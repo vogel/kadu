@@ -25,6 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class Docking;
+class MainConfigurationWindowService;
 class PathsProvider;
 
 class DOCKINGAPI DockingPluginObject : public QObject
@@ -40,12 +41,14 @@ public:
 
 private:
 	QPointer<Docking> m_docking;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
+	INJEQT_SET void setDocking(Docking *docking);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SET void setDocking(Docking *docking);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };

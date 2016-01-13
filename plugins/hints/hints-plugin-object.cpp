@@ -22,6 +22,7 @@
 #include "hints-configuration-ui-handler.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
@@ -49,6 +50,11 @@ void HintsPluginObject::setHintManager(HintManager *hintManager)
 	m_hintManager = hintManager;
 }
 
+void HintsPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void HintsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -56,14 +62,14 @@ void HintsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void HintsPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_hintsConfigurationUiHandler);
 }
 
 void HintsPluginObject::done()
 {
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_hintsConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
 }
 
 #include "moc_hints-plugin-object.cpp"

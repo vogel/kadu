@@ -24,6 +24,7 @@
 #include "plugins/sound/sound-manager.h"
 #include "plugins/sound/sound-plugin-object.h"
 
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "kadu/kadu-core/misc/paths-provider.h"
 
@@ -41,6 +42,11 @@ void ExtSoundPluginObject::setExternalPlayer(ExternalPlayer *externalPlayer)
 	m_externalPlayer = externalPlayer;
 }
 
+void ExtSoundPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void ExtSoundPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -54,12 +60,12 @@ void ExtSoundPluginObject::setSoundManager(SoundManager *soundManager)
 void ExtSoundPluginObject::init()
 {
 	m_soundManager->setPlayer(m_externalPlayer);
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String{"plugins/configuration/ext_sound.ui"});
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String{"plugins/configuration/ext_sound.ui"});
 }
 
 void ExtSoundPluginObject::done()
 {
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String{"plugins/configuration/ext_sound.ui"});
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String{"plugins/configuration/ext_sound.ui"});
 	m_soundManager->setPlayer(nullptr);
 }
 

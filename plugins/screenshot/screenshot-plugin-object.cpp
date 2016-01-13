@@ -24,6 +24,7 @@
 #include "gui/actions/screenshot-actions.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "notification/notification-event-repository.h"
@@ -41,6 +42,11 @@ ScreenshotPluginObject::~ScreenshotPluginObject()
 void ScreenshotPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+}
+
+void ScreenshotPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void ScreenshotPluginObject::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
@@ -70,7 +76,7 @@ void ScreenshotPluginObject::setScreenShotConfiguration(ScreenShotConfiguration 
 
 void ScreenshotPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_screenShotConfigurationUiHandler);
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
 }
@@ -79,7 +85,7 @@ void ScreenshotPluginObject::done()
 {
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_screenShotConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
 }
 
 #include "moc_screenshot-plugin-object.cpp"

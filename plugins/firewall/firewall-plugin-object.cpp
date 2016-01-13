@@ -23,6 +23,7 @@
 #include "firewall-message-filter.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "message/message-filter-service.h"
 #include "misc/paths-provider.h"
@@ -54,6 +55,11 @@ void FirewallPluginObject::setFirewallMessageFilter(FirewallMessageFilter *firew
 	m_firewallMessageFilter = firewallMessageFilter;
 }
 
+void FirewallPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void FirewallPluginObject::setMessageFilterService(MessageFilterService *messageFilterService)
 {
 	m_messageFilterService = messageFilterService;
@@ -71,7 +77,7 @@ void FirewallPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void FirewallPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_firewallConfigurationUiHandler);
 	m_messageFilterService->registerMessageFilter(m_firewallMessageFilter);
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")});
@@ -82,7 +88,7 @@ void FirewallPluginObject::done()
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")});
 	m_messageFilterService->unregisterMessageFilter(m_firewallMessageFilter);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_firewallConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/firewall.ui"));
 }
 
 #include "moc_firewall-plugin-object.cpp"

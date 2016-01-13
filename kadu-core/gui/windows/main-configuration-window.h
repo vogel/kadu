@@ -1,5 +1,4 @@
-#ifndef MAIN_CONFIGURATION_WINDOW_H
-#define MAIN_CONFIGURATION_WINDOW_H
+#pragma once
 
 #include <QtCore/QPointer>
 
@@ -20,7 +19,6 @@ class SyntaxEditorWindow;
 
 class MainConfigurationWindow;
 
-class ConfigFileDataManager;
 class ConfigurationUiHandler;
 
 /**
@@ -32,13 +30,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 {
 	Q_OBJECT
 
-	static MainConfigurationWindow *Instance;
-	static ConfigFileDataManager *InstanceDataManager;
-
-	static QList<QString> UiFiles;
-
-	static void instanceCreated();
-
 	QPointer<ConfigurationWindow> lookChatAdvanced;
 
 	QCheckBox *onStartupSetLastDescription;
@@ -49,8 +40,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	QCheckBox *userboxBlur;
 	BuddyListBackgroundColorsWidget *buddyColors;
 	PluginListWidget *PluginList;
-
-	explicit MainConfigurationWindow();
 
 	void setLanguages();
 
@@ -71,33 +60,12 @@ private slots:
 	void configurationUiHandlerRemoved(ConfigurationUiHandler *configurationUiHandler);
 
 public:
-	static MainConfigurationWindow * instance();
-	static bool hasInstance();
-	static ConfigFileDataManager * instanceDataManager();
-
-	/**
-		Rejestracja nowego pliku *.ui (dokonywana przez modu�u).
-		Plik uiFile zostanie wczytany wraz z otwarciem g��wnego okna konfiguracyjnego.
-		Obiekt uiHandle zostanie poinformowany o stworzeniu okna i b�dzie m�g� doda�
-		do niego w�asne interakcje.
-		@note Należy pamiętać, aby wywołać tę metodę zawsze przed korespondującym
-		      wywołaniem metody \c registerUiHandler() (o ile takie istnieje).
-	 **/
-	static void registerUiFile(const QString &uiFile);
-	/**
-		Wyrejestrowanie pliku *.ui i klasy obs�uguj�cej okno konfiguracyjne.
-		@note Należy pamiętać, aby wywołać tę metodę zawsze po korespondującym
-		      wywołaniu metody \c unregisterUiHandler() (o ile takie istnieje).
-	 **/
-	static void unregisterUiFile(const QString &uiFile);
-
 	static const char *SyntaxText;
 	static const char *SyntaxTextNotify;
 
+	explicit MainConfigurationWindow(QObject *parent = nullptr);
 	virtual ~MainConfigurationWindow();
 
 	virtual void show();
 
 };
-
-#endif // MAIN_CONFIGURATION_WINDOW_H

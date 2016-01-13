@@ -22,6 +22,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class MainConfigurationWindowService;
 class PathsProvider;
 class SimpleView;
 
@@ -35,13 +36,15 @@ public:
 	virtual ~SimpleviewPluginObject();
 
 private:
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<SimpleView> m_simpleView;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setSimpleView(SimpleView *simpleView);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

@@ -26,6 +26,7 @@
 #include "plugins/mediaplayer/mediaplayer.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
@@ -41,6 +42,11 @@ MprisPlayerPluginObject::~MprisPlayerPluginObject()
 void MprisPlayerPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+}
+
+void MprisPlayerPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void MprisPlayerPluginObject::setMediaPlayer(MediaPlayer *mediaPlayer)
@@ -65,7 +71,7 @@ void MprisPlayerPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void MprisPlayerPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_mprisPlayerConfigurationUiHandler);
 
 	if (!m_mediaPlayer->registerMediaPlayer(m_mprisPlayer, m_mprisPlayer))
@@ -81,7 +87,7 @@ void MprisPlayerPluginObject::done()
 {
 	m_mediaPlayer->unregisterMediaPlayer();
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_mprisPlayerConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
 }
 
 #include "moc_mpris-player-plugin-object.cpp"

@@ -21,6 +21,7 @@
 
 #include "filedesc-status-changer.h"
 
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "status/status-changer-manager.h"
@@ -39,6 +40,11 @@ void FiledescPluginObject::setFileDescStatusChanger(FileDescStatusChanger *fileD
 	m_fileDescStatusChanger = fileDescStatusChanger;
 }
 
+void FiledescPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void FiledescPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -52,12 +58,12 @@ void FiledescPluginObject::setStatusChangerManager(StatusChangerManager *statusC
 void FiledescPluginObject::init()
 {
 	m_statusChangerManager->registerStatusChanger(m_fileDescStatusChanger);
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
 }
 
 void FiledescPluginObject::done()
 {
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
 	m_statusChangerManager->unregisterStatusChanger(m_fileDescStatusChanger);
 }
 

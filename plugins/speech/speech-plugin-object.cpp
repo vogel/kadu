@@ -23,6 +23,7 @@
 #include "speech-configuration-ui-handler.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "notification/notification-manager.h"
@@ -39,6 +40,11 @@ SpeechPluginObject::~SpeechPluginObject()
 void SpeechPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+}
+
+void SpeechPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void SpeechPluginObject::setNotificationManager(NotificationManager *notificationManager)
@@ -64,7 +70,7 @@ void SpeechPluginObject::setSpeech(Speech *speech)
 void SpeechPluginObject::init()
 {
 
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_speechConfigurationUiHandler);
 	m_notificationManager->registerNotifier(m_speech);
 }
@@ -73,7 +79,7 @@ void SpeechPluginObject::done()
 {
 	m_notificationManager->unregisterNotifier(m_speech);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_speechConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
 }
 
 #include "moc_speech-plugin-object.cpp"

@@ -25,6 +25,7 @@
 #include "sms-gateway-manager.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
@@ -40,6 +41,11 @@ SmsPluginObject::~SmsPluginObject()
 void SmsPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+}
+
+void SmsPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void SmsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
@@ -69,7 +75,7 @@ void SmsPluginObject::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
 
 void SmsPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_smsConfigurationUiHandler);
 	m_smsScriptsManager->init();
 	m_smsGatewayManager->load();
@@ -78,7 +84,7 @@ void SmsPluginObject::init()
 void SmsPluginObject::done()
 {
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_smsConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
 }
 
 #include "moc_sms-plugin-object.cpp"

@@ -29,6 +29,7 @@
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/windows/chat-data-window-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/proxy-edit-window-service.h"
 #include "gui/windows/search-window-actions.h"
 #include "gui/windows/your-accounts-window-service.h"
@@ -45,6 +46,7 @@ GuiModule::GuiModule()
 	add_type<ChatEditBoxSizeManager>();
 	add_type<ChatWidgetActions>();
 	add_type<CustomInputMenuManager>();
+	add_type<MainConfigurationWindowService>();
 	add_type<MenuInventory>();
 	add_type<ProxyEditWindowService>();
 	add_type<SearchWindowActions>();

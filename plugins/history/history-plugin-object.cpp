@@ -27,6 +27,7 @@
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
@@ -74,6 +75,11 @@ void HistoryPluginObject::setHistory(History *history)
 	m_history = history;
 }
 
+void HistoryPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void HistoryPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -86,7 +92,7 @@ History * HistoryPluginObject::history() const
 
 void HistoryPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/history.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/history.ui"));
 	m_buddyAdditionalDataDeleteHandlerManager->registerAdditionalDataDeleteHandler(m_buddyHistoryDeleteHandler);
 	m_buddyConfigurationWidgetFactoryRepository->registerFactory(m_historyBuddyConfigurationWidgetFactory);
 	m_chatConfigurationWidgetFactoryRepository->registerFactory(m_historyChatConfigurationWidgetFactory);
@@ -97,7 +103,7 @@ void HistoryPluginObject::done()
 	m_chatConfigurationWidgetFactoryRepository->unregisterFactory(m_historyChatConfigurationWidgetFactory);
 	m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_historyBuddyConfigurationWidgetFactory);
 	m_buddyAdditionalDataDeleteHandlerManager->unregisterAdditionalDataDeleteHandler(m_buddyHistoryDeleteHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/history.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/history.ui"));
 }
 
 #include "moc_history-plugin-object.cpp"

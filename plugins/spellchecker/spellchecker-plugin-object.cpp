@@ -23,6 +23,7 @@
 #include "spellchecker.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
@@ -38,6 +39,11 @@ SpellcheckerPluginObject::~SpellcheckerPluginObject()
 void SpellcheckerPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+}
+
+void SpellcheckerPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void SpellcheckerPluginObject::setPathsProvider(PathsProvider *pathsProvider)
@@ -57,14 +63,14 @@ void SpellcheckerPluginObject::setSpellChecker(SpellChecker *spellChecker)
 
 void SpellcheckerPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_spellcheckerConfigurationUiHandler);
 }
 
 void SpellcheckerPluginObject::done()
 {
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_spellcheckerConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
 }
 
 #include "moc_spellchecker-plugin-object.cpp"

@@ -23,6 +23,7 @@
 #include "autoresponder-message-filter.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "message/message-filter-service.h"
@@ -51,6 +52,11 @@ void AutoresponderPluginObject::setConfigurationUiHandlerRepository(Configuratio
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
+void AutoresponderPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void AutoresponderPluginObject::setMessageFilterService(MessageFilterService *messageFilterService)
 {
 	m_messageFilterService = messageFilterService;
@@ -63,7 +69,7 @@ void AutoresponderPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void AutoresponderPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoresponderConfigurationUiHandler);
 	m_messageFilterService->registerMessageFilter(m_autoresponderMessageFilter);
 }
@@ -72,7 +78,7 @@ void AutoresponderPluginObject::done()
 {
 	m_messageFilterService->unregisterMessageFilter(m_autoresponderMessageFilter);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoresponderConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 }
 
 #include "moc_autoresponder-plugin-object.cpp"

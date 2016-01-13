@@ -23,6 +23,7 @@
 #include <injeqt/injeqt.h>
 
 class ConfigurationUiHandlerRepository;
+class MainConfigurationWindowService;
 class MediaPlayer;
 class MPRISPlayerConfigurationUiHandler;
 class MPRISPlayer;
@@ -39,18 +40,20 @@ public:
 
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MediaPlayer> m_mediaPlayer;
 	QPointer<MPRISPlayerConfigurationUiHandler> m_mprisPlayerConfigurationUiHandler;
 	QPointer<MPRISPlayer> m_mprisPlayer;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
 	INJEQT_SET void setMPRISPlayerConfigurationUiHandler(MPRISPlayerConfigurationUiHandler *mprisPlayerConfigurationUiHandler);
 	INJEQT_SET void setMPRISPlayer(MPRISPlayer *mprisPlayer);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

@@ -56,7 +56,7 @@ private slots:
 	void syntaxChanged();
 
 public:
-	HintOverUserConfigurationWindow(HintManager *hintManager, Buddy exampleContact);
+	HintOverUserConfigurationWindow(HintManager *hintManager, Buddy exampleContact, ConfigurationWindowDataManager *dataManager);
 
 };
 

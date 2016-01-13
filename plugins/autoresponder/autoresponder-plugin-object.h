@@ -27,6 +27,7 @@
 class AutoresponderConfigurationUiHandler;
 class AutoresponderMessageFilter;
 class ConfigurationUiHandlerRepository;
+class MainConfigurationWindowService;
 class MessageFilterService;
 class PathsProvider;
 
@@ -43,6 +44,7 @@ private:
 	QPointer<AutoresponderConfigurationUiHandler> m_autoresponderConfigurationUiHandler;
 	QPointer<AutoresponderMessageFilter> m_autoresponderMessageFilter;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MessageFilterService> m_messageFilterService;
 	QPointer<PathsProvider> m_pathsProvider;
 
@@ -52,6 +54,7 @@ private slots:
 	INJEQT_SET void setAutoresponderConfigurationUiHandler(AutoresponderConfigurationUiHandler *autoresponderConfigurationUiHandler);
 	INJEQT_SET void setAutoresponderMessageFilter(AutoresponderMessageFilter *autoresponderMessageFilter);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 

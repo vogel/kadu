@@ -21,6 +21,7 @@
 
 #include "freedesktop-notifier.h"
 
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "notification/notification-manager.h"
@@ -39,6 +40,11 @@ void FreedesktopNotifyPluginObject::setFreedesktopNotifier(FreedesktopNotifier *
 	m_freedesktopNotifier = freedesktopNotifier;
 }
 
+void FreedesktopNotifyPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void FreedesktopNotifyPluginObject::setNotificationManager(NotificationManager *notificationManager)
 {
 	m_notificationManager = notificationManager;
@@ -51,14 +57,14 @@ void FreedesktopNotifyPluginObject::setPathsProvider(PathsProvider *pathsProvide
 
 void FreedesktopNotifyPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
 	m_notificationManager->registerNotifier(m_freedesktopNotifier);
 }
 
 void FreedesktopNotifyPluginObject::done()
 {
 	m_notificationManager->unregisterNotifier(m_freedesktopNotifier);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
 }
 
 #include "moc_freedesktop-notify-plugin-object.cpp"

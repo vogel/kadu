@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,40 +19,38 @@
 
 #pragma once
 
-#include "misc/memory.h"
+#include "exports.h"
 
+#include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class AutoHide;
-class AutoHideConfigurationUiHandler;
 class ConfigurationUiHandlerRepository;
-class MainConfigurationWindowService;
-class PathsProvider;
+class InjectedFactory;
+class MainConfigurationWindow;
 
-class AutoHidePluginObject : public QObject
+class KADUAPI MainConfigurationWindowService : public QObject
 {
 	Q_OBJECT
-	INJEQT_INSTANCE_IMMEDIATE
 
 public:
-	Q_INVOKABLE explicit AutoHidePluginObject(QObject *parent = nullptr);
-	virtual ~AutoHidePluginObject();
+	Q_INVOKABLE explicit MainConfigurationWindowService(QObject *parent = nullptr);
+	virtual ~MainConfigurationWindowService();
+
+	void registerUiFile(const QString &uiFile);
+	void unregisterUiFile(const QString &uiFile);
+
+	void show();
 
 private:
-	QPointer<AutoHide> m_autoHide;
-	QPointer<AutoHideConfigurationUiHandler> m_autoHideConfigurationUiHandler;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<MainConfigurationWindow> m_mainConfigurationWindow;
+
+	QList<QString> m_uiFiles;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setAutoHide(AutoHide *autoHide);
-	INJEQT_SET void setAutoHideConfigurationUiHandler(AutoHideConfigurationUiHandler *autoHideConfigurationUiHandler);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

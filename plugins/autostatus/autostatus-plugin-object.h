@@ -27,6 +27,7 @@
 class AutostatusActions;
 class AutostatusService;
 class AutostatusStatusChanger;
+class MainConfigurationWindowService;
 class PathsProvider;
 class StatusChangerManager;
 
@@ -43,6 +44,7 @@ private:
 	QPointer<AutostatusActions> m_autostatusActions;
 	QPointer<AutostatusService> m_autostatusService;
 	QPointer<AutostatusStatusChanger> m_autostatusStatusChanger;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<StatusChangerManager> m_statusChangerManager;
 
@@ -52,6 +54,7 @@ private slots:
 	INJEQT_SET void setAutostatusActions(AutostatusActions *autostatusActions);
 	INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
 	INJEQT_SET void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 

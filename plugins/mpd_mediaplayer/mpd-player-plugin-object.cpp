@@ -24,6 +24,7 @@
 #include "plugins/mediaplayer/mediaplayer-plugin-object.h"
 #include "plugins/mediaplayer/mediaplayer.h"
 
+#include "gui/windows/main-configuration-window-service.h"
 #include "misc/paths-provider.h"
 
 MpdPlayerPluginObject::MpdPlayerPluginObject(QObject *parent) :
@@ -33,6 +34,11 @@ MpdPlayerPluginObject::MpdPlayerPluginObject(QObject *parent) :
 
 MpdPlayerPluginObject::~MpdPlayerPluginObject()
 {
+}
+
+void MpdPlayerPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void MpdPlayerPluginObject::setMediaPlayer(MediaPlayer *mediaPlayer)
@@ -52,14 +58,14 @@ void MpdPlayerPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void MpdPlayerPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 	m_mediaPlayer->registerMediaPlayer(m_mpdMediaPlayer, m_mpdMediaPlayer);
 }
 
 void MpdPlayerPluginObject::done()
 {
 	m_mediaPlayer->unregisterMediaPlayer();
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 }
 
 #include "moc_mpd-player-plugin-object.cpp"

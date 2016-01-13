@@ -116,6 +116,8 @@ void NotificationService::setStatusContainerManager(StatusContainerManager *stat
 
 void NotificationService::init()
 {
+	NotifyUiHandler = new NotifyConfigurationUiHandler(this);
+
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(NotifyUiHandler);
 
 	auto ignoreCallback = NotificationCallback{
@@ -137,8 +139,6 @@ void NotificationService::init()
 	m_notificationCallbackRepository->addCallback(openChatCallback);
 
 	Notification::registerParserTags();
-
-	NotifyUiHandler = new NotifyConfigurationUiHandler(this);
 
 	MessageNotification::registerEvents();
 

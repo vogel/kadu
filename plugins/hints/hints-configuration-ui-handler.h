@@ -39,6 +39,7 @@ class HintsConfigurationUiHandler : public QObject, public ConfigurationUiHandle
 	Q_OBJECT
 
 private:
+	QPointer<MainConfigurationWindow> m_mainConfigurationWindow;
 	QPointer<ConfigurationWindow> AdvancedWindow;
 	QPointer<HintManager> m_hintManager;
 

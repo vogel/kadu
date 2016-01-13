@@ -27,6 +27,7 @@
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "dom/dom-processor-service.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "misc/paths-provider.h"
@@ -80,6 +81,11 @@ void EmoticonsPluginObject::setInsertEmoticonAction(InsertEmoticonAction *insert
 	m_insertEmoticonAction = insertEmoticonAction;
 }
 
+void EmoticonsPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void EmoticonsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -87,7 +93,7 @@ void EmoticonsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void EmoticonsPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
 	m_clipboardHtmlTransformerService->registerTransformer(m_emoticonClipboardHtmlTransformer);
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_emoticonsConfigurationUiHandler);
 	m_domProcessorService->registerVisitorProvider(m_emoticonExpanderDomVisitorProvider, 2000);
@@ -99,7 +105,7 @@ void EmoticonsPluginObject::done()
 	m_domProcessorService->unregisterVisitorProvider(m_emoticonExpanderDomVisitorProvider);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_emoticonsConfigurationUiHandler);
 	m_clipboardHtmlTransformerService->unregisterTransformer(m_emoticonClipboardHtmlTransformer);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
 }
 
 #include "moc_emoticons-plugin-object.cpp"

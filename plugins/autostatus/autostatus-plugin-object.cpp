@@ -23,6 +23,7 @@
 #include "autostatus-service.h"
 #include "autostatus-status-changer.h"
 
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "kadu/kadu-core/misc/paths-provider.h"
 #include "status/status-changer-manager.h"
@@ -51,6 +52,11 @@ void AutostatusPluginObject::setAutostatusStatusChanger(AutostatusStatusChanger 
 	m_autostatusStatusChanger = autostatusStatusChanger;
 }
 
+void AutostatusPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void AutostatusPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -63,14 +69,14 @@ void AutostatusPluginObject::setStatusChangerManager(StatusChangerManager *statu
 
 void AutostatusPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
 	m_statusChangerManager->registerStatusChanger(m_autostatusStatusChanger);
 }
 
 void AutostatusPluginObject::done()
 {
 	m_statusChangerManager->unregisterStatusChanger(m_autostatusStatusChanger);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autostatus.ui"));
 }
 
 #include "moc_autostatus-plugin-object.cpp"

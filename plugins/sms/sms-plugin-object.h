@@ -23,6 +23,7 @@
 #include <injeqt/injeqt.h>
 
 class ConfigurationUiHandlerRepository;
+class MainConfigurationWindowService;
 class PathsProvider;
 class SmsActions;
 class SmsConfigurationUiHandler;
@@ -40,6 +41,7 @@ public:
 
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<SmsActions> m_smsActions;
 	QPointer<SmsConfigurationUiHandler> m_smsConfigurationUiHandler;
@@ -50,6 +52,7 @@ private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setSmsActions(SmsActions *smsActions);
 	INJEQT_SET void setSmsConfigurationUiHandler(SmsConfigurationUiHandler *smsConfigurationUiHandler);

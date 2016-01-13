@@ -23,6 +23,7 @@
 #include "mediaplayer.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
@@ -38,6 +39,11 @@ MediaplayerPluginObject::~MediaplayerPluginObject()
 void MediaplayerPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+}
+
+void MediaplayerPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void MediaplayerPluginObject::setMediaplayerConfigurationUiHandler(MediaplayerConfigurationUiHandler *mediaplayerConfigurationUiHandler)
@@ -62,14 +68,14 @@ MediaPlayer * MediaplayerPluginObject::mediaPlayer() const
 
 void MediaplayerPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_mediaplayerConfigurationUiHandler);
 }
 
 void MediaplayerPluginObject::done()
 {
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_mediaplayerConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
 }
 
 #include "moc_mediaplayer-plugin-object.cpp"

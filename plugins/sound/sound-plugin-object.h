@@ -27,6 +27,7 @@
 class BuddyConfigurationWidgetFactoryRepository;
 class ChatConfigurationWidgetFactoryRepository;
 class ConfigurationUiHandlerRepository;
+class MainConfigurationWindowService;
 class NotificationManager;
 class PathsProvider;
 class SoundActions;
@@ -51,6 +52,7 @@ private:
 	QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
 	QPointer<ChatConfigurationWidgetFactoryRepository> m_chatConfigurationWidgetFactoryRepository;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<NotificationManager> m_notificationManager;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<SoundActions> m_soundActions;
@@ -66,6 +68,7 @@ private slots:
 	INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
 	INJEQT_SET void setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setSoundActions(SoundActions *soundActions);

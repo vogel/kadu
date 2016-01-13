@@ -100,6 +100,8 @@ void HintsConfigurationUiHandler::setHintManager(HintManager *hintManager)
 
 void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+	m_mainConfigurationWindow = mainConfigurationWindow;
+
 	connect(mainConfigurationWindow->widget()->widgetById("hints/advanced"), SIGNAL(clicked()), this, SLOT(showAdvanced()));
 
 	connect(mainConfigurationWindow->widget()->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
@@ -152,7 +154,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 {
 	if (!AdvancedWindow)
 	{
-		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", MainConfigurationWindow::instanceDataManager());
+		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", m_mainConfigurationWindow->dataManager());
 		AdvancedWindow->widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
 
 		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
@@ -343,7 +345,7 @@ void HintsConfigurationUiHandler::showOverUserConfigurationWindow()
 		_activateWindow(overUserConfigurationWindow.data());
 	else
 	{
-		overUserConfigurationWindow = new HintOverUserConfigurationWindow(m_hintManager, Buddy::dummy());
+		overUserConfigurationWindow = new HintOverUserConfigurationWindow(m_hintManager, Buddy::dummy(), m_mainConfigurationWindow->dataManager());
 		connect(overUserConfigurationWindow.data(), SIGNAL(configurationSaved()), this, SLOT(updateOverUserPreview()));
 		overUserConfigurationWindow->show();
 	}

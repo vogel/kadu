@@ -30,6 +30,7 @@ class EmoticonConfigurator;
 class EmoticonExpanderDomVisitorProvider;
 class EmoticonsConfigurationUiHandler;
 class InsertEmoticonAction;
+class MainConfigurationWindowService;
 class PathsProvider;
 
 class EmoticonsPluginObject : public QObject
@@ -50,11 +51,10 @@ private:
 	QPointer<EmoticonExpanderDomVisitorProvider> m_emoticonExpanderDomVisitorProvider;
 	QPointer<EmoticonsConfigurationUiHandler> m_emoticonsConfigurationUiHandler;
 	QPointer<InsertEmoticonAction> m_insertEmoticonAction;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
@@ -63,6 +63,9 @@ private slots:
 	INJEQT_SET void setEmoticonExpanderDomVisitorProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderDomVisitorProvider);
 	INJEQT_SET void setEmoticonsConfigurationUiHandler(EmoticonsConfigurationUiHandler *emoticonsConfigurationUiHandler);
 	INJEQT_SET void setInsertEmoticonAction(InsertEmoticonAction *insertEmoticonAction);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

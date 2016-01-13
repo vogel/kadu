@@ -23,6 +23,7 @@
 #include <injeqt/injeqt.h>
 
 class FileDescStatusChanger;
+class MainConfigurationWindowService;
 class PathsProvider;
 class StatusChangerManager;
 
@@ -37,14 +38,16 @@ public:
 
 private:
 	QPointer<FileDescStatusChanger> m_fileDescStatusChanger;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<StatusChangerManager> m_statusChangerManager;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 	INJEQT_SET void setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

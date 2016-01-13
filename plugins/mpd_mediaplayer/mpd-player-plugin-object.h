@@ -22,6 +22,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class MainConfigurationWindowService;
 class MediaPlayer;
 class MPDMediaPlayer;
 class PathsProvider;
@@ -36,15 +37,17 @@ public:
 	virtual ~MpdPlayerPluginObject();
 
 private:
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MediaPlayer> m_mediaPlayer;
 	QPointer<MPDMediaPlayer> m_mpdMediaPlayer;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
 	INJEQT_SET void setMPDMediaPlayer(MPDMediaPlayer *mpdMediaPlayer);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

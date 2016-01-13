@@ -95,6 +95,7 @@ class KADUAPI ConfigurationWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
+	ConfigurationWindowDataManager *m_dataManager;
 	QString Name;
 	QString Section;
 
@@ -115,6 +116,8 @@ public:
 	 **/
 	ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigurationWindow();
+
+	ConfigurationWindowDataManager * dataManager() const { return m_dataManager; }
 
 	const QString & name() const { return Name; }
 	const QString & section() const { return Section; }

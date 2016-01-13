@@ -23,6 +23,7 @@
 #include "auto-hide-configuration-ui-handler.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "kadu/kadu-core/misc/paths-provider.h"
 
@@ -50,6 +51,11 @@ void AutoHidePluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHa
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
+void AutoHidePluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void AutoHidePluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -57,14 +63,14 @@ void AutoHidePluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void AutoHidePluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoHideConfigurationUiHandler);
 }
 
 void AutoHidePluginObject::done()
 {
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoHideConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 }
 
 #include "moc_auto-hide-plugin-object.cpp"

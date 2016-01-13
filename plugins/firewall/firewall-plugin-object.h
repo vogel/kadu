@@ -25,6 +25,7 @@
 class ConfigurationUiHandlerRepository;
 class FirewallConfigurationUiHandler;
 class FirewallMessageFilter;
+class MainConfigurationWindowService;
 class MessageFilterService;
 class NotificationEventRepository;
 class PathsProvider;
@@ -42,18 +43,20 @@ private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<FirewallConfigurationUiHandler> m_firewallConfigurationUiHandler;
 	QPointer<FirewallMessageFilter> m_firewallMessageFilter;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MessageFilterService> m_messageFilterService;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setFirewallConfigurationUiHandler(FirewallConfigurationUiHandler *firewallConfigurationUiHandler);
 	INJEQT_SET void setFirewallMessageFilter(FirewallMessageFilter *firewallMessageFilter);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

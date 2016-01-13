@@ -28,6 +28,7 @@ class Autoaway;
 class AutoawayConfigurationUiHandler;
 class AutoawayStatusChanger;
 class ConfigurationUiHandlerRepository;
+class MainConfigurationWindowService;
 class PathsProvider;
 class StatusChangerManager;
 
@@ -45,6 +46,7 @@ private:
 	QPointer<AutoawayConfigurationUiHandler> m_autoawayConfigurationUiHandler;
 	QPointer<AutoawayStatusChanger> m_autoawayStatusChanger;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<StatusChangerManager> m_statusChangerManager;
 
@@ -55,6 +57,7 @@ private slots:
 	INJEQT_SET void setAutoawayConfigurationUiHandler(AutoawayConfigurationUiHandler *autoawayConfigurationUiHandler);
 	INJEQT_SET void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 

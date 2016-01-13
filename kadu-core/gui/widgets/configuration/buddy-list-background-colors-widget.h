@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_LIST_BACKGROUND_COLORS_WIDGET_H
-#define BUDDY_LIST_BACKGROUND_COLORS_WIDGET_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 
 class ColorButton;
@@ -31,10 +31,12 @@ class BuddyListBackgroundColorsWidget : public QWidget
 {
 	Q_OBJECT
 
+	QPointer<MainConfigurationWindow> m_mainWindow;
+
 	ColorButton *colorButton;
 	ColorButton *alternateColorButton;
 
-	void createGui(MainConfigurationWindow* mainWindow);
+	void createGui();
 	void loadConfiguration();
 
 private slots:
@@ -42,6 +44,5 @@ private slots:
 
 public:
 	explicit BuddyListBackgroundColorsWidget(MainConfigurationWindow *mainWindow);
-};
 
-#endif // BUDDY_LIST_BACKGROUND_COLORS_WIDGET_H
+};

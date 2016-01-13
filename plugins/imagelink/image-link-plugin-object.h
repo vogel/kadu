@@ -25,6 +25,7 @@
 class DomProcessorService;
 class ImageExpanderDomVisitorProvider;
 class ImageLinkConfigurator;
+class MainConfigurationWindowService;
 class PathsProvider;
 class VideoExpanderDomVisitorProvider;
 
@@ -41,16 +42,18 @@ private:
 	QPointer<DomProcessorService> m_domProcessorService;
 	QPointer<ImageExpanderDomVisitorProvider> m_imageExpanderDomVisitorProvider;
 	QPointer<ImageLinkConfigurator> m_imageLinkConfigurator;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<VideoExpanderDomVisitorProvider> m_videoExpanderDomVisitorProvider;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
 	INJEQT_SET void setImageExpanderDomVisitorProvider(ImageExpanderDomVisitorProvider *imageExpanderDomVisitorProvider);
 	INJEQT_SET void setImageLinkConfigurator(ImageLinkConfigurator *imageLinkConfigurator);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setVideoExpanderDomVisitorProvider(VideoExpanderDomVisitorProvider *videoExpanderDomVisitorProvider);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

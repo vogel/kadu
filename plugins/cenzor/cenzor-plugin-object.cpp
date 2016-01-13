@@ -23,6 +23,7 @@
 #include "cenzor-message-filter.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "message/message-filter-service.h"
 #include "misc/paths-provider.h"
@@ -54,6 +55,11 @@ void CenzorPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHand
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
+void CenzorPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void CenzorPluginObject::setMessageFilterService(MessageFilterService *messageFilterService)
 {
 	m_messageFilterService = messageFilterService;
@@ -74,12 +80,12 @@ void CenzorPluginObject::init()
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_cenzorConfigurationUiHandler);
 	m_messageFilterService->registerMessageFilter(m_cenzorMessageFilter);
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored")});
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
 }
 
 void CenzorPluginObject::done()
 {
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored")});
 	m_messageFilterService->unregisterMessageFilter(m_cenzorMessageFilter);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_cenzorConfigurationUiHandler);

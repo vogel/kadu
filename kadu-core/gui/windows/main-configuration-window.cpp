@@ -81,10 +81,6 @@
 #undef Status            // and Status defined by Xlib.h must be undefined
 #endif
 
-MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
-ConfigFileDataManager *MainConfigurationWindow::InstanceDataManager = 0;
-QList<QString> MainConfigurationWindow::UiFiles;
-
 const char *MainConfigurationWindow::SyntaxText = QT_TRANSLATE_NOOP
 (
 	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
@@ -101,47 +97,6 @@ const char *MainConfigurationWindow::SyntaxTextNotify = QT_TRANSLATE_NOOP
 	"#{event} - name of event,\n"
 );
 
-MainConfigurationWindow * MainConfigurationWindow::instance()
-{
-	if (!Instance)
-	{
-		InstanceDataManager = new ConfigFileDataManager();
-		Instance = new MainConfigurationWindow();
-		instanceCreated();
-	}
-
-	return Instance;
-}
-
-bool MainConfigurationWindow::hasInstance()
-{
-	return Instance;
-}
-
-ConfigFileDataManager * MainConfigurationWindow::instanceDataManager()
-{
-	if (!InstanceDataManager)
-		InstanceDataManager = new ConfigFileDataManager();
-
-	return InstanceDataManager;
-}
-
-void MainConfigurationWindow::registerUiFile(const QString &uiFile)
-{
-	UiFiles.append(uiFile);
-	if (!Instance)
-		return;
-
-	Instance->widget()->appendUiFile(uiFile);
-}
-
-void MainConfigurationWindow::unregisterUiFile(const QString &uiFile)
-{
-	UiFiles.removeAll(uiFile);
-	if (Instance)
-		Instance->widget()->removeUiFile(uiFile);
-}
-
 void MainConfigurationWindow::configurationUiHandlerAdded(ConfigurationUiHandler *configurationUiHandler)
 {
 	configurationUiHandler->mainConfigurationWindowCreated(this);
@@ -152,18 +107,11 @@ void MainConfigurationWindow::configurationUiHandlerRemoved(ConfigurationUiHandl
 	Q_UNUSED(configurationUiHandler)
 }
 
-void MainConfigurationWindow::instanceCreated()
+MainConfigurationWindow::MainConfigurationWindow(QObject *parent) :
+		ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", new ConfigFileDataManager())
 {
-	foreach (const QString &uiFile, UiFiles)
-		Instance->widget()->appendUiFile(uiFile);
+	Q_UNUSED(parent);
 
-	for (auto configurationUiHandler : Core::instance()->configurationUiHandlerRepository())
-		configurationUiHandler->mainConfigurationWindowCreated(Instance);
-}
-
-MainConfigurationWindow::MainConfigurationWindow() :
-		ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", instanceDataManager())
-{
 	setWindowRole("kadu-configuration");
 
 	widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog.ui"));
@@ -244,8 +192,6 @@ MainConfigurationWindow::~MainConfigurationWindow()
 {
 	for (auto configurationUiHandler : Core::instance()->configurationUiHandlerRepository())
 		configurationUiHandler->mainConfigurationWindowDestroyed();
-
-	Instance = 0;
 }
 
 void MainConfigurationWindow::applied()
@@ -401,7 +347,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 {
 	if (!lookChatAdvanced)
 	{
-		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", instanceDataManager());
+		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", dataManager());
 		lookChatAdvanced.data()->widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
 	}
 

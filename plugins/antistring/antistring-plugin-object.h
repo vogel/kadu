@@ -27,6 +27,7 @@
 class AntistringConfigurationUiHandler;
 class AntistringMessageFilter;
 class ConfigurationUiHandlerRepository;
+class MainConfigurationWindowService;
 class MessageFilterService;
 class NotificationEventRepository;
 class PathsProvider;
@@ -44,6 +45,7 @@ private:
 	QPointer<AntistringConfigurationUiHandler> m_antistringConfigurationUiHandler;
 	QPointer<AntistringMessageFilter> m_antistringMessageFilter;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MessageFilterService> m_messageFilterService;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<PathsProvider> m_pathsProvider;
@@ -54,6 +56,7 @@ private slots:
 	INJEQT_SET void setAntistringConfigurationUiHandler(AntistringConfigurationUiHandler *antistringConfigurationUiHandler);
 	INJEQT_SET void setAntistringMessageFilter(AntistringMessageFilter *antistringMessageFilter);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);

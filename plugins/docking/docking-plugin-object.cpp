@@ -21,6 +21,7 @@
 
 #include "docking.h"
 
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
@@ -38,6 +39,11 @@ void DockingPluginObject::setDocking(Docking *docking)
 	m_docking = docking;
 }
 
+void DockingPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void DockingPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -45,12 +51,12 @@ void DockingPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void DockingPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
 }
 
 void DockingPluginObject::done()
 {
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
 }
 
 #include "moc_docking-plugin-object.cpp"

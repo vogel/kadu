@@ -45,8 +45,8 @@
 
 #include "hint-over-user-configuration-window.h"
 
-HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(HintManager *hintManager, Buddy exampleBuddy) :
-	ConfigurationWindow("HintOverUser", tr("Hint Over Buddy Configuration"), "Hints", MainConfigurationWindow::instanceDataManager()),
+HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(HintManager *hintManager, Buddy exampleBuddy, ConfigurationWindowDataManager *dataManager) :
+	ConfigurationWindow("HintOverUser", tr("Hint Over Buddy Configuration"), "Hints", dataManager),
 	ExampleBuddy(exampleBuddy)
 {
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));

@@ -23,6 +23,7 @@
 #include "antistring-message-filter.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "message/message-filter-service.h"
 #include "misc/paths-provider.h"
@@ -54,6 +55,11 @@ void AntistringPluginObject::setConfigurationUiHandlerRepository(ConfigurationUi
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
+void AntistringPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void AntistringPluginObject::setMessageFilterService(MessageFilterService *messageFilterService)
 {
 	m_messageFilterService = messageFilterService;
@@ -71,7 +77,7 @@ void AntistringPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void AntistringPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_antistringConfigurationUiHandler);
 	m_messageFilterService->registerMessageFilter(m_antistringMessageFilter);
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")});
@@ -82,7 +88,7 @@ void AntistringPluginObject::done()
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")});
 	m_messageFilterService->unregisterMessageFilter(m_antistringMessageFilter);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_antistringConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/antistring.ui"));
 }
 
 #include "moc_antistring-plugin-object.cpp"

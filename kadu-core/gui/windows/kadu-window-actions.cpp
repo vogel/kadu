@@ -67,6 +67,7 @@
 #include "gui/windows/kadu-dialog.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/group-edit-window.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/multilogon-window.h"
@@ -201,6 +202,11 @@ void KaduWindowActions::setActions(Actions *actions)
 void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void KaduWindowActions::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void KaduWindowActions::setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService)
@@ -569,7 +575,7 @@ void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggl
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	MainConfigurationWindow::instance()->show();
+	m_mainConfigurationWindowService->show();
 }
 
 void KaduWindowActions::yourAccountsActionActivated(QAction *sender, bool toggled)

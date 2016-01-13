@@ -23,6 +23,7 @@
 #include "tabs.h"
 
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
@@ -38,6 +39,11 @@ TabsPluginObject::~TabsPluginObject()
 void TabsPluginObject::setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
 {
 	m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
+}
+
+void TabsPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void TabsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
@@ -57,7 +63,7 @@ void TabsPluginObject::setTabsManager(TabsManager *tabsManager)
 
 void TabsPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
 	m_chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_tabsChatWidgetContainerHandler);
 	m_tabsManager->openStoredChatTabs();
 }
@@ -66,7 +72,7 @@ void TabsPluginObject::done()
 {
 	m_tabsManager->storeOpenedChatTabs();
 	m_chatWidgetContainerHandlerRepository->unregisterChatWidgetContainerHandler(m_tabsChatWidgetContainerHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
 }
 
 #include "moc_tabs-plugin-object.cpp"

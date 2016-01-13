@@ -21,6 +21,7 @@
 
 #include "simpleview.h"
 
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
@@ -32,6 +33,12 @@ SimpleviewPluginObject::SimpleviewPluginObject(QObject *parent) :
 SimpleviewPluginObject::~SimpleviewPluginObject()
 {
 }
+
+void SimpleviewPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void SimpleviewPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -44,12 +51,12 @@ void SimpleviewPluginObject::setSimpleView(SimpleView *simpleView)
 
 void SimpleviewPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
 }
 
 void SimpleviewPluginObject::done()
 {
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
 }
 
 #include "moc_simpleview-plugin-object.cpp"

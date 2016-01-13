@@ -198,6 +198,7 @@ set (gui_SRCS
 	windows/kadu-dialog.cpp
 	windows/kadu-window.cpp
 	windows/kadu-window-actions.cpp
+	windows/main-configuration-window-service.cpp
 	windows/main-configuration-window.cpp
 	windows/main-window.cpp
 	windows/message-dialog.cpp

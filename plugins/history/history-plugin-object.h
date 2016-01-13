@@ -31,6 +31,7 @@ class ChatConfigurationWidgetFactoryRepository;
 class HistoryBuddyConfigurationWidgetFactory;
 class HistoryChatConfigurationWidgetFactory;
 class History;
+class MainConfigurationWindowService;
 class PathsProvider;
 
 class HISTORYAPI HistoryPluginObject : public QObject
@@ -52,11 +53,10 @@ private:
 	QPointer<HistoryBuddyConfigurationWidgetFactory> m_historyBuddyConfigurationWidgetFactory;
 	QPointer<HistoryChatConfigurationWidgetFactory> m_historyChatConfigurationWidgetFactory;
 	QPointer<History> m_history;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 	INJEQT_SET void setBuddyAdditionalDataDeleteHandlerManager(BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager);
 	INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
 	INJEQT_SET void setBuddyHistoryDeleteHandler(BuddyHistoryDeleteHandler *buddyHistoryDeleteHandler);
@@ -64,6 +64,9 @@ private slots:
 	INJEQT_SET void setHistoryBuddyConfigurationWidgetFactory(HistoryBuddyConfigurationWidgetFactory *historyBuddyConfigurationWidgetFactory);
 	INJEQT_SET void setHistoryChatConfigurationWidgetFactory(HistoryChatConfigurationWidgetFactory *historyChatConfigurationWidgetFactory);
 	INJEQT_SET void setHistory(History *history);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

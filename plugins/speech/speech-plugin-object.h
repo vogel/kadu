@@ -23,6 +23,7 @@
 #include <injeqt/injeqt.h>
 
 class ConfigurationUiHandlerRepository;
+class MainConfigurationWindowService;
 class NotificationManager;
 class PathsProvider;
 class SpeechConfigurationUiHandler;
@@ -39,18 +40,20 @@ public:
 
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<NotificationManager> m_notificationManager;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<SpeechConfigurationUiHandler> m_speechConfigurationUiHandler;
 	QPointer<Speech> m_speech;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setSpeechConfigurationUiHandler(SpeechConfigurationUiHandler *speechConfigurationUiHandler);
 	INJEQT_SET void setSpeech(Speech *speech);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

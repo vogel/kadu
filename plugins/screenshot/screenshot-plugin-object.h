@@ -23,6 +23,7 @@
 #include <injeqt/injeqt.h>
 
 class ConfigurationUiHandlerRepository;
+class MainConfigurationWindowService;
 class NotificationEventRepository;
 class PathsProvider;
 class ScreenshotActions;
@@ -40,6 +41,7 @@ public:
 
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<ScreenshotActions> m_screenshotActions;
@@ -47,13 +49,14 @@ private:
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setScreenshotActions(ScreenshotActions *screenshotActions);
 	INJEQT_SET void setScreenShotConfigurationUiHandler(ScreenShotConfigurationUiHandler *screenShotConfigurationUiHandler);
 	INJEQT_SET void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

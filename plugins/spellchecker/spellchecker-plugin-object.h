@@ -23,6 +23,7 @@
 #include <injeqt/injeqt.h>
 
 class ConfigurationUiHandlerRepository;
+class MainConfigurationWindowService;
 class PathsProvider;
 class SpellcheckerConfigurationUiHandler;
 class SpellChecker;
@@ -38,16 +39,18 @@ public:
 
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<SpellcheckerConfigurationUiHandler> m_spellcheckerConfigurationUiHandler;
 	QPointer<SpellChecker> m_spellChecker;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setSpellcheckerConfigurationUiHandler(SpellcheckerConfigurationUiHandler *spellcheckerConfigurationUiHandler);
 	INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

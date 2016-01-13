@@ -23,6 +23,7 @@
 #include "autoaway-configuration-ui-handler.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "kadu/kadu-core/misc/paths-provider.h"
 #include "status/status-changer-manager.h"
@@ -56,6 +57,11 @@ void AutoawayPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHa
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
+void AutoawayPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+{
+	m_mainConfigurationWindowService = mainConfigurationWindowService;
+}
+
 void AutoawayPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -68,7 +74,7 @@ void AutoawayPluginObject::setStatusChangerManager(StatusChangerManager *statusC
 
 void AutoawayPluginObject::init()
 {
-	MainConfigurationWindow::registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoawayConfigurationUiHandler);
 	m_statusChangerManager->registerStatusChanger(m_autoawayStatusChanger);
 }
@@ -77,7 +83,7 @@ void AutoawayPluginObject::done()
 {
 	m_statusChangerManager->unregisterStatusChanger(m_autoawayStatusChanger);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoawayConfigurationUiHandler);
-	MainConfigurationWindow::unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 }
 
 #include "moc_autoaway-plugin-object.cpp"
