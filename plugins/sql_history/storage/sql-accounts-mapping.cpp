@@ -22,22 +22,30 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/core.h"
 
 #include "sql-accounts-mapping.h"
 
 SqlAccountsMapping::SqlAccountsMapping(const QSqlDatabase &database, QObject *parent) :
 		QObject(parent), Database(database), Mutex(QMutex::Recursive)
 {
-	loadMappingsFromDatabase();
-
-	triggerAllAccountsAdded(Core::instance()->accountManager());
-
-	connect(Core::instance()->accountManager(), SIGNAL(accountUpdated(Account)), this, SLOT(accountUpdated(Account)));
 }
 
 SqlAccountsMapping::~SqlAccountsMapping()
 {
+}
+
+void SqlAccountsMapping::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void SqlAccountsMapping::init()
+{
+	loadMappingsFromDatabase();
+
+	triggerAllAccountsAdded(m_accountManager);
+
+	connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(accountUpdated(Account)));
 }
 
 void SqlAccountsMapping::accountAdded(Account account)
@@ -111,7 +119,7 @@ void SqlAccountsMapping::loadMappingsFromDatabase()
 		if (id <= 0 || protocol.isEmpty() || accountId.isEmpty())
 			continue;
 
-		Account account = Core::instance()->accountManager()->byId(protocol, accountId);
+		Account account = m_accountManager->byId(protocol, accountId);
 		if (account)
 			addMapping(id, account);
 	}

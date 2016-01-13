@@ -43,6 +43,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
@@ -178,7 +179,7 @@ void HistorySqlStorage::databaseReady(bool ok)
 	Database.transaction();
 	initQueries();
 
-	AccountsMapping = new SqlAccountsMapping(Database, this);
+	AccountsMapping = Core::instance()->injectedFactory()->makeInjected<SqlAccountsMapping>(Database, this);
 	ContactsMapping = new SqlContactsMapping(Database, AccountsMapping, this);
 	ChatsMapping = new SqlChatsMapping(Database, AccountsMapping, ContactsMapping, this);
 
