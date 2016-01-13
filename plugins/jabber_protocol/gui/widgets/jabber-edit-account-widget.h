@@ -19,29 +19,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_EDIT_ACCOUNT_WIDGET_H
-#define JABBER_EDIT_ACCOUNT_WIDGET_H
+#pragma once
 
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
+#include "jabber-account-details.h"
+#include "jabber-personal-info-widget.h"
 
 #include "gui/widgets/account-edit-widget.h"
 #include "gui/widgets/identities-combo-box.h"
 
-#include "jabber-account-details.h"
-#include "jabber-personal-info-widget.h"
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
+class ConfigurationManager;
+class IdentityManager;
+class ProxyComboBox;
 
 class QCheckBox;
 class QLineEdit;
 class QTabWidget;
 class QVBoxLayout;
 
-class ProxyComboBox;
-
 class JabberEditAccountWidget : public AccountEditWidget
 {
 	Q_OBJECT
+
+public:
+	explicit JabberEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
+	virtual ~JabberEditAccountWidget();
+
+public slots:
+	virtual void apply();
+	virtual void cancel();
+
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<IdentityManager> m_identityManager;
 
 	JabberAccountDetails *AccountDetails;
 	JabberPersonalInfoWidget *PersonalInfoWidget;
@@ -94,7 +110,13 @@ class JabberEditAccountWidget : public AccountEditWidget
 	void resetState();
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_INIT void init();
+
 	virtual void removeAccount();
+
 	void sslActivated(int i);
 	void hostToggled(bool on);
 	void autoResourceToggled(bool on);
@@ -103,14 +125,4 @@ private slots:
 	void passwordChanged(const QString &newPassword);
 	void stateChangedSlot(ConfigurationValueState);
 
-public:
-	explicit JabberEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
-	virtual ~JabberEditAccountWidget();
-
-public slots:
-	virtual void apply();
-	virtual void cancel();
-
 };
-
-#endif // JABBER_EDIT_ACCOUNT_WIDGET_H

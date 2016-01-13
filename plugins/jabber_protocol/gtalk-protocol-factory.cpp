@@ -103,7 +103,7 @@ AccountCreateWidget * GTalkProtocolFactory::newCreateAccountWidget(bool showButt
 
 AccountEditWidget * GTalkProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	JabberEditAccountWidget *result = new JabberEditAccountWidget(Core::instance()->accountConfigurationWidgetFactoryRepository(), account, parent);
+	JabberEditAccountWidget *result = Core::instance()->injectedFactory()->makeInjected<JabberEditAccountWidget>(Core::instance()->accountConfigurationWidgetFactoryRepository(), account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }

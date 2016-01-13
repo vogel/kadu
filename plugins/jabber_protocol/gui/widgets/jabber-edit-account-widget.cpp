@@ -19,6 +19,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "jabber-edit-account-widget.h"
+
+#include "gui/windows/jabber-change-password-window.h"
+#include "jabber-protocol.h"
+
+#include "accounts/account-manager.h"
+#include "accounts/account.h"
+#include "configuration/configuration-manager.h"
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "gui/widgets/account-avatar-widget.h"
+#include "gui/widgets/account-buddy-list-widget.h"
+#include "gui/widgets/account-configuration-widget-tab-adapter.h"
+#include "gui/widgets/proxy-combo-box.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
+#include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
+#include "identities/identity-manager.h"
+#include "protocols/services/avatar-service.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
@@ -31,39 +51,37 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
-#include "configuration/configuration-manager.h"
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "gui/widgets/account-avatar-widget.h"
-#include "gui/widgets/account-buddy-list-widget.h"
-#include "gui/widgets/account-configuration-widget-tab-adapter.h"
-#include "gui/widgets/proxy-combo-box.h"
-#include "gui/widgets/simple-configuration-value-state-notifier.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "identities/identity-manager.h"
-#include "protocols/services/avatar-service.h"
-
-#include "gui/windows/jabber-change-password-window.h"
-#include "jabber-protocol.h"
-
-#include "jabber-edit-account-widget.h"
-
 JabberEditAccountWidget::JabberEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
 		AccountEditWidget(accountConfigurationWidgetFactoryRepository, account, parent)
+{
+}
+
+JabberEditAccountWidget::~JabberEditAccountWidget()
+{
+}
+
+void JabberEditAccountWidget::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void JabberEditAccountWidget::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
+void JabberEditAccountWidget::setIdentityManager(IdentityManager *identityManager)
+{
+	m_identityManager = identityManager;
+}
+
+void JabberEditAccountWidget::init()
 {
 	createGui();
 	loadAccountData();
 	loadAccountDetailsData();
 	simpleStateNotifier()->setState(StateNotChanged);
 	stateChangedSlot(stateNotifier()->state());
-}
-
-JabberEditAccountWidget::~JabberEditAccountWidget()
-{
 }
 
 void JabberEditAccountWidget::createGui()
@@ -378,8 +396,8 @@ void JabberEditAccountWidget::dataChanged()
 		return;
 	}
 
-	bool sameIdExists = Core::instance()->accountManager()->byId(account().protocolName(), AccountId->text())
-			&& Core::instance()->accountManager()->byId(account().protocolName(), AccountId->text()) != account();
+	bool sameIdExists = m_accountManager->byId(account().protocolName(), AccountId->text())
+			&& m_accountManager->byId(account().protocolName(), AccountId->text()) != account();
 
 	if (/*AccountName->text().isEmpty()
 		|| sameNameExists
@@ -463,8 +481,8 @@ void JabberEditAccountWidget::apply()
 	if (PersonalInfoWidget->isModified())
 		PersonalInfoWidget->apply();
 
-	Core::instance()->identityManager()->removeUnused();
-	Core::instance()->configurationManager()->flush();
+	m_identityManager->removeUnused();
+	m_configurationManager->flush();
 
 	simpleStateNotifier()->setState(StateNotChanged);
 }
@@ -477,7 +495,7 @@ void JabberEditAccountWidget::cancel()
 	loadAccountDetailsData();
 	PersonalInfoWidget->cancel();
 
-	Core::instance()->identityManager()->removeUnused();
+	m_identityManager->removeUnused();
 
 	simpleStateNotifier()->setState(StateNotChanged);
 }
@@ -495,7 +513,7 @@ void JabberEditAccountWidget::removeAccount()
 
 	if (decision == QMessageBox::Yes)
 	{
-		Core::instance()->accountManager()->removeAccountAndBuddies(account());
+		m_accountManager->removeAccountAndBuddies(account());
 		deleteLater();
 	}
 }
