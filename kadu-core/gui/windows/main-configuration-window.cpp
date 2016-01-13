@@ -46,7 +46,7 @@
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
 #include "gui/widgets/configuration/config-check-box.h"
@@ -112,9 +112,49 @@ MainConfigurationWindow::MainConfigurationWindow(QObject *parent) :
 {
 	Q_UNUSED(parent);
 
+}
+
+MainConfigurationWindow::~MainConfigurationWindow()
+{
+	for (auto configurationUiHandler : m_configurationUiHandlerRepository)
+		configurationUiHandler->mainConfigurationWindowDestroyed();
+}
+
+void MainConfigurationWindow::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void MainConfigurationWindow::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+{
+	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+}
+
+void MainConfigurationWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void MainConfigurationWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void MainConfigurationWindow::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void MainConfigurationWindow::setToolTipClassManager(ToolTipClassManager *toolTipClassManager)
+{
+	m_toolTipClassManager = toolTipClassManager;
+}
+
+void MainConfigurationWindow::init()
+{
 	setWindowRole("kadu-configuration");
 
-	widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog.ui"));
+	widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("configuration/dialog.ui"));
 
 #ifndef DEBUG_ENABLED
 	widget()->widgetById("debug")->hide();
@@ -144,7 +184,7 @@ MainConfigurationWindow::MainConfigurationWindow(QObject *parent) :
 	disconnectDescription = static_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
 	onStartupSetDescription = static_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
 
-	Account account = Core::instance()->accountManager()->defaultAccount();
+	Account account = m_accountManager->defaultAccount();
 	if (!account.isNull() && account.protocolHandler())
 	{
 		disconnectDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());
@@ -171,32 +211,21 @@ MainConfigurationWindow::MainConfigurationWindow(QObject *parent) :
 
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
 
-	PluginList = new PluginListWidget(this);
-	PluginList->setPluginActivationService(Core::instance()->pluginActivationService());
-	PluginList->setPluginConflictResolver(Core::instance()->pluginConflictResolver());
-	PluginList->setPluginDependencyHandler(Core::instance()->pluginDependencyHandler());
-	PluginList->setPluginStateManager(Core::instance()->pluginStateManager());
-	PluginList->setPluginStateService(Core::instance()->pluginStateService());
+	PluginList = m_injectedFactory->makeInjected<PluginListWidget>(this);
 	PluginList->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
 
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(applied()));
-	connect(Core::instance()->configurationUiHandlerRepository(), SIGNAL(configurationUiHandlerAdded(ConfigurationUiHandler*)),
+	connect(m_configurationUiHandlerRepository, SIGNAL(configurationUiHandlerAdded(ConfigurationUiHandler*)),
 	        this, SLOT(configurationUiHandlerAdded(ConfigurationUiHandler*)));
-	connect(Core::instance()->configurationUiHandlerRepository(), SIGNAL(configurationUiHandlerRemoved(ConfigurationUiHandler*)),
+	connect(m_configurationUiHandlerRepository, SIGNAL(configurationUiHandlerRemoved(ConfigurationUiHandler*)),
 	        this, SLOT(configurationUiHandlerRemoved(ConfigurationUiHandler*)));
 
 	triggerCompositingStateChanged();
 }
 
-MainConfigurationWindow::~MainConfigurationWindow()
-{
-	for (auto configurationUiHandler : Core::instance()->configurationUiHandlerRepository())
-		configurationUiHandler->mainConfigurationWindowDestroyed();
-}
-
 void MainConfigurationWindow::applied()
 {
-	for (auto configurationUiHandler : Core::instance()->configurationUiHandlerRepository())
+	for (auto configurationUiHandler : m_configurationUiHandlerRepository)
 		configurationUiHandler->mainConfigurationWindowApplied();
 }
 
@@ -263,7 +292,7 @@ void MainConfigurationWindow::installIconTheme()
 	if (fileName.isEmpty())
 		return;
 
-	const QString &profilePath = Core::instance()->pathsProvider()->profilePath();
+	const QString &profilePath = m_pathsProvider->profilePath();
 	ArchiveExtractor extractor;
 	bool success = extractor.extract(fileName, profilePath + "icons");
 	if (success)
@@ -281,20 +310,20 @@ void MainConfigurationWindow::setIconThemes()
 	ConfigListWidget *iconThemes = static_cast<ConfigListWidget *>(widget()->widgetById("iconThemes"));
 	iconThemes->clear();
 
-	Core::instance()->iconsManager()->themeManager()->loadThemes();
+	m_iconsManager->themeManager()->loadThemes();
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
 
 	QStringList values;
 	QStringList captions;
-	foreach (const Theme &theme, Core::instance()->iconsManager()->themeManager()->themes())
+	foreach (const Theme &theme, m_iconsManager->themeManager()->themes())
 	{
 		values.append(theme.name());
 		captions.append(QCoreApplication::translate("@default", theme.name().toUtf8().constData()));
 	}
 
 	iconThemes->setItems(values, captions);
-	iconThemes->setCurrentItem(Core::instance()->iconsManager()->themeManager()->currentTheme().name());
+	iconThemes->setCurrentItem(m_iconsManager->themeManager()->currentTheme().name());
 
 	QStringList iconPaths;
 	iconPaths
@@ -304,7 +333,7 @@ void MainConfigurationWindow::setIconThemes()
 			<< "preferences-other";
 
 	QList<QIcon> icons;
-	foreach (const Theme &theme, Core::instance()->iconsManager()->themeManager()->themes())
+	foreach (const Theme &theme, m_iconsManager->themeManager()->themes())
 	{
 		QPixmap combinedIcon(iconPaths.count() * 36, 36);
 		combinedIcon.fill(Qt::transparent);
@@ -333,7 +362,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	captions << tr("None");
 	values << QLatin1String("none");
 
-	QStringList toolTipClasses = Core::instance()->toolTipClassManager()->getToolTipClasses();
+	QStringList toolTipClasses = m_toolTipClassManager->getToolTipClasses();
 	foreach(const QString &toolTipClass, toolTipClasses)
 	{
 		captions << QCoreApplication::translate("@default", toolTipClass.toUtf8().constData());
@@ -348,7 +377,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	if (!lookChatAdvanced)
 	{
 		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", dataManager());
-		lookChatAdvanced.data()->widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
+		lookChatAdvanced.data()->widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
 	}
 
 	lookChatAdvanced.data()->show();

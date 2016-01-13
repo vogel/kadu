@@ -1,21 +1,28 @@
 #pragma once
 
-#include <QtCore/QPointer>
-
 #include "gui/windows/configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QCheckBox;
 class QLineEdit;
 class QSlider;
 
+class AccountManager;
 class BuddyListBackgroundColorsWidget;
 class ConfigComboBox;
 class ConfigLineEdit;
+class ConfigurationUiHandlerRepository;
+class IconsManager;
+class InjectedFactory;
+class PathsProvider;
 class PluginListWidget;
 class Preview;
 class SyntaxEditorWindow;
+class ToolTipClassManager;
 
 class MainConfigurationWindow;
 
@@ -29,6 +36,13 @@ class ConfigurationUiHandler;
 class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingAwareObject
 {
 	Q_OBJECT
+
+	QPointer<AccountManager> m_accountManager;
+	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<IconsManager> m_iconsManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PathsProvider> m_pathsProvider;
+	QPointer<ToolTipClassManager> m_toolTipClassManager;
 
 	QPointer<ConfigurationWindow> lookChatAdvanced;
 
@@ -49,6 +63,14 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	virtual void compositingDisabled();
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
+	INJEQT_INIT void init();
+
 	void onChangeStartupStatus(int index);
 	void onChangeStartupDescription(int index);
 	void onChangeShutdownStatus(int index);

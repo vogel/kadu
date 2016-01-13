@@ -25,6 +25,7 @@
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QLineEdit;
 class QModelIndex;
@@ -54,12 +55,6 @@ class PluginListWidget : public QWidget
 public:
 	explicit PluginListWidget(MainConfigurationWindow *mainWindow);
 	virtual ~PluginListWidget();
-
-	void setPluginActivationService(PluginActivationService *pluginActivationService);
-	void setPluginConflictResolver(PluginConflictResolver *pluginConflictResolver);
-	void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-	void setPluginStateManager(PluginStateManager *pluginStateManager);
-	void setPluginStateService(PluginStateService *pluginStateService);
 
 	void applyChanges();
 
@@ -91,6 +86,12 @@ private:
 	QString vectorToString(const QVector<QString> &plugins);
 
 private slots:
+	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
+	INJEQT_SET void setPluginConflictResolver(PluginConflictResolver *pluginConflictResolver);
+	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+	INJEQT_SET void setPluginStateManager(PluginStateManager *pluginStateManager);
+	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
+
 	void configurationApplied();
 	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
