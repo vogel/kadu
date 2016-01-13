@@ -18,8 +18,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_ADD_ACCOUNT_WIDGET_H
-#define JABBER_ADD_ACCOUNT_WIDGET_H
+#pragma once
+
+#include "gui/widgets/account-add-widget.h"
+#include "gui/widgets/identities-combo-box.h"
 
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
@@ -27,21 +29,39 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
-
-#include "gui/widgets/account-add-widget.h"
-#include "gui/widgets/identities-combo-box.h"
+#include <injeqt/injeqt.h>
 
 class QGridLayout;
 class QLineEdit;
 class QPushButton;
 
+class AccountManager;
+class AccountStorage;
 class ChooseIdentityWidget;
+class IdentityManager;
 class JabberProtocolFactory;
 class JabberServersService;
 
 class JabberAddAccountWidget : public AccountAddWidget
 {
 	Q_OBJECT
+
+public:
+	explicit JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent = 0);
+	virtual ~JabberAddAccountWidget();
+
+	void setJabberServersService(JabberServersService *serversService);
+
+public slots:
+	virtual void apply();
+	virtual void cancel();
+
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<AccountStorage> m_accountStorage;
+	QPointer<IdentityManager> m_identityManager;
+
+	bool m_showButtons;
 
 	JabberProtocolFactory *Factory;
 	QLineEdit *Username;
@@ -56,19 +76,12 @@ class JabberAddAccountWidget : public AccountAddWidget
 	void resetGui();
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_INIT void init();
+
 	void dataChanged();
 	void showWhatIsMyUsername();
 
-public:
-	explicit JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent = 0);
-	virtual ~JabberAddAccountWidget();
-
-	void setJabberServersService(JabberServersService *serversService);
-
-public slots:
-	virtual void apply();
-	virtual void cancel();
-
 };
-
-#endif // JABBER_ADD_ACCOUNT_WIDGET_H

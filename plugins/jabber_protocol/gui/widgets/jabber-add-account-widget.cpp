@@ -19,6 +19,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "jabber-add-account-widget.h"
+
+#include "services/jabber-servers-service.h"
+#include "jabber-account-details.h"
+#include "jabber-protocol-factory.h"
+
+#include "accounts/account-manager.h"
+#include "accounts/account-storage.h"
+#include "gui/widgets/choose-identity-widget.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
+#include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
+#include "identities/identity-manager.h"
+#include "protocols/protocols-manager.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
@@ -31,35 +46,40 @@
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QVBoxLayout>
 
-#include "accounts/account-manager.h"
-#include "accounts/account-storage.h"
-#include "core/core.h"
-#include "gui/widgets/choose-identity-widget.h"
-#include "gui/widgets/simple-configuration-value-state-notifier.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "identities/identity-manager.h"
-#include "protocols/protocols-manager.h"
-
-#include "services/jabber-servers-service.h"
-#include "jabber-account-details.h"
-#include "jabber-protocol-factory.h"
-
-#include "jabber-add-account-widget.h"
-
 JabberAddAccountWidget::JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent) :
-		AccountAddWidget(parent), Factory(factory)
+		AccountAddWidget{parent},
+		m_showButtons{showButtons},
+		Factory{factory}
 {
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
-
-	createGui(showButtons);
-	resetGui();
 }
 
 JabberAddAccountWidget::~JabberAddAccountWidget()
 {
+}
+
+void JabberAddAccountWidget::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void JabberAddAccountWidget::setAccountStorage(AccountStorage *accountStorage)
+{
+	m_accountStorage = accountStorage;
+}
+
+void JabberAddAccountWidget::setIdentityManager(IdentityManager *identityManager)
+{
+	m_identityManager = identityManager;
+}
+
+void JabberAddAccountWidget::init()
+{
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
+
+	createGui(m_showButtons);
+	resetGui();
 }
 
 void JabberAddAccountWidget::createGui(bool showButtons)
@@ -159,7 +179,7 @@ void JabberAddAccountWidget::dataChanged()
 	bool valid = !Username->text().isEmpty()
 			&& !AccountPassword->text().isEmpty()
 			&& !Domain->currentText().isEmpty()
-			&& !Core::instance()->accountManager()->byId("jabber", Username->text() + '@' + Domain->currentText())
+			&& !m_accountManager->byId("jabber", Username->text() + '@' + Domain->currentText())
 			&& Identity->currentIdentity();
 
 	AddAccountButton->setEnabled(valid);
@@ -176,7 +196,7 @@ void JabberAddAccountWidget::dataChanged()
 
 void JabberAddAccountWidget::apply()
 {
-	Account jabberAccount = Core::instance()->accountStorage()->create("jabber");
+	auto jabberAccount = m_accountStorage->create("jabber");
 
 	jabberAccount.setId(Username->text() + '@' + Domain->currentText());
 	jabberAccount.setPassword(AccountPassword->text());
@@ -220,7 +240,7 @@ void JabberAddAccountWidget::resetGui()
 	Username->clear();
 	Domain->setEditText(Factory->defaultServer());
 	RememberPassword->setChecked(true);
-	Core::instance()->identityManager()->removeUnused();
+	m_identityManager->removeUnused();
 	Identity->setCurrentIndex(0);
 	AddAccountButton->setDisabled(true);
 

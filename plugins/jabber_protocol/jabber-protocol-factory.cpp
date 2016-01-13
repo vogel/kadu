@@ -88,7 +88,7 @@ AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *acco
 
 AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	auto result = new JabberAddAccountWidget(this, showButtons, parent);
+	auto result = Core::instance()->injectedFactory()->makeInjected<JabberAddAccountWidget>(this, showButtons, parent);
 	result->setJabberServersService(new JabberServersService{result});
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
