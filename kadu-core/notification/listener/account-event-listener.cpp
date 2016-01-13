@@ -22,7 +22,6 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
-#include "core/core.h"
 #include "multilogon/multilogon-session.h"
 #include "notification/notification/multilogon-notification.h"
 #include "notification/notification/status-changed-notification.h"
@@ -37,12 +36,26 @@
 AccountEventListener::AccountEventListener(NotificationService *service)
 		: EventListener(service)
 {
-	triggerAllAccountsRegistered(Core::instance()->accountManager());
 }
 
 AccountEventListener::~AccountEventListener()
 {
-	triggerAllAccountsUnregistered(Core::instance()->accountManager());
+	triggerAllAccountsUnregistered(m_accountManager);
+}
+
+void AccountEventListener::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void AccountEventListener::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
+void AccountEventListener::init()
+{
+	triggerAllAccountsRegistered(m_accountManager);
 }
 
 void AccountEventListener::accountRegistered(Account account)
@@ -135,7 +148,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 			!oldStatus.isDisconnected())
 		return;
 
-	const StatusTypeData &typeData = Core::instance()->statusTypeManager()->statusTypeData(status.type());
+	const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(status.type());
 	QString changedTo = "/To" + typeData.name();
 
 	auto statusChangedNotification = new StatusChangedNotification(changedTo, contact, statusDisplayName, description);

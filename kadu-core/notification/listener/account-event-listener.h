@@ -18,34 +18,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNT_EVENT_LISTENER_H
-#define ACCOUNT_EVENT_LISTENER_H
+#pragma once
 
 #include "accounts/accounts-aware-object.h"
 #include "contacts/contact.h"
 #include "event-listener.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
 class Message;
 class MultilogonSession;
+class StatusTypeManager;
 class Status;
 
 class AccountEventListener : public EventListener, AccountsAwareObject
 {
 	Q_OBJECT
 
+public:
+	explicit AccountEventListener(NotificationService *service);
+	virtual ~AccountEventListener();
+
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<StatusTypeManager> m_statusTypeManager;
+
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_INIT void init();
+
 	void multilogonSessionConnected(MultilogonSession *session);
 	void multilogonSessionDisconnected(MultilogonSession *session);
 	void contactStatusChanged(Contact contact, Status oldStatus);
 	void accountConnected();
-	
-public:
-	AccountEventListener(NotificationService *service);
-	virtual ~AccountEventListener();
-};
 
-#endif // ACCOUNT_EVENT_LISTENER_H
+};

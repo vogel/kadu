@@ -22,6 +22,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -76,6 +77,11 @@ void NotificationService::setConfigurationUiHandlerRepository(ConfigurationUiHan
 void NotificationService::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void NotificationService::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void NotificationService::setMenuInventory(MenuInventory *menuInventory)
@@ -209,7 +215,7 @@ void NotificationService::createActionDescriptions()
 void NotificationService::createEventListeners()
 {
 	ChatListener = new ChatEventListener(m_messageManager, this);
-	AccountListener = new AccountEventListener(this);
+	AccountListener = m_injectedFactory->makeInjected<AccountEventListener>(this);
 	GroupListener = new GroupEventListener(this);
 }
 

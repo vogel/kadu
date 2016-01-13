@@ -38,6 +38,7 @@ class ChatWidgetManager;
 class ConfigurationUiHandlerRepository;
 class Configuration;
 class GroupEventListener;
+class InjectedFactory;
 class MenuInventory;
 class MessageManager;
 class NotificationManager;
@@ -57,6 +58,7 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
@@ -121,6 +123,7 @@ private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
