@@ -458,7 +458,7 @@ void Core::createAllDefaultToolbars()
 
 	KaduWindow::createDefaultToolbars(configuration(), toolbarsConfig);
 	ChatEditBox::createDefaultToolbars(toolbarsConfig);
-	SearchWindow::createDefaultToolbars(toolbarsConfig);
+	SearchWindow::createDefaultToolbars(configuration(), toolbarsConfig);
 
 	application()->flushConfiguration();
 }
@@ -484,6 +484,7 @@ void Core::init()
 
 	// TODO: add some life-cycle management
 	notificationManager();
+	searchWindowActions(); // temporary, during full-injection-port
 
 	accountManager()->ensureLoaded();
 	buddyManager()->ensureLoaded();

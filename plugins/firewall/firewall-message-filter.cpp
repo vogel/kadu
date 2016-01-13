@@ -50,7 +50,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
@@ -333,7 +333,7 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 	{
 		if (LastContact != sender && Search)
 		{
-			SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(),
+			SearchWindow *sd = Core::instance()->injectedFactory()->makeInjected<SearchWindow>(Core::instance()->kaduWindow(),
 			                                    Core::instance()->buddyManager()->byContact(sender, ActionCreateAndAdd));
 			sd->show();
 			sd->firstSearch();

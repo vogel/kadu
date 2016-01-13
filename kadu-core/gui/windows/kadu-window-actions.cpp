@@ -654,7 +654,7 @@ void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	(new SearchWindow(sender->parentWidget()))->show();
+	(m_injectedFactory->makeInjected<SearchWindow>(sender->parentWidget()))->show();
 }
 
 void KaduWindowActions::forumActionActivated(QAction *sender, bool toggled)
@@ -857,11 +857,11 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 	const Buddy &buddy = action->context()->buddies().toBuddy();
 	if (!buddy)
 	{
-		(new SearchWindow(Core::instance()->kaduWindow()))->show();
+		(m_injectedFactory->makeInjected<SearchWindow>(Core::instance()->kaduWindow()))->show();
 		return;
 	}
 
-	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), buddy);
+	auto sd = m_injectedFactory->makeInjected<SearchWindow>(Core::instance()->kaduWindow(), buddy);
 	sd->show();
 	sd->firstSearch();
 
