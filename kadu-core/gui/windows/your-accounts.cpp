@@ -23,27 +23,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QKeyEvent>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QListView>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QStackedWidget>
-#include <QtWidgets/QVBoxLayout>
+#include "your-accounts.h"
 
 #include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/widgets/account-add-widget.h"
@@ -62,14 +47,50 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
-
 #include "activate.h"
 
-#include "your-accounts.h"
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QListView>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStackedWidget>
+#include <QtWidgets/QVBoxLayout>
 
 YourAccounts::YourAccounts(QWidget *parent) :
 		QWidget(parent), DesktopAwareObject(this), CurrentWidget(0), IsCurrentWidgetEditAccount(false),
 		ForceWidgetChange(false), LastProtocol(0), CanRegisterFilter(new CanRegisterProtocolFilter())
+{
+}
+
+YourAccounts::~YourAccounts()
+{
+}
+
+void YourAccounts::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void YourAccounts::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
+void YourAccounts::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void YourAccounts::init()
 {
 	setWindowRole("kadu-your-accounts");
 
@@ -82,10 +103,6 @@ YourAccounts::YourAccounts(QWidget *parent) :
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "YourAccountsWindowGeometry"), QRect(0, 50, 700, 500), this);
 }
 
-YourAccounts::~YourAccounts()
-{
-}
-
 void YourAccounts::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -96,7 +113,7 @@ void YourAccounts::createGui()
 	AccountsView = new QListView(this);
 	AccountsView->setMinimumWidth(150);
 	contentLayout->addWidget(AccountsView);
-	MyAccountsModel = new AccountsModel(Core::instance()->accountManager(), AccountsView);
+	MyAccountsModel = new AccountsModel(m_accountManager, AccountsView);
 
 	QAction *separator = new QAction(this);
 	separator->setSeparator(true);
@@ -413,10 +430,10 @@ void YourAccounts::accountCreated(Account account)
 	if (!account)
 		return;
 
-	Core::instance()->accountManager()->addItem(account);
-	account.accountContact().setOwnerBuddy(Core::instance()->myself()->buddy());
+	m_accountManager->addItem(account);
+	account.accountContact().setOwnerBuddy(m_myself->buddy());
 
-	Core::instance()->configurationManager()->flush();
+	m_configurationManager->flush();
 	selectAccount(account);
 }
 

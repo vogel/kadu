@@ -25,6 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class InjectedFactory;
 class YourAccounts;
 
 class KADUAPI YourAccountsWindowService : public QObject
@@ -38,6 +39,10 @@ public:
 	void show();
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<YourAccounts> m_yourAccounts;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

@@ -30,8 +30,10 @@
 #include "exports.h"
 
 #include <QtCore/QItemSelection>
+#include <QtCore/QPointer>
 #include <QtCore/QModelIndex>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QHBoxLayout;
 class QGroupBox;
@@ -43,15 +45,22 @@ class QVBoxLayout;
 class AccountAddWidget;
 class AccountCreateWidget;
 class AccountEditWidget;
+class AccountManager;
 class AccountsModel;
 class CanRegisterProtocolFilter;
+class ConfigurationManager;
 class ModalConfigurationWidget;
+class Myself;
 class ProtocolFactory;
 class ProtocolsComboBox;
 
 class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareObject
 {
 	Q_OBJECT
+
+	QPointer<AccountManager> m_accountManager;
+	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Myself> m_myself;
 
 	QListView *AccountsView;
 	AccountsModel *MyAccountsModel;
@@ -103,6 +112,11 @@ class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareOb
 	bool canChangeWidget();
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_INIT void init();
+
 	void protocolChanged();
 
 	void accountCreated(Account account);

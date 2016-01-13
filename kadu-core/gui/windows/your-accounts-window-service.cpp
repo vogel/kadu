@@ -19,6 +19,7 @@
 
 #include "your-accounts-window-service.h"
 
+#include "core/injected-factory.h"
 #include "gui/windows/your-accounts.h"
 #include "activate.h"
 
@@ -31,10 +32,15 @@ YourAccountsWindowService::~YourAccountsWindowService()
 {
 }
 
+void YourAccountsWindowService::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void YourAccountsWindowService::show()
 {
 	if (!m_yourAccounts)
-		m_yourAccounts = new YourAccounts();
+		m_yourAccounts = m_injectedFactory->makeInjected<YourAccounts>();
 	
 	m_yourAccounts->show();
 	_activateWindow(m_yourAccounts);
