@@ -29,6 +29,8 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "storage/storage-point.h"
 
 #include "contact.h"
@@ -39,7 +41,7 @@ Contact Contact::null;
 
 Contact Contact::create()
 {
-	return new ContactShared();
+	return Core::instance()->injectedFactory()->makeInjected<ContactShared>();
 }
 
 Contact Contact::loadStubFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint)

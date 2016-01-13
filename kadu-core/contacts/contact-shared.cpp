@@ -29,7 +29,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "misc/change-notifier.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -49,7 +49,7 @@ ContactShared * ContactShared::loadStubFromStorage(const std::shared_ptr<Storage
 
 ContactShared * ContactShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	ContactShared *result = new ContactShared();
+	ContactShared *result = Core::instance()->injectedFactory()->makeInjected<ContactShared>();
 	result->setStorage(storagePoint);
 
 	return result;
@@ -60,6 +60,53 @@ ContactShared::ContactShared(const QUuid &uuid) :
 		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
 		Blocking(false), IgnoreNextStatusChange(false)
 {
+}
+
+ContactShared::~ContactShared()
+{
+	ref.ref();
+
+	disconnect(m_protocolsManager, 0, this, 0);
+
+	protocolFactoryUnregistered(m_protocolsManager->byName(ContactAccount->protocolName()));
+
+	delete OwnerBuddy;
+	delete ContactAvatar;
+	delete ContactAccount;
+}
+
+void ContactShared::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void ContactShared::setAvatarManager(AvatarManager *avatarManager)
+{
+	m_avatarManager = avatarManager;
+}
+
+void ContactShared::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void ContactShared::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ContactShared::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void ContactShared::setProtocolsManager(ProtocolsManager *protocolsManager)
+{
+	m_protocolsManager = protocolsManager;
+}
+
+void ContactShared::init()
+{
 	Entry = new RosterEntry(this);
 	connect(&Entry->hasLocalChangesNotifier(), SIGNAL(changed()), this, SIGNAL(updatedLocally()));
 
@@ -67,30 +114,17 @@ ContactShared::ContactShared(const QUuid &uuid) :
 	ContactAvatar = new Avatar();
 	OwnerBuddy = new Buddy();
 
-	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
+	connect(m_protocolsManager, SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
 	        this, SLOT(protocolFactoryRegistered(ProtocolFactory*)));
-	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
+	connect(m_protocolsManager, SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
 	        this, SLOT(protocolFactoryUnregistered(ProtocolFactory*)));
 
 	connect(&changeNotifier(), SIGNAL(changed()), this, SLOT(changeNotifierChanged()));
 }
 
-ContactShared::~ContactShared()
-{
-	ref.ref();
-
-	disconnect(Core::instance()->protocolsManager(), 0, this, 0);
-
-	protocolFactoryUnregistered(Core::instance()->protocolsManager()->byName(ContactAccount->protocolName()));
-
-	delete OwnerBuddy;
-	delete ContactAvatar;
-	delete ContactAccount;
-}
-
 StorableObject * ContactShared::storageParent()
 {
-	return Core::instance()->contactManager();
+	return m_contactManager;
 }
 
 QString ContactShared::storageNodeName()
@@ -127,11 +161,11 @@ void ContactShared::load()
 	else
 		Entry->setSynchronized();
 
-	*ContactAccount = Core::instance()->accountManager()->byUuid(loadValue<QString>("Account"));
-	doSetOwnerBuddy(Core::instance()->buddyManager()->byUuid(loadValue<QString>("Buddy")));
-	doSetContactAvatar(Core::instance()->avatarManager()->byUuid(loadValue<QString>("Avatar")));
+	*ContactAccount = m_accountManager->byUuid(loadValue<QString>("Account"));
+	doSetOwnerBuddy(m_buddyManager->byUuid(loadValue<QString>("Buddy")));
+	doSetContactAvatar(m_avatarManager->byUuid(loadValue<QString>("Avatar")));
 
-	protocolFactoryRegistered(Core::instance()->protocolsManager()->byName(ContactAccount->protocolName()));
+	protocolFactoryRegistered(m_protocolsManager->byName(ContactAccount->protocolName()));
 	addToBuddy();
 }
 
@@ -142,7 +176,7 @@ void ContactShared::aboutToBeRemoved()
 	removeFromBuddy();
 	doSetOwnerBuddy(Buddy::null);
 
-	Core::instance()->avatarManager()->removeItem(*ContactAvatar);
+	m_avatarManager->removeItem(*ContactAvatar);
 	doSetContactAvatar(Avatar::null);
 
 	changeNotifier().notify();
@@ -186,7 +220,7 @@ bool ContactShared::shouldStore()
 		return false;
 
 	// we dont need data for non-roster contacts only from 4 version of sql schema
-	if (Core::instance()->configuration()->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
+	if (m_configuration->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
 		return true;
 
 	return !isAnonymous() || rosterEntry()->requiresSynchronization() || customProperties()->shouldStore();

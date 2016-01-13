@@ -19,25 +19,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTACT_SHARED_H
-#define CONTACT_SHARED_H
-
-#include <QtCore/QObject>
-#include <QtNetwork/QHostAddress>
+#pragma once
 
 #include "status/status.h"
 #include "storage/shared.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtNetwork/QHostAddress>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
 class Account;
+class AvatarManager;
 class Avatar;
+class BuddyManager;
 class Buddy;
+class Configuration;
+class ContactManager;
 class ProtocolFactory;
+class ProtocolsManager;
 class RosterEntry;
 
 class KADUAPI ContactShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)
+
+	QPointer<AccountManager> m_accountManager;
+	QPointer<AvatarManager> m_avatarManager;
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<Configuration> m_configuration;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<ProtocolsManager> m_protocolsManager;
 
 	RosterEntry *Entry;
 
@@ -60,6 +74,14 @@ class KADUAPI ContactShared : public QObject, public Shared
 	void doSetContactAvatar(const Avatar &contactAvatar);
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+	INJEQT_INIT void init();
+
 	void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
 	void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
 
@@ -122,6 +144,3 @@ signals:
 	void updatedLocally();
 
 };
-
-#endif // CONTACT_SHARED_H
-
