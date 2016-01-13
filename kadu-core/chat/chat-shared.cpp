@@ -35,7 +35,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "misc/change-notifier.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -60,7 +60,7 @@ ChatShared * ChatShared::loadStubFromStorage(const std::shared_ptr<StoragePoint>
  */
 ChatShared * ChatShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	ChatShared *result = new ChatShared();
+	ChatShared *result = Core::instance()->injectedFactory()->makeInjected<ChatShared>();
 	result->setStorage(storagePoint);
 
 	return result;
@@ -79,9 +79,6 @@ ChatShared * ChatShared::loadFromStorage(const std::shared_ptr<StoragePoint> &st
 ChatShared::ChatShared(const QUuid &uuid) :
 		Shared(uuid), Details(0), IgnoreAllMessages(false), UnreadMessagesCount(0), Open(false)
 {
-	ChatAccount = new Account();
-
-	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 /**
@@ -100,6 +97,38 @@ ChatShared::~ChatShared()
 	delete ChatAccount;
 }
 
+void ChatShared::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void ChatShared::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void ChatShared::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
+void ChatShared::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ChatShared::setGroupManager(GroupManager *groupManager)
+{
+	m_groupManager = groupManager;
+}
+
+void ChatShared::init()
+{
+	ChatAccount = new Account();
+
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+}
+
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Returns parent storage node for this object - ChatManager node.
@@ -109,7 +138,7 @@ ChatShared::~ChatShared()
  */
 StorableObject * ChatShared::storageParent()
 {
-	return Core::instance()->chatManager();
+	return m_chatManager;
 }
 
 /**
@@ -158,16 +187,16 @@ void ChatShared::load()
 			QDomElement groupElement = groupsList.at(i).toElement();
 			if (groupElement.isNull())
 				continue;
-			doAddToGroup(Core::instance()->groupManager()->byUuid(groupElement.text()));
+			doAddToGroup(m_groupManager->byUuid(groupElement.text()));
 		}
 	}
 
-	*ChatAccount = Core::instance()->accountManager()->byUuid(QUuid(loadValue<QString>("Account")));
+	*ChatAccount = m_accountManager->byUuid(QUuid(loadValue<QString>("Account")));
 	Display = loadValue<QString>("Display");
 	Type = loadValue<QString>("Type");
 
 	// import from alias to new name of chat type
-	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(Type);
+	ChatType *chatType = m_chatTypeManager->chatType(Type);
 	if (chatType)
 		Type = chatType->name();
 
@@ -200,7 +229,7 @@ void ChatShared::store()
 	storeValue("Display", Display);
 
 	// import from alias to new name of chat type
-	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(Type);
+	ChatType *chatType = m_chatTypeManager->chatType(Type);
 	if (chatType)
 		Type = chatType->name();
 
@@ -234,7 +263,7 @@ bool ChatShared::shouldStore()
 		return false;
 
 	// we dont need data for non-roster contacts only from 4 version of sql schema
-	if (Core::instance()->configuration()->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
+	if (m_configuration->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
 		return true;
 
 	if (customProperties()->shouldStore())
@@ -294,7 +323,7 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
 		Details->ensureLoaded();
 	}
 
-	Core::instance()->chatManager()->registerItem(this);
+	m_chatManager->registerItem(this);
 }
 
 /**
@@ -316,8 +345,7 @@ void ChatShared::chatTypeUnregistered(ChatType *chatType)
 		Details = 0;
 	}
 
-	if (Core::instance())
-		Core::instance()->chatManager()->unregisterItem(this);
+	m_chatManager->unregisterItem(this);
 }
 
 /**
@@ -363,12 +391,12 @@ void ChatShared::setType(const QString &type)
 		delete Details;
 		Details = 0;
 
-		Core::instance()->chatManager()->unregisterItem(this);
+		m_chatManager->unregisterItem(this);
 	}
 
 	Type = type;
 
-	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(type);
+	ChatType *chatType = m_chatTypeManager->chatType(type);
 	if (chatType)
 		chatTypeRegistered(chatType); // this will add details
 }

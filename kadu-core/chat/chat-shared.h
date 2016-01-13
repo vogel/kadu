@@ -21,20 +21,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_SHARED_H
-#define CHAT_SHARED_H
-
-#include <QtCore/QSet>
+#pragma once
 
 #include "chat/type/chat-type-aware-object.h"
 #include "contacts/contact.h"
 #include "storage/shared.h"
 
+#include <QtCore/QPointer>
+#include <QtCore/QSet>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
 class Account;
 class BuddySet;
-class Chat;
 class ChatDetails;
+class ChatManager;
+class ChatTypeManager;
+class Chat;
+class Configuration;
 class ContactSet;
+class GroupManager;
 class Group;
 
 /**
@@ -53,7 +59,12 @@ class Group;
 class KADUAPI ChatShared : public QObject, public Shared, ChatTypeAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatShared)
+
+	QPointer<AccountManager> m_accountManager;
+	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<Configuration> m_configuration;
+	QPointer<GroupManager> m_groupManager;
 
 	Account *ChatAccount;
 	ChatDetails *Details;
@@ -69,6 +80,13 @@ class KADUAPI ChatShared : public QObject, public Shared, ChatTypeAwareObject
 	bool doRemoveFromGroup(const Group &group);
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_INIT void init();
+
 	void groupAboutToBeRemoved();
 
 protected:
@@ -228,5 +246,3 @@ signals:
 /**
  * @}
  */
-
-#endif // CHAT_SHARED_H

@@ -26,6 +26,8 @@
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 
 #include "chat.h"
 
@@ -48,7 +50,7 @@ Chat Chat::null;
  */
 Chat Chat::create()
 {
-	return new ChatShared();
+	return Core::instance()->injectedFactory()->makeInjected<ChatShared>();
 }
 
 Chat Chat::loadStubFromStorage(const std::shared_ptr<StoragePoint> &chatStoragePoint)
