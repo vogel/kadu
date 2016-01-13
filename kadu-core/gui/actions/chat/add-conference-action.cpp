@@ -21,7 +21,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/windows/add-conference-window.h"
 
@@ -30,22 +29,31 @@
 AddConferenceAction::AddConferenceAction(QObject *parent) :
 		ActionDescription(parent)
 {
+}
+
+AddConferenceAction::~AddConferenceAction()
+{
+}
+
+void AddConferenceAction::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void AddConferenceAction::init()
+{
 	setType(ActionDescription::TypeGlobal);
 	setName("addConferenceAction");
 	setText(tr("Add Conference..."));
 
 	registerAction();
 
-	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)),
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
 	        this, SLOT(updateAddChatMenuItem()));
-	connect(Core::instance()->accountManager(), SIGNAL(accountUnregistered(Account)),
+	connect(m_accountManager, SIGNAL(accountUnregistered(Account)),
 	        this, SLOT(updateAddChatMenuItem()));
 
 	updateAddChatMenuItem();
-}
-
-AddConferenceAction::~AddConferenceAction()
-{
 }
 
 void AddConferenceAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
@@ -60,7 +68,7 @@ void AddConferenceAction::updateAddChatMenuItem()
 {
 	bool isConferenceSupported = false;
 
-	foreach (const Account &account, Core::instance()->accountManager()->items())
+	foreach (const Account &account, m_accountManager->items())
 	{
 		if (account.protocolName() == "gadu")
 			isConferenceSupported = true;

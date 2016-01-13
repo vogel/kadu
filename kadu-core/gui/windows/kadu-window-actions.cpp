@@ -249,7 +249,7 @@ void KaduWindowActions::init()
 	);
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
-	AddConference = new AddConferenceAction(this);
+	AddConference = m_injectedFactory->makeInjected<AddConferenceAction>(this);
 	AddRoomChat = new AddRoomChatAction(this);
 
 	AddGroup= new ActionDescription(this,

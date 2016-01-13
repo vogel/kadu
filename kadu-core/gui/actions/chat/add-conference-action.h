@@ -19,27 +19,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADD_CONFERENCE_ACTION_H
-#define ADD_CONFERENCE_ACTION_H
-
-#include <QtWidgets/QAction>
+#pragma once
 
 #include "gui/actions/action-description.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QAction>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
 
 class AddConferenceAction : public ActionDescription
 {
 	Q_OBJECT
 
-private slots:
-	void updateAddChatMenuItem();
-
-protected:
-	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
-
 public:
 	explicit AddConferenceAction(QObject *parent);
 	virtual ~AddConferenceAction();
 
-};
+protected:
+	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
-#endif // ADD_CONFERENCE_ACTION_H
+private:
+	QPointer<AccountManager> m_accountManager;
+
+private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_INIT void init();
+
+	void updateAddChatMenuItem();
+
+};
