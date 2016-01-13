@@ -19,22 +19,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNTS_COMBO_BOX_H
-#define ACCOUNTS_COMBO_BOX_H
+#pragma once
 
 #include "accounts/account.h"
 #include "gui/widgets/actions-combo-box.h"
 
+#include <injeqt/injeqt.h>
+
 class AbstractAccountFilter;
+class AccountManager;
 class AccountsModel;
 class AccountsProxyModel;
 
 class AccountsComboBox : public ActionsComboBox
 {
 	Q_OBJECT
-
-	AccountsModel *Model;
-	AccountsProxyModel *ProxyModel;
 
 public:
 	explicit AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent = 0);
@@ -48,6 +47,14 @@ public:
 	void addFilter(AbstractAccountFilter *filter);
 	void removeFilter(AbstractAccountFilter *filter);
 
-};
+private:
+	QPointer<AccountManager> m_accountManager;
 
-#endif // ACCOUNTS_COMBO_BOX_H
+	AccountsModel *Model;
+	AccountsProxyModel *ProxyModel;
+
+private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_INIT void init();
+
+};

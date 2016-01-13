@@ -24,6 +24,8 @@
 #include <QtWidgets/QComboBox>
 
 #include "accounts/account.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "model/roles.h"
 
@@ -43,9 +45,8 @@ QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyle
 	if (1 != index.column()) // not account
 		return QStyledItemDelegate::createEditor(parent, option, index);
 
-	AccountsComboBox *accountsComboBox = new AccountsComboBox(index.data(AccountRole).value<Account>().isNull(),
-	                                                          AccountsComboBox::NotVisibleWithOneRowSourceModel,
-	                                                          parent);
+	AccountsComboBox *accountsComboBox = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(
+		index.data(AccountRole).value<Account>().isNull(), AccountsComboBox::NotVisibleWithOneRowSourceModel, parent);
 	// this connect does not work withour Account
 	connect(accountsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 

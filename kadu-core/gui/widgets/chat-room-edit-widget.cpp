@@ -25,6 +25,8 @@
 #include "accounts/filter/protocol-filter.h"
 #include "chat/chat-details-room.h"
 #include "chat/type/chat-type-room.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 
@@ -47,7 +49,7 @@ void ChatRoomEditWidget::createGui()
 {
 	QFormLayout *layout = new QFormLayout(this);
 
-	AccountCombo = new AccountsComboBox(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 
 	// only xmpp rooms for now

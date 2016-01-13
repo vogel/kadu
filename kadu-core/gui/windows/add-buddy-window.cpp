@@ -110,7 +110,7 @@ void AddBuddyWindow::createGui()
 
 	Layout = new QFormLayout(mainWidget);
 
-	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(MyBuddy.isNull(), AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 	AccountCombo->addFilter(new WriteableContactsListFilter(AccountCombo));
 

@@ -32,6 +32,7 @@
 #include "chat/type/chat-type-room.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "icons/kadu-icon.h"
@@ -67,7 +68,7 @@ void AddRoomChatWindow::createGui()
 
 	QFormLayout *layout = new QFormLayout(mainWidget);
 
-	AccountCombo = new AccountsComboBox(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 
 	// only xmpp rooms for now

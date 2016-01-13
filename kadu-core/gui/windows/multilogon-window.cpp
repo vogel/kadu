@@ -31,6 +31,8 @@
 
 #include "accounts/filter/have-multilogon-filter.h"
 #include "configuration/config-file-variant-wrapper.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "icons/icons-manager.h"
 #include "model/roles.h"
@@ -88,7 +90,7 @@ void MultilogonWindow::createGui()
 	selectAccountLayout->addWidget(new QLabel(tr("Account:"), selectAccountWidget));
 	selectAccountLayout->setMargin(0);
 
-	Accounts = new AccountsComboBox(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, selectAccountWidget);
+	Accounts = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, selectAccountWidget);
 	Accounts->addFilter(new HaveMultilogonFilter(Accounts));
 	Accounts->setIncludeIdInDisplay(true);
 	selectAccountLayout->addWidget(Accounts);
