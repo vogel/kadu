@@ -21,6 +21,7 @@
 #include <QtCore/QVariant>
 
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "debug.h"
 
 #include "gui/widgets/config-wizard-choose-network-page.h"
@@ -64,7 +65,7 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 
 	setPage(ProfilePage, new ConfigWizardProfilePage(this));
 	setPage(ChooseNetworkPage, new ConfigWizardChooseNetworkPage(this));
-	setPage(SetUpAccountPage, new ConfigWizardSetUpAccountPage(this));
+	setPage(SetUpAccountPage, Core::instance()->injectedFactory()->makeInjected<ConfigWizardSetUpAccountPage>(this));
 	setPage(CompletedPage, new ConfigWizardCompletedPage(this));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));

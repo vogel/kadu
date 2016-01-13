@@ -18,21 +18,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QLabel>
+#include "config-wizard-set-up-account-page.h"
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-create-widget.h"
 #include "gui/windows/your-accounts.h"
 #include "protocols/protocol-factory.h"
 
-#include "config-wizard-set-up-account-page.h"
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLabel>
 
 ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent) :
 		ConfigWizardPage(parent), AccountSuccessfullyCreated(false)
@@ -44,6 +43,21 @@ ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent) :
 
 ConfigWizardSetUpAccountPage::~ConfigWizardSetUpAccountPage()
 {
+}
+
+void ConfigWizardSetUpAccountPage::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void ConfigWizardSetUpAccountPage::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
+void ConfigWizardSetUpAccountPage::setMyself(Myself *myself)
+{
+	m_myself = myself;
 }
 
 void ConfigWizardSetUpAccountPage::createGui()
@@ -116,12 +130,12 @@ void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 		return;
 	}
 
-	Core::instance()->accountManager()->addItem(account);
-	account.accountContact().setOwnerBuddy(Core::instance()->myself()->buddy());
+	m_accountManager->addItem(account);
+	account.accountContact().setOwnerBuddy(m_myself->buddy());
 
 	AccountSuccessfullyCreated = true;
 
-	Core::instance()->configurationManager()->flush();
+	m_configurationManager->flush();
 }
 
 #include "moc_config-wizard-set-up-account-page.cpp"
