@@ -21,19 +21,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_UPDATES_H
-#define KADU_UPDATES_H
-
-#include <QtCore/QDateTime>
+#pragma once
 
 #include "accounts/accounts-aware-object.h"
 #include "protocols/protocol.h"
+
+#include <QtCore/QDateTime>
+#include <injeqt/injeqt.h>
+
+class AccountManager;
+class ConfigurationManager;
+class Configuration;
 
 class QNetworkReply;
 
 class Updates : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
+
+public:
+	explicit Updates(QObject *parent = nullptr);
+	virtual ~Updates();
+
+protected:
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
+
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Configuration> m_configuration;
 
 	bool UpdateChecked;
 	QString Query;
@@ -44,17 +61,12 @@ class Updates : public QObject, AccountsAwareObject
 	static QString stripVersion(const QString &version);
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
 	void gotUpdatesInfo(QNetworkReply *reply);
 	void run();
 
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-
-public:
-	explicit Updates(QObject *parent = 0);
-	virtual ~Updates();
-
 };
-
-#endif

@@ -45,13 +45,31 @@
 Updates::Updates(QObject *parent) :
 		QObject(parent), UpdateChecked{false}
 {
-	kdebugf();
-	buildQuery();
-	triggerAllAccountsRegistered(Core::instance()->accountManager());
 }
 
 Updates::~Updates()
 {
+}
+
+void Updates::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void Updates::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
+void Updates::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void Updates::init()
+{
+	buildQuery();
+	triggerAllAccountsRegistered(m_accountManager);
 }
 
 void Updates::accountRegistered(Account account)
@@ -66,9 +84,9 @@ void Updates::accountUnregistered(Account account)
 
 void Updates::buildQuery()
 {
-	Query = QString("/update-new.php?uuid=%1&version=%2").arg(Core::instance()->configurationManager()->uuid().toString()).arg(Core::version());
+	Query = QString("/update-new.php?uuid=%1&version=%2").arg(m_configurationManager->uuid().toString()).arg(Core::version());
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "SendSysInfo"), true)
+	if (m_configuration->deprecatedApi()->readBoolEntry("General", "SendSysInfo"), true)
 	{
 		QString platform("&system=");
 #if defined(Q_OS_LINUX)
@@ -211,7 +229,7 @@ void Updates::gotUpdatesInfo(QNetworkReply *reply)
 	reply->deleteLater();
 	deleteLater();
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "CheckUpdates"))
+	if (m_configuration->deprecatedApi()->readBoolEntry("General", "CheckUpdates"))
 	{
 		auto newestVersion = QString::fromUtf8(reply->readAll());
 		if (newestVersion.size() > 31)

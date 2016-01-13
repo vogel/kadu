@@ -476,7 +476,7 @@ void Core::init()
 		m_injector.get<PluginManager>()->activateProtocolPlugins();
 	}
 
-	new Updates(this);
+	injectedFactory()->makeInjected<Updates>(this);
 
 	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
 	connect(iconsManager(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
