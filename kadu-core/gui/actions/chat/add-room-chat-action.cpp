@@ -34,19 +34,27 @@ AddRoomChatAction::AddRoomChatAction(QObject *parent) :
 	setType(ActionDescription::TypeGlobal);
 	setName("addRoomChatAction");
 	setText(tr("Join Room..."));
-
-	registerAction();
-
-	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)),
-	        this, SLOT(updateAddChatMenuItem()));
-	connect(Core::instance()->accountManager(), SIGNAL(accountUnregistered(Account)),
-	        this, SLOT(updateAddChatMenuItem()));
-
-	updateAddChatMenuItem();
 }
 
 AddRoomChatAction::~AddRoomChatAction()
 {
+}
+
+void AddRoomChatAction::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void AddRoomChatAction::init()
+{
+	registerAction();
+
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
+	        this, SLOT(updateAddChatMenuItem()));
+	connect(m_accountManager, SIGNAL(accountUnregistered(Account)),
+	        this, SLOT(updateAddChatMenuItem()));
+
+	updateAddChatMenuItem();
 }
 
 void AddRoomChatAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
@@ -61,7 +69,7 @@ void AddRoomChatAction::updateAddChatMenuItem()
 {
 	bool isRoomChatSupported = false;
 
-	foreach (const Account &account, Core::instance()->accountManager()->items())
+	foreach (const Account &account, m_accountManager->items())
 	{
 		if (account.protocolName() == "jabber")
 			isRoomChatSupported = true;
