@@ -17,22 +17,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_ADD_ACCOUNT_WIDGET_H
-#define GADU_ADD_ACCOUNT_WIDGET_H
+#pragma once
 
 #include "gui/widgets/account-add-widget.h"
+
+#include <injeqt/injeqt.h>
+
+class AccountManager;
+class AccountStorage;
+class IdentitiesComboBox;
+class IdentityManager;
 
 class QCheckBox;
 class QGridLayout;
 class QLineEdit;
 class QPushButton;
 
-class IdentitiesComboBox;
-
 class GaduAddAccountWidget : public AccountAddWidget
 {
 	Q_OBJECT
 
+public:
+	explicit GaduAddAccountWidget(bool showButtons, QWidget *parent = 0);
+	virtual ~GaduAddAccountWidget();
+
+public slots:
+	virtual void apply();
+	virtual void cancel();
+
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<AccountStorage> m_accountStorage;
+	QPointer<IdentityManager> m_identityManager;
+
+	bool m_showButtons;
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
@@ -43,19 +61,14 @@ class GaduAddAccountWidget : public AccountAddWidget
 	void resetGui();
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_INIT void init();
+
 	void dataChanged();
 	void registerAccount();
 	void remindUin();
 	void remindPassword();
 
-public:
-	explicit GaduAddAccountWidget(bool showButtons, QWidget *parent = 0);
-	virtual ~GaduAddAccountWidget();
-
-public slots:
-	virtual void apply();
-	virtual void cancel();
-
 };
-
-#endif // GADU_ADD_ACCOUNT_WIDGET_H

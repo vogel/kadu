@@ -18,6 +18,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gadu-add-account-widget.h"
+
+#include "gadu-account-details.h"
+#include "gadu-id-validator.h"
+#include "gadu-protocol-factory.h"
+
+#include "accounts/account-manager.h"
+#include "accounts/account-storage.h"
+#include "gui/widgets/identities-combo-box.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
+#include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
+#include "identities/identity-manager.h"
+#include "os/generic/url-opener.h"
+#include "protocols/protocols-manager.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
@@ -29,36 +45,39 @@
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QVBoxLayout>
 
-#include "accounts/account-manager.h"
-#include "accounts/account-storage.h"
-#include "core/core.h"
-#include "gui/widgets/identities-combo-box.h"
-#include "gui/widgets/simple-configuration-value-state-notifier.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "identities/identity-manager.h"
-#include "os/generic/url-opener.h"
-#include "protocols/protocols-manager.h"
-
-#include "gadu-account-details.h"
-#include "gadu-id-validator.h"
-#include "gadu-protocol-factory.h"
-
-#include "gadu-add-account-widget.h"
-
 GaduAddAccountWidget::GaduAddAccountWidget(bool showButtons, QWidget *parent) :
-		AccountAddWidget(parent)
+		AccountAddWidget{parent},
+		m_showButtons{showButtons}
 {
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
-
-	createGui(showButtons);
-	resetGui();
 }
 
 GaduAddAccountWidget::~GaduAddAccountWidget()
 {
+}
+
+void GaduAddAccountWidget::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void GaduAddAccountWidget::setAccountStorage(AccountStorage *accountStorage)
+{
+	m_accountStorage = accountStorage;
+}
+
+void GaduAddAccountWidget::setIdentityManager(IdentityManager *identityManager)
+{
+	m_identityManager = identityManager;
+}
+
+void GaduAddAccountWidget::init()
+{
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
+
+	createGui(m_showButtons);
+	resetGui();
 }
 
 void GaduAddAccountWidget::createGui(bool showButtons)
@@ -131,7 +150,7 @@ void GaduAddAccountWidget::resetGui()
 	AccountId->clear();
 	AccountPassword->clear();
 	RememberPassword->setChecked(true);
-	Core::instance()->identityManager()->removeUnused();
+	m_identityManager->removeUnused();
 	Identity->setCurrentIndex(0);
 
 	dataChanged();
@@ -139,7 +158,7 @@ void GaduAddAccountWidget::resetGui()
 
 void GaduAddAccountWidget::apply()
 {
-	Account gaduAccount = Core::instance()->accountStorage()->create("gadu");
+	auto gaduAccount = m_accountStorage->create("gadu");
 
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());
@@ -168,7 +187,7 @@ void GaduAddAccountWidget::dataChanged()
 {
 	bool valid = !AccountId->text().isEmpty()
 			&& !AccountPassword->text().isEmpty()
-			&& !Core::instance()->accountManager()->byId("gadu", AccountId->text())
+			&& !m_accountManager->byId("gadu", AccountId->text())
 			&& Identity->currentIdentity();
 
 	AddAccountButton->setEnabled(valid);

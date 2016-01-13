@@ -78,7 +78,7 @@ AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accoun
 
 AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	GaduAddAccountWidget *result = new GaduAddAccountWidget(showButtons, parent);
+	auto result = Core::instance()->injectedFactory()->makeInjected<GaduAddAccountWidget>(showButtons, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
