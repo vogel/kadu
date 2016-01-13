@@ -33,7 +33,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
-#include "core/core.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/jabber-wait-for-account-register-window.h"
 #include "gui/windows/message-dialog.h"
@@ -50,18 +49,38 @@
 #include "jabber-create-account-widget.h"
 
 JabberCreateAccountWidget::JabberCreateAccountWidget(bool showButtons, QWidget *parent) :
-		AccountCreateWidget(parent)
+		AccountCreateWidget{parent},
+		m_showButtons{showButtons}
 {
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-	connect(Core::instance()->accountManager(), SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
-
-	createGui(showButtons);
-	resetGui();
 }
 
 JabberCreateAccountWidget::~JabberCreateAccountWidget()
 {
+}
+
+void JabberCreateAccountWidget::setAccountManager(AccountManager *accountManager)
+{
+	m_accountManager = accountManager;
+}
+
+void JabberCreateAccountWidget::setAccountStorage(AccountStorage *accountStorage)
+{
+	m_accountStorage = accountStorage;
+}
+
+void JabberCreateAccountWidget::setIdentityManager(IdentityManager *identityManager)
+{
+	m_identityManager = identityManager;
+}
+
+void JabberCreateAccountWidget::init()
+{
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
+
+	createGui(m_showButtons);
+	resetGui();
 }
 
 void JabberCreateAccountWidget::createGui(bool showButtons)
@@ -159,7 +178,7 @@ void JabberCreateAccountWidget::dataChanged()
 			&& !Username->text().isEmpty()
 			&& !NewPassword->text().isEmpty()
 			&& !ReNewPassword->text().isEmpty()
-			&& !Core::instance()->accountManager()->byId("jabber", Username->text() + '@' + Domain->currentText())
+			&& !m_accountManager->byId("jabber", Username->text() + '@' + Domain->currentText())
 			&& IdentityCombo->currentIdentity();
 
 	RegisterAccountButton->setEnabled(valid);
@@ -209,7 +228,7 @@ void JabberCreateAccountWidget::resetGui()
 	NewPassword->clear();
 	ReNewPassword->clear();
 	RememberPassword->setChecked(true);
-	Core::instance()->identityManager()->removeUnused();
+	m_identityManager->removeUnused();
 	IdentityCombo->setCurrentIndex(0);
 	RegisterAccountButton->setEnabled(false);
 
@@ -224,7 +243,7 @@ void JabberCreateAccountWidget::jidRegistered(const Jid &jid)
 		return;
 	}
 
-	Account jabberAccount = Core::instance()->accountStorage()->create("jabber");
+	Account jabberAccount = m_accountStorage->create("jabber");
 	jabberAccount.setId(jid.bare());
 	jabberAccount.setHasPassword(true);
 	jabberAccount.setPassword(NewPassword->text());

@@ -18,34 +18,52 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_CREATE_ACCOUNT_WIDGET_H
-#define JABBER_CREATE_ACCOUNT_WIDGET_H
+#pragma once
+
+#include "accounts/account.h"
+#include "gui/widgets/account-create-widget.h"
+#include "gui/widgets/identities-combo-box.h"
 
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QVBoxLayout>
-
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QVBoxLayout>
+#include <injeqt/injeqt.h>
 
-#include "accounts/account.h"
-#include "gui/widgets/account-create-widget.h"
-#include "gui/widgets/identities-combo-box.h"
+class AccountManager;
+class AccountStorage;
+class ChooseIdentityWidget;
+class IdentityManager;
+class JabberServersService;
+class Jid;
 
 class QGridLayout;
 class QLineEdit;
 class QPushButton;
 
-class ChooseIdentityWidget;
-class JabberServersService;
-class Jid;
-
 class JabberCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
 
+public:
+	explicit JabberCreateAccountWidget(bool showButtons, QWidget *parent = 0);
+	virtual ~JabberCreateAccountWidget();
+
+	void setJabberServersService(JabberServersService *serversService);
+
+public slots:
+	virtual void apply();
+	virtual void cancel();
+
+private:
+	QPointer<AccountManager> m_accountManager;
+	QPointer<AccountStorage> m_accountStorage;
+	QPointer<IdentityManager> m_identityManager;
+
+	bool m_showButtons;
 	QLineEdit *Username;
 	QComboBox *Domain;
 	QLineEdit *NewPassword;
@@ -59,19 +77,12 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	void resetGui();
 
 private slots:
+	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_INIT void init();
+
 	void dataChanged();
 	void jidRegistered(const Jid &jid);
 
-public:
-	explicit JabberCreateAccountWidget(bool showButtons, QWidget *parent = 0);
-	virtual ~JabberCreateAccountWidget();
-
-	void setJabberServersService(JabberServersService *serversService);
-
-public slots:
-	virtual void apply();
-	virtual void cancel();
-
 };
-
-#endif // JABBER_CREATE_ACCOUNT_WIDGET_H

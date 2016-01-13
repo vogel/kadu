@@ -95,7 +95,7 @@ AccountAddWidget * GTalkProtocolFactory::newAddAccountWidget(bool showButtons, Q
 
 AccountCreateWidget * GTalkProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
 {
-	auto result = new JabberCreateAccountWidget(showButtons, parent);
+	auto result = Core::instance()->injectedFactory()->makeInjected<JabberCreateAccountWidget>(showButtons, parent);
 	result->setJabberServersService(new JabberServersService{result});
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
