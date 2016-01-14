@@ -29,7 +29,9 @@ class QCheckBox;
 class QLineEdit;
 class QSlider;
 
+class BuddyDummyFactory;
 class ConfigComboBox;
+class Configuration;
 class MainConfigurationWindow;
 class SelectFile;
 class Speech;
@@ -37,7 +39,9 @@ class Speech;
 class SpeechConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
-	
+
+	QPointer<BuddyDummyFactory> m_buddyDummyFactory;
+	QPointer<Configuration> m_configuration;
 	QPointer<Speech> m_speech;
 
 	QSlider *frequencySlider;
@@ -52,6 +56,8 @@ class SpeechConfigurationUiHandler : public QObject, public ConfigurationUiHandl
 	ConfigComboBox *soundSystemComboBox;
 
 private slots:
+	INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setSpeech(Speech *speech);
 
 	void testSpeech();

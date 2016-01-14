@@ -19,11 +19,11 @@
 
 #include "myself.h"
 
+#include "buddies/buddy-storage.h"
 #include "configuration/deprecated-configuration-api.h"
 
 Myself::Myself(QObject *parent) :
-		QObject{parent},
-		m_buddy{Buddy::create()}
+		QObject{parent}
 {
 }
 
@@ -31,15 +31,14 @@ Myself::~Myself()
 {
 }
 
+void Myself::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
+}
+
 void Myself::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
-}
-
-void Myself::init()
-{
-	m_buddy.setAnonymous(false);
-	configurationUpdated();
 }
 
 void Myself::configurationUpdated()
@@ -49,5 +48,12 @@ void Myself::configurationUpdated()
 
 Buddy Myself::buddy()
 {
+	if (!m_buddy)
+	{
+		m_buddy = m_buddyStorage->create();
+		m_buddy.setAnonymous(false);
+		configurationUpdated();
+	}
+
 	return m_buddy;
 }

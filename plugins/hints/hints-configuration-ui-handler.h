@@ -28,6 +28,7 @@
 
 #include "hint-manager.h"
 
+class BuddyDummyFactory;
 class HintsManager;
 
 class QCheckBox;
@@ -40,6 +41,7 @@ class HintsConfigurationUiHandler : public QObject, public ConfigurationUiHandle
 
 private:
 	QPointer<MainConfigurationWindow> m_mainConfigurationWindow;
+	QPointer<BuddyDummyFactory> m_buddyDummyFactory;
 	QPointer<ConfigurationWindow> AdvancedWindow;
 	QPointer<HintManager> m_hintManager;
 
@@ -64,6 +66,7 @@ private:
 	void setPreviewLayoutDirection();
 
 private slots:
+	INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
 	INJEQT_SET void setHintManager(HintManager *hintManager);
 
 	void showAdvanced();

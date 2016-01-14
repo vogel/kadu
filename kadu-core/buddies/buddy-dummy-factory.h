@@ -19,38 +19,40 @@
 
 #pragma once
 
-#include "buddies/buddy.h"
-#include "configuration/configuration-aware-object.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
+#include <memory>
 
+class AccountStorage;
+class AvatarManager;
 class BuddyStorage;
-class Configuration;
+class Buddy;
+class InjectedFactory;
+class StoragePoint;
 
-class KADUAPI Myself : public QObject, private ConfigurationAwareObject
+class KADUAPI BuddyDummyFactory : public QObject
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit Myself(QObject *parent = nullptr);
-	virtual ~Myself();
+	Q_INVOKABLE explicit BuddyDummyFactory(QObject *parent = nullptr);
+	virtual ~BuddyDummyFactory();
 
-	Buddy buddy();
-
-protected:
-	virtual void configurationUpdated() override;
+	Buddy dummy();
 
 private:
+	QPointer<AccountStorage> m_accountStorage;
+	QPointer<AvatarManager> m_avatarManager;
 	QPointer<BuddyStorage> m_buddyStorage;
-	QPointer<Configuration> m_configuration;
-
-	Buddy m_buddy;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
+	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

@@ -50,8 +50,10 @@ class Application;
 class AvatarManager;
 class BuddyChatManager;
 class BuddyConfigurationWidgetFactoryRepository;
+class BuddyDummyFactory;
 class BuddyManager;
 class BuddyPreferredManager;
+class BuddyStorage;
 class ChatConfigurationHolder;
 class ChatConfigurationWidgetFactoryRepository;
 class ChatImageRequestService;
@@ -248,6 +250,8 @@ public:
 	ToolTipClassManager * toolTipClassManager() const;
 	Myself * myself() const;
 	AccountStorage * accountStorage() const;
+	BuddyStorage * buddyStorage() const;
+	BuddyDummyFactory * buddyDummyFactory() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

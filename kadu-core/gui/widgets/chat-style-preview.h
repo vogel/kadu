@@ -27,7 +27,11 @@
 #include <QtWidgets/QFrame>
 #include <injeqt/injeqt.h>
 
+class BuddyPreferredManager;
+class BuddyStorage;
+class ChatConfigurationHolder;
 class FormattedStringFactory;
+class Myself;
 class WebkitMessagesViewFactory;
 class WebkitMessagesView;
 
@@ -45,14 +49,22 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<BuddyStorage> m_buddyStorage;
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<Myself> m_myself;
 	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
 	owned_qptr<WebkitMessagesView> m_view;
 
 	owned_qptr<WebkitMessagesView> preparePreview();
 
 private slots:
+	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
 	INJEQT_INIT void init();
 

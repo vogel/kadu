@@ -35,6 +35,7 @@
 #include <injeqt/injeqt.h>
 
 class Account;
+class BuddyStorage;
 class ConfigurationApi;
 class ConfigurationManager;
 class Configuration;
@@ -64,6 +65,7 @@ public:
 
 protected:
 	virtual void load();
+	virtual Buddy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
 	virtual void itemAboutToBeAdded(Buddy buddy);
 	virtual void itemAdded(Buddy buddy);
@@ -85,6 +87,7 @@ signals:
 	void buddySubscriptionChanged(const Buddy &buddy);
 
 private:
+	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<ContactManager> m_contactManager;
@@ -92,6 +95,7 @@ private:
 	QString mergeValue(const QString &destination, const QString &source) const;
 
 private slots:
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);

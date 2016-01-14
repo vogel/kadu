@@ -101,6 +101,11 @@ void AvatarManager::itemRemoved(Avatar item)
 	emit avatarRemoved(item);
 }
 
+Avatar AvatarManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
+{
+	return Avatar::loadStubFromStorage(storagePoint);
+}
+
 void AvatarManager::accountRegistered(Account account)
 {
 	QMutexLocker locker(&mutex());

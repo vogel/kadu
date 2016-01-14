@@ -68,6 +68,11 @@ void NetworkProxyManager::store()
 	SimpleManager<NetworkProxy>::store();
 }
 
+NetworkProxy NetworkProxyManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
+{
+	return NetworkProxy::loadStubFromStorage(storagePoint);
+}
+
 void NetworkProxyManager::configurationUpdated()
 {
 	DefaultProxy = byUuid(Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "DefaultProxy"));

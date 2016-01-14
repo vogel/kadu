@@ -24,6 +24,7 @@
 #include "contact-manager.h"
 
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-storage.h"
 #include "buddies/buddy.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
@@ -49,6 +50,11 @@ ContactManager::ContactManager(QObject *parent) :
 
 ContactManager::~ContactManager()
 {
+}
+
+void ContactManager::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
 }
 
 void ContactManager::setConfigurationManager(ConfigurationManager *configurationManager)
@@ -162,7 +168,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	if (action == ActionCreateAndAdd)
 		addItem(contact);
 
-	Buddy buddy = Buddy::create();
+	auto buddy = m_buddyStorage->create();
 	contact.setOwnerBuddy(buddy);
 
 	return contact;
@@ -232,6 +238,11 @@ void ContactManager::loaded()
 	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
 		// delay it so that everything needed will be loaded when we call this method
 		QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
+}
+
+Contact ContactManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
+{
+	return Contact::loadStubFromStorage(storagePoint);
 }
 
 #include "moc_contact-manager.cpp"

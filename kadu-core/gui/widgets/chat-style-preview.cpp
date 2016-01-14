@@ -20,6 +20,7 @@
 #include "chat-style-preview.h"
 
 #include "buddies/buddy-preferred-manager.h"
+#include "buddies/buddy-storage.h"
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "chat/chat-details-contact.h"
 #include "core/core.h"
@@ -43,9 +44,29 @@ ChatStylePreview::~ChatStylePreview()
 {
 }
 
+void ChatStylePreview::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void ChatStylePreview::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
+void ChatStylePreview::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
+}
+
 void ChatStylePreview::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	m_formattedStringFactory = formattedStringFactory;
+}
+
+void ChatStylePreview::setMyself(Myself *myself)
+{
+	m_myself = myself;
 }
 
 void ChatStylePreview::setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory)
@@ -70,17 +91,17 @@ void ChatStylePreview::setRendererFactory(std::unique_ptr<ChatStyleRendererFacto
 
 owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 {
-	auto example = Buddy::dummy();
+	auto example = m_buddyStorage->create();
 
 	auto chat = Chat::create();
 	chat.setType("Contact");
 
 	auto details = static_cast<ChatDetailsContact *>(chat.details());
 	details->setState(StorableObject::StateNew);
-	details->setContact(Core::instance()->buddyPreferredManager()->preferredContact(example));
+	details->setContact(m_buddyPreferredManager->preferredContact(example));
 
-	auto buddy = Buddy::create();
-	buddy.setDisplay(Core::instance()->myself()->buddy().display());
+	auto buddy = m_buddyStorage->create();
+	buddy.setDisplay(m_myself->buddy().display());
 	auto contact = Contact::create();
 	contact.setId("id@network");
 	contact.setOwnerBuddy(buddy);
@@ -96,7 +117,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	auto receivedMessage = Message::create();
 	receivedMessage.setMessageChat(chat);
 	receivedMessage.setType(MessageTypeReceived);
-	receivedMessage.setMessageSender(Core::instance()->buddyPreferredManager()->preferredContact(example));
+	receivedMessage.setMessageSender(m_buddyPreferredManager->preferredContact(example));
 	receivedMessage.setContent(m_formattedStringFactory->fromPlainText(tr("Message from Your friend")));
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
@@ -109,7 +130,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 
 void ChatStylePreview::configurationUpdated()
 {
-	m_view->setUserFont(Core::instance()->chatConfigurationHolder()->chatFont().toString(), Core::instance()->chatConfigurationHolder()->forceCustomChatFont());
+	m_view->setUserFont(m_chatConfigurationHolder->chatFont().toString(), m_chatConfigurationHolder->forceCustomChatFont());
 }
 
 #include "moc_chat-style-preview.cpp"

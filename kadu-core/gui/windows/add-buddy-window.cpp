@@ -34,6 +34,7 @@
 #include "accounts/model/accounts-proxy-model.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "buddies/buddy-storage.h"
 #include "buddies/buddy.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
@@ -91,6 +92,11 @@ void AddBuddyWindow::setBuddyManager(BuddyManager *buddyManager)
 void AddBuddyWindow::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
 {
 	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void AddBuddyWindow::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
 }
 
 void AddBuddyWindow::setContactManager(ContactManager *contactManager)
@@ -528,7 +534,7 @@ bool AddBuddyWindow::addContact()
 	{
 		if (MyBuddy.isNull())
 		{
-			buddy = Buddy::create();
+			buddy = m_buddyStorage->create();
 			buddy.data()->setState(StorableObject::StateNew);
 		}
 		else
@@ -574,7 +580,7 @@ bool AddBuddyWindow::addContact()
 
 bool AddBuddyWindow::addMobile()
 {
-	Buddy buddy = Buddy::create();
+	Buddy buddy = m_buddyStorage->create();
 	buddy.data()->setState(StorableObject::StateNew);
 	buddy.setAnonymous(false);
 	buddy.setMobile(UserNameEdit->text());
@@ -588,7 +594,7 @@ bool AddBuddyWindow::addMobile()
 
 bool AddBuddyWindow::addEmail()
 {
-	Buddy buddy = Buddy::create();
+	Buddy buddy = m_buddyStorage->create();
 	buddy.data()->setState(StorableObject::StateNew);
 	buddy.setAnonymous(false);
 	buddy.setEmail(UserNameEdit->text());

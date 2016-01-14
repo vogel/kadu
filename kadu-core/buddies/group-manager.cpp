@@ -114,6 +114,11 @@ void GroupManager::store()
 	SimpleManager<Group>::store();
 }
 
+Group GroupManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
+{
+	return Group::loadStubFromStorage(storagePoint);
+}
+
 Group GroupManager::byName(const QString &name, bool create)
 {
 	QMutexLocker locker(&mutex());

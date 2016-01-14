@@ -126,6 +126,11 @@ void FileTransferManager::removeFileTransferService(Account account)
 	disconnect(service, 0, this, 0);
 }
 
+FileTransfer FileTransferManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
+{
+	return FileTransfer::loadStubFromStorage(storagePoint);
+}
+
 void FileTransferManager::accountRegistered(Account account)
 {
 	QMutexLocker locker(&mutex());

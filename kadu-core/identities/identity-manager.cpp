@@ -154,4 +154,9 @@ void IdentityManager::load()
 		addDefaultIdentities();
 }
 
+Identity IdentityManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
+{
+	return Identity::loadStubFromStorage(storagePoint);
+}
+
 #include "moc_identity-manager.cpp"

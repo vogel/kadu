@@ -38,8 +38,10 @@
 #include "accounts/account-storage.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
+#include "buddies/buddy-dummy-factory.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "buddies/buddy-storage.h"
 #include "buddies/group-manager.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat-style/chat-style-manager.h"
@@ -984,6 +986,16 @@ Myself * Core::myself() const
 AccountStorage * Core::accountStorage() const
 {
 	return m_injector.get<AccountStorage>();
+}
+
+BuddyStorage * Core::buddyStorage() const
+{
+	return m_injector.get<BuddyStorage>();
+}
+
+BuddyDummyFactory * Core::buddyDummyFactory() const
+{
+	return m_injector.get<BuddyDummyFactory>();
 }
 
 void Core::showMainWindow()

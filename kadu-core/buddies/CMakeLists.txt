@@ -2,6 +2,7 @@ set (buddies_SRCS
 	buddy.cpp
 	buddy-additional-data-delete-handler.cpp
 	buddy-additional-data-delete-handler-manager.cpp
+	buddy-dummy-factory.cpp
 	buddy-list.cpp
 	buddy-list-mime-data-helper.cpp
 	buddy-manager.cpp
@@ -10,6 +11,7 @@ set (buddies_SRCS
 	buddy-search-criteria.cpp
 	buddy-set.cpp
 	buddy-shared.cpp
+	buddy-storage.cpp
 	group.cpp
 	group-manager.cpp
 	group-shared.cpp

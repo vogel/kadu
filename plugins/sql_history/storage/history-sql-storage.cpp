@@ -33,6 +33,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-storage.h"
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-details-buddy.h"
 #include "chat/chat-details.h"
@@ -137,6 +138,11 @@ void HistorySqlStorage::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 void HistorySqlStorage::setBuddyManager(BuddyManager *buddyManager)
 {
 	m_buddyManager = buddyManager;
+}
+
+void HistorySqlStorage::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
 }
 
 void HistorySqlStorage::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
@@ -573,7 +579,7 @@ QVector<Talkable> HistorySqlStorage::syncSmsRecipients()
 	QVector<Talkable> result;
 	while (query.next())
 	{
-		Buddy buddy = Buddy::create();
+		Buddy buddy = m_buddyStorage->create();
 		buddy.setDisplay(query.value(0).toString());
 		buddy.setMobile(query.value(0).toString());
 		result.append(buddy);
@@ -762,7 +768,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 		}
 		else
 		{
-			const Buddy &buddy = Buddy::create();
+			const Buddy &buddy = m_buddyStorage->create();
 			buddy.setDisplay("?");
 
 			contact = Contact::create();
@@ -836,7 +842,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncSmsRecipientDates(const Histo
 
 		HistoryQueryResult result;
 
-		Buddy buddy = Buddy::create();
+		Buddy buddy = m_buddyStorage->create();
 		buddy.setDisplay(query.value(2).toString());
 		buddy.setMobile(query.value(2).toString());
 
@@ -1046,7 +1052,7 @@ SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		if (!sender)
 		{
 			Contact sender = Contact::create();
-			Buddy senderBuddy = Buddy::create();
+			Buddy senderBuddy = m_buddyStorage->create();
 			senderBuddy.setDisplay("?");
 			sender.setOwnerBuddy(senderBuddy);
 		}

@@ -36,6 +36,7 @@
 #include <injeqt/injeqt.h>
 
 class Account;
+class BuddyStorage;
 class ConfigurationManager;
 class UnreadMessageRepository;
 
@@ -69,6 +70,7 @@ signals:
 
 protected:
 	virtual void loaded();
+	virtual Contact loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 	virtual void itemAboutToBeAdded(Contact item) override;
 	virtual void itemAdded(Contact item) override;
@@ -76,10 +78,12 @@ protected:
 	virtual void itemRemoved(Contact item) override;
 
 private:
+	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 private slots:
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();

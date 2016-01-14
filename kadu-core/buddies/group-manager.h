@@ -63,6 +63,7 @@ signals:
 protected:
 	virtual void load();
 	virtual void store();
+	virtual Group loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
 	virtual void itemAboutToBeAdded(Group item);
 	virtual void itemAdded(Group item);

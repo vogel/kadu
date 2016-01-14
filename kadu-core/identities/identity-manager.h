@@ -65,6 +65,7 @@ protected:
 	virtual void itemRemoved(Identity item);
 
 	virtual void load();
+	virtual Identity loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 private:
 	QPointer<ConfigurationManager> m_configurationManager;

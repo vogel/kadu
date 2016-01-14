@@ -62,6 +62,7 @@ signals:
 protected:
 	virtual void load();
 	virtual void store();
+	virtual NetworkProxy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 	virtual void itemAboutToBeAdded(NetworkProxy item);
 	virtual void itemAdded(NetworkProxy item);

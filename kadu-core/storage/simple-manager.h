@@ -183,13 +183,15 @@ protected:
 			QUuid uuid = storagePoint->point().attribute("uuid");
 			if (!uuid.isNull())
 			{
-				Item item = Item::loadStubFromStorage(storagePoint);
+				Item item = loadStubFromStorage(storagePoint);
 				addItem(item);
 			}
 		}
 
 		loaded();
 	}
+
+	virtual Item loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) = 0;
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

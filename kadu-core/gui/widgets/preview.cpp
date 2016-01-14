@@ -23,6 +23,7 @@
 
 #include <QtWidgets/QHBoxLayout>
 
+#include "buddies/buddy-dummy-factory.h"
 #include "core/core.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "parser/parser.h"
@@ -62,7 +63,7 @@ KaduWebView * Preview::webView() const
 void Preview::syntaxChanged(const QString &content)
 {
 	QString syntax = content;
-	QString text = Parser::parse(syntax, Talkable(Buddy::dummy()), ParserEscape::HtmlEscape);
+	QString text = Parser::parse(syntax, Talkable(Core::instance()->buddyDummyFactory()->dummy()), ParserEscape::HtmlEscape);
 	emit needFixup(text);
 
 	WebView->setHtml(text);

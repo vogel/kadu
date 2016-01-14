@@ -29,6 +29,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
 
+#include "buddies/buddy-dummy-factory.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/config-file-data-manager.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -93,6 +94,11 @@ HintsConfigurationUiHandler::~HintsConfigurationUiHandler()
 	previewHintsFrame = 0;
 }
 
+void HintsConfigurationUiHandler::setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory)
+{
+	m_buddyDummyFactory = buddyDummyFactory;
+}
+
 void HintsConfigurationUiHandler::setHintManager(HintManager *hintManager)
 {
 	m_hintManager = hintManager;
@@ -128,7 +134,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
    	configureOverUserHint = new QPushButton(tr("Configure"));
 	connect(configureOverUserHint, SIGNAL(clicked()), this, SLOT(showOverUserConfigurationWindow()));
 
-	Buddy example = Buddy::dummy();
+	Buddy example = m_buddyDummyFactory->dummy();
 
 	if (!example.isNull())
 		m_hintManager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
@@ -345,7 +351,7 @@ void HintsConfigurationUiHandler::showOverUserConfigurationWindow()
 		_activateWindow(overUserConfigurationWindow.data());
 	else
 	{
-		overUserConfigurationWindow = new HintOverUserConfigurationWindow(m_hintManager, Buddy::dummy(), m_mainConfigurationWindow->dataManager());
+		overUserConfigurationWindow = new HintOverUserConfigurationWindow(m_hintManager, m_buddyDummyFactory->dummy(), m_mainConfigurationWindow->dataManager());
 		connect(overUserConfigurationWindow.data(), SIGNAL(configurationSaved()), this, SLOT(updateOverUserPreview()));
 		overUserConfigurationWindow->show();
 	}
@@ -356,7 +362,7 @@ void HintsConfigurationUiHandler::updateOverUserPreview()
 	if (!overUserConfigurationPreview)
 		return;
 
-	Buddy example = Buddy::dummy();
+	auto example = m_buddyDummyFactory->dummy();
 
 	if (!example.isNull())
 		m_hintManager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);

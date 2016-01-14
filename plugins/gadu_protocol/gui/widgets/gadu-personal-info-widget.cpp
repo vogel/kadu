@@ -23,13 +23,15 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 
+#include "buddies/buddy-storage.h"
+#include "core/core.h"
 #include "debug.h"
 #include "gadu-account-details.h"
 
 #include "gadu-personal-info-widget.h"
 
 GaduPersonalInfoWidget::GaduPersonalInfoWidget(Account account, QWidget* parent) :
-		QWidget(parent), Id(account.id()), MyBuddy(Buddy::create())
+		QWidget(parent), Id(account.id()), MyBuddy(Core::instance()->buddyStorage()->create())
 {
 	createGui();
 	fillForm();
@@ -124,7 +126,7 @@ bool GaduPersonalInfoWidget::isModified()
 
 void GaduPersonalInfoWidget::apply()
 {
-	Buddy buddy = Buddy::create();
+	Buddy buddy = Core::instance()->buddyStorage()->create();
 
 	buddy.setNickName((*NickName).text());
 	buddy.setFirstName((*FirstName).text());

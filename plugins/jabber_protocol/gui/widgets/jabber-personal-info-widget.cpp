@@ -24,13 +24,15 @@
 #include <QtWidgets/QLineEdit>
 
 #include "accounts/account.h"
+#include "buddies/buddy-storage.h"
+#include "core/core.h"
 #include "protocols/protocol.h"
 #include "protocols/services/personal-info-service.h"
 
 #include "jabber-personal-info-widget.h"
 
 JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget* parent) :
-		QWidget(parent), Id(account.id()), MyBuddy(Buddy::create())
+		QWidget(parent), Id(account.id()), MyBuddy(Core::instance()->buddyStorage()->create())
 {
 	createGui();
 	fillForm();
@@ -115,7 +117,7 @@ bool JabberPersonalInfoWidget::isModified()
 
 void JabberPersonalInfoWidget::apply()
 {
-	Buddy buddy = Buddy::create();
+	Buddy buddy = Core::instance()->buddyStorage()->create();
 
 	buddy.setNickName((*NickName).text());
 	buddy.setFirstName((*FullName).text());

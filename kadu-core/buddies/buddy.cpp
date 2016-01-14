@@ -32,6 +32,7 @@
 #include "configuration/configuration.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "protocols/protocol.h"
@@ -43,21 +44,6 @@
 KaduSharedBaseClassImpl(Buddy)
 
 Buddy Buddy::null;
-
-Buddy Buddy::create()
-{
-	return new BuddyShared();
-}
-
-Buddy Buddy::loadStubFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint)
-{
-	return BuddyShared::loadStubFromStorage(contactStoragePoint);
-}
-
-Buddy Buddy::loadFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint)
-{
-	return BuddyShared::loadFromStorage(contactStoragePoint);
-}
 
 Buddy::Buddy()
 {
@@ -218,42 +204,6 @@ QString Buddy::display() const
 	}
 
 	return result;
-}
-
-Buddy Buddy::dummy()
-{
-	Buddy example = Buddy::create();
-
-	example.setFirstName("Mark");
-	example.setLastName("Smith");
-	example.setNickName("Jimbo");
-	example.setDisplay("Jimbo");
-	example.setMobile("+48123456789");
-	example.setEmail("jimbo@mail.server.net");
-	example.setHomePhone("+481234567890");
-
-	Identity identity = Identity::create();
-	identity.setName(QApplication::translate("Buddy", "Example identity"));
-
-	Account account = Core::instance()->accountStorage()->create("");
-	account.setAccountIdentity(identity);
-
-	Contact contact = Contact::create();
-	contact.setContactAccount(account);
-	contact.setOwnerBuddy(example);
-	contact.setId("999999");
-	contact.setCurrentStatus(Status(StatusTypeAway, QApplication::translate("Buddy", "Example description")));
-
-	// this is just an example contact, do not add avatar to list
-	Avatar avatar = Core::instance()->avatarManager()->byContact(contact, ActionCreate);
-
-	avatar.setLastUpdated(QDateTime::currentDateTime());
-	avatar.setFilePath(KaduIcon("kadu_icons/buddy0", "96x96").fullPath());
-
-	example.addContact(contact);
-	example.setAnonymous(false);
-
-	return example;
 }
 
 KaduSharedBase_PropertyDefCRW(Buddy, Avatar, buddyAvatar, BuddyAvatar, Avatar::null)

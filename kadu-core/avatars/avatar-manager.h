@@ -63,6 +63,8 @@ signals:
 	void avatarUpdated(Avatar avatar);
 
 protected:
+	virtual Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
+
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 

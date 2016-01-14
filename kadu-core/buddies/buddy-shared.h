@@ -21,23 +21,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_SHARED_DATA
-#define BUDDY_SHARED_DATA
+#pragma once
+
+#include "buddies/buddy-gender.h"
+#include "misc/change-notifier.h"
+#include "storage/shared.h"
+#include "exports.h"
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
+#include <QtCore/QPointer>
 #include <QtCore/QSet>
 #include <QtCore/QSharedData>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
-
-#include "buddies/buddy-gender.h"
-#include "misc/change-notifier.h"
-#include "storage/shared.h"
-
-#include "exports.h"
+#include <injeqt/injeqt.h>
 
 #define BuddyShared_PropertyDirtyWrite(type, name, capitalized_name) \
 	void set##capitalized_name(type name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier().notify(); markContactsDirty(); } }
@@ -64,15 +64,23 @@
 	BuddyShared_PropertySubscriptionDirtyWrite(capitalized_name)
 
 class Account;
+class AvatarManager;
 class Avatar;
-class Contact;
-class Group;
+class BuddyManager;
 class ConfigurationApi;
+class Contact;
+class GroupManager;
+class Group;
+class Myself;
 
 class KADUAPI BuddyShared : public QObject, public Shared
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(BuddyShared)
+
+	QPointer<AvatarManager> m_avatarManager;
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<GroupManager> m_groupManager;
+	QPointer<Myself> m_myself;
 
 	bool CollectingGarbage;
 
@@ -107,6 +115,12 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	int priorityForNewContact();
 
 private slots:
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_INIT void init();
+
 	void avatarUpdated();
 	void groupAboutToBeRemoved();
 	void markContactsDirty();
@@ -119,9 +133,6 @@ protected:
 	virtual bool shouldStore();
 
 public:
-	static BuddyShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint);
-	static BuddyShared * loadFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint);
-
 	explicit BuddyShared(const QUuid &uuid = QUuid());
 	virtual ~BuddyShared();
 
@@ -197,5 +208,3 @@ signals:
 	void buddySubscriptionChanged();
 
 };
-
-#endif // BUDDY_SHARED_DATA

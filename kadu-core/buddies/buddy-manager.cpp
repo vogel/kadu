@@ -24,6 +24,7 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy-list.h"
+#include "buddies/buddy-storage.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
@@ -41,6 +42,11 @@ BuddyManager::BuddyManager(QObject *parent) :
 
 BuddyManager::~BuddyManager()
 {
+}
+
+void BuddyManager::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
 }
 
 void BuddyManager::setConfigurationManager(ConfigurationManager *configurationManager)
@@ -73,6 +79,11 @@ void BuddyManager::load()
 	QMutexLocker locker(&mutex());
 
 	SimpleManager<Buddy>::load();
+}
+
+Buddy BuddyManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
+{
+	return m_buddyStorage->loadStubFromStorage(storagePoint);
 }
 
 void BuddyManager::itemAboutToBeAdded(Buddy buddy)
@@ -173,7 +184,7 @@ Buddy BuddyManager::byDisplay(const QString &display, NotFoundAction action)
 	if (ActionReturnNull == action)
 		return Buddy::null;
 
-	Buddy buddy = Buddy::create();
+	auto buddy = m_buddyStorage->create();
 	buddy.setDisplay(display);
 
 	if (ActionCreateAndAdd == action)
@@ -208,7 +219,7 @@ Buddy BuddyManager::byContact(Contact contact, NotFoundAction action)
 		return contact.ownerBuddy();
 
 	if (!contact.ownerBuddy())
-		contact.setOwnerBuddy(Buddy::create());
+		contact.setOwnerBuddy(m_buddyStorage->create());
 
 	if (ActionCreateAndAdd == action)
 		addItem(contact.ownerBuddy());
@@ -223,13 +234,13 @@ Buddy BuddyManager::byUuid(const QUuid &uuid)
 	ensureLoaded();
 
 	if (uuid.isNull())
-		return Buddy::create();
+		return m_buddyStorage->create();
 
 	foreach (const Buddy &buddy, items())
 		if (buddy.uuid() == uuid)
 			return buddy;
 
-	return Buddy::create();
+	return m_buddyStorage->create();
 }
 
 void BuddyManager::removeBuddyIfEmpty(Buddy buddy, bool checkOnlyForContacts)

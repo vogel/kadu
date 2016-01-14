@@ -66,6 +66,8 @@ signals:
 	void totalProgressChanged(int totalProgress);
 
 protected:
+	virtual FileTransfer loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
+
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 

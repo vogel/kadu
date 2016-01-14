@@ -26,6 +26,9 @@
 
 #include "jabber-personal-info-service.h"
 
+#include "buddies/buddy-storage.h"
+#include "core/core.h"
+
 #include <qxmpp/QXmppVCardIq.h>
 
 JabberPersonalInfoService::JabberPersonalInfoService(Account account, QObject *parent) :
@@ -44,7 +47,7 @@ void JabberPersonalInfoService::setVCardService(JabberVCardService *vCardService
 
 void JabberPersonalInfoService::fetchPersonalInfo(const QString &id)
 {
-	CurrentBuddy = Buddy::create();
+	CurrentBuddy = Core::instance()->buddyStorage()->create();
 	if (!VCardService)
 		return;
 

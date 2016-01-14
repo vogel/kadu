@@ -17,27 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddy-module.h"
+#pragma once
 
-#include "buddies/buddy-additional-data-delete-handler-manager.h"
-#include "buddies/buddy-dummy-factory.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/buddy-preferred-manager.h"
-#include "buddies/buddy-storage.h"
-#include "buddies/group-manager.h"
-#include "gui/widgets/buddy-configuration-widget-factory-repository.h"
+#include "exports.h"
 
-BuddyModule::BuddyModule()
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+#include <memory>
+
+class Buddy;
+class InjectedFactory;
+class StoragePoint;
+
+class KADUAPI BuddyStorage : public QObject
 {
-	add_type<BuddyAdditionalDataDeleteHandlerManager>();
-	add_type<BuddyConfigurationWidgetFactoryRepository>();
-	add_type<BuddyDummyFactory>();
-	add_type<BuddyManager>();
-	add_type<BuddyPreferredManager>();
-	add_type<BuddyStorage>();
-	add_type<GroupManager>();
-}
+	Q_OBJECT
 
-BuddyModule::~BuddyModule()
-{
-}
+public:
+	Q_INVOKABLE explicit BuddyStorage(QObject *parent = nullptr);
+	virtual ~BuddyStorage();
+
+	Buddy create();
+	Buddy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+	Buddy loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
+};

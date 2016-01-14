@@ -21,8 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QVariant>
-#include <QtXml/QDomNamedNodeMap>
+#include "buddy-shared.h"
 
 #include "accounts/account.h"
 #include "avatars/avatar-manager.h"
@@ -34,37 +33,21 @@
 #include "configuration/configuration.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "core/myself.h"
 #include "misc/change-notifier.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
 #include "storage/storage-point.h"
 
-#include "buddy-shared.h"
-
-BuddyShared * BuddyShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint)
-{
-	BuddyShared *result = loadFromStorage(buddyStoragePoint);
-	result->loadStub();
-	return result;
-}
-
-BuddyShared * BuddyShared::loadFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint)
-{
-	BuddyShared *result = new BuddyShared();
-	result->setStorage(buddyStoragePoint);
-	return result;
-}
+#include <QtCore/QVariant>
+#include <QtXml/QDomNamedNodeMap>
 
 BuddyShared::BuddyShared(const QUuid &uuid) :
 		Shared(uuid), CollectingGarbage(false),
 		BirthYear(0), Gender(GenderUnknown), PreferHigherStatuses(true),
 		Anonymous(true), Temporary(false), Blocked(false), OfflineTo(false)
 {
-	BuddyAvatar = new Avatar();
-
-	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 BuddyShared::~BuddyShared()
@@ -72,6 +55,33 @@ BuddyShared::~BuddyShared()
 	ref.ref();
 	delete BuddyAvatar;
 	BuddyAvatar = 0;
+}
+
+void BuddyShared::setAvatarManager(AvatarManager *avatarManager)
+{
+	m_avatarManager = avatarManager;
+}
+
+void BuddyShared::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void BuddyShared::setGroupManager(GroupManager *groupManager)
+{
+	m_groupManager = groupManager;
+}
+
+void BuddyShared::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void BuddyShared::init()
+{
+	BuddyAvatar = new Avatar();
+
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 void BuddyShared::collectGarbage()
@@ -110,7 +120,7 @@ void BuddyShared::collectGarbage()
 
 StorableObject * BuddyShared::storageParent()
 {
-	return Core::instance()->buddyManager();
+	return m_buddyManager;
 }
 
 QString BuddyShared::storageNodeName()
@@ -142,7 +152,7 @@ void BuddyShared::importConfiguration()
 {
 	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
 	for (auto &&group : groups)
-		doAddToGroup(Core::instance()->groupManager()->byName(group));
+		doAddToGroup(m_groupManager->byName(group));
 
 	CustomData.remove("groups");
 
@@ -193,11 +203,11 @@ void BuddyShared::load()
 			QDomElement groupElement = groupsList.at(i).toElement();
 			if (groupElement.isNull())
 				continue;
-			doAddToGroup(Core::instance()->groupManager()->byUuid(groupElement.text()));
+			doAddToGroup(m_groupManager->byUuid(groupElement.text()));
 		}
 	}
 
-	setBuddyAvatar(Core::instance()->avatarManager()->byUuid(loadValue<QString>("Avatar")));
+	setBuddyAvatar(m_avatarManager->byUuid(loadValue<QString>("Avatar")));
 	Display = loadValue<QString>("Display");
 	FirstName = loadValue<QString>("FirstName");
 	LastName = loadValue<QString>("LastName");
@@ -283,7 +293,7 @@ void BuddyShared::aboutToBeRemoved()
 	Contacts.clear();
 	Groups.clear();
 
-	Core::instance()->avatarManager()->removeItem(*BuddyAvatar);
+	m_avatarManager->removeItem(*BuddyAvatar);
 	setBuddyAvatar(Avatar::null);
 }
 
@@ -541,7 +551,7 @@ quint16 BuddyShared::unreadMessagesCount()
 std::shared_ptr<StoragePoint> BuddyShared::createStoragePoint()
 {
 	// TODO: fix this, it is only a workaround for an empty buddy on list
-	if (Core::instance()->myself()->buddy() == Buddy(this))
+	if (m_myself->buddy() == Buddy(this))
 		return {};
 	else
 		return Shared::createStoragePoint();

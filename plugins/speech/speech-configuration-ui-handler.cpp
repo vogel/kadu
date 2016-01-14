@@ -23,11 +23,11 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QSlider>
 
+#include "buddies/buddy-dummy-factory.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/core.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -55,6 +55,16 @@ SpeechConfigurationUiHandler::SpeechConfigurationUiHandler(QObject *parent) :
 
 SpeechConfigurationUiHandler::~SpeechConfigurationUiHandler()
 {
+}
+
+void SpeechConfigurationUiHandler::setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory)
+{
+	m_buddyDummyFactory = buddyDummyFactory;
+}
+
+void SpeechConfigurationUiHandler::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void SpeechConfigurationUiHandler::setSpeech(Speech *speech)
@@ -105,8 +115,8 @@ void SpeechConfigurationUiHandler::testSpeech()
 
 	QString program = programSelectFile->file();
 	// TODO: mo�e u�ywa� jakiego� normalnego tekstu ?
-	QString formatM = Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Male");
-	QString formatF = Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Female");
+	QString formatM = m_configuration->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Male");
+	QString formatF = m_configuration->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Female");
 	QString device = dspDeviceLineEdit->text();
 	bool klatt = klattSyntCheckBox->isChecked();
 	bool mel = melodyCheckBox->isChecked();
@@ -121,7 +131,7 @@ void SpeechConfigurationUiHandler::testSpeech()
 	kdebugm(KDEBUG_INFO, "%d %d %d\n", frequency, tempo, baseFrequency);
 
 	QString text;
-	text = Parser::parse(formatF, Talkable(Buddy::dummy()), ParserEscape::HtmlEscape);
+	text = Parser::parse(formatF, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
 
 	m_speech->say(text.contains("%1") ? text.arg("Test") : QString("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
 

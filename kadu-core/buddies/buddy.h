@@ -48,18 +48,14 @@ class KADUAPI Buddy : public SharedBase<BuddyShared>
 {
 	KaduSharedBaseClass(Buddy)
 
+	friend class BuddyDummyFactory;
 	friend class ContactShared;
-	// only allow ContactShared to access these methods
+	// only allow ContactShared and BuddyDummyFactory to access these methods
 	void addContact(Contact contact);
 	void removeContact(Contact contact) const;
 
 public:
-	static Buddy create();
-	static Buddy loadStubFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint);
-	static Buddy loadFromStorage(const std::shared_ptr<StoragePoint> &buddyStoragePoint);
 	static Buddy null;
-
-	static Buddy dummy();
 
 	Buddy();
 	Buddy(BuddyShared *data);

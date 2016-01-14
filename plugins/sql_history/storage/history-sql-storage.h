@@ -34,6 +34,7 @@ class QSqlError;
 
 class BuddyChatManager;
 class BuddyManager;
+class BuddyStorage;
 class FormattedStringFactory;
 class HistoryQuery;
 class InjectedFactory;
@@ -55,6 +56,7 @@ class HistorySqlStorage : public HistoryStorage
 
 	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<BuddyManager> m_buddyManager;
+	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<StatusTypeManager> m_statusTypeManager;
@@ -115,6 +117,7 @@ class HistorySqlStorage : public HistoryStorage
 private slots:
 	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);

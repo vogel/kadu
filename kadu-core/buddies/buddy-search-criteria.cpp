@@ -21,11 +21,13 @@
  */
 
 #include "accounts/account.h"
+#include "buddies/buddy-storage.h"
+#include "core/core.h"
 
 #include "buddy-search-criteria.h"
 
 BuddySearchCriteria::BuddySearchCriteria() :
-		SearchBuddy(Buddy::create()), BirthYearTo(), Active(false), IgnoreResults(false)
+		SearchBuddy(Core::instance()->buddyStorage()->create()), BirthYearTo(), Active(false), IgnoreResults(false)
 {
 }
 
@@ -85,7 +87,7 @@ void BuddySearchCriteria::reqActive()
 
 void BuddySearchCriteria::clearData()
 {
-	SearchBuddy = Buddy::create();
+	SearchBuddy = Core::instance()->buddyStorage()->create();
 	BirthYearFrom.clear();
 	BirthYearTo.clear();
 	Active = false;

@@ -25,6 +25,7 @@
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy-storage.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "contacts/contact-manager.h"
@@ -213,7 +214,7 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 		QDomElement contactElement = contactsNode.firstChildElement("Contact");
 		for (; !contactElement.isNull(); contactElement = contactElement.nextSiblingElement("Contact"))
 		{
-			Buddy buddy = Buddy::create();
+			Buddy buddy = Core::instance()->buddyStorage()->create();
 
 			buddy.setFirstName(contactElement.firstChildElement("FirstName").text());
 			buddy.setLastName(contactElement.firstChildElement("LastName").text());
@@ -264,7 +265,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 	if (secCount < 5)
 		return Buddy::null;
 
-	Buddy buddy = Buddy::create();
+	Buddy buddy = Core::instance()->buddyStorage()->create();
 
 	buddy.setFirstName(sections[0]);
 	buddy.setLastName(sections[1]);
@@ -339,7 +340,7 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 	if (secCount < 6)
 		return Buddy::null;
 
-	Buddy buddy = Buddy::create();
+	Buddy buddy = Core::instance()->buddyStorage()->create();
 
 	buddy.setFirstName(sections[0]);
 	buddy.setLastName(sections[1]);
