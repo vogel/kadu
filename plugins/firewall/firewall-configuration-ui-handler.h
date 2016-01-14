@@ -17,34 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FIREWALL_CONFIGURATION_UI_HANDLER_H
-#define FIREWALL_CONFIGURATION_UI_HANDLER_H
+#pragma once
 
 #include "configuration/gui/configuration-ui-handler.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyManager;
+class Configuration;
+class MainConfigurationWindow;
 
 class QLineEdit;
 class QListWidget;
 class QListWidgetItem;
 class QTextEdit;
 
-class MainConfigurationWindow;
-
 class FirewallConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
-
-	QListWidget *AllList;
-	QListWidget *SecureList;
-	QTextEdit *QuestionEdit;
-	QLineEdit *AnswerEdit;
-
-private slots:
-	void left(QListWidgetItem *);
-	void right(QListWidgetItem *);
-	void allLeft();
-	void allRight();
-
-	void configurationApplied();
 
 public:
 	Q_INVOKABLE explicit FirewallConfigurationUiHandler(QObject *parent = nullptr);
@@ -54,6 +46,24 @@ public:
 	virtual void mainConfigurationWindowDestroyed() override;
 	virtual void mainConfigurationWindowApplied() override;
 
-};
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<Configuration> m_configuration;
 
-#endif // FIREWALL_CONFIGURATION_UI_HANDLER_H
+	QListWidget *AllList;
+	QListWidget *SecureList;
+	QTextEdit *QuestionEdit;
+	QLineEdit *AnswerEdit;
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+
+	void left(QListWidgetItem *);
+	void right(QListWidgetItem *);
+	void allLeft();
+	void allRight();
+
+	void configurationApplied();
+
+};

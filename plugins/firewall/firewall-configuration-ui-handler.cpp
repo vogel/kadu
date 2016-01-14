@@ -19,6 +19,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "firewall-configuration-ui-handler.h"
+
+#include "firewall-message-filter.h"
+
+#include "buddies/buddy-manager.h"
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/paths-provider.h"
+#include "debug.h"
+
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -26,22 +40,6 @@
 #include <QtWidgets/QListWidgetItem>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
-
-#include "buddies/buddy-manager.h"
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/core.h"
-#include "core/core.h"
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
-#include "debug.h"
-
-#include "firewall-message-filter.h"
-
-#include "firewall-configuration-ui-handler.h"
 
 FirewallConfigurationUiHandler::FirewallConfigurationUiHandler(QObject *parent) :
 		QObject{parent},
@@ -54,6 +52,16 @@ FirewallConfigurationUiHandler::FirewallConfigurationUiHandler(QObject *parent) 
 
 FirewallConfigurationUiHandler::~FirewallConfigurationUiHandler()
 {
+}
+
+void FirewallConfigurationUiHandler::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void FirewallConfigurationUiHandler::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void FirewallConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -86,7 +94,7 @@ void FirewallConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigur
 
 	secureGroupBox->addWidgets(0, secure);
 
-	foreach (const Buddy &buddy, Core::instance()->buddyManager()->items())
+	for (auto const &buddy : m_buddyManager->items())
 		if (!buddy.isAnonymous())
 		{
 			if (!buddy.property("firewall-secured-sending:FirewallSecuredSending", false).toBool())
@@ -112,11 +120,11 @@ Automatic question GUI
 
 	QuestionEdit = new QTextEdit(question);
 	QuestionEdit->setAcceptRichText(false);
-	QuestionEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "question"));
+	QuestionEdit->setText(m_configuration->deprecatedApi()->readEntry("Firewall", "question"));
 	QuestionEdit->setToolTip(tr("This message will be send to unknown person."));
 
 	AnswerEdit = new QLineEdit(question);
-	AnswerEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "answer"));
+	AnswerEdit->setText(m_configuration->deprecatedApi()->readEntry("Firewall", "answer"));
 	AnswerEdit->setToolTip(tr("Right answer for question above - you can use regexp."));
 	QLabel *label = new QLabel(tr("Answer:"), question);
 	label->setToolTip(tr("Right answer for question above - you can use regexp."));
@@ -213,7 +221,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 	int count = SecureList->count();
 	for (int i = 0; i < count; i++)
 	{
-		Buddy buddy = Core::instance()->buddyManager()->byDisplay(SecureList->item(i)->text(), ActionReturnNull);
+		Buddy buddy = m_buddyManager->byDisplay(SecureList->item(i)->text(), ActionReturnNull);
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
@@ -223,15 +231,15 @@ void FirewallConfigurationUiHandler::configurationApplied()
 	count = AllList->count();
 	for (int i = 0; i < count; i++)
 	{
-		Buddy buddy = Core::instance()->buddyManager()->byDisplay(AllList->item(i)->text(), ActionReturnNull);
+		Buddy buddy = m_buddyManager->byDisplay(AllList->item(i)->text(), ActionReturnNull);
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
 		buddy.removeProperty("firewall-secured-sending:FirewallSecuredSending");
 	}
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("Firewall", "question", QuestionEdit->toPlainText());
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("Firewall", "answer", AnswerEdit->text());
+	m_configuration->deprecatedApi()->writeEntry("Firewall", "question", QuestionEdit->toPlainText());
+	m_configuration->deprecatedApi()->writeEntry("Firewall", "answer", AnswerEdit->text());
 }
 
 #include "moc_firewall-configuration-ui-handler.cpp"
