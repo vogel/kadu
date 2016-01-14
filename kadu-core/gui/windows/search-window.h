@@ -38,6 +38,7 @@ class BuddyManager;
 class BuddyPreferredManager;
 class ChatWidgetManager;
 class ContactManager;
+class InjectedFactory;
 class SearchService;
 class SearchWindowActions;
 
@@ -83,6 +84,7 @@ private:
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ContactManager> m_contactManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<SearchWindowActions> m_searchWindowActions;
 
 	Buddy m_buddy;
@@ -122,6 +124,7 @@ private slots:
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setSearchWindowActions(SearchWindowActions *searchWindowActions);
 	INJEQT_INIT void init();
 

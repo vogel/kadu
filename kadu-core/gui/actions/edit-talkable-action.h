@@ -28,9 +28,12 @@
 #include <injeqt/injeqt.h>
 
 class BuddyDataWindowRepository;
-class ChatDataWindowRepository;
 class Buddy;
+class ChatDataWindowRepository;
+class ChatTypeManager;
 class Chat;
+class InjectedFactory;
+class Myself;
 
 class EditTalkableAction : public ActionDescription
 {
@@ -38,6 +41,9 @@ class EditTalkableAction : public ActionDescription
 
 	QPointer<BuddyDataWindowRepository> m_buddyDataWindowRepository;
 	QPointer<ChatDataWindowRepository> m_chatDataWindowRepository;
+	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<Myself> m_myself;
 
 	int actionRole(ActionContext *context) const;
 	Chat actionChat(ActionContext *context) const;
@@ -55,6 +61,9 @@ class EditTalkableAction : public ActionDescription
 private slots:
 	INJEQT_SET void setBuddyDataWindowRepository(BuddyDataWindowRepository *buddyDataWindowRepository);
 	INJEQT_SET void setChatDataWindowRepository(ChatDataWindowRepository *chatDataWindowRepository);
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMyself(Myself *myself);
 
 protected:
 	virtual void actionInstanceCreated(Action *action);

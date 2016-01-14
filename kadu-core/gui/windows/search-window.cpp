@@ -23,19 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QKeyEvent>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QRadioButton>
-#include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QTreeWidgetItem>
+#include "search-window.h"
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
@@ -50,7 +38,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/toolbar.h"
@@ -66,7 +54,19 @@
 #include "qt/long-validator.h"
 #include "status/status-container.h"
 
-#include "search-window.h"
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QRadioButton>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QTreeWidgetItem>
 
 void SearchWindow::createDefaultToolbars(Configuration *configuration, const QDomElement &toolbarsConfig)
 {
@@ -122,6 +122,11 @@ void SearchWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 void SearchWindow::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
+}
+
+void SearchWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void SearchWindow::setSearchWindowActions(SearchWindowActions *searchWindowActions)
@@ -362,7 +367,7 @@ ContactSet SearchWindow::selectedContacts() const
 void SearchWindow::addFound()
 {
 	foreach (const Buddy &buddy, selectedContacts().toBuddySet())
-		(new AddBuddyWindow(Core::instance()->kaduWindow(), buddy))->show();
+		(m_injectedFactory->makeInjected<AddBuddyWindow>(Core::instance()->kaduWindow(), buddy))->show();
 }
 
 void SearchWindow::chatFound()

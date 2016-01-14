@@ -24,16 +24,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QSortFilterProxyModel>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
+#include "add-buddy-window.h"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -50,7 +41,6 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/scoped-updates-disabler.h"
@@ -69,7 +59,16 @@
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
 #include "url-handlers/url-handler-manager.h"
 
-#include "add-buddy-window.h"
+#include <QtCore/QSortFilterProxyModel>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
 
 AddBuddyWindow::AddBuddyWindow(QWidget *parent, const Buddy &buddy, bool forceBuddyAccount) :
 		QDialog(parent, Qt::Window), DesktopAwareObject(this), UserNameLabel(0), UserNameEdit(0),
@@ -78,13 +77,56 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent, const Buddy &buddy, bool forceBu
 		AllowToSeeMeCheck(0), ErrorLabel(0), AddContactButton(0), MyBuddy(buddy),
 		ForceBuddyAccount(forceBuddyAccount)
 {
+}
+
+AddBuddyWindow::~AddBuddyWindow()
+{
+}
+
+void AddBuddyWindow::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void AddBuddyWindow::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void AddBuddyWindow::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void AddBuddyWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void AddBuddyWindow::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void AddBuddyWindow::setRoster(Roster *roster)
+{
+	m_roster = roster;
+}
+
+void AddBuddyWindow::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
+{
+	m_urlHandlerManager = urlHandlerManager;
+}
+
+void AddBuddyWindow::init()
+{
 	setWindowRole("kadu-add-buddy");
 	setWindowTitle(tr("Add buddy"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	if (MyBuddy)
 	{
-		MyAccount = Core::instance()->buddyPreferredManager()->preferredAccount(MyBuddy);
+		MyAccount = m_buddyPreferredManager->preferredAccount(MyBuddy);
 		if (!MyAccount)
 			MyBuddy = Buddy::null;
 	}
@@ -94,10 +136,6 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent, const Buddy &buddy, bool forceBu
 		addFakeAccountsToComboBox();
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AddBuddyWindowGeometry"), QRect(0, 50, 425, 430), this);
-}
-
-AddBuddyWindow::~AddBuddyWindow()
-{
 }
 
 void AddBuddyWindow::createGui()
@@ -110,7 +148,7 @@ void AddBuddyWindow::createGui()
 
 	Layout = new QFormLayout(mainWidget);
 
-	AccountCombo = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(MyBuddy.isNull(), AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo = m_injectedFactory->makeInjected<AccountsComboBox>(MyBuddy.isNull(), AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 	AccountCombo->addFilter(new WriteableContactsListFilter(AccountCombo));
 
@@ -177,12 +215,12 @@ void AddBuddyWindow::createGui()
 	SelectBuddy = new SelectTalkableComboBox(this);
 	SelectBuddy->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectBuddy));
 
-	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(SelectBuddy);
+	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(SelectBuddy);
 	new BuddyManagerAdapter(buddyListModel);
 	SelectBuddy->setBaseModel(buddyListModel);
 	SelectBuddy->setEnabled(false);
 	SelectBuddy->setVisible(false);
-	SelectBuddy->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself()->buddy(), SelectBuddy));
+	SelectBuddy->addFilter(new ExcludeBuddyTalkableFilter(m_myself->buddy(), SelectBuddy));
 	Layout->addRow(tr("Merge with:"), SelectBuddy);
 
 	MergeWidgets.append(SelectBuddy);
@@ -353,7 +391,7 @@ void AddBuddyWindow::validateData()
 		return;
 	}
 
-	Contact contact = Core::instance()->contactManager()->byId(account, UserNameEdit->text(), ActionReturnNull);
+	Contact contact = m_contactManager->byId(account, UserNameEdit->text(), ActionReturnNull);
 	if (!contact.isAnonymous())
 	{
 		displayErrorMessage(tr("This contact is already available as <i>%1</i>").arg(contact.display(true)));
@@ -377,7 +415,7 @@ void AddBuddyWindow::validateData()
 		}
 		else
 		{
-			Buddy existingBuddy = Core::instance()->buddyManager()->byDisplay(DisplayNameEdit->text(), ActionReturnNull);
+			Buddy existingBuddy = m_buddyManager->byDisplay(DisplayNameEdit->text(), ActionReturnNull);
 			if (existingBuddy && existingBuddy != MyBuddy)
 			{
 				displayErrorMessage(tr("Visible name is already used for another buddy"));
@@ -419,7 +457,7 @@ void AddBuddyWindow::validateEmailData()
 {
 	Q_ASSERT(!MergeBuddy->isChecked());
 
-	if (!Core::instance()->urlHandlerManager()->mailRegExp().exactMatch(UserNameEdit->text()))
+	if (!m_urlHandlerManager->mailRegExp().exactMatch(UserNameEdit->text()))
 	{
 		if (!UserNameEdit->text().isEmpty())
 			displayErrorMessage(tr("Entered e-mail is invalid"));
@@ -496,7 +534,7 @@ bool AddBuddyWindow::addContact()
 		else
 			buddy = MyBuddy;
 
-		Core::instance()->buddyManager()->addItem(buddy);
+		m_buddyManager->addItem(buddy);
 
 		buddy.setAnonymous(false);
 		buddy.setOfflineTo(!AllowToSeeMeCheck->isChecked());
@@ -516,13 +554,13 @@ bool AddBuddyWindow::addContact()
 			? ActionCreateAndAdd
 			: ActionReturnNull;
 
-	Contact contact = Core::instance()->contactManager()->byId(account, UserNameEdit->text(), action);
+	Contact contact = m_contactManager->byId(account, UserNameEdit->text(), action);
 
 	if (contact)
 	{
 		contact.setOwnerBuddy(buddy);
 
-		Core::instance()->roster()->addContact(contact);
+		m_roster->addContact(contact);
 
 		if (!buddy.isOfflineTo())
 			sendAuthorization(contact);
@@ -543,7 +581,7 @@ bool AddBuddyWindow::addMobile()
 	buddy.setDisplay(DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text());
 	buddy.addToGroup(GroupCombo->currentGroup());
 
-	Core::instance()->buddyManager()->addItem(buddy);
+	m_buddyManager->addItem(buddy);
 
 	return true;
 }
@@ -557,7 +595,7 @@ bool AddBuddyWindow::addEmail()
 	buddy.setDisplay(DisplayNameEdit->text().isEmpty() ? UserNameEdit->text() : DisplayNameEdit->text());
 	buddy.addToGroup(GroupCombo->currentGroup());
 
-	Core::instance()->buddyManager()->addItem(buddy);
+	m_buddyManager->addItem(buddy);
 
 	return true;
 }

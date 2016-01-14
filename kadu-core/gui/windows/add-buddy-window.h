@@ -22,15 +22,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADD_BUDDY_WINDOW_H
-#define ADD_BUDDY_WINDOW_H
-
-#include <QtWidgets/QDialog>
+#pragma once
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"
+
+#include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
+
+class AccountsComboBox;
+class BuddyManager;
+class BuddyPreferredManager;
+class ContactManager;
+class GroupsComboBox;
+class InjectedFactory;
+class Myself;
+class Roster;
+class SelectTalkableComboBox;
+class UrlHandlerManager;
 
 class QCheckBox;
 class QFormLayout;
@@ -38,13 +49,27 @@ class QLabel;
 class QLineEdit;
 class QRegExpValidator;
 
-class AccountsComboBox;
-class GroupsComboBox;
-class SelectTalkableComboBox;
-
 class KADUAPI AddBuddyWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
+
+public:
+	explicit AddBuddyWindow(QWidget *parent = nullptr, const Buddy &buddy = Buddy::null, bool forceBuddyAccount = false);
+	virtual ~AddBuddyWindow();
+
+	void setGroup(Group group);
+
+public slots:
+	virtual void accept();
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<Myself> m_myself;
+	QPointer<Roster> m_roster;
+	QPointer<UrlHandlerManager> m_urlHandlerManager;
 
 	QFormLayout *Layout;
 
@@ -93,20 +118,18 @@ class KADUAPI AddBuddyWindow : public QDialog, DesktopAwareObject
 	void sendAuthorization(const Contact &contact);
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setRoster(Roster *roster);
+	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
+	INJEQT_INIT void init();
+
 	void accountChanged();
 	void updateGui();
 	void setAddContactEnabled();
 	void mergeToggled(bool toggled);
 
-public:
-	explicit AddBuddyWindow(QWidget *parent = 0, const Buddy &buddy = Buddy::null, bool forceBuddyAccount = false);
-	virtual ~AddBuddyWindow();
-
-	void setGroup(Group group);
-
-public slots:
-	virtual void accept();
-
 };
-
-#endif // ADD_BUDDY_WINDOW_H

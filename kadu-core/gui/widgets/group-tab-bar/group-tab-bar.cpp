@@ -18,18 +18,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QMimeData>
-#include <QtGui/QDragEnterEvent>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QInputDialog>
-#include <QtWidgets/QMenu>
+#include "group-filter-tab-data.h"
+#include "group-tab-bar.h"
 
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "chat/chat-list-mime-data-helper.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-edit-window.h"
 #include "gui/windows/kadu-dialog.h"
@@ -37,11 +34,13 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "talkable/filter/group-filter.h"
-
 #include "debug.h"
 
-#include "group-filter-tab-data.h"
-#include "group-tab-bar.h"
+#include <QtCore/QMimeData>
+#include <QtGui/QDragEnterEvent>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QMenu>
 
 GroupTabBar::GroupTabBar(QWidget *parent) :
 		QTabBar(parent)
@@ -62,9 +61,19 @@ GroupTabBar::~GroupTabBar()
 {
 }
 
+void GroupTabBar::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void GroupTabBar::setGroupManager(GroupManager *groupManager)
 {
 	m_groupManager = groupManager;
+}
+
+void GroupTabBar::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void GroupTabBar::init()
@@ -87,18 +96,18 @@ void GroupTabBar::setInitialConfiguration(GroupTabBarConfiguration configuration
 
 void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)
 {
-	Configuration = configuration;
+	m_groupTabBarConfiguration = configuration;
 
-	setVisible(Configuration.displayGroupTabs());
+	setVisible(m_groupTabBarConfiguration.displayGroupTabs());
 
-	if (Configuration.showGroupTabEverybody())
+	if (m_groupTabBarConfiguration.showGroupTabEverybody())
 		insertGroupFilter(0, GroupFilter(GroupFilterEverybody));
 	else
 		removeGroupFilter(GroupFilter(GroupFilterEverybody));
 
 	updateUngrouppedTab();
 
-	if (Configuration.displayGroupTabs())
+	if (m_groupTabBarConfiguration.displayGroupTabs())
 	{
 		if (currentIndex() == configuration.currentGroupTab())
 			currentChangedSlot(configuration.currentGroupTab());
@@ -107,8 +116,8 @@ void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)
 	}
 	else
 	{
-		CurrentGroupFilter = GroupFilter{GroupFilterEverybody};
-		emit currentGroupFilterChanged(CurrentGroupFilter);
+		m_groupFilter = GroupFilter{GroupFilterEverybody};
+		emit currentGroupFilterChanged(m_groupFilter);
 	}
 }
 
@@ -122,15 +131,15 @@ void GroupTabBar::updateUngrouppedTab()
 
 bool GroupTabBar::shouldShowUngrouppedTab() const
 {
-	return Configuration.alwaysShowGroupTabUngroupped()
+	return m_groupTabBarConfiguration.alwaysShowGroupTabUngroupped()
 			? true
-			: !Configuration.showGroupTabEverybody();
+			: !m_groupTabBarConfiguration.showGroupTabEverybody();
 }
 
 GroupTabBarConfiguration GroupTabBar::configuration()
 {
-	Configuration.setGroupFilters(groupFilters()); // update only if needed
-	return Configuration;
+	m_groupTabBarConfiguration.setGroupFilters(groupFilters()); // update only if needed
+	return m_groupTabBarConfiguration;
 }
 
 Group GroupTabBar::groupAt(int index) const
@@ -140,7 +149,7 @@ Group GroupTabBar::groupAt(int index) const
 
 GroupFilter GroupTabBar::groupFilter() const
 {
-	if (Configuration.displayGroupTabs())
+	if (m_groupTabBarConfiguration.displayGroupTabs())
 		return groupFilterAt(currentIndex());
 	else
 		return GroupFilter{GroupFilterEverybody};
@@ -164,13 +173,13 @@ QVector<GroupFilter> GroupTabBar::groupFilters() const
 
 void GroupTabBar::currentChangedSlot(int index)
 {
-	Configuration.setCurrentGroupTab(index);
-	if (Configuration.displayGroupTabs())
-		CurrentGroupFilter = groupFilterAt(index);
+	m_groupTabBarConfiguration.setCurrentGroupTab(index);
+	if (m_groupTabBarConfiguration.displayGroupTabs())
+		m_groupFilter = groupFilterAt(index);
 	else
-		CurrentGroupFilter = GroupFilter{GroupFilterEverybody};
+		m_groupFilter = GroupFilter{GroupFilterEverybody};
 
-	emit currentGroupFilterChanged(CurrentGroupFilter);
+	emit currentGroupFilterChanged(m_groupFilter);
 
 }
 
@@ -292,7 +301,7 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 	if (clickedGroup)
 	{
 		QMenu menu;
-		if (CurrentGroupFilter.filterType() == GroupFilterRegular)
+		if (m_groupFilter.filterType() == GroupFilterRegular)
 			menu.addAction(tr("Move to group %1").arg(clickedGroup.name()), this, SLOT(moveToGroup()))->setData(clickedGroup);
 		menu.addAction(tr("Add to group %1").arg(clickedGroup.name()), this, SLOT(addToGroup()))->setData(clickedGroup);
 		menu.exec(QCursor::pos());
@@ -309,7 +318,7 @@ void GroupTabBar::addBuddy()
 	if (!action)
 		return;
 
-	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(Core::instance()->kaduWindow());
+	auto addBuddyWindow = m_injectedFactory->makeInjected<AddBuddyWindow>(Core::instance()->kaduWindow());
 	addBuddyWindow->setGroup(action->data().value<Group>());
 	addBuddyWindow->show();
 }
@@ -337,7 +346,7 @@ void GroupTabBar::deleteGroup()
 
 void GroupTabBar::createNewGroup()
 {
-	auto editWindow = new GroupEditWindow{m_groupManager, Core::instance()->configuration()->deprecatedApi(), Group::null, Core::instance()->kaduWindow()};
+	auto editWindow = new GroupEditWindow{m_groupManager, m_configuration->deprecatedApi(), Group::null, Core::instance()->kaduWindow()};
 	editWindow->show();
 }
 
@@ -351,7 +360,7 @@ void GroupTabBar::groupProperties()
 	if (!group)
 		return;
 
-	auto editWindow = new GroupEditWindow{m_groupManager, Core::instance()->configuration()->deprecatedApi(), group, Core::instance()->kaduWindow()};
+	auto editWindow = new GroupEditWindow{m_groupManager, m_configuration->deprecatedApi(), group, Core::instance()->kaduWindow()};
 	editWindow->show();
 }
 

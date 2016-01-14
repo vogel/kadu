@@ -24,6 +24,7 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
@@ -60,6 +61,21 @@ void EditTalkableAction::setBuddyDataWindowRepository(BuddyDataWindowRepository 
 void EditTalkableAction::setChatDataWindowRepository(ChatDataWindowRepository *chatDataWindowRepository)
 {
 	m_chatDataWindowRepository = chatDataWindowRepository;
+}
+
+void EditTalkableAction::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
+void EditTalkableAction::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void EditTalkableAction::setMyself(Myself *myself)
+{
+	m_myself = myself;
 }
 
 int EditTalkableAction::actionRole(ActionContext *context) const
@@ -110,7 +126,7 @@ void EditTalkableAction::updateChatActionState(Action *action)
 	setChatActionTitleAndIcon(action);
 
 	const Chat &chat = actionChat(action->context());
-	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(chat.type());
+	ChatType *chatType = m_chatTypeManager->chatType(chat.type());
 	action->setEnabled(chat && (!chatType || (chatType->name() != "Contact" && !chat.display().isEmpty())));
 }
 
@@ -122,7 +138,7 @@ void EditTalkableAction::updateBuddyActionState(Action *action)
 	if (!buddy)
 		return;
 
-	if (buddy == Core::instance()->myself()->buddy())
+	if (buddy == m_myself->buddy())
 		return;
 
 	action->setEnabled(true);
@@ -176,7 +192,7 @@ void EditTalkableAction::buddyActionTriggered(ActionContext *context)
 	if (!buddy)
 		return;
 	if (buddy.isAnonymous())
-		(new AddBuddyWindow(Core::instance()->kaduWindow(), buddy, true))->show();
+		(m_injectedFactory->makeInjected<AddBuddyWindow>(Core::instance()->kaduWindow(), buddy, true))->show();
 	else
 		m_buddyDataWindowRepository->showBuddyWindow(buddy);
 }

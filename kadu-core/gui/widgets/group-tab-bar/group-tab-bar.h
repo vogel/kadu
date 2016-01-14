@@ -30,16 +30,21 @@
 #include "gui/widgets/group-tab-bar/group-tab-bar-configuration.h"
 
 class Chat;
+class Configuration;
+class GroupManager;
 class GroupFilter;
+class InjectedFactory;
 
 class KADUAPI GroupTabBar : public QTabBar
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
 	QPointer<GroupManager> m_groupManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
-	GroupTabBarConfiguration Configuration;
-	GroupFilter CurrentGroupFilter;
+	GroupTabBarConfiguration m_groupTabBarConfiguration;
+	GroupFilter m_groupFilter;
 
 	// for dnd support
 	BuddyList DNDBuddies;
@@ -54,7 +59,9 @@ class KADUAPI GroupTabBar : public QTabBar
 	bool shouldShowUngrouppedTab() const;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void addGroup(Group group);

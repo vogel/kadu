@@ -617,9 +617,9 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 	const Buddy &buddy = action->context()->buddies().toBuddy();
 
 	if (buddy.isAnonymous())
-		(new AddBuddyWindow(action->parentWidget(), buddy, true))->show();
+		(Core::instance()->injectedFactory()->makeInjected<AddBuddyWindow>(action->parentWidget(), buddy, true))->show();
 	else
-		(new AddBuddyWindow(action->parentWidget()))->show();
+		(Core::instance()->injectedFactory()->makeInjected<AddBuddyWindow>(action->parentWidget()))->show();
 
 	kdebugf2();
 }
