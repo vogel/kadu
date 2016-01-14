@@ -20,10 +20,11 @@
 
 #pragma once
 
-#include <QtCore/QPointer>
-
 #include "misc/memory.h"
 #include "roster/roster-service.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 enum class JabberRosterState;
 
@@ -31,8 +32,11 @@ class JabberProtocol;
 class JabberRosterExtension;
 class Jid;
 
+class BuddyManager;
 class Buddy;
+class ContactManager;
 class Contact;
+class GroupManager;
 
 class QXmppRosterEntry;
 class QXmppRosterManager;
@@ -40,6 +44,52 @@ class QXmppRosterManager;
 class JabberRosterService : public RosterService
 {
 	Q_OBJECT
+
+public:
+	explicit JabberRosterService(QXmppRosterManager *roster, JabberRosterExtension *rosterExtension, const QVector<Contact> &contacts, Protocol *protocol);
+	virtual ~JabberRosterService();
+
+    virtual RosterServiceTasks * tasks() const override;
+
+	JabberRosterState state() const { return State; }
+
+	void prepareRoster();
+
+signals:
+	/**
+	 * @short Signal emitted when roster is ready
+	 */
+	void rosterReady();
+
+protected:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return true if local update can be processed.
+	 * @return true if local update can be processed
+	 *
+	 * Local update can only be processed when roster is in StateInitialized. Derivered services can override this
+	 * method and add more conditions.
+	 */
+	bool canPerformLocalUpdate() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return true if remote update for given contact can be processed.
+	 * @param contact contact to check
+	 * @return true if remote update can be processed
+	 *
+	 * Remote update can only be processed for either anonymous contacts or contacts than can accept remote updates (not detached
+	 * and not currently synchronizing) when there is no task for given contact.
+	 */
+	bool canPerformRemoteUpdate(const Contact &contact) const;
+
+	void executeAllTasks();
+	void executeTask(const RosterTask &task);
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<GroupManager> m_groupManager;
 
 	QPointer<QXmppRosterManager> m_roster;
 	QPointer<JabberRosterExtension> m_rosterExtension;
@@ -92,6 +142,11 @@ class JabberRosterService : public RosterService
 	void setState(JabberRosterState state);
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_INIT void init();
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Slot called when protocol disconencted.
@@ -109,46 +164,5 @@ private slots:
 	void rosterCancelationReceived(const Jid &jid);
 
 	void rosterRequestFinished();
-
-protected:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return true if local update can be processed.
-	 * @return true if local update can be processed
-	 *
-	 * Local update can only be processed when roster is in StateInitialized. Derivered services can override this
-	 * method and add more conditions.
-	 */
-	bool canPerformLocalUpdate() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return true if remote update for given contact can be processed.
-	 * @param contact contact to check
-	 * @return true if remote update can be processed
-	 *
-	 * Remote update can only be processed for either anonymous contacts or contacts than can accept remote updates (not detached
-	 * and not currently synchronizing) when there is no task for given contact.
-	 */
-	bool canPerformRemoteUpdate(const Contact &contact) const;
-
-	void executeAllTasks();
-	void executeTask(const RosterTask &task);
-
-public:
-	explicit JabberRosterService(QXmppRosterManager *roster, JabberRosterExtension *rosterExtension, const QVector<Contact> &contacts, Protocol *protocol);
-	virtual ~JabberRosterService();
-
-    virtual RosterServiceTasks * tasks() const override;
-
-	JabberRosterState state() const { return State; }
-
-	void prepareRoster();
-
-signals:
-	/**
-	 * @short Signal emitted when roster is ready
-	 */
-	void rosterReady();
 
 };

@@ -29,7 +29,6 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "qxmpp/jabber-roster-extension.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
@@ -55,7 +54,30 @@ JabberRosterService::JabberRosterService(QXmppRosterManager *roster, JabberRoste
 		m_tasks{new RosterServiceTasks{this}},
 		State{JabberRosterState::NonInitialized}
 {
-	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
+}
+
+JabberRosterService::~JabberRosterService()
+{
+}
+
+void JabberRosterService::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void JabberRosterService::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void JabberRosterService::setGroupManager(GroupManager *groupManager)
+{
+	m_groupManager = groupManager;
+}
+
+void JabberRosterService::init()
+{
+	connect(protocol(), SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
 
 	connect(m_roster, SIGNAL(itemAdded(QString)), this, SLOT(remoteContactUpdated(QString)));
 	connect(m_roster, SIGNAL(itemChanged(QString)), this, SLOT(remoteContactUpdated(QString)));
@@ -66,10 +88,6 @@ JabberRosterService::JabberRosterService(QXmppRosterManager *roster, JabberRoste
 	connect(this, SIGNAL(contactAdded(Contact)), this, SLOT(contactAddedSlot(Contact)));
 	connect(this, SIGNAL(contactRemoved(Contact)), this, SLOT(contactRemovedSlot(Contact)));
 	connect(this, SIGNAL(contactUpdatedLocally(Contact)), this, SLOT(contactUpdatedSlot(Contact)));
-}
-
-JabberRosterService::~JabberRosterService()
-{
 }
 
 RosterServiceTasks * JabberRosterService::tasks() const
@@ -112,7 +130,7 @@ void JabberRosterService::ensureContactHasBuddyWithDisplay(const Contact &contac
 {
 	if (contact.isAnonymous()) // contact has anonymous buddy, we should search for other
 	{
-		contact.setOwnerBuddy(Core::instance()->buddyManager()->byDisplay(display, ActionCreateAndAdd));
+		contact.setOwnerBuddy(m_buddyManager->byDisplay(display, ActionCreateAndAdd));
 		contact.ownerBuddy().setAnonymous(false);
 	}
 	else
@@ -124,7 +142,7 @@ void JabberRosterService::remoteContactUpdated(const QString &bareJid)
 	if (JabberRosterState::NonInitialized == state())
 		return;
 
-	auto contact = Core::instance()->contactManager()->byId(account(), bareJid, ActionCreateAndAdd);
+	auto contact = m_contactManager->byId(account(), bareJid, ActionCreateAndAdd);
 	if (!contact || contact == account().accountContact())
 		return;
 
@@ -135,14 +153,14 @@ void JabberRosterService::remoteContactUpdated(const QString &bareJid)
 	contact.rosterEntry()->setSynchronizingFromRemote();
 	ensureContactHasBuddyWithDisplay(contact, itemDisplay(bareJid));
 
-	auto buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreateAndAdd);
-	Core::instance()->buddyManager()->addItem(buddy);
+	auto buddy = m_buddyManager->byContact(contact, ActionCreateAndAdd);
+	m_buddyManager->addItem(buddy);
 
 	auto item = m_roster->getRosterEntry(bareJid);
 
 	auto groups = QSet<Group>{};
 	for (auto &&group : item.groups())
-		groups << Core::instance()->groupManager()->byName(group);
+		groups << m_groupManager->byName(group);
 	buddy.setGroups(groups);
 
 	contact.rosterEntry()->setSynchronized();
@@ -164,13 +182,13 @@ void JabberRosterService::remoteContactDeleted(const QString &bareJid)
 	if (JabberRosterState::NonInitialized == state())
 		return;
 
-	auto contact = Core::instance()->contactManager()->byId(account(), bareJid, ActionReturnNull);
+	auto contact = m_contactManager->byId(account(), bareJid, ActionReturnNull);
 
 	auto rosterTaskType = m_tasks->taskType(contact.id());
 	if (RosterTaskType::None == rosterTaskType || RosterTaskType::Delete == rosterTaskType)
 	{
 		contact.rosterEntry()->setSynchronizingFromRemote();
-		Core::instance()->buddyManager()->clearOwnerAndRemoveEmptyBuddy(contact);
+		m_buddyManager->clearOwnerAndRemoveEmptyBuddy(contact);
 		contact.rosterEntry()->setSynchronized();
 
 		RosterService::removeContact(contact);
@@ -179,7 +197,7 @@ void JabberRosterService::remoteContactDeleted(const QString &bareJid)
 
 void JabberRosterService::rosterCancelationReceived(const Jid &jid)
 {
-	auto contact = Core::instance()->contactManager()->byId(account(), jid.bare(), ActionReturnNull);
+	auto contact = m_contactManager->byId(account(), jid.bare(), ActionReturnNull);
 	if (!contact)
 		return;
 
@@ -206,7 +224,7 @@ void JabberRosterService::deleteMarkedContacts()
 {
 	for (auto &&contact : m_markedForDelete)
 	{
-		Core::instance()->buddyManager()->clearOwnerAndRemoveEmptyBuddy(contact);
+		m_buddyManager->clearOwnerAndRemoveEmptyBuddy(contact);
 		contact.rosterEntry()->setSynchronized();
 	}
 }
@@ -276,7 +294,7 @@ void JabberRosterService::executeTask(const RosterTask& task)
 {
 	Q_ASSERT(JabberRosterState::Initialized == state());
 
-	auto contact = Core::instance()->contactManager()->byId(account(), task.id(), ActionReturnNull);
+	auto contact = m_contactManager->byId(account(), task.id(), ActionReturnNull);
 	auto taskType = contact ? task.type() : RosterTaskType::Delete;
 	if (contact)
 	{

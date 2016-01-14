@@ -154,7 +154,7 @@ void JabberProtocol::init()
 	m_personalInfoService->setVCardService(m_vcardService);
 
 	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
-	auto rosterService = new JabberRosterService{&m_client->rosterManager(), m_rosterExtension.get(), contacts, this};
+	auto rosterService = m_injectedFactory->makeInjected<JabberRosterService>(&m_client->rosterManager(), m_rosterExtension.get(), contacts, this);
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 
