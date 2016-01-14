@@ -47,7 +47,7 @@ class JabberEditAccountWidget : public AccountEditWidget
 	Q_OBJECT
 
 public:
-	explicit JabberEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
+	explicit JabberEditAccountWidget(Account account, QWidget *parent = 0);
 	virtual ~JabberEditAccountWidget();
 
 public slots:

@@ -90,7 +90,7 @@ AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool, QWidget 
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	auto result = Core::instance()->injectedFactory()->makeInjected<GaduEditAccountWidget>(m_gaduServersManager, Core::instance()->accountConfigurationWidgetFactoryRepository(), account, parent);
+	auto result = Core::instance()->injectedFactory()->makeInjected<GaduEditAccountWidget>(m_gaduServersManager, account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }

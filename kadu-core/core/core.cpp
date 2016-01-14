@@ -701,11 +701,6 @@ ClipboardHtmlTransformerService * Core::clipboardHtmlTransformerService() const
 	return m_injector.get<ClipboardHtmlTransformerService>();
 }
 
-AccountConfigurationWidgetFactoryRepository * Core::accountConfigurationWidgetFactoryRepository() const
-{
-	return m_injector.get<AccountConfigurationWidgetFactoryRepository>();
-}
-
 BuddyConfigurationWidgetFactoryRepository * Core::buddyConfigurationWidgetFactoryRepository() const
 {
 	return m_injector.get<BuddyConfigurationWidgetFactoryRepository>();

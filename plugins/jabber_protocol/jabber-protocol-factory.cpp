@@ -104,7 +104,7 @@ AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(bool showBut
 
 AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	JabberEditAccountWidget *result = Core::instance()->injectedFactory()->makeInjected<JabberEditAccountWidget>(Core::instance()->accountConfigurationWidgetFactoryRepository(), account, parent);
+	JabberEditAccountWidget *result = Core::instance()->injectedFactory()->makeInjected<JabberEditAccountWidget>(account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }

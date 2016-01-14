@@ -27,32 +27,37 @@
 #include "account-configuration-widget-factory.h"
 #include "account-edit-widget.h"
 
-AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
-		AccountConfigurationWidget(account, parent), MyAccountConfigurationWidgetFactoryRepository(accountConfigurationWidgetFactoryRepository),
+AccountEditWidget::AccountEditWidget(Account account, QWidget *parent) :
+		AccountConfigurationWidget(account, parent),
 		StateNotifier(new SimpleConfigurationValueStateNotifier(this)),
 		CompositeStateNotifier(new CompositeConfigurationValueStateNotifier(this))
 {
 	CompositeStateNotifier->addConfigurationValueStateNotifier(StateNotifier);
-
-	if (MyAccountConfigurationWidgetFactoryRepository)
-	{
-		connect(MyAccountConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(AccountConfigurationWidgetFactory*)),
-				this, SLOT(factoryRegistered(AccountConfigurationWidgetFactory*)));
-		connect(MyAccountConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(AccountConfigurationWidgetFactory*)),
-				this, SLOT(factoryUnregistered(AccountConfigurationWidgetFactory*)));
-
-		foreach (AccountConfigurationWidgetFactory *factory, MyAccountConfigurationWidgetFactoryRepository->factories())
-			factoryRegistered(factory);
-	}
 }
 
 AccountEditWidget::~AccountEditWidget()
 {
 }
 
+void AccountEditWidget::setAccountConfigurationWidgetFactoryRepository(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository)
+{
+	m_accountConfigurationWidgetFactoryRepository = accountConfigurationWidgetFactoryRepository;
+}
+
+void AccountEditWidget::init()
+{
+	connect(m_accountConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(AccountConfigurationWidgetFactory*)),
+			this, SLOT(factoryRegistered(AccountConfigurationWidgetFactory*)));
+	connect(m_accountConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(AccountConfigurationWidgetFactory*)),
+			this, SLOT(factoryUnregistered(AccountConfigurationWidgetFactory*)));
+
+	for (auto factory : m_accountConfigurationWidgetFactoryRepository->factories())
+		factoryRegistered(factory);
+}
+
 AccountConfigurationWidgetFactoryRepository * AccountEditWidget::accountConfigurationWidgetFactoryRepository() const
 {
-	return MyAccountConfigurationWidgetFactoryRepository;
+	return m_accountConfigurationWidgetFactoryRepository;
 }
 
 void AccountEditWidget::factoryRegistered(AccountConfigurationWidgetFactory *factory)

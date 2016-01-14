@@ -20,22 +20,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNT_EDIT_WIDGET_H
-#define ACCOUNT_EDIT_WIDGET_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "accounts/account.h"
 #include "gui/widgets/account-configuration-widget.h"
 #include "gui/widgets/modal-configuration-widget.h"
 #include "exports.h"
 
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
 class QTabWidget;
 class QPushButton;
 
-class AccountConfigurationWidget;
-class AccountConfigurationWidgetFactory;
 class AccountConfigurationWidgetFactoryRepository;
+class AccountConfigurationWidgetFactory;
+class AccountConfigurationWidget;
 class CompositeConfigurationValueStateNotifier;
 class SimpleConfigurationValueStateNotifier;
 
@@ -43,15 +43,21 @@ class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 {
 	Q_OBJECT
 
-	AccountConfigurationWidgetFactoryRepository *MyAccountConfigurationWidgetFactoryRepository;
-	QMap<AccountConfigurationWidgetFactory *, AccountConfigurationWidget *> AccountConfigurationWidgets;
-	SimpleConfigurationValueStateNotifier *StateNotifier;
-	CompositeConfigurationValueStateNotifier *CompositeStateNotifier;
+public:
+	explicit AccountEditWidget(Account account, QWidget *parent = 0);
+	virtual ~AccountEditWidget();
 
-private slots:
-	void factoryRegistered(AccountConfigurationWidgetFactory *factory);
-	void factoryUnregistered(AccountConfigurationWidgetFactory *factory);
-	virtual void removeAccount() = 0;
+	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+
+	QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
+
+public slots:
+	virtual void apply() = 0;
+	virtual void cancel() = 0;
+
+signals:
+	void widgetAdded(AccountConfigurationWidget *widget);
+	void widgetRemoved(AccountConfigurationWidget *widget);
 
 protected:
 	AccountConfigurationWidgetFactoryRepository * accountConfigurationWidgetFactoryRepository() const;
@@ -61,22 +67,19 @@ protected:
 
 	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
 
-public:
-	explicit AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository,
-							   Account account, QWidget *parent = 0);
-	virtual ~AccountEditWidget();
+private:
+	QPointer<AccountConfigurationWidgetFactoryRepository> m_accountConfigurationWidgetFactoryRepository;
 
-	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+	QMap<AccountConfigurationWidgetFactory *, AccountConfigurationWidget *> AccountConfigurationWidgets;
+	SimpleConfigurationValueStateNotifier *StateNotifier;
+	CompositeConfigurationValueStateNotifier *CompositeStateNotifier;
 
-	QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
+private slots:
+	INJEQT_SET void setAccountConfigurationWidgetFactoryRepository(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository);
+	INJEQT_INIT void init();
 
-signals:
-	void widgetAdded(AccountConfigurationWidget *widget);
-	void widgetRemoved(AccountConfigurationWidget *widget);
+	void factoryRegistered(AccountConfigurationWidgetFactory *factory);
+	void factoryUnregistered(AccountConfigurationWidgetFactory *factory);
+	virtual void removeAccount() = 0;
 
-public slots:
-	virtual void apply() = 0;
-	virtual void cancel() = 0;
 };
-
-#endif // ACCOUNT_EDIT_WIDGET_H

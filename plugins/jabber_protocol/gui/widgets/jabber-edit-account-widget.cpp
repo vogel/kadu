@@ -51,8 +51,8 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 
-JabberEditAccountWidget::JabberEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
-		AccountEditWidget(accountConfigurationWidgetFactoryRepository, account, parent)
+JabberEditAccountWidget::JabberEditAccountWidget(Account account, QWidget *parent) :
+		AccountEditWidget(account, parent)
 {
 }
 

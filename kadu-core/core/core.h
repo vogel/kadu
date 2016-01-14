@@ -44,7 +44,6 @@
 template<class T>
 class DefaultProvider;
 
-class AccountConfigurationWidgetFactoryRepository;
 class AccountStorage;
 class Actions;
 class Application;
@@ -188,7 +187,6 @@ public:
 	FormattedStringFactory * formattedStringFactory() const;
 	RawMessageTransformerService * rawMessageTransformerService() const;
 	ClipboardHtmlTransformerService * clipboardHtmlTransformerService() const;
-	AccountConfigurationWidgetFactoryRepository * accountConfigurationWidgetFactoryRepository() const;
 	BuddyConfigurationWidgetFactoryRepository * buddyConfigurationWidgetFactoryRepository() const;
 	ChatConfigurationWidgetFactoryRepository * chatConfigurationWidgetFactoryRepository() const;
 	ChatTopBarWidgetFactoryRepository * chatTopBarWidgetFactoryRepository() const;

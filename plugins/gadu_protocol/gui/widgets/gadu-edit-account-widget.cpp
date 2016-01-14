@@ -58,8 +58,8 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 
-GaduEditAccountWidget::GaduEditAccountWidget(GaduServersManager *gaduServersManager, AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
-		AccountEditWidget(accountConfigurationWidgetFactoryRepository, account, parent),
+GaduEditAccountWidget::GaduEditAccountWidget(GaduServersManager *gaduServersManager, Account account, QWidget *parent) :
+		AccountEditWidget(account, parent),
 		m_gaduServersManager{gaduServersManager}
 {
 }
