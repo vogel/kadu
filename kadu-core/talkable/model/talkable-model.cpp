@@ -34,7 +34,7 @@ TalkableModel::TalkableModel(QObject *parent) :
 	Chats = new ChatListModel(this);
 	new ChatManagerAdapter(Chats);
 	Buddies = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(this);
-	BuddiesAdapter = new BuddyManagerAdapter(Buddies);
+	BuddiesAdapter = Core::instance()->injectedFactory()->makeInjected<BuddyManagerAdapter>(Buddies);
 
 	QList<QAbstractItemModel *> models;
 	models.append(Chats);

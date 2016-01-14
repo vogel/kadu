@@ -107,7 +107,7 @@ void AddConferenceWindow::createGui()
 	ModelChain *chain = new ModelChain(this);
 
 	Model = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(chain);
-	new BuddyManagerAdapter(Model);
+	Core::instance()->injectedFactory()->makeInjected<BuddyManagerAdapter>(Model);
 
 	// will be removed when Qt 4.8 .is required
 	Model->setCheckable(true);

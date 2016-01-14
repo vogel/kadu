@@ -222,7 +222,7 @@ void AddBuddyWindow::createGui()
 	SelectBuddy->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectBuddy));
 
 	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(SelectBuddy);
-	new BuddyManagerAdapter(buddyListModel);
+	m_injectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
 	SelectBuddy->setBaseModel(buddyListModel);
 	SelectBuddy->setEnabled(false);
 	SelectBuddy->setVisible(false);

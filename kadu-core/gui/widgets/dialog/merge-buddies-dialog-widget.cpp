@@ -61,7 +61,7 @@ void MergeBuddiesDialogWidget::createGui()
 	SelectCombo->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectCombo));
 
 	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(SelectCombo);
-	new BuddyManagerAdapter(buddyListModel);
+	Core::instance()->injectedFactory()->makeInjected<BuddyManagerAdapter>(buddyListModel);
 	SelectCombo->setBaseModel(buddyListModel);
 	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(MyBuddy, SelectCombo));
 	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself()->buddy(), SelectCombo));

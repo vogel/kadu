@@ -114,7 +114,7 @@ void SmsDialog::createGui()
 	RecipientComboBox->addBeforeAction(new QAction(tr(" - Select recipient - "), RecipientComboBox));
 
 	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(RecipientComboBox);
-	new BuddyManagerAdapter(buddyListModel);
+	Core::instance()->injectedFactory()->makeInjected<BuddyManagerAdapter>(buddyListModel);
 
 	RecipientComboBox->setBaseModel(buddyListModel);
 	RecipientComboBox->addFilter(new MobileTalkableFilter(RecipientComboBox));

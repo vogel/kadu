@@ -57,10 +57,10 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(5);
 
-	ModelChain *chain = new ModelChain(this)
-;
+	ModelChain *chain = new ModelChain(this);
+
 	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(chain);
-	new BuddyManagerAdapter(buddyListModel);
+	Core::instance()->injectedFactory()->makeInjected<BuddyManagerAdapter>(buddyListModel);
 	chain->setBaseModel(buddyListModel);
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
 

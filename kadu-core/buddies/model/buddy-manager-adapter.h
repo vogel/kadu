@@ -18,15 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_MANAGER_ADAPTER_H
-#define BUDDY_MANAGER_ADAPTER_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "buddies/buddy.h"
 #include "exports.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class BuddyListModel;
+class BuddyManager;
 
 /**
  * @addtogroup Buddy
@@ -46,9 +48,27 @@ class KADUAPI BuddyManagerAdapter : public QObject
 {
 	Q_OBJECT
 
+public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
+	 * @param model model to adapt @link BuddiesManager @endlink to
+	 *
+	 * Given @link BuddyListModel @endlink will now have exactly the same data as @link BuddiesManager @endlink singleton.
+	 * Non-managable buddies can be added or removed from this model.
+	 */
+	explicit BuddyManagerAdapter(BuddyListModel *model);
+	virtual ~BuddyManagerAdapter();
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+
 	BuddyListModel *Model;
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_INIT void init();
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Slot called after a buddy is added to @link BuddiesManager @endlink singleton.
@@ -67,22 +87,8 @@ private slots:
 	 */
 	void buddyRemoved(const Buddy &buddy);
 
-public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
-	 * @param model model to adapt @link BuddiesManager @endlink to
-	 *
-	 * Given @link BuddyListModel @endlink will now have exactly the same data as @link BuddiesManager @endlink singleton.
-	 * Non-managable buddies can be added or removed from this model.
-	 */
-	explicit BuddyManagerAdapter(BuddyListModel *model);
-	virtual ~BuddyManagerAdapter();
-
 };
 
 /**
  * @}
  */
-
-#endif // BUDDY_MANAGER_ADAPTER_H
