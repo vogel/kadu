@@ -17,22 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_OPEN_CHAT_WITH_RUNNER_H
-#define JABBER_OPEN_CHAT_WITH_RUNNER_H
+#pragma once
 
 #include "accounts/account.h"
-
 #include "gui/windows/open-chat-with/open-chat-with-runner.h"
 
-class JabberOpenChatWithRunner : public OpenChatWithRunner
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyManager;
+class ContactManager;
+
+class JabberOpenChatWithRunner : public QObject, public OpenChatWithRunner
 {
-	Account ParentAccount;
+	Q_OBJECT
 
 public:
-	JabberOpenChatWithRunner(Account account);
-	virtual BuddyList matchingContacts(const QString &query);
-	void setAccount(Account account) { ParentAccount = account; }
+	explicit JabberOpenChatWithRunner(Account account, QObject *parent = nullptr);
+	virtual ~JabberOpenChatWithRunner();
+
+	virtual BuddyList matchingContacts(const QString &query) override;
+
+	void setAccount(Account account);
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ContactManager> m_contactManager;
+
+	Account m_account;
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 
 };
-
-#endif // JABBER_OPEN_CHAT_WITH_RUNNER_H

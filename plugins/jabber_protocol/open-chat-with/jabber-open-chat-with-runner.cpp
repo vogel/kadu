@@ -18,20 +18,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "jabber-open-chat-with-runner.h"
+
+#include "jabber-id-validator.h"
+
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "debug.h"
 
-#include "jabber-id-validator.h"
-
-#include "jabber-open-chat-with-runner.h"
-
-JabberOpenChatWithRunner::JabberOpenChatWithRunner(Account account) :
-		ParentAccount(account)
+JabberOpenChatWithRunner::JabberOpenChatWithRunner(Account account, QObject *parent) :
+		QObject{parent},
+		m_account{account}
 {
+}
+
+JabberOpenChatWithRunner::~JabberOpenChatWithRunner()
+{
+}
+
+void JabberOpenChatWithRunner::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void JabberOpenChatWithRunner::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
 }
 
 BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
@@ -45,9 +59,16 @@ BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 	if (validator.validate(queryCopy, pos) != QValidator::Acceptable)
 		return matchedContacts;
 
-	Contact contact = Core::instance()->contactManager()->byId(ParentAccount, query, ActionCreate);
-	Buddy buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreate);
+	auto contact = m_contactManager->byId(m_account, query, ActionCreate);
+	auto buddy = m_buddyManager->byContact(contact, ActionCreate);
 	matchedContacts.append(buddy);
 
 	return matchedContacts;
 }
+
+void JabberOpenChatWithRunner::setAccount(Account account)
+{
+	m_account = account;
+}
+
+#include "moc_jabber-open-chat-with-runner.cpp"

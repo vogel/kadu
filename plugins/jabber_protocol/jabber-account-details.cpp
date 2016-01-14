@@ -22,6 +22,7 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "misc/misc.h"
 #include "os/generic/system-info.h"
@@ -35,7 +36,7 @@ JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
 		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS), RequireDataTransferProxy{false},
 		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true)
 {
-	OpenChatRunner = new JabberOpenChatWithRunner(data);
+	OpenChatRunner = Core::instance()->injectedFactory()->makeInjected<JabberOpenChatWithRunner>(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
