@@ -86,6 +86,8 @@ void AccountManager::init()
 	// needed for QueuedConnection
 	qRegisterMetaType<Account>("Account");
 	m_configurationManager->registerStorableObject(this);
+
+	ensureLoaded();
 }
 
 void AccountManager::done()

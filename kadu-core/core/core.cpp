@@ -486,7 +486,6 @@ void Core::init()
 	notificationManager();
 	searchWindowActions(); // temporary, during full-injection-port
 
-	accountManager()->ensureLoaded();
 	buddyManager()->ensureLoaded();
 	contactManager()->ensureLoaded();
 	// Without that UnreadMessageRepository is loaded while filtering buddies list for the first time.
