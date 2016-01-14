@@ -94,10 +94,10 @@
 
 #include "kadu-window-actions.h"
 
-void hideNoMultilogonAccounts(Action *action)
+void hideNoMultilogonAccounts(AccountManager *accountManager, Action *action)
 {
-	bool hasMultilogonAccount = false;
-	foreach (const Account &account, Core::instance()->accountManager()->items())
+	auto hasMultilogonAccount = false;
+	for (auto const &account : accountManager->items())
 		if (account.protocolHandler() && account.protocolHandler()->multilogonService())
 		{
 			hasMultilogonAccount = true;
@@ -107,10 +107,10 @@ void hideNoMultilogonAccounts(Action *action)
 	action->setVisible(hasMultilogonAccount);
 }
 
-void hideNoSearchServiceAccounts(Action *action)
+void hideNoSearchServiceAccounts(AccountManager *accountManager, Action *action)
 {
-	bool hasSearchServiceAccount = false;
-	foreach (const Account &account, Core::instance()->accountManager()->items())
+	auto hasSearchServiceAccount = false;
+	for (auto const &account : accountManager->items())
 		if (account.protocolHandler() && account.protocolHandler()->searchService())
 		{
 			hasSearchServiceAccount = true;
@@ -237,7 +237,7 @@ void KaduWindowActions::init()
 		ActionDescription::TypeMainMenu, "showMultilogonsAction",
 		this, SLOT(showMultilogonsActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/multilogon"), tr("Multilogons"), false,
-		hideNoMultilogonAccounts
+		[this](Action *action){ return hideNoMultilogonAccounts(m_accountManager, action); }
 	);
 	connect(ShowMultilogons, SIGNAL(actionCreated(Action *)), this, SLOT(showMultilogonsActionCreated(Action *)));
 
@@ -268,7 +268,7 @@ void KaduWindowActions::init()
 		ActionDescription::TypeGlobal, "openSearchAction",
 		this, SLOT(openSearchActionActivated(QAction *, bool)),
 		KaduIcon("edit-find"), tr("Search for Buddy..."), false,
-		hideNoSearchServiceAccounts
+		[this](Action *action){ return hideNoSearchServiceAccounts(m_accountManager, action); }
 	);
 	connect(OpenSearch, SIGNAL(actionCreated(Action*)), this, SLOT(openSearchActionCreated(Action*)));
 
