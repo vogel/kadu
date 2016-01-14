@@ -68,6 +68,7 @@ private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 	void autoSendActionCreated(Action *action);
 	void clearChatActionCreated(Action *action);

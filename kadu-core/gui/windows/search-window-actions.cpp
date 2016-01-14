@@ -96,6 +96,16 @@ void SearchWindowActions::init()
 	connect(ChatFound, SIGNAL(actionCreated(Action*)), this, SLOT(actionsFoundActionCreated(Action*)));
 }
 
+void SearchWindowActions::done()
+{
+	delete FirstSearch;
+	delete NextResults;
+	delete StopSearch;
+	delete ClearResults;
+	delete AddFound;
+	delete ChatFound;
+}
+
 void SearchWindowActions::firstSearchActionCreated(Action *action)
 {
 	SearchWindow *search = qobject_cast<SearchWindow *>(action->parentWidget());

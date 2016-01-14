@@ -184,6 +184,9 @@ void NotificationService::done()
 
 	delete CurrentWindowNotifier;
 	CurrentWindowNotifier = nullptr;
+
+	delete notifyAboutUserActionDescription;
+	delete SilentModeActionDescription;
 }
 
 void NotificationService::createActionDescriptions()

@@ -262,6 +262,23 @@ void ChatWidgetActions::init()
 	LeaveChat = new LeaveChatAction(this);
 }
 
+void ChatWidgetActions::done()
+{
+	delete MoreActions;
+	delete AutoSend;
+	delete ClearChat;
+	delete InsertImage;
+	delete Bold;
+	delete Italic;
+	delete Underline;
+	delete Send;
+	delete BlockUser;
+	delete OpenChat;
+	delete OpenWith;
+	delete EditTalkable;
+	delete LeaveChat;
+}
+
 void ChatWidgetActions::configurationUpdated()
 {
 	autoSendActionCheck();

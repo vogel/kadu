@@ -54,6 +54,7 @@ private:
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 	void firstSearchActionCreated(Action *action);
 	void nextResultsActionCreated(Action *action);
