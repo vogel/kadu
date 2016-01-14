@@ -29,7 +29,6 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 
 #include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppMessage.h>
@@ -181,8 +180,8 @@ Message JabberRoomChatService::handleReceivedMessage(const QXmppMessage &xmppMes
 	if (jid.resource() == roomChat->nick()) // message from myself
 		return Message::null;
 
-	auto contact = Core::instance()->contactManager()->byId(account(), jid.full(), ActionCreateAndAdd);
-	auto buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreateAndAdd);
+	auto contact = m_contactManager->byId(account(), jid.full(), ActionCreateAndAdd);
+	auto buddy = m_buddyManager->byContact(contact, ActionCreateAndAdd);
 	buddy.setDisplay(jid.resource());
 	buddy.setTemporary(true);
 
