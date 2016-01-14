@@ -42,7 +42,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -130,9 +129,29 @@ HistorySqlStorage::~HistorySqlStorage()
 		Database.commit();
 }
 
+void HistorySqlStorage::setBuddyChatManager(BuddyChatManager *buddyChatManager)
+{
+	m_buddyChatManager = buddyChatManager;
+}
+
+void HistorySqlStorage::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
 void HistorySqlStorage::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	CurrentFormattedStringFactory = formattedStringFactory;
+	m_formattedStringFactory = formattedStringFactory;
+}
+
+void HistorySqlStorage::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void HistorySqlStorage::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
 }
 
 void HistorySqlStorage::ensureProgressWindowReady()
@@ -179,7 +198,7 @@ void HistorySqlStorage::databaseReady(bool ok)
 	Database.transaction();
 	initQueries();
 
-	AccountsMapping = Core::instance()->injectedFactory()->makeInjected<SqlAccountsMapping>(Database, this);
+	AccountsMapping = m_injectedFactory->makeInjected<SqlAccountsMapping>(Database, this);
 	ContactsMapping = new SqlContactsMapping(Database, AccountsMapping, this);
 	ChatsMapping = new SqlChatsMapping(Database, AccountsMapping, ContactsMapping, this);
 
@@ -367,7 +386,7 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 
 	QMutexLocker locker(&DatabaseMutex);
 
-	StatusTypeData statusTypeData = Core::instance()->statusTypeManager()->statusTypeData(status.type());
+	StatusTypeData statusTypeData = m_statusTypeManager->statusTypeData(status.type());
 
 	AppendStatusQuery.bindValue(":contact_id", ContactsMapping->idByContact(contact, true));
 	AppendStatusQuery.bindValue(":status", statusTypeData.name());
@@ -525,7 +544,7 @@ QVector<Talkable> HistorySqlStorage::syncStatusBuddies()
 		if (!contact)
 			continue;
 
-		Buddy buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreate);
+		Buddy buddy = m_buddyManager->byContact(contact, ActionCreate);
 		Q_ASSERT(buddy);
 
 		if (!result.contains(buddy))
@@ -627,7 +646,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			continue;
 
 		Chat chat = ChatsMapping->chatById(query.value(3).toInt());
-		Chat buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
+		Chat buddyChat = m_buddyChatManager->buddyChat(chat);
 		chat = buddyChat ? buddyChat : chat;
 
 		if (chat != lastChat || date != lastDate)
@@ -645,9 +664,9 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			// TODO: this should be done in different place
 
 			QString title;
-			if (CurrentFormattedStringFactory)
+			if (m_formattedStringFactory)
 			{
-				auto formattedString = CurrentFormattedStringFactory.data()->fromHtml(message);
+				auto formattedString = m_formattedStringFactory.data()->fromHtml(message);
 
 				FormattedStringPlainTextVisitor plainTextVisitor;
 				formattedString->accept(&plainTextVisitor);
@@ -738,7 +757,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 		Contact contact = ContactsMapping->contactById(query.value(2).toInt());
 		if (contact)
 		{
-			const Buddy &buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreate);
+			const Buddy &buddy = m_buddyManager->byContact(contact, ActionCreate);
 			result.setTalkable(Talkable(buddy));
 		}
 		else
@@ -1012,7 +1031,7 @@ QString HistorySqlStorage::stripAllScriptTags(const QString &string)
 
 SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 {
-	if (!CurrentFormattedStringFactory)
+	if (!m_formattedStringFactory)
 		return {};
 
 	auto messages = std::vector<Message>{};
@@ -1036,7 +1055,7 @@ SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		message.setMessageChat(ChatsMapping->chatById(query.value(0).toInt()));
 		message.setType(type);
 		message.setMessageSender(sender);
-		message.setContent(CurrentFormattedStringFactory.data()->fromHtml(stripAllScriptTags(query.value(2).toString())));
+		message.setContent(m_formattedStringFactory.data()->fromHtml(stripAllScriptTags(query.value(2).toString())));
 		message.setSendDate(query.value(3).toDateTime());
 		message.setReceiveDate(query.value(4).toDateTime());
 		if (outgoing)
@@ -1053,14 +1072,14 @@ SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 
 SortedMessages HistorySqlStorage::statusesFromQuery(const Contact &contact, QSqlQuery &query)
 {
-	if (!CurrentFormattedStringFactory)
+	if (!m_formattedStringFactory)
 		return {};
 
 	auto statuses = std::vector<Message>{};
 	while (query.next())
 	{
-		StatusType type = Core::instance()->statusTypeManager()->fromName(query.value(1).toString());
-		const StatusTypeData &typeData = Core::instance()->statusTypeManager()->statusTypeData(type);
+		StatusType type = m_statusTypeManager->fromName(query.value(1).toString());
+		const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(type);
 
 		auto message = Message::create();
 
@@ -1069,7 +1088,7 @@ SortedMessages HistorySqlStorage::statusesFromQuery(const Contact &contact, QSql
 				? Qt::escape(typeData.name())
 				: Qt::escape(QString("%1 with description: %2").arg(typeData.name()).arg(description));
 
-		message.setContent(CurrentFormattedStringFactory.data()->fromHtml(htmlContent));
+		message.setContent(m_formattedStringFactory.data()->fromHtml(htmlContent));
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
 		message.setReceiveDate(query.value(3).toDateTime());
@@ -1083,7 +1102,7 @@ SortedMessages HistorySqlStorage::statusesFromQuery(const Contact &contact, QSql
 
 SortedMessages HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 {
-	if (!CurrentFormattedStringFactory)
+	if (!m_formattedStringFactory)
 		return {};
 
 	auto messages = std::vector<Message>{};
@@ -1093,7 +1112,7 @@ SortedMessages HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());
-		message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(Qt::escape(query.value(0).toString())));
+		message.setContent(m_formattedStringFactory.data()->fromPlainText(Qt::escape(query.value(0).toString())));
 
 		messages.push_back(message);
 	}

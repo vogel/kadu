@@ -32,9 +32,13 @@
 
 class QSqlError;
 
+class BuddyChatManager;
+class BuddyManager;
 class FormattedStringFactory;
 class HistoryQuery;
+class InjectedFactory;
 class ProgressWindow;
+class StatusTypeManager;
 
 class SqlAccountsMapping;
 class SqlChatsMapping;
@@ -49,7 +53,11 @@ class HistorySqlStorage : public HistoryStorage
 {
 	Q_OBJECT
 
-	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<BuddyChatManager> m_buddyChatManager;
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	QThread *InitializerThread;
 	ProgressWindow *ImportProgressWindow;
@@ -105,7 +113,11 @@ class HistorySqlStorage : public HistoryStorage
 	SortedMessages syncSmses(const HistoryQuery &historyQuery);
 
 private slots:
+	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);
