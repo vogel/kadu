@@ -26,6 +26,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtWidgets/QToolButton>
+#include <functional>
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"
@@ -35,6 +36,8 @@ class QMenu;
 
 class Action;
 class ActionContext;
+
+using ActionBoolCallback = std::function<void(Action *)>;
 
 /**
  * @addtogroup Actions
@@ -77,9 +80,6 @@ class KADUAPI ActionDescription : public QObject, protected ConfigurationAwareOb
 	Q_OBJECT
 
 public:
-
-	// TODO 0.10.0: this sux, but will be better
-	typedef void (*ActionBoolCallback)(Action *);
 
 	enum ActionType {
 		TypeGlobal   = 0x0001, //!< actions with TypeGlobal type does not require access to user list or anything window-dependent

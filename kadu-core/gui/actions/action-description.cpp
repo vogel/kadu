@@ -146,7 +146,7 @@ void ActionDescription::actionInstanceCreated(Action *action)
 void ActionDescription::updateActionState(Action *action)
 {
 	if (EnableCallback)
-		(*EnableCallback)(action);
+		EnableCallback(action);
 }
 
 void ActionDescription::updateActionStates()
