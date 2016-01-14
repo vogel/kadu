@@ -35,7 +35,6 @@
 #include <QtWidgets/QApplication>
 #include <injeqt/injector.h>
 
-#include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
@@ -248,8 +247,6 @@ Core::~Core()
 	delete Window;
 	Window = 0;
 	delete hiddenParent;
-
-	triggerAllAccountsUnregistered(accountManager());
 }
 
 void Core::importPre10Configuration()
@@ -652,11 +649,6 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
-}
-
-AccountManager * Core::accountManager() const
-{
-	return m_injector.get<AccountManager>();
 }
 
 BuddyManager * Core::buddyManager() const

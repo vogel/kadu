@@ -45,7 +45,6 @@ template<class T>
 class DefaultProvider;
 
 class AccountConfigurationWidgetFactoryRepository;
-class AccountManager;
 class AccountStorage;
 class Actions;
 class Application;
@@ -179,7 +178,6 @@ public:
 
 	void activatePlugins();
 
-	AccountManager * accountManager() const;
 	BuddyManager * buddyManager() const;
 	MessageManager * messageManager() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;
