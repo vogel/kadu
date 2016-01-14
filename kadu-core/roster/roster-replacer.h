@@ -27,9 +27,12 @@
 #include <injeqt/injeqt.h>
 
 class Account;
-class Buddy;
 class BuddyList;
+class BuddyManager;
+class Buddy;
+class ContactManager;
 class Contact;
+class Myself;
 class Roster;
 
 /**
@@ -56,6 +59,9 @@ public:
 	QPair<QList<Contact>, QList<Contact>> replaceRoster(Account account, const BuddyList &buddies, bool ask);
 
 private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<Myself> m_myself;
 	QPointer<Roster> m_roster;
 
 	bool askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
@@ -65,6 +71,9 @@ private:
 	void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source);
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setRoster(Roster *roster);
 
 };

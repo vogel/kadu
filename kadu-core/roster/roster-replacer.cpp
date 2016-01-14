@@ -26,7 +26,6 @@
 #include "buddies/group.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
@@ -43,6 +42,21 @@ RosterReplacer::RosterReplacer(QObject *parent) :
 
 RosterReplacer::~RosterReplacer()
 {
+}
+
+void RosterReplacer::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void RosterReplacer::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void RosterReplacer::setMyself(Myself *myself)
+{
+	m_myself = myself;
 }
 
 void RosterReplacer::setRoster(Roster *roster)
@@ -99,7 +113,7 @@ QList<Contact> RosterReplacer::performAdds(const QMap<Buddy, Contact> &contactsT
 
 	for (QMap<Buddy, Contact>::const_iterator i = contactsToAdd.constBegin(); i != contactsToAdd.constEnd(); i++)
 	{
-		Core::instance()->contactManager()->addItem(i.value());
+		m_contactManager->addItem(i.value());
 		i.value().setOwnerBuddy(i.key());
 		resultContacts.append(i.value());
 
@@ -120,7 +134,7 @@ void RosterReplacer::performRenames(const QMap<Buddy, Contact> &contactsToRename
 	}
 
 	for (auto &&buddy : buddiesToRemove)
-		Core::instance()->buddyManager()->removeBuddyIfEmpty(buddy, true);
+		m_buddyManager->removeBuddyIfEmpty(buddy, true);
 }
 
 QPair<QList<Contact>, QList<Contact>> RosterReplacer::registerBuddies(Account account, const BuddyList &buddies, bool ask)
@@ -144,12 +158,12 @@ QPair<QList<Contact>, QList<Contact>> RosterReplacer::registerBuddies(Account ac
 				break;
 			}
 		if (!targetBuddy)
-			targetBuddy = Core::instance()->buddyManager()->byDisplay(buddy.display(), ActionCreate);
+			targetBuddy = m_buddyManager->byDisplay(buddy.display(), ActionCreate);
 		targetBuddy.setAnonymous(false);
 
 		for (auto &&contact : buddy.contacts(account))
 		{
-			Contact knownContact = Core::instance()->contactManager()->byId(account, contact.id(), ActionReturnNull);
+			Contact knownContact = m_contactManager->byId(account, contact.id(), ActionReturnNull);
 			if (knownContact)
 			{
 				allContacts.append(knownContact);
@@ -196,7 +210,7 @@ QPair<QList<Contact>, QList<Contact>> RosterReplacer::registerBuddies(Account ac
 		copySupportedBuddyInformation(i.key(), i.value());
 		// sometimes when a new Contact is added from server on login, sorting fails on that Contact
 		// TODO 0.10: find out why it happens and fix it _properly_ as it _might_ be a bug in model
-		Core::instance()->buddyManager()->addItem(i.key());
+		m_buddyManager->addItem(i.key());
 	}
 
 	return qMakePair(allContacts, resultContacts);
@@ -204,9 +218,9 @@ QPair<QList<Contact>, QList<Contact>> RosterReplacer::registerBuddies(Account ac
 
 QPair<QList<Contact>, QList<Contact>> RosterReplacer::replaceRoster(Account account, const BuddyList &buddies, bool ask)
 {
-	QList<Contact> unImportedContacts = Core::instance()->contactManager()->contacts(account).toList();
+	QList<Contact> unImportedContacts = m_contactManager->contacts(account).toList();
 
-	for (auto &&myselfContact : Core::instance()->myself()->buddy().contacts(account))
+	for (auto &&myselfContact : m_myself->buddy().contacts(account))
 		unImportedContacts.removeAll(myselfContact);
 
 	// now buddies = SERVER_CONTACTS, unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS
