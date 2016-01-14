@@ -157,6 +157,5 @@ public:
 	virtual HistoryMessagesStorage * chatStorage();
 	virtual HistoryMessagesStorage * statusStorage();
 	virtual HistoryMessagesStorage * smsStorage();
-	void chatWhere (Chat toChat);
 
 };
