@@ -33,7 +33,10 @@ class QLineEdit;
 class QPushButton;
 class QTextEdit;
 
+class BuddyManager;
+class Configuration;
 class History;
+class InjectedFactory;
 class MobileNumberManager;
 class SelectTalkableComboBox;
 class SmsGatewayManager;
@@ -43,7 +46,10 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<History> m_history;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MobileNumberManager> m_mobileNumberManager;
 	QPointer<SmsGatewayManager> m_smsGatewayManager;
 	QPointer<SmsScriptsManager> m_smsScriptsManager;
@@ -63,6 +69,11 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 	void createGui();
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void validate();
 
 	void recipientBuddyChanged();

@@ -37,7 +37,6 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
@@ -67,11 +66,31 @@ SmsDialog::SmsDialog(History *history, MobileNumberManager *mobileNumberManager,
 		m_smsScriptsManager{smsScriptsManager},
 		MaxLength{0}
 {
-	kdebugf();
-
 	setWindowTitle(tr("Send SMS"));
 	setAttribute(Qt::WA_DeleteOnClose);
+}
 
+SmsDialog::~SmsDialog()
+{
+}
+
+void SmsDialog::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void SmsDialog::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void SmsDialog::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SmsDialog::init()
+{
 	createGui();
 	validate();
 
@@ -80,12 +99,6 @@ SmsDialog::SmsDialog(History *history, MobileNumberManager *mobileNumberManager,
 	new WindowGeometryManager(new ConfigFileVariantWrapper("Sms", "SmsDialogGeometry"), QRect(200, 200, 400, 250), this);
 
 	RecipientEdit->setFocus();
-
-	kdebugf2();
-}
-
-SmsDialog::~SmsDialog()
-{
 }
 
 void SmsDialog::createGui()
@@ -113,8 +126,8 @@ void SmsDialog::createGui()
 	RecipientComboBox = new SelectTalkableComboBox(this);
 	RecipientComboBox->addBeforeAction(new QAction(tr(" - Select recipient - "), RecipientComboBox));
 
-	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(RecipientComboBox);
-	Core::instance()->injectedFactory()->makeInjected<BuddyManagerAdapter>(buddyListModel);
+	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(RecipientComboBox);
+	m_injectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
 
 	RecipientComboBox->setBaseModel(buddyListModel);
 	RecipientComboBox->addFilter(new MobileTalkableFilter(RecipientComboBox));
@@ -145,7 +158,7 @@ void SmsDialog::createGui()
 	LengthLabel = new QLabel("0", this);
 	formLayout->addRow(0, LengthLabel);
 
-	SignatureEdit = new QLineEdit(Core::instance()->configuration()->deprecatedApi()->readEntry("SMS", "SmsNick"), this);
+	SignatureEdit = new QLineEdit(m_configuration->deprecatedApi()->readEntry("SMS", "SmsNick"), this);
 	connect(SignatureEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
 	formLayout->addRow(tr("Signature") + ':', SignatureEdit);
@@ -198,7 +211,7 @@ void SmsDialog::validate()
 
 void SmsDialog::configurationUpdated()
 {
-	ContentEdit->setFont(Core::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "ChatFont"));
+	ContentEdit->setFont(m_configuration->deprecatedApi()->readFontEntry("Look", "ChatFont"));
 }
 
 void SmsDialog::setRecipient(const QString &phone)
@@ -231,7 +244,7 @@ void SmsDialog::recipientNumberChanged(const QString &number)
 		return;
 	}
 
-	foreach (const Buddy &buddy, Core::instance()->buddyManager()->items())
+	foreach (const Buddy &buddy, m_buddyManager->items())
 		if (buddy.mobile() == number)
 		{
 			RecipientComboBox->setCurrentTalkable(buddy);
@@ -277,7 +290,7 @@ void SmsDialog::sendSms()
 
 	SmsSender *sender;
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("SMS", "BuiltInApp"))
+	if (m_configuration->deprecatedApi()->readBoolEntry("SMS", "BuiltInApp"))
 	{
 		int gatewayIndex = ProviderComboBox->currentIndex();
 		QString gatewayId = ProviderComboBox->itemData(gatewayIndex, Qt::UserRole).toString();
@@ -285,7 +298,7 @@ void SmsDialog::sendSms()
 	}
 	else
 	{
-		if (Core::instance()->configuration()->deprecatedApi()->readEntry("SMS", "SmsApp").isEmpty())
+		if (m_configuration->deprecatedApi()->readEntry("SMS", "SmsApp").isEmpty())
 		{
 			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
 					tr("SMS application was not specified. Visit the configuration section"), QMessageBox::Ok, this);

@@ -24,6 +24,7 @@
 
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
@@ -55,6 +56,11 @@ SmsActions::~SmsActions()
 void SmsActions::setHistory(History *history)
 {
 	m_history = history;
+}
+
+void SmsActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void SmsActions::setMenuInventory(MenuInventory *menuInventory)
@@ -120,7 +126,7 @@ void SmsActions::done()
 
 void SmsActions::newSms(const QString &mobile)
 {
-	SmsDialog *smsDialog = new SmsDialog(m_history, m_mobileNumberManager, m_smsGatewayManager, m_smsScriptsManager);
+	auto smsDialog = m_injectedFactory->makeInjected<SmsDialog>(m_history, m_mobileNumberManager, m_smsGatewayManager, m_smsScriptsManager);
 	if (m_smsDialogRepository)
 		m_smsDialogRepository->addDialog(smsDialog);
 

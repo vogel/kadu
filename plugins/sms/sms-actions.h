@@ -32,6 +32,7 @@ class QAction;
 class ActionDescription;
 class ChatWidget;
 class History;
+class InjectedFactory;
 class MenuInventory;
 class MobileNumberManager;
 class SmsDialogRepository;
@@ -43,6 +44,7 @@ class SmsActions : public QObject
 	Q_OBJECT
 
 	QPointer<History> m_history;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MobileNumberManager> m_mobileNumberManager;
 	QPointer<SmsDialogRepository> m_smsDialogRepository;
@@ -53,6 +55,7 @@ class SmsActions : public QObject
 
 private slots:
 	INJEQT_SET void setHistory(History *history);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMobileNumberManager(MobileNumberManager *mobileNumberManager);
 	INJEQT_SET void setSmsDialogRepository(SmsDialogRepository *smsDialogRepository);
