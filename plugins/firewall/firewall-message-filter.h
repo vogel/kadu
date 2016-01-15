@@ -35,12 +35,15 @@
 
 class AccountManager;
 class Account;
+class BuddyManager;
 class ChatWidget;
 class ChatWidgetRepository;
+class Configuration;
 class Contact;
 class FormattedStringFactory;
 class History;
 class IncomingMessageFirewallFilter;
+class InjectedFactory;
 class MessageManager;
 class Message;
 class OutgoingMessageFirewallFilter;
@@ -60,9 +63,12 @@ public:
 
 private:
 	QPointer<AccountManager> m_accountManager;
+	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<Configuration> m_configuration;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<History> m_history;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MessageManager> m_messageManager;
 
 	BuddySet SecuredTemporaryAllowed;
@@ -103,9 +109,12 @@ private:
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setHistory(History *history);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
