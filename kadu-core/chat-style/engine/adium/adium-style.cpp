@@ -103,12 +103,12 @@ AdiumStyle::AdiumStyle(const QString &styleName) :
 	if (!dir.exists(BaseHref))
 		BaseHref = Core::instance()->pathsProvider()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/");
 
-	readConfiugrationFile();
+	readConfigurationFile();
 	loadHtmlFiles();
 	loadVariants();
 }
 
-void AdiumStyle::readConfiugrationFile()
+void AdiumStyle::readConfigurationFile()
 {
 	QSettings styleSettings(BaseHref + "../Info.plist", plistFormat);
 

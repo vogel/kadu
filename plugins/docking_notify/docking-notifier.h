@@ -8,6 +8,8 @@
 
 #include <injeqt/injeqt.h>
 
+class ChatWidgetManager;
+class Configuration;
 class Docking;
 
 /**
@@ -30,6 +32,8 @@ public slots:
 	void messageClicked();
 
 private:
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<Docking> m_docking;
 
 	void createDefaultConfiguration();
@@ -39,7 +43,10 @@ private:
 	DockingNotifyConfigurationWidget *configurationWidget;
 
 private slots:
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDocking(Docking *docking);
+	INJEQT_INIT void init();
 
 };
 

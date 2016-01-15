@@ -56,7 +56,7 @@ class AdiumStyle
 
 	QString readStylePart(const QString &part);
 
-	void readConfiugrationFile();
+	void readConfigurationFile();
 	void loadHtmlFiles();
 	void loadVariants();
 

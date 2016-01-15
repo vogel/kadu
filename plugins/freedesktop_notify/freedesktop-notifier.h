@@ -21,19 +21,24 @@
 
 #pragma once
 
+#include "configuration/configuration-aware-object.h"
+#include "notification/notifier.h"
+
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QQueue>
 #include <QtCore/QRegExp>
-
-#include "configuration/configuration-aware-object.h"
-#include "notification/notifier.h"
+#include <injeqt/injeqt.h>
 
 class QDBusInterface;
 
+class Configuration;
 class DomProcessorService;
+class NotificationCallbackRepository;
+class NotificationEventRepository;
 class Notification;
+class PathsProvider;
 
 class FreedesktopNotifier : public QObject, public Notifier, public ConfigurationAwareObject
 {
@@ -50,7 +55,11 @@ protected:
 	void configurationUpdated();
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+	QPointer<NotificationEventRepository> m_notificationEventRepository;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	QDBusInterface *NotificationsInterface;
 	QRegExp StripBr;
@@ -79,7 +88,12 @@ private:
 	void checkServerCapabilities();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
 
 	void actionInvoked(unsigned int id, QString action);
 
