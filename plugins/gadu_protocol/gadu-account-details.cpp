@@ -22,6 +22,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner.h"
 #include "misc/misc.h"
@@ -33,7 +34,7 @@ GaduAccountDetails::GaduAccountDetails(AccountShared *data) :
 		ChatImageSizeWarning(true), InitialRosterImport(true), TlsEncryption(false),
 		SendTypingNotification(true), UserlistVersion(-1), ReceiveSpam(true)
 {
-	OpenChatRunner = new GaduOpenChatWithRunner(data);
+	OpenChatRunner = Core::instance()->injectedFactory()->makeInjected<GaduOpenChatWithRunner>(data);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 

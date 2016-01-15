@@ -17,22 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_OPEN_CHAT_WITH_RUNNER_H
-#define GADU_OPEN_CHAT_WITH_RUNNER_H
+#pragma once
 
 #include "accounts/account.h"
-
 #include "gui/windows/open-chat-with/open-chat-with-runner.h"
 
-class GaduOpenChatWithRunner : public OpenChatWithRunner
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyManager;
+class ContactManager;
+
+class GaduOpenChatWithRunner : public QObject, public OpenChatWithRunner
 {
-	Account ParentAccount;
+	Q_OBJECT
 
 public:
-	GaduOpenChatWithRunner(Account account);
-	virtual BuddyList matchingContacts(const QString &query);
-	void setAccount(Account account) { ParentAccount = account; }
+	explicit GaduOpenChatWithRunner(Account account, QObject *parent = nullptr);
+	virtual ~GaduOpenChatWithRunner();
+
+	virtual BuddyList matchingContacts(const QString &query) override;
+	void setAccount(Account account) { m_account = account; }
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ContactManager> m_contactManager;
+
+	Account m_account;
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 
 };
-
-#endif // GADU_OPEN_CHAT_WITH_RUNNER_H
