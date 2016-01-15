@@ -52,6 +52,14 @@ public:
 		return result;
 	}
 
+	template<typename T, typename ...Args>
+	std::unique_ptr<T> makeUnique(Args&& ...args)
+	{
+		auto result = make_unique<T>(std::forward<Args>(args)...);
+		injectInto(result.get());
+		return result;
+	}
+
 private:
 	QPointer<InjectorProvider> m_injectorProvider;
 

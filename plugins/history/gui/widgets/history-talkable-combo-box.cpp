@@ -64,10 +64,10 @@ void HistoryTalkableComboBox::setTalkables(const QVector<Talkable> &talkables)
 {
 	futureTalkablesCanceled();
 
-	ChatsBuddiesSplitter chatsBuddies(talkables);
+	auto chatsBuddies = Core::instance()->injectedFactory()->makeUnique<ChatsBuddiesSplitter>(talkables);
 
-	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
-	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
+	ChatsModel->setChats(chatsBuddies->chats().toList().toVector());
+	BuddiesModel->setBuddyList(chatsBuddies->buddies().toList());
 }
 
 void HistoryTalkableComboBox::setFutureTalkables(const QFuture<QVector<Talkable>> &talkables)

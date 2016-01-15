@@ -17,18 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHATS_BUDDIES_SPLITTER_H
-#define CHATS_BUDDIES_SPLITTER_H
+#pragma once
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QSet>
 #include <QtCore/QVector>
+#include <injeqt/injeqt.h>
 
+class BuddyChatManager;
+class BuddyManager;
 class Buddy;
+class ChatTypeManager;
 class Chat;
 class Talkable;
 
-class ChatsBuddiesSplitter
+class ChatsBuddiesSplitter : public QObject
 {
+	Q_OBJECT
+
+public:
+	explicit ChatsBuddiesSplitter(QVector<Talkable> talkables, QObject *parent = nullptr);
+	virtual ~ChatsBuddiesSplitter();
+
+	QSet<Chat> chats() const;
+	QSet<Buddy> buddies() const;
+
+private:
+	QPointer<BuddyChatManager> m_buddyChatManager;
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ChatTypeManager> m_chatTypeManager;
+
+	QVector<Talkable> m_talkables;
 	QSet<Chat> UsedChats;
 
 	QSet<Chat> Chats;
@@ -37,12 +57,10 @@ class ChatsBuddiesSplitter
 	void processChat(const Chat &chat);
 	void assignChat(const Chat &chat);
 
-public:
-	ChatsBuddiesSplitter(QVector<Talkable> talkables);
-
-	QSet<Chat> chats() const;
-	QSet<Buddy> buddies() const;
+private slots:
+	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_INIT void init();
 
 };
-
-#endif // CHATS_BUDDIES_SPLITTER_H

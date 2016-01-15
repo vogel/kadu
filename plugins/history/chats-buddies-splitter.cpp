@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QSet>
+#include "chats-buddies-splitter.h"
 
 #include "buddies/buddy-manager.h"
 #include "chat/buddy-chat-manager.h"
@@ -26,15 +26,40 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "talkable/talkable.h"
 
-#include "chats-buddies-splitter.h"
+#include <QtCore/QSet>
 
-ChatsBuddiesSplitter::ChatsBuddiesSplitter(QVector<Talkable> talkables)
+ChatsBuddiesSplitter::ChatsBuddiesSplitter(QVector<Talkable> talkables, QObject *parent) :
+		QObject{parent},
+		m_talkables{talkables}
+{
+}
+
+ChatsBuddiesSplitter::~ChatsBuddiesSplitter()
+{
+
+}
+
+void ChatsBuddiesSplitter::setBuddyChatManager(BuddyChatManager *buddyChatManager)
+{
+	m_buddyChatManager = buddyChatManager;
+}
+
+void ChatsBuddiesSplitter::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void ChatsBuddiesSplitter::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
+void ChatsBuddiesSplitter::init()
 {
 	// we ignore contacts
-	foreach (const Talkable &talkable, talkables)
+	foreach (const Talkable &talkable, m_talkables)
 		if (talkable.isValidChat())
 			processChat(talkable.toChat());
 		else if (talkable.isValidBuddy())
@@ -46,7 +71,7 @@ void ChatsBuddiesSplitter::processChat(const Chat &chat)
 	if (UsedChats.contains(chat))
 		return;
 
-	Chat buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
+	Chat buddyChat = m_buddyChatManager->buddyChat(chat);
 	if (!buddyChat)
 	{
 		UsedChats.insert(chat);
@@ -64,9 +89,9 @@ void ChatsBuddiesSplitter::processChat(const Chat &chat)
 
 void ChatsBuddiesSplitter::assignChat(const Chat &chat)
 {
-	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(chat.type());
+	ChatType *chatType = m_chatTypeManager->chatType(chat.type());
 	if (chatType && (chatType->name() == "Contact" || chatType->name() == "Buddy"))
-		Buddies.insert(Core::instance()->buddyManager()->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
+		Buddies.insert(m_buddyManager->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
 	else
 		Chats.insert(chat);
 }
@@ -80,3 +105,5 @@ QSet<Buddy> ChatsBuddiesSplitter::buddies() const
 {
 	return Buddies;
 }
+
+#include "moc_chats-buddies-splitter.cpp"

@@ -223,10 +223,10 @@ TimelineChatMessagesView * HistoryMessagesTab::timelineView() const
 
 void HistoryMessagesTab::setTalkables(const QVector<Talkable> &talkables)
 {
-	ChatsBuddiesSplitter chatsBuddies(talkables);
+	auto chatsBuddies = m_injectedFactory->makeUnique<ChatsBuddiesSplitter>(talkables);
 
-	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
-	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
+	ChatsModel->setChats(chatsBuddies->chats().toList().toVector());
+	BuddiesModel->setBuddyList(chatsBuddies->buddies().toList());
 }
 
 void HistoryMessagesTab::futureTalkablesAvailable()
