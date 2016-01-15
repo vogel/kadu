@@ -22,9 +22,12 @@
 
 #include "roster/roster-service.h"
 
+#include <injeqt/injeqt.h>
+
 struct gg_session;
 
 class BuddyList;
+class BuddyManager;
 class GaduConnection;
 class GaduRosterStateMachine;
 class RosterNotifier;
@@ -56,6 +59,8 @@ signals:
 	void stateMachineRemoteDirty();
 
 private:
+	QPointer<BuddyManager> m_buddyManager;
+
 	QPointer<GaduConnection> m_connection;
 	QPointer<RosterNotifier> m_rosterNotifier;
 	QPointer<RosterReplacer> m_rosterReplacer;
@@ -75,6 +80,9 @@ private:
 	void markSynchronizingAsSynchronized();
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_INIT void init();
+
 	void exportContactList();
 	void importContactList();
 	void rosterChanged();

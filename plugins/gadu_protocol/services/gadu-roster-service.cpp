@@ -27,7 +27,6 @@
 #include "gadu-account-details.h"
 
 #include "buddies/buddy-manager.h"
-#include "core/core.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
 #include "roster/roster-notifier.h"
@@ -47,12 +46,20 @@ GaduRosterService::GaduRosterService(const QVector<Contact> &contacts, Protocol 
 
 	connect(m_stateMachine, SIGNAL(performGet()), SLOT(importContactList()));
 	connect(m_stateMachine, SIGNAL(performPut()), SLOT(exportContactList()));
-
-	m_stateMachine->start();
 }
 
 GaduRosterService::~GaduRosterService()
 {
+}
+
+void GaduRosterService::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void GaduRosterService::init()
+{
+	m_stateMachine->start();
 }
 
 void GaduRosterService::setConnection(GaduConnection *connection)
@@ -167,7 +174,7 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 		{
 			auto ownerBuddy = contact.ownerBuddy();
 			contact.setOwnerBuddy(Buddy::null);
-			Core::instance()->buddyManager()->removeBuddyIfEmpty(ownerBuddy, true);
+			m_buddyManager->removeBuddyIfEmpty(ownerBuddy, true);
 			removeContact(contact);
 			contact.rosterEntry()->setSynchronized();
 		}

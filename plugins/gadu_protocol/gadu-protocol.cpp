@@ -148,7 +148,7 @@ void GaduProtocol::init()
 	CurrentUserDataService->setContactManager(m_contactManager);
 
 	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
-	auto rosterService = new GaduRosterService{contacts, this};
+	auto rosterService = m_injectedFactory->makeInjected<GaduRosterService>(contacts, this);
 	rosterService->setConnection(Connection);
 	rosterService->setRosterNotifier(Core::instance()->rosterNotifier());
 	rosterService->setRosterReplacer(Core::instance()->rosterReplacer());
