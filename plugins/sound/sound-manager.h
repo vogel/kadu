@@ -26,6 +26,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 
+class Configuration;
 class SoundPlayer;
 class SoundThemeManager;
 
@@ -51,6 +52,7 @@ public slots:
 	void setMute(bool mute);
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<SoundThemeManager> m_soundThemeManager;
 	QPointer<SoundPlayer> m_player;
 	QPointer<QSound> m_playingSound;
@@ -61,6 +63,8 @@ private:
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setSoundThemeManager(SoundThemeManager *soundThemeManager);
+	INJEQT_INIT void init();
 
 };

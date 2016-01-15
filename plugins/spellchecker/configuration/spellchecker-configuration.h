@@ -28,6 +28,7 @@
 #include <QtGui/QColor>
 #include <injeqt/injeqt.h>
 
+class Configuration;
 class SpellChecker;
 
 class SpellcheckerConfiguration : public QObject, private ConfigurationAwareObject
@@ -54,6 +55,7 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<SpellChecker> m_spellChecker;
 
 	bool Bold;
@@ -69,6 +71,8 @@ private:
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
+	INJEQT_INIT void init();
 
 };

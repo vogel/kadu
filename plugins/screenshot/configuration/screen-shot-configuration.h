@@ -23,6 +23,11 @@
 #include "configuration/configuration-aware-object.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class PathsProvider;
 
 class ScreenShotConfiguration : public QObject, private ConfigurationAwareObject
 {
@@ -47,6 +52,9 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<Configuration> m_configuration;
+	QPointer<PathsProvider> m_pathsProvider;
+
 	QString FileFormat;
 	bool UseShortJpgExtension;
 	int Quality;
@@ -57,5 +65,10 @@ private:
 	long DirectorySizeLimit;
 
 	void createDefaultConfiguration();
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
 
 };
