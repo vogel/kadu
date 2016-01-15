@@ -52,5 +52,6 @@ private:
 private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
 
 };

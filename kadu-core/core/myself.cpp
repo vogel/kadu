@@ -41,6 +41,13 @@ void Myself::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void Myself::init()
+{
+	m_buddy = m_buddyStorage->create();
+	m_buddy.setAnonymous(false);
+	configurationUpdated();
+}
+
 void Myself::configurationUpdated()
 {
 	m_buddy.setDisplay(m_configuration->deprecatedApi()->readEntry("General", "Nick", tr("Me")));
@@ -48,12 +55,5 @@ void Myself::configurationUpdated()
 
 Buddy Myself::buddy()
 {
-	if (!m_buddy)
-	{
-		m_buddy = m_buddyStorage->create();
-		m_buddy.setAnonymous(false);
-		configurationUpdated();
-	}
-
 	return m_buddy;
 }
