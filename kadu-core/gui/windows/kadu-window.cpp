@@ -212,7 +212,7 @@ void KaduWindow::createKaduMenu()
 	KaduMenu = new QMenu(this);
 	m_menuInventory->menu("main")->attachToMenu(KaduMenu);
 	m_menuInventory->menu("main")
-		->addAction(Actions->Configuration, KaduMenu::SectionConfig, 30)
+		->addAction(Actions->ShowConfigurationWindow, KaduMenu::SectionConfig, 30)
 		->addAction(Actions->ShowYourAccounts, KaduMenu::SectionConfig, 29)
 		->addAction(Actions->RecentChats, KaduMenu::SectionRecentChats, 28)
 		->addAction(Actions->ExitKadu, KaduMenu::SectionQuit)

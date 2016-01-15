@@ -39,15 +39,21 @@ class Actions;
 class Action;
 class AddConferenceAction;
 class AddRoomChatAction;
+class Application;
 class ChangeStatusAction;
+class ChatWidgetActions;
+class Configuration;
 class DeleteTalkableAction;
 class DefaultProxyAction;
 class EditTalkableAction;
+class GroupManager;
 class InjectedFactory;
 class MainConfigurationWindowService;
 class MainWindow;
+class MenuInventory;
 class RecentChatsAction;
 class StatusContainer;
+class UrlHandlerManager;
 class YourAccountsWindowService;
 
 class KaduWindowActions : public QObject, ConfigurationAwareObject
@@ -56,12 +62,18 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 
 	QPointer<AccountManager> m_accountManager;
 	QPointer<Actions> m_actions;
+	QPointer<Application> m_application;
+	QPointer<ChatWidgetActions> m_chatWidgetActions;
+	QPointer<Configuration> m_configuration;
+	QPointer<GroupManager> m_groupManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+	QPointer<MenuInventory> m_menuInventory;
+	QPointer<UrlHandlerManager> m_urlHandlerManager;
 	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
 	friend class KaduWindow;
-	ActionDescription *Configuration;
+	ActionDescription *ShowConfigurationWindow;
 	ActionDescription *ShowYourAccounts;
 	ActionDescription *ShowMultilogons;
 	RecentChatsAction *RecentChats;
@@ -100,8 +112,14 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setApplication(Application *application);
+	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 	INJEQT_INIT void init();
 
