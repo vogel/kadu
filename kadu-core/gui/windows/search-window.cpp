@@ -70,15 +70,15 @@
 
 void SearchWindow::createDefaultToolbars(Configuration *configuration, const QDomElement &toolbarsConfig)
 {
-	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "search_bottomDockArea");
+	QDomElement dockAreaConfig = getDockAreaConfigElement(configuration, toolbarsConfig, "search_bottomDockArea");
 	QDomElement toolbarConfig = configuration->api()->createElement(dockAreaConfig, "ToolBar");
 
-	addToolButton(toolbarConfig, "firstSearchAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "nextResultsAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "stopSearchAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "clearSearchAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "addSearchedAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "chatSearchedAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(configuration, toolbarConfig, "firstSearchAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(configuration, toolbarConfig, "nextResultsAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(configuration, toolbarConfig, "stopSearchAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(configuration, toolbarConfig, "clearSearchAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(configuration, toolbarConfig, "addSearchedAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(configuration, toolbarConfig, "chatSearchedAction", Qt::ToolButtonTextUnderIcon);
 }
 
 SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :

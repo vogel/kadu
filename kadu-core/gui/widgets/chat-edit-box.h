@@ -64,7 +64,7 @@ private slots:
 	void cursorPositionChanged();
 
 public:
-	static void createDefaultToolbars(QDomElement parentConfig);
+	static void createDefaultToolbars(Configuration *configuration, QDomElement parentConfig);
 
 	ChatEditBox(const Chat &chat, QWidget *parent = 0);
 	virtual ~ChatEditBox();

@@ -103,11 +103,6 @@ void KaduWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 	m_chatWidgetManager = chatWidgetManager;
 }
 
-void KaduWindow::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
-}
-
 void KaduWindow::setFileTransferManager(FileTransferManager *fileTransferManager)
 {
 	m_fileTransferManager = fileTransferManager;
@@ -178,15 +173,15 @@ void KaduWindow::createGui()
 
 	ChangeStatusButtons = new StatusButtons(MainWidget);
 
-	if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+	if (!configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->setVisible(false);
-	if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"))
+	if (!configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"))
 		ChangeStatusButtons->hide();
 
 	QList<int> splitSizes;
 
-	splitSizes.append(m_configuration->deprecatedApi()->readNumEntry("General", "UserBoxHeight"));
-	splitSizes.append(m_configuration->deprecatedApi()->readNumEntry("General", "DescriptionHeight"));
+	splitSizes.append(configuration()->deprecatedApi()->readNumEntry("General", "UserBoxHeight"));
+	splitSizes.append(configuration()->deprecatedApi()->readNumEntry("General", "DescriptionHeight"));
 
 	Split->setSizes(splitSizes);
 
@@ -277,7 +272,7 @@ void KaduWindow::createHelpMenu()
 
 void KaduWindow::compositingEnabled()
 {
-	if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
+	if (!configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency"))
 	{
 		compositingDisabled();
 		return;
@@ -350,13 +345,13 @@ void KaduWindow::storeConfiguration()
 	}
 #endif
 
-	if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+	if (configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 	{
-		m_configuration->deprecatedApi()->writeEntry("General", "UserBoxHeight", Roster->size().height());
-		m_configuration->deprecatedApi()->writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
+		configuration()->deprecatedApi()->writeEntry("General", "UserBoxHeight", Roster->size().height());
+		configuration()->deprecatedApi()->writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
 	}
-	if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"))
-		m_configuration->deprecatedApi()->writeEntry("General", "UserBoxHeight", Roster->size().height());
+	if (configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"))
+		configuration()->deprecatedApi()->writeEntry("General", "UserBoxHeight", Roster->size().height());
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)
@@ -427,7 +422,7 @@ void KaduWindow::hideWindowFromTaskbar()
 {
 	auto *w = window();
 	auto newWindowLongPtr = GetWindowLongPtr(reinterpret_cast<HWND>(w->winId()), GWL_EXSTYLE);
-	auto hideFromTaskbar = m_configuration->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar");
+	auto hideFromTaskbar = configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar");
 	if (hideFromTaskbar == !(newWindowLongPtr & WS_EX_APPWINDOW))
 		return;
 
@@ -454,7 +449,7 @@ void KaduWindow::changeEvent(QEvent *event)
 #ifdef Q_OS_WIN
 	else if (event->type() == QEvent::WindowStateChange)
 	{
-		if (Docked && isMinimized() && m_configuration->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
+		if (Docked && isMinimized() && configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
 			QMetaObject::invokeMethod(this, "hide", Qt::QueuedConnection);
 	}
 #endif
@@ -499,20 +494,20 @@ void KaduWindow::configurationUpdated()
 
 	setDocked(Docked);
 
-	ChangeStatusButtons->setVisible(m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
+	ChangeStatusButtons->setVisible(configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
 
 	triggerCompositingStateChanged();
-	setBlur(m_configuration->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency") && m_configuration->deprecatedApi()->readBoolEntry("Look", "UserboxBlur"));
+	setBlur(configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxTransparency") && configuration()->deprecatedApi()->readBoolEntry("Look", "UserboxBlur"));
 }
 
 void KaduWindow::createDefaultToolbars(Configuration *configuration, QDomElement parentConfig)
 {
-	QDomElement dockAreaConfig = getDockAreaConfigElement(parentConfig, "topDockArea");
+	QDomElement dockAreaConfig = getDockAreaConfigElement(configuration, parentConfig, "topDockArea");
 	QDomElement toolbarConfig = configuration->api()->createElement(dockAreaConfig, "ToolBar");
 
-	addToolButton(toolbarConfig, "addUserAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "addGroupAction", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "muteSoundsAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(configuration, toolbarConfig, "addUserAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(configuration, toolbarConfig, "addGroupAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(configuration, toolbarConfig, "muteSoundsAction", Qt::ToolButtonTextUnderIcon);
 }
 
 void KaduWindow::setDocked(bool docked)

@@ -21,24 +21,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_MAIN_WINDOW_H
-#define KADU_MAIN_WINDOW_H
-
-#include <QtWidgets/QMainWindow>
-#include <QtXml/QDomElement>
+#pragma once
 
 #include "gui/actions/action-context-provider.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "os/generic/desktop-aware-object.h"
-
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QMainWindow>
+#include <QtXml/QDomElement>
+#include <injeqt/injeqt.h>
 
 class QContextMenuEvent;
 
+class Actions;
 class Buddy;
 class BuddySet;
 class Chat;
+class ConfigurationManager;
+class Configuration;
 class Contact;
 class ContactSet;
 class StatusContainer;
@@ -48,47 +51,6 @@ class ToolBar;
 class KADUAPI MainWindow : public QMainWindow, public ActionContextProvider, DesktopAwareObject
 {
 	Q_OBJECT
-
-	QString WindowName;
-	bool TransparencyEnabled;
-	bool BlurEnabled;
-
-	ActionContext *Context;
-
-	ToolBar * newToolbar(QWidget *parent);
-
-	void loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::ToolBarArea area);
-
-private slots:
-	void actionLoadedOrUnloaded(ActionDescription *action);
-	void toolbarUpdated();
-	void toolbarRemoved(ToolBar *toolBar);
-
-protected:
-	void loadToolBarsFromConfig();
-	void loadToolBarsFromConfig(Qt::ToolBarArea area);
-
-	bool loadOldToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area);
-
-	void writeToolBarsToConfig();
-	void writeToolBarsToConfig(Qt::ToolBarArea area);
-
-	QDomElement getDockAreaConfigElement(Qt::ToolBarArea area);
-
-	static QDomElement getToolbarsConfigElement();
-	static QDomElement getDockAreaConfigElement(QDomElement toolbarsConfig, const QString &name);
-	static void addToolButton(QDomElement toolbarConfig, const QString &actionName, Qt::ToolButtonStyle style = Qt::ToolButtonIconOnly);
-	static QDomElement findExistingToolbarOnArea(const QString &areaName);
-	static QDomElement findExistingToolbar(const QString &prefix);
-
-	void setTransparency(bool enable);
-	void setBlur(bool enable);
-	virtual void showEvent (QShowEvent * event);
-
-	virtual void contextMenuEvent(QContextMenuEvent *event);
-
-protected slots:
-	void refreshToolBars();
 
 public:
 	static MainWindow * findMainWindow(QWidget *widget);
@@ -117,6 +79,56 @@ public slots:
 	void addLeftToolbar();
 	void addRightToolbar();
 
-};
+protected:
+	void loadToolBarsFromConfig();
+	void loadToolBarsFromConfig(Qt::ToolBarArea area);
 
-#endif // KADU_MAIN_WINDOW_H
+	bool loadOldToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area);
+
+	void writeToolBarsToConfig();
+	void writeToolBarsToConfig(Qt::ToolBarArea area);
+
+	QDomElement getDockAreaConfigElement(Qt::ToolBarArea area);
+
+	static QDomElement getToolbarsConfigElement(Configuration *configuration);
+	static QDomElement getDockAreaConfigElement(Configuration *configuration, QDomElement toolbarsConfig, const QString &name);
+	static void addToolButton(Configuration *configuration, QDomElement toolbarConfig, const QString &actionName, Qt::ToolButtonStyle style = Qt::ToolButtonIconOnly);
+	static QDomElement findExistingToolbarOnArea(Configuration *configuration, const QString &areaName);
+	static QDomElement findExistingToolbar(Configuration *configuration, const QString &prefix);
+
+	void setTransparency(bool enable);
+	void setBlur(bool enable);
+	virtual void showEvent (QShowEvent * event);
+
+	virtual void contextMenuEvent(QContextMenuEvent *event);
+	Configuration * configuration() const;
+
+protected slots:
+	void refreshToolBars();
+
+private:
+	QPointer<Actions> m_actions;
+	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Configuration> m_configuration;
+
+	QString WindowName;
+	bool TransparencyEnabled;
+	bool BlurEnabled;
+
+	ActionContext *Context;
+
+	ToolBar * newToolbar(QWidget *parent);
+
+	void loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::ToolBarArea area);
+
+private slots:
+	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
+	void actionLoadedOrUnloaded(ActionDescription *action);
+	void toolbarUpdated();
+	void toolbarRemoved(ToolBar *toolBar);
+
+};

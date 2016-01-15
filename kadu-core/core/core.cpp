@@ -456,7 +456,7 @@ void Core::createAllDefaultToolbars()
 	toolbarsConfig = configuration()->api()->createElement(configuration()->api()->rootElement(), "Toolbars");
 
 	KaduWindow::createDefaultToolbars(configuration(), toolbarsConfig);
-	ChatEditBox::createDefaultToolbars(toolbarsConfig);
+	ChatEditBox::createDefaultToolbars(configuration(), toolbarsConfig);
 	SearchWindow::createDefaultToolbars(configuration(), toolbarsConfig);
 
 	application()->flushConfiguration();

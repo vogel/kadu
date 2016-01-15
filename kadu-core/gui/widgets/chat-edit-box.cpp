@@ -208,20 +208,20 @@ ChatWidget * ChatEditBox::chatWidget()
 	return 0;
 }
 
-void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
+void ChatEditBox::createDefaultToolbars(Configuration *configuration, QDomElement toolbarsConfig)
 {
-	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "chat_topDockArea");
-	QDomElement toolbarConfig = Core::instance()->configuration()->api()->createElement(dockAreaConfig, "ToolBar");
+	QDomElement dockAreaConfig = getDockAreaConfigElement(configuration, toolbarsConfig, "chat_topDockArea");
+	QDomElement toolbarConfig = configuration->api()->createElement(dockAreaConfig, "ToolBar");
 
-	addToolButton(toolbarConfig, "autoSendAction");
-	addToolButton(toolbarConfig, "clearChatAction");
-	addToolButton(toolbarConfig, "insertEmoticonAction", Qt::ToolButtonTextBesideIcon);
-	addToolButton(toolbarConfig, "insertImageAction");
-	addToolButton(toolbarConfig, "showHistoryAction");
-	addToolButton(toolbarConfig, "encryptionAction");
-	addToolButton(toolbarConfig, "editUserAction");
-	addToolButton(toolbarConfig, "__spacer1", Qt::ToolButtonTextBesideIcon);
-	addToolButton(toolbarConfig, "sendAction", Qt::ToolButtonTextBesideIcon);
+	addToolButton(configuration, toolbarConfig, "autoSendAction");
+	addToolButton(configuration, toolbarConfig, "clearChatAction");
+	addToolButton(configuration, toolbarConfig, "insertEmoticonAction", Qt::ToolButtonTextBesideIcon);
+	addToolButton(configuration, toolbarConfig, "insertImageAction");
+	addToolButton(configuration, toolbarConfig, "showHistoryAction");
+	addToolButton(configuration, toolbarConfig, "encryptionAction");
+	addToolButton(configuration, toolbarConfig, "editUserAction");
+	addToolButton(configuration, toolbarConfig, "__spacer1", Qt::ToolButtonTextBesideIcon);
+	addToolButton(configuration, toolbarConfig, "sendAction", Qt::ToolButtonTextBesideIcon);
 }
 
 void ChatEditBox::openColorSelector(const QWidget *activatingWidget)
