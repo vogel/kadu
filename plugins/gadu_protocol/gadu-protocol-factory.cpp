@@ -29,6 +29,7 @@
 #include "gui/widgets/gadu-add-account-widget.h"
 #include "gui/widgets/gadu-contact-personal-info-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
+#include "helpers/gadu-list-helper.h"
 #include "gadu-account-details.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol.h"
@@ -56,6 +57,11 @@ GaduProtocolFactory::~GaduProtocolFactory()
 {
 }
 
+void GaduProtocolFactory::setGaduListHelper(GaduListHelper *gaduListHelper)
+{
+	m_gaduListHelper = gaduListHelper;
+}
+
 void GaduProtocolFactory::setGaduServersManager(GaduServersManager *gaduServersManager)
 {
 	m_gaduServersManager = gaduServersManager;
@@ -68,7 +74,7 @@ void GaduProtocolFactory::setInjectedFactory(InjectedFactory *injectedFactory)
 
 Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 {
-	return m_injectedFactory->makeInjected<GaduProtocol>(m_gaduServersManager, account, this);
+	return m_injectedFactory->makeInjected<GaduProtocol>(m_gaduListHelper, m_gaduServersManager, account, this);
 }
 
 AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accountShared)

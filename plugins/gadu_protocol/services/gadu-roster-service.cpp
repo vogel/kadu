@@ -36,9 +36,10 @@
 #include <QtCore/QScopedArrayPointer>
 #include <libgadu.h>
 
-GaduRosterService::GaduRosterService(const QVector<Contact> &contacts, Protocol *protocol) :
+GaduRosterService::GaduRosterService(GaduListHelper *gaduListHelper, const QVector<Contact> &contacts, Protocol *protocol) :
 		RosterService{contacts, protocol},
-		m_stateMachine{new GaduRosterStateMachine{this, protocol}}
+		m_stateMachine{new GaduRosterStateMachine{this, protocol}},
+		m_gaduListHelper{gaduListHelper}
 {
 	connect(this, SIGNAL(contactAdded(Contact)), this, SLOT(rosterChanged()));
 	connect(this, SIGNAL(contactRemoved(Contact)), this, SLOT(rosterChanged()));
@@ -160,7 +161,7 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 	if (accountDetails->userlistVersion() != (int)e->event.userlist100_reply.version)
 	{
 		auto content2 = QByteArray{content};
-		auto buddies = GaduListHelper::byteArrayToBuddyList(account(), content2);
+		auto buddies = m_gaduListHelper->byteArrayToBuddyList(account(), content2);
 		getFinished(true);
 
 		auto result = m_rosterReplacer->replaceRoster(account(), buddies, haveToAskForAddingContacts());
@@ -306,7 +307,7 @@ void GaduRosterService::exportContactList()
 	for (auto &&contact : m_synchronizingContacts)
 		contact.rosterEntry()->setSynchronizingToRemote();
 
-	auto contacts = GaduListHelper::contactListToByteArray(m_synchronizingContacts);
+	auto contacts = m_gaduListHelper->contactListToByteArray(m_synchronizingContacts);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
 

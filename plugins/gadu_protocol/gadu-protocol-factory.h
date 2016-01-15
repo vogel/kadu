@@ -27,6 +27,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class GaduListHelper;
 class GaduServersManager;
 class InjectedFactory;
 
@@ -56,6 +57,7 @@ public:
 	virtual KaduIcon icon();
 
 private:
+	QPointer<GaduListHelper> m_gaduListHelper;
 	QPointer<GaduServersManager> m_gaduServersManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 
@@ -64,6 +66,7 @@ private:
 	std::unique_ptr<StatusAdapter> MyStatusAdapter;
 
 private slots:
+	INJEQT_SET void setGaduListHelper(GaduListHelper *gaduListHelper);
 	INJEQT_SET void setGaduServersManager(GaduServersManager *gaduServersManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 

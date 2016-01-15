@@ -18,20 +18,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_LIST_HELPER_H
-#define GADU_LIST_HELPER_H
+#pragma once
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Account;
+class BuddyList;
+class BuddyManager;
+class BuddyStorage;
+class Buddy;
+class Contact;
+class GroupManager;
 
 class QByteArray;
 class QString;
 class QTextStream;
 
-class Account;
-class Buddy;
-class BuddyList;
-class Contact;
-
-namespace GaduListHelper
+class GaduListHelper : public QObject
 {
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit GaduListHelper(QObject *parent = nullptr);
+	virtual ~GaduListHelper();
+
 	void setSupportedBuddyInformation(const Buddy &destination, const Buddy &source);
 	QByteArray buddyListToByteArray(Account account, const BuddyList &buddies);
 	QByteArray contactListToByteArray(const QVector<Contact> &contacts);
@@ -43,6 +55,15 @@ namespace GaduListHelper
 	BuddyList streamPost70ToBuddyList(const QString &line, Account account, QTextStream &content);
 	BuddyList stream70ToBuddyList(Account account, QTextStream &content);
 	BuddyList streamPre70ToBuddyList(const QString &firstLine, Account account, QTextStream &content);
-}
 
-#endif // GADU_LIST_HELPER_H
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<BuddyStorage> m_buddyStorage;
+	QPointer<GroupManager> m_groupManager;
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+
+};

@@ -29,6 +29,7 @@ struct gg_session;
 class BuddyList;
 class BuddyManager;
 class GaduConnection;
+class GaduListHelper;
 class GaduRosterStateMachine;
 class RosterNotifier;
 class RosterReplacer;
@@ -38,7 +39,7 @@ class GaduRosterService : public RosterService
 	Q_OBJECT
 
 public:
-	explicit GaduRosterService(const QVector<Contact> &contacts, Protocol *protocol);
+	explicit GaduRosterService(GaduListHelper *gaduListHelper, const QVector<Contact> &contacts, Protocol *protocol);
 	virtual ~GaduRosterService();
 
 	void setConnection(GaduConnection *connection);
@@ -66,6 +67,8 @@ private:
 	QPointer<RosterReplacer> m_rosterReplacer;
 	GaduRosterStateMachine *m_stateMachine;
 	QVector<Contact> m_synchronizingContacts;
+
+	GaduListHelper *m_gaduListHelper;
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventUserlist100Version(struct gg_event *e);

@@ -21,6 +21,7 @@
 
 #include "actions/gadu-protocol-menu-manager.h"
 #include "server/gadu-servers-manager.h"
+#include "helpers/gadu-list-helper.h"
 #include "gadu-plugin-object.h"
 #include "gadu-protocol-factory.h"
 #include "gadu-url-dom-visitor-provider.h"
@@ -28,6 +29,7 @@
 
 GaduModule::GaduModule()
 {
+	add_type<GaduListHelper>();
 	add_type<GaduPluginObject>();
 	add_type<GaduProtocolFactory>();
 	add_type<GaduProtocolMenuManager>();

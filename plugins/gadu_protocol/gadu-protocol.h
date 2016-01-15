@@ -114,6 +114,8 @@ private:
 	QTimer *PingTimer;
 	bool SecureConnection;
 
+	GaduListHelper *m_gaduListHelper;
+
 	void setupLoginParams();
 	void cleanUpLoginParams();
 
@@ -151,7 +153,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit GaduProtocol(GaduServersManager *gaduServersManager, Account account, ProtocolFactory *factory);
+	explicit GaduProtocol(GaduListHelper *gaduListHelper, GaduServersManager *gaduServersManager, Account account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
 	virtual AvatarService * avatarService() { return CurrentAvatarService; }

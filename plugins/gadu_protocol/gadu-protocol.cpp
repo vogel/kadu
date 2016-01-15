@@ -71,11 +71,12 @@
 #include "gadu-protocol.h"
 #include <core/injected-factory.h>
 
-GaduProtocol::GaduProtocol(GaduServersManager *gaduServersManager, Account account, ProtocolFactory *factory) :
+GaduProtocol::GaduProtocol(GaduListHelper *gaduListHelper, GaduServersManager *gaduServersManager, Account account, ProtocolFactory *factory) :
 		Protocol(account, factory),
 		m_gaduServersManager{gaduServersManager},
 		ActiveServer(), GaduLoginParams(), GaduSession(0), SocketNotifiers(0), PingTimer(0),
-		SecureConnection{false}
+		SecureConnection{false},
+		m_gaduListHelper{gaduListHelper}
 {
 }
 
@@ -105,7 +106,7 @@ void GaduProtocol::init()
 
 	CurrentAvatarService = new GaduAvatarService(account(), this);
 
-	CurrentBuddyListSerializationService = new GaduBuddyListSerializationService{account(), this};
+	CurrentBuddyListSerializationService = new GaduBuddyListSerializationService{m_gaduListHelper, account(), this};
 
 	CurrentChatImageService = new GaduChatImageService(account(), this);
 	CurrentChatImageService->setConnection(Connection);
@@ -148,7 +149,7 @@ void GaduProtocol::init()
 	CurrentUserDataService->setContactManager(m_contactManager);
 
 	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
-	auto rosterService = m_injectedFactory->makeInjected<GaduRosterService>(contacts, this);
+	auto rosterService = m_injectedFactory->makeInjected<GaduRosterService>(m_gaduListHelper, contacts, this);
 	rosterService->setConnection(Connection);
 	rosterService->setRosterNotifier(Core::instance()->rosterNotifier());
 	rosterService->setRosterReplacer(Core::instance()->rosterReplacer());

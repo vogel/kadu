@@ -19,9 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QStringList>
-#include <QtCore/QTextCodec>
-#include <QtCore/QTextStream>
+#include "gadu-list-helper.h"
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
@@ -30,18 +28,42 @@
 #include "buddies/group.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
-#include "protocols/protocol.h"
-
 #include "misc/misc.h"
+#include "protocols/protocol.h"
 #include "debug.h"
 
-#include "gadu-list-helper.h"
+#include <QtCore/QStringList>
+#include <QtCore/QTextCodec>
+#include <QtCore/QTextStream>
+
+GaduListHelper::GaduListHelper(QObject *parent) :
+		QObject{parent}
+{
+}
+
+GaduListHelper::~GaduListHelper()
+{
+}
+
+void GaduListHelper::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void GaduListHelper::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
+}
+
+void GaduListHelper::setGroupManager(GroupManager *groupManager)
+{
+	m_groupManager = groupManager;
+}
 
 QString GaduListHelper::contactToLine70(Contact contact)
 {
 	QStringList list;
-	Buddy buddy = Core::instance()->buddyManager()->byContact(contact, ActionCreateAndAdd);
+	Buddy buddy = m_buddyManager->byContact(contact, ActionCreateAndAdd);
 
 	list.append(buddy.firstName());
 	list.append(buddy.lastName());
@@ -204,7 +226,7 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 			if (nameElement.text().isEmpty())
 				continue;
 
-			importedGroups.insert(idElement.text(), Core::instance()->groupManager()->byName(nameElement.text()));
+			importedGroups.insert(idElement.text(), m_groupManager->byName(nameElement.text()));
 		}
 	}
 
@@ -214,7 +236,7 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 		QDomElement contactElement = contactsNode.firstChildElement("Contact");
 		for (; !contactElement.isNull(); contactElement = contactElement.nextSiblingElement("Contact"))
 		{
-			Buddy buddy = Core::instance()->buddyStorage()->create();
+			Buddy buddy = m_buddyStorage->create();
 
 			buddy.setFirstName(contactElement.firstChildElement("FirstName").text());
 			buddy.setLastName(contactElement.firstChildElement("LastName").text());
@@ -265,7 +287,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 	if (secCount < 5)
 		return Buddy::null;
 
-	Buddy buddy = Core::instance()->buddyStorage()->create();
+	Buddy buddy = m_buddyStorage->create();
 
 	buddy.setFirstName(sections[0]);
 	buddy.setLastName(sections[1]);
@@ -275,7 +297,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 
 	groups.clear();
 	if (!sections[5].isEmpty())
-		groups.insert(Core::instance()->groupManager()->byName(sections[5]));
+		groups.insert(m_groupManager->byName(sections[5]));
 
 	i = 6;
 	while (!ok && i < secCount)
@@ -283,7 +305,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 		sections[i].toULong(&ok);
 		ok = ok || sections[i].isEmpty();
 		if (!ok)
-			groups.insert(Core::instance()->groupManager()->byName(sections[i]));
+			groups.insert(m_groupManager->byName(sections[i]));
 		++i;
 	}
 	buddy.setGroups(groups);
@@ -340,7 +362,7 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 	if (secCount < 6)
 		return Buddy::null;
 
-	Buddy buddy = Core::instance()->buddyStorage()->create();
+	Buddy buddy = m_buddyStorage->create();
 
 	buddy.setFirstName(sections[0]);
 	buddy.setLastName(sections[1]);
@@ -351,7 +373,7 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 	if (!sections[5].isEmpty())
 	{
 		foreach (const QString &group, sections[5].split(',', QString::SkipEmptyParts))
-			groups.insert(Core::instance()->groupManager()->byName(group));
+			groups.insert(m_groupManager->byName(group));
 
 		buddy.setGroups(groups);
 	}
@@ -396,3 +418,5 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 	buddy.setAnonymous(false);
 	return buddy;
 }
+
+#include "moc_gadu-list-helper.cpp"
