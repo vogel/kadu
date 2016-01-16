@@ -34,7 +34,7 @@ class QString;
 class QWidget;
 
 class Configuration;
-class Docking;
+class DockingMenuActionRepository;
 class GroupTabBar;
 class KaduWindow;
 class MainWindow;
@@ -54,7 +54,7 @@ public slots:
 
 private:
 	QPointer<Configuration> m_configuration;
-	QPointer<Docking> m_docking;
+	QPointer<DockingMenuActionRepository> m_dockingMenuActionRepository;
 
 	bool KeepSize;
 	bool NoScrollBar;
@@ -76,9 +76,9 @@ private:
 	virtual void configurationUpdated();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setDocking(Docking *docking);
 
 };

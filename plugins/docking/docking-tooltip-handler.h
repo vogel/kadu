@@ -22,6 +22,8 @@
 #include "status/status-type.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class DockingConfigurationProvider;
 class StatusContainerManager;
@@ -30,13 +32,11 @@ class StatusNotifierItem;
 class DockingTooltipHandler final : public QObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
-	explicit DockingTooltipHandler(StatusNotifierItem *statusNotifierItem, QObject *parent = nullptr);
+	Q_INVOKABLE explicit DockingTooltipHandler(QObject *parent = nullptr);
 	virtual ~DockingTooltipHandler();
-
-	void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
-	void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 
 public slots:
 	void updateTooltip();
@@ -47,5 +47,11 @@ private:
 	StatusNotifierItem *m_statusNotifierItem;
 
 	QString tooltip() const;
+
+private slots:
+	INJEQT_SET void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setStatusNotifierItem(StatusNotifierItem *statusNotifierItem);
+	INJEQT_INIT void init();
 
 };

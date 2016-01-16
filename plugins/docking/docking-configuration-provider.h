@@ -30,7 +30,7 @@ class DockingConfigurationProvider final : public QObject, private Configuration
 	Q_OBJECT
 
 public:
-	explicit DockingConfigurationProvider(QObject *parent = nullptr);
+	Q_INVOKABLE explicit DockingConfigurationProvider(QObject *parent = nullptr);
 	virtual ~DockingConfigurationProvider();
 
 	const DockingConfiguration & configuration() const;

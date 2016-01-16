@@ -27,19 +27,15 @@
 #include "docking.h"
 
 #include "docking-configuration-provider.h"
-#include "docking-menu-action-repository.h"
 #include "docking-menu-handler.h"
-#include "docking-tooltip-handler.h"
 #include "status-notifier-item.h"
 #include "status-notifier-item-attention-mode.h"
 #include "status-notifier-item-configuration.h"
 
 #include "core/core.h"
-#include "core/core.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
-#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message.h"
 #include "message/unread-message-repository.h"
@@ -65,9 +61,14 @@ void Docking::setAttentionService(AttentionService *attentionService)
 	connect(attentionService, SIGNAL(needAttentionChanged(bool)), this, SLOT(needAttentionChanged(bool)));
 }
 
-void Docking::setIconsManager(IconsManager *iconsManager)
+void Docking::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
-	m_iconsManager = iconsManager;
+	m_chatWidgetManager = chatWidgetManager;
+}
+
+void Docking::setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider)
+{
+	m_dockingConfigurationProvider = dockingConfigurationProvider;
 }
 
 void Docking::setStatusContainerManager(StatusContainerManager *statusContainerManager)
@@ -75,42 +76,32 @@ void Docking::setStatusContainerManager(StatusContainerManager *statusContainerM
 	m_statusContainerManager = statusContainerManager;
 }
 
+void Docking::setStatusNotifierItem(StatusNotifierItem *statusNotifierItem)
+{
+	m_statusNotifierItem = statusNotifierItem;
+}
+
+void Docking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
+{
+	m_unreadMessageRepository = unreadMessageRepository;
+}
+
 void Docking::init()
 {
-	m_dockingMenuActionRepository = make_owned<DockingMenuActionRepository>(this);
-
 	auto statusIcon = make_owned<StatusIcon>(m_statusContainerManager, this);
 	connect(statusIcon.get(), SIGNAL(iconUpdated(KaduIcon)), this, SLOT(configurationUpdated()));
 
 	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
 
-	m_statusNotifierItem = make_owned<StatusNotifierItem>(this);
-	connect(m_statusNotifierItem.get(), SIGNAL(activateRequested()), this, SLOT(activateRequested()));
-	connect(m_statusNotifierItem.get(), SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
+	connect(m_statusNotifierItem, SIGNAL(activateRequested()), this, SLOT(activateRequested()));
+	connect(m_statusNotifierItem, SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
 
-	m_dockingConfigurationProvider = make_owned<DockingConfigurationProvider>(this);
-
-	auto dockingMenuHandler = make_owned<DockingMenuHandler>(m_statusNotifierItem->contextMenu(), this);
-	dockingMenuHandler->setDockingMenuActionRepository(m_dockingMenuActionRepository.get());
-	dockingMenuHandler->setIconsManager(m_iconsManager);
-	dockingMenuHandler->setNotificationService(Core::instance()->notificationService());
-	dockingMenuHandler->setStatusContainerManager(Core::instance()->statusContainerManager());
-
-	auto dockingTooltipHandler = make_owned<DockingTooltipHandler>(m_statusNotifierItem.get(), this);
-	dockingTooltipHandler->setDockingConfigurationProvider(m_dockingConfigurationProvider.get());
-	dockingTooltipHandler->setStatusContainerManager(Core::instance()->statusContainerManager());
-
-	connect(m_dockingConfigurationProvider.get(), SIGNAL(updated()), this, SLOT(configurationUpdated()));
+	connect(m_dockingConfigurationProvider, SIGNAL(updated()), this, SLOT(configurationUpdated()));
 	configurationUpdated();
 
 	if (m_dockingConfigurationProvider->configuration().RunDocked)
 		Core::instance()->setShowMainWindowOnStart(false);
 	Core::instance()->kaduWindow()->setDocked(true);
-}
-
-DockingMenuActionRepository * Docking::dockingMenuActionRepository() const
-{
-	return m_dockingMenuActionRepository.get();
 }
 
 void Docking::needAttentionChanged(bool needAttention)
@@ -120,8 +111,8 @@ void Docking::needAttentionChanged(bool needAttention)
 
 void Docking::openUnreadMessages()
 {
-	auto message = Core::instance()->unreadMessageRepository()->unreadMessage();
-	Core::instance()->chatWidgetManager()->openChat(message.messageChat(), OpenChatActivation::Activate);
+	auto message = m_unreadMessageRepository->unreadMessage();
+	m_chatWidgetManager->openChat(message.messageChat(), OpenChatActivation::Activate);
 }
 
 void Docking::showMessage(QString title, QString message, QSystemTrayIcon::MessageIcon icon, int msecs)
@@ -131,7 +122,7 @@ void Docking::showMessage(QString title, QString message, QSystemTrayIcon::Messa
 
 void Docking::activateRequested()
 {
-	if (Core::instance()->unreadMessageRepository()->hasUnreadMessages())
+	if (m_unreadMessageRepository->hasUnreadMessages())
 	{
 		openUnreadMessages();
 		return;
@@ -162,7 +153,7 @@ void Docking::configurationUpdated()
 	configuration.AttentionMode = m_dockingConfigurationProvider->configuration().NewMessageIcon;
 	configuration.AttentionIcon = KaduIcon{"protocols/common/message"};
 	configuration.AttentionMovie = KaduIcon{"protocols/common/message_anim", "16x16"}.fullPath();
-	configuration.Icon = Core::instance()->statusContainerManager()->statusIcon();
+	configuration.Icon = m_statusContainerManager->statusIcon();
 	m_statusNotifierItem->setConfiguration(configuration);
 }
 

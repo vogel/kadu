@@ -38,7 +38,7 @@ class DOCKINGAPI StatusNotifierItem final : public QObject
 	Q_OBJECT
 
 public:
-	explicit StatusNotifierItem(QObject *parent = nullptr);
+	Q_INVOKABLE explicit StatusNotifierItem(QObject *parent = nullptr);
 	virtual ~StatusNotifierItem();
 
 	void setConfiguration(StatusNotifierItemConfiguration configuration);

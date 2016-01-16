@@ -25,10 +25,8 @@
 
 #include "status/status-container-manager.h"
 
-DockingTooltipHandler::DockingTooltipHandler(StatusNotifierItem *statusNotifierItem, QObject *parent) :
-		QObject{parent},
-		m_statusContainerManager{nullptr},
-		m_statusNotifierItem{statusNotifierItem}
+DockingTooltipHandler::DockingTooltipHandler(QObject *parent) :
+		QObject{parent}
 {
 }
 
@@ -39,19 +37,24 @@ DockingTooltipHandler::~DockingTooltipHandler()
 void DockingTooltipHandler::setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider)
 {
 	m_dockingConfigurationProvider = dockingConfigurationProvider;
-	connect(m_dockingConfigurationProvider, SIGNAL(updated()), this, SLOT(updateTooltip()));
-
-	if (m_dockingConfigurationProvider && m_statusContainerManager)
-		updateTooltip();
 }
 
 void DockingTooltipHandler::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
 	m_statusContainerManager = statusContainerManager;
+}
+
+void DockingTooltipHandler::setStatusNotifierItem(StatusNotifierItem *statusNotifierItem)
+{
+	m_statusNotifierItem = statusNotifierItem;
+}
+
+void DockingTooltipHandler::init()
+{
+	connect(m_dockingConfigurationProvider, SIGNAL(updated()), this, SLOT(updateTooltip()));
 	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(updateTooltip()));
 
-	if (m_dockingConfigurationProvider && m_statusContainerManager)
-		updateTooltip();
+	updateTooltip();
 }
 
 void DockingTooltipHandler::updateTooltip()

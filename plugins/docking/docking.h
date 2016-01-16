@@ -25,19 +25,17 @@
 
 #include "docking-exports.h"
 
-#include "misc/memory.h"
-
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QSystemTrayIcon>
 #include <injeqt/injeqt.h>
 
 class AttentionService;
+class ChatWidgetManager;
 class DockingConfigurationProvider;
-class DockingMenuActionRepository;
-class IconsManager;
 class StatusContainerManager;
 class StatusNotifierItem;
+class UnreadMessageRepository;
 
 class DOCKINGAPI Docking final : public QObject
 {
@@ -47,27 +45,27 @@ public:
 	Q_INVOKABLE Docking(QObject *parent = nullptr);
 	virtual ~Docking();
 
-	DockingMenuActionRepository * dockingMenuActionRepository() const;
-
 	void showMessage(QString title, QString message, QSystemTrayIcon::MessageIcon icon, int msecs);
 
 signals:
 	void messageClicked();
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<DockingConfigurationProvider> m_dockingConfigurationProvider;
 	QPointer<StatusContainerManager> m_statusContainerManager;
-
-	owned_qptr<DockingConfigurationProvider> m_dockingConfigurationProvider;
-	owned_qptr<DockingMenuActionRepository> m_dockingMenuActionRepository;
-	owned_qptr<StatusNotifierItem> m_statusNotifierItem;
+	QPointer<StatusNotifierItem> m_statusNotifierItem;
+	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	void openUnreadMessages();
 
 private slots:
 	INJEQT_SET void setAttentionService(AttentionService *attentionService);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setStatusNotifierItem(StatusNotifierItem *statusNotifierItem);
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();
 
 	void configurationUpdated();

@@ -19,11 +19,21 @@
 
 #include "docking-module.h"
 
-#include "docking.h"
+#include "docking-configuration-provider.h"
+#include "docking-menu-action-repository.h"
+#include "docking-menu-handler.h"
 #include "docking-plugin-object.h"
+#include "docking-tooltip-handler.h"
+#include "docking.h"
+#include "status-notifier-item.h"
 
 DockingModule::DockingModule()
 {
-	add_type<Docking>();
+	add_type<DockingConfigurationProvider>();
+	add_type<DockingMenuActionRepository>();
+	add_type<DockingMenuHandler>();
 	add_type<DockingPluginObject>();
+	add_type<DockingTooltipHandler>();
+	add_type<Docking>();
+	add_type<StatusNotifierItem>();
 }

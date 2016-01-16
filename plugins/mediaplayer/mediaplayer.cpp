@@ -104,9 +104,9 @@ void MediaPlayer::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void MediaPlayer::setDocking(Docking*docking)
+void MediaPlayer::setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository)
 {
-	m_docking = docking;
+	m_dockingMenuActionRepository = dockingMenuActionRepository;
 }
 
 void MediaPlayer::setMenuInventory(MenuInventory *menuInventory)
@@ -206,7 +206,7 @@ void MediaPlayer::init()
 void MediaPlayer::done()
 {
 	if (DockedMediaplayerStatus)
-		m_docking->dockingMenuActionRepository()->removeAction(DockedMediaplayerStatus);
+		m_dockingMenuActionRepository->removeAction(DockedMediaplayerStatus);
 
 	kdebugf();
 
@@ -756,7 +756,7 @@ void MediaPlayer::configurationUpdated()
 			DockedMediaplayerStatus->setChecked(enabled);
 			connect(DockedMediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
 
-			m_docking->dockingMenuActionRepository()->addAction(DockedMediaplayerStatus);
+			m_dockingMenuActionRepository->addAction(DockedMediaplayerStatus);
 		}
 	}
 	else
@@ -768,7 +768,7 @@ void MediaPlayer::configurationUpdated()
 
 		if (DockedMediaplayerStatus)
 		{
-			m_docking->dockingMenuActionRepository()->removeAction(DockedMediaplayerStatus);
+			m_dockingMenuActionRepository->removeAction(DockedMediaplayerStatus);
 			delete DockedMediaplayerStatus;
 			DockedMediaplayerStatus = 0;
 		}

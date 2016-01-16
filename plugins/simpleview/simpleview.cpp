@@ -79,14 +79,14 @@ void SimpleView::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void SimpleView::setDocking(Docking *docking)
+void SimpleView::setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository)
 {
-	m_docking = docking;
+	m_dockingMenuActionRepository = dockingMenuActionRepository;
 }
 
 void SimpleView::init()
 {
-	m_docking->dockingMenuActionRepository()->addAction(DockAction);
+	m_dockingMenuActionRepository->addAction(DockAction);
 
 	DiffRect = m_configuration->deprecatedApi()->readRectEntry("Look", "SimpleViewGeometry");
 	if (DiffRect != QRect(0,0,0,0))
@@ -97,7 +97,7 @@ void SimpleView::init()
 void SimpleView::done()
 {
 	m_configuration->deprecatedApi()->writeEntry("Look", "SimpleViewGeometry", DiffRect);
-	m_docking->dockingMenuActionRepository()->removeAction(DockAction);
+	m_dockingMenuActionRepository->removeAction(DockAction);
 }
 
 void SimpleView::simpleViewToggle(bool activate)

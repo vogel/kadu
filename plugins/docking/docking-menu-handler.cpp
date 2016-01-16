@@ -20,6 +20,7 @@
 #include "docking-menu-handler.h"
 
 #include "docking-menu-action-repository.h"
+#include "status-notifier-item.h"
 
 #include "core/core.h"
 #include "core/injected-factory.h"
@@ -33,9 +34,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
 
-DockingMenuHandler::DockingMenuHandler(QMenu *menu, QObject *parent) :
+DockingMenuHandler::DockingMenuHandler(QObject *parent) :
 		QObject{parent},
-		m_menu{menu},
 #if defined(Q_OS_UNIX)
 		m_showKaduAction{nullptr},
 		m_hideKaduAction{nullptr},
@@ -45,6 +45,52 @@ DockingMenuHandler::DockingMenuHandler(QMenu *menu, QObject *parent) :
 		m_needsUpdate{true},
 		m_mainWindowLastVisible{true}
 {
+}
+
+DockingMenuHandler::~DockingMenuHandler()
+{
+}
+
+void DockingMenuHandler::setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository)
+{
+	m_dockingMenuActionRepository = dockingMenuActionRepository;
+}
+
+void DockingMenuHandler::setIconsManager(IconsManager *iconsManager)
+{
+	connect(iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
+}
+
+void DockingMenuHandler::setNotificationService(NotificationService *notificationService)
+{
+	m_notificationService = notificationService;
+}
+
+void DockingMenuHandler::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
+}
+
+void DockingMenuHandler::setStatusNotifierItem(StatusNotifierItem *statusNotifierItem)
+{
+	m_menu = statusNotifierItem->contextMenu();
+}
+
+void DockingMenuHandler::init()
+{
+	connect(m_dockingMenuActionRepository, SIGNAL(actionAdded(QAction*)), this, SLOT(update()));
+	connect(m_dockingMenuActionRepository, SIGNAL(actionRemoved(QAction*)), this, SLOT(update()));
+
+	for (auto statusContainer : m_statusContainerManager->statusContainers())
+		connect(statusContainer, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(update()));
+	
+	connect(m_statusContainerManager, SIGNAL(statusContainerRegistered(StatusContainer*)),
+	        this, SLOT(statusContainerRegistered(StatusContainer*)));
+	connect(m_statusContainerManager, SIGNAL(statusContainerUnregistered(StatusContainer*)),
+	        this, SLOT(statusContainerUnregistered(StatusContainer*)));
+
+	connect(m_notificationService, SIGNAL(silentModeToggled(bool)), this, SLOT(update()));
+
 	m_menu->setSeparatorsCollapsible(true);
 	connect(m_menu, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
 	
@@ -62,40 +108,6 @@ DockingMenuHandler::DockingMenuHandler(QMenu *menu, QObject *parent) :
 
 	m_closeKaduAction = new QAction{KaduIcon{"application-exit"}.icon(), tr("&Exit Kadu"), this};
 	connect(m_closeKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-}
-
-DockingMenuHandler::~DockingMenuHandler()
-{
-}
-
-void DockingMenuHandler::setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository)
-{
-	m_dockingMenuActionRepository = dockingMenuActionRepository;
-	connect(m_dockingMenuActionRepository, SIGNAL(actionAdded(QAction*)), this, SLOT(update()));
-	connect(m_dockingMenuActionRepository, SIGNAL(actionRemoved(QAction*)), this, SLOT(update()));
-}
-
-void DockingMenuHandler::setIconsManager(IconsManager *iconsManager)
-{
-	connect(iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
-}
-
-void DockingMenuHandler::setNotificationService(NotificationService *notificationService)
-{
-	m_notificationService = notificationService;
-	connect(m_notificationService, SIGNAL(silentModeToggled(bool)), this, SLOT(update()));
-}
-
-void DockingMenuHandler::setStatusContainerManager(StatusContainerManager *statusContainerManager)
-{
-	m_statusContainerManager = statusContainerManager;
-	for (auto statusContainer : m_statusContainerManager->statusContainers())
-		connect(statusContainer, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(update()));
-	
-	connect(m_statusContainerManager, SIGNAL(statusContainerRegistered(StatusContainer*)),
-	        this, SLOT(statusContainerRegistered(StatusContainer*)));
-	connect(m_statusContainerManager, SIGNAL(statusContainerUnregistered(StatusContainer*)),
-	        this, SLOT(statusContainerUnregistered(StatusContainer*)));
 }
 
 void DockingMenuHandler::statusContainerRegistered(StatusContainer *statusContainer)

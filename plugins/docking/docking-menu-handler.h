@@ -23,12 +23,15 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class DockingMenuActionRepository;
 class IconsManager;
 class NotificationService;
 class StatusContainer;
 class StatusContainerManager;
+class StatusNotifierItem;
 
 class QAction;
 class QMenu;
@@ -36,22 +39,18 @@ class QMenu;
 class DOCKINGAPI DockingMenuHandler final : public QObject
 {
 	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
 public:
-	explicit DockingMenuHandler(QMenu *menu, QObject *parent = nullptr);
+	Q_INVOKABLE explicit DockingMenuHandler(QObject *parent = nullptr);
 	virtual ~DockingMenuHandler();
 
-	void setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository);
-	void setIconsManager(IconsManager *iconsManager);
-	void setNotificationService(NotificationService *notificationService);
-	void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-
 private:
-	DockingMenuActionRepository *m_dockingMenuActionRepository;
-	NotificationService *m_notificationService;
-	StatusContainerManager *m_statusContainerManager;
+	QPointer<DockingMenuActionRepository> m_dockingMenuActionRepository;
+	QPointer<NotificationService> m_notificationService;
+	QPointer<StatusContainerManager> m_statusContainerManager;
 
-	QMenu *m_menu;
+	QPointer<QMenu> m_menu;
 #if defined(Q_OS_UNIX)
 	QAction *m_showKaduAction;
 	QAction *m_hideKaduAction;
@@ -68,6 +67,13 @@ private:
 	void addActionRepositoryMenus();
 
 private slots:
+	INJEQT_SET void setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setNotificationService(NotificationService *notificationService);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setStatusNotifierItem(StatusNotifierItem *statusNotifierItem);
+	INJEQT_INIT void init();
+
 	void aboutToShow();
 	void update();
 

@@ -30,7 +30,7 @@ class DOCKINGAPI DockingMenuActionRepository final : public QObject
 	Q_OBJECT
 
 public:
-	explicit DockingMenuActionRepository(QObject *parent = nullptr);
+	Q_INVOKABLE explicit DockingMenuActionRepository(QObject *parent = nullptr);
 	virtual ~DockingMenuActionRepository();
 
 	void addAction(QAction *action);
