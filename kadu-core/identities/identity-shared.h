@@ -20,28 +20,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IDENTITY_SHARED_H
-#define IDENTITY_SHARED_H
+#pragma once
 
 #include "status/storable-status-container.h"
 #include "storage/shared.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class Account;
+class IdentityManager;
+class StatusConfigurationHolder;
+class StatusTypeManager;
 
 class KADUAPI IdentityShared : public StorableStatusContainer, public Shared
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(IdentityShared)
-
-	bool Permanent;
-	QString Name;
-	QList<Account> Accounts;
-	Status LastSetStatus;
-
-protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
 
 public:
 	static IdentityShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
@@ -78,6 +72,25 @@ public:
 
 	virtual QList<StatusType> supportedStatusTypes();
 
-};
+protected:
+	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
 
-#endif // IDENTITY_SHARED_H
+private:
+	QPointer<IdentityManager> m_identityManager;
+	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+	QPointer<StatusTypeManager> m_statusTypeManager;
+
+	bool Permanent;
+	QString Name;
+	QList<Account> Accounts;
+	Status LastSetStatus;
+
+private slots:
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_INIT void init();
+
+};

@@ -22,6 +22,8 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 
 #include "identity.h"
 
@@ -31,7 +33,7 @@ Identity Identity::null;
 
 Identity Identity::create()
 {
-	return new IdentityShared();
+	return Core::instance()->injectedFactory()->makeInjected<IdentityShared>();
 }
 
 Identity Identity::loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint)

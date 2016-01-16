@@ -24,6 +24,7 @@
 #include "accounts/account-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
 #include "misc/misc.h"
@@ -45,7 +46,7 @@ IdentityShared * IdentityShared::loadStubFromStorage(const std::shared_ptr<Stora
 
 IdentityShared * IdentityShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	IdentityShared *identityShared = new IdentityShared();
+	IdentityShared *identityShared = Core::instance()->injectedFactory()->makeInjected<IdentityShared>();
 	identityShared->setStorage(storagePoint);
 
 	return identityShared;
@@ -54,7 +55,6 @@ IdentityShared * IdentityShared::loadFromStorage(const std::shared_ptr<StoragePo
 IdentityShared::IdentityShared(const QUuid &uuid) :
 		StorableStatusContainer(this), Shared(uuid), Permanent(false)
 {
-	setState(StateNotLoaded);
 }
 
 IdentityShared::~IdentityShared()
@@ -62,9 +62,29 @@ IdentityShared::~IdentityShared()
 	ref.ref();
 }
 
+void IdentityShared::setIdentityManager(IdentityManager *identityManager)
+{
+	m_identityManager = identityManager;
+}
+
+void IdentityShared::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
+{
+	m_statusConfigurationHolder = statusConfigurationHolder;
+}
+
+void IdentityShared::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
+void IdentityShared::init()
+{
+	setState(StateNotLoaded);
+}
+
 StorableObject * IdentityShared::storageParent()
 {
-	return Core::instance()->identityManager();
+	return m_identityManager;
 }
 
 QString IdentityShared::storageNodeName()
@@ -117,7 +137,7 @@ void IdentityShared::addAccount(const Account &account)
 
 	Accounts.append(account);
 	connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
-	if (Core::instance()->statusConfigurationHolder()->isSetStatusPerIdentity())
+	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
 		account.statusContainer()->setStatus(LastSetStatus, SourceStatusChanger);
 
 	emit statusUpdated(this);
@@ -196,7 +216,7 @@ KaduIcon IdentityShared::statusIcon(const Status &status)
 		protocols.insert(account.protocolName());
 
 	if (protocols.count() > 1)
-		return Core::instance()->statusTypeManager()->statusIcon("common", status);
+		return m_statusTypeManager->statusIcon("common", status);
 
 	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.statusContainer()->statusIcon(status) : KaduIcon();
