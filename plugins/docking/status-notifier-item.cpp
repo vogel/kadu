@@ -52,11 +52,6 @@ void StatusNotifierItem::setConfiguration(StatusNotifierItemConfiguration config
 	updateAttention();
 }
 
-void StatusNotifierItem::setIconLoader(std::function<QIcon(const QString &)> iconLoader)
-{
-	m_iconLoader = std::move(iconLoader);
-}
-
 void StatusNotifierItem::setNeedAttention(bool needAttention)
 {
 	m_needAttention = needAttention;
@@ -69,7 +64,7 @@ void StatusNotifierItem::updateAttention()
 
 	if (!m_needAttention)
 	{
-		m_systemTrayIcon->setIcon(m_iconLoader(m_configuration.Icon));
+		m_systemTrayIcon->setIcon(m_configuration.Icon.icon());
 		m_systemTrayIcon->show();
 		return;
 	}
@@ -77,13 +72,13 @@ void StatusNotifierItem::updateAttention()
 	switch (m_configuration.AttentionMode)
 	{
 		case StatusNotifierItemAttentionMode::StaticIcon:
-			m_attention = new StatusNotifierItemAttentionStatic{m_iconLoader(m_configuration.AttentionIcon), m_systemTrayIcon.get()};
+			m_attention = new StatusNotifierItemAttentionStatic{m_configuration.AttentionIcon.icon(), m_systemTrayIcon.get()};
 			break;
 		case StatusNotifierItemAttentionMode::Movie:
 			m_attention = new StatusNotifierItemAttentionAnimator{m_configuration.AttentionMovie, m_systemTrayIcon.get()};
 			break;
 		default:
-			m_attention = new StatusNotifierItemAttentionBlinker{m_iconLoader(m_configuration.Icon), m_iconLoader(m_configuration.AttentionIcon), m_systemTrayIcon.get()};
+			m_attention = new StatusNotifierItemAttentionBlinker{m_configuration.Icon.icon(), m_configuration.AttentionIcon.icon(), m_systemTrayIcon.get()};
 			break;
 	}
 

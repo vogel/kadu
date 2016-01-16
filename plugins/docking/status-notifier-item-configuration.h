@@ -21,12 +21,14 @@
 
 #include "status-notifier-item-attention-mode.h"
 
+#include "icons/kadu-icon.h"
+
 #include <QtCore/QString>
 
 struct StatusNotifierItemConfiguration
 {
 	StatusNotifierItemAttentionMode AttentionMode = StatusNotifierItemAttentionMode::BlinkingIcon;
-	QString AttentionIcon;
+	KaduIcon AttentionIcon;
 	QString AttentionMovie;
-	QString Icon;
+	KaduIcon Icon;
 };

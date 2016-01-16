@@ -88,12 +88,6 @@ void Docking::init()
 	connect(m_statusNotifierItem.get(), SIGNAL(activateRequested()), this, SLOT(activateRequested()));
 	connect(m_statusNotifierItem.get(), SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
 
-#ifdef Q_OS_WIN
-	m_statusNotifierItem->setIconLoader([](const QString &x){ return QIcon{x}; });
-#else
-	m_statusNotifierItem->setIconLoader([](const QString &x){ return QIcon::fromTheme(x); });
-#endif
-
 	m_dockingConfigurationProvider = make_owned<DockingConfigurationProvider>(this);
 
 	auto dockingMenuHandler = make_owned<DockingMenuHandler>(m_statusNotifierItem->contextMenu(), this);
@@ -166,9 +160,9 @@ void Docking::configurationUpdated()
 {
 	auto configuration = StatusNotifierItemConfiguration{};
 	configuration.AttentionMode = m_dockingConfigurationProvider->configuration().NewMessageIcon;
-	configuration.AttentionIcon = KaduIcon{"protocols/common/message", "128x128"}.fullPath();
+	configuration.AttentionIcon = KaduIcon{"protocols/common/message"};
 	configuration.AttentionMovie = KaduIcon{"protocols/common/message_anim", "16x16"}.fullPath();
-	configuration.Icon = Core::instance()->statusContainerManager()->statusIcon().fullPath();
+	configuration.Icon = Core::instance()->statusContainerManager()->statusIcon();
 	m_statusNotifierItem->setConfiguration(configuration);
 }
 
