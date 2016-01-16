@@ -21,15 +21,16 @@
 #include "message-render-info.h"
 
 #include "core/core.h"
+#include "gui/configuration/chat-configuration-holder.h"
 #include "message/message-html-renderer-service.h"
 #include "misc/date-time.h"
 #include "parser/parser.h"
 
-static QString getMessage(const ParserData * const object)
+static QString getMessage(MessageHtmlRendererService *messageHtmlRendererService, const ParserData * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo && Core::instance()) // TODO: can be run on app exit when Core does not exist
-		return Core::instance()->messageHtmlRendererService()->renderMessage(messageRenderInfo->message());
+		return messageHtmlRendererService->renderMessage(messageRenderInfo->message());
 	else
 		return QString();
 }
@@ -77,20 +78,20 @@ static QString getNickColor(const ParserData * const object)
 		return QString();
 }
 
-static QString getSentDate(const ParserData * const object)
+static QString getSentDate(bool niceDateFormat, const ParserData * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo && messageRenderInfo->showServerTime())
-		return printDateTime(messageRenderInfo->message().sendDate());
+		return printDateTime(niceDateFormat, messageRenderInfo->message().sendDate());
 	else
 		return QString();
 }
 
-static QString getReceivedDate(const ParserData * const object)
+static QString getReceivedDate(bool niceDateFormat, const ParserData * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
-		return printDateTime(messageRenderInfo->message().receiveDate());
+		return printDateTime(niceDateFormat, messageRenderInfo->message().receiveDate());
 	else
 		return QString();
 }
@@ -108,16 +109,16 @@ static QString getSeparator(const ParserData * const object)
 		return QString();
 }
 
-void MessageRenderInfo::registerParserTags()
+void MessageRenderInfo::registerParserTags(ChatConfigurationHolder *chatConfigurationHolder, MessageHtmlRendererService *messageHtmlRendererService)
 {
-	Parser::registerObjectTag("message", getMessage);
+	Parser::registerObjectTag("message", [messageHtmlRendererService](const ParserData * const object){ return getMessage(messageHtmlRendererService, object); });
 	Parser::registerObjectTag("messageId", getMessageId);
 	Parser::registerObjectTag("messageStatus", getMessageStatus);
 	Parser::registerObjectTag("backgroundColor", getBackgroundColor);
 	Parser::registerObjectTag("fontColor", getFontColor);
 	Parser::registerObjectTag("nickColor", getNickColor);
-	Parser::registerObjectTag("sentDate", getSentDate);
-	Parser::registerObjectTag("receivedDate", getReceivedDate);
+	Parser::registerObjectTag("sentDate", [chatConfigurationHolder](const ParserData * const object){ return getSentDate(chatConfigurationHolder->niceDateFormat(), object); } );
+	Parser::registerObjectTag("receivedDate", [chatConfigurationHolder](const ParserData * const object){ return getReceivedDate(chatConfigurationHolder->niceDateFormat(), object); });
 	Parser::registerObjectTag("separator", getSeparator);
 }
 

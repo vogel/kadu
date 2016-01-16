@@ -20,9 +20,12 @@
 #include "adium-style-renderer-factory.h"
 
 #include "chat-style/engine/adium/adium-style-renderer.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "message/message-html-renderer-service.h"
 
-AdiumStyleRendererFactory::AdiumStyleRendererFactory(std::shared_ptr<AdiumStyle> style) :
+AdiumStyleRendererFactory::AdiumStyleRendererFactory(std::shared_ptr<AdiumStyle> style, QObject *parent) :
+		QObject{parent},
 		m_style{std::move(style)}
 {
 }
@@ -31,14 +34,10 @@ AdiumStyleRendererFactory::~AdiumStyleRendererFactory()
 {
 }
 
-void AdiumStyleRendererFactory::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
-{
-	m_messageHtmlRendererService = messageHtmlRendererService;
-}
-
 not_owned_qptr<ChatStyleRenderer> AdiumStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
 {
-	auto renderer = make_not_owned<AdiumStyleRenderer>(std::move(configuration), m_style);
-	renderer->setMessageHtmlRendererService(m_messageHtmlRendererService);
-	return not_owned_qptr<ChatStyleRenderer>{renderer.release()};
+	auto result = Core::instance()->injectedFactory()->makeNotOwned<AdiumStyleRenderer>(std::move(configuration), m_style);
+	return not_owned_qptr<ChatStyleRenderer>(result.release());
 }
+
+#include "moc_adium-style-renderer-factory.cpp"

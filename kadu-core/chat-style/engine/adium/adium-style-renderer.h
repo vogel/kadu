@@ -22,8 +22,10 @@
 #include "chat-style/engine/chat-style-renderer.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class AdiumStyle;
+class ChatConfigurationHolder;
 class MessageHtmlRendererService;
 
 class AdiumStyleRenderer : public ChatStyleRenderer
@@ -34,8 +36,6 @@ public:
 	explicit AdiumStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<AdiumStyle> style, QObject *parent = nullptr);
 	virtual ~AdiumStyleRenderer();
 
-	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
-
 	virtual void clearMessages() override;
 	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) override;
 	virtual void removeFirstMessage() override;
@@ -44,6 +44,7 @@ public:
 	virtual void displayChatImage(const ChatImage &chatImage, const QString &fileName) override;
 
 private:
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
 
 	std::shared_ptr<AdiumStyle> m_style;
@@ -53,6 +54,10 @@ private:
 	QString preprocessStyleBaseHtml(bool useTransparency);
 
 private slots:
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+	INJEQT_SET void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
+	INJEQT_INIT void init();
+
 	void pageLoaded();
 
 };

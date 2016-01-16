@@ -48,18 +48,26 @@ AdiumStyleRenderer::AdiumStyleRenderer(ChatStyleRendererConfiguration configurat
 		ChatStyleRenderer{std::move(configuration), parent},
 		m_style{std::move(style)}
 {
-	this->configuration().webFrame().setHtml(preprocessStyleBaseHtml(this->configuration().useTransparency()));
-
-	connect(&this->configuration().webFrame(), SIGNAL(loadFinished(bool)), this, SLOT(pageLoaded()));
 }
 
 AdiumStyleRenderer::~AdiumStyleRenderer()
 {
 }
 
+void AdiumStyleRenderer::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
 void AdiumStyleRenderer::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
 {
 	m_messageHtmlRendererService = messageHtmlRendererService;
+}
+
+void AdiumStyleRenderer::init()
+{
+	configuration().webFrame().setHtml(preprocessStyleBaseHtml(configuration().useTransparency()));
+	connect(&configuration().webFrame(), SIGNAL(loadFinished(bool)), this, SLOT(pageLoaded()));
 }
 
 void AdiumStyleRenderer::pageLoaded()
@@ -183,7 +191,7 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
 	// Replace %destinationName%
 	result.replace(QString("%destinationName%"), Qt::escape(configuration().chat().name()));
 	// For %timeOpened%, display the date and time. TODO: get real time
-	result.replace(QString("%timeOpened%"), Qt::escape(printDateTime(QDateTime::currentDateTime())));
+	result.replace(QString("%timeOpened%"), Qt::escape(printDateTime(m_chatConfigurationHolder->niceDateFormat(), QDateTime::currentDateTime())));
 
 	//TODO 0.10.0: get real time!!!
 	QRegExp timeRegExp("%timeOpened\\{([^}]*)\\}%");
@@ -241,14 +249,14 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
 
 	// Replace time
 	QDateTime time = message.sendDate().isNull() ? message.receiveDate(): message.sendDate();
-	result.replace(QString("%time%"), Qt::escape(printDateTime(time)));
+	result.replace(QString("%time%"), Qt::escape(printDateTime(m_chatConfigurationHolder->niceDateFormat(), time)));
 	// Look for %time{X}%
 	QRegExp timeRegExp("%time\\{([^}]*)\\}%");
 	int pos = 0;
 	while ((pos = timeRegExp.indexIn(result , pos)) != -1)
 		result.replace(pos, timeRegExp.cap(0).length(), Qt::escape(AdiumTimeFormatter::convertTimeDate(timeRegExp.cap(1), time)));
 
-	result.replace("%shortTime%", Qt::escape(printDateTime(time)));
+	result.replace("%shortTime%", Qt::escape(printDateTime(m_chatConfigurationHolder->niceDateFormat(), time)));
 
 	// Look for %textbackgroundcolor{X}%
 	// TODO: highlight background color: use the X value.

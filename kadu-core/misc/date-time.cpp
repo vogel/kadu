@@ -31,14 +31,9 @@
 #endif
 #include <time.h>
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "gui/configuration/chat-configuration-holder.h"
-
 #include "date-time.h"
 
-QString printDateTime(const QDateTime &datetime)
+QString printDateTime(bool niceDateFormat, const QDateTime &datetime)
 {
 	QString ret;
 	QDateTime current_date;
@@ -52,7 +47,7 @@ QString printDateTime(const QDateTime &datetime)
 
 	if (delta != 0)
 	{
-		if (Core::instance()->chatConfigurationHolder()->niceDateFormat())
+		if (niceDateFormat)
 		{
 			if (delta == 1) // 1 day ago
 				ret.prepend(QCoreApplication::translate("@default", "Yesterday at "));

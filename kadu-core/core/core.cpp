@@ -194,7 +194,6 @@ Core::Core(injeqt::injector &&injector) :
 		m_injector{std::move(injector)},
 		KaduWindowProvider{new SimpleProvider<QWidget *>(0)},
 		MainWindowProvider{new DefaultProvider<QWidget *>(KaduWindowProvider)},
-		CurrentMessageHtmlRendererService{nullptr},
 		CurrentChatWidgetMessageHandler{nullptr},
 		Window(0),
 		IsClosing(false),
@@ -464,7 +463,7 @@ void Core::createAllDefaultToolbars()
 
 void Core::init()
 {
-	MessageRenderInfo::registerParserTags();
+	MessageRenderInfo::registerParserTags(m_injector.get<ChatConfigurationHolder>(), m_injector.get<MessageHtmlRendererService>());
 
 	runServices();
 
@@ -594,8 +593,6 @@ void Core::createGui()
 
 void Core::runServices()
 {
-	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
-
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
 		notificationEventRepository()->addNotificationEvent(notifyEvent);
@@ -620,8 +617,6 @@ void Core::runServices()
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
 	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
 	configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
-
-	CurrentMessageHtmlRendererService->setDomProcessorService(m_injector.get<DomProcessorService>());
 
 	m_injector.get<PluginMetadataFinder>()->setDirectory(pathsProvider()->dataPath() + QLatin1String{"plugins"});
 	m_injector.get<PluginStateManager>()->loadPluginStates();
@@ -661,11 +656,6 @@ BuddyManager * Core::buddyManager() const
 MessageManager * Core::messageManager() const
 {
 	return m_injector.get<MessageManager>();
-}
-
-MessageHtmlRendererService * Core::messageHtmlRendererService() const
-{
-	return CurrentMessageHtmlRendererService;
 }
 
 NotificationCallbackRepository * Core::notificationCallbackRepository() const
@@ -891,11 +881,6 @@ AvatarManager * Core::avatarManager() const
 BuddyChatManager * Core::buddyChatManager() const
 {
 	return m_injector.get<BuddyChatManager>();
-}
-
-ChatConfigurationHolder * Core::chatConfigurationHolder() const
-{
-	return m_injector.get<ChatConfigurationHolder>();
 }
 
 BuddyPreferredManager * Core::buddyPreferredManager() const

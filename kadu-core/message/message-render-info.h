@@ -29,11 +29,14 @@
 
 #include <QtCore/QString>
 
+class ChatConfigurationHolder;
+class MessageHtmlRendererService;
+
 class KADUAPI MessageRenderInfo : public ParserData
 {
 
 public:
-	static void registerParserTags();
+	static void registerParserTags(ChatConfigurationHolder *chatConfigurationHolder, MessageHtmlRendererService *messageHtmlRendererService);
 	static void unregisterParserTags();
 
 	MessageRenderInfo(Message message, QString backgroundColor, QString fontColor, QString nickColor,

@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGE_HTML_RENDERER_SERVICE_H
-#define MESSAGE_HTML_RENDERER_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -43,20 +42,9 @@ class MessageHtmlRendererService : public QObject
 {
 	Q_OBJECT
 
-	QPointer<DomProcessorService> CurrentDomProcessorService;
-
 public:
-	explicit MessageHtmlRendererService(QObject *parent = 0);
+	Q_INVOKABLE explicit MessageHtmlRendererService(QObject *parent = 0);
 	virtual ~MessageHtmlRendererService();
-
-	/**
-	 * @short Set domProcessorService,
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param domProcessorService domProcessorService
-	 *
-	 * This service will be used to process DOM representation of HTML version of messages.
-	 */
-	void setDomProcessorService(DomProcessorService *domProcessorService);
 
 	/**
 	 * @short Render Message into HTML fragment,
@@ -66,10 +54,21 @@ public:
 	 */
 	QString renderMessage(const Message &message);
 
+private:
+	QPointer<DomProcessorService> CurrentDomProcessorService;
+
+private slots:
+	/**
+	 * @short Set domProcessorService,
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param domProcessorService domProcessorService
+	 *
+	 * This service will be used to process DOM representation of HTML version of messages.
+	 */
+	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+
 };
 
 /**
  * @}
  */
-
-#endif // MESSAGE_HTML_RENDERER_SERVICE_H

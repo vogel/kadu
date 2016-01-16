@@ -23,7 +23,7 @@
 #include "chat-style/engine/adium/adium-style-renderer-factory.h"
 #include "chat-style/engine/adium/adium-style.h"
 #include "core/core.h"
-#include "message/message-html-renderer-service.h"
+#include "core/injected-factory.h"
 #include "misc/memory.h"
 #include "misc/paths-provider.h"
 
@@ -35,11 +35,6 @@ AdiumStyleEngine::AdiumStyleEngine()
 
 AdiumStyleEngine::~AdiumStyleEngine()
 {
-}
-
-void AdiumStyleEngine::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
-{
-	CurrentMessageHtmlRendererService = messageHtmlRendererService;
 }
 
 QString AdiumStyleEngine::isStyleValid(QString stylePath)
@@ -75,7 +70,5 @@ std::unique_ptr<ChatStyleRendererFactory> AdiumStyleEngine::createRendererFactor
 	auto style = std::make_shared<AdiumStyle>(chatStyle.name());
 	style->setCurrentVariant(chatStyle.variant());
 
-	auto result = make_unique<AdiumStyleRendererFactory>(style);
-	result.get()->setMessageHtmlRendererService(CurrentMessageHtmlRendererService);
-	return std::move(result);
+	return Core::instance()->injectedFactory()->makeUnique<AdiumStyleRendererFactory>(style);
 }

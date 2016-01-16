@@ -54,7 +54,6 @@ class BuddyDummyFactory;
 class BuddyManager;
 class BuddyPreferredManager;
 class BuddyStorage;
-class ChatConfigurationHolder;
 class ChatConfigurationWidgetFactoryRepository;
 class ChatImageRequestService;
 class ChatManager;
@@ -83,7 +82,6 @@ class KaduIcon;
 class KaduWindow;
 class MenuInventory;
 class Message;
-class MessageHtmlRendererService;
 class MessageManager;
 class MessageTransformerService;
 class Myself;
@@ -131,8 +129,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	std::shared_ptr<SimpleProvider<QWidget *>> KaduWindowProvider;
 	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
 
-	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
-	ChatWidgetActions *CurrentChatWidgetActions;
 	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
 
 	KaduWindow *Window;
@@ -180,7 +176,6 @@ public:
 
 	BuddyManager * buddyManager() const;
 	MessageManager * messageManager() const;
-	MessageHtmlRendererService * messageHtmlRendererService() const;
 	NotificationCallbackRepository * notificationCallbackRepository() const;
 	NotificationEventRepository * notificationEventRepository() const;
 	NotificationManager * notificationManager() const;
@@ -230,7 +225,6 @@ public:
 	ConfigurationManager * configurationManager() const;
 	AvatarManager * avatarManager() const;
 	BuddyChatManager * buddyChatManager() const;
-	ChatConfigurationHolder * chatConfigurationHolder() const;
 	BuddyPreferredManager * buddyPreferredManager() const;
 	ChatTypeManager * chatTypeManager() const;
 	Actions * actions() const;

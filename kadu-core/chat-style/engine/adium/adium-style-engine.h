@@ -23,17 +23,12 @@
 
 #include <QtCore/QPointer>
 
-class MessageHtmlRendererService;
-
 class AdiumStyleEngine : public ChatStyleEngine
 {
-	QPointer<MessageHtmlRendererService> CurrentMessageHtmlRendererService;
 
 public:
 	explicit AdiumStyleEngine();
 	virtual ~AdiumStyleEngine();
-
-	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
 	virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle);
 

@@ -21,25 +21,21 @@
 
 #include "chat-style/engine/chat-style-renderer-factory.h"
 
+#include <QtCore/QObject>
 #include <QtCore/QPointer>
 
 class AdiumStyle;
-class MessageHtmlRendererService;
 
-class AdiumStyleRendererFactory : public ChatStyleRendererFactory
+class AdiumStyleRendererFactory : public QObject, public ChatStyleRendererFactory
 {
+	Q_OBJECT
 
 public:
-	explicit AdiumStyleRendererFactory(std::shared_ptr<AdiumStyle> style);
+	explicit AdiumStyleRendererFactory(std::shared_ptr<AdiumStyle> style, QObject *parent = nullptr);
 	virtual ~AdiumStyleRendererFactory();
-
-	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
-
 	virtual not_owned_qptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
 
 private:
-	QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
-
 	std::shared_ptr<AdiumStyle> m_style;
 
 };

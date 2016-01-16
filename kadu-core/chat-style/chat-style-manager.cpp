@@ -84,10 +84,7 @@ void ChatStyleManager::setFormattedStringFactory(FormattedStringFactory *formatt
 void ChatStyleManager::init()
 {
 	registerChatStyleEngine("Kadu", make_unique<KaduStyleEngine>());
-
-	auto adiumStyleEngine = make_unique<AdiumStyleEngine>();
-	adiumStyleEngine.get()->setMessageHtmlRendererService(Core::instance()->messageHtmlRendererService());
-	registerChatStyleEngine("Adium", std::move(adiumStyleEngine));
+	registerChatStyleEngine("Adium", make_unique<AdiumStyleEngine>());
 
 	loadStyles();
 	configurationUpdated();

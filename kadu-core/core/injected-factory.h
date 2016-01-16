@@ -53,6 +53,14 @@ public:
 	}
 
 	template<typename T, typename ...Args>
+	not_owned_qptr<T> makeNotOwned(Args&& ...args)
+	{
+		auto result = make_not_owned<T>(std::forward<Args>(args)...);
+		injectInto(result);
+		return result;
+	}
+
+	template<typename T, typename ...Args>
 	std::unique_ptr<T> makeUnique(Args&& ...args)
 	{
 		auto result = make_unique<T>(std::forward<Args>(args)...);
