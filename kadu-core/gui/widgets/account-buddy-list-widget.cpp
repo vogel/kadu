@@ -77,7 +77,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameFilter);
 
-	TalkableTreeView *view = new TalkableTreeView(BuddiesWidget);
+	TalkableTreeView *view = Core::instance()->injectedFactory()->makeInjected<TalkableTreeView>(BuddiesWidget);
 	view->setChain(chain);
 
 	BuddiesWidget->setView(view);

@@ -135,7 +135,7 @@ void AddConferenceWindow::createGui()
 	connect(buddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameFilter);
 
-	TalkableTreeView *view = new TalkableTreeView(buddiesWidget);
+	TalkableTreeView *view = Core::instance()->injectedFactory()->makeInjected<TalkableTreeView>(buddiesWidget);
 	view->setModel(chain->lastModel());
 	view->setRootIsDecorated(false);
 	view->setShowIdentityNameIfMany(false);

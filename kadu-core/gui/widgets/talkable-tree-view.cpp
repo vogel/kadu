@@ -71,10 +71,47 @@
 TalkableTreeView::TalkableTreeView(QWidget *parent) :
 		KaduTreeView(parent), Delegate(0), Chain(0), ContextMenuEnabled(false)
 {
-	Context = new BaseActionContext{this};
-	connect(Core::instance()->statusConfigurationHolder(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
+}
 
-	Delegate = Core::instance()->injectedFactory()->makeInjected<TalkableDelegate>(this);
+TalkableTreeView::~TalkableTreeView()
+{
+	disconnect(m_statusConfigurationHolder, 0, this, 0);
+
+	delete Context;
+	Context = 0;
+}
+
+void TalkableTreeView::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void TalkableTreeView::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
+void TalkableTreeView::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
+}
+
+void TalkableTreeView::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
+{
+	m_statusConfigurationHolder = statusConfigurationHolder;
+}
+
+void TalkableTreeView::setToolTipClassManager(ToolTipClassManager *toolTipClassManager)
+{
+	m_toolTipClassManager = toolTipClassManager;
+}
+
+void TalkableTreeView::init()
+{
+	Context = new BaseActionContext{this};
+	connect(m_statusConfigurationHolder, SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
+
+	Delegate = m_injectedFactory->makeInjected<TalkableDelegate>(this);
 	setItemDelegate(Delegate);
 
 	ToolTipTimeoutTimer.setSingleShot(true);
@@ -83,14 +120,6 @@ TalkableTreeView::TalkableTreeView(QWidget *parent) :
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 
 	updateContext();
-}
-
-TalkableTreeView::~TalkableTreeView()
-{
-	disconnect(Core::instance()->statusConfigurationHolder(), 0, this, 0);
-
-	delete Context;
-	Context = 0;
 }
 
 void TalkableTreeView::setChain(ModelChain *chain)
@@ -169,8 +198,8 @@ void TalkableTreeView::contextMenuEvent(QContextMenuEvent *event)
 		return;
 
 	QScopedPointer<QMenu> menu(new QMenu());
-	Core::instance()->menuInventory()->menu("buddy-list")->attachToMenu(menu.data());
-	Core::instance()->menuInventory()->menu("buddy-list")->applyTo(menu.data(), Context);
+	m_menuInventory->menu("buddy-list")->attachToMenu(menu.data());
+	m_menuInventory->menu("buddy-list")->applyTo(menu.data(), Context);
 	menu->exec(event->globalPos());
 }
 
@@ -239,12 +268,12 @@ void TalkableTreeView::mouseMoveEvent(QMouseEvent *event)
 
 StatusContainer * TalkableTreeView::statusContainerForChat(const Chat &chat) const
 {
-	if (Core::instance()->statusConfigurationHolder()->isSetStatusPerIdentity())
+	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
 		return chat.chatAccount().accountIdentity().data();
-	else if (Core::instance()->statusConfigurationHolder()->isSetStatusPerAccount())
+	else if (m_statusConfigurationHolder->isSetStatusPerAccount())
 		return chat.chatAccount().statusContainer();
 	else
-		return Core::instance()->statusContainerManager();
+		return m_statusContainerManager;
 }
 
 void TalkableTreeView::setCurrentTalkable(const Talkable &talkable)
@@ -289,7 +318,7 @@ void TalkableTreeView::toolTipTimeout()
 {
 	if (Talkable::ItemNone != ToolTipItem.type())
 	{
-		Core::instance()->toolTipClassManager()->showToolTip(QCursor::pos(), ToolTipItem);
+		m_toolTipClassManager->showToolTip(QCursor::pos(), ToolTipItem);
 		ToolTipTimeoutTimer.stop();
 	}
 }
@@ -317,7 +346,7 @@ void TalkableTreeView::toolTipRestart(QPoint pos)
 
 void TalkableTreeView::toolTipHide(bool waitForAnother)
 {
-	Core::instance()->toolTipClassManager()->hideToolTip();
+	m_toolTipClassManager->hideToolTip();
 
 	if (waitForAnother)
 		ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);

@@ -21,6 +21,8 @@
 
 #include <QtWidgets/QLineEdit>
 
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "model/model-chain.h"
@@ -37,7 +39,7 @@ SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
 	setAttribute(Qt::WA_WindowPropagation);
 	setAttribute(Qt::WA_X11NetWmWindowTypeCombo);
 
-	View = new TalkableTreeView(this);
+	View = Core::instance()->injectedFactory()->makeInjected<TalkableTreeView>(this);
 	setView(View);
 
 	Chain = new ModelChain(this);

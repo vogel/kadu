@@ -18,11 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TALKABLE_TREE_VIEW_H
-#define TALKABLE_TREE_VIEW_H
+#pragma once
 
-#include <QtCore/QDateTime>
-#include <QtCore/QTimer>
+#include "gui/widgets/kadu-tree-view.h"
 
 #include "buddies/buddy.h"
 #include "chat/chat.h"
@@ -32,7 +30,10 @@
 #include "talkable/talkable.h"
 #include "exports.h"
 
-#include "gui/widgets/kadu-tree-view.h"
+#include <QtCore/QDateTime>
+#include <QtCore/QPointer>
+#include <QtCore/QTimer>
+#include <injeqt/injeqt.h>
 
 class QContextMenuEvent;
 class QModelIndex;
@@ -42,60 +43,18 @@ class Buddy;
 class BuddySet;
 class BuddiesModelProxy;
 class ContactSet;
+class InjectedFactory;
+class MenuInventory;
 class ModelChain;
+class StatusConfigurationHolder;
+class StatusContainerManager;
 class TalkableDelegate;
 class TalkableDelegateConfiguration;
+class ToolTipClassManager;
 
 class KADUAPI TalkableTreeView : public KaduTreeView, public ActionContextProvider
 {
 	Q_OBJECT
-
-	friend class TalkableDelegateConfiguration;
-
-	TalkableDelegate *Delegate;
-	ModelChain *Chain;
-
-	BaseActionContext *Context;
-	Talkable CurrentTalkable;
-
-	Talkable talkableAt(const QModelIndex &index) const;
-	void triggerActivate(const QModelIndex &index);
-
-	// Tool tips
-	Talkable ToolTipItem;
-	QTimer ToolTipTimeoutTimer;
-
-	bool ContextMenuEnabled;
-
-	StatusContainer * statusContainerForChat(const Chat &chat) const;
-
-	void setCurrentTalkable(const Talkable &talkable);
-
-private slots:
-	void doubleClickedSlot(const QModelIndex &index);
-
-	// Tool tips
-	void toolTipTimeout();
-	void toolTipRestart(QPoint pos);
-	void toolTipHide(bool waitForAnother = true);
-
-	// Actions
-	void updateContext();
-
-protected:
-	virtual void contextMenuEvent(QContextMenuEvent *event);
-	virtual void keyPressEvent(QKeyEvent *event);
-
-	virtual void wheelEvent(QWheelEvent *event);
-	virtual void leaveEvent(QEvent *event);
-
-	virtual void mousePressEvent(QMouseEvent *event);
-	virtual void mouseReleaseEvent(QMouseEvent *event);
-	virtual void mouseMoveEvent(QMouseEvent *event);
-
-	virtual void hideEvent(QHideEvent *event);
-
-	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
 
 public:
 	explicit TalkableTreeView(QWidget *parent = 0);
@@ -120,6 +79,65 @@ signals:
 	void talkableActivated(const Talkable &talkable);
 	void currentChanged(const Talkable &talkable);
 
-};
+protected:
+	virtual void contextMenuEvent(QContextMenuEvent *event);
+	virtual void keyPressEvent(QKeyEvent *event);
 
-#endif // TALKABLE_TREE_VIEW_H
+	virtual void wheelEvent(QWheelEvent *event);
+	virtual void leaveEvent(QEvent *event);
+
+	virtual void mousePressEvent(QMouseEvent *event);
+	virtual void mouseReleaseEvent(QMouseEvent *event);
+	virtual void mouseMoveEvent(QMouseEvent *event);
+
+	virtual void hideEvent(QHideEvent *event);
+
+	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+
+private:
+	friend class TalkableDelegateConfiguration;
+
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<MenuInventory> m_menuInventory;
+	QPointer<StatusContainerManager> m_statusContainerManager;
+	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+	QPointer<ToolTipClassManager> m_toolTipClassManager;
+
+	TalkableDelegate *Delegate;
+	ModelChain *Chain;
+
+	BaseActionContext *Context;
+	Talkable CurrentTalkable;
+
+	Talkable talkableAt(const QModelIndex &index) const;
+	void triggerActivate(const QModelIndex &index);
+
+	// Tool tips
+	Talkable ToolTipItem;
+	QTimer ToolTipTimeoutTimer;
+
+	bool ContextMenuEnabled;
+
+	StatusContainer * statusContainerForChat(const Chat &chat) const;
+
+	void setCurrentTalkable(const Talkable &talkable);
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
+	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
+	INJEQT_INIT void init();
+
+	void doubleClickedSlot(const QModelIndex &index);
+
+	// Tool tips
+	void toolTipTimeout();
+	void toolTipRestart(QPoint pos);
+	void toolTipHide(bool waitForAnother = true);
+
+	// Actions
+	void updateContext();
+
+};

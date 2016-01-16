@@ -99,7 +99,7 @@ void HistoryMessagesTab::createGui()
 	FilteredView->filterWidget()->setAutoVisibility(false);
 	FilteredView->filterWidget()->setLabel(tr("Filter") + ":");
 
-	TalkableTree = new TalkableTreeView(FilteredView);
+	TalkableTree = m_injectedFactory->makeInjected<TalkableTreeView>(FilteredView);
 	TalkableTree->setAlternatingRowColors(true);
 	TalkableTree->setContextMenuEnabled(true);
 	TalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
