@@ -171,7 +171,7 @@ void KaduWindow::createGui()
 	connect(Roster, SIGNAL(currentChanged(Talkable)), InfoPanel, SLOT(displayItem(Talkable)));
 	connect(Roster, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
 
-	ChangeStatusButtons = new StatusButtons(MainWidget);
+	ChangeStatusButtons = m_injectedFactory->makeInjected<StatusButtons>(MainWidget);
 
 	if (!configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->setVisible(false);

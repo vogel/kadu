@@ -22,7 +22,6 @@
  */
 
 #include "accounts/account-manager.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/status-button.h"
 #include "status/status-configuration-holder.h"
@@ -33,18 +32,32 @@
 StatusButtons::StatusButtons(QWidget *parent) :
 		QToolBar(parent)//, Layout(0), HasStretch(0)
 {
-	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-
-	triggerAllStatusContainerRegistered();
 }
 
 StatusButtons::~StatusButtons()
 {
 }
 
+void StatusButtons::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void StatusButtons::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
+{
+	m_statusConfigurationHolder = statusConfigurationHolder;
+}
+
+void StatusButtons::init()
+{
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+	triggerAllStatusContainerRegistered();
+}
+
 void StatusButtons::enableStatusName()
 {
-	if (Core::instance()->statusConfigurationHolder()->setStatusMode() != SetStatusPerAccount && 1 == Buttons.count())
+	if (m_statusConfigurationHolder->setStatusMode() != SetStatusPerAccount && 1 == Buttons.count())
 		Buttons.begin().value()->setDisplayStatusName(true);
 }
 
@@ -61,7 +74,7 @@ void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 
 	disableStatusName();
 
-	StatusButton *button = Core::instance()->injectedFactory()->makeInjected<StatusButton>(statusContainer);
+	StatusButton *button = m_injectedFactory->makeInjected<StatusButton>(statusContainer);
 	addWidget(button);
 	Buttons[statusContainer] = button;
 

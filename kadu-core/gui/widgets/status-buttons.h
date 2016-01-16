@@ -19,34 +19,44 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_BUTTONS_H
-#define STATUS_BUTTONS_H
-
-#include <QtCore/QMap>
-#include <QtWidgets/QToolBar>
+#pragma once
 
 #include "status/status-container-aware-object.h"
 
+#include <QtCore/QMap>
+#include <QtCore/QPointer>
+#include <QtWidgets/QToolBar>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
 class StatusButton;
+class StatusConfigurationHolder;
 class StatusContainer;
 
 class KADUAPI StatusButtons : public QToolBar, private StatusContainerAwareObject
 {
 	Q_OBJECT
 
-	QMap<StatusContainer *, StatusButton *> Buttons;
-
-	void enableStatusName();
-	void disableStatusName();
+public:
+	explicit StatusButtons(QWidget *parent = nullptr);
+	virtual ~StatusButtons();
 
 protected:
 	virtual void statusContainerRegistered(StatusContainer *statusContainer);
 	virtual void statusContainerUnregistered(StatusContainer *statusContainer);
 
-public:
-	explicit StatusButtons(QWidget *parent = 0);
-	virtual ~StatusButtons();
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+
+	QMap<StatusContainer *, StatusButton *> Buttons;
+
+	void enableStatusName();
+	void disableStatusName();
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
+	INJEQT_INIT void init();
 
 };
-
-#endif // STATUS_BUTTONS_H
