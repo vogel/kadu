@@ -768,21 +768,6 @@ PluginActivationService * Core::pluginActivationService() const
 	return m_injector.get<PluginActivationService>();
 }
 
-PluginConflictResolver * Core::pluginConflictResolver() const
-{
-	return m_injector.get<PluginConflictResolver>();
-}
-
-PluginDependencyHandler * Core::pluginDependencyHandler() const
-{
-	return m_injector.get<PluginDependencyHandler>();
-}
-
-PluginStateManager * Core::pluginStateManager() const
-{
-	return m_injector.get<PluginStateManager>();
-}
-
 PluginStateService * Core::pluginStateService() const
 {
 	return m_injector.get<PluginStateService>();

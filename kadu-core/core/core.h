@@ -203,9 +203,6 @@ public:
 	ConfigurationUiHandlerRepository * configurationUiHandlerRepository() const;
 
 	PluginActivationService * pluginActivationService() const;
-	PluginConflictResolver * pluginConflictResolver() const;
-	PluginDependencyHandler * pluginDependencyHandler() const;
-	PluginStateManager * pluginStateManager() const;
 	PluginStateService * pluginStateService() const;
 
 	RosterReplacer * rosterReplacer() const;
