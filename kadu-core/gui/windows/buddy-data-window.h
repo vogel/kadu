@@ -20,17 +20,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_DATA_WINDOW_H
-#define BUDDY_DATA_WINDOW_H
-
-#include <QtCore/QMap>
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "buddies/buddy.h"
 #include "gui/widgets/buddy-options-configuration-widget.h"
 #include "gui/widgets/configuration-value-state-notifier.h"
-
 #include "exports.h"
+
+#include <QtCore/QMap>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QCheckBox;
 class QHostInfo;
@@ -42,20 +41,25 @@ class QScrollArea;
 class QTabWidget;
 class QVBoxLayout;
 
-class Buddy;
 class BuddyConfigurationWidget;
 class BuddyConfigurationWidgetFactory;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyGeneralConfigurationWidget;
 class BuddyGroupsConfigurationWidget;
+class BuddyManager;
 class BuddyPersonalInfoConfigurationWidget;
+class Buddy;
 class CompositeConfigurationValueStateNotifier;
+class Myself;
 
 class KADUAPI BuddyDataWindow : public QWidget
 {
 	Q_OBJECT
 
-	BuddyConfigurationWidgetFactoryRepository *MyBuddyConfigurationWidgetFactoryRepository;
+	QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<Myself> m_myself;
+
 	QMap<BuddyConfigurationWidgetFactory *, BuddyConfigurationWidget *> BuddyConfigurationWidgets;
 
 	Buddy MyBuddy;
@@ -82,6 +86,11 @@ class KADUAPI BuddyDataWindow : public QWidget
 	void applyBuddyConfigurationWidgets();
 
 private slots:
+	INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_INIT void init();
+
 	void factoryRegistered(BuddyConfigurationWidgetFactory *factory);
 	void factoryUnregistered(BuddyConfigurationWidgetFactory *factory);
 
@@ -95,7 +104,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	explicit BuddyDataWindow(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository, const Buddy &buddy);
+	explicit BuddyDataWindow(const Buddy &buddy);
 	virtual ~BuddyDataWindow();
 
 	QList<BuddyConfigurationWidget *> buddyConfigurationWidgets() const;
@@ -113,5 +122,3 @@ signals:
 	void destroyed(const Buddy &buddy);
 
 };
-
-#endif // BUDDY_DATA_WINDOW_H

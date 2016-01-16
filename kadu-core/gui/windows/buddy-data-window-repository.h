@@ -22,8 +22,10 @@
 #include "buddies/buddy.h"
 
 #include <QtCore/QObject>
+#include <injeqt/injeqt.h>
 
 class BuddyDataWindow;
+class InjectedFactory;
 
 class BuddyDataWindowRepository : public QObject
 {
@@ -40,9 +42,13 @@ public slots:
 	void showBuddyWindow(const Buddy &buddy);
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	QMap<Buddy, BuddyDataWindow *> Windows;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 	void windowDestroyed(const Buddy &buddy);
 
 };

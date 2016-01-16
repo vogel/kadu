@@ -48,7 +48,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory.h"
@@ -72,11 +71,37 @@
 
 #include "buddy-data-window.h"
 
-BuddyDataWindow::BuddyDataWindow(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository, const Buddy &buddy) :
-		QWidget(0, Qt::Dialog), MyBuddyConfigurationWidgetFactoryRepository(buddyConfigurationWidgetFactoryRepository), MyBuddy(buddy),
+BuddyDataWindow::BuddyDataWindow(const Buddy &buddy) :
+		QWidget(0, Qt::Dialog), MyBuddy(buddy),
 		ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this))
 {
-	Q_ASSERT(MyBuddy != Core::instance()->myself()->buddy());
+}
+
+BuddyDataWindow::~BuddyDataWindow()
+{
+	kdebugf();
+	emit destroyed(MyBuddy);
+	kdebugf2();
+}
+
+void BuddyDataWindow::setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository)
+{
+	m_buddyConfigurationWidgetFactoryRepository = buddyConfigurationWidgetFactoryRepository;
+}
+
+void BuddyDataWindow::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void BuddyDataWindow::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void BuddyDataWindow::init()
+{
+	Q_ASSERT(MyBuddy != m_myself->buddy());
 
 	kdebugf();
 
@@ -88,29 +113,19 @@ BuddyDataWindow::BuddyDataWindow(BuddyConfigurationWidgetFactoryRepository *budd
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ManageUsersDialogGeometry"), QRect(0, 50, 425, 500), this);
 
-	connect(Core::instance()->buddyManager(), SIGNAL(buddyRemoved(Buddy)),
+	connect(m_buddyManager, SIGNAL(buddyRemoved(Buddy)),
 			this, SLOT(buddyRemoved(Buddy)));
 
 	connect(ValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
 	stateChangedSlot(ValueStateNotifier->state());
 
-	if (MyBuddyConfigurationWidgetFactoryRepository)
-	{
-		connect(MyBuddyConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(BuddyConfigurationWidgetFactory*)),
-				this, SLOT(factoryRegistered(BuddyConfigurationWidgetFactory*)));
-		connect(MyBuddyConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(BuddyConfigurationWidgetFactory*)),
-				this, SLOT(factoryUnregistered(BuddyConfigurationWidgetFactory*)));
+	connect(m_buddyConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(BuddyConfigurationWidgetFactory*)),
+			this, SLOT(factoryRegistered(BuddyConfigurationWidgetFactory*)));
+	connect(m_buddyConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(BuddyConfigurationWidgetFactory*)),
+			this, SLOT(factoryUnregistered(BuddyConfigurationWidgetFactory*)));
 
-		foreach (BuddyConfigurationWidgetFactory *factory, MyBuddyConfigurationWidgetFactoryRepository->factories())
-			factoryRegistered(factory);
-	}
-}
-
-BuddyDataWindow::~BuddyDataWindow()
-{
-	kdebugf();
-	emit destroyed(MyBuddy);
-	kdebugf2();
+	foreach (BuddyConfigurationWidgetFactory *factory, m_buddyConfigurationWidgetFactoryRepository->factories())
+		factoryRegistered(factory);
 }
 
 void BuddyDataWindow::factoryRegistered(BuddyConfigurationWidgetFactory *factory)

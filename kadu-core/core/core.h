@@ -48,7 +48,6 @@ class Actions;
 class Application;
 class AvatarManager;
 class BuddyChatManager;
-class BuddyConfigurationWidgetFactoryRepository;
 class BuddyDummyFactory;
 class BuddyManager;
 class BuddyPreferredManager;
@@ -171,7 +170,6 @@ public:
 	NotificationService * notificationService() const;
 	FormattedStringFactory * formattedStringFactory() const;
 	RawMessageTransformerService * rawMessageTransformerService() const;
-	BuddyConfigurationWidgetFactoryRepository * buddyConfigurationWidgetFactoryRepository() const;
 	ChatConfigurationWidgetFactoryRepository * chatConfigurationWidgetFactoryRepository() const;
 	ChatTopBarWidgetFactoryRepository * chatTopBarWidgetFactoryRepository() const;
 	UnreadMessageRepository * unreadMessageRepository() const;

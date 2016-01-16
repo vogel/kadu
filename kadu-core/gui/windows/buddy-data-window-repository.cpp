@@ -19,6 +19,7 @@
 
 #include "core/core.h"
 #include "core/myself.h"
+#include <core/injected-factory.h>
 #include "gui/windows/buddy-data-window.h"
 
 #include "buddy-data-window-repository.h"
@@ -32,6 +33,10 @@ BuddyDataWindowRepository::~BuddyDataWindowRepository()
 {
 }
 
+void BuddyDataWindowRepository::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
 
 BuddyDataWindow * BuddyDataWindowRepository::windowForBuddy(const Buddy &buddy)
 {
@@ -41,7 +46,7 @@ BuddyDataWindow * BuddyDataWindowRepository::windowForBuddy(const Buddy &buddy)
 	if (buddy == Core::instance()->myself()->buddy())
 		return 0;
 
-	BuddyDataWindow *result = new BuddyDataWindow(Core::instance()->buddyConfigurationWidgetFactoryRepository(), buddy);
+	auto result = m_injectedFactory->makeInjected<BuddyDataWindow>(buddy);
 	connect(result, SIGNAL(destroyed(Buddy)), this, SLOT(windowDestroyed(Buddy)));
 	Windows.insert(buddy, result);
 
