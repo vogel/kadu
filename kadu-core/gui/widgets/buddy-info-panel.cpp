@@ -60,11 +60,6 @@ BuddyInfoPanel::~BuddyInfoPanel()
 	disconnect(Core::instance()->buddyPreferredManager(), 0, this, 0);
 }
 
-void BuddyInfoPanel::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
-}
-
 void BuddyInfoPanel::setDomProcessorService(DomProcessorService *domProcessorService)
 {
 	m_domProcessorService = domProcessorService;
@@ -77,7 +72,7 @@ void BuddyInfoPanel::init()
 
 void BuddyInfoPanel::configurationUpdated()
 {
-	setUserFont(m_configuration->deprecatedApi()->readFontEntry("Look", "PanelFont").toString(), true);
+	setUserFont(configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont").toString(), true);
 
 	update();
 }
@@ -90,10 +85,10 @@ void BuddyInfoPanel::buddyUpdated(const Buddy &buddy)
 
 void BuddyInfoPanel::update()
 {
-	if (!m_configuration)
+	if (!configuration())
 		return;
 
-	QFont font = m_configuration->deprecatedApi()->readFontEntry("Look", "PanelFont");
+	QFont font = configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont");
 	QString fontFamily = font.family();
 	QString fontSize;
 	if (font.pointSize() > 0)
@@ -104,10 +99,10 @@ void BuddyInfoPanel::update()
 	QString fontStyle = font.italic() ? "italic" : "normal";
 	QString fontWeight = font.bold() ? "bold" : "normal";
 	QString textDecoration = font.underline() ? "underline" : "none";
-	QString fontColor = m_configuration->deprecatedApi()->readColorEntry("Look", "InfoPanelFgColor").name();
-	bool backgroundFilled = m_configuration->deprecatedApi()->readBoolEntry("Look", "InfoPanelBgFilled");
+	QString fontColor = configuration()->deprecatedApi()->readColorEntry("Look", "InfoPanelFgColor").name();
+	bool backgroundFilled = configuration()->deprecatedApi()->readBoolEntry("Look", "InfoPanelBgFilled");
 	if (backgroundFilled)
-		BackgroundColor = m_configuration->deprecatedApi()->readColorEntry("Look", "InfoPanelBgColor").name();
+		BackgroundColor = configuration()->deprecatedApi()->readColorEntry("Look", "InfoPanelBgColor").name();
 	else
 		BackgroundColor = "transparent";
 
@@ -144,11 +139,11 @@ void BuddyInfoPanel::update()
 		"</html>"
 		).arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, BackgroundColor, "%1");
 
-	QString syntaxFile = m_configuration->deprecatedApi()->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
+	QString syntaxFile = configuration()->deprecatedApi()->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
 	if (syntaxFile == "default")
 	{
 		syntaxFile = "Old Default";
-		m_configuration->deprecatedApi()->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
+		configuration()->deprecatedApi()->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
 	}
 
 	Syntax = SyntaxList::readSyntax("infopanel", syntaxFile,
@@ -157,7 +152,7 @@ void BuddyInfoPanel::update()
 	Syntax = Syntax.remove("file:///");
 	displayItem(Item);
 
-	if (m_configuration->deprecatedApi()->readBoolEntry("Look", "PanelVerticalScrollbar"))
+	if (configuration()->deprecatedApi()->readBoolEntry("Look", "PanelVerticalScrollbar"))
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
 	else
 		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);

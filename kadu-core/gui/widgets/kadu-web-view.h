@@ -34,13 +34,19 @@ class QPoint;
 class QTimer;
 class QUrl;
 
+class ClipboardHtmlTransformerService;
+class Configuration;
 class ImageStorageService;
+class UrlHandlerManager;
 
 class KADUAPI KaduWebView : public QWebView
 {
 	Q_OBJECT
 
-	QPointer<ImageStorageService> CurrentImageStorageService;
+	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
+	QPointer<Configuration> m_configuration;
+	QPointer<ImageStorageService> m_imageStorageService;
+	QPointer<UrlHandlerManager> m_urlHandlerManager;
 
 	bool DraggingPossible;
 	bool IsLoading;
@@ -48,10 +54,13 @@ class KADUAPI KaduWebView : public QWebView
 	QPoint DragStartPosition;
 	QTimer *RefreshTimer;
 
-	static void convertClipboardHtml(QClipboard::Mode mode);
+	void convertClipboardHtml(QClipboard::Mode mode) const;
 
 private slots:
+	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 
 	void hyperlinkClicked(const QUrl &anchor) const;
 	void loadStarted();
@@ -65,6 +74,8 @@ private slots:
 #endif
 
 protected:
+	Configuration * configuration();
+
 	virtual void contextMenuEvent(QContextMenuEvent *e);
 	virtual void mouseMoveEvent(QMouseEvent *e);
 	virtual void mousePressEvent(QMouseEvent *e);

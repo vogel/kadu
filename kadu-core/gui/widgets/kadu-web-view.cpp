@@ -56,8 +56,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/services/chat-image-service.h"
@@ -99,14 +97,34 @@ KaduWebView::~KaduWebView()
 {
 }
 
+void KaduWebView::setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService)
+{
+	m_clipboardHtmlTransformerService = clipboardHtmlTransformerService;
+}
+
+void KaduWebView::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void KaduWebView::setImageStorageService(ImageStorageService *imageStorageService)
 {
-	CurrentImageStorageService = imageStorageService;
+	m_imageStorageService = imageStorageService;
+}
+
+void KaduWebView::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
+{
+	m_urlHandlerManager = urlHandlerManager;
+}
+
+Configuration * KaduWebView::configuration()
+{
+	return m_configuration;
 }
 
 ImageStorageService * KaduWebView::imageStorageService() const
 {
-	return CurrentImageStorageService.data();
+	return m_imageStorageService.data();
 }
 
 void KaduWebView::contextMenuEvent(QContextMenuEvent *e)
@@ -219,7 +237,7 @@ void KaduWebView::mouseReleaseEvent(QMouseEvent *e)
 
 void KaduWebView::hyperlinkClicked(const QUrl &anchor) const
 {
-	Core::instance()->urlHandlerManager()->openUrl(anchor.toEncoded());
+	m_urlHandlerManager->openUrl(anchor.toEncoded());
 }
 
 void KaduWebView::loadStarted()
@@ -245,8 +263,8 @@ void KaduWebView::saveImage()
 	kdebugf();
 
 	QUrl imageUrl = page()->currentFrame()->hitTestContent(ContextMenuPos).imageUrl();
-	if (CurrentImageStorageService)
-		imageUrl = CurrentImageStorageService->toFileUrl(imageUrl);
+	if (m_imageStorageService)
+		imageUrl = m_imageStorageService->toFileUrl(imageUrl);
 
 	QString imageFullPath = imageUrl.toLocalFile();
 	if (imageFullPath.isEmpty())
@@ -271,7 +289,7 @@ void KaduWebView::saveImage()
 	QPointer<QFileDialog> fd = new QFileDialog(this);
 	fd->setFileMode(QFileDialog::AnyFile);
 	fd->setAcceptMode(QFileDialog::AcceptSave);
-	fd->setDirectory(Core::instance()->configuration()->deprecatedApi()->readEntry("Chat", "LastImagePath"));
+	fd->setDirectory(m_configuration->deprecatedApi()->readEntry("Chat", "LastImagePath"));
 	fd->setNameFilter(QString("%1 (*%2)").arg(QCoreApplication::translate("ImageDialog", "Images"), fileExt));
 	fd->setLabelText(QFileDialog::FileName, imageFullPath.section('/', -1));
 	fd->setWindowTitle(tr("Save image"));
@@ -325,7 +343,7 @@ void KaduWebView::saveImage()
 			}
 		}
 
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
+		m_configuration->deprecatedApi()->writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
 	} while (false);
 
 	delete fd.data();
@@ -351,12 +369,10 @@ void KaduWebView::textCopied() const
 }
 
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
-void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
+void KaduWebView::convertClipboardHtml(QClipboard::Mode mode) const
 {
 	QString html = QApplication::clipboard()->mimeData(mode)->html();
-
-	if (Core::instance()->clipboardHtmlTransformerService())
-		html = Core::instance()->clipboardHtmlTransformerService()->transform(html);
+	m_clipboardHtmlTransformerService->transform(html);
 
 	QTextDocument document;
 	document.setHtml(html);

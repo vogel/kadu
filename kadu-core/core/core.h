@@ -63,7 +63,6 @@ class ChatWidgetActions;
 class ChatWidgetManager;
 class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
-class ClipboardHtmlTransformerService;
 class ConfigurationManager;
 class Configuration;
 class ContactManager;
@@ -172,7 +171,6 @@ public:
 	NotificationService * notificationService() const;
 	FormattedStringFactory * formattedStringFactory() const;
 	RawMessageTransformerService * rawMessageTransformerService() const;
-	ClipboardHtmlTransformerService * clipboardHtmlTransformerService() const;
 	BuddyConfigurationWidgetFactoryRepository * buddyConfigurationWidgetFactoryRepository() const;
 	ChatConfigurationWidgetFactoryRepository * chatConfigurationWidgetFactoryRepository() const;
 	ChatTopBarWidgetFactoryRepository * chatTopBarWidgetFactoryRepository() const;

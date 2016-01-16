@@ -36,7 +36,6 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
 	QPointer<DomProcessorService> m_domProcessorService;
 
 	Talkable Item;
@@ -48,7 +47,6 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 	void disconnectItem();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
 	INJEQT_INIT void init();
 
