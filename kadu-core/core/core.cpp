@@ -898,11 +898,6 @@ Roster * Core::roster() const
 	return m_injector.get<Roster>();
 }
 
-StatusConfigurationHolder * Core::statusConfigurationHolder() const
-{
-	return m_injector.get<StatusConfigurationHolder>();
-}
-
 SystemInfo * Core::systemInfo() const
 {
 	return m_injector.get<SystemInfo>();
