@@ -1,5 +1,6 @@
 +++ version 3.0-rc3
 * docking: #3050 fixed: try icon is now visible everywhere (Vogel)
+* docking: #3044 fixed: proper context menu appears on tray every time (Vogel)
 
 +++ version 3.0-rc2
 * docking: #3037 fixed: loading docking plugin after import from 2.x (Vogel)

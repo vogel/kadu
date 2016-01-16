@@ -116,14 +116,8 @@ void DockingMenuHandler::update()
 
 void DockingMenuHandler::aboutToShow()
 {
-	if (!m_needsUpdate
-#if defined(Q_OS_UNIX)
-			|| Core::instance()->kaduWindow()->window()->isVisible() != m_mainWindowLastVisible
-#endif
-	)
-		return;
-
-	doUpdate();
+	if (m_needsUpdate)
+		doUpdate();
 }
 
 void DockingMenuHandler::doUpdate()
