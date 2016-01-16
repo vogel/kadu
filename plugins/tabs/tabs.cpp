@@ -63,7 +63,7 @@
 
 #include "tabs.h"
 
-static void disableNewTab(Action *action)
+static void disableNewTab(Configuration *configuration, Action *action)
 {
 	if (action->context()->buddies().isAnyTemporary())
 	{
@@ -73,7 +73,7 @@ static void disableNewTab(Action *action)
 
 	action->setEnabled(action->context()->chat());
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
+	if (configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
 		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Window"));
 	else
 		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Tab"));
@@ -90,15 +90,24 @@ TabsManager::~TabsManager()
 {
 }
 
+void TabsManager::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
+void TabsManager::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
 void TabsManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
+}
 
-	if (m_chatWidgetRepository)
-	{
-		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
-				this, SLOT(onDestroyingChat(ChatWidget *)));
-	}
+void TabsManager::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
 }
 
 void TabsManager::setConfiguration(Configuration *configuration)
@@ -124,6 +133,8 @@ void TabsManager::init()
 
 	createDefaultConfiguration();
 
+	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(onDestroyingChat(ChatWidget *)));
+
 	TabDialog = new TabWidget(this);
 	TabDialog->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TabDialog, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
@@ -143,7 +154,8 @@ void TabsManager::init()
 	OpenInNewTabActionDescription = new ActionDescription(this,
 		ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
-		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false, disableNewTab
+		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false,
+		[this](Action *action){ return disableNewTab(m_configuration, action); }
 	);
 
 	m_menuInventory
@@ -170,7 +182,7 @@ void TabsManager::done()
 		->removeAction(OpenInNewTabActionDescription)
 		->update();
 
-	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
+	disconnect(m_chatWidgetManager, 0, this, 0);
 
 	if (m_chatWidgetRepository)
 		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
@@ -363,7 +375,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!chat)
 		return;
 
-	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
+	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
 	if (!chatWidget)
 	{
 		if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
@@ -376,7 +388,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		}
 	}
 
-	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 
 	chat.removeProperty("tabs:tmp-attached");
 	chat.removeProperty("tabs:tmp-detached");
@@ -561,7 +573,7 @@ void TabsManager::load()
 		if (chatId.isNull())
 			continue;
 
-		Chat chat = Core::instance()->chatManager()->byUuid(chatId);
+		Chat chat = m_chatManager->byUuid(chatId);
 		if (!chat)
 			continue;
 
@@ -570,7 +582,7 @@ void TabsManager::load()
 		else if (element.attribute("type") == "tab")
 			chat.addProperty("tabs:attached", true, CustomProperties::Storable);
 
-		Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
+		m_chatWidgetManager->openChat(chat, OpenChatActivation::DoNotActivate);
 	}
 }
 
@@ -641,7 +653,7 @@ void TabsManager::setConfiguration(ChatWidget* chatWidget)
 	auto blinkChatTitle = m_configuration->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false);
 	chatWidget->title()->setBlinkIconWhenUnreadMessages(blinkChatTitle);
 	chatWidget->title()->setBlinkTitleWhenUnreadMessages(blinkChatTitle);
-	chatWidget->title()->setComposingStatePosition(Core::instance()->chatConfigurationHolder()->composingStatePosition());
+	chatWidget->title()->setComposingStatePosition(m_chatConfigurationHolder->composingStatePosition());
 	chatWidget->title()->setShowUnreadMessagesCount(m_configuration->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
 }
 
@@ -674,7 +686,7 @@ void TabsManager::reopenClosedChat()
 	if (ClosedChats.isEmpty())
 		return;
 
-	Core::instance()->chatWidgetManager()->openChat(ClosedChats.takeFirst(), OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(ClosedChats.takeFirst(), OpenChatActivation::Activate);
 	ReopenClosedTabMenuAction->setEnabled(ClosedChats.isEmpty());
 }
 

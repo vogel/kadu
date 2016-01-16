@@ -45,7 +45,10 @@ class QMenu;
 
 class Action;
 class ActionDescription;
+class ChatConfigurationHolder;
+class ChatManager;
 class ChatWidget;
+class ChatWidgetManager;
 class ChatWidgetRepository;
 class ChatWidgetSetTitle;
 class InjectedFactory;
@@ -61,6 +64,9 @@ class TabsManager : public QObject, ConfigurationAwareObject, StorableObject
 	// that one more friend class wont do a difference
 	friend class TabWidget;
 
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -96,7 +102,10 @@ class TabsManager : public QObject, ConfigurationAwareObject, StorableObject
 	void setConfiguration(ChatWidget *chatWidget);
 
 private slots:
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
