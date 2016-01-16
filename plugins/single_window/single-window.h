@@ -14,8 +14,12 @@
 class QSplitter;
 class QTabWidget;
 
+class Application;
+class ChatConfigurationHolder;
 class ChatWidget;
 class ChatWidgetSetTitle;
+class Configuration;
+class FileTransferManager;
 class InjectedFactory;
 
 enum class OpenChatActivation;
@@ -59,6 +63,10 @@ protected:
 	void resizeEvent(QResizeEvent *event);
 
 private:
+	QPointer<Application> m_application;
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+	QPointer<Configuration> m_configuration;
+	QPointer<FileTransferManager> m_fileTransferManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 
 	QSplitter *m_split;
@@ -71,7 +79,12 @@ private:
 	void setConfiguration(ChatWidget *chatWidget);
 
 private slots:
+	INJEQT_SET void setApplication(Application *application);
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
 
 	void titleChanged();
 

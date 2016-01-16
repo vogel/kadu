@@ -20,6 +20,7 @@
 #include "core/application.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
+#include "file-transfer/file-transfer-manager.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/hot-key.h"
 #include "gui/taskbar-progress.h"
@@ -78,7 +79,7 @@ void SingleWindowManager::done()
 
 void SingleWindowManager::configurationUpdated()
 {
-	int newRosterPos = Core::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
+	int newRosterPos = m_configuration->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
 	if (m_singleWindow->rosterPosition() != newRosterPos)
 		m_singleWindow->changeRosterPos(newRosterPos);
 }
@@ -86,7 +87,64 @@ void SingleWindowManager::configurationUpdated()
 SingleWindow::SingleWindow(QWidget *parent) :
 		QWidget{parent}
 {
-	new TaskbarProgress{Core::instance()->fileTransferManager(), this};
+}
+
+SingleWindow::~SingleWindow()
+{
+	KaduWindow *kadu = Core::instance()->kaduWindow();
+	bool visible = isVisible();
+
+	m_configuration->deprecatedApi()->writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
+
+	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
+	disconnect(m_tabs, 0, this, 0);
+	disconnect(kadu, 0, this, 0);
+
+	if (!Core::instance()->isClosing())
+	{
+		for (int i = m_tabs->count()-1; i >= 0; --i)
+		{
+			ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->widget(i));
+			const Chat &chat = chatWidget->chat();
+			m_tabs->removeTab(i);
+			delete chatWidget;
+			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
+		}
+	}
+
+	kadu->setParent(0);
+	if (!Core::instance()->isClosing())
+		kadu->setVisible(visible);
+}
+
+void SingleWindow::setApplication(Application *application)
+{
+	m_application = application;
+}
+
+void SingleWindow::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
+void SingleWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void SingleWindow::setFileTransferManager(FileTransferManager *fileTransferManager)
+{
+	m_fileTransferManager = fileTransferManager;
+}
+
+void SingleWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SingleWindow::init()
+{
+	new TaskbarProgress{m_fileTransferManager, this};
 	setWindowRole("kadu-single-window");
 
 	KaduWindow *kadu = Core::instance()->kaduWindow();
@@ -97,7 +155,7 @@ SingleWindow::SingleWindow(QWidget *parent) :
 	m_tabs = new QTabWidget(this);
 	m_tabs->setTabsClosable(true);
 
-	m_rosterPos = Core::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
+	m_rosterPos = m_configuration->deprecatedApi()->readNumEntry("SingleWindow", "RosterPosition", 0);
 	if (m_rosterPos == 0)
 	{
 		m_split->addWidget(kadu);
@@ -116,7 +174,7 @@ SingleWindow::SingleWindow(QWidget *parent) :
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("SingleWindow", "WindowGeometry"), QRect(0, 0, 800, 440), this);
 
-	int kaduwidth = Core::instance()->configuration()->deprecatedApi()->readNumEntry("SingleWindow", "KaduWindowWidth", 205);
+	int kaduwidth = m_configuration->deprecatedApi()->readNumEntry("SingleWindow", "KaduWindowWidth", 205);
 
 	if (m_rosterPos == 0)
 	{
@@ -146,39 +204,6 @@ SingleWindow::SingleWindow(QWidget *parent) :
 	kadu->setFocus();
 
 	setVisible(visible);
-}
-
-SingleWindow::~SingleWindow()
-{
-	KaduWindow *kadu = Core::instance()->kaduWindow();
-	bool visible = isVisible();
-
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
-
-	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
-	disconnect(m_tabs, 0, this, 0);
-	disconnect(kadu, 0, this, 0);
-
-	if (!Core::instance()->isClosing())
-	{
-		for (int i = m_tabs->count()-1; i >= 0; --i)
-		{
-			ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->widget(i));
-			const Chat &chat = chatWidget->chat();
-			m_tabs->removeTab(i);
-			delete chatWidget;
-			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
-		}
-	}
-
-	kadu->setParent(0);
-	if (!Core::instance()->isClosing())
-		kadu->setVisible(visible);
-}
-
-void SingleWindow::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
 }
 
 void SingleWindow::titleChanged()
@@ -287,17 +312,17 @@ void SingleWindow::configurationUpdated()
 
 void SingleWindow::setConfiguration(ChatWidget *chatWidget)
 {
-	auto blinkChatTitle = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false);
+	auto blinkChatTitle = m_configuration->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false);
 	chatWidget->title()->setBlinkIconWhenUnreadMessages(blinkChatTitle);
 	chatWidget->title()->setBlinkTitleWhenUnreadMessages(blinkChatTitle);
-	chatWidget->title()->setComposingStatePosition(Core::instance()->chatConfigurationHolder()->composingStatePosition());
-	chatWidget->title()->setShowUnreadMessagesCount(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
+	chatWidget->title()->setComposingStatePosition(m_chatConfigurationHolder->composingStatePosition());
+	chatWidget->title()->setShowUnreadMessagesCount(m_configuration->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
 }
 
 void SingleWindow::closeEvent(QCloseEvent *event)
 {
 	// do not block window closing when session is about to close
-	if (Core::instance()->application()->isSavingSession())
+	if (m_application->isSavingSession())
 	{
 		QWidget::closeEvent(event);
 		return;
@@ -311,7 +336,7 @@ void SingleWindow::closeEvent(QCloseEvent *event)
 	else
 	{
 		QWidget::closeEvent(event);
-		Core::instance()->application()->quit();
+		m_application->quit();
 	}
 }
 
