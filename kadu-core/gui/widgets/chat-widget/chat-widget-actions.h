@@ -31,18 +31,26 @@ class ActionDescription;
 class Actions;
 class Action;
 class Buddy;
+class ChatConfigurationHolder;
+class ChatWidgetManager;
+class Configuration;
 class EditTalkableAction;
 class InjectedFactory;
 class LeaveChatAction;
 class MenuInventory;
+class Myself;
 
 class ChatWidgetActions : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
 	QPointer<Actions> m_actions;
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
+	QPointer<Myself> m_myself;
 
 	ActionDescription *MoreActions;
 	ActionDescription *AutoSend;
@@ -65,8 +73,12 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

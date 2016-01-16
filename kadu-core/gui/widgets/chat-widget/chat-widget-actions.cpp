@@ -27,7 +27,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "core/injected-factory.h"
 #include "gui/actions/action.h"
@@ -93,11 +92,11 @@ static void disableNoChatImageService(Action *action)
 	action->setEnabled(protocol->chatImageService());
 }
 
-static void checkBlocking(Action *action)
+static void checkBlocking(Myself *myself, Action *action)
 {
 	BuddySet buddies = action->context()->buddies();
 
-	if (!buddies.count() || buddies.contains(Core::instance()->myself()->buddy()))
+	if (!buddies.count() || buddies.contains(myself->buddy()))
 	{
 		action->setEnabled(false);
 		return;
@@ -153,6 +152,21 @@ void ChatWidgetActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void ChatWidgetActions::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
+void ChatWidgetActions::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
+void ChatWidgetActions::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void ChatWidgetActions::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -161,6 +175,11 @@ void ChatWidgetActions::setInjectedFactory(InjectedFactory *injectedFactory)
 void ChatWidgetActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
+}
+
+void ChatWidgetActions::setMyself(Myself *myself)
+{
+	m_myself = myself;
 }
 
 void ChatWidgetActions::init()
@@ -228,7 +247,7 @@ void ChatWidgetActions::init()
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/block-buddy"), tr("Block Buddy"), true,
-		checkBlocking
+		[this](Action *action){ return checkBlocking(m_myself, action); }
 	);
 
 	// The last ActionDescription of each type will send actionLoaded() signal.
@@ -286,7 +305,7 @@ void ChatWidgetActions::configurationUpdated()
 
 void ChatWidgetActions::autoSendActionCreated(Action *action)
 {
-	action->setChecked(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend"));
+	action->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Chat", "AutoSend"));
 }
 
 void ChatWidgetActions::clearChatActionCreated(Action *action)
@@ -315,7 +334,7 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 
 void ChatWidgetActions::autoSendActionCheck()
 {
- 	bool check = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
+ 	bool check = m_configuration->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
  	foreach (Action *action, AutoSend->actions())
  		action->setChecked(check);
 }
@@ -328,10 +347,10 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 	if (!chatEditBox)
 		return;
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
+	m_configuration->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
 	autoSendActionCheck();
 
-	Core::instance()->chatConfigurationHolder()->configurationUpdated();
+	m_chatConfigurationHolder->configurationUpdated();
 }
 
 void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled)
@@ -528,7 +547,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	if (!action)
 		return;
 
-	Core::instance()->chatWidgetManager()->openChat(action->context()->chat(), OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(action->context()->chat(), OpenChatActivation::Activate);
 
 	kdebugf2();
 }
