@@ -67,7 +67,6 @@ class ClipboardHtmlTransformerService;
 class ConfigurationManager;
 class Configuration;
 class ContactManager;
-class DescriptionManager;
 class FileTransferHandlerManager;
 class FileTransferManager;
 class FormattedStringFactory;
@@ -210,7 +209,6 @@ public:
 	GroupManager * groupManager() const;
 	IdentityManager * identityManager() const;
 	NetworkProxyManager * networkProxyManager() const;
-	DescriptionManager * descriptionManager() const;
 	ConfigurationManager * configurationManager() const;
 	AvatarManager * avatarManager() const;
 	BuddyChatManager * buddyChatManager() const;

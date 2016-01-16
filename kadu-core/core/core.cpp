@@ -848,11 +848,6 @@ NetworkProxyManager * Core::networkProxyManager() const
 	return m_injector.get<NetworkProxyManager>();
 }
 
-DescriptionManager * Core::descriptionManager() const
-{
-	return m_injector.get<DescriptionManager>();
-}
-
 ConfigurationManager * Core::configurationManager() const
 {
 	return m_injector.get<ConfigurationManager>();

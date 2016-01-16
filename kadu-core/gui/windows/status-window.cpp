@@ -20,20 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QKeyEvent>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QTextEdit>
+#include "status-window.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "gui/widgets/kadu-text-edit.h"
 #include "gui/windows/kadu-window.h"
@@ -50,7 +40,16 @@
 #include "activate.h"
 #include "debug.h"
 
-#include "status-window.h"
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QTextEdit>
 
 StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent) :
 		QDialog(parent), DesktopAwareObject(this), Container(statusContainer), IgnoreNextTextChange(false)
@@ -61,6 +60,21 @@ StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent) :
 StatusWindow::~StatusWindow()
 {
 	emit statusWindowClosed(Container);
+}
+
+void StatusWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void StatusWindow::setDescriptionManager(DescriptionManager *descriptionManager)
+{
+	m_descriptionManager = descriptionManager;
+}
+
+void StatusWindow::setMyself(Myself *myself)
+{
+	m_myself = myself;
 }
 
 void StatusWindow::setStatusSetter(StatusSetter *statusSetter)
@@ -226,7 +240,7 @@ void StatusWindow::setupStatusSelect()
 void StatusWindow::setupDescriptionSelect(const QString &description)
 {
 	StatusWindowDescriptionProxyModel *proxyModel = new StatusWindowDescriptionProxyModel(this);
-	proxyModel->setSourceModel(Core::instance()->descriptionManager()->model());
+	proxyModel->setSourceModel(m_descriptionManager->model());
 
 	DescriptionSelect->setModel(proxyModel);
 	DescriptionSelect->setEnabled(false);
@@ -234,13 +248,13 @@ void StatusWindow::setupDescriptionSelect(const QString &description)
 
 	Q_ASSERT(Container->subStatusContainers().count() > 0);
 
-	if (Core::instance()->descriptionManager()->model()->rowCount() > 0)
+	if (m_descriptionManager->model()->rowCount() > 0)
 	{
 		DescriptionSelect->setEnabled(true);
 		ClearDescriptionsHistoryButton->setEnabled(true);
 
-		QModelIndexList matching = Core::instance()->descriptionManager()->model()->match(
-			Core::instance()->descriptionManager()->model()->index(0, 0),
+		QModelIndexList matching = m_descriptionManager->model()->match(
+			m_descriptionManager->model()->index(0, 0),
 			DescriptionRole, QVariant(description),
 			1,
 			Qt::MatchFixedString | Qt::MatchCaseSensitive
@@ -279,10 +293,10 @@ void StatusWindow::applyStatus()
 	disconnect(DescriptionSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(descriptionSelected(int)));
 
 	QString description = DescriptionEdit->toPlainText();
-	Core::instance()->descriptionManager()->addDescription(description);
+	m_descriptionManager->addDescription(description);
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
-		description = Parser::parse(description, Talkable(Core::instance()->myself()->buddy()), ParserEscape::NoEscape);
+	if (m_configuration->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
+		description = Parser::parse(description, Talkable(m_myself->buddy()), ParserEscape::NoEscape);
 
 	for (auto &&container : Container->subStatusContainers())
 	{
@@ -303,7 +317,7 @@ void StatusWindow::descriptionSelected(int index)
 	if (index < 0)
 		return;
 
-	QString description = Core::instance()->descriptionManager()->model()->data(Core::instance()->descriptionManager()->model()->index(index, 0), DescriptionRole).toString();
+	QString description = m_descriptionManager->model()->data(m_descriptionManager->model()->index(index, 0), DescriptionRole).toString();
 
 	IgnoreNextTextChange = true;
 	DescriptionEdit->setPlainText(description);
@@ -389,8 +403,8 @@ void StatusWindow::clearDescriptionsHistory()
 	if (!dialog->ask())
 		return;
 
-	Core::instance()->descriptionManager()->clearDescriptions();
-	DescriptionSelect->setModel(Core::instance()->descriptionManager()->model());
+	m_descriptionManager->clearDescriptions();
+	DescriptionSelect->setModel(m_descriptionManager->model());
 	DescriptionSelect->setCurrentIndex(-1);
 	DescriptionSelect->setEnabled(false);
 	ClearDescriptionsHistoryButton->setEnabled(false);

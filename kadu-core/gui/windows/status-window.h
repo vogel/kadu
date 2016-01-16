@@ -22,18 +22,21 @@
 
 #pragma once
 
-#include <QtWidgets/QDialog>
-#include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
-
 #include "os/generic/desktop-aware-object.h"
 #include "status/status.h"
 #include "exports.h"
+
+#include <QtWidgets/QDialog>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QComboBox;
 class QLabel;
 class QTextEdit;
 
+class Configuration;
+class DescriptionManager;
+class Myself;
 class StatusContainer;
 class StatusSetter;
 class StatusTypeManager;
@@ -42,6 +45,9 @@ class KADUAPI StatusWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
+	QPointer<DescriptionManager> m_descriptionManager;
+	QPointer<Myself> m_myself;
 	QPointer<StatusSetter> m_statusSetter;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 
@@ -70,6 +76,9 @@ class KADUAPI StatusWindow : public QDialog, DesktopAwareObject
 	StatusType findCommonStatusType(const QList<StatusContainer *> &containers);
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setDescriptionManager(DescriptionManager *descriptionManager);
+	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
