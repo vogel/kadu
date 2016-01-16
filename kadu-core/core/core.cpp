@@ -863,11 +863,6 @@ GroupManager * Core::groupManager() const
 	return m_injector.get<GroupManager>();
 }
 
-RecentChatManager * Core::recentChatManager() const
-{
-	return m_injector.get<RecentChatManager>();
-}
-
 IdentityManager * Core::identityManager() const
 {
 	return m_injector.get<IdentityManager>();

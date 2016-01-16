@@ -103,7 +103,6 @@ class PluginStateService;
 class ProtocolsManager;
 class ProxyEditWindowService;
 class RawMessageTransformerService;
-class RecentChatManager;
 class RosterNotifier;
 class RosterReplacer;
 class Roster;
@@ -225,7 +224,6 @@ public:
 	PathsProvider * pathsProvider() const;
 	Application * application() const;
 	GroupManager * groupManager() const;
-	RecentChatManager * recentChatManager() const;
 	IdentityManager * identityManager() const;
 	NetworkProxyManager * networkProxyManager() const;
 	DescriptionManager * descriptionManager() const;
