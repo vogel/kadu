@@ -32,11 +32,11 @@
 
 #include "multilogon-notification.h"
 
-void MultilogonNotification::registerEvents()
+void MultilogonNotification::registerEvents(NotificationEventRepository *notificationEventRepository)
 {
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("multilogon", QT_TRANSLATE_NOOP("@default", "Multilogon")));
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("multilogon/sessionConnected", QT_TRANSLATE_NOOP("@default", "Multilogon session connected")));
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("multilogon/sessionDisconnected", QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected")));
+	notificationEventRepository->addNotificationEvent(NotificationEvent("multilogon", QT_TRANSLATE_NOOP("@default", "Multilogon")));
+	notificationEventRepository->addNotificationEvent(NotificationEvent("multilogon/sessionConnected", QT_TRANSLATE_NOOP("@default", "Multilogon session connected")));
+	notificationEventRepository->addNotificationEvent(NotificationEvent("multilogon/sessionDisconnected", QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected")));
 
 	auto multilogonDisconnect = NotificationCallback{
 		"multilogon-disconnect",
@@ -50,13 +50,13 @@ void MultilogonNotification::registerEvents()
 	Core::instance()->notificationCallbackRepository()->addCallback(multilogonDisconnect);
 }
 
-void MultilogonNotification::unregisterEvents()
+void MultilogonNotification::unregisterEvents(NotificationEventRepository *notificationEventRepository)
 {
 	if (Core::instance()) // TODO: hack
 	{
-		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("multilogon", QT_TRANSLATE_NOOP("@default", "Multilogon")));
-		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("multilogon/sessionConnected", QT_TRANSLATE_NOOP("@default", "Multilogon session connected")));
-		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("multilogon/sessionDisconnected", QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected")));
+		notificationEventRepository->removeNotificationEvent(NotificationEvent("multilogon", QT_TRANSLATE_NOOP("@default", "Multilogon")));
+		notificationEventRepository->removeNotificationEvent(NotificationEvent("multilogon/sessionConnected", QT_TRANSLATE_NOOP("@default", "Multilogon session connected")));
+		notificationEventRepository->removeNotificationEvent(NotificationEvent("multilogon/sessionDisconnected", QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected")));
 	}
 }
 

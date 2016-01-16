@@ -25,6 +25,7 @@
 #include "notification/notification/notification.h"
 
 class MultilogonSession;
+class NotificationEventRepository;
 
 class MultilogonNotification : public Notification
 {
@@ -39,8 +40,8 @@ public:
 	MultilogonNotification(MultilogonSession *session, const QString &type, bool addKillCallback);
 	virtual ~MultilogonNotification();
 
-	static void registerEvents();
-	static void unregisterEvents();
+	static void registerEvents(NotificationEventRepository *notificationEventRepository);
+	static void unregisterEvents(NotificationEventRepository *notificationEventRepository);
 };
 
 #endif // MULTILOGON_NOTIFICATION_H

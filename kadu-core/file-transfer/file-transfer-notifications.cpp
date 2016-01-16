@@ -35,10 +35,10 @@
 
 #include <QtGui/QTextDocument>
 
-void NewFileTransferNotification::registerEvents()
+void NewFileTransferNotification::registerEvents(NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository)
 {
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
+	notificationEventRepository->addNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
+	notificationEventRepository->addNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
 
 	auto acceptTransferCallback = NotificationCallback{
 		"file-transfer-accept",
@@ -76,18 +76,18 @@ void NewFileTransferNotification::registerEvents()
 				fileTransferNotification->callbackReject();
 		}
 	};
-	Core::instance()->notificationCallbackRepository()->addCallback(acceptTransferCallback);
-	Core::instance()->notificationCallbackRepository()->addCallback(saveTransferCallback);
-	Core::instance()->notificationCallbackRepository()->addCallback(rejectTransferCallback);
-	Core::instance()->notificationCallbackRepository()->addCallback(ignoreTransferCallback);
+	notificationCallbackRepository->addCallback(acceptTransferCallback);
+	notificationCallbackRepository->addCallback(saveTransferCallback);
+	notificationCallbackRepository->addCallback(rejectTransferCallback);
+	notificationCallbackRepository->addCallback(ignoreTransferCallback);
 }
 
-void NewFileTransferNotification::unregisterEvents()
+void NewFileTransferNotification::unregisterEvents(NotificationEventRepository *notificationEventRepository)
 {
 	if (Core::instance()) // TODO: hack
 	{
-		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
-		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
+		notificationEventRepository->removeNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
+		notificationEventRepository->removeNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
 	}
 }
 

@@ -23,6 +23,7 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "misc/misc.h"
+#include "notification/notification-event-repository.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol-factory.h"
 
@@ -39,14 +40,19 @@ ProtocolsManager::~ProtocolsManager()
 {
 }
 
+void ProtocolsManager::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+{
+	m_notificationEventRepository = notificationEventRepository;
+}
+
 void ProtocolsManager::init()
 {
-	ConnectionErrorNotification::registerEvent();
+	ConnectionErrorNotification::registerEvent(m_notificationEventRepository);
 }
 
 void ProtocolsManager::done()
 {
-	ConnectionErrorNotification::unregisterEvent();
+	ConnectionErrorNotification::unregisterEvent(m_notificationEventRepository);
 }
 
 void ProtocolsManager::registerProtocolFactory(ProtocolFactory *factory)

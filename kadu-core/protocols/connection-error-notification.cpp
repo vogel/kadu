@@ -52,9 +52,9 @@ static QString getErrorServer(const ParserData * const object)
 		return QString();
 }
 
-void ConnectionErrorNotification::registerEvent()
+void ConnectionErrorNotification::registerEvent(NotificationEventRepository *notificationEventRepository)
 {
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
+	notificationEventRepository->addNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
 
 	Parser::registerObjectTag("error", getErrorMessage);
 	Parser::registerObjectTag("errorServer", getErrorServer);
@@ -71,13 +71,13 @@ void ConnectionErrorNotification::registerEvent()
 	Core::instance()->notificationCallbackRepository()->addCallback(connectionIgnoreErrorsDisconnect);
 }
 
-void ConnectionErrorNotification::unregisterEvent()
+void ConnectionErrorNotification::unregisterEvent(NotificationEventRepository *notificationEventRepository)
 {
 	Parser::unregisterObjectTag("errorServer");
 	Parser::unregisterObjectTag("error");
 
 	if (Core::instance())
-		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
+		notificationEventRepository->removeNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
 }
 
 void ConnectionErrorNotification::notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage)

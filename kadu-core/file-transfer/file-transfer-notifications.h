@@ -26,14 +26,16 @@
 #include "notification/notification/notification.h"
 
 class FileTransferManager;
+class NotificationCallbackRepository;
+class NotificationEventRepository;
 
 class NewFileTransferNotification : public Notification
 {
 	Q_OBJECT
 
 public:
-	static void registerEvents();
-	static void unregisterEvents();
+	static void registerEvents(NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository);
+	static void unregisterEvents(NotificationEventRepository *notificationEventRepository);
 
 	static void notifyIncomingFileTransfer(const FileTransfer &fileTransfer);
 

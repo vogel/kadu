@@ -28,6 +28,8 @@
 
 #include "notification/notification/notification.h"
 
+class NotificationEventRepository;
+
 class ConnectionErrorNotification : public Notification
 {
 	Q_OBJECT
@@ -39,8 +41,8 @@ private slots:
 	void ignoreErrors();
 
 public:
-	static void registerEvent();
-	static void unregisterEvent();
+	static void registerEvent(NotificationEventRepository *notificationEventRepository);
+	static void unregisterEvent(NotificationEventRepository *notificationEventRepository);
 
 	static void notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage);
 

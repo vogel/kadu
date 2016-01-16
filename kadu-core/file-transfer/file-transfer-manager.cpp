@@ -49,6 +49,8 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "notification/notification-callback-repository.h"
+#include "notification/notification-event-repository.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 #include "storage/storage-point.h"
@@ -83,9 +85,19 @@ void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManag
 	m_fileTransferHandlerManager = fileTransferHandlerManager;
 }
 
+void FileTransferManager::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
+{
+	m_notificationCallbackRepository = notificationCallbackRepository;
+}
+
+void FileTransferManager::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+{
+	m_notificationEventRepository = notificationEventRepository;
+}
+
 void FileTransferManager::init()
 {
-	NewFileTransferNotification::registerEvents();
+	NewFileTransferNotification::registerEvents(m_notificationEventRepository, m_notificationCallbackRepository);
 	m_actions = new FileTransferActions{this};
 	m_configurationManager->registerStorableObject(this);
 	triggerAllAccountsRegistered(m_accountManager);
@@ -96,7 +108,7 @@ void FileTransferManager::done()
 	triggerAllAccountsUnregistered(m_accountManager);
 	m_configurationManager->unregisterStorableObject(this);
 	m_window.data()->deleteLater();
-	NewFileTransferNotification::unregisterEvents();
+	NewFileTransferNotification::unregisterEvents(m_notificationEventRepository);
 }
 
 void FileTransferManager::addFileTransferService(Account account)

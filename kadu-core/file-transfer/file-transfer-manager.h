@@ -32,11 +32,13 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class ConfigurationApi;
+class ConfigurationManager;
 class FileTransferActions;
 class FileTransferHandlerManager;
 class FileTransferWindow;
-class ConfigurationApi;
-class ConfigurationManager;
+class NotificationCallbackRepository;
+class NotificationEventRepository;
 
 class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTransfer>, AccountsAwareObject
 {
@@ -82,6 +84,8 @@ private:
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
 	QPointer<FileTransferWindow> m_window;
+	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	int m_totalProgress;
 
 	void addFileTransferService(Account account);
@@ -92,6 +96,8 @@ private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

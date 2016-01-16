@@ -150,7 +150,7 @@ void NotificationService::init()
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
 
-	MultilogonNotification::registerEvents();
+	MultilogonNotification::registerEvents(m_notificationEventRepository);
 
 	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
@@ -180,7 +180,7 @@ void NotificationService::done()
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
 
 	MessageNotification::unregisterEvents();
-	MultilogonNotification::unregisterEvents();
+	MultilogonNotification::unregisterEvents(m_notificationEventRepository);
 
 	delete CurrentWindowNotifier;
 	CurrentWindowNotifier = nullptr;
