@@ -482,7 +482,7 @@ void Core::init()
 
 	// TODO: add some life-cycle management
 	notificationManager();
-	searchWindowActions(); // temporary, during full-injection-port
+	m_injector.get<SearchWindowActions>(); // temporary, during full-injection-port
 
 	buddyManager()->ensureLoaded();
 	contactManager()->ensureLoaded();
@@ -621,7 +621,7 @@ void Core::runServices()
 	m_injector.get<PluginMetadataFinder>()->setDirectory(pathsProvider()->dataPath() + QLatin1String{"plugins"});
 	m_injector.get<PluginStateManager>()->loadPluginStates();
 
-	configurationUiHandlerRepository()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
+	m_injector.get<ConfigurationUiHandlerRepository>()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
 }
 
 void Core::runGuiServices()
@@ -634,7 +634,7 @@ void Core::runGuiServices()
 
 void Core::stopServices()
 {
-	configurationUiHandlerRepository()->removeConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
+	m_injector.get<ConfigurationUiHandlerRepository>()->removeConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
 
 	auto chatWidgetRepository = m_injector.get<ChatWidgetRepository>();
 	while (begin(chatWidgetRepository) != end(chatWidgetRepository))
@@ -651,11 +651,6 @@ void Core::activatePlugins()
 BuddyManager * Core::buddyManager() const
 {
 	return m_injector.get<BuddyManager>();
-}
-
-MessageManager * Core::messageManager() const
-{
-	return m_injector.get<MessageManager>();
 }
 
 NotificationCallbackRepository * Core::notificationCallbackRepository() const
@@ -718,11 +713,6 @@ RosterNotifier * Core::rosterNotifier() const
 	return m_injector.get<RosterNotifier>();
 }
 
-ChatWidgetContainerHandlerRepository * Core::chatWidgetContainerHandlerRepository() const
-{
-	return m_injector.get<ChatWidgetContainerHandlerRepository>();
-}
-
 ChatWidgetActions * Core::chatWidgetActions() const
 {
 	return m_injector.get<ChatWidgetActions>();
@@ -746,11 +736,6 @@ ChatStyleManager * Core::chatStyleManager() const
 StoragePointFactory * Core::storagePointFactory() const
 {
 	return m_injector.get<StoragePointFactory>();
-}
-
-ConfigurationUiHandlerRepository * Core::configurationUiHandlerRepository() const
-{
-	return m_injector.get<ConfigurationUiHandlerRepository>();
 }
 
 PluginActivationService * Core::pluginActivationService() const
@@ -923,16 +908,6 @@ SystemInfo * Core::systemInfo() const
 	return m_injector.get<SystemInfo>();
 }
 
-YourAccountsWindowService * Core::yourAccountsWindowService() const
-{
-	return m_injector.get<YourAccountsWindowService>();
-}
-
-SearchWindowActions * Core::searchWindowActions() const
-{
-	return m_injector.get<SearchWindowActions>();
-}
-
 ProxyEditWindowService * Core::proxyEditWindowService() const
 {
 	return m_injector.get<ProxyEditWindowService>();
@@ -946,11 +921,6 @@ ToolTipClassManager * Core::toolTipClassManager() const
 Myself * Core::myself() const
 {
 	return m_injector.get<Myself>();
-}
-
-AccountStorage * Core::accountStorage() const
-{
-	return m_injector.get<AccountStorage>();
 }
 
 BuddyStorage * Core::buddyStorage() const

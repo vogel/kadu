@@ -44,7 +44,6 @@
 template<class T>
 class DefaultProvider;
 
-class AccountStorage;
 class Actions;
 class Application;
 class AvatarManager;
@@ -61,13 +60,11 @@ class ChatTopBarWidgetFactoryRepository;
 class ChatTypeManager;
 class ChatStyleManager;
 class ChatWidgetActions;
-class ChatWidgetContainerHandlerRepository;
 class ChatWidgetManager;
 class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ClipboardHtmlTransformerService;
 class ConfigurationManager;
-class ConfigurationUiHandlerRepository;
 class Configuration;
 class ContactManager;
 class DescriptionManager;
@@ -82,7 +79,6 @@ class KaduIcon;
 class KaduWindow;
 class MenuInventory;
 class Message;
-class MessageManager;
 class MessageTransformerService;
 class Myself;
 class NetworkManager;
@@ -104,7 +100,6 @@ class RawMessageTransformerService;
 class RosterNotifier;
 class RosterReplacer;
 class Roster;
-class SearchWindowActions;
 class SslCertificateManager;
 class StatusChangerManager;
 class StatusConfigurationHolder;
@@ -116,7 +111,6 @@ class SystemInfo;
 class ToolTipClassManager;
 class UnreadMessageRepository;
 class UrlHandlerManager;
-class YourAccountsWindowService;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -175,7 +169,6 @@ public:
 	void activatePlugins();
 
 	BuddyManager * buddyManager() const;
-	MessageManager * messageManager() const;
 	NotificationCallbackRepository * notificationCallbackRepository() const;
 	NotificationEventRepository * notificationEventRepository() const;
 	NotificationManager * notificationManager() const;
@@ -189,12 +182,10 @@ public:
 	UnreadMessageRepository * unreadMessageRepository() const;
 	RosterNotifier * rosterNotifier() const;
 	ChatWidgetActions * chatWidgetActions() const;
-	ChatWidgetContainerHandlerRepository * chatWidgetContainerHandlerRepository() const;
 	ChatWidgetManager * chatWidgetManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
 	ChatStyleManager * chatStyleManager() const;
 	StoragePointFactory * storagePointFactory() const;
-	ConfigurationUiHandlerRepository * configurationUiHandlerRepository() const;
 
 	PluginActivationService * pluginActivationService() const;
 	PluginStateService * pluginStateService() const;
@@ -233,12 +224,9 @@ public:
 	Roster * roster() const;
 	StatusConfigurationHolder * statusConfigurationHolder() const;
 	SystemInfo * systemInfo() const;
-	YourAccountsWindowService * yourAccountsWindowService() const;
-	SearchWindowActions * searchWindowActions() const;
 	ProxyEditWindowService * proxyEditWindowService() const;
 	ToolTipClassManager * toolTipClassManager() const;
 	Myself * myself() const;
-	AccountStorage * accountStorage() const;
 	BuddyStorage * buddyStorage() const;
 	BuddyDummyFactory * buddyDummyFactory() const;
 
