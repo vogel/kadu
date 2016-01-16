@@ -29,7 +29,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/status-menu.h"
@@ -43,6 +42,24 @@
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 		QToolButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false), MenuTitleAction{nullptr}
 {
+}
+
+StatusButton::~StatusButton()
+{
+}
+
+void StatusButton::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void StatusButton::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
+{
+	m_statusConfigurationHolder = statusConfigurationHolder;
+}
+
+void StatusButton::init()
+{
 	Icon = new StatusIcon(MyStatusContainer, this);
 
 	createGui();
@@ -53,16 +70,12 @@ StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 	connect(Icon, SIGNAL(iconUpdated(KaduIcon)), this, SLOT(iconUpdated(KaduIcon)));
 }
 
-StatusButton::~StatusButton()
-{
-}
-
 void StatusButton::createGui()
 {
 	QMenu *menu = new QMenu(this);
 	if (!MyStatusContainer->statusContainerName().isEmpty())
 		addTitleToMenu(MyStatusContainer->statusContainerName(), menu);
-	Core::instance()->injectedFactory()->makeInjected<StatusMenu>(MyStatusContainer, false, menu);
+	m_injectedFactory->makeInjected<StatusMenu>(MyStatusContainer, false, menu);
 
 	setMenu(menu);
 	setIcon(Icon->icon().icon());
@@ -113,7 +126,7 @@ void StatusButton::updateStatus()
 	}
 	else
 	{
-		if (Core::instance()->statusConfigurationHolder()->isSetStatusPerIdentity())
+		if (m_statusConfigurationHolder->isSetStatusPerIdentity())
 		{
 			setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 			setText(MyStatusContainer->statusContainerName());

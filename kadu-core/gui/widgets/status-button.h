@@ -20,15 +20,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_BUTTON_H
-#define STATUS_BUTTON_H
-
-#include <QtWidgets/QToolButton>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"
 #include "status/status.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QToolButton>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
+class StatusConfigurationHolder;
 class StatusContainer;
 class StatusIcon;
 class StatusMenu;
@@ -36,6 +39,20 @@ class StatusMenu;
 class StatusButton : public QToolButton, private ConfigurationAwareObject
 {
 	Q_OBJECT
+
+public:
+	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = nullptr);
+	virtual ~StatusButton();
+
+	void setDisplayStatusName(bool displayStatusName);
+	bool eventFilter(QObject *object, QEvent *event);
+
+protected:
+	virtual void configurationUpdated();
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
 
 	StatusContainer *MyStatusContainer;
 	bool DisplayStatusName;
@@ -48,20 +65,12 @@ class StatusButton : public QToolButton, private ConfigurationAwareObject
 	QString prepareDescription(const QString &description) const;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
+	INJEQT_INIT void init();
+
 	void iconUpdated(const KaduIcon &icon);
 	void statusUpdated(StatusContainer *container = 0);
 	void addTitleToMenu(const QString &title, QMenu *menu);
 
-protected:
-	virtual void configurationUpdated();
-
-public:
-	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = 0);
-	virtual ~StatusButton();
-
-	void setDisplayStatusName(bool displayStatusName);
-	bool eventFilter(QObject *object, QEvent *event);
-
 };
-
-#endif // STATUS_BUTTON_H

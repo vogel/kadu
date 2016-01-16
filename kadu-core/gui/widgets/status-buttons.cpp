@@ -23,6 +23,7 @@
 
 #include "accounts/account-manager.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/status-button.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
@@ -60,7 +61,7 @@ void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 
 	disableStatusName();
 
-	StatusButton *button = new StatusButton(statusContainer);
+	StatusButton *button = Core::instance()->injectedFactory()->makeInjected<StatusButton>(statusContainer);
 	addWidget(button);
 	Buttons[statusContainer] = button;
 
