@@ -908,11 +908,6 @@ ProxyEditWindowService * Core::proxyEditWindowService() const
 	return m_injector.get<ProxyEditWindowService>();
 }
 
-ToolTipClassManager * Core::toolTipClassManager() const
-{
-	return m_injector.get<ToolTipClassManager>();
-}
-
 Myself * Core::myself() const
 {
 	return m_injector.get<Myself>();
