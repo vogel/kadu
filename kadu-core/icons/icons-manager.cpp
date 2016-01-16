@@ -140,6 +140,11 @@ QIcon IconsManager::buildPngIcon(const QString &themePath, const QString &path)
 
 QIcon IconsManager::buildSvgIcon(const QString &themePath, const QString& path)
 {
+	Q_UNUSED(themePath);
+	Q_UNUSED(path);
+
+	return {};
+/*
 	QIcon icon;
 	QString theme = themePath.isEmpty() ? ThemeManager->currentTheme().path() : themePath;
 	QString realPath;
@@ -155,17 +160,22 @@ QIcon IconsManager::buildSvgIcon(const QString &themePath, const QString& path)
 		iconName = path;
 
 	QFileInfo fileInfo;
-	fileInfo.setFile(theme + realPath + "/svg/" + iconName + ".svgz" );
+	fileInfo.setFile(theme + realPath + "/svg/" + iconName + ".svgz");
 	if (fileInfo.isFile() && fileInfo.isReadable())
+	{
 		icon.addFile(fileInfo.canonicalFilePath());
+	}
 	else
 	{
 		fileInfo.setFile(theme + realPath + "/svg/" + iconName + ".svg" );
 		if (fileInfo.isFile() && fileInfo.isReadable())
+		{
 			icon.addFile(fileInfo.canonicalFilePath());
+		}
 	}
 
 	return icon;
+*/
 }
 
 QIcon IconsManager::iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty)
