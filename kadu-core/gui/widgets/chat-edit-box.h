@@ -33,15 +33,23 @@
 
 class Action;
 class BaseActionContext;
+class ChatConfigurationHolder;
+class ChatWidgetActions;
 class ChatWidget;
 class CustomInput;
 class InjectedFactory;
+class StatusConfigurationHolder;
+class StatusContainerManager;
 
 class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+	QPointer<StatusContainerManager> m_statusContainerManager;
 
 	Chat CurrentChat;
 	CustomInput *InputBox;
@@ -52,7 +60,11 @@ class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 	void setColorFromCurrentText(bool force);
 
 private slots:
+	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_INIT void init();
 
 	void configurationUpdated();

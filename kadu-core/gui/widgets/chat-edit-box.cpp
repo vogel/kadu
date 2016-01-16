@@ -38,8 +38,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/base-action-context.h"
@@ -72,15 +70,35 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 
 ChatEditBox::~ChatEditBox()
 {
-// 	disconnect(Core::instance()->chatWidgetActions()->colorSelector(), 0, this, 0);
+// 	disconnect(m_chatWidgetActions->colorSelector(), 0, this, 0);
 	disconnect(InputBox, 0, this, 0);
 
 	chatEditBoxes.removeAll(this);
 }
 
+void ChatEditBox::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
+{
+	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
+void ChatEditBox::setChatWidgetActions(ChatWidgetActions *chatWidgetActions)
+{
+	m_chatWidgetActions = chatWidgetActions;
+}
+
 void ChatEditBox::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void ChatEditBox::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
+{
+	m_statusConfigurationHolder = statusConfigurationHolder;
+}
+
+void ChatEditBox::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
 }
 
 void ChatEditBox::init()
@@ -103,7 +121,7 @@ void ChatEditBox::init()
 	Context->setBuddies(CurrentChat.contacts().toBuddySet());
 	updateContext();
 
-	connect(Core::instance()->statusConfigurationHolder(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
+	connect(m_statusConfigurationHolder, SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
 	InputBox = m_injectedFactory->makeInjected<CustomInput>(CurrentChat, this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
@@ -121,26 +139,26 @@ void ChatEditBox::init()
 	else
 		loadToolBarsFromConfig(); // load new config
 
-// 	connect(Core::instance()->chatWidgetActions()->colorSelector(), SIGNAL(actionCreated(Action *)),
+// 	connect(m_chatWidgetActions->colorSelector(), SIGNAL(actionCreated(Action *)),
 // 			this, SLOT(colorSelectorActionCreated(Action *)));
 	connect(InputBox, SIGNAL(keyPressed(QKeyEvent *,CustomInput *, bool &)),
 			this, SIGNAL(keyPressed(QKeyEvent *,CustomInput *,bool &)));
 	connect(InputBox, SIGNAL(fontChanged(QFont)), this, SLOT(fontChanged(QFont)));
 	connect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
-	connect(Core::instance()->chatConfigurationHolder(), SIGNAL(chatConfigurationUpdated()), this, SLOT(configurationUpdated()));
+	connect(m_chatConfigurationHolder, SIGNAL(chatConfigurationUpdated()), this, SLOT(configurationUpdated()));
 
 	configurationUpdated();
 }
 
 void ChatEditBox::fontChanged(QFont font)
 {
-	if (Core::instance()->chatWidgetActions()->bold()->action(actionContext()))
-		Core::instance()->chatWidgetActions()->bold()->action(actionContext())->setChecked(font.bold());
-	if (Core::instance()->chatWidgetActions()->italic()->action(actionContext()))
-		Core::instance()->chatWidgetActions()->italic()->action(actionContext())->setChecked(font.italic());
-	if (Core::instance()->chatWidgetActions()->underline()->action(actionContext()))
-		Core::instance()->chatWidgetActions()->underline()->action(actionContext())->setChecked(font.underline());
+	if (m_chatWidgetActions->bold()->action(actionContext()))
+		m_chatWidgetActions->bold()->action(actionContext())->setChecked(font.bold());
+	if (m_chatWidgetActions->italic()->action(actionContext()))
+		m_chatWidgetActions->italic()->action(actionContext())->setChecked(font.italic());
+	if (m_chatWidgetActions->underline()->action(actionContext()))
+		m_chatWidgetActions->underline()->action(actionContext())->setChecked(font.underline());
 }
 
 void ChatEditBox::colorSelectorActionCreated(Action *action)
@@ -158,7 +176,7 @@ void ChatEditBox::configurationUpdated()
 {
 	setColorFromCurrentText(true);
 
-	InputBox->setAutoSend(Core::instance()->chatConfigurationHolder()->autoSend());
+	InputBox->setAutoSend(m_chatConfigurationHolder->autoSend());
 }
 
 void ChatEditBox::setAutoSend(bool autoSend)
@@ -187,12 +205,12 @@ TalkableProxyModel * ChatEditBox::talkableProxyModel()
 
 void ChatEditBox::updateContext()
 {
-	if (Core::instance()->statusConfigurationHolder()->isSetStatusPerIdentity())
+	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
 		Context->setStatusContainer(CurrentChat.chatAccount().accountIdentity().data());
-	else if (Core::instance()->statusConfigurationHolder()->isSetStatusPerAccount())
+	else if (m_statusConfigurationHolder->isSetStatusPerAccount())
 		Context->setStatusContainer(CurrentChat.chatAccount().statusContainer());
 	else
-		Context->setStatusContainer(Core::instance()->statusContainerManager());
+		Context->setStatusContainer(m_statusContainerManager);
 }
 
 ChatWidget * ChatEditBox::chatWidget()
@@ -239,13 +257,13 @@ void ChatEditBox::openInsertImageDialog()
 		return;
 
 	// QTBUG-849
-	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), Core::instance()->configuration()->deprecatedApi()->readEntry("Chat", "LastImagePath"),
+	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), configuration()->deprecatedApi()->readEntry("Chat", "LastImagePath"),
 							tr("Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)"));
 	if (!selectedFile.isEmpty())
 	{
 		QFileInfo f(selectedFile);
 
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("Chat", "LastImagePath", f.absolutePath());
+		configuration()->deprecatedApi()->writeEntry("Chat", "LastImagePath", f.absolutePath());
 
 		if (!f.isReadable())
 		{
@@ -326,7 +344,7 @@ void ChatEditBox::changeColor(const QColor &newColor)
 	QPixmap p(12, 12);
 	p.fill(CurrentColor);
 
-// 	Action *action = Core::instance()->chatWidgetActions()->colorSelector()->action(this);
+// 	Action *action = m_chatWidgetActions->colorSelector()->action(this);
 // 	if (action)
 // 		action->setIcon(p);
 
@@ -338,7 +356,7 @@ void ChatEditBox::setColorFromCurrentText(bool force)
 	Q_UNUSED(force);
 
 /*
-	Action *action = Core::instance()->chatWidgetActions()->colorSelector()->action(this);
+	Action *action = m_chatWidgetActions->colorSelector()->action(this);
 	if (!action || (!force && (InputBox->textColor() == CurrentColor)))
 		return;
 
