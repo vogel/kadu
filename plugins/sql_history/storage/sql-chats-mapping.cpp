@@ -28,7 +28,6 @@
 #include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-room.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 
 #include "storage/sql-accounts-mapping.h"
 #include "storage/sql-contacts-mapping.h"
@@ -38,16 +37,25 @@
 SqlChatsMapping::SqlChatsMapping(const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, SqlContactsMapping *contactsMapping, QObject *parent) :
 		QObject(parent), Database(database), Mutex(QMutex::Recursive), AccountsMapping(accountsMapping), ContactsMapping(contactsMapping)
 {
+}
+
+SqlChatsMapping::~SqlChatsMapping()
+{
+}
+
+void SqlChatsMapping::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void SqlChatsMapping::init()
+{
 	Q_ASSERT(AccountsMapping);
 	Q_ASSERT(ContactsMapping);
 
 	loadMappingsFromDatabase();
 
-	connect(Core::instance()->chatManager(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
-}
-
-SqlChatsMapping::~SqlChatsMapping()
-{
+	connect(m_chatManager, SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 }
 
 void SqlChatsMapping::chatUpdated(const Chat &chat)

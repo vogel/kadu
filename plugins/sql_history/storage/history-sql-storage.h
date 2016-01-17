@@ -121,6 +121,7 @@ private slots:
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_INIT void init();
 
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);

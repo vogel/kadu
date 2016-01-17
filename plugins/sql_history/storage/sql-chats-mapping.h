@@ -17,16 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SQL_CHATS_MAPPING_H
-#define SQL_CHATS_MAPPING_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QMutex>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtSql/QSqlDatabase>
+#include <injeqt/injeqt.h>
 
 #include "chat/chat.h"
 
+class ChatManager;
 class SqlAccountsMapping;
 class SqlContactsMapping;
 
@@ -60,6 +62,8 @@ class SqlChatsMapping : public QObject
 {
 	Q_OBJECT
 
+	QPointer<ChatManager> m_chatManager;
+
 	const QSqlDatabase &Database;
 	mutable QMutex Mutex;
 	SqlAccountsMapping *AccountsMapping;
@@ -87,6 +91,9 @@ class SqlChatsMapping : public QObject
 	void loadMappingsFromDatabase();
 
 private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_INIT void init();
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Update SQL mapping of changed chat.
@@ -174,5 +181,3 @@ public:
 /**
  * @}
  */
-
-#endif // SQL_CHATS_MAPPING_H

@@ -81,36 +81,6 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 		AccountsMapping(), ContactsMapping(), ChatsMapping(), DatabaseMutex(QMutex::NonRecursive),
 		ChatStorage(), StatusStorage(), SmsStorage()
 {
-	kdebugf();
-
-	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
-	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
-				tr("It seems your Qt library does not provide support for selected database. "
-				   "Please install Qt with %1 plugin.").arg("QSQLITE"));
-		return;
-	}
-
-	qRegisterMetaType<QSqlError>("QSqlError");
-
-	InitializerThread = new QThread();
-
-	// this object cannot have parent as it will be moved to a new thread
-	SqlInitializer *initializer = new SqlInitializer();
-	initializer->moveToThread(InitializerThread);
-
-	connect(InitializerThread, SIGNAL(started()), initializer, SLOT(initialize()));
-	connect(initializer, SIGNAL(progressMessage(QString,QString)),
-	        this, SLOT(initializerProgressMessage(QString,QString)));
-	connect(initializer, SIGNAL(progressFinished(bool,QString,QString)),
-	        this, SLOT(initializerProgressFinished(bool,QString,QString)));
-	connect(initializer, SIGNAL(databaseReady(bool)), this, SLOT(databaseReady(bool)));
-
-	InitializerThread->start();
-
-	ChatStorage = new SqlMessagesChatStorage(this);
-	StatusStorage = new SqlMessagesStatusStorage(this);
-	SmsStorage = new SqlMessagesSmsStorage(this);
 }
 
 HistorySqlStorage::~HistorySqlStorage()
@@ -160,6 +130,40 @@ void HistorySqlStorage::setStatusTypeManager(StatusTypeManager *statusTypeManage
 	m_statusTypeManager = statusTypeManager;
 }
 
+void HistorySqlStorage::init()
+{
+	kdebugf();
+
+	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
+	{
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
+				tr("It seems your Qt library does not provide support for selected database. "
+				   "Please install Qt with %1 plugin.").arg("QSQLITE"));
+		return;
+	}
+
+	qRegisterMetaType<QSqlError>("QSqlError");
+
+	InitializerThread = new QThread();
+
+	// this object cannot have parent as it will be moved to a new thread
+	auto initializer = m_injectedFactory->makeInjected<SqlInitializer>();
+	initializer->moveToThread(InitializerThread);
+
+	connect(InitializerThread, SIGNAL(started()), initializer, SLOT(initialize()));
+	connect(initializer, SIGNAL(progressMessage(QString,QString)),
+	        this, SLOT(initializerProgressMessage(QString,QString)));
+	connect(initializer, SIGNAL(progressFinished(bool,QString,QString)),
+	        this, SLOT(initializerProgressFinished(bool,QString,QString)));
+	connect(initializer, SIGNAL(databaseReady(bool)), this, SLOT(databaseReady(bool)));
+
+	InitializerThread->start();
+
+	ChatStorage = new SqlMessagesChatStorage(this);
+	StatusStorage = new SqlMessagesStatusStorage(this);
+	SmsStorage = new SqlMessagesSmsStorage(this);
+}
+
 void HistorySqlStorage::ensureProgressWindowReady()
 {
 	if (ImportProgressWindow)
@@ -205,8 +209,8 @@ void HistorySqlStorage::databaseReady(bool ok)
 	initQueries();
 
 	AccountsMapping = m_injectedFactory->makeInjected<SqlAccountsMapping>(Database, this);
-	ContactsMapping = new SqlContactsMapping(Database, AccountsMapping, this);
-	ChatsMapping = new SqlChatsMapping(Database, AccountsMapping, ContactsMapping, this);
+	ContactsMapping = m_injectedFactory->makeInjected<SqlContactsMapping>(Database, AccountsMapping, this);
+	ChatsMapping = m_injectedFactory->makeInjected<SqlChatsMapping>(Database, AccountsMapping, ContactsMapping, this);
 
 	if (InitializerThread)
 		InitializerThread->quit();

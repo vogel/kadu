@@ -18,10 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SQL_IMPORT_H
-#define SQL_IMPORT_H
+#pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class ChatManager;
+class Configuration;
+class ContactManager;
+class InjectedFactory;
 
 class QSqlDatabase;
 
@@ -41,6 +47,46 @@ class QSqlDatabase;
 class SqlImport : public QObject
 {
 	Q_OBJECT
+
+public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Read schema version from database.
+	 * @param database database to read schema version from
+	 * @return schema version of given database
+	 */
+	static quint16 databaseSchemaVersion(QSqlDatabase &database);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Check if database needs import to new version of schema.
+	 * @param database database to check
+	 *
+	 * Any database that does not have schema_version table with one value equal to last schema
+	 * version needs update.
+	 */
+	static bool importNeeded(QSqlDatabase &database);
+
+	explicit SqlImport(QObject *parent = nullptr);
+	virtual ~SqlImport();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Perform import from old schema version.
+	 * @param database database to import
+	 *
+	 * Perform import from old schema version to new one. If database is empty - performs initialization
+	 * of tables and indexes.
+	 *
+	 * This method is synchronous. Do not call from GUI thread.
+	 */
+	void performImport(QSqlDatabase &database);
+
+private:
+	QPointer<ChatManager> m_chatManager;
+	QPointer<Configuration> m_configuration;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	void initTables(QSqlDatabase &database);
 	void initKaduSchemaTable(QSqlDatabase &database);
@@ -64,41 +110,14 @@ class SqlImport : public QObject
 
 	void importVersion3Schema(QSqlDatabase &database);
 
-public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Read schema version from database.
-	 * @param database database to read schema version from
-	 * @return schema version of given database
-	 */
-	static quint16 databaseSchemaVersion(QSqlDatabase &database);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Check if database needs import to new version of schema.
-	 * @param database database to check
-	 *
-	 * Any database that does not have schema_version table with one value equal to last schema
-	 * version needs update.
-	 */
-	static bool importNeeded(QSqlDatabase &database);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Perform import from old schema version.
-	 * @param database database to import
-	 *
-	 * Perform import from old schema version to new one. If database is empty - performs initialization
-	 * of tables and indexes.
-	 *
-	 * This method is synchronous. Do not call from GUI thread.
-	 */
-	void performImport(QSqlDatabase &database);
+private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };
 
 /**
  * @}
  */
-
-#endif // SQL_IMPORT_H

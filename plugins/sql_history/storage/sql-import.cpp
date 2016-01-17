@@ -32,8 +32,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 
 #include "storage/sql-accounts-mapping.h"
 #include "storage/sql-chats-mapping.h"
@@ -69,6 +68,35 @@ quint16 SqlImport::databaseSchemaVersion(QSqlDatabase &database)
 bool SqlImport::importNeeded(QSqlDatabase &database)
 {
 	return CURRENT_SCHEMA_VERSION > databaseSchemaVersion(database);
+}
+
+SqlImport::SqlImport(QObject *parent) :
+		QObject{parent}
+{
+}
+
+SqlImport::~SqlImport()
+{
+}
+
+void SqlImport::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void SqlImport::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void SqlImport::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void SqlImport::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void SqlImport::initTables(QSqlDatabase &database)
@@ -286,7 +314,7 @@ void SqlImport::importAccountsToV4(QSqlDatabase &database)
 	// this is enough
 	// SqlAccountsMapping fills database in constructor
 	// maybe this is not best API, but this is how it works
-	SqlAccountsMapping mapping(database);
+	auto mapping = m_injectedFactory->makeUnique<SqlAccountsMapping>(database);
 }
 
 void SqlImport::importContactsToV4(QSqlDatabase &database)
@@ -305,7 +333,7 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 		int id = query.value(0).toInt();
 		QString uuid = query.value(1).toString();
 
-		Contact contact = Core::instance()->contactManager()->byUuid(uuid);
+		Contact contact = m_contactManager->byUuid(uuid);
 		if (contact && contact.contactAccount() && !contact.id().isEmpty())
 			contacts.insert(id, contact);
 	}
@@ -334,15 +362,15 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 	query.setForwardOnly(true);
 	query.exec();
 
-	SqlAccountsMapping accounsMapping(database);
-	SqlContactsMapping contactsMapping(database, &accounsMapping);
+	auto accounsMapping = m_injectedFactory->makeUnique<SqlAccountsMapping>(database); 
+	auto contactsMapping = m_injectedFactory->makeUnique<SqlContactsMapping>(database, accounsMapping.get());
 
 	// force creating contacts table entries for all contacts used in statuses
 	while (query.next())
 	{
-		Contact contact = Core::instance()->contactManager()->byUuid(query.value(0).toString());
+		Contact contact = m_contactManager->byUuid(query.value(0).toString());
 		if (contact)
-			contactsMapping.idByContact(contact, true);
+			contactsMapping->idByContact(contact, true);
 	}
 
 	database.commit();
@@ -353,10 +381,10 @@ void SqlImport::importContactsToV4StatusesTable(QSqlDatabase &database)
 	QSqlQuery query(database);
 	database.transaction();
 
-	SqlAccountsMapping accounsMapping(database);
-	SqlContactsMapping contactsMapping(database, &accounsMapping);
+	auto accounsMapping = m_injectedFactory->makeUnique<SqlAccountsMapping>(database);
+	auto contactsMapping = m_injectedFactory->makeUnique<SqlContactsMapping>(database, accounsMapping.get());
 
-	QMap<int, Contact> mapping = contactsMapping.mapping();
+	QMap<int, Contact> mapping = contactsMapping->mapping();
 	QMap<int, Contact>::const_iterator i = mapping.constBegin();
 	QMap<int, Contact>::const_iterator end = mapping.constEnd();
 
@@ -390,7 +418,7 @@ void SqlImport::importChatsToV4(QSqlDatabase &database)
 		int id = query.value(0).toInt();
 		QString uuid = query.value(1).toString();
 
-		Chat chat = Core::instance()->chatManager()->byUuid(uuid);
+		Chat chat = m_chatManager->byUuid(uuid);
 		if (chat && chat.chatAccount() && !chat.contacts().isEmpty())
 			chats.insert(id, chat);
 	}
@@ -398,9 +426,9 @@ void SqlImport::importChatsToV4(QSqlDatabase &database)
 	query.prepare("UPDATE kadu_chats SET account_id = :account_id, chat = :chat WHERE id = :id");
 	query.setForwardOnly(false);
 
-	SqlAccountsMapping accountsMapping(database);
-	SqlContactsMapping contactsMapping(database, &accountsMapping);
-	SqlChatsMapping chatsMapping(database, &accountsMapping, &contactsMapping);
+	auto accountsMapping = m_injectedFactory->makeUnique<SqlAccountsMapping>(database);
+	auto contactsMapping = m_injectedFactory->makeUnique<SqlContactsMapping>(database, accountsMapping.get());
+	auto chatsMapping = m_injectedFactory->makeUnique<SqlChatsMapping>(database, accountsMapping.get(), contactsMapping.get());
 
 	QList<int> ids = chats.keys();
 	foreach (int id, ids)
@@ -412,7 +440,7 @@ void SqlImport::importChatsToV4(QSqlDatabase &database)
 		{
 			query.bindValue(":id", id);
 			query.bindValue(":account_id", accountId);
-			query.bindValue(":chat", chatsMapping.chatToString(chat));
+			query.bindValue(":chat", chatsMapping->chatToString(chat));
 			query.exec();
 
 			chat.addProperty("sql_history:id", query.lastInsertId(), CustomProperties::NonStorable);
@@ -684,7 +712,7 @@ void SqlImport::performImport(QSqlDatabase &database)
 
 	initKaduSchemaTable(database);
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("History", "Schema", CURRENT_SCHEMA_VERSION);
+	m_configuration->deprecatedApi()->writeEntry("History", "Schema", CURRENT_SCHEMA_VERSION);
 }
 
 #include "moc_sql-import.cpp"

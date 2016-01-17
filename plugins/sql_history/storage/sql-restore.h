@@ -18,10 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SQL_RESTORE_H
-#define SQL_RESTORE_H
+#pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class PathsProvider;
 
 class QSqlDatabase;
 
@@ -116,6 +119,9 @@ public:
 	 */
 	static QString errorMessage(RestoreError error);
 
+	explicit SqlRestore(QObject *parent = nullptr);
+	virtual ~SqlRestore();
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Try to restore database file.
@@ -127,10 +133,14 @@ public:
 	 */
 	RestoreError performRestore(const QString &databaseFilePath);
 
+private:
+	QPointer<PathsProvider> m_pathsProvider;
+
+private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+
 };
 
 /**
  * @}
  */
-
-#endif // SQL_RESTORE_H

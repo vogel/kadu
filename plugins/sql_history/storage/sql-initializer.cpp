@@ -27,7 +27,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "misc/paths-provider.h"
 
 #include "storage/history-sql-storage.h"
@@ -49,6 +49,21 @@ SqlInitializer::~SqlInitializer()
 {
 }
 
+void SqlInitializer::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void SqlInitializer::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SqlInitializer::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
 void SqlInitializer::initialize()
 {
 	initDatabase();
@@ -63,28 +78,28 @@ void SqlInitializer::initialize()
 
 bool SqlInitializer::oldHistoryFileExists()
 {
-	QFileInfo scheme0FileInfo(Core::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_0));
-	QFileInfo scheme1FileInfo(Core::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_1));
+	QFileInfo scheme0FileInfo(m_pathsProvider->profilePath() + QLatin1String(HISTORY_FILE_0));
+	QFileInfo scheme1FileInfo(m_pathsProvider->profilePath() + QLatin1String(HISTORY_FILE_1));
 	return scheme0FileInfo.exists() || scheme1FileInfo.exists();
 }
 
 bool SqlInitializer::currentHistoryFileExists()
 {
-	QFileInfo schemeCurrentFileInfo(Core::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT));
+	QFileInfo schemeCurrentFileInfo(m_pathsProvider->profilePath() + QLatin1String(HISTORY_FILE_CURRENT));
 	return schemeCurrentFileInfo.exists();
 }
 
 bool SqlInitializer::copyHistoryFile()
 {
-	QFileInfo schemeCurrentFileInfo(Core::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT));
+	QFileInfo schemeCurrentFileInfo(m_pathsProvider->profilePath() + QLatin1String(HISTORY_FILE_CURRENT));
 	if (schemeCurrentFileInfo.exists())
 		return true;
 
-	QFileInfo scheme1FileInfo(Core::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_1));
+	QFileInfo scheme1FileInfo(m_pathsProvider->profilePath() + QLatin1String(HISTORY_FILE_1));
 	if (scheme1FileInfo.exists())
 		return QFile::copy(scheme1FileInfo.absoluteFilePath(), schemeCurrentFileInfo.absoluteFilePath());
 
-	QFileInfo scheme0FileInfo(Core::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_0));
+	QFileInfo scheme0FileInfo(m_pathsProvider->profilePath() + QLatin1String(HISTORY_FILE_0));
 	if (scheme0FileInfo.exists())
 		return QFile::copy(scheme0FileInfo.absoluteFilePath(), schemeCurrentFileInfo.absoluteFilePath());
 
@@ -105,7 +120,7 @@ void SqlInitializer::initDatabase()
 
 	if (!currentFileExists && oldHistoryFileExists())
 	{
-		emit progressMessage("dialog-information", tr("Copying history file to new location: %1 ...").arg(Core::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT)));
+		emit progressMessage("dialog-information", tr("Copying history file to new location: %1 ...").arg(m_pathsProvider->profilePath() + QLatin1String(HISTORY_FILE_CURRENT)));
 		if (!copyHistoryFile())
 		{
 			emit progressFinished(false, "dialog-error", tr("Unable to copy history file to new location. Check if disk is full."));
@@ -113,7 +128,7 @@ void SqlInitializer::initDatabase()
 		}
 	}
 
-	QString historyFilePath = Core::instance()->pathsProvider()->profilePath() + QLatin1String(HISTORY_FILE_CURRENT);
+	QString historyFilePath = m_pathsProvider->profilePath() + QLatin1String(HISTORY_FILE_CURRENT);
 
 	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
 	Database.setDatabaseName(historyFilePath);
@@ -130,8 +145,8 @@ void SqlInitializer::initDatabase()
 
 		emit progressMessage("dialog-warning", tr("History file is corrupted, performing recovery..."));
 
-		SqlRestore sqlRestore;
-		SqlRestore::RestoreError error = sqlRestore.performRestore(historyFilePath);
+		auto sqlRestore = m_injectedFactory->makeUnique<SqlRestore>();
+		SqlRestore::RestoreError error = sqlRestore->performRestore(historyFilePath);
 		if (SqlRestore::ErrorNoError == error)
 			emit progressMessage("dialog-information", tr("Recovery completed."));
 		else
@@ -149,15 +164,15 @@ void SqlInitializer::initDatabase()
 		if (anyHistoryFileExists)
 			emit progressMessage("dialog-warning", tr("History file is outdated, performing import..."));
 
-		SqlImport sqlImport;
-		sqlImport.performImport(Database);
+		auto sqlImport = m_injectedFactory->makeUnique<SqlImport>();
+		sqlImport->performImport(Database);
 
 		if (anyHistoryFileExists)
 			emit progressFinished(true, "dialog-information", tr("Import completed."));
 	}
 	else
 	{
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
+		m_configuration->deprecatedApi()->writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
 		emit progressFinished(true, "dialog-information", tr("Copying completed."));
 	}
 }

@@ -19,17 +19,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SQL_INITIALIZER_H
-#define SQL_INITIALIZER_H
+#pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtSql/QSqlDatabase>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class InjectedFactory;
+class PathsProvider;
 
 class QSqlError;
 
 class SqlInitializer : public QObject
 {
 	Q_OBJECT
+
+	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	QSqlDatabase Database;
 
@@ -40,8 +49,13 @@ class SqlInitializer : public QObject
 	void initDatabaseFile();
 	void initDatabase();
 
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+
 public:
-	explicit SqlInitializer(QObject *parent = 0);
+	explicit SqlInitializer(QObject *parent = nullptr);
 	virtual ~SqlInitializer();
 
 public slots:
@@ -54,5 +68,3 @@ signals:
 	void progressFinished(bool ok, const QString &iconName, const QString &message);
 
 };
-
-#endif // SQL_INITIALIZER_H

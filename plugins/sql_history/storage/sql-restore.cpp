@@ -19,16 +19,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "sql-restore.h"
+
+#include "misc/paths-provider.h"
+
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcess>
 #include <QtCore/QStringList>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
-
-#include "core/core.h"
-#include "misc/paths-provider.h"
-
-#include "sql-restore.h"
 
 #define RECOVERY_SCRIPT "plugins/data/sql_history/scripts/history-database-recovery.sh"
 
@@ -69,9 +68,23 @@ QString SqlRestore::errorMessage(SqlRestore::RestoreError error)
 	}
 }
 
+SqlRestore::SqlRestore(QObject *parent) :
+		QObject{parent}
+{
+}
+
+SqlRestore::~SqlRestore()
+{
+}
+
+void SqlRestore::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
 SqlRestore::RestoreError SqlRestore::performRestore(const QString &databaseFilePath)
 {
-	QString recoveryScriptPath = Core::instance()->pathsProvider()->dataPath() + QLatin1String(RECOVERY_SCRIPT);
+	QString recoveryScriptPath = m_pathsProvider->dataPath() + QLatin1String(RECOVERY_SCRIPT);
 
 	QFileInfo recoveryScriptFileInfo(recoveryScriptPath);
 	if (!recoveryScriptFileInfo.exists())

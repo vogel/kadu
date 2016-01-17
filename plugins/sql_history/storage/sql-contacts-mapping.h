@@ -17,16 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SQL_CONTACTS_MAPPING_H
-#define SQL_CONTACTS_MAPPING_H
+#pragma once
+
+#include "contacts/contact.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QMutex>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtSql/QSqlDatabase>
+#include <injeqt/injeqt.h>
 
-#include "contacts/contact.h"
-
+class ContactManager;
 class SqlAccountsMapping;
 
 /**
@@ -60,6 +62,8 @@ class SqlContactsMapping : public QObject
 {
 	Q_OBJECT
 
+	QPointer<ContactManager> m_contactManager;
+
 	const QSqlDatabase &Database;
 	mutable QMutex Mutex;
 	SqlAccountsMapping *AccountsMapping;
@@ -86,6 +90,9 @@ class SqlContactsMapping : public QObject
 	void loadMappingsFromDatabase();
 
 private slots:
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_INIT void init();
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Update kadu_contacts entry to new contact's data.
@@ -142,5 +149,3 @@ public:
 /**
  * @}
  */
-
-#endif // SQL_CONTACTS_MAPPING_H

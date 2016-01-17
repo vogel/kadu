@@ -33,14 +33,22 @@ SqlContactsMapping::SqlContactsMapping(const QSqlDatabase &database, SqlAccounts
 		QObject(parent), Database(database), Mutex(QMutex::Recursive), AccountsMapping(accountsMapping)
 {
 	Q_ASSERT(AccountsMapping);
-
-	loadMappingsFromDatabase();
-
-	connect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
 }
 
 SqlContactsMapping::~SqlContactsMapping()
 {
+}
+
+void SqlContactsMapping::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void SqlContactsMapping::init()
+{
+	loadMappingsFromDatabase();
+
+	connect(m_contactManager, SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
 }
 
 void SqlContactsMapping::contactUpdated(const Contact &contact)
@@ -89,7 +97,7 @@ void SqlContactsMapping::loadMappingsFromDatabase()
 
 		// This contact needs to be known to the manager even if it's not on our roster,
 		// in case we want to add him later or even talk to her without adding.
-		Contact contact = Core::instance()->contactManager()->byId(account, contactId, ActionCreateAndAdd);
+		Contact contact = m_contactManager->byId(account, contactId, ActionCreateAndAdd);
 		if (contact)
 			addMapping(id, contact);
 	}
