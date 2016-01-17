@@ -26,7 +26,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
@@ -47,6 +46,11 @@ WordFixConfigurationUiHandler::WordFixConfigurationUiHandler(QObject *parent) :
 
 WordFixConfigurationUiHandler::~WordFixConfigurationUiHandler()
 {
+}
+
+void WordFixConfigurationUiHandler::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void WordFixConfigurationUiHandler::setWordFix(WordFix *wordFix)
@@ -154,7 +158,7 @@ void WordFixConfigurationUiHandler::saveList()
 	for (QMap<QString, QString>::const_iterator i = m_wordFix->wordsList().constBegin(); i != m_wordFix->wordsList().constEnd(); ++i)
 		list.append(i.key() + '\t' + i.value());
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
+	m_configuration->deprecatedApi()->writeEntry("word_fix", "WordFix_list", list.join("\t\t"));
 }
 
 void WordFixConfigurationUiHandler::wordSelected()

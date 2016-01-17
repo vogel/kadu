@@ -32,6 +32,7 @@ class QLineEdit;
 class QPushButton;
 class QTreeWidget;
 
+class Configuration;
 class WordFix;
 
 class WordFixConfigurationUiHandler : public QObject, public ConfigurationUiHandler
@@ -50,6 +51,7 @@ public slots:
 	void moveToNewValue();
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<WordFix> m_wordFix;
 
 	QPushButton *m_changeButton;
@@ -66,6 +68,7 @@ private:
 	void saveList();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setWordFix(WordFix *wordFix);
 
 };

@@ -37,8 +37,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
@@ -58,13 +56,36 @@
 WordFix::WordFix(QObject *parent) :
 		QObject{parent}
 {
+}
+
+WordFix::~WordFix()
+{
+}
+
+void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+}
+
+void WordFix::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void WordFix::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void WordFix::init()
+{
 	ExtractBody.setPattern("<body[^>]*>.*</body>");
 
 	// Loading list
-	QString data = Core::instance()->configuration()->deprecatedApi()->readEntry("word_fix", "WordFix_list");
+	QString data = m_configuration->deprecatedApi()->readEntry("word_fix", "WordFix_list");
 	if (data.isEmpty())
 	{
-		QFile defList(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
+		QFile defList(m_pathsProvider->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
 		if (defList.open(QIODevice::ReadOnly))
 		{
 			QTextStream s(&defList);
@@ -97,26 +118,14 @@ WordFix::WordFix(QObject *parent) :
 			}
 		}
 	}
-}
 
-WordFix::~WordFix()
-{
-}
+	connect(m_chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget *)),
+		this, SLOT(chatWidgetAdded(ChatWidget *)));
+	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget*)),
+		this, SLOT(chatWidgetRemoved(ChatWidget *)));
 
-void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
-{
-	this->chatWidgetRepository = chatWidgetRepository;
-
-	if (this->chatWidgetRepository)
-	{
-		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)),
-			this, SLOT(chatWidgetAdded(ChatWidget *)));
-		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
-			this, SLOT(chatWidgetRemoved(ChatWidget *)));
-
-		for (auto chatWidget : this->chatWidgetRepository.data())
-			chatWidgetAdded(chatWidget);
-	}
+	for (auto chatWidget : m_chatWidgetRepository)
+		chatWidgetAdded(chatWidget);
 }
 
 void WordFix::chatWidgetAdded(ChatWidget *chatWidget)
@@ -131,7 +140,7 @@ void WordFix::chatWidgetRemoved(ChatWidget *chatWidget)
 
 void WordFix::sendRequest(ChatWidget* chat)
 {
-	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "enable_word_fix", false))
+	if (!m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_word_fix", false))
 		return;
 
 	auto formattedString = chat->edit()->formattedString();

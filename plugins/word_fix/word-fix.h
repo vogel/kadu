@@ -24,11 +24,14 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QRegExp>
 #include <injeqt/injeqt.h>
 
 class ChatWidget;
 class ChatWidgetRepository;
+class Configuration;
+class PathsProvider;
 class UserGroup;
 
 /*!
@@ -42,7 +45,9 @@ class WordFix : public QObject
 {
 	Q_OBJECT
 
-	QPointer<ChatWidgetRepository> chatWidgetRepository;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<Configuration> m_configuration;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	/*!
 	 * \var QMap<QString,QString> wordsList
@@ -55,6 +60,9 @@ class WordFix : public QObject
 
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
 
 	/*!
 	 * \fn void chatCreated(ChatWidget *chat)
