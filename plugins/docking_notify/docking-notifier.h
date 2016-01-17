@@ -11,6 +11,7 @@
 class ChatWidgetManager;
 class Configuration;
 class Docking;
+class InjectedFactory;
 
 /**
  * @defgroup qt4_notify Qt4 Notify
@@ -35,6 +36,7 @@ private:
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<Docking> m_docking;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
@@ -46,6 +48,7 @@ private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDocking(Docking *docking);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 };

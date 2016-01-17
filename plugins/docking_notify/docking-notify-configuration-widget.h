@@ -18,20 +18,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef QT4_DOCKING_NOTIFY_CONFIGURATION_WIDGET_H
-#define QT4_DOCKING_NOTIFY_CONFIGURATION_WIDGET_H
+#pragma once
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class ConfigurationWindow;
+class PathsProvider;
 
 class DockingNotifyConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
 
+	QPointer<PathsProvider> m_pathsProvider;
+
 	QString currentNotificationEvent;
 
 private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 	void showConfigurationWindow();
 
@@ -42,6 +48,5 @@ public:
 	virtual void saveNotifyConfigurations();
 
 	virtual void switchToEvent(const QString &event);
-};
 
-#endif // QT4_DOCKING_NOTIFY_CONFIGURATION_WIDGET_H
+};

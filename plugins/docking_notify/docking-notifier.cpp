@@ -27,6 +27,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "parser/parser.h"
@@ -66,6 +67,11 @@ void DockingNotifier::setConfiguration(Configuration *configuration)
 void DockingNotifier::setDocking(Docking *docking)
 {
 	connect(docking, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
+}
+
+void DockingNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void DockingNotifier::init()
@@ -132,10 +138,9 @@ void DockingNotifier::messageClicked()
 	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
 
-NotifierConfigurationWidget *DockingNotifier::createConfigurationWidget(QWidget *parent)
+NotifierConfigurationWidget * DockingNotifier::createConfigurationWidget(QWidget *parent)
 {
-	configurationWidget = new DockingNotifyConfigurationWidget(parent);
-	return configurationWidget;
+	return m_injectedFactory->makeInjected<DockingNotifyConfigurationWidget>(parent);
 }
 
 void DockingNotifier::createDefaultConfiguration()

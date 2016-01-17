@@ -47,6 +47,11 @@ DockingNotifyConfigurationWidget::DockingNotifyConfigurationWidget(QWidget *pare
 	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
+void DockingNotifyConfigurationWidget::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
 void DockingNotifyConfigurationWidget::saveNotifyConfigurations()
 {
 }
@@ -65,7 +70,7 @@ void DockingNotifyConfigurationWidget::showConfigurationWindow()
 
 	dataManager->configurationWindowCreated(configWindow);
 
-	configWindow->widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/docking-notify.ui"));
+	configWindow->widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/docking-notify.ui"));
 
 	QString tooltip = QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxTextNotify) +
 	tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");
