@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TABS_TABWIDGET_H
-#define TABS_TABWIDGET_H
+#pragma once
 
 #include <QtGui/QCursor>
 #include <QtGui/QMouseEvent>
@@ -29,6 +28,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 #include "gui/widgets/custom-input.h"
 
@@ -36,13 +36,22 @@
 
 #include "debug.h"
 
+class Application;
+class ChatWidgetManager;
 class ChatWidget;
+class Configuration;
+class InjectedFactory;
 class RecentChatsMenu;
 class TabsManager;
 
 class TabWidget : public QTabWidget, CompositingAwareObject
 {
 	Q_OBJECT
+
+	QPointer<Application> m_application;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QToolButton *CloseChatButton;
 	QToolButton *TabsListButton;
@@ -61,6 +70,12 @@ class TabWidget : public QTabWidget, CompositingAwareObject
 	bool isTabVisible(int index);
 
 private slots:
+	INJEQT_SET void setApplication(Application *application);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void onContextMenu(int id, const QPoint &pos);
 
 	/**
@@ -188,5 +203,3 @@ signals:
 	void openTab(QStringList altnicks, int index);
 
 };
-
-#endif // TABS_TABWIDGET_H

@@ -135,7 +135,7 @@ void TabsManager::init()
 
 	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(onDestroyingChat(ChatWidget *)));
 
-	TabDialog = new TabWidget(this);
+	TabDialog = m_injectedFactory->makeInjected<TabWidget>(this);
 	TabDialog->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TabDialog, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 	connect(TabDialog, SIGNAL(contextMenu(QWidget *, const QPoint &)),

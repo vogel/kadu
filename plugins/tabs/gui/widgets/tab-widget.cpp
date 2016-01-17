@@ -31,7 +31,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -51,6 +50,34 @@
 #include "tab-widget.h"
 
 TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
+{
+}
+
+TabWidget::~TabWidget()
+{
+}
+
+void TabWidget::setApplication(Application *application)
+{
+	m_application = application;
+}
+
+void TabWidget::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
+void TabWidget::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void TabWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void TabWidget::init()
 {
 	setWindowRole("kadu-tabs");
 
@@ -93,7 +120,7 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	connect(OpenRecentChatButton, SIGNAL(clicked()), SLOT(openRecentChatsMenu()));
 
 	//menu for recent chats
-	RecentChatsMenuWidget = Core::instance()->injectedFactory()->makeInjected<RecentChatsMenu>(OpenRecentChatButton);
+	RecentChatsMenuWidget = m_injectedFactory->makeInjected<RecentChatsMenu>(OpenRecentChatButton);
 	connect(RecentChatsMenuWidget, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChat(QAction *)));
 	connect(RecentChatsMenuWidget, SIGNAL(chatsListAvailable(bool)), OpenRecentChatButton, SLOT(setEnabled(bool)));
 
@@ -141,10 +168,6 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	setCornerWidget(RightCornerWidget, Qt::TopRightCorner);
 
 	configurationUpdated();
-}
-
-TabWidget::~TabWidget()
-{
 }
 
 bool TabWidget::isTabVisible(int index)
@@ -214,9 +237,9 @@ void TabWidget::closeTab(ChatWidget *chatWidget)
 	if (!chatWidget)
 		return;
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
 	{
-		unsigned int period = Core::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("Chat",
+		unsigned int period = m_configuration->deprecatedApi()->readUnsignedNumEntry("Chat",
 			"ChatCloseTimerPeriod", 2);
 
 		if (QDateTime::currentDateTime() < chatWidget->lastReceivedMessageTime().addSecs(period))
@@ -241,7 +264,7 @@ bool TabWidget::isChatWidgetActive(const ChatWidget *chatWidget)
 void TabWidget::closeEvent(QCloseEvent *e)
 {
 	// do not block window closing when session is about to close
-	if (Core::instance()->application()->isSavingSession())
+	if (m_application->isSavingSession())
 	{
 		QTabWidget::closeEvent(e);
 		return;
@@ -449,7 +472,7 @@ void TabWidget::openTabsList()
 
 void TabWidget::openRecentChat(QAction *action)
 {
-	Core::instance()->chatWidgetManager()->openChat(action->data().value<Chat>(), OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(action->data().value<Chat>(), OpenChatActivation::Activate);
 }
 
 void TabWidget::deleteTab()
@@ -481,7 +504,7 @@ void TabWidget::tabRemoved(int index)
 
 void TabWidget::compositingEnabled()
 {
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseTransparency", false))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "UseTransparency", false))
 	{
 		setAutoFillBackground(false);
 		setAttribute(Qt::WA_TranslucentBackground, true);
@@ -503,13 +526,13 @@ void TabWidget::configurationUpdated()
 
 	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
 
-	setTabsClosable(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButtonOnTab"));
-	config_oldStyleClosing = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OldStyleClosing");
+	setTabsClosable(m_configuration->deprecatedApi()->readBoolEntry("Tabs", "CloseButtonOnTab"));
+	config_oldStyleClosing = m_configuration->deprecatedApi()->readBoolEntry("Tabs", "OldStyleClosing");
 
 	bool isOpenChatButtonEnabled = (cornerWidget(Qt::TopLeftCorner) == OpenChatButtonsWidget);
-	bool shouldEnableOpenChatButton = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "OpenChatButton");
+	bool shouldEnableOpenChatButton = m_configuration->deprecatedApi()->readBoolEntry("Tabs", "OpenChatButton");
 	bool isCloseButtonEnabled = CloseChatButton->isVisible();
-	bool shouldEnableCloseButton = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Tabs", "CloseButton");
+	bool shouldEnableCloseButton = m_configuration->deprecatedApi()->readBoolEntry("Tabs", "CloseButton");
 
 	if (isOpenChatButtonEnabled != shouldEnableOpenChatButton)
 	{
