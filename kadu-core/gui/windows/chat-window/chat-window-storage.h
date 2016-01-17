@@ -53,8 +53,6 @@ public:
 	Q_INVOKABLE explicit ChatWindowStorage(QObject *parent = nullptr);
 	virtual ~ChatWindowStorage();
 
-	void setChatManager(ChatManager *chatManager);
-
 	void setConfiguration(ChatWindowStorageConfiguration configuration);
 
 	/**
@@ -75,6 +73,7 @@ private:
 	std::unique_ptr<StoragePoint> storagePoint() const;
 
 private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
 };

@@ -115,8 +115,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	std::shared_ptr<SimpleProvider<QWidget *>> KaduWindowProvider;
 	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
 
-	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
-
 	KaduWindow *Window;
 
 	bool IsClosing;

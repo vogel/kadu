@@ -24,6 +24,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Chat;
 class ChatWidget;
@@ -59,15 +60,8 @@ class ChatWidgetMessageHandler : public QObject
 	Q_OBJECT
 
 public:
-	explicit ChatWidgetMessageHandler(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ChatWidgetMessageHandler(QObject *parent = nullptr);
 	virtual ~ChatWidgetMessageHandler();
-
-	void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
-	void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	void setMessageManager(MessageManager *messageManager);
-	void setNotificationService(NotificationService *notificationService);
-	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 	void setConfiguration(ChatWidgetMessageHandlerConfiguration configuration);
 
@@ -86,6 +80,13 @@ private:
 	bool shouldOpenChatWidget(const Chat &chat) const;
 
 private slots:
+	INJEQT_SET void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setNotificationService(NotificationService *notificationService);
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+
 	void chatWidgetAdded(ChatWidget *chatWidget);
 	void chatWidgetRemoved(ChatWidget *chatWidget);
 	void chatWidgetActivated(ChatWidget *chatWidget);

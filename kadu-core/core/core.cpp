@@ -190,7 +190,6 @@ Core::Core(injeqt::injector &&injector) :
 		m_injector{std::move(injector)},
 		KaduWindowProvider{new SimpleProvider<QWidget *>(0)},
 		MainWindowProvider{new DefaultProvider<QWidget *>(KaduWindowProvider)},
-		CurrentChatWidgetMessageHandler{nullptr},
 		Window(0),
 		IsClosing(false),
 		ShowMainWindowOnStart(true)
@@ -596,16 +595,9 @@ void Core::runServices()
 	auto chatWidgetContainerHandlerRepository = m_injector.get<ChatWidgetContainerHandlerRepository>();
 	chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_injector.get<WindowChatWidgetContainerHandler>());
 
-	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
-	CurrentChatWidgetMessageHandler->setChatWidgetActivationService(m_injector.get<ChatWidgetActivationService>());
-	CurrentChatWidgetMessageHandler->setChatWidgetManager(m_injector.get<ChatWidgetManager>());
-	CurrentChatWidgetMessageHandler->setChatWidgetRepository(m_injector.get<ChatWidgetRepository>());
-	CurrentChatWidgetMessageHandler->setMessageManager(m_injector.get<MessageManager>());
-	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(m_injector.get<UnreadMessageRepository>());
 	auto chatWidgetMessageHandlerConfigurator = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
-	chatWidgetMessageHandlerConfigurator->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
+	chatWidgetMessageHandlerConfigurator->setChatWidgetMessageHandler(m_injector.get<ChatWidgetMessageHandler>());
 
-	m_injector.get<ChatWindowStorage>()->setChatManager(chatManager());
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(m_injector.get<ChatWindowStorage>());
 
@@ -622,8 +614,6 @@ void Core::runServices()
 
 void Core::runGuiServices()
 {
-	CurrentChatWidgetMessageHandler->setNotificationService(m_injector.get<NotificationService>());
-
 	m_injector.get<ChatWindowManager>()->openStoredChatWindows();
 	m_injector.get<SslCertificateManager>()->loadPersistentSslCertificates();
 }
