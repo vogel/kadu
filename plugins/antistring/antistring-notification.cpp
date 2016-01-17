@@ -18,19 +18,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
 #include "notification/notification-event-repository.h"
 
 #include "antistring-notification.h"
 
-void AntistringNotification::notifyStringReceived(const Chat &chat)
+void AntistringNotification::notifyStringReceived(NotificationManager *notificationManager, const Chat &chat)
 {
 	AntistringNotification *notification = new AntistringNotification(chat);
 	notification->setTitle(tr("Antistring"));
 	notification->setText(tr("Your interlocutor send you love letter"));
-	Core::instance()->notificationManager()->notify(notification);
+	notificationManager->notify(notification);
 }
 
 AntistringNotification::AntistringNotification(const Chat &chat) :

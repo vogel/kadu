@@ -17,35 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ANTISTRING_CONFIGURATION_H
-#define ANTISTRING_CONFIGURATION_H
-
-#include <QtCore/QList>
-#include <QtCore/QPair>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 
+#include <QtCore/QList>
+#include <QtCore/QObject>
+#include <QtCore/QPair>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 typedef QPair<QString, int> ConditionPair;
 
-class AntistringConfiguration : public ConfigurationAwareObject
+class Configuration;
+class PathsProvider;
+
+class AntistringConfiguration : public QObject, ConfigurationAwareObject
 {
-	QList<ConditionPair> Conditions;
-
-	bool Enabled;
-	bool MessageStop;
-	bool LogMessage;
-	QString ReturnMessage;
-	QString LogFile;
-
-	void createDefaultConfiguration();
-	void addCondition(const QString &conditionString);
-	void readDefaultConditions();
-
-protected:
-	virtual void configurationUpdated();
+	Q_OBJECT
 
 public:
-	AntistringConfiguration();
+	Q_INVOKABLE explicit AntistringConfiguration(QObject *parent = nullptr);
 	virtual ~AntistringConfiguration();
 
 	void readConditions();
@@ -59,6 +51,28 @@ public:
 	const QString & returnMessage() const { return ReturnMessage; }
 	const QString & logFile() const { return LogFile; }
 
-};
+protected:
+	virtual void configurationUpdated();
 
-#endif // ANTISTRING_CONFIGURATION_H
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<PathsProvider> m_pathsProvider;
+
+	QList<ConditionPair> Conditions;
+
+	bool Enabled;
+	bool MessageStop;
+	bool LogMessage;
+	QString ReturnMessage;
+	QString LogFile;
+
+	void createDefaultConfiguration();
+	void addCondition(const QString &conditionString);
+	void readDefaultConditions();
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+
+};

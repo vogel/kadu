@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
+#include "antistring-configuration.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -27,22 +26,38 @@
 #include "misc/paths-provider.h"
 #include "debug.h"
 
-#include "antistring-configuration.h"
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
-AntistringConfiguration::AntistringConfiguration()
+AntistringConfiguration::AntistringConfiguration(QObject *parent) :
+		QObject{parent}
 {
-	createDefaultConfiguration();
-	configurationUpdated();
 }
 
 AntistringConfiguration::~AntistringConfiguration()
 {
 }
 
+void AntistringConfiguration::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void AntistringConfiguration::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void AntistringConfiguration::init()
+{
+	createDefaultConfiguration();
+	configurationUpdated();
+}
+
 void AntistringConfiguration::createDefaultConfiguration()
 {
-	Core::instance()->configuration()->deprecatedApi()->addVariable("PowerKadu", "log file", Core::instance()->pathsProvider()->profilePath() + QLatin1String("antistring.log"));
-	Core::instance()->configuration()->deprecatedApi()->addVariable("PowerKadu", "admonish_tresc_config",
+	m_configuration->deprecatedApi()->addVariable("PowerKadu", "log file", m_pathsProvider->profilePath() + QLatin1String("antistring.log"));
+	m_configuration->deprecatedApi()->addVariable("PowerKadu", "admonish_tresc_config",
 			"http://www.olsztyn.mm.pl/~silentman/lancuszki.htm");
 }
 
@@ -50,11 +65,11 @@ void AntistringConfiguration::configurationUpdated()
 {
 	readConditions();
 
-	Enabled = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "enable_antistring");
-	MessageStop = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "message stop");
-	LogMessage = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "log message");
-	ReturnMessage = Core::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "admonish_tresc_config");
-	LogFile = Core::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "log file", Core::instance()->pathsProvider()->profilePath() + QLatin1String("antistring.log"));
+	Enabled = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_antistring");
+	MessageStop = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "message stop");
+	LogMessage = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "log message");
+	ReturnMessage = m_configuration->deprecatedApi()->readEntry("PowerKadu", "admonish_tresc_config");
+	LogFile = m_configuration->deprecatedApi()->readEntry("PowerKadu", "log file", m_pathsProvider->profilePath() + QLatin1String("antistring.log"));
 }
 
 void AntistringConfiguration::addCondition(const QString &conditionString)
@@ -72,7 +87,7 @@ void AntistringConfiguration::addCondition(const QString &conditionString)
 
 void AntistringConfiguration::readDefaultConditions()
 {
-	QFile defaultListFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/antistring/ant_conditions.conf"));
+	QFile defaultListFile(m_pathsProvider->dataPath() + QLatin1String("plugins/data/antistring/ant_conditions.conf"));
 	if (!defaultListFile.open(QFile::ReadOnly))
 	{
 		kdebug("Can't open file: %s\n", qPrintable(defaultListFile.fileName()));
@@ -91,7 +106,7 @@ void AntistringConfiguration::readConditions()
 {
 	Conditions.clear();
 
-	QString conditionsString = Core::instance()->configuration()->deprecatedApi()->readEntry("PowerKadu", "antistring conditions");
+	QString conditionsString = m_configuration->deprecatedApi()->readEntry("PowerKadu", "antistring conditions");
 	QStringList conditionsList = conditionsString.split("\t\t");
 
 	if (conditionsList.empty())
@@ -111,5 +126,5 @@ void AntistringConfiguration::storeConditions()
 	foreach (const ConditionPair &condition, Conditions)
 		conditionsList.append(QString::number(condition.second) + '\t' + condition.first);
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("PowerKadu", "antistring conditions", conditionsList.join("\t\t"));
+	m_configuration->deprecatedApi()->writeEntry("PowerKadu", "antistring conditions", conditionsList.join("\t\t"));
 }

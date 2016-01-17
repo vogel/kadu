@@ -20,9 +20,11 @@
 
 #include "antistring-message-filter.h"
 
+#include "antistring-configuration.h"
 #include "antistring-notification.h"
 
 #include "message/message-manager.h"
+#include "notification/notification-manager.h"
 
 #include <QtCore/QFile>
 
@@ -35,14 +37,24 @@ AntistringMessageFilter::~AntistringMessageFilter()
 {
 }
 
+void AntistringMessageFilter::setAntistringConfiguration(AntistringConfiguration *antistringConfiguration)
+{
+	m_antistringConfiguration = antistringConfiguration;
+}
+
 void AntistringMessageFilter::setMessageManager(MessageManager *messageManager)
 {
 	m_messageManager = messageManager;
 }
 
+void AntistringMessageFilter::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
+}
+
 bool AntistringMessageFilter::acceptMessage(const Message &message)
 {
-	if (!Configuration.enabled())
+	if (!m_antistringConfiguration->enabled())
 		return true;
 
 	if (MessageTypeSent == message.type())
@@ -51,18 +63,18 @@ bool AntistringMessageFilter::acceptMessage(const Message &message)
 	if (points(message.plainTextContent()) < 3)
 		return true;
 
-	AntistringNotification::notifyStringReceived(message.messageChat());
-	m_messageManager->sendMessage(message.messageChat(), Configuration.returnMessage(), true);
+	AntistringNotification::notifyStringReceived(m_notificationManager, message.messageChat());
+	m_messageManager->sendMessage(message.messageChat(), m_antistringConfiguration->returnMessage(), true);
 
-	if (Configuration.logMessage())
+	if (m_antistringConfiguration->logMessage())
 		writeLog(message.messageSender(), message.htmlContent());
 
-	return !Configuration.messageStop();
+	return !m_antistringConfiguration->messageStop();
 }
 
 void AntistringMessageFilter::writeLog(Contact sender, const QString &message)
 {
-	QFile logFile(Configuration.logFile());
+	QFile logFile(m_antistringConfiguration->logFile());
 
 	if (!logFile.exists())
 	{
@@ -92,7 +104,7 @@ int AntistringMessageFilter::points(const QString &message)
 	if (message.length() > 600)
 		result++;
 
-	foreach (const ConditionPair &condition, Configuration.conditions())
+	foreach (const ConditionPair &condition, m_antistringConfiguration->conditions())
 		if (message.indexOf(QRegExp(condition.first)) >= 0)
 			result += condition.second;
 

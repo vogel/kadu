@@ -24,13 +24,13 @@
 #include "gui/windows/main-configuration-window.h"
 #include "message/message-filter.h"
 
-#include "antistring-configuration.h"
-
 #include <injeqt/injeqt.h>
 
 class Account;
+class AntistringConfiguration;
 class Contact;
 class MessageManager;
+class NotificationManager;
 
 class AntistringMessageFilter : public QObject, public MessageFilter
 {
@@ -40,18 +40,19 @@ public:
 	Q_INVOKABLE explicit AntistringMessageFilter(QObject *parent = nullptr);
 	virtual ~AntistringMessageFilter();
 
-	AntistringConfiguration & configuration() { return Configuration; }
-
 	virtual bool acceptMessage(const Message &message);
 
 private:
+	QPointer<AntistringConfiguration> m_antistringConfiguration;
 	QPointer<MessageManager> m_messageManager;
-	AntistringConfiguration Configuration;
+	QPointer<NotificationManager> m_notificationManager;
 
 	int points(const QString &message);
 	void writeLog(Contact sender, const QString &message);
 
 private slots:
+	INJEQT_SET void setAntistringConfiguration(AntistringConfiguration *antistringConfiguration);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };

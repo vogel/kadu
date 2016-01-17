@@ -24,7 +24,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class AntistringMessageFilter;
+class AntistringConfiguration;
 
 class QLineEdit;
 class QListWidget;
@@ -51,10 +51,10 @@ protected:
 	virtual void mainConfigurationWindowApplied() override;
 
 private:
-	QPointer<AntistringMessageFilter> m_antistringMessageFilter;
+	QPointer<AntistringConfiguration> m_antistringConfiguration;
 
 private slots:
-	INJEQT_SET void setAntistringMessageFilter(AntistringMessageFilter *antistringMessageFilter);
+	INJEQT_SET void setAntistringConfiguration(AntistringConfiguration *antistringConfiguration);
 
 	void addCondition();
 	void changeCondition();

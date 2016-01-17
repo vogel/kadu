@@ -18,20 +18,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ANTISTRING_NOTIFICATION_H
-#define ANTISTRING_NOTIFICATION_H
+#pragma once
 
 #include "notification/notification/notification.h"
+
+class NotificationManager;
 
 class AntistringNotification : public Notification
 {
 	Q_OBJECT
 
 public:
-	static void notifyStringReceived(const Chat &chat);
+	static void notifyStringReceived(NotificationManager *notificationManager, const Chat &chat);
 
 	explicit AntistringNotification(const Chat &chat);
 	virtual ~AntistringNotification();
 };
-
-#endif // ANTISTRING_NOTIFICATION_H
