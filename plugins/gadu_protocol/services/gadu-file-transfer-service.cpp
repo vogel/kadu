@@ -28,7 +28,6 @@
 #include "gadu-protocol.h"
 
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -51,6 +50,11 @@ GaduFileTransferService::~GaduFileTransferService()
 {
 }
 
+void GaduFileTransferService::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
 void GaduFileTransferService::setGaduIMTokenService(GaduIMTokenService *imTokenService)
 {
 	m_imTokenService = imTokenService;
@@ -68,7 +72,7 @@ FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTra
 
 FileTransferCanSendResult GaduFileTransferService::canSend(Contact contact)
 {
-	if (Core::instance()->myself()->buddy() == contact.ownerBuddy())
+	if (m_myself->buddy() == contact.ownerBuddy())
 		return {false, {}};
 
 	if (!Protocol->isConnected())

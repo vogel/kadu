@@ -18,19 +18,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_PERSONAL_INFO_SERVICE_H
-#define GADU_PERSONAL_INFO_SERVICE_H
+#pragma once
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 #include <libgadu.h>
 
 #include "protocols/services/personal-info-service.h"
 
+class BuddyStorage;
 class GaduConnection;
 
 class GaduPersonalInfoService : public PersonalInfoService
 {
 	Q_OBJECT
 
+	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<GaduConnection> Connection;
 
 	unsigned int FetchSeq;
@@ -43,6 +46,9 @@ class GaduPersonalInfoService : public PersonalInfoService
 	void handleEventPubdir50Read(struct gg_event *e);
 	void handleEventPubdir50Write(struct gg_event *e);
 
+private slots:
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+
 public:
 	explicit GaduPersonalInfoService(Account account, QObject *parent = 0);
 	virtual ~GaduPersonalInfoService();
@@ -53,6 +59,3 @@ public:
 	virtual void updatePersonalInfo(const QString &id, Buddy buddy);
 
 };
-
-#endif // GADU_PERSONAL_INFO_SERVICE_H
-

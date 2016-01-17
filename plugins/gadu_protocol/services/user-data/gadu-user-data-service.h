@@ -22,6 +22,7 @@
 #include "protocols/services/account-service.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 struct gg_event_user_data;
 struct gg_event_user_data_user;
@@ -37,9 +38,6 @@ public:
 	explicit GaduUserDataService(Account account, QObject *parent = nullptr);
 	virtual ~GaduUserDataService();
 
-	void setAvatarManager(AvatarManager *avatarManager);
-	void setContactManager(ContactManager *contactManager);
-
 	void handleUserDataEvent(const gg_event_user_data &userData);
 
 private:
@@ -47,5 +45,9 @@ private:
 	QPointer<ContactManager> m_contactManager;
 
 	void handleUserDataItem(const gg_event_user_data_user &userDataUser, bool update);
+
+private slots:
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 
 };

@@ -18,16 +18,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_ACCOUNT_DETAILS_H
-#define GADU_ACCOUNT_DETAILS_H
+#pragma once
 
 #include "accounts/account-details.h"
 
 #include "open-chat-with/gadu-open-chat-with-runner.h"
 #include "gadu-protocol.h"
 
-class GaduAccountDetails : public AccountDetails
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injector.h>
+
+class InjectedFactory;
+
+class GaduAccountDetails : public QObject, public AccountDetails
 {
+	Q_OBJECT
+
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	PROPERTY_DEC(bool, ReceiveImagesDuringInvisibility)
 	PROPERTY_DEC(bool, ChatImageSizeWarning)
 	PROPERTY_DEC(bool, InitialRosterImport)
@@ -38,12 +47,16 @@ class GaduAccountDetails : public AccountDetails
 
 	GaduOpenChatWithRunner *OpenChatRunner;
 
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 protected:
 	virtual void load();
 	virtual void store();
 
 public:
-	explicit GaduAccountDetails(AccountShared *data);
+	explicit GaduAccountDetails(AccountShared *data, QObject *parent = nullptr);
 	virtual ~GaduAccountDetails();
 
 	UinType uin();
@@ -57,5 +70,3 @@ public:
 	PROPERTY_DEF(bool, receiveSpam, setReceiveSpam, ReceiveSpam)
 
 };
-
-#endif // GADU_ACCOUNT_DETAILS_H

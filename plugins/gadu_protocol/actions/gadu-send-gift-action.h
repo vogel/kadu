@@ -23,6 +23,11 @@
 
 #include "services/gadu-imtoken-service.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class UrlHandlerManager;
+
 class GaduSendGiftAction : public ActionDescription
 {
 	Q_OBJECT
@@ -35,5 +40,11 @@ protected:
 	virtual void actionInstanceCreated(Action *action) override;
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled) override;
 	virtual void updateActionState(Action *action) override;
+
+private:
+	QPointer<UrlHandlerManager> m_urlHandlerManager;
+
+private slots:
+	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 
 };

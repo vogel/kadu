@@ -19,7 +19,6 @@
  */
 
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "protocols/services/chat-state.h"
 
 #include "helpers/gadu-protocol-helper.h"
@@ -35,6 +34,11 @@ GaduChatStateService::GaduChatStateService(Account account, QObject *parent) :
 
 GaduChatStateService::~GaduChatStateService()
 {
+}
+
+void GaduChatStateService::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
 }
 
 void GaduChatStateService::setConnection(GaduConnection *connection)
@@ -55,7 +59,7 @@ void GaduChatStateService::messageReceived(const Message &message)
 
 void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 {
-	Contact contact = Core::instance()->contactManager()->byId(account(), QString::number(e->event.typing_notification.uin), ActionReturnNull);
+	Contact contact = m_contactManager->byId(account(), QString::number(e->event.typing_notification.uin), ActionReturnNull);
 	if (!contact)
 		return;
 

@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_FILE_TRANSFER_SERVICE_H
-#define GADU_FILE_TRANSFER_SERVICE_H
+#pragma once
 
+#include <injeqt/injeqt.h>
 #include <libgadu.h>
 
 #include "protocols/protocol.h"
@@ -28,12 +28,11 @@
 class GaduFileTransferHandler;
 class GaduIMTokenService;
 class GaduProtocol;
+class Myself;
 
 class GaduFileTransferService : public FileTransferService
 {
 	Q_OBJECT
-
-	GaduProtocol *Protocol;
 
 public:
 	explicit GaduFileTransferService(GaduProtocol *protocol);
@@ -48,9 +47,11 @@ public:
 
 private:
 	QPointer<GaduIMTokenService> m_imTokenService;
+	QPointer<Myself> m_myself;
+
+	GaduProtocol *Protocol;
+
+private slots:
+	INJEQT_SET void setMyself(Myself *myself);
 
 };
-
-#endif // GADU_FILE_TRANSFER_SERVICE_H
-
-// kate: indent-mode cstyle; replace-tabs off; tab-width 4;

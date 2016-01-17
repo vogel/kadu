@@ -196,7 +196,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 void GaduEditAccountWidget::createPersonalInfoTab(QTabWidget *tabWidget)
 {
-	gpiw = new GaduPersonalInfoWidget(account(), tabWidget);
+	gpiw = m_injectedFactory->makeInjected<GaduPersonalInfoWidget>(account(), tabWidget);
 	connect(gpiw, SIGNAL(dataChanged()), this, SLOT(dataChanged()));
 	tabWidget->addTab(gpiw, tr("Personal info"));
 }

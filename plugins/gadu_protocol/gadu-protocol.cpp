@@ -89,6 +89,16 @@ GaduProtocol::~GaduProtocol()
 	kdebugf2();
 }
 
+void GaduProtocol::setAvatarManager(AvatarManager *avatarManager)
+{
+	m_avatarManager = avatarManager;
+}
+
+void GaduProtocol::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void GaduProtocol::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
@@ -97,6 +107,11 @@ void GaduProtocol::setContactManager(ContactManager *contactManager)
 void GaduProtocol::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void GaduProtocol::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
+{
+	m_networkProxyManager = networkProxyManager;
 }
 
 void GaduProtocol::init()
@@ -113,29 +128,28 @@ void GaduProtocol::init()
 
 	CurrentImTokenService = new GaduIMTokenService{this};
 
-	CurrentFileTransferService = new GaduFileTransferService{this};
+	CurrentFileTransferService = m_injectedFactory->makeInjected<GaduFileTransferService>(this);
 	CurrentFileTransferService->setGaduIMTokenService(CurrentImTokenService);
 
 	CurrentChatService = m_injectedFactory->makeInjected<GaduChatService>(account(), this);
 	CurrentChatService->setConnection(Connection);
-	CurrentChatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	CurrentChatService->setGaduChatImageService(CurrentChatImageService);
 	CurrentChatService->setGaduFileTransferService(CurrentFileTransferService);
 	CurrentChatImageService->setGaduChatService(CurrentChatService);
 
-	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(account(), this);
+	CurrentContactPersonalInfoService = m_injectedFactory->makeInjected<GaduContactPersonalInfoService>(account(), this);
 	CurrentContactPersonalInfoService->setConnection(Connection);
 
-	CurrentPersonalInfoService = new GaduPersonalInfoService(account(), this);
+	CurrentPersonalInfoService = m_injectedFactory->makeInjected<GaduPersonalInfoService>(account(), this);
 	CurrentPersonalInfoService->setConnection(Connection);
 
-	CurrentSearchService = new GaduSearchService(account(), this);
+	CurrentSearchService = m_injectedFactory->makeInjected<GaduSearchService>(account(), this);
 	CurrentSearchService->setConnection(Connection);
 
 	CurrentMultilogonService = new GaduMultilogonService(account(), this);
 	CurrentMultilogonService->setConnection(Connection);
 
-	CurrentChatStateService = new GaduChatStateService(account(), this);
+	CurrentChatStateService = m_injectedFactory->makeInjected<GaduChatStateService>(account(), this);
 	CurrentChatStateService->setConnection(Connection);
 
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
@@ -144,9 +158,7 @@ void GaduProtocol::init()
 	CurrentDriveService = new GaduDriveService{account(), this};
 	CurrentDriveService->setGaduIMTokenService(CurrentImTokenService);
 
-	CurrentUserDataService = new GaduUserDataService{account(), this};
-	CurrentUserDataService->setAvatarManager(Core::instance()->avatarManager());
-	CurrentUserDataService->setContactManager(m_contactManager);
+	CurrentUserDataService = m_injectedFactory->makeInjected<GaduUserDataService>(account(), this);
 
 	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
 	auto rosterService = m_injectedFactory->makeInjected<GaduRosterService>(m_gaduListHelper, contacts, this);
@@ -303,7 +315,7 @@ void GaduProtocol::login()
 	}
 
 	GaduProxyHelper::setupProxy(account().useDefaultProxy()
-			? Core::instance()->networkProxyManager()->defaultProxy()
+			? m_networkProxyManager->defaultProxy()
 			: account().proxy());
 
 	setupLoginParams();
@@ -348,7 +360,7 @@ void GaduProtocol::connectedToServer()
 void GaduProtocol::afterLoggedIn()
 {
 	// fetch current avatar after connection
-	Core::instance()->avatarManager()->updateAvatar(account().accountContact(), true);
+	m_avatarManager->updateAvatar(account().accountContact(), true);
 
 	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
 	CurrentNotifyService->sendInitialData(contacts);
@@ -439,9 +451,9 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.encoding = GG_ENCODING_UTF8;
 
 	GaduLoginParams.has_audio = false;
-	GaduLoginParams.last_sysmsg = Core::instance()->configuration()->deprecatedApi()->readNumEntry("General", "SystemMsgIndex", 1389);
+	GaduLoginParams.last_sysmsg = m_configuration->deprecatedApi()->readNumEntry("General", "SystemMsgIndex", 1389);
 
-	GaduLoginParams.image_size = qMax(qMin(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
+	GaduLoginParams.image_size = qMax(qMin(m_configuration->deprecatedApi()->readNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255), 255), 0);
 
 	GaduLoginParams.struct_size = sizeof(struct gg_login_params);
 

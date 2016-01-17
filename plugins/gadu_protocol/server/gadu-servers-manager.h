@@ -21,11 +21,16 @@
 #pragma once
 
 #include <QtCore/QList>
+#include <QtCore/QPointer>
 #include <QtNetwork/QHostAddress>
+#include <injeqt/injeqt.h>
 
 #include "../gadu-exports.h"
 
 #include "configuration/configuration-aware-object.h"
+
+class Configuration;
+class PathsProvider;
 
 class GADUAPI GaduServersManager : public QObject, public ConfigurationAwareObject
 {
@@ -48,6 +53,9 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<Configuration> m_configuration;
+	QPointer<PathsProvider> m_pathsProvider;
+
 	QList<int> AllPorts;
 	QList<GaduServer> AllServers;
 	QList<GaduServer> GoodServers;
@@ -57,5 +65,10 @@ private:
 
 	void loadServerListFromFile(const QString &fileName);
 	void loadServerListFromString(const QString &data);
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
 
 };

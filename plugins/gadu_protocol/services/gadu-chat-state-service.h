@@ -18,22 +18,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_CHAT_STATE_SERVICE_H
-#define GADU_CHAT_STATE_SERVICE_H
+#pragma once
 
 #include "message/message.h"
 
 #include "protocols/services/chat-state-service.h"
 
+#include <injeqt/injeqt.h>
+
+class ContactManager;
 class GaduConnection;
 
 class GaduChatStateService : public ChatStateService
 {
 	Q_OBJECT
 
+	QPointer<ContactManager> m_contactManager;
 	QPointer<GaduConnection> Connection;
 
 	bool SendTypingNotifications;
+
+private slots:
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 
 public:
 	explicit GaduChatStateService(Account account, QObject *parent = 0);
@@ -51,5 +57,3 @@ public slots:
 	void messageReceived(const Message & message);
 
 };
-
-#endif // GADU_CHAT_STATE_SERVICE_H

@@ -26,6 +26,8 @@
 
 #include "gadu-protocol.h"
 
+class BuddyStorage;
+
 namespace GaduProtocolHelper
 {
 	GADUAPI StatusType statusTypeFromGaduStatus(unsigned int index);
@@ -35,7 +37,7 @@ namespace GaduProtocolHelper
 	GADUAPI QString connectionErrorMessage(GaduProtocol::GaduError error);
 	GADUAPI bool isConnectionErrorFatal(GaduProtocol::GaduError error);
 
-	GADUAPI Buddy searchResultToBuddy(Account account, gg_pubdir50_t res, int number);
+	GADUAPI Buddy searchResultToBuddy(BuddyStorage *buddyStorage, Account account, gg_pubdir50_t res, int number);
 
 	GADUAPI UinType uin(Contact contact);
 }

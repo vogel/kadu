@@ -24,13 +24,6 @@
 #include "chat/chat.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
-#include "core/core.h"
-#include "file-transfer/file-transfer-direction.h"
-#include "file-transfer/file-transfer-handler.h"
-#include "file-transfer/file-transfer-manager.h"
-#include "file-transfer/file-transfer.h"
-#include "file-transfer/gui/file-transfer-can-send-result.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "protocols/protocol.h"
@@ -50,6 +43,11 @@ GaduSendGiftAction::GaduSendGiftAction(QObject *parent) :
 
 GaduSendGiftAction::~GaduSendGiftAction()
 {
+}
+
+void GaduSendGiftAction::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
+{
+	m_urlHandlerManager = urlHandlerManager;
 }
 
 void GaduSendGiftAction::actionInstanceCreated(Action *action)
@@ -84,7 +82,7 @@ void GaduSendGiftAction::triggered(QWidget* widget, ActionContext* context, bool
 	auto contact = context->contacts().toContact();
 	auto mainRedirect = QString{"http%3A%2F%2Fwww.gg.pl%2F%23shop%2F"};
 	auto url = QString{"https://login.gg.pl/rd_login?IMToken=%1&redirect_url=%2%3"}.arg(imTokenService->imToken(), mainRedirect, contact.id());
-	Core::instance()->urlHandlerManager()->openUrl(url.toUtf8(), true);
+	m_urlHandlerManager->openUrl(url.toUtf8(), true);
 }
 
 void GaduSendGiftAction::updateActionState(Action *action)

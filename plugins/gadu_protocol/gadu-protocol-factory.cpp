@@ -79,12 +79,12 @@ Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 
 AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return new GaduAccountDetails(accountShared);
+	return m_injectedFactory->makeInjected<GaduAccountDetails>(accountShared);
 }
 
 AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	auto result = Core::instance()->injectedFactory()->makeInjected<GaduAddAccountWidget>(showButtons, parent);
+	auto result = m_injectedFactory->makeInjected<GaduAddAccountWidget>(showButtons, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
@@ -96,7 +96,7 @@ AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool, QWidget 
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	auto result = Core::instance()->injectedFactory()->makeInjected<GaduEditAccountWidget>(m_gaduServersManager, account, parent);
+	auto result = m_injectedFactory->makeInjected<GaduEditAccountWidget>(m_gaduServersManager, account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }

@@ -32,6 +32,8 @@
 
 class QTimer;
 
+class Configuration;
+class ContactManager;
 class FormattedStringFactory;
 class GaduChatImageService;
 class GaduConnection;
@@ -56,6 +58,8 @@ class GaduChatService : public ChatService
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
+	QPointer<ContactManager> m_contactManager;
 	QPointer<GaduChatImageService> CurrentGaduChatImageService;
 	QPointer<GaduFileTransferService> CurrentFileTransferService;
 	QPointer<ImageStorageService> CurrentImageStorageService;
@@ -79,13 +83,9 @@ class GaduChatService : public ChatService
 	QTimer *RemoveTimer;
 
 private slots:
-	/**
-	 * @short Set image storage service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param imageStorageService image storage service for this service
-	 *
-	 * This service is used to get full file paths of chat images.
-	 */
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 
 	void removeTimeoutUndeliveredMessages();
@@ -102,13 +102,6 @@ public:
 	void setGaduChatImageService(GaduChatImageService *gaduChatImageService);
 
 	void setGaduFileTransferService(GaduFileTransferService *gaduFileTransferService);
-
-	/**
-	 * @short Set formatted string factory for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param formattedStringFactory formatted string factory for this service
-	 */
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	/**
 	 * @short Set connection for this service.

@@ -46,6 +46,8 @@
 
 #include "protocols/protocol.h"
 
+class AvatarManager;
+class Configuration;
 class ContactManager;
 class GaduContactListHandler;
 class GaduDriveService;
@@ -54,12 +56,12 @@ class GaduNotifyService;
 class GaduProtocolSocketNotifiers;
 class GaduUserDataService;
 class InjectedFactory;
+class NetworkProxyManager;
 class ProtocolGaduConnection;
 
 class GADUAPI GaduProtocol : public Protocol, public ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(GaduProtocol)
 
 public:
 	enum GaduError
@@ -82,9 +84,12 @@ public:
 	typedef unsigned int UinType;
 
 private:
+	QPointer<AvatarManager> m_avatarManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<GaduServersManager> m_gaduServersManager;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<NetworkProxyManager> m_networkProxyManager;
 
 	ProtocolGaduConnection *Connection;
 
@@ -133,8 +138,11 @@ private:
 	void configureServices();
 
 private slots:
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
 	INJEQT_INIT void init();
 
 	void accountUpdated();

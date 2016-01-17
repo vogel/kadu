@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-storage.h"
 #include "misc/misc.h"
 
 #include "helpers/gadu-protocol-helper.h"
@@ -33,6 +34,11 @@ GaduPersonalInfoService::GaduPersonalInfoService(Account account, QObject *paren
 
 GaduPersonalInfoService::~GaduPersonalInfoService()
 {
+}
+
+void GaduPersonalInfoService::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
 }
 
 void GaduPersonalInfoService::setConnection(GaduConnection *connection)
@@ -54,7 +60,7 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		return;
 	}
 
-	Buddy result = GaduProtocolHelper::searchResultToBuddy(account(), res, 0);
+	Buddy result = GaduProtocolHelper::searchResultToBuddy(m_buddyStorage, account(), res, 0);
 
 	// inverted values for "self" data
 	// this is why gadu protocol suxx

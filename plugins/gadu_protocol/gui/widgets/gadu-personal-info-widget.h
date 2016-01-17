@@ -18,23 +18,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_PERSONAL_INFO_WIDGET_H
-#define GADU_PERSONAL_INFO_WIDGET_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "buddies/buddy.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QComboBox;
 class QLineEdit;
 
 class Account;
+class BuddyStorage;
 class PersonalInfoService;
 
 class GaduPersonalInfoWidget : public QWidget
 {
 	Q_OBJECT
 
+	QPointer<BuddyStorage> m_buddyStorage;
+
+	Account m_account;
 	PersonalInfoService *Service;
 	QString Id;
 	Buddy MyBuddy;
@@ -52,6 +57,9 @@ class GaduPersonalInfoWidget : public QWidget
 	void fillForm();
 
 private slots:
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_INIT void init();
+
 	void personalInfoAvailable(Buddy buddy);
 
 public:
@@ -67,5 +75,3 @@ signals:
 	void dataChanged();
 
 };
-
-#endif // GADU_PERSONAL_INFO_WIDGET_H

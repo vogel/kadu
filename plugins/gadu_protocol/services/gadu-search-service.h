@@ -18,23 +18,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_SEARCH_SERVICE_H
-#define GADU_SEARCH_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
-
+#include <injeqt/injeqt.h>
 #include <libgadu.h>
 
 #include "buddies/buddy.h"
 
 #include "protocols/services/search-service.h"
 
+class BuddyStorage;
 class GaduConnection;
 
 class GaduSearchService : public SearchService
 {
 	Q_OBJECT
 
+	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<GaduConnection> Connection;
 	BuddySearchCriteria Query;
 	unsigned int SearchSeq;
@@ -43,6 +44,9 @@ class GaduSearchService : public SearchService
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventPubdir50SearchReply(struct gg_event *e);
+
+private slots:
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 
 public:
 	explicit GaduSearchService(Account account, QObject *parent = 0);
@@ -54,6 +58,5 @@ public:
 	virtual void searchNext();
 	virtual void stop();
 
-};
 
-#endif // GADU_SEARCH_SERVICE_H
+};

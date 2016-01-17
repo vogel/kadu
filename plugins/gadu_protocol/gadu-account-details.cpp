@@ -29,13 +29,12 @@
 
 #include "gadu-account-details.h"
 
-GaduAccountDetails::GaduAccountDetails(AccountShared *data) :
+GaduAccountDetails::GaduAccountDetails(AccountShared *data, QObject *parent) :
+		QObject{parent},
 		AccountDetails(data), ReceiveImagesDuringInvisibility(true),
 		ChatImageSizeWarning(true), InitialRosterImport(true), TlsEncryption(false),
 		SendTypingNotification(true), UserlistVersion(-1), ReceiveSpam(true)
 {
-	OpenChatRunner = Core::instance()->injectedFactory()->makeInjected<GaduOpenChatWithRunner>(data);
-	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
 GaduAccountDetails::~GaduAccountDetails()
@@ -43,6 +42,17 @@ GaduAccountDetails::~GaduAccountDetails()
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 	delete OpenChatRunner;
 	OpenChatRunner = 0;
+}
+
+void GaduAccountDetails::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void GaduAccountDetails::init()
+{
+	OpenChatRunner = m_injectedFactory->makeInjected<GaduOpenChatWithRunner>(mainData());
+	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
 void GaduAccountDetails::load()
@@ -79,3 +89,5 @@ UinType GaduAccountDetails::uin()
 {
 	return mainData()->id().toULong();
 }
+
+#include "moc_gadu-account-details.cpp"

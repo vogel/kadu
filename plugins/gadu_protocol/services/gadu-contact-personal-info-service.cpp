@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-storage.h"
 #include "misc/misc.h"
 
 #include "helpers/gadu-protocol-helper.h"
@@ -29,6 +30,11 @@
 GaduContactPersonalInfoService::GaduContactPersonalInfoService(Account account, QObject *parent) :
 		ContactPersonalInfoService(account, parent), FetchSeq(0)
 {
+}
+
+void GaduContactPersonalInfoService::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
 }
 
 void GaduContactPersonalInfoService::setConnection(GaduConnection *connection)
@@ -50,7 +56,7 @@ void GaduContactPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		return;
 	}
 
-	Buddy result = GaduProtocolHelper::searchResultToBuddy(account(), res, 0);
+	Buddy result = GaduProtocolHelper::searchResultToBuddy(m_buddyStorage, account(), res, 0);
 	emit personalInfoAvailable(result);
 }
 

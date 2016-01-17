@@ -18,25 +18,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_CONTACT_PERSONAL_INFO_SERVICE_H
-#define GADU_CONTACT_PERSONAL_INFO_SERVICE_H
+#pragma once
 
+#include <injeqt/injeqt.h>
 #include <libgadu.h>
 
 #include "protocols/services/contact-personal-info-service.h"
 
+class BuddyStorage;
 class GaduConnection;
 
 class GaduContactPersonalInfoService : public ContactPersonalInfoService
 {
 	Q_OBJECT
 
+	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<GaduConnection> Connection;
 	unsigned int FetchSeq;
 	QString Id;
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventPubdir50Read(struct gg_event *e);
+
+private slots:
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 
 public:
 	GaduContactPersonalInfoService(Account account, QObject *parent);
@@ -46,6 +51,3 @@ public:
 	virtual void fetchPersonalInfo(Contact contact);
 
 };
-
-#endif // GADU_CONTACT_PERSONAL_INFO_SERVICE_H
-

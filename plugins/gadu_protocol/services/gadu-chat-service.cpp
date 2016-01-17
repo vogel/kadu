@@ -30,8 +30,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-is-plain-text-visitor.h"
@@ -69,6 +67,16 @@ GaduChatService::GaduChatService(Account account, QObject *parent) :
 
 GaduChatService::~GaduChatService()
 {
+}
+
+void GaduChatService::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void GaduChatService::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
 }
 
 void GaduChatService::setGaduChatImageService(GaduChatImageService *gaduChatImageService)
@@ -193,17 +201,17 @@ bool GaduChatService::isSystemMessage(gg_event *e)
 
 Contact GaduChatService::getSender(gg_event *e)
 {
-	return Core::instance()->contactManager()->byId(account(), QString::number(e->event.msg.sender), ActionCreateAndAdd);
+	return m_contactManager->byId(account(), QString::number(e->event.msg.sender), ActionCreateAndAdd);
 }
 
 bool GaduChatService::ignoreSender(gg_event *e, Buddy sender)
 {
 	bool ignore =
 			sender.isAnonymous() &&
-			Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
+			m_configuration->deprecatedApi()->readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
 			(
 				(e->event.msg.recipients_count == 0) ||
-				Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")
+				m_configuration->deprecatedApi()->readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")
 			);
 
 	return ignore;
@@ -213,7 +221,7 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 {
 	ContactSet recipients;
 	for (int i = 0; i < e->event.msg.recipients_count; ++i)
-		recipients.insert(Core::instance()->contactManager()->byId(account(), QString::number(e->event.msg.recipients[i]), ActionCreateAndAdd));
+		recipients.insert(m_contactManager->byId(account(), QString::number(e->event.msg.recipients[i]), ActionCreateAndAdd));
 
 	return recipients;
 }
@@ -228,7 +236,7 @@ RawMessage GaduChatService::getRawMessage(gg_event *e)
 
 bool GaduChatService::ignoreRichText(Contact sender)
 {
-	return sender.isAnonymous() && Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat","IgnoreAnonymousRichtext");
+	return sender.isAnonymous() && m_configuration->deprecatedApi()->readBoolEntry("Chat","IgnoreAnonymousRichtext");
 }
 
 void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageType type, gg_event *e)

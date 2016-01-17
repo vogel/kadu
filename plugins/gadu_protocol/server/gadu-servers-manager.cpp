@@ -25,7 +25,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "gadu-servers-manager.h"
@@ -33,11 +32,25 @@
 GaduServersManager::GaduServersManager(QObject *parent) :
 		QObject{parent}
 {
-	buildServerList();
 }
 
 GaduServersManager::~GaduServersManager()
 {
+}
+
+void GaduServersManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void GaduServersManager::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void GaduServersManager::init()
+{
+	buildServerList();
 }
 
 QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(const QString &serverAddress)
@@ -89,7 +102,7 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 void GaduServersManager::loadServerListFromFile(const QString &fileName)
 {
 	GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
-	GoodServers << gaduServersFromString(Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastServerIP"));
+	GoodServers << gaduServersFromString(m_configuration->deprecatedApi()->readEntry("Network", "LastServerIP"));
 
 	QFile file(fileName);
 
@@ -114,7 +127,7 @@ void GaduServersManager::loadServerListFromString(const QString& data)
 	foreach (const QString &server, servers)
 		GoodServers << gaduServersFromString(server.trimmed());
 	GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
-	GoodServers << gaduServersFromString(Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastServerIP"));
+	GoodServers << gaduServersFromString(m_configuration->deprecatedApi()->readEntry("Network", "LastServerIP"));
 }
 
 void GaduServersManager::buildServerList()
@@ -124,8 +137,8 @@ void GaduServersManager::buildServerList()
 	AllServers.clear();
 	AllPorts.clear();
 
-	int LastGoodPort = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Network", "LastServerPort",
-			Core::instance()->configuration()->deprecatedApi()->readNumEntry("Network", "DefaultPort", 443));
+	int LastGoodPort = m_configuration->deprecatedApi()->readNumEntry("Network", "LastServerPort",
+			m_configuration->deprecatedApi()->readNumEntry("Network", "DefaultPort", 443));
 
 	if (8074 == LastGoodPort || 443 == LastGoodPort)
 		AllPorts << LastGoodPort;
@@ -134,10 +147,10 @@ void GaduServersManager::buildServerList()
 	if (443 != LastGoodPort)
 		AllPorts << 443;
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Network", "isDefServers", true))
-		loadServerListFromFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/gadu_protocol/servers.txt"));
+	if (m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true))
+		loadServerListFromFile(m_pathsProvider->dataPath() + QLatin1String("plugins/data/gadu_protocol/servers.txt"));
 	else
-		loadServerListFromString(Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "Server"));
+		loadServerListFromString(m_configuration->deprecatedApi()->readEntry("Network", "Server"));
 
 	AllServers = GoodServers;
 }
@@ -172,8 +185,8 @@ const QList<GaduServersManager::GaduServer> & GaduServersManager::getServersList
 
 void GaduServersManager::markServerAsGood(GaduServersManager::GaduServer server)
 {
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("Network", "LastServerIP", server.first.toString());
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("Network", "LastServerPort", server.second);
+	m_configuration->deprecatedApi()->writeEntry("Network", "LastServerIP", server.first.toString());
+	m_configuration->deprecatedApi()->writeEntry("Network", "LastServerPort", server.second);
 }
 
 void GaduServersManager::markServerAsBad(GaduServersManager::GaduServer server)

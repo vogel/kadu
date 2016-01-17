@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-storage.h"
 #include "misc/misc.h"
 #include "debug.h"
 
@@ -35,6 +36,11 @@ GaduSearchService::GaduSearchService(Account account, QObject *parent) :
 
 GaduSearchService::~GaduSearchService()
 {
+}
+
+void GaduSearchService::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
 }
 
 void GaduSearchService::setConnection(GaduConnection *connection)
@@ -111,7 +117,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "found %d results\n", count);
 
 	for (int i = 0; i < count; i++)
-		results.append(GaduProtocolHelper::searchResultToBuddy(account(), res, i));
+		results.append(GaduProtocolHelper::searchResultToBuddy(m_buddyStorage, account(), res, i));
 
 	From = gg_pubdir50_next(res);
 

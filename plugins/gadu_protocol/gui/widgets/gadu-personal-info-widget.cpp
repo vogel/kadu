@@ -31,24 +31,35 @@
 #include "gadu-personal-info-widget.h"
 
 GaduPersonalInfoWidget::GaduPersonalInfoWidget(Account account, QWidget* parent) :
-		QWidget(parent), Id(account.id()), MyBuddy(Core::instance()->buddyStorage()->create())
+		QWidget(parent), m_account{account}, Id(account.id())
 {
+}
+
+GaduPersonalInfoWidget::~GaduPersonalInfoWidget()
+{
+}
+
+void GaduPersonalInfoWidget::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
+}
+
+void GaduPersonalInfoWidget::init()
+{
+	MyBuddy = m_buddyStorage->create();
+
 	createGui();
 	fillForm();
 
-	if (account.isNull() || !account.protocolHandler())
+	if (m_account.isNull() || !m_account.protocolHandler())
 		return;
 
-	Service = account.protocolHandler()->personalInfoService();
+	Service = m_account.protocolHandler()->personalInfoService();
 	if (!Service)
 		return;
 
 	connect(Service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
 	Service->fetchPersonalInfo(Id);
-}
-
-GaduPersonalInfoWidget::~GaduPersonalInfoWidget()
-{
 }
 
 void GaduPersonalInfoWidget::createGui()
@@ -126,7 +137,7 @@ bool GaduPersonalInfoWidget::isModified()
 
 void GaduPersonalInfoWidget::apply()
 {
-	Buddy buddy = Core::instance()->buddyStorage()->create();
+	Buddy buddy = m_buddyStorage->create();
 
 	buddy.setNickName((*NickName).text());
 	buddy.setFirstName((*FirstName).text());
