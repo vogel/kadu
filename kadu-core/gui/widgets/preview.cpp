@@ -21,14 +21,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QHBoxLayout>
+#include "preview.h"
 
 #include "buddies/buddy-dummy-factory.h"
-#include "core/core.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "parser/parser.h"
 
-#include "preview.h"
+#include <QtWidgets/QHBoxLayout>
 
 #define PREVIEW_DEFAULT_HEIGHT 250
 
@@ -42,31 +41,36 @@ Preview::Preview(QWidget *parent) :
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 
-	WebView = new KaduWebView(this);
-	layout->addWidget(WebView);
+	m_webView = new KaduWebView(this);
+	layout->addWidget(m_webView);
 
 	QPalette p = palette();
 	p.setBrush(QPalette::Base, Qt::transparent);
-	WebView->page()->setPalette(p);
-	WebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
+	m_webView->page()->setPalette(p);
+	m_webView->setAttribute(Qt::WA_OpaquePaintEvent, false);
 }
 
 Preview::~Preview()
 {
 }
 
+void Preview::setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory)
+{
+	m_buddyDummyFactory = buddyDummyFactory;
+}
+
 KaduWebView * Preview::webView() const
 {
-	return WebView;
+	return m_webView;
 }
 
 void Preview::syntaxChanged(const QString &content)
 {
 	QString syntax = content;
-	QString text = Parser::parse(syntax, Talkable(Core::instance()->buddyDummyFactory()->dummy()), ParserEscape::HtmlEscape);
+	QString text = Parser::parse(syntax, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
 	emit needFixup(text);
 
-	WebView->setHtml(text);
+	m_webView->setHtml(text);
 }
 
 #include "moc_preview.cpp"

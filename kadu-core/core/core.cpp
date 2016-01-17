@@ -38,7 +38,6 @@
 #include "accounts/account-storage.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
-#include "buddies/buddy-dummy-factory.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-storage.h"
@@ -872,11 +871,6 @@ Myself * Core::myself() const
 BuddyStorage * Core::buddyStorage() const
 {
 	return m_injector.get<BuddyStorage>();
-}
-
-BuddyDummyFactory * Core::buddyDummyFactory() const
-{
-	return m_injector.get<BuddyDummyFactory>();
 }
 
 void Core::showMainWindow()

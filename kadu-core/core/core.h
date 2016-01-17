@@ -48,7 +48,6 @@ class Actions;
 class Application;
 class AvatarManager;
 class BuddyChatManager;
-class BuddyDummyFactory;
 class BuddyManager;
 class BuddyPreferredManager;
 class BuddyStorage;
@@ -210,7 +209,6 @@ public:
 	ProxyEditWindowService * proxyEditWindowService() const;
 	Myself * myself() const;
 	BuddyStorage * buddyStorage() const;
-	BuddyDummyFactory * buddyDummyFactory() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

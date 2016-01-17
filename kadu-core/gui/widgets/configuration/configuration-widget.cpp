@@ -35,6 +35,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-action-button.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-color-button.h"
@@ -363,7 +364,7 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	else if (tagName == "select-file")
 		widget = new ConfigSelectFile(configGroupBox, DataManager);
 	else if (tagName == "preview")
-		widget = new ConfigPreview(configGroupBox, DataManager);
+		widget = Core::instance()->injectedFactory()->makeInjected<ConfigPreview>(configGroupBox, DataManager);
 	else if (tagName == "proxy-combo-box")
 		widget = new ConfigProxyComboBox(configGroupBox, DataManager);
 	else if (tagName == "slider")

@@ -20,18 +20,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PREVIEW_H
-#define PREVIEW_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QFrame>
+#include <injeqt/injeqt.h>
 
+class BuddyDummyFactory;
 class KaduWebView;
 
 class Preview : public QFrame
 {
 	Q_OBJECT
-
-	KaduWebView *WebView;
 
 public:
 	explicit Preview(QWidget *parent = 0);
@@ -45,6 +45,12 @@ public slots:
 signals:
 	void needFixup(QString &syntax);
 
-};
+private:
+	QPointer<BuddyDummyFactory> m_buddyDummyFactory;
 
-#endif // PREVIEW_H
+	KaduWebView *m_webView;
+
+private slots:
+	INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
+
+};
