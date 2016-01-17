@@ -26,8 +26,7 @@
 #include <QtCore/QStringList>
 #include <injeqt/injeqt.h>
 
-#include "configuration/autostatus-configuration.h"
-
+class AutostatusConfiguration;
 class AutostatusStatusChanger;
 
 class QTimer;
@@ -48,9 +47,8 @@ public:
 	void toggle(bool toggled);
 
 private:
+	QPointer<AutostatusConfiguration> m_autostatusConfiguration;
 	QPointer<AutostatusStatusChanger> m_autostatusStatusChanger;
-
-	AutostatusConfiguration Configuration;
 
 	QTimer *Timer;
 
@@ -63,6 +61,7 @@ private:
 	QStringList DescriptionList;
 
 private slots:
+	INJEQT_SET void setAutostatusConfiguration(AutostatusConfiguration *autostatusConfiguration);
 	INJEQT_SET void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
 
 	//! This slot is called on timeout

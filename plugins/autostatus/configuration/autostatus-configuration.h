@@ -17,27 +17,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTOSTATUS_CONFIGURATION_H
-#define AUTOSTATUS_CONFIGURATION_H
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 
-class AutostatusConfiguration : ConfigurationAwareObject
-{
-	int AutoTime;
-	int AutoStatus;
-	QString StatusFilePath;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-protected:
-	virtual void configurationUpdated();
+class Configuration;
+class PathsProvider;
+
+class AutostatusConfiguration : public QObject, private ConfigurationAwareObject
+{
+	Q_OBJECT
 
 public:
-	AutostatusConfiguration();
+	Q_INVOKABLE explicit AutostatusConfiguration(QObject *parent = nullptr);
+	virtual ~AutostatusConfiguration();
 
 	int autoTime() { return AutoTime; }
 	int autoStatus() { return AutoStatus; }
 	const QString & statusFilePath() { return StatusFilePath; }
 
-};
+protected:
+	virtual void configurationUpdated();
 
-#endif // AUTOSTATUS_CONFIGURATION_H
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<PathsProvider> m_pathsProvider;
+
+	int AutoTime;
+	int AutoStatus;
+	QString StatusFilePath;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+
+};

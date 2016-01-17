@@ -26,6 +26,7 @@
 #include "icons/kadu-icon.h"
 #include "status/status-changer-manager.h"
 
+#include "configuration/autostatus-configuration.h"
 #include "autostatus-status-changer.h"
 
 #include "autostatus-service.h"
@@ -42,6 +43,11 @@ AutostatusService::~AutostatusService()
 	Timer->stop();
 }
 
+void AutostatusService::setAutostatusConfiguration(AutostatusConfiguration *autostatusConfiguration)
+{
+	m_autostatusConfiguration = autostatusConfiguration;
+}
+
 void AutostatusService::setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger)
 {
 	m_autostatusStatusChanger = autostatusStatusChanger;
@@ -50,7 +56,7 @@ void AutostatusService::setAutostatusStatusChanger(AutostatusStatusChanger *auto
 void AutostatusService::on()
 {
 	m_autostatusStatusChanger->setEnabled(true);
-	Timer->start(Configuration.autoTime() * 1000);
+	Timer->start(m_autostatusConfiguration->autoTime() * 1000);
 	changeStatus();
 }
 
@@ -65,13 +71,13 @@ void AutostatusService::changeStatus()
 	if (CurrentDescription == DescriptionList.constEnd())
 		CurrentDescription = DescriptionList.constBegin();
 
-	m_autostatusStatusChanger->setConfiguration(Configuration.autoStatus(), *CurrentDescription);
+	m_autostatusStatusChanger->setConfiguration(m_autostatusConfiguration->autoStatus(), *CurrentDescription);
 	CurrentDescription++;
 }
 
 bool AutostatusService::readDescriptionList()
 {
-	if (!QFile::exists(Configuration.statusFilePath()))
+	if (!QFile::exists(m_autostatusConfiguration->statusFilePath()))
 	{
 		MessageDialog::show(KaduIcon("dialog-information"), "Autostatus", "File does not exist !");
 		return false;
@@ -79,7 +85,7 @@ bool AutostatusService::readDescriptionList()
 
 	DescriptionList.clear();
 
-	QFile file(Configuration.statusFilePath());
+	QFile file(m_autostatusConfiguration->statusFilePath());
 
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
