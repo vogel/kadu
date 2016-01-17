@@ -19,6 +19,7 @@
 
 #include "cenzor-module.h"
 
+#include "configuration/cenzor-configuration.h"
 #include "configuration/gui/cenzor-configuration-ui-handler.h"
 #include "cenzor-message-filter.h"
 #include "cenzor-plugin-object.h"
@@ -26,6 +27,7 @@
 CenzorModule::CenzorModule()
 {
 	add_type<CenzorConfigurationUiHandler>();
+	add_type<CenzorConfiguration>();
 	add_type<CenzorMessageFilter>();
 	add_type<CenzorPluginObject>();
 }

@@ -24,7 +24,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class CenzorMessageFilter;
+class CenzorConfiguration;
 class ListEditWidget;
 
 class CenzorConfigurationUiHandler : public QObject, public ConfigurationUiHandler
@@ -41,12 +41,12 @@ protected:
 	virtual void mainConfigurationWindowApplied() override;
 
 private:
-	QPointer<CenzorMessageFilter> m_cenzorMessageFilter;
+	QPointer<CenzorConfiguration> m_cenzorConfiguration;
 
 	ListEditWidget *m_swearwordsWidget;
 	ListEditWidget *m_exclusionsWidget;
 
 private slots:
-	INJEQT_SET void setCenzorMessageFilter(CenzorMessageFilter *cenzorMessageFilter);
+	INJEQT_SET void setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration);
 
 };

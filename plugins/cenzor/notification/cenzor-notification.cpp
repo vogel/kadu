@@ -18,20 +18,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
 
 #include "cenzor-notification.h"
 
-void CenzorNotification::notifyCenzored(const Chat &chat)
+void CenzorNotification::notifyCenzored(NotificationManager *notificationManager, const Chat &chat)
 {
 	CenzorNotification *notification = new CenzorNotification(chat);
 	notification->setTitle(tr("Cenzor"));
 	notification->setText(tr("Message was cenzored"));
 	notification->setDetails(tr("Your interlocutor used obscene word and became admonished"));
-	Core::instance()->notificationManager()->notify(notification);
+	notificationManager->notify(notification);
 }
 
 CenzorNotification::CenzorNotification(const Chat &chat) :

@@ -18,20 +18,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_H
-#define CENZOR_H
+#pragma once
+
+#include "message/message-filter.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-#include "message/message-filter.h"
-
-#include "configuration/cenzor-configuration.h"
-
+class CenzorConfiguration;
 class Chat;
 class Contact;
 class MessageManager;
+class NotificationManager;
 
 class CenzorMessageFilter : public QObject, public MessageFilter
 {
@@ -41,22 +40,20 @@ public:
 	Q_INVOKABLE explicit CenzorMessageFilter(QObject *parent = nullptr);
 	virtual ~CenzorMessageFilter();
 
-	CenzorConfiguration & configuration() { return Configuration; }
-
 protected:
 	virtual bool acceptMessage(const Message &message);
 
 private:
+	QPointer<CenzorConfiguration> m_cenzorConfiguration;
 	QPointer<MessageManager> m_messageManager;
-
-	CenzorConfiguration Configuration;
+	QPointer<NotificationManager> m_notificationManager;
 
 	bool shouldIgnore(const QString &message);
 	bool isExclusion(const QString &word);
 
 private slots:
+	INJEQT_SET void setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };
-
-#endif // CENZOR_H

@@ -18,21 +18,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_NOTIFICATION_H
-#define CENZOR_NOTIFICATION_H
+#pragma once
 
 #include "notification/notification/notification.h"
+
+class NotificationManager;
 
 class CenzorNotification : public Notification
 {
 	Q_OBJECT
 
 public:
-	static void notifyCenzored(const Chat &chat);
+	static void notifyCenzored(NotificationManager *notificationManager, const Chat &chat);
 
 	explicit CenzorNotification(const Chat &chat);
 	virtual ~CenzorNotification();
 
 };
-
-#endif // CENZOR_NOTIFICATION_H

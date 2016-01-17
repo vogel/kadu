@@ -17,31 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CENZOR_CONFIGURATION_H
-#define CENZOR_CONFIGURATION_H
-
-#include <QtCore/QStringList>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 
-class CenzorConfiguration : public ConfigurationAwareObject
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QStringList>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class PathsProvider;
+
+class CenzorConfiguration : public QObject, private ConfigurationAwareObject
 {
-	bool Enabled;
-	QString Admonition;
-	QList<QRegExp> SwearList;
-	QList<QRegExp> ExclusionList;
-
-	QList<QRegExp> loadRegExpList(const QString &itemName, const QString &fileName);
-
-protected:
-    virtual void configurationUpdated();
+	Q_OBJECT
 
 public:
 	static QStringList toStringList(const QList<QRegExp> &list);
 	static QList<QRegExp> toRegExpList(const QStringList &list);
 
-	CenzorConfiguration();
-	~CenzorConfiguration();
+	Q_INVOKABLE explicit CenzorConfiguration(QObject *parent = nullptr);
+	virtual ~CenzorConfiguration();
 
 	void saveConfiguration();
 
@@ -53,6 +50,23 @@ public:
 	void setSwearList(const QList<QRegExp> &swearList);
 	void setExclusionList(const QList<QRegExp> &exclusionList);
 
-};
+protected:
+    virtual void configurationUpdated();
 
-#endif // CENZOR_CONFIGURATION_H
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<PathsProvider> m_pathsProvider;
+
+	bool Enabled;
+	QString Admonition;
+	QList<QRegExp> SwearList;
+	QList<QRegExp> ExclusionList;
+
+	QList<QRegExp> loadRegExpList(const QString &itemName, const QString &fileName);
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+
+};

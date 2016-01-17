@@ -20,9 +20,11 @@
 
 #include "cenzor-message-filter.h"
 
+#include "configuration/cenzor-configuration.h"
 #include "notification/cenzor-notification.h"
 
 #include "message/message-manager.h"
+#include "notification/notification-manager.h"
 
 CenzorMessageFilter::CenzorMessageFilter(QObject *parent) :
 		QObject{parent}
@@ -33,9 +35,19 @@ CenzorMessageFilter::~CenzorMessageFilter()
 {
 }
 
+void CenzorMessageFilter::setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration)
+{
+	m_cenzorConfiguration = cenzorConfiguration;
+}
+
 void CenzorMessageFilter::setMessageManager(MessageManager *messageManager)
 {
 	m_messageManager = messageManager;
+}
+
+void CenzorMessageFilter::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
 }
 
 bool CenzorMessageFilter::acceptMessage(const Message &message)
@@ -43,7 +55,7 @@ bool CenzorMessageFilter::acceptMessage(const Message &message)
 	if (MessageTypeSent == message.type())
 		return true;
 
-	if (!Configuration.enabled())
+	if (!m_cenzorConfiguration->enabled())
 		return true;
 
 	if (!shouldIgnore(message.plainTextContent()))
@@ -56,8 +68,8 @@ bool CenzorMessageFilter::acceptMessage(const Message &message)
 		return false;
 
 
-	if (m_messageManager->sendMessage(message.messageChat(), Configuration.admonition(), true))
-		CenzorNotification::notifyCenzored(message.messageChat());
+	if (m_messageManager->sendMessage(message.messageChat(), m_cenzorConfiguration->admonition(), true))
+		CenzorNotification::notifyCenzored(m_notificationManager, message.messageChat());
 
 	return false;
 }
@@ -69,7 +81,7 @@ bool CenzorMessageFilter::shouldIgnore(const QString &message)
 	for (const QString &word : words)
 	{
 		QString lowerWord = word.toLower();
-		for (const QRegExp &swear : Configuration.swearList())
+		for (const QRegExp &swear : m_cenzorConfiguration->swearList())
 			if ((swear.indexIn(lowerWord) >= 0) && (!isExclusion(lowerWord)))
 				return true;
 	}
@@ -79,7 +91,7 @@ bool CenzorMessageFilter::shouldIgnore(const QString &message)
 
 bool CenzorMessageFilter::isExclusion(const QString &word)
 {
-	for (const QRegExp &exclusion : Configuration.exclusionList())
+	for (const QRegExp &exclusion : m_cenzorConfiguration->exclusionList())
 		if (exclusion.indexIn(word) >= 0)
 			return true;
 

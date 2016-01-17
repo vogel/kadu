@@ -22,11 +22,8 @@
 
 #include "configuration/cenzor-configuration.h"
 #include "gui/widgets/list-edit-widget.h"
-#include "cenzor-message-filter.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
@@ -43,9 +40,9 @@ CenzorConfigurationUiHandler::~CenzorConfigurationUiHandler()
 {
 }
 
-void CenzorConfigurationUiHandler::setCenzorMessageFilter(CenzorMessageFilter *cenzorMessageFilter)
+void CenzorConfigurationUiHandler::setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration)
 {
-	m_cenzorMessageFilter = cenzorMessageFilter;
+	m_cenzorConfiguration = cenzorConfiguration;
 }
 
 void CenzorConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -58,8 +55,8 @@ void CenzorConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	m_exclusionsWidget = new ListEditWidget(exclusionsGroupBox->widget());
 	exclusionsGroupBox->addWidgets(0, m_exclusionsWidget);
 
-	m_swearwordsWidget->setList(CenzorConfiguration::toStringList(m_cenzorMessageFilter->configuration().swearList()));
-	m_exclusionsWidget->setList(CenzorConfiguration::toStringList(m_cenzorMessageFilter->configuration().exclusionList()));
+	m_swearwordsWidget->setList(CenzorConfiguration::toStringList(m_cenzorConfiguration->swearList()));
+	m_exclusionsWidget->setList(CenzorConfiguration::toStringList(m_cenzorConfiguration->exclusionList()));
 }
 
 void CenzorConfigurationUiHandler::mainConfigurationWindowDestroyed()
@@ -68,9 +65,9 @@ void CenzorConfigurationUiHandler::mainConfigurationWindowDestroyed()
 
 void CenzorConfigurationUiHandler::mainConfigurationWindowApplied()
 {
-	m_cenzorMessageFilter->configuration().setSwearList(CenzorConfiguration::toRegExpList(m_swearwordsWidget->list()));
-	m_cenzorMessageFilter->configuration().setExclusionList(CenzorConfiguration::toRegExpList(m_exclusionsWidget->list()));
-	m_cenzorMessageFilter->configuration().saveConfiguration();
+	m_cenzorConfiguration->setSwearList(CenzorConfiguration::toRegExpList(m_swearwordsWidget->list()));
+	m_cenzorConfiguration->setExclusionList(CenzorConfiguration::toRegExpList(m_exclusionsWidget->list()));
+	m_cenzorConfiguration->saveConfiguration();
 }
 
 #include "moc_cenzor-configuration-ui-handler.cpp"
