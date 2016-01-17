@@ -35,7 +35,6 @@ AutoHide::AutoHide(QObject *parent) :
 		m_enabled{false}
 {
 	connect(&m_timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
-	configurationUpdated();
 }
 
 AutoHide::~AutoHide()
@@ -43,9 +42,19 @@ AutoHide::~AutoHide()
 	m_timer.stop();
 }
 
+void AutoHide::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void AutoHide::setIdle(Idle *idle)
 {
 	m_idle = idle;
+}
+
+void AutoHide::init()
+{
+	configurationUpdated();
 }
 
 void AutoHide::timerTimeoutSlot()
@@ -63,8 +72,8 @@ void AutoHide::timerTimeoutSlot()
 
 void AutoHide::configurationUpdated()
 {
-	m_idleTime = Core::instance()->configuration()->deprecatedApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
-	m_enabled = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
+	m_idleTime = m_configuration->deprecatedApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
+	m_enabled = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
 
 	if (m_enabled && !m_timer.isActive())
 		m_timer.start(1000);

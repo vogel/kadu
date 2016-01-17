@@ -26,6 +26,7 @@
 #include <QtCore/QTimer>
 #include <injeqt/injeqt.h>
 
+class Configuration;
 class Idle;
 
 class AutoHide : public QObject, ConfigurationAwareObject
@@ -37,6 +38,7 @@ public:
 	virtual ~AutoHide();
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<Idle> m_idle;
 
 	QTimer m_timer;
@@ -44,7 +46,9 @@ private:
 	bool m_enabled;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIdle(Idle *idle);
+	INJEQT_INIT void init();
 
 	void timerTimeoutSlot();
 
