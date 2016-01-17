@@ -53,14 +53,38 @@
 AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent) :
 		QWidget(parent), CurrentAccount(account)
 {
+}
+
+void AccountBuddyListWidget::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void AccountBuddyListWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void AccountBuddyListWidget::setRosterReplacer(RosterReplacer *rosterReplacer)
+{
+	m_rosterReplacer = rosterReplacer;
+}
+
+void AccountBuddyListWidget::setRoster(Roster *roster)
+{
+	m_roster = roster;
+}
+
+void AccountBuddyListWidget::init()
+{
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(5);
 
 	ModelChain *chain = new ModelChain(this);
 
-	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(chain);
-	Core::instance()->injectedFactory()->makeInjected<BuddyManagerAdapter>(buddyListModel);
+	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(chain);
+	m_injectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
 	chain->setBaseModel(buddyListModel);
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
 
@@ -77,7 +101,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameFilter);
 
-	TalkableTreeView *view = Core::instance()->injectedFactory()->makeInjected<TalkableTreeView>(BuddiesWidget);
+	TalkableTreeView *view = m_injectedFactory->makeInjected<TalkableTreeView>(BuddiesWidget);
 	view->setChain(chain);
 
 	BuddiesWidget->setView(view);
@@ -126,7 +150,7 @@ void AccountBuddyListWidget::restoreFromFile()
 			return;
 		}
 
-		auto result = Core::instance()->rosterReplacer()->replaceRoster(CurrentAccount, list, false);
+		auto result = m_rosterReplacer->replaceRoster(CurrentAccount, list, false);
 		auto unImportedContacts = result.second;
 		auto contactsList = QStringList{};
 		for (auto &&contact : unImportedContacts)
@@ -148,8 +172,8 @@ void AccountBuddyListWidget::restoreFromFile()
 					Buddy ownerBuddy = contact.ownerBuddy();
 					contact.setOwnerBuddy(Buddy::null);
 					// remove even if it still has some data, e.g. mobile number
-					Core::instance()->buddyManager()->removeBuddyIfEmpty(ownerBuddy, true);
-					Core::instance()->roster()->removeContact(contact);
+					m_buddyManager->removeBuddyIfEmpty(ownerBuddy, true);
+					m_roster->removeContact(contact);
 				}
 			}
 		}
@@ -170,7 +194,7 @@ void AccountBuddyListWidget::storeToFile()
 
 	if (file.open(QFile::WriteOnly))
 	{
-		file.write(service->serialize(Core::instance()->buddyManager()->buddies(CurrentAccount)));
+		file.write(service->serialize(m_buddyManager->buddies(CurrentAccount)));
 		file.close();
 	}
 }

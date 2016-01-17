@@ -31,6 +31,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/account-configuration-widget-tab-adapter.h"
@@ -91,6 +92,11 @@ void GaduEditAccountWidget::setContactManager(ContactManager *contactManager)
 void GaduEditAccountWidget::setIdentityManager(IdentityManager *identityManager)
 {
 	m_identityManager = identityManager;
+}
+
+void GaduEditAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void GaduEditAccountWidget::init()
@@ -197,10 +203,10 @@ void GaduEditAccountWidget::createPersonalInfoTab(QTabWidget *tabWidget)
 
 void GaduEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
 {
-	QWidget *widget = new QWidget(this);
-	QVBoxLayout *layout = new QVBoxLayout(widget);
+	auto widget = new QWidget(this);
+	auto layout = new QVBoxLayout(widget);
 
-	AccountBuddyListWidget *buddiesWidget = new AccountBuddyListWidget(account(), widget);
+	auto buddiesWidget = m_injectedFactory->makeInjected<AccountBuddyListWidget>(account(), widget);
 	layout->addWidget(buddiesWidget);
 
 	tabWidget->addTab(widget, tr("Buddies"));

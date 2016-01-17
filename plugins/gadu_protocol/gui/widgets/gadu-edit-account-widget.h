@@ -34,6 +34,7 @@ class GaduPersonalInfoWidget;
 class GaduServersManager;
 class IdentitiesComboBox;
 class IdentityManager;
+class InjectedFactory;
 class ProxyComboBox;
 
 class QCheckBox;
@@ -62,6 +63,7 @@ private:
 	QPointer<ContactManager> m_contactManager;
 	QPointer<GaduServersManager> m_gaduServersManager;
 	QPointer<IdentityManager> m_identityManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	GaduAccountDetails *Details;
 
@@ -107,6 +109,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	virtual void removeAccount();
