@@ -29,6 +29,7 @@
 #include <QtCore/QScopedPointer>
 #include <injeqt/injeqt.h>
 
+class Configuration;
 class EmoticonExpanderDomVisitorProvider;
 class InsertEmoticonAction;
 
@@ -49,9 +50,11 @@ class EmoticonConfigurator : public ConfigurationHolder
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
+
 	QString LastLoadedThemeName;
 	EmoticonTheme LastTheme;
-	EmoticonConfiguration Configuration;
+	EmoticonConfiguration m_emoticonConfiguration;
 
 	QScopedPointer<EmoticonThemeManager> ThemeManager;
 	QPointer<InsertEmoticonAction> InsertAction;
@@ -76,8 +79,10 @@ public:
 	void configure();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInsertAction(InsertEmoticonAction *insertAction);
 	INJEQT_SET void setEmoticonExpanderProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderProvider);
+	INJEQT_INIT void init();
 
 };
 
