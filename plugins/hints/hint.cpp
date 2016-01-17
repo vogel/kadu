@@ -30,8 +30,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "notification/notification/aggregate-notification.h"
 #include "notification/notification-callback-repository.h"
@@ -49,6 +47,24 @@
 Hint::Hint(QWidget *parent, Notification *xnotification)
 	: QFrame(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(xnotification)
 {
+}
+
+Hint::~Hint()
+{
+}
+
+void Hint::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void Hint::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
+{
+	m_notificationCallbackRepository = notificationCallbackRepository;
+}
+
+void Hint::init()
+{
 	kdebugf();
 
 	AggregateNotification *aggregateNotification = qobject_cast<AggregateNotification *>(notification);
@@ -59,14 +75,14 @@ Hint::Hint(QWidget *parent, Notification *xnotification)
 
 	CurrentChat = notification->data()["chat"].value<Chat>();
 
-	startSecs = secs = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
+	startSecs = secs = m_configuration->deprecatedApi()->readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 
-	createLabels(notification->icon().icon().pixmap(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
+	createLabels(notification->icon().icon().pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
 
 	auto callbacks = notification->getCallbacks();
 	bool showButtons = !callbacks.isEmpty();
 	if (showButtons)
-		if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons"))
+		if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons"))
 			showButtons = false;
 
 	if (showButtons)
@@ -77,7 +93,7 @@ Hint::Hint(QWidget *parent, Notification *xnotification)
 
 		for (auto &&callbackName : callbacks)
 		{
-			auto callback = Core::instance()->notificationCallbackRepository()->callback(callbackName);
+			auto callback = m_notificationCallbackRepository->callback(callbackName);
 			auto button = new QPushButton(callback.title(), this);
 			button->setProperty("notify:callback", callbackName);
 			connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
@@ -100,10 +116,6 @@ Hint::Hint(QWidget *parent, Notification *xnotification)
 	kdebugf2();
 }
 
-Hint::~Hint()
-{
-}
-
 void Hint::buttonClicked()
 {
 	auto callbackNotification = notification;
@@ -113,7 +125,7 @@ void Hint::buttonClicked()
 	auto callbackName = sender()->property("notify:callback").toString();
 	if (!callbackName.isEmpty())
 	{
-		auto callback = Core::instance()->notificationCallbackRepository()->callback(callbackName);
+		auto callback = m_notificationCallbackRepository->callback(callbackName);
 		callback.call(callbackNotification);
 	}
 
@@ -126,18 +138,18 @@ void Hint::configurationUpdated()
 	QFont font(qApp->font());
 	QPalette palette(qApp->palette());
 
-	bcolor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &palette.window().color());
-	fcolor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &palette.windowText().color());
-	label->setFont(Core::instance()->configuration()->deprecatedApi()->readFontEntry("Hints", "Event_" + notification->key() + "_font", &font));
-	setMinimumWidth(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MinimumWidth", 100));
-	setMaximumWidth(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MaximumWidth", 500));
+	bcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + notification->key() + "_bgcolor", &palette.window().color());
+	fcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + notification->key() + "_fgcolor", &palette.windowText().color());
+	label->setFont(m_configuration->deprecatedApi()->readFontEntry("Hints", "Event_" + notification->key() + "_font", &font));
+	setMinimumWidth(m_configuration->deprecatedApi()->readNumEntry("Hints", "MinimumWidth", 100));
+	setMaximumWidth(m_configuration->deprecatedApi()->readNumEntry("Hints", "MaximumWidth", 500));
 	mouseOut();
 	updateText();
 }
 
 void Hint::createLabels(const QPixmap &pixmap)
 {
-	int margin = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "MarginSize", 0);
+	int margin = m_configuration->deprecatedApi()->readNumEntry("Hints", "MarginSize", 0);
 
 	vbox = new QVBoxLayout(this);
 	vbox->setSpacing(0);
@@ -170,7 +182,7 @@ void Hint::updateText()
 {
 	QString text;
 
-	QString syntax = Core::instance()->configuration()->deprecatedApi()->readEntry("Hints", "Event_" + notification->key() + "_syntax", QString());
+	QString syntax = m_configuration->deprecatedApi()->readEntry("Hints", "Event_" + notification->key() + "_syntax", QString());
 	if (syntax.isEmpty())
 		text = notification->text();
 	else
@@ -191,7 +203,7 @@ void Hint::updateText()
 		text = text.remove("file://");
 	}
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
 	{
 		QStringList details;
 		if (!notification->details().isEmpty())
@@ -202,14 +214,14 @@ void Hint::updateText()
 		{
 			int i = (count > 5) ? count - 5 : 0;
 
-			int citeSign = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints","CiteSign");
+			int citeSign = m_configuration->deprecatedApi()->readNumEntry("Hints","CiteSign");
 
 			QString defaultSyntax;
 			if (notification->type() == "NewMessage" || notification->type() == "NewChat")
 				defaultSyntax = "\n&bull; <small>%1</small>";
 			else
 				defaultSyntax = "\n <small>%1</small>";
-			QString itemSyntax = Core::instance()->configuration()->deprecatedApi()->readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", defaultSyntax);
+			QString itemSyntax = m_configuration->deprecatedApi()->readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", defaultSyntax);
 			for (; i < count; i++)
 			{
 				const QString &message = details[i].replace("<br/>", QLatin1String(""));

@@ -41,6 +41,7 @@ class Configuration;
 class HintsConfigurationUiHandler;
 class HintsConfigurationWidget;
 class HintOverUserConfigurationWindow;
+class InjectedFactory;
 class NotificationManager;
 class ToolTipClassManager;
 class UnreadMessageRepository;
@@ -52,6 +53,7 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationManager> m_notificationManager;
 	QPointer<ToolTipClassManager> m_toolTipClassManager;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
@@ -83,6 +85,7 @@ private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);

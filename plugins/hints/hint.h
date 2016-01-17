@@ -22,8 +22,10 @@
 #ifndef HINT_H
 #define HINT_H
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QVBoxLayout>
+#include <injeqt/injeqt.h>
 
 #include "chat/chat.h"
 
@@ -33,12 +35,17 @@ class QLabel;
 class QVBoxLayout;
 
 class Chat;
+class Configuration;
+class NotificationCallbackRepository;
 class Notification;
 
 // Hint needs to inherit QFrame (not just QWidget) for better stylesheets support.
 class Hint : public QFrame, ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<Configuration> m_configuration;
+	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 
 	QVBoxLayout *vbox;
 
@@ -63,6 +70,10 @@ class Hint : public QFrame, ConfigurationAwareObject
 	Chat CurrentChat;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_INIT void init();
+
 	void notificationClosed();
 	void buttonClicked();
 

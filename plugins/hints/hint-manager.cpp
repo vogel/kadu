@@ -32,7 +32,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "message/message-manager.h"
@@ -83,6 +83,11 @@ void HintManager::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 void HintManager::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void HintManager::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void HintManager::setNotificationManager(NotificationManager *notificationManager)
@@ -459,7 +464,7 @@ Hint *HintManager::addHint(Notification *notification)
 
 	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 
-	auto hint = new Hint(frame, notification);
+	auto hint = m_injectedFactory->makeInjected<Hint>(frame, notification);
 	hints.append(hint);
 
 	setLayoutDirection();

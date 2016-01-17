@@ -48,6 +48,7 @@
 #include "activate.h"
 
 #include "hints-configuration-ui-handler.h"
+#include <core/injected-factory.h>
 
 #define FRAME_WIDTH 1
 #define BORDER_RADIUS 0
@@ -67,25 +68,6 @@ HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent):
 		overUserConfigurationTipLabel{},
 		configureOverUserHint{}
 {
-#ifdef Q_OS_MAC
-	previewHintsFrame = new QFrame(qobject_cast<QWidget *>(parent), Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-#else
-	previewHintsFrame = new QFrame(qobject_cast<QWidget *>(parent), Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-#endif
-	previewHintsFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-	previewHintsLayout = new QVBoxLayout(previewHintsFrame);
-	previewHintsLayout->setSpacing(0);
-	previewHintsLayout->setMargin(0);
-	previewHintsLayout->setSizeConstraint(QLayout::SetFixedSize);
-
-	auto style = QString("Hint {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
-			.arg(Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
-			.arg(Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
-			.arg(BORDER_RADIUS);
-	previewHintsFrame->setStyleSheet(style);
-
-	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 }
 
 HintsConfigurationUiHandler::~HintsConfigurationUiHandler()
@@ -99,9 +81,47 @@ void HintsConfigurationUiHandler::setBuddyDummyFactory(BuddyDummyFactory *buddyD
 	m_buddyDummyFactory = buddyDummyFactory;
 }
 
+void HintsConfigurationUiHandler::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void HintsConfigurationUiHandler::setHintManager(HintManager *hintManager)
 {
 	m_hintManager = hintManager;
+}
+
+void HintsConfigurationUiHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void HintsConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void HintsConfigurationUiHandler::init()
+{
+#ifdef Q_OS_MAC
+	previewHintsFrame = new QFrame(qobject_cast<QWidget *>(parent()), Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+#else
+	previewHintsFrame = new QFrame(qobject_cast<QWidget *>(parent()), Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+#endif
+	previewHintsFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+	previewHintsLayout = new QVBoxLayout(previewHintsFrame);
+	previewHintsLayout->setSpacing(0);
+	previewHintsLayout->setMargin(0);
+	previewHintsLayout->setSizeConstraint(QLayout::SetFixedSize);
+
+	auto style = QString("Hint {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
+			.arg(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
+			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
+			.arg(BORDER_RADIUS);
+	previewHintsFrame->setStyleSheet(style);
+
+	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -161,7 +181,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 	if (!AdvancedWindow)
 	{
 		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", m_mainConfigurationWindow->dataManager());
-		AdvancedWindow->widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
+		AdvancedWindow->widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
 
 		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
 
@@ -193,7 +213,7 @@ void HintsConfigurationUiHandler::addHintsPreview()
 	auto previewNotify = new Notification(Account::null, Chat::null, QLatin1String("Preview"), KaduIcon("protocols/common/message"));
 	previewNotify->setText(QCoreApplication::translate("@default", "Hints position preview"));
 
-	Hint *previewHint = new Hint(previewHintsFrame, previewNotify);
+	auto previewHint = m_injectedFactory->makeInjected<Hint>(previewHintsFrame, previewNotify);
 	previewHints.append(previewHint);
 
 	setPreviewLayoutDirection();

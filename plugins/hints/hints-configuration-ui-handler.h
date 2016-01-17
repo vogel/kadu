@@ -29,7 +29,10 @@
 #include "hint-manager.h"
 
 class BuddyDummyFactory;
+class Configuration;
 class HintsManager;
+class InjectedFactory;
+class PathsProvider;
 
 class QCheckBox;
 class QComboBox;
@@ -40,10 +43,13 @@ class HintsConfigurationUiHandler : public QObject, public ConfigurationUiHandle
 	Q_OBJECT
 
 private:
-	QPointer<MainConfigurationWindow> m_mainConfigurationWindow;
 	QPointer<BuddyDummyFactory> m_buddyDummyFactory;
 	QPointer<ConfigurationWindow> AdvancedWindow;
+	QPointer<Configuration> m_configuration;
 	QPointer<HintManager> m_hintManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<MainConfigurationWindow> m_mainConfigurationWindow;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	QFrame *previewHintsFrame;
 	QVBoxLayout *previewHintsLayout;
@@ -67,7 +73,11 @@ private:
 
 private slots:
 	INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setHintManager(HintManager *hintManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
 
 	void showAdvanced();
 
