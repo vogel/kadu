@@ -25,26 +25,31 @@
 
 #include "chat-top-bar-container-widget.h"
 
-ChatTopBarContainerWidget::ChatTopBarContainerWidget(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository,
-													 const Chat &chat, QWidget *parent) :
-		QWidget(parent), MyChatTopBarWidgetFactoryRepository(chatTopBarWidgetFactoryRepository), MyChat(chat)
+ChatTopBarContainerWidget::ChatTopBarContainerWidget(const Chat &chat, QWidget *parent) :
+		QWidget(parent),MyChat(chat)
 {
-	createGui();
-
-	if (MyChatTopBarWidgetFactoryRepository)
-	{
-		connect(MyChatTopBarWidgetFactoryRepository, SIGNAL(factoryRegistered(ChatTopBarWidgetFactory*)),
-				this, SLOT(factoryRegistered(ChatTopBarWidgetFactory*)));
-		connect(MyChatTopBarWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatTopBarWidgetFactory*)),
-				this, SLOT(factoryUnregistered(ChatTopBarWidgetFactory*)));
-
-		foreach (ChatTopBarWidgetFactory *factory, MyChatTopBarWidgetFactoryRepository->factories())
-			factoryRegistered(factory);
-	}
 }
 
 ChatTopBarContainerWidget::~ChatTopBarContainerWidget()
 {
+}
+
+void ChatTopBarContainerWidget::setChatTopBarWidgetFactoryRepository(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository)
+{
+	m_chatTopBarWidgetFactoryRepository = chatTopBarWidgetFactoryRepository;
+}
+
+void ChatTopBarContainerWidget::init()
+{
+	createGui();
+
+	connect(m_chatTopBarWidgetFactoryRepository, SIGNAL(factoryRegistered(ChatTopBarWidgetFactory*)),
+			this, SLOT(factoryRegistered(ChatTopBarWidgetFactory*)));
+	connect(m_chatTopBarWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatTopBarWidgetFactory*)),
+			this, SLOT(factoryUnregistered(ChatTopBarWidgetFactory*)));
+
+	foreach (ChatTopBarWidgetFactory *factory, m_chatTopBarWidgetFactoryRepository->factories())
+		factoryRegistered(factory);
 }
 
 void ChatTopBarContainerWidget::createGui()

@@ -69,7 +69,6 @@
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
@@ -666,11 +665,6 @@ FormattedStringFactory * Core::formattedStringFactory() const
 RawMessageTransformerService * Core::rawMessageTransformerService() const
 {
 	return m_injector.get<RawMessageTransformerService>();
-}
-
-ChatTopBarWidgetFactoryRepository * Core::chatTopBarWidgetFactoryRepository() const
-{
-	return m_injector.get<ChatTopBarWidgetFactoryRepository>();
 }
 
 UnreadMessageRepository * Core::unreadMessageRepository() const

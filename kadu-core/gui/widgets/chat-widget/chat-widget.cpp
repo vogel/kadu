@@ -56,6 +56,7 @@
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-container-widget.h"
+#include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
 #include "gui/widgets/color-selector.h"
@@ -191,7 +192,7 @@ void ChatWidget::createGui()
 	mainLayout->setMargin(0);
 	mainLayout->setSpacing(0);
 
-	TopBarContainer = new ChatTopBarContainerWidget(Core::instance()->chatTopBarWidgetFactoryRepository(), CurrentChat);
+	TopBarContainer = m_injectedFactory->makeInjected<ChatTopBarContainerWidget>(CurrentChat);
 	mainLayout->addWidget(TopBarContainer);
 
 	VerticalSplitter = new QSplitter(Qt::Vertical, this);

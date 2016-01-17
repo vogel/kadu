@@ -42,6 +42,7 @@ class ChatConfigurationHolder;
 class ChatEditBoxSizeManager;
 class ChatEditBox;
 class ChatTopBarContainerWidget;
+class ChatTopBarWidgetFactoryRepository;
 class ChatTypeManager;
 class ChatWidgetTitle;
 class CustomInput;
@@ -64,6 +65,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	QPointer<Actions> m_actions;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatEditBoxSizeManager> m_chatEditBoxSizeManager;
+	QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
 	QPointer<ChatTypeManager> m_chatTypeManager;
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 	QPointer<InjectedFactory> m_injectedFactory;

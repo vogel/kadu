@@ -18,12 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_TOP_BAR_CONTAINER_WIDGET_H
-#define CHAT_TOP_BAR_CONTAINER_WIDGET_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "chat/chat.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QVBoxLayout;
 
@@ -34,7 +35,8 @@ class ChatTopBarContainerWidget : public QWidget
 {
 	Q_OBJECT
 
-	ChatTopBarWidgetFactoryRepository *MyChatTopBarWidgetFactoryRepository;
+	QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
+
 	Chat MyChat;
 	QVBoxLayout *Layout;
 	QMap<ChatTopBarWidgetFactory *, QWidget *> TopBarWidgets;
@@ -42,13 +44,14 @@ class ChatTopBarContainerWidget : public QWidget
 	void createGui();
 
 private slots:
+	INJEQT_SET void setChatTopBarWidgetFactoryRepository(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository);
+	INJEQT_INIT void init();
+
 	void factoryRegistered(ChatTopBarWidgetFactory *factory);
 	void factoryUnregistered(ChatTopBarWidgetFactory *factory);
 
 public:
-	explicit ChatTopBarContainerWidget(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository, const Chat &chat, QWidget *parent = 0);
+	explicit ChatTopBarContainerWidget(const Chat &chat, QWidget *parent = 0);
 	virtual ~ChatTopBarContainerWidget();
 
 };
-
-#endif // CHAT_TOP_BAR_CONTAINER_WIDGET_H

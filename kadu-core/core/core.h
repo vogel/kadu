@@ -53,7 +53,6 @@ class BuddyPreferredManager;
 class BuddyStorage;
 class ChatImageRequestService;
 class ChatManager;
-class ChatTopBarWidgetFactoryRepository;
 class ChatTypeManager;
 class ChatStyleManager;
 class ChatWidgetActions;
@@ -164,7 +163,6 @@ public:
 	NotificationService * notificationService() const;
 	FormattedStringFactory * formattedStringFactory() const;
 	RawMessageTransformerService * rawMessageTransformerService() const;
-	ChatTopBarWidgetFactoryRepository * chatTopBarWidgetFactoryRepository() const;
 	UnreadMessageRepository * unreadMessageRepository() const;
 	ChatWidgetActions * chatWidgetActions() const;
 	ChatWidgetManager * chatWidgetManager() const;
