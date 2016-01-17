@@ -50,11 +50,25 @@
 
 #include "chat-data-window.h"
 
-ChatDataWindow::ChatDataWindow(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository, const Chat &chat) :
-		QWidget(0, Qt::Dialog), MyChatConfigurationWidgetFactoryRepository(chatConfigurationWidgetFactoryRepository),
+ChatDataWindow::ChatDataWindow(const Chat &chat) :
+		QWidget(0, Qt::Dialog),
 		ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this)),
 		SimpleStateNotifier(new SimpleConfigurationValueStateNotifier(this)),
 		MyChat(chat), EditWidget(0)
+{
+}
+
+ChatDataWindow::~ChatDataWindow()
+{
+	emit destroyed(MyChat);
+}
+
+void ChatDataWindow::setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository)
+{
+	m_chatConfigurationWidgetFactoryRepository = chatConfigurationWidgetFactoryRepository;
+}
+
+void ChatDataWindow::init()
 {
 	setWindowRole("kadu-chat-data");
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -73,21 +87,13 @@ ChatDataWindow::ChatDataWindow(ChatConfigurationWidgetFactoryRepository *chatCon
 	connect(ValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
 	stateChangedSlot(ValueStateNotifier->state());
 
-	if (MyChatConfigurationWidgetFactoryRepository)
-	{
-		connect(MyChatConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(ChatConfigurationWidgetFactory*)),
-				this, SLOT(factoryRegistered(ChatConfigurationWidgetFactory*)));
-		connect(MyChatConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatConfigurationWidgetFactory*)),
-				this, SLOT(factoryUnregistered(ChatConfigurationWidgetFactory*)));
+	connect(m_chatConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(ChatConfigurationWidgetFactory*)),
+			this, SLOT(factoryRegistered(ChatConfigurationWidgetFactory*)));
+	connect(m_chatConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatConfigurationWidgetFactory*)),
+			this, SLOT(factoryUnregistered(ChatConfigurationWidgetFactory*)));
 
-		foreach (ChatConfigurationWidgetFactory *factory, MyChatConfigurationWidgetFactoryRepository->factories())
-			factoryRegistered(factory);
-	}
-}
-
-ChatDataWindow::~ChatDataWindow()
-{
-	emit destroyed(MyChat);
+	foreach (ChatConfigurationWidgetFactory *factory, m_chatConfigurationWidgetFactoryRepository->factories())
+		factoryRegistered(factory);
 }
 
 void ChatDataWindow::factoryRegistered(ChatConfigurationWidgetFactory *factory)

@@ -24,6 +24,7 @@
 #include <QtCore/QObject>
 
 class ChatDataWindow;
+class InjectedFactory;
 
 class ChatDataWindowRepository : public QObject
 {
@@ -40,9 +41,13 @@ public slots:
 	void showChatWindow(const Chat &chat);
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	QMap<Chat, ChatDataWindow *> Windows;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 	void windowDestroyed(const Chat &chat);
 
 };

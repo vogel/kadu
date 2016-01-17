@@ -18,16 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DATA_WINDOW_H
-#define CHAT_DATA_WINDOW_H
-
-#include <QtCore/QMap>
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "chat/chat.h"
 #include "gui/widgets/modal-configuration-widget.h"
-
 #include "exports.h"
+
+#include <QtCore/QMap>
+#include <QtWidgets/QWidget>
 
 class QLineEdit;
 class QPushButton;
@@ -47,7 +45,30 @@ class KADUAPI ChatDataWindow : public QWidget
 {
 	Q_OBJECT
 
-	ChatConfigurationWidgetFactoryRepository *MyChatConfigurationWidgetFactoryRepository;
+public:
+	explicit ChatDataWindow(const Chat &chat);
+	virtual ~ChatDataWindow();
+
+	QList<ChatConfigurationWidget *> chatConfigurationWidgets() const;
+
+	void show();
+
+	Chat chat() const { return MyChat; }
+
+	QWidget * generalTab() const { return GeneralTab; }
+
+signals:
+	void widgetAdded(ChatConfigurationWidget *widget);
+	void widgetRemoved(ChatConfigurationWidget *widget);
+
+	void destroyed(const Chat &chat);
+	void save();
+
+protected:
+	virtual void keyPressEvent(QKeyEvent *event);
+
+private:
+	QPointer<ChatConfigurationWidgetFactoryRepository> m_chatConfigurationWidgetFactoryRepository;
 	QMap<ChatConfigurationWidgetFactory *, ChatConfigurationWidget *> ChatConfigurationWidgets;
 
 	CompositeConfigurationValueStateNotifier *ValueStateNotifier;
@@ -72,6 +93,9 @@ class KADUAPI ChatDataWindow : public QWidget
 	void applyChatConfigurationWidgets();
 
 private slots:
+	INJEQT_SET void setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
+	INJEQT_INIT void init();
+
 	void factoryRegistered(ChatConfigurationWidgetFactory *factory);
 	void factoryUnregistered(ChatConfigurationWidgetFactory *factory);
 
@@ -82,28 +106,4 @@ private slots:
 	void updateChatAndClose();
 	void chatRemoved(const Chat &buddy);
 
-protected:
-	virtual void keyPressEvent(QKeyEvent *event);
-
-public:
-	explicit ChatDataWindow(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository, const Chat &chat);
-	virtual ~ChatDataWindow();
-
-	QList<ChatConfigurationWidget *> chatConfigurationWidgets() const;
-
-	void show();
-
-	Chat chat() const { return MyChat; }
-
-	QWidget * generalTab() const { return GeneralTab; }
-
-signals:
-	void widgetAdded(ChatConfigurationWidget *widget);
-	void widgetRemoved(ChatConfigurationWidget *widget);
-
-	void destroyed(const Chat &chat);
-	void save();
-
 };
-
-#endif // CHAT_DATA_WINDOW_H
