@@ -128,3 +128,5 @@ void AntistringConfiguration::storeConditions()
 
 	m_configuration->deprecatedApi()->writeEntry("PowerKadu", "antistring conditions", conditionsList.join("\t\t"));
 }
+
+#include "moc_antistring-configuration.cpp"
