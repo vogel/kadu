@@ -19,17 +19,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QSpinBox>
+#include "autoaway.h"
+
+#include "plugins/idle/idle-plugin-object.h"
+#include "plugins/idle/idle.h"
 
 #include "accounts/account.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
@@ -38,10 +36,11 @@
 #include "status/status-changer-manager.h"
 #include "debug.h"
 
-#include "plugins/idle/idle-plugin-object.h"
-#include "plugins/idle/idle.h"
-
-#include "autoaway.h"
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QSpinBox>
 
 /**
  * @ingroup autoaway
@@ -78,19 +77,27 @@ Autoaway::~Autoaway()
 void Autoaway::setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger)
 {
 	m_autoawayStatusChanger = autoawayStatusChanger;
-	configurationUpdated();
 }
 
 void Autoaway::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
-
-	createDefaultConfiguration();
 }
 
 void Autoaway::setIdle(Idle *idle)
 {
 	m_idle = idle;
+}
+
+void Autoaway::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void Autoaway::init()
+{
+	createDefaultConfiguration();
+	configurationUpdated();
 }
 
 AutoawayStatusChanger::ChangeStatusTo Autoaway::changeStatusTo()
@@ -198,7 +205,7 @@ void Autoaway::configurationUpdated()
 QString Autoaway::parseDescription(const QString &parseDescription)
 {
 	if (m_parseAutoStatus)
-		return (Parser::parse(parseDescription, Talkable(Core::instance()->myself()->buddy()), ParserEscape::HtmlEscape));
+		return (Parser::parse(parseDescription, Talkable(m_myself->buddy()), ParserEscape::HtmlEscape));
 	else
 		return parseDescription;
 }
