@@ -130,7 +130,6 @@
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
 #include "roster/roster-notifier.h"
-#include "roster/roster-replacer.h"
 #include "roster/roster.h"
 #include "services/chat-image-request-service-configurator.h"
 #include "services/chat-image-request-service.h"
@@ -690,11 +689,6 @@ UnreadMessageRepository * Core::unreadMessageRepository() const
 	return m_injector.get<UnreadMessageRepository>();
 }
 
-RosterNotifier * Core::rosterNotifier() const
-{
-	return m_injector.get<RosterNotifier>();
-}
-
 ChatWidgetActions * Core::chatWidgetActions() const
 {
 	return m_injector.get<ChatWidgetActions>();
@@ -728,11 +722,6 @@ PluginActivationService * Core::pluginActivationService() const
 PluginStateService * Core::pluginStateService() const
 {
 	return m_injector.get<PluginStateService>();
-}
-
-RosterReplacer * Core::rosterReplacer() const
-{
-	return m_injector.get<RosterReplacer>();
 }
 
 SslCertificateManager * Core::sslCertificateManager() const

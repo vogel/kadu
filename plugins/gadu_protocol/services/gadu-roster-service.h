@@ -43,8 +43,6 @@ public:
 	virtual ~GaduRosterService();
 
 	void setConnection(GaduConnection *connection);
-	void setRosterNotifier(RosterNotifier *rosterNotifier);
-	void setRosterReplacer(RosterReplacer *rosterReplacer);
 
 	void prepareRoster();
 
@@ -84,6 +82,8 @@ private:
 
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setRosterNotifier(RosterNotifier *rosterNotifier);
+	INJEQT_SET void setRosterReplacer(RosterReplacer *rosterReplacer);
 	INJEQT_INIT void init();
 
 	void exportContactList();

@@ -93,8 +93,6 @@ class PluginStateService;
 class ProtocolsManager;
 class ProxyEditWindowService;
 class RawMessageTransformerService;
-class RosterNotifier;
-class RosterReplacer;
 class Roster;
 class SslCertificateManager;
 class StatusChangerManager;
@@ -171,7 +169,6 @@ public:
 	RawMessageTransformerService * rawMessageTransformerService() const;
 	ChatTopBarWidgetFactoryRepository * chatTopBarWidgetFactoryRepository() const;
 	UnreadMessageRepository * unreadMessageRepository() const;
-	RosterNotifier * rosterNotifier() const;
 	ChatWidgetActions * chatWidgetActions() const;
 	ChatWidgetManager * chatWidgetManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
@@ -181,7 +178,6 @@ public:
 	PluginActivationService * pluginActivationService() const;
 	PluginStateService * pluginStateService() const;
 
-	RosterReplacer * rosterReplacer() const;
 	SslCertificateManager * sslCertificateManager() const;
 
 	FileTransferHandlerManager * fileTransferHandlerManager() const;
