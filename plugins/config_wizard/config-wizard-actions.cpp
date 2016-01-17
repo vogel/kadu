@@ -25,6 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -45,6 +46,11 @@ ConfigWizardActions::ConfigWizardActions(QObject *parent) :
 ConfigWizardActions::~ConfigWizardActions()
 {
 	delete m_wizard.data();
+}
+
+void ConfigWizardActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
@@ -76,7 +82,7 @@ void ConfigWizardActions::showConfigWizard()
 		_activateWindow(m_wizard.data());
 	else
 	{
-		m_wizard = new ConfigWizardWindow();
+		m_wizard = m_injectedFactory->makeInjected<ConfigWizardWindow>();
 		// we have to delay it a bit to show after main window to have focus on startup
 		QMetaObject::invokeMethod(m_wizard.data(), "show", Qt::QueuedConnection);
 	}

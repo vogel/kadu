@@ -20,7 +20,6 @@
 
 #include <QtCore/QVariant>
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "debug.h"
 
@@ -40,6 +39,26 @@
 
 ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 		QWizard(parent)
+{
+}
+
+ConfigWizardWindow::~ConfigWizardWindow()
+{
+	kdebugf();
+	kdebugf2();
+}
+
+void ConfigWizardWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ConfigWizardWindow::setProtocolsManager(ProtocolsManager *protocolsManager)
+{
+	m_protocolsManager = protocolsManager;
+}
+
+void ConfigWizardWindow::init()
 {
 	kdebugf();
 
@@ -63,20 +82,14 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 	setMinimumSize(500, 500);
 #endif
 
-	setPage(ProfilePage, new ConfigWizardProfilePage(this));
+	setPage(ProfilePage, m_injectedFactory->makeInjected<ConfigWizardProfilePage>(this));
 	setPage(ChooseNetworkPage, new ConfigWizardChooseNetworkPage(this));
-	setPage(SetUpAccountPage, Core::instance()->injectedFactory()->makeInjected<ConfigWizardSetUpAccountPage>(this));
-	setPage(CompletedPage, Core::instance()->injectedFactory()->makeInjected<ConfigWizardCompletedPage>(this));
+	setPage(SetUpAccountPage, m_injectedFactory->makeInjected<ConfigWizardSetUpAccountPage>(this));
+	setPage(CompletedPage, m_injectedFactory->makeInjected<ConfigWizardCompletedPage>(this));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
 	connect(this, SIGNAL(rejected()), this, SLOT(rejectedSlot()));
 
-	kdebugf2();
-}
-
-ConfigWizardWindow::~ConfigWizardWindow()
-{
-	kdebugf();
 	kdebugf2();
 }
 
@@ -89,7 +102,7 @@ void ConfigWizardWindow::setPage(int id, ConfigWizardPage *page)
 
 bool ConfigWizardWindow::goToChooseNetwork() const
 {
-	return Core::instance()->protocolsManager()->count() > 0;
+	return m_protocolsManager->count() > 0;
 }
 
 bool ConfigWizardWindow::goToAccountSetUp() const

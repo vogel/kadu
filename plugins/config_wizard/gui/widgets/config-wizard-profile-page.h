@@ -17,10 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_WIZARD_PROFILE_PAGE_H
-#define CONFIG_WIZARD_PROFILE_PAGE_H
+#pragma once
 
 #include "gui/widgets/config-wizard-page.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class Myself;
 
 class QComboBox;
 class QLineEdit;
@@ -39,9 +44,16 @@ public:
 	explicit ConfigWizardProfilePage(QWidget *parent = 0);
 	virtual ~ConfigWizardProfilePage();
 
-    virtual void initializePage();
-    virtual void acceptPage();
+	virtual void initializePage();
+	virtual void acceptPage();
+
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<Myself> m_myself;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_INIT void init();
 
 };
-
-#endif // CONFIG_WIZARD_PROFILE_PAGE_H

@@ -27,7 +27,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "languages-manager.h"
 
@@ -36,15 +35,29 @@
 ConfigWizardProfilePage::ConfigWizardProfilePage(QWidget *parent) :
 		ConfigWizardPage(parent)
 {
+}
+
+ConfigWizardProfilePage::~ConfigWizardProfilePage()
+{
+}
+
+void ConfigWizardProfilePage::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ConfigWizardProfilePage::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void ConfigWizardProfilePage::init()
+{
 	setDescription(tr("<h3>Welcome to Kadu Instant Messenger</h3>"
 		"<p>This wizard will help you to configure the basic settings of Kadu.</p>"
 		"<p>Please choose a preferred language and create a nickname</p>"));
 
 	createGui();
-}
-
-ConfigWizardProfilePage::~ConfigWizardProfilePage()
-{
 }
 
 void ConfigWizardProfilePage::createGui()
@@ -74,22 +87,22 @@ void ConfigWizardProfilePage::setLanguages()
 
 void ConfigWizardProfilePage::initializePage()
 {
-	int languageIndex = LanguagesCombo->findData(Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language"));
+	int languageIndex = LanguagesCombo->findData(m_configuration->deprecatedApi()->readEntry("General", "Language"));
 	if (-1 == languageIndex)
 		languageIndex = LanguagesCombo->findData("en");
 	if (-1 != languageIndex)
 		LanguagesCombo->setCurrentIndex(languageIndex);
 
-	NickNameEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Nick", "Me"));
+	NickNameEdit->setText(m_configuration->deprecatedApi()->readEntry("General", "Nick", "Me"));
 }
 
 void ConfigWizardProfilePage::acceptPage()
 {
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "Nick", NickNameEdit->text());
+	m_configuration->deprecatedApi()->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
+	m_configuration->deprecatedApi()->writeEntry("General", "Nick", NickNameEdit->text());
 
 	// TODO: check if needed
-	Core::instance()->myself()->buddy().setDisplay(NickNameEdit->text());
+	m_myself->buddy().setDisplay(NickNameEdit->text());
 }
 
 #include "moc_config-wizard-profile-page.cpp"
