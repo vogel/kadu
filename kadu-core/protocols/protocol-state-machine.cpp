@@ -20,7 +20,6 @@
 
 #include <QtCore/QStringList>
 
-#include "core/core.h"
 #include "network/network-manager.h"
 #include "protocols/protocol.h"
 #include "debug.h"
@@ -38,6 +37,19 @@
  */
 ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 		QStateMachine(protocol), CurrentProtocol(protocol)
+{
+}
+
+ProtocolStateMachine::~ProtocolStateMachine()
+{
+}
+
+void ProtocolStateMachine::setNetworkManager(NetworkManager *networkManager)
+{
+	m_networkManager = networkManager;
+}
+
+void ProtocolStateMachine::init()
 {
 	TryToGoOnlineTimer.setInterval(5000);
 	TryToGoOnlineTimer.setSingleShot(true);
@@ -72,7 +84,7 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	connect(LoggingInState, SIGNAL(entered()), this, SIGNAL(loggingInStateEntered()));
 	connect(LoggingInMaybeOnlineState, SIGNAL(entered()), this, SIGNAL(loggingInStateEntered()));
 	connect(LoggedInState, SIGNAL(entered()), this, SIGNAL(loggedInStateEntered()));
-	connect(LoggedInState, SIGNAL(entered()), Core::instance()->networkManager(), SLOT(forceOnline()));
+	connect(LoggedInState, SIGNAL(entered()), m_networkManager, SLOT(forceOnline()));
 	connect(PasswordRequiredState, SIGNAL(entered()), this, SIGNAL(passwordRequiredStateEntered()));
 
 	connect(WantToLogInState, SIGNAL(entered()), &TryToGoOnlineTimer, SLOT(start()));
@@ -81,34 +93,34 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	connect(LoggingInDelayState, SIGNAL(entered()), &DelayTimer, SLOT(start()));
 	connect(LoggingInDelayState, SIGNAL(exited()), &DelayTimer, SLOT(stop()));
 
-	LoggingOutState->addTransition(Core::instance()->networkManager(), SIGNAL(offline()), LoggedOutOfflineState);
+	LoggingOutState->addTransition(m_networkManager, SIGNAL(offline()), LoggedOutOfflineState);
 	LoggingOutState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedOut()), LoggedOutOnlineState);
 
 	LoggedOutOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatus()), LoggingInState);
-	LoggedOutOnlineState->addTransition(Core::instance()->networkManager(), SIGNAL(offline()), LoggedOutOfflineState);
+	LoggedOutOnlineState->addTransition(m_networkManager, SIGNAL(offline()), LoggedOutOfflineState);
 
 	LoggedOutOfflineState->addTransition(CurrentProtocol, SIGNAL(stateMachineChangeStatus()), WantToLogInState);
-	LoggedOutOfflineState->addTransition(Core::instance()->networkManager(), SIGNAL(online()), LoggedOutOnlineState);
+	LoggedOutOfflineState->addTransition(m_networkManager, SIGNAL(online()), LoggedOutOnlineState);
 
-	WantToLogInState->addTransition(Core::instance()->networkManager(), SIGNAL(online()), LoggingInState);
+	WantToLogInState->addTransition(m_networkManager, SIGNAL(online()), LoggingInState);
 	WantToLogInState->addTransition(&TryToGoOnlineTimer, SIGNAL(timeout()), LoggingInMaybeOnlineState);
 	WantToLogInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOfflineState);
 
-	LoggingInState->addTransition(Core::instance()->networkManager(), SIGNAL(offline()), WantToLogInState);
+	LoggingInState->addTransition(m_networkManager, SIGNAL(offline()), WantToLogInState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedIn()), LoggedInState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOnlineState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordRequired()), PasswordRequiredState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInDelayState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
 
-	LoggingInDelayState->addTransition(Core::instance()->networkManager(), SIGNAL(offline()), WantToLogInState);
+	LoggingInDelayState->addTransition(m_networkManager, SIGNAL(offline()), WantToLogInState);
 	LoggingInDelayState->addTransition(&DelayTimer, SIGNAL(timeout()), LoggingInState);
 	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedIn()), LoggedInState);
 	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOnlineState);
 	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordRequired()), PasswordRequiredState);
 	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
 
-	LoggingInMaybeOnlineState->addTransition(Core::instance()->networkManager(), SIGNAL(offline()), WantToLogInState);
+	LoggingInMaybeOnlineState->addTransition(m_networkManager, SIGNAL(offline()), WantToLogInState);
 	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedIn()), LoggedInState);
 	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOnlineState);
 	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordRequired()), PasswordRequiredState);
@@ -116,27 +128,23 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), WantToLogInState);
 	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), WantToLogInState);
 
-	LoggedInState->addTransition(Core::instance()->networkManager(), SIGNAL(offline()), WantToLogInState);
+	LoggedInState->addTransition(m_networkManager, SIGNAL(offline()), WantToLogInState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggingOutState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
 
-	PasswordRequiredState->addTransition(Core::instance()->networkManager(), SIGNAL(offline()), WantToLogInState);
+	PasswordRequiredState->addTransition(m_networkManager, SIGNAL(offline()), WantToLogInState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOnlineState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordAvailable()), LoggingInState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordNotAvailable()), LoggedOutOnlineState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
 
-	if (Core::instance()->networkManager()->isOnline())
+	if (m_networkManager->isOnline())
 		setInitialState(LoggedOutOnlineState);
 	else
 		setInitialState(LoggedOutOfflineState);
 
 	start();
-}
-
-ProtocolStateMachine::~ProtocolStateMachine()
-{
 }
 
 /**

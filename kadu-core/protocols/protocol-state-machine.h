@@ -18,12 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROTOCOL_STATE_MACHINE_H
-#define PROTOCOL_STATE_MACHINE_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtCore/QStateMachine>
 #include <QtCore/QTimer>
+#include <injeqt/injeqt.h>
 
+class NetworkManager;
 class Protocol;
 
 /**
@@ -184,6 +186,8 @@ class ProtocolStateMachine : public QStateMachine
 {
 	Q_OBJECT
 
+	QPointer<NetworkManager> m_networkManager;
+
 	Protocol *CurrentProtocol;
 
 	QTimer TryToGoOnlineTimer;
@@ -200,6 +204,9 @@ class ProtocolStateMachine : public QStateMachine
 	QState *LoggedInState;
 
 private slots:
+	INJEQT_SET void setNetworkManager(NetworkManager *networkManager);
+	INJEQT_INIT void init();
+
 	void printConfiguration();
 
 public:
@@ -279,5 +286,3 @@ signals:
 /**
  * @}
  */
-
-#endif // PROTOCOL_STATE_MACHINE_H

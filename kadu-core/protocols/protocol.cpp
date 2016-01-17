@@ -31,6 +31,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
@@ -48,7 +49,7 @@
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
 		Factory(factory), CurrentAccount(account)
 {
-	Machine = new ProtocolStateMachine(this);
+	Machine = Core::instance()->injectedFactory()->makeInjected<ProtocolStateMachine>(this);
 	/*
 	 * after machine is started we need to re-call changeStatus
 	 * so proper transition can be called
