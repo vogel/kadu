@@ -18,14 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTORESPONDER_CONFIGURATOR_H
-#define AUTORESPONDER_CONFIGURATOR_H
-
-#include <QtCore/QPointer>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class AutoresponderMessageFilter;
+class Configuration;
 
 /**
  * @addtogroup Autoresponder
@@ -40,27 +42,31 @@ class AutoresponderMessageFilter;
  * This class listens to changed in global configuration. After change is detected it updated configuration of given
  * AutoresponderMessageFilter with newly created AutoresponderConfiguration instance.
  */
-class AutoresponderConfigurator : private ConfigurationAwareObject
+class AutoresponderConfigurator : private QObject, ConfigurationAwareObject
 {
-	QPointer<AutoresponderMessageFilter> ConfigurableAutoresponder;
+	Q_OBJECT
+	INJEQT_INSTANCE_IMMEDIATE
 
-	void createDefaultConfiguration();
+public:
+	Q_INVOKABLE explicit AutoresponderConfigurator(QObject *parent = nullptr);
+	virtual ~AutoresponderConfigurator();
 
 protected:
 	virtual void configurationUpdated();
 
-public:
-	/**
-	 * @short Sets AutoResponder to configure.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param autoresponder autoresponder to configured
-	 */
-	void setAutoresponderMessageFilter(AutoresponderMessageFilter *autoresponderMessageFilter);
+private:
+	QPointer<AutoresponderMessageFilter> m_autoresponderMessageFilter;
+	QPointer<Configuration> m_configuration;
+
+	void createDefaultConfiguration();
+
+private slots:
+	INJEQT_SET void setAutoresponderMessageFilter(AutoresponderMessageFilter *autoresponderMessageFilter);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
 
 };
 
 /**
  * @}
  */
-
-#endif // AUTORESPONDER_CONFIGURATOR_H

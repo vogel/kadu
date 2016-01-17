@@ -20,12 +20,14 @@
 #include "autoresponder-module.h"
 
 #include "autoresponder-configuration-ui-handler.h"
+#include "autoresponder-configurator.h"
 #include "autoresponder-message-filter.h"
 #include "autoresponder-plugin-object.h"
 
 AutoresponderModule::AutoresponderModule()
 {
 	add_type<AutoresponderConfigurationUiHandler>();
+	add_type<AutoresponderConfigurator>();
 	add_type<AutoresponderMessageFilter>();
 	add_type<AutoresponderPluginObject>();
 }

@@ -30,7 +30,7 @@
 #include <QtCore/QSet>
 #include <injeqt/injeqt.h>
 
-class AutoresponderConfigurator;
+class ChatWidgetRepository;
 class ChatWidget;
 class MessageManager;
 
@@ -50,14 +50,16 @@ public slots:
 	void chatWidgetClosed(ChatWidget *chat);
 
 private:
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<MessageManager> m_messageManager;
 
-	AutoresponderConfigurator *Configurator;
 	AutoresponderConfiguration Configuration;
 
 	QSet<Chat> RepliedChats;
 
 private slots:
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_INIT void init();
 
 };

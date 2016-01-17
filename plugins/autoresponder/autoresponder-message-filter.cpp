@@ -21,7 +21,6 @@
 #include "autoresponder-message-filter.h"
 
 #include "autoresponder-configuration-ui-handler.h"
-#include "autoresponder-configurator.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact-set.h"
@@ -41,18 +40,17 @@
 #include <QtWidgets/QLineEdit>
 
 AutoresponderMessageFilter::AutoresponderMessageFilter(QObject *parent) :
-		QObject(parent),
-		Configurator{nullptr}
+		QObject(parent)
 {
-	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget *)),
-			this, SLOT(chatWidgetClosed(ChatWidget *)));
-
-	Configurator = new AutoresponderConfigurator();
-	Configurator->setAutoresponderMessageFilter(this);
 }
 
 AutoresponderMessageFilter::~AutoresponderMessageFilter()
 {
+}
+
+void AutoresponderMessageFilter::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void AutoresponderMessageFilter::setMessageManager(MessageManager *messageManager)
@@ -60,10 +58,14 @@ void AutoresponderMessageFilter::setMessageManager(MessageManager *messageManage
 	m_messageManager = messageManager;
 }
 
+void AutoresponderMessageFilter::init()
+{
+	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)),
+			this, SLOT(chatWidgetClosed(ChatWidget *)));
+}
+
 bool AutoresponderMessageFilter::acceptMessage(const Message &message)
 {
-	printf("should I do accept?\n");
-
 	if (MessageTypeSent == message.type())
 		return true;
 

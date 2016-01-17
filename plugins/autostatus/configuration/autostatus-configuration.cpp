@@ -54,3 +54,5 @@ void AutostatusConfiguration::configurationUpdated()
 	AutoStatus = m_configuration->deprecatedApi()->readNumEntry("PowerKadu", "autoStatus");
 	StatusFilePath = m_configuration->deprecatedApi()->readEntry("PowerKadu", "status_file_path", m_pathsProvider->profilePath() + QLatin1String("autostatus.list"));
 }
+
+#include "moc_autostatus-configuration.cpp"
