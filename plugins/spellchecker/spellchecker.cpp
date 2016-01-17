@@ -34,7 +34,6 @@
 #include <enchant.h>
 #endif
 
-#include "core/core.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -86,23 +85,6 @@ static void enchantUsedDictDescribe(const char * const langTag, const char * con
 SpellChecker::SpellChecker(QObject *parent) :
 		QObject{parent}
 {
-#if defined(HAVE_ASPELL)
-	// prepare configuration of spellchecker
-	SpellConfig = new_aspell_config();
-	aspell_config_replace(SpellConfig, "encoding", "utf-8");
-	aspell_config_replace(SpellConfig, "sug-mode", "ultra");
-
-#	if defined(Q_OS_WIN)
-	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(Core::instance()->pathsProvider()->dataPath() + QLatin1String("aspell")));
-	aspell_config_replace(SpellConfig, "data-dir", qPrintable(Core::instance()->pathsProvider()->dataPath() + QLatin1String("aspell")));
-	aspell_config_replace(SpellConfig, "prefix", qPrintable(Core::instance()->pathsProvider()->profilePath() + QLatin1String("dicts")));
-#	endif
-#elif defined(HAVE_ENCHANT)
-	Broker = enchant_broker_init();
-#	if defined(Q_OS_WIN)
-	enchant_broker_set_param(Broker, "enchant.myspell.dictionary.path", qPrintable(Core::instance()->pathsProvider()->dataPath() + QLatin1String("share/enchant/myspell/")));
-#	endif
-#endif
 }
 
 SpellChecker::~SpellChecker()
@@ -126,15 +108,16 @@ SpellChecker::~SpellChecker()
 void SpellChecker::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
+}
+
+void SpellChecker::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
 }
 
 void SpellChecker::setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration)
 {
 	m_spellcheckerConfiguration = spellcheckerConfiguration;
-
-	buildCheckers();
-	buildMarkTag();
 }
 
 void SpellChecker::setSuggester(Suggester *suggester)
@@ -142,11 +125,40 @@ void SpellChecker::setSuggester(Suggester *suggester)
 	m_suggester = suggester;
 }
 
+void SpellChecker::init()
+{
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
+	connect(m_spellcheckerConfiguration, SIGNAL(updated()), this, SLOT(configurationUpdated()));
+
+#if defined(HAVE_ASPELL)
+	// prepare configuration of spellchecker
+	SpellConfig = new_aspell_config();
+	aspell_config_replace(SpellConfig, "encoding", "utf-8");
+	aspell_config_replace(SpellConfig, "sug-mode", "ultra");
+
+#	if defined(Q_OS_WIN)
+	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(m_pathsProvider->dataPath() + QLatin1String("aspell")));
+	aspell_config_replace(SpellConfig, "data-dir", qPrintable(m_pathsProvider->dataPath() + QLatin1String("aspell")));
+	aspell_config_replace(SpellConfig, "prefix", qPrintable(m_pathsProvider->profilePath() + QLatin1String("dicts")));
+#	endif
+#elif defined(HAVE_ENCHANT)
+	Broker = enchant_broker_init();
+#	if defined(Q_OS_WIN)
+	enchant_broker_set_param(Broker, "enchant.myspell.dictionary.path", qPrintable(m_pathsProvider->dataPath() + QLatin1String("share/enchant/myspell/")));
+#	endif
+#endif
+
+	configurationUpdated();
+}
+
+void SpellChecker::configurationUpdated()
+{
+	buildCheckers();
+	buildMarkTag();
+}
+
 void SpellChecker::buildCheckers()
 {
-	if (!m_spellcheckerConfiguration)
-		return;
-
 #if defined(HAVE_ASPELL)
 	foreach (AspellSpeller *speller, MyCheckers)
 		delete_aspell_speller(speller);

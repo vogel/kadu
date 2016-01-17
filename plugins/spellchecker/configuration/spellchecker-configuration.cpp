@@ -48,11 +48,6 @@ void SpellcheckerConfiguration::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void SpellcheckerConfiguration::setSpellChecker(SpellChecker *spellChecker)
-{
-	m_spellChecker = spellChecker;
-}
-
 void SpellcheckerConfiguration::init()
 {
 	createDefaultConfiguration();
@@ -102,11 +97,7 @@ void SpellcheckerConfiguration::configurationUpdated()
 	Checked = checked;
 	SuggesterWordCount = suggesterWordCount;
 
-	if (m_spellChecker)
-	{
-		m_spellChecker->buildMarkTag();
-		m_spellChecker->buildCheckers();
-	}
+	emit updated();
 }
 
 void SpellcheckerConfiguration::setChecked(const QStringList &checked)

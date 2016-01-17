@@ -29,7 +29,6 @@
 #include <injeqt/injeqt.h>
 
 class Configuration;
-class SpellChecker;
 
 class SpellcheckerConfiguration : public QObject, private ConfigurationAwareObject
 {
@@ -51,12 +50,14 @@ public:
 
 	void setChecked(const QStringList &checked);
 
+signals:
+	void updated();
+
 protected:
 	virtual void configurationUpdated();
 
 private:
 	QPointer<Configuration> m_configuration;
-	QPointer<SpellChecker> m_spellChecker;
 
 	bool Bold;
 	bool Italic;
@@ -72,7 +73,6 @@ private:
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
 	INJEQT_INIT void init();
 
 };

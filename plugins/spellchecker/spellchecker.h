@@ -34,6 +34,7 @@ class QListWidgetItem;
 
 class ChatWidget;
 class ChatWidgetRepository;
+class PathsProvider;
 class SpellcheckerConfiguration;
 class Suggester;
 
@@ -74,6 +75,7 @@ public slots:
 
 private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
 	QPointer<Suggester> m_suggester;
 
@@ -87,7 +89,11 @@ private:
 
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
 	INJEQT_SET void setSuggester(Suggester *suggester);
+	INJEQT_INIT void init();
+
+	void configurationUpdated();
 
 };
