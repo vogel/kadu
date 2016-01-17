@@ -61,6 +61,11 @@ void DockingMenuHandler::setIconsManager(IconsManager *iconsManager)
 	connect(iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
 }
 
+void DockingMenuHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void DockingMenuHandler::setNotificationService(NotificationService *notificationService)
 {
 	m_notificationService = notificationService;
@@ -166,7 +171,7 @@ void DockingMenuHandler::addStatusContainerMenus()
 
 	if (showAllAccountsMenu)
 	{
-		auto allAccountsMenu = Core::instance()->injectedFactory()->makeInjected<StatusMenu>(Core::instance()->statusContainerManager(), multipleMenus, m_menu);
+		auto allAccountsMenu = m_injectedFactory->makeInjected<StatusMenu>(m_statusContainerManager, multipleMenus, m_menu);
 		connect(allAccountsMenu, SIGNAL(menuRecreated()), this, SLOT(update()));
 	}
 }

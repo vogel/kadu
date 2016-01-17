@@ -24,6 +24,10 @@
 #include "configuration/configuration-aware-object.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 
 class DockingConfigurationProvider final : public QObject, private ConfigurationAwareObject
 {
@@ -42,8 +46,14 @@ protected:
 	virtual void configurationUpdated() override;
 
 private:
-	DockingConfiguration m_configuration;
+	QPointer<Configuration> m_configuration;
+
+	DockingConfiguration m_dockingConfiguration;
 
 	void createDefaultConfiguration();
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
 
 };
