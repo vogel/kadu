@@ -25,7 +25,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 
 #include "speech-configuration-widget.h"
 
@@ -49,6 +48,11 @@ SpeechConfigurationWidget::~SpeechConfigurationWidget()
 {
 }
 
+void SpeechConfigurationWidget::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void SpeechConfigurationWidget::saveNotifyConfigurations()
 {
 	if (!currentNotificationEvent.isEmpty())
@@ -62,7 +66,7 @@ void SpeechConfigurationWidget::saveNotifyConfigurations()
 	{
 		i.next();
 		const QString &eventName = i.key();
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Male", i.value());
+		m_configuration->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Male", i.value());
 	}
 
 	QMapIterator<QString, QString> j(femaleFormat);
@@ -70,7 +74,7 @@ void SpeechConfigurationWidget::saveNotifyConfigurations()
 	{
 		j.next();
 		const QString &eventName = j.key();
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Female", j.value());
+		m_configuration->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Female", j.value());
 	}
 }
 
@@ -86,12 +90,12 @@ void SpeechConfigurationWidget::switchToEvent(const QString &event)
 	if (maleFormat.contains(event))
 		maleLineEdit->setText(maleFormat[event]);
 	else
-		maleLineEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", event + "_Syntax/Male"));
+		maleLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Speech", event + "_Syntax/Male"));
 
 	if (femaleFormat.contains(event))
 		femaleLineEdit->setText(femaleFormat[event]);
 	else
-		femaleLineEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Speech", event + "_Syntax/Female"));
+		femaleLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Speech", event + "_Syntax/Female"));
 }
 
 #include "moc_speech-configuration-widget.cpp"

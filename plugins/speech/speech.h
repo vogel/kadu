@@ -23,8 +23,11 @@
 #include "notification/notifier.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QTime>
+#include <injeqt/injeqt.h>
 
+class Configuration;
 class Notification;
 
 /**
@@ -46,10 +49,17 @@ public:
 	NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent);
 
 	void say(const QString &s,
-		const QString &path = QString(),
-		bool klatt = false, bool melodie = false,
-		const QString &sound_system = QString(), const QString &device = QString(),
-		int freq = 0, int tempo = 0, int basefreq = 0);
+	const QString &path = QString(),
+	bool klatt = false, bool melodie = false,
+	const QString &sound_system = QString(), const QString &device = QString(),
+	int freq = 0, int tempo = 0, int basefreq = 0);
+
+private:
+	QPointer<Configuration> m_configuration;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
 
 };
 

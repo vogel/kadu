@@ -18,18 +18,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPEECH_CONFIGURATION_WIDGET_H
-#define SPEECH_CONFIGURATION_WIDGET_H
-
-#include <QtCore/QMap>
+#pragma once
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
+
+#include <QtCore/QMap>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 
 class QLineEdit;
 
 class SpeechConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
+
+	QPointer<Configuration> m_configuration;
 
 	QMap<QString, QString> maleFormat;
 	QMap<QString, QString> femaleFormat;
@@ -38,6 +43,9 @@ class SpeechConfigurationWidget : public NotifierConfigurationWidget
 	QLineEdit *maleLineEdit;
 	QLineEdit *femaleLineEdit;
 
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+
 public:
 	explicit SpeechConfigurationWidget(QWidget *parent = 0);
 	virtual ~SpeechConfigurationWidget();
@@ -45,6 +53,5 @@ public:
 	virtual void loadNotifyConfigurations() {}
 	virtual void saveNotifyConfigurations();
 	virtual void switchToEvent(const QString &event);
-};
 
-#endif // SPEECH_CONFIGURATION_WIDGET_H
+};
