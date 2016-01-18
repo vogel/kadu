@@ -35,6 +35,7 @@ class QListWidget;
 class QWidget;
 
 class Configuration;
+class InjectedFactory;
 class NotificationEventRepository;
 class NotificationManager;
 class NotifierConfigurationWidget;
@@ -61,6 +62,7 @@ class NotifyConfigurationUiHandler : public QObject, public ConfigurationUiHandl
 	Q_OBJECT
 
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationManager> m_notificationManager;
 
@@ -83,6 +85,7 @@ class NotifyConfigurationUiHandler : public QObject, public ConfigurationUiHandl
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_INIT void init();

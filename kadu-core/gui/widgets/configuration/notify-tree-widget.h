@@ -25,15 +25,17 @@
  *  Copyright (C) 2005 Olivier Goffart <ogoffart at kde.org>
  */
 
-#ifndef NOTIFY_TREE_WIDGET_H
-#define NOTIFY_TREE_WIDGET_H
-
-#include <QtWidgets/QStyledItemDelegate>
-#include <QtWidgets/QTreeWidget>
-#include <QtWidgets/QTreeWidgetItem>
+#pragma once
 
 #include "notification/notify-configuration-ui-handler.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QStyledItemDelegate>
+#include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QTreeWidgetItem>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
 class Notifier;
 
 class NotifyTreeWidgetDelegate : public QStyledItemDelegate
@@ -41,9 +43,17 @@ class NotifyTreeWidgetDelegate : public QStyledItemDelegate
 	Q_OBJECT
 
 public:
-	NotifyTreeWidgetDelegate(QObject *parent = 0);
+	explicit NotifyTreeWidgetDelegate(QObject *parent = nullptr);
+	virtual ~NotifyTreeWidgetDelegate();
 
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+private:
+	QPointer<NotificationManager> m_notificationManager;
+
+private slots:
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+
 };
 
 
@@ -67,19 +77,6 @@ class NotifyTreeWidget : public QTreeWidget
 {
 	Q_OBJECT
 
-	NotifyConfigurationUiHandler *UiHandler;
-
-	int StateColumnDefaultWidth;
-	int IconWidth;
-	int ColumnWidth;
-
-	inline int eventColumnWidth();
-
-	QMap<QString, NotifyTreeWidgetItem *> TreeItems;
-
-protected:
-	virtual void resizeEvent(QResizeEvent *event);
-
 public:
 	NotifyTreeWidget(NotifyConfigurationUiHandler *uiHandler, QWidget *parent);
 
@@ -91,6 +88,30 @@ public:
 public slots:
 	void refresh();
 
-};
+protected:
+	virtual void resizeEvent(QResizeEvent *event);
 
-#endif //NOTIFY_TREE_WIDGET_H
+private:
+	QPointer<IconsManager> m_iconsManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<NotificationEventRepository> m_notificationEventRepository;
+	QPointer<NotificationManager> m_notificationManager;
+
+	NotifyConfigurationUiHandler *UiHandler;
+
+	int StateColumnDefaultWidth;
+	int IconWidth;
+	int ColumnWidth;
+
+	inline int eventColumnWidth();
+
+	QMap<QString, NotifyTreeWidgetItem *> TreeItems;
+
+private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_INIT void init();
+
+};

@@ -33,6 +33,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -63,6 +64,11 @@ NotifyConfigurationUiHandler::~NotifyConfigurationUiHandler()
 void NotifyConfigurationUiHandler::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void NotifyConfigurationUiHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void NotifyConfigurationUiHandler::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
@@ -158,7 +164,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	notificationsGroupBox->addWidget(notifierMainWidget, true);
 
-	notifyTreeWidget = new NotifyTreeWidget(this, notificationsGroupBox->widget());
+	notifyTreeWidget = m_injectedFactory->makeInjected<NotifyTreeWidget>(this, notificationsGroupBox->widget());
 	notifyTreeWidget->setMinimumHeight(300);
 	notifierMainWidgetLayout->addWidget(notifyTreeWidget, 100);
 	notifyTreeWidget->setCurrentItem(notifyTreeWidget->topLevelItem(0));

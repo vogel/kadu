@@ -30,7 +30,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHeaderView>
 
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "notification/notification-manager.h"
 #include "notification/notifier.h"
 #include "notification/notify-configuration-ui-handler.h"
@@ -43,6 +43,15 @@
 
 NotifyTreeWidgetDelegate::NotifyTreeWidgetDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
+}
+
+NotifyTreeWidgetDelegate::~NotifyTreeWidgetDelegate()
+{
+}
+
+void NotifyTreeWidgetDelegate::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
 }
 
 void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -61,7 +70,7 @@ void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 	int iconWidth = option.decorationSize.width();
 	int iconHeight = option.decorationSize.height();
 
-	foreach (Notifier *notifier, Core::instance()->notificationManager()->notifiers())
+	for (auto notifier : m_notificationManager->notifiers())
 	{
 		if (notifiers.contains(notifier->name()))
 			notifier->icon().icon().paint(painter, rect.left() + position + 4, rect.top() + (rect.height() - iconHeight) / 2, iconWidth, iconHeight);
@@ -73,16 +82,40 @@ void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 NotifyTreeWidget::NotifyTreeWidget(NotifyConfigurationUiHandler *uiHandler, QWidget *parent)
 	: QTreeWidget(parent), UiHandler(uiHandler)
 {
+}
+
+void NotifyTreeWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void NotifyTreeWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void NotifyTreeWidget::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+{
+	m_notificationEventRepository = notificationEventRepository;
+}
+
+void NotifyTreeWidget::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
+}
+
+void NotifyTreeWidget::init()
+{
 	QStringList headerLabels;
 	headerLabels << tr("Event") << tr("Notification");
 	setHeaderLabels(headerLabels);
 
-	setItemDelegate(new NotifyTreeWidgetDelegate(this));
+	setItemDelegate(m_injectedFactory->makeInjected<NotifyTreeWidgetDelegate>(this));
 	setAlternatingRowColors(true);
 	setItemsExpandable(true);
 	setExpandsOnDoubleClick(true);
 
-	connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(refresh()));
+	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(refresh()));
 
 	//Extract icon size as the font height (as h=w on icons)
 	QStyleOptionViewItem iconOption;
@@ -106,7 +139,7 @@ void NotifyTreeWidget::refresh()
 	clear();
 	TreeItems.clear();
 
-	ColumnWidth = (IconWidth + 4) * Core::instance()->notificationManager()->notifiers().count();
+	ColumnWidth = (IconWidth + 4) * m_notificationManager->notifiers().count();
 	header()->resizeSection(0, eventColumnWidth());
 
 	const QMap<Notifier *, NotifierConfigurationGuiItem> &notifierGuiItems = UiHandler->notifierGui();
@@ -114,10 +147,10 @@ void NotifyTreeWidget::refresh()
 
 	QStringList notifiersNames;
 	QString eventName;
-	for (auto &&notifyEvent : Core::instance()->notificationEventRepository()->notificationEvents())
+	for (auto &&notifyEvent : m_notificationEventRepository->notificationEvents())
 	{
 		eventName = notifyEvent.name();
-		foreach (Notifier *notifier, Core::instance()->notificationManager()->notifiers())
+		foreach (Notifier *notifier, m_notificationManager->notifiers())
 			if (notifierGuiItems[notifier].Events[eventName])
 				notifiersNames << notifier->name();
 
