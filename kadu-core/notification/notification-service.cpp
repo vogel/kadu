@@ -140,7 +140,7 @@ void NotificationService::init()
 
 	Notification::registerParserTags();
 
-	MessageNotification::registerEvents();
+	MessageNotification::registerEvents(m_notificationEventRepository);
 
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
@@ -150,7 +150,7 @@ void NotificationService::init()
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
 
-	MultilogonNotification::registerEvents(m_notificationEventRepository);
+	MultilogonNotification::registerEvents(m_notificationEventRepository, m_notificationCallbackRepository);
 
 	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
@@ -179,7 +179,7 @@ void NotificationService::done()
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
 
-	MessageNotification::unregisterEvents();
+	MessageNotification::unregisterEvents(m_notificationEventRepository);
 	MultilogonNotification::unregisterEvents(m_notificationEventRepository);
 
 	delete CurrentWindowNotifier;

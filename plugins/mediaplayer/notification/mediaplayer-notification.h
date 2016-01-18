@@ -26,15 +26,18 @@
 
 #include "mediaplayer-exports.h"
 
+class NotificationEventRepository;
+class NotificationManager;
+
 class MEDIAPLAYERAPI MediaPlayerNotification : public Notification
 {
 	Q_OBJECT
 
 public:
-	static void registerNotifications();
-	static void unregisterNotifications();
+	static void registerNotifications(NotificationEventRepository *notificationEventRepository);
+	static void unregisterNotifications(NotificationEventRepository *notificationEventRepository);
 
-	static void notifyTitleHint(const QString &title);
+	static void notifyTitleHint(NotificationManager *notificationManager, const QString &title);
 
 	MediaPlayerNotification();
 	virtual ~MediaPlayerNotification();

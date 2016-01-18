@@ -26,6 +26,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class NotificationCallbackRepository;
 class NotificationEventRepository;
 class Protocol;
 class ProtocolFactory;
@@ -58,11 +59,13 @@ signals:
 	void protocolFactoryUnregistered(ProtocolFactory *factory);
 
 private:
+	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 
 	QList<ProtocolFactory *> Factories;
 
 private slots:
+	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

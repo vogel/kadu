@@ -35,7 +35,6 @@
 #include "notification/notifier.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"
-#include "status/status-container-manager.h"
 #include "debug.h"
 
 #include "notification/notification-manager.h"
@@ -43,8 +42,6 @@
 NotificationManager::NotificationManager(QObject *parent) :
 		QObject{parent}
 {
-	//HACK force creating StatusContainerManager instance so Kadu won't crash at startup
-	Core::instance()->statusContainerManager();
 }
 
 NotificationManager::~NotificationManager()

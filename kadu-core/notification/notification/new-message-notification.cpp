@@ -21,7 +21,6 @@
 
 #include <QtGui/QTextDocument>
 
-#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "icons/icons-manager.h"
@@ -32,19 +31,16 @@
 
 #include "new-message-notification.h"
 
-void MessageNotification::registerEvents()
+void MessageNotification::registerEvents(NotificationEventRepository *notificationEventRepository)
 {
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
+	notificationEventRepository->addNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
+	notificationEventRepository->addNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
 }
 
-void MessageNotification::unregisterEvents()
+void MessageNotification::unregisterEvents(NotificationEventRepository *notificationEventRepository)
 {
-	if (Core::instance()) // TODO: hack
-	{
-		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
-		Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
-	}
+	notificationEventRepository->removeNotificationEvent(NotificationEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat")));
+	notificationEventRepository->removeNotificationEvent(NotificationEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message")));
 }
 
 MessageNotification::MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message) :

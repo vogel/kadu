@@ -22,7 +22,6 @@
 
 #include <QtGui/QTextDocument>
 
-#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "identities/identity.h"
 #include "notification/notification-manager.h"
@@ -52,7 +51,7 @@ static QString getErrorServer(const ParserData * const object)
 		return QString();
 }
 
-void ConnectionErrorNotification::registerEvent(NotificationEventRepository *notificationEventRepository)
+void ConnectionErrorNotification::registerEvent(NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository)
 {
 	notificationEventRepository->addNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
 
@@ -68,7 +67,7 @@ void ConnectionErrorNotification::registerEvent(NotificationEventRepository *not
 				connectionErrorNotification->ignoreErrors();
 		}
 	};
-	Core::instance()->notificationCallbackRepository()->addCallback(connectionIgnoreErrorsDisconnect);
+	notificationCallbackRepository->addCallback(connectionIgnoreErrorsDisconnect);
 }
 
 void ConnectionErrorNotification::unregisterEvent(NotificationEventRepository *notificationEventRepository)
@@ -76,14 +75,14 @@ void ConnectionErrorNotification::unregisterEvent(NotificationEventRepository *n
 	Parser::unregisterObjectTag("errorServer");
 	Parser::unregisterObjectTag("error");
 
-	if (Core::instance())
-		notificationEventRepository->removeNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
+	notificationEventRepository->removeNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
 }
 
-void ConnectionErrorNotification::notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage)
+void ConnectionErrorNotification::notifyConnectionError(NotificationManager *notificationManager, const Account &account, const QString &errorServer, const QString &errorMessage)
 {
 	ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(account, errorServer, errorMessage);
-	Core::instance()->notificationManager()->notify(connectionErrorNotification);
+	connectionErrorNotification->setNotificationManager(notificationManager);
+	notificationManager->notify(connectionErrorNotification);
 }
 
 ConnectionErrorNotification::ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage) :
@@ -104,10 +103,15 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 	addCallback("connection-ignore-errors");
 }
 
+void ConnectionErrorNotification::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
+}
+
 void ConnectionErrorNotification::ignoreErrors()
 {
 	auto account = data()["account"].value<Account>();
-	Core::instance()->notificationManager()->ignoreConnectionErrors(account);
+	m_notificationManager->ignoreConnectionErrors(account);
 	emit closed(this);
 }
 

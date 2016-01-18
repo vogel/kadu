@@ -76,7 +76,6 @@ class MessageTransformerService;
 class Myself;
 class NetworkManager;
 class NetworkProxyManager;
-class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationManager;
 class NotificationService;
@@ -156,7 +155,6 @@ public:
 	void activatePlugins();
 
 	BuddyManager * buddyManager() const;
-	NotificationCallbackRepository * notificationCallbackRepository() const;
 	NotificationEventRepository * notificationEventRepository() const;
 	NotificationManager * notificationManager() const;
 	NotificationService * notificationService() const;

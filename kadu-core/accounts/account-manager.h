@@ -39,6 +39,7 @@ class ConfigurationApi;
 class ConfigurationManager;
 class ContactManager;
 class Myself;
+class NotificationManager;
 class Status;
 
 class KADUAPI AccountManager : public Manager<Account>
@@ -51,6 +52,7 @@ class KADUAPI AccountManager : public Manager<Account>
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<Myself> m_myself;
+	QPointer<NotificationManager> m_notificationManager;
 
 private slots:
 	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
@@ -59,6 +61,7 @@ private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

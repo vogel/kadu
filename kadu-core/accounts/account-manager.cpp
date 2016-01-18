@@ -33,6 +33,7 @@
 #include "gui/widgets/dialog/password-dialog-widget.h"
 #include "gui/windows/kadu-dialog.h"
 #include "identities/identity.h"
+#include "notification/notification-manager.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -79,6 +80,11 @@ void AccountManager::setContactManager(ContactManager *contactManager)
 void AccountManager::setMyself(Myself *myself)
 {
 	m_myself = myself;
+}
+
+void AccountManager::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
 }
 
 void AccountManager::init()
@@ -234,7 +240,7 @@ void AccountManager::connectionError(Account account, const QString &server, con
 {
 	QMutexLocker locker(&mutex());
 
-	ConnectionErrorNotification::notifyConnectionError(account, server, message);
+	ConnectionErrorNotification::notifyConnectionError(m_notificationManager, account, server, message);
 }
 
 void AccountManager::removeAccountAndBuddies(Account account)

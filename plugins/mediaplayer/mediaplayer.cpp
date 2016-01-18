@@ -43,6 +43,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
+#include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
 #include "notification/notification-event.h"
@@ -112,6 +113,16 @@ void MediaPlayer::setDockingMenuActionRepository(DockingMenuActionRepository *do
 void MediaPlayer::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
+}
+
+void MediaPlayer::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+{
+	m_notificationEventRepository = notificationEventRepository;
+}
+
+void MediaPlayer::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
 }
 
 void MediaPlayer::init()
@@ -196,7 +207,7 @@ void MediaPlayer::init()
 	setControlsEnabled(false);
 	isPaused = true;
 
-	MediaPlayerNotification::registerNotifications();
+	MediaPlayerNotification::registerNotifications(m_notificationEventRepository);
 
 	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)m_configuration->deprecatedApi()->readNumEntry("MediaPlayer", "statusPosition"));
 	createDefaultConfiguration();
@@ -210,7 +221,7 @@ void MediaPlayer::done()
 
 	kdebugf();
 
-	MediaPlayerNotification::unregisterNotifications();
+	MediaPlayerNotification::unregisterNotifications(m_notificationEventRepository);
 
 	Core::instance()->statusChangerManager()->unregisterStatusChanger(Changer);
 
@@ -730,7 +741,7 @@ void MediaPlayer::checkTitle()
 
 	// If OSD is enabled and current track position is betwean 0 and 1000 ms, then shows OSD
 	if (m_configuration->deprecatedApi()->readBoolEntry("MediaPlayer", "osd", true) && pos < 1000 && pos > 0)
-		MediaPlayerNotification::notifyTitleHint(getTitle());
+		MediaPlayerNotification::notifyTitleHint(m_notificationManager, getTitle());
 
 	Changer->setTitle(parse(m_configuration->deprecatedApi()->readEntry("MediaPlayer", "statusTagString")));
 }

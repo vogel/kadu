@@ -30,28 +30,27 @@
 
 #include <QtGui/QTextDocument>
 
-#include "core/core.h"
 #include "notification/notification-event.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
 
 #include "mediaplayer-notification.h"
 
-void MediaPlayerNotification::registerNotifications()
+void MediaPlayerNotification::registerNotifications(NotificationEventRepository *notificationEventRepository)
 {
-	Core::instance()->notificationEventRepository()->addNotificationEvent(NotificationEvent("MediaPlayerOsd", QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer")));
+	notificationEventRepository->addNotificationEvent(NotificationEvent("MediaPlayerOsd", QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer")));
 }
 
-void MediaPlayerNotification::unregisterNotifications()
+void MediaPlayerNotification::unregisterNotifications(NotificationEventRepository *notificationEventRepository)
 {
-	Core::instance()->notificationEventRepository()->removeNotificationEvent(NotificationEvent("MediaPlayerOsd", QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer")));
+	notificationEventRepository->removeNotificationEvent(NotificationEvent("MediaPlayerOsd", QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer")));
 }
 
-void MediaPlayerNotification::notifyTitleHint(const QString &title)
+void MediaPlayerNotification::notifyTitleHint(NotificationManager *notificationManager, const QString &title)
 {
 	Notification *notification = new MediaPlayerNotification();
 	notification->setText(Qt::escape(title));
-	Core::instance()->notificationManager()->notify(notification);
+	notificationManager->notify(notification);
 }
 
 MediaPlayerNotification::MediaPlayerNotification() :

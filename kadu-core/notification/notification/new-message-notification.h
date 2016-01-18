@@ -28,6 +28,7 @@
 
 class ChatWidget;
 class ChatWidgetRepository;
+class NotificationEventRepository;
 
 class KADUAPI MessageNotification : public Notification
 {
@@ -43,8 +44,8 @@ public:
 
 	virtual QString groupKey() const { return CurrentMessage.messageSender().id(); }
 
-	static void registerEvents();
-	static void unregisterEvents();
+	static void registerEvents(NotificationEventRepository *notificationEventRepository);
+	static void unregisterEvents(NotificationEventRepository *notificationEventRepository);
 
 	MessageNotification(ChatWidgetRepository *chatWidgetRepository, MessageType messageType, const Message &message);
 	virtual ~MessageNotification() {}

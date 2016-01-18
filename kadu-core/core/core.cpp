@@ -103,7 +103,6 @@
 #include "misc/paths-provider.h"
 #include "network/network-manager.h"
 #include "network/proxy/network-proxy-manager.h"
-#include "notification/notification-callback-repository.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-manager.h"
@@ -634,11 +633,6 @@ void Core::activatePlugins()
 BuddyManager * Core::buddyManager() const
 {
 	return m_injector.get<BuddyManager>();
-}
-
-NotificationCallbackRepository * Core::notificationCallbackRepository() const
-{
-	return m_injector.get<NotificationCallbackRepository>();
 }
 
 NotificationEventRepository * Core::notificationEventRepository() const

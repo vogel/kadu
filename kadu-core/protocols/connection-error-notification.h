@@ -20,33 +20,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONNECTION_ERROR_NOTIFICATION_H
-#define CONNECTION_ERROR_NOTIFICATION_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
 #include "notification/notification/notification.h"
 
+class NotificationCallbackRepository;
 class NotificationEventRepository;
+class NotificationManager;
 
 class ConnectionErrorNotification : public Notification
 {
 	Q_OBJECT
 
+	QPointer<NotificationManager> m_notificationManager;
+
 	QString ErrorServer;
 	QString ErrorMessage;
 
 private slots:
+	void setNotificationManager(NotificationManager *notificationManager);
+
 	void ignoreErrors();
 
 public:
-	static void registerEvent(NotificationEventRepository *notificationEventRepository);
+	static void registerEvent(NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository);
 	static void unregisterEvent(NotificationEventRepository *notificationEventRepository);
 
-	static void notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage);
+	static void notifyConnectionError(NotificationManager *notificationManager, const Account &account, const QString &errorServer, const QString &errorMessage);
 
-	ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage);
+	explicit ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage);
 	virtual ~ConnectionErrorNotification();
 
 	const QString & errorServer() const { return ErrorServer; }
@@ -55,5 +60,3 @@ public:
 	virtual bool isPeriodic() { return true; }
 	virtual int period() { return 20; }
 };
-
-#endif // CONNECTION_ERROR_NOTIFICATION_H
