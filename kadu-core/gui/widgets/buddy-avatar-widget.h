@@ -19,12 +19,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_AVATAR_WIDGET_H
-#define BUDDY_AVATAR_WIDGET_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "buddies/buddy.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
+class AvatarManager;
+class BuddyPreferredManager;
 
 class QLabel;
 class QPushButton;
@@ -32,6 +36,16 @@ class QPushButton;
 class BuddyAvatarWidget : public QWidget
 {
 	Q_OBJECT
+
+public:
+	explicit BuddyAvatarWidget(Buddy buddy, QWidget *parent = 0);
+
+	const QPixmap avatarPixmap();
+	bool buddyAvatar() const { return BuddyAvatar; }
+
+private:
+	QPointer<AvatarManager> m_avatarManager;
+	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 
 	Buddy MyBuddy;
 
@@ -54,14 +68,10 @@ class BuddyAvatarWidget : public QWidget
 	void removeAvatar();
 
 private slots:
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_INIT void init();
+
 	void buttonClicked();
 
-public:
-	explicit BuddyAvatarWidget(Buddy buddy, QWidget *parent = 0);
-
-	const QPixmap avatarPixmap();
-	bool buddyAvatar() const { return BuddyAvatar; }
-
 };
-
-#endif // BUDDY_AVATAR_WIDGET_H

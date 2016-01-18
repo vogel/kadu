@@ -43,6 +43,7 @@ class CompositeConfigurationValueStateNotifier;
 class ConfigurationValueStateNotifier;
 class Contact;
 class ContactManager;
+class InjectedFactory;
 class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
@@ -60,6 +61,7 @@ public:
 private:
 	QPointer<AvatarManager> m_avatarManager;
 	QPointer<BuddyManager> m_buddyManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QLineEdit *DisplayEdit;
 	QLineEdit *PhoneEdit;
@@ -86,6 +88,7 @@ private:
 private slots:
 	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void updateStateNotifier();

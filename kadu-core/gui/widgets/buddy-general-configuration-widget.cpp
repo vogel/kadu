@@ -30,6 +30,7 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/buddy-avatar-widget.h"
 #include "gui/widgets/buddy-contacts-table.h"
 #include "gui/widgets/composite-configuration-value-state-notifier.h"
@@ -75,6 +76,11 @@ void BuddyGeneralConfigurationWidget::setBuddyManager(BuddyManager *buddyManager
 	m_buddyManager = buddyManager;
 }
 
+void BuddyGeneralConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void BuddyGeneralConfigurationWidget::init()
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -109,7 +115,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 		}
 	}
 
-	AvatarWidget = new BuddyAvatarWidget(MyBuddy, nameWidget);
+	AvatarWidget = m_injectedFactory->makeInjected<BuddyAvatarWidget>(MyBuddy, nameWidget);
 	nameLayout->addWidget(AvatarWidget);
 
 	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"), this);

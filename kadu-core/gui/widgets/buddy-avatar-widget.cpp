@@ -21,21 +21,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddy-avatar-widget.h"
+
+#include "avatars/avatar-manager.h"
+#include "avatars/avatar.h"
+#include "buddies/buddy-preferred-manager.h"
+
 #include <QtGui/QImageReader>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar.h"
-#include "buddies/buddy-preferred-manager.h"
-#include "core/core.h"
-
-#include "buddy-avatar-widget.h"
-
 BuddyAvatarWidget::BuddyAvatarWidget(Buddy buddy, QWidget *parent) :
 		QWidget(parent), MyBuddy(buddy), BuddyAvatar(false)
+{
+}
+
+void BuddyAvatarWidget::setAvatarManager(AvatarManager *avatarManager)
+{
+	m_avatarManager = avatarManager;
+}
+
+void BuddyAvatarWidget::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void BuddyAvatarWidget::init()
 {
 	createGui();
 }
@@ -67,8 +80,8 @@ void BuddyAvatarWidget::showBuddyAvatar()
 
 void BuddyAvatarWidget::showContactAvatar()
 {
-	Contact preferredContact = Core::instance()->buddyPreferredManager()->preferredContact(MyBuddy);
-	showAvatar(Core::instance()->avatarManager()->byContact(preferredContact, ActionCreateAndAdd).pixmap());
+	auto preferredContact = m_buddyPreferredManager->preferredContact(MyBuddy);
+	showAvatar(m_avatarManager->byContact(preferredContact, ActionCreateAndAdd).pixmap());
 	BuddyAvatar = false;
 }
 
