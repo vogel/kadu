@@ -72,6 +72,7 @@
 #include "icons/icons-module.h"
 #include "identities/identity-module.h"
 #include "message/message-module.h"
+#include "message/message.h"
 #include "misc/date-time.h"
 #include "misc/paths-provider.h"
 #include "network/network-module.h"
@@ -215,6 +216,8 @@ int main(int argc, char *argv[]) try
 		else
 			fprintf(stderr, "Ignoring invalid debug mask '%s'\n", executionArguments.debugMask().toUtf8().constData());
 	}
+
+	qRegisterMetaType<Message>();
 
 	auto profileDirectory = executionArguments.profileDirectory().isEmpty()
 			? QString::fromUtf8(qgetenv("CONFIG_DIR"))

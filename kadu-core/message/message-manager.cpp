@@ -60,8 +60,6 @@ void MessageManager::setFormattedStringFactory(FormattedStringFactory *formatted
 
 void MessageManager::init()
 {
-	// TODO: move somewhere else?
-	qRegisterMetaType<Message>();
 	triggerAllAccountsRegistered(m_accountManager);
 }
 
