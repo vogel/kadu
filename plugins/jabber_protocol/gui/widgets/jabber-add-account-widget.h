@@ -37,8 +37,8 @@ class QPushButton;
 
 class AccountManager;
 class AccountStorage;
-class ChooseIdentityWidget;
 class IdentityManager;
+class InjectedFactory;
 class JabberProtocolFactory;
 class JabberServersService;
 
@@ -60,6 +60,7 @@ private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<AccountStorage> m_accountStorage;
 	QPointer<IdentityManager> m_identityManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	bool m_showButtons;
 
@@ -79,6 +80,7 @@ private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void dataChanged();

@@ -19,28 +19,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IDENTITY_MODEL_H
-#define IDENTITY_MODEL_H
-
-#include <QtCore/QAbstractListModel>
-#include <QtCore/QModelIndex>
+#pragma once
 
 #include "model/kadu-abstract-model.h"
 
+#include <QtCore/QAbstractListModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class IdentityManager;
 class Identity;
 
 class IdentityModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
-private slots:
-	void identityAboutToBeAdded(Identity identity);
-	void identityAdded(Identity identity);
-	void identityAboutToBeRemoved(Identity identity);
-	void identityRemoved(Identity identity);
-
 public:
-	explicit IdentityModel(QObject *parent = 0);
+	explicit IdentityModel(QObject *parent = nullptr);
 	virtual ~IdentityModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -51,6 +47,16 @@ public:
 	int identityIndex(Identity identity) const;
 	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
-};
+private:
+	QPointer<IdentityManager> m_identityManager;
 
-#endif // IDENTITY_MODEL_H
+private slots:
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_INIT void init();
+
+	void identityAboutToBeAdded(Identity identity);
+	void identityAdded(Identity identity);
+	void identityAboutToBeRemoved(Identity identity);
+	void identityRemoved(Identity identity);
+
+};

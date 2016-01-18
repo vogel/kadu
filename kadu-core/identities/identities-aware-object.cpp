@@ -18,33 +18,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
-#include "identity-manager.h"
-
 #include "identities-aware-object.h"
+
+#include "identity-manager.h"
 
 KADU_AWARE_CLASS(IdentitiesAwareObject)
 
 void IdentitiesAwareObject::notifyIdentityAdded(Identity identity)
 {
-	foreach (IdentitiesAwareObject *object, Objects)
+	for (IdentitiesAwareObject *object : Objects)
 		object->identityAdded(identity);
 }
 
 void IdentitiesAwareObject::notifyIdentityRemoved(Identity identity)
 {
-	foreach (IdentitiesAwareObject *object, Objects)
+	for (IdentitiesAwareObject *object : Objects)
 		object->identityRemoved(identity);
 }
 
-void IdentitiesAwareObject::triggerAllIdentitiesAdded()
+void IdentitiesAwareObject::triggerAllIdentitiesAdded(IdentityManager *identityManager)
 {
-	foreach (const Identity &identity, Core::instance()->identityManager()->items())
+	for (const Identity &identity : identityManager->items())
 		identityAdded(identity);
 }
 
-void IdentitiesAwareObject::triggerAllIdentitiesRemoved()
+void IdentitiesAwareObject::triggerAllIdentitiesRemoved(IdentityManager *identityManager)
 {
-	foreach (const Identity &identity, Core::instance()->identityManager()->items())
+	for (const Identity &identity : identityManager->items())
 		identityRemoved(identity);
 }

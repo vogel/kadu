@@ -19,23 +19,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QAction>
-#include <QtWidgets/QInputDialog>
-#include <QtWidgets/QLineEdit>
+#include "identities-combo-box.h"
 
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity-manager.h"
 #include "identities/model/identity-model.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 
-#include "identities-combo-box.h"
+#include <QtWidgets/QAction>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QLineEdit>
 
 IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
-	Core::instance()->identityManager()->removeUnused();
+}
+
+IdentitiesComboBox::~IdentitiesComboBox()
+{
+	m_identityManager->removeUnused();
+}
+
+void IdentitiesComboBox::setIdentityManager(IdentityManager *identityManager)
+{
+	m_identityManager = identityManager;
+}
+
+void IdentitiesComboBox::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void IdentitiesComboBox::init()
+{
+	m_identityManager->removeUnused();
 
 	CreateNewIdentityAction = new QAction(tr("Create a new identity..."), this);
 	QFont createNewIdentityActionFont = CreateNewIdentityAction->font();
@@ -46,15 +65,10 @@ IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
 	addAfterAction(CreateNewIdentityAction);
 
 	ModelChain *chain = new ModelChain(this);
-	chain->setBaseModel(new IdentityModel(chain));
+	chain->setBaseModel(m_injectedFactory->makeInjected<IdentityModel>(chain));
 	setUpModel(IdentityRole, chain);
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-}
-
-IdentitiesComboBox::~IdentitiesComboBox()
-{
-	Core::instance()->identityManager()->removeUnused();
 }
 
 void IdentitiesComboBox::setCurrentIdentity(Identity identity)
@@ -78,7 +92,7 @@ void IdentitiesComboBox::createNewIdentity()
 	if (!ok)
 		return;
 
-	Identity newIdentity = Core::instance()->identityManager()->byName(identityName, true);
+	Identity newIdentity = m_identityManager->byName(identityName, true);
 	if (newIdentity)
 		setCurrentIdentity(newIdentity);
 }

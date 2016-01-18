@@ -26,6 +26,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
@@ -68,6 +69,11 @@ void GaduAddAccountWidget::setAccountStorage(AccountStorage *accountStorage)
 void GaduAddAccountWidget::setIdentityManager(IdentityManager *identityManager)
 {
 	m_identityManager = identityManager;
+}
+
+void GaduAddAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void GaduAddAccountWidget::init()
@@ -117,7 +123,7 @@ void GaduAddAccountWidget::createGui(bool showButtons)
 	layout->addRow(0, remindPasswordLabel);
 	connect(remindPasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindPassword()));
 
-	Identity = new IdentitiesComboBox(this);
+	Identity = m_injectedFactory->makeInjected<IdentitiesComboBox>(this);
 	connect(Identity, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', Identity);
 

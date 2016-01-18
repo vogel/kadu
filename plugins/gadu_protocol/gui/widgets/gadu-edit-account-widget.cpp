@@ -178,7 +178,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	formLayout->addRow(0, remindPasswordLabel);
 	connect(remindPasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindPassword()));
 
-	Identities = new IdentitiesComboBox(this);
+	Identities = m_injectedFactory->makeInjected<IdentitiesComboBox>(this);
 	connect(Identities, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Account Identity") + ':', Identities);
 

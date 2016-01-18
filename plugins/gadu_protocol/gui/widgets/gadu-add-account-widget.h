@@ -27,6 +27,7 @@ class AccountManager;
 class AccountStorage;
 class IdentitiesComboBox;
 class IdentityManager;
+class InjectedFactory;
 
 class QCheckBox;
 class QGridLayout;
@@ -49,6 +50,7 @@ private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<AccountStorage> m_accountStorage;
 	QPointer<IdentityManager> m_identityManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	bool m_showButtons;
 	QLineEdit *AccountId;
@@ -64,6 +66,7 @@ private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void dataChanged();

@@ -33,6 +33,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/jabber-wait-for-account-register-window.h"
 #include "gui/windows/message-dialog.h"
@@ -71,6 +72,11 @@ void JabberCreateAccountWidget::setAccountStorage(AccountStorage *accountStorage
 void JabberCreateAccountWidget::setIdentityManager(IdentityManager *identityManager)
 {
 	m_identityManager = identityManager;
+}
+
+void JabberCreateAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void JabberCreateAccountWidget::init()
@@ -136,7 +142,7 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	layout->addRow(0, infoLabel);
 
-	IdentityCombo = new IdentitiesComboBox(this);
+	IdentityCombo = m_injectedFactory->makeInjected<IdentitiesComboBox>(this);
 	connect(IdentityCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', IdentityCombo);
 

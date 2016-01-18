@@ -20,21 +20,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IDENTITIES_COMBO_BOX_H
-#define IDENTITIES_COMBO_BOX_H
+#pragma once
 
 #include "gui/widgets/actions-combo-box.h"
 #include "identities/identity.h"
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class IdentityManager;
+class InjectedFactory;
+
 class KADUAPI IdentitiesComboBox : public ActionsComboBox
 {
 	Q_OBJECT
-
-	QAction *CreateNewIdentityAction;
-
-private slots:
-	void createNewIdentity();
 
 public:
 	explicit IdentitiesComboBox(QWidget *parent = 0);
@@ -43,6 +43,17 @@ public:
 	void setCurrentIdentity(Identity identity);
 	Identity currentIdentity();
 
-};
+private:
+	QPointer<IdentityManager> m_identityManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
-#endif // IDENTITIES_COMBO_BOX_H
+	QAction *CreateNewIdentityAction;
+
+private slots:
+	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
+	void createNewIdentity();
+
+};

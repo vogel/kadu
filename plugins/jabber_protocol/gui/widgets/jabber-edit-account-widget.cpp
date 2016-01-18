@@ -29,6 +29,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/account-configuration-widget-tab-adapter.h"
@@ -73,6 +74,11 @@ void JabberEditAccountWidget::setConfigurationManager(ConfigurationManager *conf
 void JabberEditAccountWidget::setIdentityManager(IdentityManager *identityManager)
 {
 	m_identityManager = identityManager;
+}
+
+void JabberEditAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void JabberEditAccountWidget::init()
@@ -147,7 +153,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	formLayout->addRow(0, changePasswordLabel);
 	connect(changePasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(changePasssword()));
 
-	Identities = new IdentitiesComboBox(this);
+	Identities = m_injectedFactory->makeInjected<IdentitiesComboBox>(this);
 	connect(Identities, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Account Identity") + ':', Identities);
 

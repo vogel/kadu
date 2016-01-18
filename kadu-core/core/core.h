@@ -67,7 +67,6 @@ class FileTransferManager;
 class FormattedStringFactory;
 class GroupManager;
 class IconsManager;
-class IdentityManager;
 class InjectedFactory;
 class KaduIcon;
 class KaduWindow;
@@ -192,7 +191,6 @@ public:
 	PathsProvider * pathsProvider() const;
 	Application * application() const;
 	GroupManager * groupManager() const;
-	IdentityManager * identityManager() const;
 	NetworkProxyManager * networkProxyManager() const;
 	ConfigurationManager * configurationManager() const;
 	AvatarManager * avatarManager() const;

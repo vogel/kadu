@@ -67,7 +67,7 @@ void StatusContainerManager::setStatusTypeManager(StatusTypeManager *statusTypeM
 void StatusContainerManager::init()
 {
 	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		triggerAllIdentitiesAdded();
+		triggerAllIdentitiesAdded(m_identityManager);
 	else if (m_statusConfigurationHolder->isSetStatusPerAccount())
 		triggerAllAccountsRegistered(m_accountManager);
 	else
@@ -82,7 +82,7 @@ void StatusContainerManager::done()
 	if (m_statusConfigurationHolder)
 	{
 		if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-			triggerAllIdentitiesRemoved();
+			triggerAllIdentitiesRemoved(m_identityManager);
 		else if (m_statusConfigurationHolder->isSetStatusPerAccount())
 			triggerAllAccountsUnregistered(m_accountManager);
 		else

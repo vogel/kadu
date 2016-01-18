@@ -20,13 +20,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IDENTITIES_AWARE_OBJECT_H
-#define IDENTITIES_AWARE_OBJECT_H
-
-#include <QtCore/QList>
+#pragma once
 
 #include "aware-object.h"
 
+#include <QtCore/QList>
+
+class IdentityManager;
 class Identity;
 
 class KADUAPI IdentitiesAwareObject : public AwareObject<IdentitiesAwareObject>
@@ -40,9 +40,7 @@ public:
 	static void notifyIdentityAdded(Identity identity);
 	static void notifyIdentityRemoved(Identity identity);
 
-	void triggerAllIdentitiesAdded();
-	void triggerAllIdentitiesRemoved();
+	void triggerAllIdentitiesAdded(IdentityManager *identityManager);
+	void triggerAllIdentitiesRemoved(IdentityManager *identityManager);
 
 };
-
-#endif // IDENTITIES_AWARE_OBJECT_H

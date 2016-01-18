@@ -85,7 +85,6 @@ set (gui_SRCS
 	widgets/chat-top-bar-container-widget.cpp
 	widgets/chat-top-bar-widget-factory-repository.cpp
 	widgets/chat-view-network-access-manager.cpp
-	widgets/choose-identity-widget.cpp
 	widgets/color-button.cpp
 	widgets/color-selector.cpp
 	widgets/composite-configuration-value-state-notifier.cpp
@@ -285,7 +284,6 @@ set (gui_MOC_SRCS
 	widgets/chat-edit-widget.h
 	widgets/chat-room-edit-widget.h
 	widgets/chat-view-network-access-manager.h
-	widgets/choose-identity-widget.h
 	widgets/color-button.h
 	widgets/color-selector.h
 	widgets/composite-configuration-value-state-notifier.h
