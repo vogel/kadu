@@ -29,13 +29,16 @@
 
 #include <injeqt/injeqt.h>
 
-class Configuration;
+class AvatarManager;
+class BuddyPreferredManager;
 class DomProcessorService;
 
 class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<AvatarManager> m_avatarManager;
+	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 	QPointer<DomProcessorService> m_domProcessorService;
 
 	Talkable Item;
@@ -47,6 +50,8 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 	void disconnectItem();
 
 private slots:
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
 	INJEQT_INIT void init();
 

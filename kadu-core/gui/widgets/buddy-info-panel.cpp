@@ -31,7 +31,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
@@ -41,6 +40,30 @@
 #include "buddy-info-panel.h"
 
 BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
+{
+}
+
+BuddyInfoPanel::~BuddyInfoPanel()
+{
+	disconnect(m_buddyPreferredManager, 0, this, 0);
+}
+
+void BuddyInfoPanel::setAvatarManager(AvatarManager *avatarManager)
+{
+	m_avatarManager = avatarManager;
+}
+
+void BuddyInfoPanel::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void BuddyInfoPanel::setDomProcessorService(DomProcessorService *domProcessorService)
+{
+	m_domProcessorService = domProcessorService;
+}
+
+void BuddyInfoPanel::init()
 {
 	QPalette p = palette();
 	p.setBrush(QPalette::Base, Qt::transparent);
@@ -52,21 +75,8 @@ BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 		"XMLHttpRequest.prototype.send = function() { return false; };"
 	);
 
-	connect(Core::instance()->buddyPreferredManager(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
-}
+	connect(m_buddyPreferredManager, SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
 
-BuddyInfoPanel::~BuddyInfoPanel()
-{
-	disconnect(Core::instance()->buddyPreferredManager(), 0, this, 0);
-}
-
-void BuddyInfoPanel::setDomProcessorService(DomProcessorService *domProcessorService)
-{
-	m_domProcessorService = domProcessorService;
-}
-
-void BuddyInfoPanel::init()
-{
 	configurationUpdated();
 }
 
@@ -172,7 +182,7 @@ void BuddyInfoPanel::connectItem()
 	if (contact)
 	{
 		connect(contact, SIGNAL(updated()), this, SLOT(update()));
-		auto avatar = Core::instance()->avatarManager()->byContact(contact, ActionReturnNull);
+		auto avatar = m_avatarManager->byContact(contact, ActionReturnNull);
 		if (avatar)
 			connect(avatar, SIGNAL(updated()), this, SLOT(update()));
 	}
@@ -192,7 +202,7 @@ void BuddyInfoPanel::disconnectItem()
 	if (contact)
 	{
 		disconnect(contact, 0, this, 0);
-		auto avatar = Core::instance()->avatarManager()->byContact(contact, ActionReturnNull);
+		auto avatar = m_avatarManager->byContact(contact, ActionReturnNull);
 		if (avatar)
 			disconnect(avatar, 0, this, 0);
 	}
