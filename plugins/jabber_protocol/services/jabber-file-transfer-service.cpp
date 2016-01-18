@@ -26,7 +26,6 @@
 #include "jabber-account-details.h"
 #include "jid.h"
 
-#include "core/core.h"
 #include "core/myself.h"
 #include "contacts/contact-manager.h"
 #include "file-transfer/file-transfer-direction.h"
@@ -53,6 +52,21 @@ JabberFileTransferService::~JabberFileTransferService()
 {
 }
 
+void JabberFileTransferService::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void JabberFileTransferService::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
+{
+	m_fileTransferHandlerManager = fileTransferHandlerManager;
+}
+
+void JabberFileTransferService::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
 void JabberFileTransferService::setResourceService(JabberResourceService *resourceService)
 {
 	m_resourceService = resourceService;
@@ -77,7 +91,7 @@ FileTransferHandler * JabberFileTransferService::createFileTransferHandler(FileT
 
 FileTransferCanSendResult JabberFileTransferService::canSend(Contact contact)
 {
-	if (Core::instance()->myself()->buddy() == contact.ownerBuddy())
+	if (m_myself->buddy() == contact.ownerBuddy())
 		return {false, {}};
 
 	return {true, {}};
@@ -93,7 +107,7 @@ void JabberFileTransferService::dataTransferProxyChanged()
 void JabberFileTransferService::fileReceived(QXmppTransferJob *transferJob)
 {
 	auto jid = Jid::parse(transferJob->jid());
-	auto peer = Core::instance()->contactManager()->byId(m_account, jid.bare(), ActionCreateAndAdd);
+	auto peer = m_contactManager->byId(m_account, jid.bare(), ActionCreateAndAdd);
 
 	auto transfer = FileTransfer::create();
 	transfer.setPeer(peer);
@@ -103,7 +117,7 @@ void JabberFileTransferService::fileReceived(QXmppTransferJob *transferJob)
 	transfer.setRemoteFileName(transferJob->fileName());
 	transfer.setFileSize(transferJob->fileSize());
 
-	if (!Core::instance()->fileTransferHandlerManager()->ensureHandler(transfer))
+	if (!m_fileTransferHandlerManager->ensureHandler(transfer))
 		return;
 
 	auto handler = qobject_cast<JabberStreamIncomingFileTransferHandler *>(transfer.handler());

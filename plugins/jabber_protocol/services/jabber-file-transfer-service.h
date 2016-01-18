@@ -24,8 +24,12 @@
 #include "accounts/account.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class ContactManager;
+class FileTransferHandlerManager;
 class JabberResourceService;
+class Myself;
 
 class QXmppTransferJob;
 class QXmppTransferManager;
@@ -44,12 +48,19 @@ public:
 	virtual FileTransferCanSendResult canSend(Contact contact) override;
 
 private:
+	QPointer<ContactManager> m_contactManager;
+	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
 	QPointer<JabberResourceService> m_resourceService;
+	QPointer<Myself> m_myself;
 
 	QPointer<QXmppTransferManager> m_transferManager;
 	Account m_account;
 
 private slots:
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+	INJEQT_SET void setMyself(Myself *myself);
+
 	void dataTransferProxyChanged();
 	void fileReceived(QXmppTransferJob *transferJob);
 
