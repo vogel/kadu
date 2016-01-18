@@ -586,7 +586,7 @@ void Core::runServices()
 {
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
-		notificationEventRepository()->addNotificationEvent(notifyEvent);
+		m_injector.get<NotificationEventRepository>()->addNotificationEvent(notifyEvent);
 
 	auto chatWidgetContainerHandlerRepository = m_injector.get<ChatWidgetContainerHandlerRepository>();
 	chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_injector.get<WindowChatWidgetContainerHandler>());
@@ -633,11 +633,6 @@ void Core::activatePlugins()
 BuddyManager * Core::buddyManager() const
 {
 	return m_injector.get<BuddyManager>();
-}
-
-NotificationEventRepository * Core::notificationEventRepository() const
-{
-	return m_injector.get<NotificationEventRepository>();
 }
 
 NotificationManager * Core::notificationManager() const
