@@ -206,7 +206,7 @@ TalkableProxyModel * ChatEditBox::talkableProxyModel()
 void ChatEditBox::updateContext()
 {
 	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		Context->setStatusContainer(CurrentChat.chatAccount().accountIdentity().data());
+		Context->setStatusContainer(CurrentChat.chatAccount().accountIdentity().statusContainer());
 	else if (m_statusConfigurationHolder->isSetStatusPerAccount())
 		Context->setStatusContainer(CurrentChat.chatAccount().statusContainer());
 	else

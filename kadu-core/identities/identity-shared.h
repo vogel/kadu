@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "misc/memory.h"
 #include "status/storable-status-container.h"
 #include "storage/shared.h"
 
@@ -30,10 +31,10 @@
 
 class Account;
 class IdentityManager;
-class StatusConfigurationHolder;
-class StatusTypeManager;
+class IdentityStatusContainer;
+class InjectedFactory;
 
-class KADUAPI IdentityShared : public StorableStatusContainer, public Shared
+class KADUAPI IdentityShared : public QObject, public Shared
 {
 	Q_OBJECT
 
@@ -49,6 +50,7 @@ public:
 
 	virtual void aboutToBeRemoved();
 
+	QList<Account> accounts();
 	void addAccount(const Account &account);
 	void removeAccount(const Account &account);
 	bool hasAccount(const Account &account);
@@ -58,19 +60,7 @@ public:
 	KaduShared_Property(const QString &, name, Name)
 	KaduShared_PropertyBool(Permanent)
 
-	// StatusContainer implementation
-
-	virtual QString statusContainerName()  { return name(); }
-
-	virtual Status status();
-	virtual void setStatus(Status status, StatusChangeSource source);
-	virtual bool isStatusSettingInProgress();
-	virtual int maxDescriptionLength();
-
-	virtual KaduIcon statusIcon();
-	virtual KaduIcon statusIcon(const Status &status);
-
-	virtual QList<StatusType> supportedStatusTypes();
+	StatusContainer * statusContainer() const;
 
 protected:
 	virtual void load();
@@ -79,18 +69,17 @@ protected:
 
 private:
 	QPointer<IdentityManager> m_identityManager;
-	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+
+	not_owned_qptr<IdentityStatusContainer> m_identityStatusContainer;
 
 	bool Permanent;
 	QString Name;
 	QList<Account> Accounts;
-	Status LastSetStatus;
 
 private slots:
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 };

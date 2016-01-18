@@ -96,10 +96,10 @@ void StatusContainerManager::updateIdentities()
 		return;
 
 	foreach (const Identity &identity, m_identityManager->items())
-		if (StatusContainers.contains(identity) && !identity.hasAnyAccountWithDetails())
-			unregisterStatusContainer(identity);
-		else if (!StatusContainers.contains(identity) && identity.hasAnyAccountWithDetails())
-			registerStatusContainer(identity);
+		if (StatusContainers.contains(identity.statusContainer()) && !identity.hasAnyAccountWithDetails())
+			unregisterStatusContainer(identity.statusContainer());
+		else if (!StatusContainers.contains(identity.statusContainer()) && identity.hasAnyAccountWithDetails())
+			registerStatusContainer(identity.statusContainer());
 }
 
 void StatusContainerManager::accountRegistered(Account account)
@@ -107,7 +107,7 @@ void StatusContainerManager::accountRegistered(Account account)
 	if (m_statusConfigurationHolder->isSetStatusPerAccount() && !StatusContainers.contains(account.statusContainer()))
 		registerStatusContainer(account.statusContainer());
 
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && !StatusContainers.contains(account.accountIdentity()))
+	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && !StatusContainers.contains(account.accountIdentity().statusContainer()))
 		updateIdentities();
 }
 
@@ -122,14 +122,14 @@ void StatusContainerManager::accountUnregistered(Account account)
 
 void StatusContainerManager::identityAdded(Identity identity)
 {
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && !StatusContainers.contains(identity) && identity.hasAnyAccountWithDetails())
-		registerStatusContainer(identity);
+	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && !StatusContainers.contains(identity.statusContainer()) && identity.hasAnyAccountWithDetails())
+		registerStatusContainer(identity.statusContainer());
 }
 
 void StatusContainerManager::identityRemoved(Identity identity)
 {
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && StatusContainers.contains(identity))
-		unregisterStatusContainer(identity);
+	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && StatusContainers.contains(identity.statusContainer()))
+		unregisterStatusContainer(identity.statusContainer());
 }
 
 void StatusContainerManager::cleanStatusContainers()

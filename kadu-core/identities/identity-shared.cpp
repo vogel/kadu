@@ -27,11 +27,10 @@
 #include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
+#include "identities/identity-status-container.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
-#include "status/status-configuration-holder.h"
 
-#include "status/status-type-manager.h"
 #include "status/status-type.h"
 
 #include "identity-shared.h"
@@ -53,7 +52,7 @@ IdentityShared * IdentityShared::loadFromStorage(const std::shared_ptr<StoragePo
 }
 
 IdentityShared::IdentityShared(const QUuid &uuid) :
-		StorableStatusContainer(this), Shared(uuid), Permanent(false)
+		Shared(uuid), Permanent(false)
 {
 }
 
@@ -67,18 +66,14 @@ void IdentityShared::setIdentityManager(IdentityManager *identityManager)
 	m_identityManager = identityManager;
 }
 
-void IdentityShared::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
+void IdentityShared::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_statusConfigurationHolder = statusConfigurationHolder;
-}
-
-void IdentityShared::setStatusTypeManager(StatusTypeManager *statusTypeManager)
-{
-	m_statusTypeManager = statusTypeManager;
+	m_injectedFactory = injectedFactory;
 }
 
 void IdentityShared::init()
 {
+	m_identityStatusContainer = m_injectedFactory->makeNotOwned<IdentityStatusContainer>(this);
 	setState(StateNotLoaded);
 }
 
@@ -128,6 +123,13 @@ void IdentityShared::aboutToBeRemoved()
 	Accounts.clear();
 }
 
+QList<Account> IdentityShared::accounts()
+{
+	ensureLoaded();
+
+	return Accounts;
+}
+
 void IdentityShared::addAccount(const Account &account)
 {
 	if (!account)
@@ -136,11 +138,7 @@ void IdentityShared::addAccount(const Account &account)
 	ensureLoaded();
 
 	Accounts.append(account);
-	connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		account.statusContainer()->setStatus(LastSetStatus, SourceStatusChanger);
-
-	emit statusUpdated(this);
+	m_identityStatusContainer->addAccount(account);
 }
 
 void IdentityShared::removeAccount(const Account &account)
@@ -151,10 +149,7 @@ void IdentityShared::removeAccount(const Account &account)
 	ensureLoaded();
 
 	if (Accounts.removeAll(account) > 0)
-	{
-		disconnect(account.statusContainer(), 0, this, 0);
-		emit statusUpdated(this);
-	}
+		m_identityStatusContainer->removeAccount(account);
 }
 
 bool IdentityShared::hasAccount(const Account &account)
@@ -182,56 +177,9 @@ bool IdentityShared::isEmpty()
 	return Accounts.isEmpty();
 }
 
-void IdentityShared::setStatus(Status status, StatusChangeSource source)
+StatusContainer * IdentityShared::statusContainer() const
 {
-	ensureLoaded();
-
-	LastSetStatus = status;
-	foreach (const Account &account, Accounts)
-		if (account)
-			account.statusContainer()->setStatus(status, source);
-}
-
-Status IdentityShared::status()
-{
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.statusContainer()->status() : Status();
-}
-
-bool IdentityShared::isStatusSettingInProgress()
-{
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.statusContainer()->isStatusSettingInProgress() : false;
-}
-
-KaduIcon IdentityShared::statusIcon()
-{
-	return statusIcon(status());
-}
-
-KaduIcon IdentityShared::statusIcon(const Status &status)
-{
-	QSet<QString> protocols;
-	foreach (const Account &account, Accounts)
-		protocols.insert(account.protocolName());
-
-	if (protocols.count() > 1)
-		return m_statusTypeManager->statusIcon("common", status);
-
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.statusContainer()->statusIcon(status) : KaduIcon();
-}
-
-QList<StatusType> IdentityShared::supportedStatusTypes()
-{
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.statusContainer()->supportedStatusTypes() : QList<StatusType>();
-}
-
-int IdentityShared::maxDescriptionLength()
-{
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.statusContainer()->maxDescriptionLength() : -1;
+	return m_identityStatusContainer.get();
 }
 
 #include "moc_identity-shared.cpp"

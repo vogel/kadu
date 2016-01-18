@@ -269,7 +269,7 @@ void TalkableTreeView::mouseMoveEvent(QMouseEvent *event)
 StatusContainer * TalkableTreeView::statusContainerForChat(const Chat &chat) const
 {
 	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		return chat.chatAccount().accountIdentity().data();
+		return chat.chatAccount().accountIdentity().statusContainer();
 	else if (m_statusConfigurationHolder->isSetStatusPerAccount())
 		return chat.chatAccount().statusContainer();
 	else

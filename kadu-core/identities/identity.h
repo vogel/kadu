@@ -52,6 +52,8 @@ public:
 	bool hasAnyAccountWithDetails() const;
 	bool isEmpty() const;
 
+	StatusContainer * statusContainer() const;
+
 	KaduSharedBase_PropertyBool(Permanent)
 	KaduSharedBase_PropertyCRW(QString, name, Name)
 

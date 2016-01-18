@@ -104,5 +104,12 @@ bool Identity::isEmpty() const
 			: true;
 }
 
+StatusContainer * Identity::statusContainer() const
+{
+	return !isNull()
+			? data()->statusContainer()
+			: nullptr;
+}
+
 KaduSharedBase_PropertyBoolDef(Identity, Permanent, false)
 KaduSharedBase_PropertyDefCRW(Identity, QString, name, Name, QString())
