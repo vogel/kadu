@@ -77,7 +77,6 @@ class Myself;
 class NetworkManager;
 class NetworkProxyManager;
 class NotificationManager;
-class NotificationService;
 class PathsProvider;
 class PluginActivationService;
 class PluginConflictResolver;
@@ -155,7 +154,6 @@ public:
 
 	BuddyManager * buddyManager() const;
 	NotificationManager * notificationManager() const;
-	NotificationService * notificationService() const;
 	FormattedStringFactory * formattedStringFactory() const;
 	RawMessageTransformerService * rawMessageTransformerService() const;
 	UnreadMessageRepository * unreadMessageRepository() const;

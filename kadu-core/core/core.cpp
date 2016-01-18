@@ -106,7 +106,6 @@
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-manager.h"
-#include "notification/notification-service.h"
 #include "os/generic/system-info.h"
 #include "parser/parser.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
@@ -638,11 +637,6 @@ BuddyManager * Core::buddyManager() const
 NotificationManager * Core::notificationManager() const
 {
 	return m_injector.get<NotificationManager>();
-}
-
-NotificationService * Core::notificationService() const
-{
-	return m_injector.get<NotificationService>();
 }
 
 FormattedStringFactory * Core::formattedStringFactory() const
