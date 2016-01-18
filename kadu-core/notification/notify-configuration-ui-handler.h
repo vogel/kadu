@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NOTIFY_CONFIGURATION_UI_HANDLER
-#define NOTIFY_CONFIGURATION_UI_HANDLER
+#pragma once
 
 #include "configuration/gui/configuration-ui-handler.h"
 #include "gui/windows/main-configuration-window.h"
@@ -28,10 +27,16 @@
 
 #include "notification-manager.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class QCheckBox;
 class QListWidget;
 class QWidget;
 
+class Configuration;
+class NotificationEventRepository;
+class NotificationManager;
 class NotifierConfigurationWidget;
 class NotifyGroupBox;
 class NotifyTreeWidget;
@@ -55,6 +60,10 @@ class NotifyConfigurationUiHandler : public QObject, public ConfigurationUiHandl
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
+	QPointer<NotificationEventRepository> m_notificationEventRepository;
+	QPointer<NotificationManager> m_notificationManager;
+
 	QMap<Notifier *, NotifierConfigurationGuiItem> NotifierGui;
 	QMap<QString, NotificationEventConfigurationItem> NotificationEvents;
 
@@ -73,6 +82,11 @@ class NotifyConfigurationUiHandler : public QObject, public ConfigurationUiHandl
 	void removeConfigurationWidget(Notifier *notifier);
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_INIT void init();
+
 	void notifierRegistered(Notifier *notifier);
 	void notifierUnregistered(Notifier *notifier);
 
@@ -93,11 +107,10 @@ protected:
 	virtual void mainConfigurationWindowApplied() override;
 
 public:
-	explicit NotifyConfigurationUiHandler(QObject *parent = 0);
+	Q_INVOKABLE explicit NotifyConfigurationUiHandler(QObject *parent = nullptr);
 	virtual ~NotifyConfigurationUiHandler();
 
 	const QMap<Notifier *, NotifierConfigurationGuiItem> & notifierGui() { return NotifierGui; }
 	const QMap<QString, NotificationEventConfigurationItem> & notifyEvents() { return NotificationEvents; }
-};
 
-#endif // NOTIFY_CONFIGURATION_UI_HANDLER
+};

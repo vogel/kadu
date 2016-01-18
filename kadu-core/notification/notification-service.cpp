@@ -114,11 +114,14 @@ void NotificationService::setStatusContainerManager(StatusContainerManager *stat
 	m_statusContainerManager = statusContainerManager;
 }
 
+void NotificationService::setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler)
+{
+	m_notifyConfigurationUiHandler = notifyConfigurationUiHandler;
+}
+
 void NotificationService::init()
 {
-	NotifyUiHandler = new NotifyConfigurationUiHandler(this);
-
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(NotifyUiHandler);
+	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_notifyConfigurationUiHandler);
 
 	auto ignoreCallback = NotificationCallback{
 		"ignore",
@@ -168,8 +171,7 @@ void NotificationService::done()
 {
 	Notification::unregisterParserTags();
 
-	if (m_configurationUiHandlerRepository)
-		m_configurationUiHandlerRepository->removeConfigurationUiHandler(NotifyUiHandler);
+	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_notifyConfigurationUiHandler);
 
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));

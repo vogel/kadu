@@ -64,6 +64,7 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotifyConfigurationUiHandler> m_notifyConfigurationUiHandler;
 	QPointer<StatusContainerManager> m_statusContainerManager;
 
 	bool NewMessageOnlyIfInactive;
@@ -76,8 +77,6 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 
 	bool IsFullScreen;
 	ScreenModeChecker *FullscreenChecker;
-
-	NotifyConfigurationUiHandler *NotifyUiHandler;
 
 	ActionDescription *notifyAboutUserActionDescription;
 	ActionDescription *SilentModeActionDescription;
@@ -129,6 +128,7 @@ private slots:
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
