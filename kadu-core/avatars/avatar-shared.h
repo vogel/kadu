@@ -28,7 +28,7 @@
 
 #include "storage/shared.h"
 
-class KADUAPI AvatarShared : public QObject, public Shared
+class KADUAPI AvatarShared : public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AvatarShared)

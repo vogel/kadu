@@ -34,7 +34,7 @@ class KADUAPI AccountDetails : public Details<AccountShared>
 {
 
 public:
-	explicit AccountDetails(AccountShared *mainData);
+	explicit AccountDetails(AccountShared *mainData, QObject *parent = nullptr);
 	virtual ~AccountDetails();
 
 };

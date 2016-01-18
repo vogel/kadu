@@ -34,7 +34,7 @@ class IdentityManager;
 class IdentityStatusContainer;
 class InjectedFactory;
 
-class KADUAPI IdentityShared : public QObject, public Shared
+class KADUAPI IdentityShared : public Shared
 {
 	Q_OBJECT
 
@@ -42,7 +42,7 @@ public:
 	static IdentityShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
 	static IdentityShared * loadFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
 
-	explicit IdentityShared(const QUuid &uuid = QUuid());
+	explicit IdentityShared(const QUuid &uuid = QUuid(), QObject *parent = nullptr);
 	virtual ~IdentityShared();
 
 	virtual StorableObject * storageParent();

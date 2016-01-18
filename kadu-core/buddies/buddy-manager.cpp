@@ -36,7 +36,7 @@
 #include "debug.h"
 
 BuddyManager::BuddyManager(QObject *parent) :
-		QObject{parent}
+		SimpleManager<Buddy>{parent}
 {
 }
 

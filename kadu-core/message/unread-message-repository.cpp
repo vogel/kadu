@@ -28,7 +28,7 @@
 #include "message/sorted-messages.h"
 
 UnreadMessageRepository::UnreadMessageRepository(QObject *parent) :
-		QObject{parent}
+		StorableObject{parent}
 {
 	setState(StateNotLoaded);
 }

@@ -20,6 +20,8 @@
  */
 
 #include "contacts/contact.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "misc/paths-provider.h"
 
 #include "avatar.h"
@@ -30,7 +32,7 @@ Avatar Avatar::null;
 
 Avatar Avatar::create()
 {
-	return new AvatarShared();
+	return Core::instance()->injectedFactory()->makeInjected<AvatarShared>();
 }
 
 Avatar Avatar::loadStubFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint)

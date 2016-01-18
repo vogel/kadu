@@ -19,18 +19,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STORABLE_OBJECT_H
-#define STORABLE_OBJECT_H
-
-#include <memory>
-
-#include <QtCore/QVariant>
+#pragma once
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "storage/storage-point.h"
-
 #include "exports.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QVariant>
+#include <memory>
+#include <injeqt/injeqt.h>
 
 #define PROPERTY_DEC(type, fieldName) \
 	type fieldName;
@@ -39,6 +39,7 @@
 	void setMethodName(type value) { ensureLoaded(); fieldName = value; }
 
 class CustomProperties;
+class StoragePointFactory;
 
 /**
  * @addtogroup Storage
@@ -100,8 +101,10 @@ class CustomProperties;
  * @link customProperties() @endlink getter. Storage mechanism for these values is described in
  * @link CustomProperties @endlink documentation.
  */
-class KADUAPI StorableObject
+class KADUAPI StorableObject : public QObject
 {
+	Q_OBJECT
+
 public:
 	/**
 	 * @enum StorableObjectState
@@ -131,11 +134,18 @@ public:
 	};
 
 private:
+	QPointer<StoragePointFactory> m_storagePointFactory;
+
 	std::shared_ptr<StoragePoint> Storage;
 	StorableObjectState State;
 	CustomProperties *Properties;
 
+private slots:
+	INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);
+
 protected:
+	StoragePointFactory * storagePointFactory() const;
+
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Creates default storage point for object.
@@ -196,7 +206,7 @@ public:
 	 * Constructs object with @link<StorableObject::StateNew state @endlink and null
 	 * (invalid) @link<StorableObject::storage storage point @endlink.
 	 */
-	StorableObject();
+	explicit StorableObject(QObject *parent = nullptr);
 	virtual ~StorableObject();
 
 	/**
@@ -429,5 +439,3 @@ template<class T>
 /**
  * @}
  */
-
-#endif // STORABLE_OBJECT_H

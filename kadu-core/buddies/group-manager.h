@@ -34,7 +34,7 @@
 class ConfigurationManager;
 class Configuration;
 
-class KADUAPI GroupManager : public QObject, public SimpleManager<Group>
+class KADUAPI GroupManager : public SimpleManager<Group>
 {
 	Q_OBJECT
 

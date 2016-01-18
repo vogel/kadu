@@ -59,8 +59,9 @@ public:
 	 *
 	 * Construct new object with StoragePoint cloned from mainData object and state set to 'StateNotLoaded'.
 	 */
-	explicit Details(T *mainData) :
-			MainData(mainData)
+	explicit Details(T *mainData, QObject *parent = nullptr) :
+			StorableObject{parent},
+			MainData{mainData}
 	{
 		setStorage(mainData->storage());
 		setState(StateNotLoaded);

@@ -43,7 +43,7 @@
 #include "account-manager.h"
 
 AccountManager::AccountManager(QObject *parent) :
-		QObject{parent}
+		Manager<Account>{parent}
 {
 }
 

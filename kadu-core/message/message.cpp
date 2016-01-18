@@ -20,6 +20,8 @@
 
 #include "chat/chat.h"
 #include "contacts/contact.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "formatted-string/formatted-string.h"
 
 #include "message.h"
@@ -30,7 +32,7 @@ Message Message::null;
 
 Message Message::create()
 {
-	return new MessageShared();
+	return Core::instance()->injectedFactory()->makeInjected<MessageShared>();
 }
 
 Message Message::loadStubFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint)

@@ -44,8 +44,8 @@
 
 #include "account-shared.h"
 
-AccountShared::AccountShared(const QString &protocolName) :
-		QObject(), Shared(QUuid()), ProtocolName(protocolName),
+AccountShared::AccountShared(const QString &protocolName, QObject *parent) :
+		Shared(QUuid(), parent), ProtocolName(protocolName),
 		ProtocolHandler(0), MyStatusContainer(new AccountStatusContainer(this)), Details(0),
 		RememberPassword(false), HasPassword(false), UseDefaultProxy(true), PrivateStatus(true)
 {

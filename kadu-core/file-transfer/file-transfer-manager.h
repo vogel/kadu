@@ -40,7 +40,7 @@ class FileTransferWindow;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 
-class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTransfer>, AccountsAwareObject
+class KADUAPI FileTransferManager : public SimpleManager<FileTransfer>, AccountsAwareObject
 {
 	Q_OBJECT
 

@@ -37,7 +37,7 @@ class Buddy;
 class ContactManager;
 class Contact;
 
-class KADUAPI AvatarManager : public QObject, public SimpleManager<Avatar>, AccountsAwareObject
+class KADUAPI AvatarManager : public SimpleManager<Avatar>, AccountsAwareObject
 {
 	Q_OBJECT
 

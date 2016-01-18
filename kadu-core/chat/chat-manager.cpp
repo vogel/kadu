@@ -31,7 +31,7 @@
 #include "chat-manager.h"
 
 ChatManager::ChatManager(QObject *parent) :
-		QObject{parent}
+		Manager<Chat>{parent}
 {
 }
 

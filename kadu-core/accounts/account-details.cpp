@@ -19,8 +19,8 @@
 
 #include "accounts/account-details.h"
 
-AccountDetails::AccountDetails(AccountShared *mainData) :
-		Details<AccountShared>(mainData)
+AccountDetails::AccountDetails(AccountShared *mainData, QObject *parent) :
+		Details<AccountShared>(mainData, parent)
 {
 }
 

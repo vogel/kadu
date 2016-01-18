@@ -20,6 +20,7 @@
  */
 
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "misc/change-notifier.h"
 #include "network/proxy/network-proxy-manager.h"
 
@@ -35,7 +36,7 @@ NetworkProxyShared * NetworkProxyShared::loadStubFromStorage(const std::shared_p
 
 NetworkProxyShared * NetworkProxyShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	NetworkProxyShared *result = new NetworkProxyShared();
+	NetworkProxyShared *result = Core::instance()->injectedFactory()->makeInjected<NetworkProxyShared>();
 	result->setStorage(storagePoint);
 
 	return result;

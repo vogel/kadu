@@ -28,7 +28,7 @@
 
 #include "storage/shared.h"
 
-class KADUAPI NetworkProxyShared : public QObject, public Shared
+class KADUAPI NetworkProxyShared : public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(NetworkProxyShared)

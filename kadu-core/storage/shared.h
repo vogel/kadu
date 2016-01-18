@@ -254,7 +254,7 @@ protected:
 	virtual void store();
 
 public:
-	explicit Shared(const QUuid &uuid);
+	explicit Shared(const QUuid &uuid, QObject *parent = nullptr);
 	virtual ~Shared();
 
 	void loadStub();

@@ -73,7 +73,7 @@ class GroupManager;
 class Group;
 class Myself;
 
-class KADUAPI BuddyShared : public QObject, public Shared
+class KADUAPI BuddyShared : public Shared
 {
 	Q_OBJECT
 

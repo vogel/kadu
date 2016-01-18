@@ -28,7 +28,7 @@
 class ConfigurationManager;
 class MobileNumber;
 
-class MobileNumberManager : public QObject, public StorableObject
+class MobileNumberManager : public StorableObject
 {
 	Q_OBJECT
 

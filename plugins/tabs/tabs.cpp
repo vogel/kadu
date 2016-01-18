@@ -82,7 +82,7 @@ static void disableNewTab(Configuration *configuration, Action *action)
 }
 
 TabsManager::TabsManager(QObject *parent) :
-		QObject(parent), TargetTabs(-1)
+		StorableObject(parent), TargetTabs(-1)
 {
 }
 

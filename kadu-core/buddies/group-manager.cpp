@@ -38,7 +38,7 @@
 #include "group-manager.h"
 
 GroupManager::GroupManager(QObject *parent) :
-		QObject{parent}
+		SimpleManager<Group>{parent}
 {
 }
 

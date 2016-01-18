@@ -27,7 +27,7 @@
 
 #include "storage/shared.h"
 
-class KADUAPI GroupShared : public QObject, public Shared
+class KADUAPI GroupShared : public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(GroupShared)

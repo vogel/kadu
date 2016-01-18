@@ -30,7 +30,8 @@
  * Constructs object with @link<StorableObject::StateNew state @endlink and null
  * (invalid) @link<StorableObject::storage storage point @endlink.
  */
-UuidStorableObject::UuidStorableObject()
+UuidStorableObject::UuidStorableObject(QObject *parent) :
+		StorableObject{parent}
 {
 }
 

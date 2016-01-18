@@ -30,7 +30,7 @@ enum class FileTransferDirection;
 enum class FileTransferStatus;
 enum class FileTransferType;
 
-class KADUAPI FileTransferShared : public QObject, public Shared
+class KADUAPI FileTransferShared : public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(FileTransferShared)

@@ -30,8 +30,7 @@
 #include "gadu-account-details.h"
 
 GaduAccountDetails::GaduAccountDetails(AccountShared *data, QObject *parent) :
-		QObject{parent},
-		AccountDetails(data), ReceiveImagesDuringInvisibility(true),
+		AccountDetails(data, parent), ReceiveImagesDuringInvisibility(true),
 		ChatImageSizeWarning(true), InitialRosterImport(true), TlsEncryption(false),
 		SendTypingNotification(true), UserlistVersion(-1), ReceiveSpam(true)
 {

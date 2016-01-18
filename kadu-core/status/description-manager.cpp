@@ -30,7 +30,7 @@
 #include "status/description-model.h"
 
 DescriptionManager::DescriptionManager(QObject *parent) :
-		QObject{parent}
+		StorableStringList{parent}
 {
 }
 

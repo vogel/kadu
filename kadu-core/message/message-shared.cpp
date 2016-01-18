@@ -23,6 +23,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
@@ -44,7 +45,7 @@ MessageShared * MessageShared::loadStubFromStorage(const std::shared_ptr<Storage
 
 MessageShared * MessageShared::loadFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint)
 {
-	MessageShared *result = new MessageShared();
+	MessageShared *result = Core::instance()->injectedFactory()->makeInjected<MessageShared>();
 	result->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	result->setStorage(messageStoragePoint);
 	return result;

@@ -46,7 +46,7 @@ class ContactSet;
  * given chat type. This class creates common interface for this custom data
  * - it can return list of contacts in that chat.
  */
-class KADUAPI ChatDetails : public QObject, public Details<ChatShared>
+class KADUAPI ChatDetails : public Details<ChatShared>
 {
 	Q_OBJECT
 
@@ -61,7 +61,7 @@ public:
 	 * Contructor must be overridden and called by all subclasses. It assigns
 	 * new object ot mainData object.
 	 */
-	explicit ChatDetails(ChatShared *mainData);
+	explicit ChatDetails(ChatShared *mainData, QObject *parent = nullptr);
 	virtual ~ChatDetails();
 
 	/**

@@ -56,7 +56,7 @@ class Group;
  * This class contains standard data that are common to all chat types used in application.
  * Data specific to given chat type is stored in classes derivered from @link ChatDetails @endlink..
  */
-class KADUAPI ChatShared : public QObject, public Shared, ChatTypeAwareObject
+class KADUAPI ChatShared : public Shared, ChatTypeAwareObject
 {
 	Q_OBJECT
 

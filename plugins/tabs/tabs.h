@@ -56,7 +56,7 @@ class MenuInventory;
 
 enum class OpenChatActivation;
 
-class TabsManager : public QObject, ConfigurationAwareObject, StorableObject
+class TabsManager : public StorableObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 

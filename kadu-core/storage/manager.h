@@ -78,7 +78,8 @@ protected:
 	 * in @link ConfigurationManager @endlink singleton, so this class
 	 * will automatically store itself on each configuration flush request.
 	 */
-	Manager() :
+	explicit Manager(QObject *parent = nullptr) :
+			StorableObject{parent},
 			Mutex(QMutex::Recursive)
 	{
 		setState(StateNotLoaded);

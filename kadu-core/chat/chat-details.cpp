@@ -21,9 +21,8 @@
 
 #include "misc/change-notifier.h"
 
-ChatDetails::ChatDetails(ChatShared *mainData) :
-		QObject{},
-		Details<ChatShared>{mainData}
+ChatDetails::ChatDetails(ChatShared *mainData, QObject *parent) :
+		Details<ChatShared>{mainData, parent}
 {
 	m_changeNotifier = new ChangeNotifier{this};
 	connect(m_changeNotifier, SIGNAL(changed()), this, SIGNAL(updated()));

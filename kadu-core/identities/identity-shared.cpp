@@ -51,8 +51,8 @@ IdentityShared * IdentityShared::loadFromStorage(const std::shared_ptr<StoragePo
 	return identityShared;
 }
 
-IdentityShared::IdentityShared(const QUuid &uuid) :
-		Shared(uuid), Permanent(false)
+IdentityShared::IdentityShared(const QUuid &uuid, QObject *parent) :
+		Shared(uuid, parent), Permanent(false)
 {
 }
 

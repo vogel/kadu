@@ -31,7 +31,7 @@
 
 class InjectedFactory;
 
-class GaduAccountDetails : public QObject, public AccountDetails
+class GaduAccountDetails : public AccountDetails
 {
 	Q_OBJECT
 

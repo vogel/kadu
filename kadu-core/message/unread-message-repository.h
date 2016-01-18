@@ -49,7 +49,7 @@ class SortedMessages;
  * This class stores all pending messages in permanent storage.
  * Pending message is an incoming message that have not ever been displayed to user.
  */
-class KADUAPI UnreadMessageRepository : public QObject, public StorableObject
+class KADUAPI UnreadMessageRepository : public StorableObject
 {
 	Q_OBJECT
 

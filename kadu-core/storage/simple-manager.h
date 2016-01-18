@@ -67,8 +67,9 @@ class SimpleManager : public StorableObject
 	QVector<Item> Items;
 
 protected:
-	SimpleManager() :
-			Mutex(QMutex::Recursive)
+	SimpleManager(QObject *parent) :
+			StorableObject{parent},
+			Mutex{QMutex::Recursive}
 	{
 		setState(StateNotLoaded);
 	}

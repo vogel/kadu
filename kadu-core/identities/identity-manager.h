@@ -36,7 +36,7 @@ class Account;
 class ConfigurationManager;
 class Status;
 
-class KADUAPI IdentityManager : public QObject, public SimpleManager<Identity>
+class KADUAPI IdentityManager : public SimpleManager<Identity>
 {
 	Q_OBJECT
 

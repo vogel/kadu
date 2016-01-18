@@ -24,6 +24,7 @@
 
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "storage/storage-point-factory.h"
 
 #include "mobile-number.h"
@@ -31,7 +32,7 @@
 #include "mobile-number-manager.h"
 
 MobileNumberManager::MobileNumberManager(QObject *parent) :
-		QObject{parent}
+		StorableObject{parent}
 {
 	setState(StateNotLoaded);
 }
@@ -65,7 +66,7 @@ void MobileNumberManager::registerNumber(QString number, QString gatewayId)
 			return;
 		}
 
-	Numbers.append(new MobileNumber(this, number, gatewayId));
+	Numbers.append(Core::instance()->injectedFactory()->makeInjected<MobileNumber>(this, number, gatewayId));
 }
 
 void MobileNumberManager::unregisterNumber(QString number)
@@ -81,7 +82,7 @@ void MobileNumberManager::unregisterNumber(QString number)
 
 std::shared_ptr<StoragePoint> MobileNumberManager::createStoragePoint()
 {
-	return Core::instance()->storagePointFactory()->createStoragePoint("MobileNumbers");
+	return storagePointFactory()->createStoragePoint("MobileNumbers");
 }
 
 StorableObject * MobileNumberManager::storageParent()
@@ -108,7 +109,7 @@ void MobileNumberManager::load()
 			continue;
 
 		auto numberStoragePoint = std::make_shared<StoragePoint>(configurationStorage, mobileNumberElement);
-		MobileNumber *number = new MobileNumber(this);
+		MobileNumber *number = Core::instance()->injectedFactory()->makeInjected<MobileNumber>(this);
 		number->setStorage(numberStoragePoint);
 		number->setState(StateNotLoaded);
 		number->ensureLoaded();

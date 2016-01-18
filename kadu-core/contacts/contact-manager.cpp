@@ -44,7 +44,7 @@
 #include <QtCore/QTimer>
 
 ContactManager::ContactManager(QObject *parent) :
-		QObject{parent}
+		SimpleManager<Contact>{parent}
 {
 }
 

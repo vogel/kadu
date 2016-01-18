@@ -31,8 +31,8 @@
 
 #include "jabber-account-details.h"
 
-JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
-		AccountDetails(data), AutoResource(false), Priority{100}, UseCustomHostPort(false), CustomPort(5222),
+JabberAccountDetails::JabberAccountDetails(AccountShared *data, QObject *parent) :
+		AccountDetails(data, parent), AutoResource(false), Priority{100}, UseCustomHostPort(false), CustomPort(5222),
 		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS), RequireDataTransferProxy{false},
 		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true)
 {

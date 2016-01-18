@@ -19,16 +19,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QtAlgorithms>
+#include "storable-object.h"
 
-#include "core/core.h"
 #include "storage/custom-properties.h"
 #include "storage/storage-point-factory.h"
 
-#include "storable-object.h"
+#include <QtCore/QtAlgorithms>
 
-StorableObject::StorableObject() :
-		State(StateNew)
+StorableObject::StorableObject(QObject *parent) :
+		QObject{parent},
+		State{StateNew}
 {
 	Properties = new CustomProperties();
 }
@@ -38,10 +38,20 @@ StorableObject::~StorableObject()
 	delete Properties;
 }
 
+void StorableObject::setStoragePointFactory(StoragePointFactory *storagePointFactory)
+{
+	m_storagePointFactory = storagePointFactory;
+}
+
+StoragePointFactory * StorableObject::storagePointFactory() const
+{
+	return m_storagePointFactory;
+}
+
 std::shared_ptr<StoragePoint> StorableObject::createStoragePoint()
 {
 	auto parent = storageParent();
-	return Core::instance()->storagePointFactory()->createStoragePoint(storageNodeName(), parent ? parent->storage().get() : nullptr);
+	return m_storagePointFactory->createStoragePoint(storageNodeName(), parent ? parent->storage().get() : nullptr);
 }
 
 void StorableObject::setStorage(const std::shared_ptr<StoragePoint> &storage)
@@ -129,3 +139,5 @@ CustomProperties * StorableObject::customProperties() const
 {
 	return Properties;
 }
+
+#include "moc_storable-object.cpp"

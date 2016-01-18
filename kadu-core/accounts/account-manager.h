@@ -41,7 +41,7 @@ class ContactManager;
 class Myself;
 class Status;
 
-class KADUAPI AccountManager : public QObject, public Manager<Account>
+class KADUAPI AccountManager : public Manager<Account>
 {
 	Q_OBJECT
 

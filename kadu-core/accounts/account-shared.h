@@ -48,7 +48,7 @@ class RosterTask;
 class StatusContainer;
 class StatusSetter;
 
-class KADUAPI AccountShared : public QObject, public Shared
+class KADUAPI AccountShared : public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
@@ -118,7 +118,7 @@ protected:
 	void forceEmitUpdated();
 
 public:
-	explicit AccountShared(const QString &protocolName = QString());
+	explicit AccountShared(const QString &protocolName = QString(), QObject *parent = nullptr);
 	virtual ~AccountShared();
 
 	virtual StorableObject * storageParent();

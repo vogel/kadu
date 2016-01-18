@@ -36,7 +36,7 @@
 #define MAX_RECENT_CHAT_COUNT 20
 
 RecentChatManager::RecentChatManager(QObject *parent) :
-		QObject{parent},
+		StorableObject{parent},
 		RecentChatsTimeout(0)
 {
 }

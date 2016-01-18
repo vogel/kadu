@@ -31,7 +31,8 @@
  * Contructs empty object with given uuid. When uuid is invalid (NULL)
  * new uuid is created and assigned to object.
  */
-Shared::Shared(const QUuid &uuid)
+Shared::Shared(const QUuid &uuid, QObject *parent) :
+		UuidStorableObject{parent}
 {
 	setUuid(uuid.isNull() ? QUuid::createUuid() : uuid);
 }

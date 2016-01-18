@@ -33,7 +33,7 @@ class Contact;
 class FormattedString;
 class FormattedStringFactory;
 
-class MessageShared : public QObject, public Shared
+class MessageShared : public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageShared)

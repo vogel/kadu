@@ -86,7 +86,7 @@ class UnreadMessageRepository;
  * Use @link items @endlink method to get access to all chats will full data, use @link allItems @endlink
  * to get access to all chats, even with only basic data.
  */
-class KADUAPI ChatManager : public QObject, public Manager<Chat>
+class KADUAPI ChatManager : public Manager<Chat>
 {
 	Q_OBJECT
 

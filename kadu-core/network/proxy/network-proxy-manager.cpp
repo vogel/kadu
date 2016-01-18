@@ -30,7 +30,7 @@
 #include "network-proxy-manager.h"
 
 NetworkProxyManager::NetworkProxyManager(QObject *parent) :
-		QObject{parent}
+		SimpleManager<NetworkProxy>{parent}
 {
 }
 

@@ -41,7 +41,7 @@ class ProtocolFactory;
 class ProtocolsManager;
 class RosterEntry;
 
-class KADUAPI ContactShared : public QObject, public Shared
+class KADUAPI ContactShared : public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactShared)

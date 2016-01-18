@@ -57,7 +57,7 @@ class Message;
  * removed after configurable period of time or when count of items would be bigger than 20.
  * If item is already on list it will be moved to the first place.
  */
-class KADUAPI RecentChatManager : public QObject, public StorableObject, private ConfigurationAwareObject
+class KADUAPI RecentChatManager : public StorableObject, private ConfigurationAwareObject
 {
 	Q_OBJECT
 

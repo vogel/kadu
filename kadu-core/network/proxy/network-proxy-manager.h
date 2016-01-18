@@ -34,7 +34,7 @@
 class ConfigurationManager;
 class NetworkProxy;
 
-class KADUAPI NetworkProxyManager : public QObject, public SimpleManager<NetworkProxy>, ConfigurationAwareObject
+class KADUAPI NetworkProxyManager : public SimpleManager<NetworkProxy>, ConfigurationAwareObject
 {
 	Q_OBJECT
 

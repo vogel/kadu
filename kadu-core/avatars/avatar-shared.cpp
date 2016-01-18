@@ -27,6 +27,7 @@
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "misc/change-notifier.h"
 #include "misc/paths-provider.h"
 
@@ -42,7 +43,7 @@ AvatarShared * AvatarShared::loadStubFromStorage(const std::shared_ptr<StoragePo
 
 AvatarShared * AvatarShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	AvatarShared *result = new AvatarShared();
+	auto result = Core::instance()->injectedFactory()->makeInjected<AvatarShared>();
 	result->setStorage(storagePoint);
 
 	return result;

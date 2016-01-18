@@ -41,7 +41,7 @@ class ConfigurationManager;
 class Configuration;
 class ContactManager;
 
-class KADUAPI BuddyManager : public QObject, public SimpleManager<Buddy>
+class KADUAPI BuddyManager : public SimpleManager<Buddy>
 {
 	Q_OBJECT
 

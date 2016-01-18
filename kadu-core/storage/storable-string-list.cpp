@@ -31,7 +31,8 @@
  *
  * Contructs empty object with state @link<StorableObject::StateNew StateNew @endlink.
  */
-StorableStringList::StorableStringList()
+StorableStringList::StorableStringList(QObject *parent) :
+		StorableObject{parent}
 {
 }
 

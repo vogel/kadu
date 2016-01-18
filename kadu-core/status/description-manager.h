@@ -30,7 +30,7 @@
 class ConfigurationManager;
 class DescriptionModel;
 
-class KADUAPI DescriptionManager : public QObject, public StorableStringList, private ConfigurationAwareObject
+class KADUAPI DescriptionManager : public StorableStringList, private ConfigurationAwareObject
 {
 	Q_OBJECT
 

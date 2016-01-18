@@ -40,7 +40,7 @@ class BuddyStorage;
 class ConfigurationManager;
 class UnreadMessageRepository;
 
-class KADUAPI ContactManager : public QObject, public SimpleManager<Contact>
+class KADUAPI ContactManager : public SimpleManager<Contact>
 {
 	Q_OBJECT
 

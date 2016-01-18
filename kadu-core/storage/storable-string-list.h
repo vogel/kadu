@@ -51,7 +51,7 @@ protected:
 	virtual void store();
 
 public:
-	StorableStringList();
+	StorableStringList(QObject *parent = nullptr);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

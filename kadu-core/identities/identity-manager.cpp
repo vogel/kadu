@@ -28,7 +28,7 @@
 #include "identity-manager.h"
 
 IdentityManager::IdentityManager(QObject *parent) :
-		QObject{parent}
+		SimpleManager<Identity>{parent}
 {
 }
 

@@ -49,7 +49,7 @@ protected:
 	virtual std::shared_ptr<StoragePoint> createStoragePoint();
 
 public:
-	UuidStorableObject();
+	UuidStorableObject(QObject *parent = nullptr);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

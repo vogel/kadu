@@ -27,7 +27,7 @@
 #include "open-chat-with/jabber-open-chat-with-runner.h"
 #include "protocols/protocol.h"
 
-class JabberAccountDetails : public QObject, public AccountDetails
+class JabberAccountDetails : public AccountDetails
 {
 	Q_OBJECT
 
@@ -71,7 +71,7 @@ protected:
 	virtual void store();
 
 public:
-	explicit JabberAccountDetails(AccountShared *data);
+	explicit JabberAccountDetails(AccountShared *data, QObject *parent = nullptr);
 	virtual ~JabberAccountDetails();
 
 	PROPERTY_DEF(QString, resource, setResource, Resource)
