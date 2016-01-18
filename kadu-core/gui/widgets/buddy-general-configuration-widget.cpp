@@ -21,16 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QTreeView>
-#include <QtWidgets/QVBoxLayout>
+#include "buddy-general-configuration-widget.h"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -39,7 +30,6 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "gui/widgets/buddy-avatar-widget.h"
 #include "gui/widgets/buddy-contacts-table.h"
 #include "gui/widgets/composite-configuration-value-state-notifier.h"
@@ -52,7 +42,16 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 
-#include "buddy-general-configuration-widget.h"
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QTreeView>
+#include <QtWidgets/QVBoxLayout>
 
 BuddyGeneralConfigurationWidget::BuddyGeneralConfigurationWidget(const Buddy &buddy, QWidget *parent) :
 		QWidget(parent),
@@ -60,17 +59,28 @@ BuddyGeneralConfigurationWidget::BuddyGeneralConfigurationWidget(const Buddy &bu
 		SimpleValueStateNotifier(new SimpleConfigurationValueStateNotifier(this)),
 		MyBuddy(buddy)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-
-	createGui();
-
-	ValueStateNotifier->addConfigurationValueStateNotifier(SimpleValueStateNotifier);
-
-	updateStateNotifier();
 }
 
 BuddyGeneralConfigurationWidget::~BuddyGeneralConfigurationWidget()
 {
+}
+
+void BuddyGeneralConfigurationWidget::setAvatarManager(AvatarManager *avatarManager)
+{
+	m_avatarManager = avatarManager;
+}
+
+void BuddyGeneralConfigurationWidget::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void BuddyGeneralConfigurationWidget::init()
+{
+	setAttribute(Qt::WA_DeleteOnClose);
+	createGui();
+	ValueStateNotifier->addConfigurationValueStateNotifier(SimpleValueStateNotifier);
+	updateStateNotifier();
 }
 
 void BuddyGeneralConfigurationWidget::createGui()
@@ -151,7 +161,7 @@ bool BuddyGeneralConfigurationWidget::isValid() const
 	if (display.isEmpty())
 		return false;
 
-	Buddy buddy = Core::instance()->buddyManager()->byDisplay(display, ActionReturnNull);
+	Buddy buddy = m_buddyManager->byDisplay(display, ActionReturnNull);
 	if (buddy && buddy != MyBuddy)
 		return false;
 
@@ -183,18 +193,18 @@ void BuddyGeneralConfigurationWidget::save()
 
 void BuddyGeneralConfigurationWidget::removeBuddyAvatar()
 {
-	Avatar buddyAvatar = MyBuddy.buddyAvatar();
+	auto buddyAvatar = MyBuddy.buddyAvatar();
 	if (buddyAvatar.isNull())
 		return;
 
 	buddyAvatar.setPixmap(QPixmap());
-	Core::instance()->avatarManager()->removeItem(buddyAvatar);
+	m_avatarManager->removeItem(buddyAvatar);
 	MyBuddy.setBuddyAvatar(Avatar::null);
 }
 
 void BuddyGeneralConfigurationWidget::setBuddyAvatar(const QPixmap& avatar)
 {
-	Avatar buddyAvatar = Core::instance()->avatarManager()->byBuddy(MyBuddy, ActionCreateAndAdd);
+	auto buddyAvatar = m_avatarManager->byBuddy(MyBuddy, ActionCreateAndAdd);
 	buddyAvatar.setPixmap(avatar);
 }
 

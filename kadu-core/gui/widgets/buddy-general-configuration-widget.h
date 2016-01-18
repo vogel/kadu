@@ -21,22 +21,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_GENERAL_CONFIGURATION_WIDGET_H
-#define BUDDY_GENERAL_CONFIGURATION_WIDGET_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "contacts/model/buddy-contact-model.h"
-
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QCheckBox;
 class QLineEdit;
 
+class AvatarManager;
 class BuddyAvatarWidget;
 class BuddyContactsTable;
+class BuddyManager;
 class CompositeConfigurationValueStateNotifier;
 class ConfigurationValueStateNotifier;
 class Contact;
@@ -46,6 +48,18 @@ class SimpleConfigurationValueStateNotifier;
 class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 {
 	Q_OBJECT
+
+public:
+	explicit BuddyGeneralConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
+	virtual ~BuddyGeneralConfigurationWidget();
+
+	const ConfigurationValueStateNotifier * valueStateNotifier() const;
+
+	void save();
+
+private:
+	QPointer<AvatarManager> m_avatarManager;
+	QPointer<BuddyManager> m_buddyManager;
 
 	QLineEdit *DisplayEdit;
 	QLineEdit *PhoneEdit;
@@ -70,16 +84,10 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	bool isValid() const;
 
 private slots:
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_INIT void init();
+
 	void updateStateNotifier();
 
-public:
-	explicit BuddyGeneralConfigurationWidget(const Buddy &buddy, QWidget *parent = 0);
-	virtual ~BuddyGeneralConfigurationWidget();
-
-	const ConfigurationValueStateNotifier * valueStateNotifier() const;
-
-	void save();
-
 };
-
-#endif // BUDDY_GENERAL_CONFIGURATION_WIDGET_H

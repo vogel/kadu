@@ -48,6 +48,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
+#include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory.h"
@@ -92,6 +93,11 @@ void BuddyDataWindow::setBuddyConfigurationWidgetFactoryRepository(BuddyConfigur
 void BuddyDataWindow::setBuddyManager(BuddyManager *buddyManager)
 {
 	m_buddyManager = buddyManager;
+}
+
+void BuddyDataWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void BuddyDataWindow::setMyself(Myself *myself)
@@ -197,7 +203,7 @@ void BuddyDataWindow::createTabs(QLayout *layout)
 
 void BuddyDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
-	ContactTab = new BuddyGeneralConfigurationWidget(MyBuddy, this);
+	ContactTab = m_injectedFactory->makeInjected<BuddyGeneralConfigurationWidget>(MyBuddy, this);
 	ValueStateNotifier->addConfigurationValueStateNotifier(ContactTab->valueStateNotifier());
 
 	tabWidget->addTab(ContactTab, tr("General"));
