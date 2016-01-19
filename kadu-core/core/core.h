@@ -62,7 +62,6 @@ class Configuration;
 class ContactManager;
 class FileTransferHandlerManager;
 class FileTransferManager;
-class FormattedStringFactory;
 class GroupManager;
 class IconsManager;
 class InjectedFactory;
@@ -149,7 +148,6 @@ public:
 
 	BuddyManager * buddyManager() const;
 	NotificationManager * notificationManager() const;
-	FormattedStringFactory * formattedStringFactory() const;
 	RawMessageTransformerService * rawMessageTransformerService() const;
 	UnreadMessageRepository * unreadMessageRepository() const;
 	ChatWidgetActions * chatWidgetActions() const;

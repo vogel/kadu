@@ -62,7 +62,6 @@
 #include "dom/dom-processor-service.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
-#include "formatted-string/formatted-string-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/menu/menu-inventory.h"
@@ -641,11 +640,6 @@ BuddyManager * Core::buddyManager() const
 NotificationManager * Core::notificationManager() const
 {
 	return m_injector.get<NotificationManager>();
-}
-
-FormattedStringFactory * Core::formattedStringFactory() const
-{
-	return m_injector.get<FormattedStringFactory>();
 }
 
 RawMessageTransformerService * Core::rawMessageTransformerService() const
