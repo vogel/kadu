@@ -19,37 +19,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AVATAR_SHARED_H
-#define AVATAR_SHARED_H
+#pragma once
+
+#include "storage/shared.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtGui/QPixmap>
+#include <injeqt/injeqt.h>
 
-#include "storage/shared.h"
+class AvatarManager;
+class PathsProvider;
 
 class KADUAPI AvatarShared : public Shared
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(AvatarShared)
-
-	QDateTime LastUpdated;
-	QDateTime NextUpdate;
-	QString FilePath;
-	QString SmallFilePath;
-	QPixmap Pixmap;
-
-	QString AvatarsDir;
-
-	QString filePathToSmallFilePath(const QString &fileName);
-	void ensureSmallPixmapExists();
-	bool isPixmapSmall();
-	void storeSmallPixmap();
-
-protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
 
 public:
 	static AvatarShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint);
@@ -80,6 +65,31 @@ signals:
 	void updated();
 	void pixmapUpdated();
 
-};
+protected:
+	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
 
-#endif // AVATAR_SHARED_H
+private:
+	QPointer<AvatarManager> m_avatarManager;
+	QPointer<PathsProvider> m_pathsProvider;
+
+	QDateTime LastUpdated;
+	QDateTime NextUpdate;
+	QString FilePath;
+	QString SmallFilePath;
+	QPixmap Pixmap;
+
+	QString AvatarsDir;
+
+	QString filePathToSmallFilePath(const QString &fileName);
+	void ensureSmallPixmapExists();
+	bool isPixmapSmall();
+	void storeSmallPixmap();
+
+private slots:
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+
+};

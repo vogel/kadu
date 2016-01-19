@@ -19,9 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtGui/QImageReader>
+#include "avatar-shared.h"
 
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy.h"
@@ -31,7 +29,9 @@
 #include "misc/change-notifier.h"
 #include "misc/paths-provider.h"
 
-#include "avatar-shared.h"
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtGui/QImageReader>
 
 AvatarShared * AvatarShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
@@ -52,9 +52,6 @@ AvatarShared * AvatarShared::loadFromStorage(const std::shared_ptr<StoragePoint>
 AvatarShared::AvatarShared(const QUuid &uuid) :
 		Shared(uuid)
 {
-	AvatarsDir = Core::instance()->pathsProvider()->profilePath() + QLatin1String("avatars/");
-
-	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 AvatarShared::~AvatarShared()
@@ -62,9 +59,26 @@ AvatarShared::~AvatarShared()
 	ref.ref();
 }
 
+void AvatarShared::setAvatarManager(AvatarManager *avatarManager)
+{
+	m_avatarManager = avatarManager;
+}
+
+void AvatarShared::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void AvatarShared::init()
+{
+	AvatarsDir = m_pathsProvider->profilePath() + QLatin1String("avatars/");
+
+	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+}
+
 StorableObject * AvatarShared::storageParent()
 {
-	return Core::instance()->avatarManager();
+	return m_avatarManager;
 }
 
 QString AvatarShared::storageNodeName()
@@ -143,7 +157,7 @@ void AvatarShared::storeAvatar()
 	storeValue("LastUpdated", LastUpdated);
 	storeValue("NextUpdate", NextUpdate);
 
-	QDir avatarsDir(Core::instance()->pathsProvider()->profilePath() + QLatin1String("avatars"));
+	QDir avatarsDir(m_pathsProvider->profilePath() + QLatin1String("avatars"));
 	if (!avatarsDir.exists())
 		avatarsDir.mkpath(QLatin1String("."));
 
@@ -173,7 +187,7 @@ void AvatarShared::storeSmallPixmap()
 	if (!isValidStorage())
 		return;
 
-	QDir avatarsDir(Core::instance()->pathsProvider()->profilePath() + QLatin1String("avatars"));
+	QDir avatarsDir(m_pathsProvider->profilePath() + QLatin1String("avatars"));
 	if (!avatarsDir.exists())
 		avatarsDir.mkpath(QLatin1String("."));
 
