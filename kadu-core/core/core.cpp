@@ -43,7 +43,6 @@
 #include "buddies/buddy-storage.h"
 #include "buddies/group-manager.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
-#include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
 #include "chat/buddy-chat-manager.h"
@@ -672,11 +671,6 @@ ChatWidgetManager * Core::chatWidgetManager() const
 ChatWidgetRepository * Core::chatWidgetRepository() const
 {
 	return m_injector.get<ChatWidgetRepository>();
-}
-
-ChatStyleManager * Core::chatStyleManager() const
-{
-	return m_injector.get<ChatStyleManager>();
 }
 
 StoragePointFactory * Core::storagePointFactory() const

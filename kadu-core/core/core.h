@@ -53,7 +53,6 @@ class BuddyStorage;
 class ChatImageRequestService;
 class ChatManager;
 class ChatTypeManager;
-class ChatStyleManager;
 class ChatWidgetActions;
 class ChatWidgetManager;
 class ChatWidgetMessageHandler;
@@ -156,7 +155,6 @@ public:
 	ChatWidgetActions * chatWidgetActions() const;
 	ChatWidgetManager * chatWidgetManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
-	ChatStyleManager * chatStyleManager() const;
 	StoragePointFactory * storagePointFactory() const;
 
 	PluginActivationService * pluginActivationService() const;
