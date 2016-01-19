@@ -26,6 +26,7 @@
 #include <QtWidgets/QAction>
 #include <injeqt/injeqt.h>
 
+class InjectedFactory;
 class NetworkProxyManager;
 class NetworkProxy;
 class ProxyEditWindowService;
@@ -47,12 +48,14 @@ protected:
 	virtual QMenu * menuForAction(Action *action);
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NetworkProxyManager> m_networkProxyManager;
 	QPointer<ProxyEditWindowService> m_proxyEditWindowService;
 
 	void populateMenu(QMenu *menu, QActionGroup *actionGroup, NetworkProxy defaultProxy);
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
 	INJEQT_SET void setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService);
 	INJEQT_INIT void init();

@@ -20,6 +20,7 @@
 
 #include "default-proxy-action.h"
 
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/windows/proxy-edit-window-service.h"
 #include "model/roles.h"
@@ -40,6 +41,11 @@ DefaultProxyAction::DefaultProxyAction(QObject *parent) :
 
 DefaultProxyAction::~DefaultProxyAction()
 {
+}
+
+void DefaultProxyAction::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void DefaultProxyAction::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
@@ -70,8 +76,8 @@ QMenu * DefaultProxyAction::menuForAction(Action *action)
 
 void DefaultProxyAction::populateMenu(QMenu *menu, QActionGroup *actionGroup, NetworkProxy defaultProxy)
 {
-	NetworkProxyModel *proxyModel = new NetworkProxyModel();
-	NetworkProxyProxyModel *proxyProxyModel = new NetworkProxyProxyModel();
+	auto proxyModel = m_injectedFactory->makeInjected<NetworkProxyModel>();
+	auto proxyProxyModel = new NetworkProxyProxyModel();
 	proxyProxyModel->setSourceModel(proxyModel);
 
 	int proxCount = proxyProxyModel->rowCount();

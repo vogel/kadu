@@ -21,6 +21,7 @@
 #include <QtWidgets/QAction>
 
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/windows/proxy-edit-window-service.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
@@ -37,7 +38,7 @@ ProxyComboBox::ProxyComboBox(QWidget *parent) :
 	addBeforeAction(new QAction(tr(" - No proxy - "), this));
 
 	ModelChain *chain = new ModelChain(this);
-	Model = new NetworkProxyModel(chain);
+	Model = Core::instance()->injectedFactory()->makeInjected<NetworkProxyModel>(chain);
 	chain->setBaseModel(Model);
 	chain->addProxyModel(new NetworkProxyProxyModel(this));
 	setUpModel(NetworkProxyRole, chain);

@@ -18,31 +18,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
+#include "network-proxy-model.h"
+
 #include "model/roles.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "network/proxy/network-proxy.h"
 
-#include "network-proxy-model.h"
-
 NetworkProxyModel::NetworkProxyModel(QObject *parent) :
 		QAbstractListModel(parent)
 {
-	connect(Core::instance()->networkProxyManager(), SIGNAL(networkProxyUpdated(NetworkProxy)),
-			this, SLOT(networkProxyUpdated(NetworkProxy)), Qt::DirectConnection);
-	connect(Core::instance()->networkProxyManager(), SIGNAL(networkProxyAboutToBeAdded(NetworkProxy)),
-			this, SLOT(networkProxyAboutToBeAdded(NetworkProxy)), Qt::DirectConnection);
-	connect(Core::instance()->networkProxyManager(), SIGNAL(networkProxyAdded(NetworkProxy)),
-			this, SLOT(networkProxyAdded(NetworkProxy)), Qt::DirectConnection);
-	connect(Core::instance()->networkProxyManager(), SIGNAL(networkProxyAboutToBeRemoved(NetworkProxy)),
-			this, SLOT(networkProxyAboutToBeRemoved(NetworkProxy)), Qt::DirectConnection);
-	connect(Core::instance()->networkProxyManager(), SIGNAL(networkProxyRemoved(NetworkProxy)),
-			this, SLOT(networkProxyRemoved(NetworkProxy)), Qt::DirectConnection);
 }
 
 NetworkProxyModel::~NetworkProxyModel()
 {
-	disconnect(Core::instance()->networkProxyManager(), 0, this, 0);
+	disconnect(m_networkProxyManager, 0, this, 0);
+}
+
+void NetworkProxyModel::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
+{
+	m_networkProxyManager = networkProxyManager;
+}
+
+void NetworkProxyModel::init()
+{
+	connect(m_networkProxyManager, SIGNAL(networkProxyUpdated(NetworkProxy)),
+			this, SLOT(networkProxyUpdated(NetworkProxy)), Qt::DirectConnection);
+	connect(m_networkProxyManager, SIGNAL(networkProxyAboutToBeAdded(NetworkProxy)),
+			this, SLOT(networkProxyAboutToBeAdded(NetworkProxy)), Qt::DirectConnection);
+	connect(m_networkProxyManager, SIGNAL(networkProxyAdded(NetworkProxy)),
+			this, SLOT(networkProxyAdded(NetworkProxy)), Qt::DirectConnection);
+	connect(m_networkProxyManager, SIGNAL(networkProxyAboutToBeRemoved(NetworkProxy)),
+			this, SLOT(networkProxyAboutToBeRemoved(NetworkProxy)), Qt::DirectConnection);
+	connect(m_networkProxyManager, SIGNAL(networkProxyRemoved(NetworkProxy)),
+			this, SLOT(networkProxyRemoved(NetworkProxy)), Qt::DirectConnection);
 }
 
 int NetworkProxyModel::columnCount(const QModelIndex &parent) const
@@ -52,7 +60,7 @@ int NetworkProxyModel::columnCount(const QModelIndex &parent) const
 
 int NetworkProxyModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : Core::instance()->networkProxyManager()->count();
+	return parent.isValid() ? 0 : m_networkProxyManager->count();
 }
 
 QVariant NetworkProxyModel::data(const QModelIndex &index, int role) const
@@ -85,12 +93,12 @@ NetworkProxy NetworkProxyModel::networkProxy(const QModelIndex &index) const
 	if (index.row() < 0 || index.row() >= rowCount())
 		return NetworkProxy::null;
 
-	return Core::instance()->networkProxyManager()->byIndex(index.row());
+	return m_networkProxyManager->byIndex(index.row());
 }
 
 int NetworkProxyModel::networkProxyIndex(NetworkProxy networkProxy) const
 {
-	return Core::instance()->networkProxyManager()->indexOf(networkProxy);
+	return m_networkProxyManager->indexOf(networkProxy);
 }
 
 QModelIndexList NetworkProxyModel::indexListForValue(const QVariant &value) const

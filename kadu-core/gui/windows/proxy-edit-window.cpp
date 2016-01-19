@@ -36,6 +36,7 @@
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "model/action-filter-proxy-model.h"
 #include "model/action-list-model.h"
 #include "model/merged-proxy-model-factory.h"
@@ -77,7 +78,7 @@ void ProxyEditWindow::createGui()
 	ProxyView->setMinimumWidth(150);
 	contentLayout->addWidget(ProxyView);
 
-	ProxyModel = new NetworkProxyModel(ProxyView);
+	ProxyModel = Core::instance()->injectedFactory()->makeInjected<NetworkProxyModel>(ProxyView);
 	ProxyProxyModel = new NetworkProxyProxyModel(ProxyView);
 	ProxyProxyModel->setSourceModel(ProxyModel);
 

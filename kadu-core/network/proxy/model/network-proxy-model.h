@@ -17,28 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_PROXY_MODEL_H
-#define NETWORK_PROXY_MODEL_H
-
-#include <QtCore/QAbstractListModel>
-#include <QtCore/QModelIndex>
+#pragma once
 
 #include "model/kadu-abstract-model.h"
 #include "network/proxy/network-proxy.h"
+
+#include <QtCore/QAbstractListModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QPointer>
+
+class NetworkProxyManager;
 
 class NetworkProxyModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
-private slots:
-	void networkProxyUpdated(NetworkProxy networkProxy);
-	void networkProxyAboutToBeAdded(NetworkProxy networkProxy);
-	void networkProxyAdded(NetworkProxy networkProxy);
-	void networkProxyAboutToBeRemoved(NetworkProxy networkProxy);
-	void networkProxyRemoved(NetworkProxy networkProxy);
-
 public:
-	explicit NetworkProxyModel(QObject *parent = 0);
+	explicit NetworkProxyModel(QObject *parent = nullptr);
 	virtual ~NetworkProxyModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -50,6 +45,17 @@ public:
 	int networkProxyIndex(NetworkProxy networkProxy) const;
 	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
-};
+private:
+	QPointer<NetworkProxyManager> m_networkProxyManager;
 
-#endif // NETWORK_PROXY_MODEL_H
+private slots:
+	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+	INJEQT_INIT void init();
+
+	void networkProxyUpdated(NetworkProxy networkProxy);
+	void networkProxyAboutToBeAdded(NetworkProxy networkProxy);
+	void networkProxyAdded(NetworkProxy networkProxy);
+	void networkProxyAboutToBeRemoved(NetworkProxy networkProxy);
+	void networkProxyRemoved(NetworkProxy networkProxy);
+
+};
