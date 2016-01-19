@@ -18,16 +18,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config-proxy-combo-box.h"
+
+#include "gui/widgets/configuration/config-group-box.h"
+#include "network/proxy/network-proxy-manager.h"
+#include "debug.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
 #include <QtXml/QDomElement>
-
-#include "core/core.h"
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/configuration/config-proxy-combo-box.h"
-#include "network/proxy/network-proxy-manager.h"
-
-#include "debug.h"
 
 ConfigProxyComboBox::ConfigProxyComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager) :
 		ProxyComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), Label(0), ShowDefault(false)
@@ -38,6 +37,11 @@ ConfigProxyComboBox::~ConfigProxyComboBox()
 {
 	if (Label)
 		delete Label;
+}
+
+void ConfigProxyComboBox::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
+{
+	m_networkProxyManager = networkProxyManager;
 }
 
 void ConfigProxyComboBox::createWidgets()
@@ -62,13 +66,13 @@ void ConfigProxyComboBox::loadConfiguration()
 		return;
 
 	if (DefaultItem.isEmpty())
-		setCurrentProxy(Core::instance()->networkProxyManager()->byUuid(dataManager->readEntry(section, item).toString()));
+		setCurrentProxy(m_networkProxyManager->byUuid(dataManager->readEntry(section, item).toString()));
 
 	QVariant defaultValue = dataManager->readEntry(section, DefaultItem);
 	if (defaultValue.isNull() || defaultValue.toBool())
 		selectDefaultProxy();
 	else
-		setCurrentProxy(Core::instance()->networkProxyManager()->byUuid(dataManager->readEntry(section, item).toString()));
+		setCurrentProxy(m_networkProxyManager->byUuid(dataManager->readEntry(section, item).toString()));
 }
 
 void ConfigProxyComboBox::saveConfiguration()

@@ -18,26 +18,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_PROXY_COMBO_BOX_H
-#define CONFIG_PROXY_COMBO_BOX_H
+#pragma once
 
 #include "gui/widgets/configuration/config-widget-value.h"
 #include "gui/widgets/proxy-combo-box.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class ConfigGroupBox;
+class NetworkProxyManager;
+
 class QLabel;
 class QDomElement;
-class ConfigGroupBox;
 
 class KADUAPI ConfigProxyComboBox : public ProxyComboBox, public ConfigWidgetValue
 {
 	Q_OBJECT
-
-	QLabel *Label;
-	QString DefaultItem;
-	bool ShowDefault;
-
-protected:
-	virtual void createWidgets();
 
 public:
 	ConfigProxyComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
@@ -50,6 +47,17 @@ public:
 
 	virtual bool fromDomElement(QDomElement domElement);
 
-};
+protected:
+	virtual void createWidgets();
 
-#endif // CONFIG_PROXY_COMBO_BOX_H
+private:
+	QPointer<NetworkProxyManager> m_networkProxyManager;
+
+	QLabel *Label;
+	QString DefaultItem;
+	bool ShowDefault;
+
+private slots:
+	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+
+};

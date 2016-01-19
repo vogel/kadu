@@ -366,7 +366,7 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	else if (tagName == "preview")
 		widget = Core::instance()->injectedFactory()->makeInjected<ConfigPreview>(configGroupBox, DataManager);
 	else if (tagName == "proxy-combo-box")
-		widget = new ConfigProxyComboBox(configGroupBox, DataManager);
+		widget = Core::instance()->injectedFactory()->makeInjected<ConfigPreview>(configGroupBox, DataManager);
 	else if (tagName == "slider")
 		widget = new ConfigSlider(configGroupBox, DataManager);
 	else if (tagName == "label")
