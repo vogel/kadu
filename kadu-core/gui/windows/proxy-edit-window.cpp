@@ -35,7 +35,6 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "configuration/config-file-variant-wrapper.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "model/action-filter-proxy-model.h"
 #include "model/action-list-model.h"
@@ -56,15 +55,28 @@ ProxyEditWindow::ProxyEditWindow(QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	setWindowTitle(tr("Proxy Configuration"));
-
-	createGui();
-	ProxyView->selectionModel()->select(ProxyView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
-
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ProxyEditWindowGeometry"), QRect(200, 200, 750, 500), this);
 }
 
 ProxyEditWindow::~ProxyEditWindow()
 {
+}
+
+void ProxyEditWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ProxyEditWindow::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
+{
+	m_networkProxyManager = networkProxyManager;
+}
+
+void ProxyEditWindow::init()
+{
+	createGui();
+	ProxyView->selectionModel()->select(ProxyView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
+
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ProxyEditWindowGeometry"), QRect(200, 200, 750, 500), this);
 }
 
 void ProxyEditWindow::createGui()
@@ -78,7 +90,7 @@ void ProxyEditWindow::createGui()
 	ProxyView->setMinimumWidth(150);
 	contentLayout->addWidget(ProxyView);
 
-	ProxyModel = Core::instance()->injectedFactory()->makeInjected<NetworkProxyModel>(ProxyView);
+	ProxyModel = m_injectedFactory->makeInjected<NetworkProxyModel>(ProxyView);
 	ProxyProxyModel = new NetworkProxyProxyModel(ProxyView);
 	ProxyProxyModel->setSourceModel(ProxyModel);
 
@@ -244,7 +256,7 @@ void ProxyEditWindow::removeButtonClicked()
 		return;
 
 	if (messageBox.data()->clickedButton() == removeButton)
-		Core::instance()->networkProxyManager()->removeItem(proxy);
+		m_networkProxyManager->removeItem(proxy);
 
 	delete messageBox.data();
 }
@@ -261,7 +273,7 @@ void ProxyEditWindow::saveProxy(NetworkProxy proxy)
 		proxy.setPollingUrl(PollingUrl->text());
 	}
 	else
-		proxy = Core::instance()->networkProxyManager()->byConfiguration(Host->text(), Port->text().toInt(), User->text(), Password->text(),
+		proxy = m_networkProxyManager->byConfiguration(Host->text(), Port->text().toInt(), User->text(), Password->text(),
 		                                                 ActionCreateAndAdd);
 
 	ForceProxyChange = true;

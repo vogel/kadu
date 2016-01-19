@@ -73,7 +73,6 @@ class MenuInventory;
 class Message;
 class MessageTransformerService;
 class Myself;
-class NetworkProxyManager;
 class NotificationManager;
 class PathsProvider;
 class PluginActivationService;
@@ -180,7 +179,6 @@ public:
 	PathsProvider * pathsProvider() const;
 	Application * application() const;
 	GroupManager * groupManager() const;
-	NetworkProxyManager * networkProxyManager() const;
 	ConfigurationManager * configurationManager() const;
 	BuddyChatManager * buddyChatManager() const;
 	BuddyPreferredManager * buddyPreferredManager() const;

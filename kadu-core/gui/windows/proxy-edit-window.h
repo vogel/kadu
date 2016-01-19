@@ -23,6 +23,7 @@
 
 #include <QtCore/QItemSelection>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 #include "gui/widgets/modal-configuration-widget.h"
 #include "network/proxy/network-proxy.h"
@@ -32,12 +33,25 @@ class QLineEdit;
 class QListView;
 class QPushButton;
 
+class InjectedFactory;
+class NetworkProxyManager;
 class NetworkProxyModel;
 class NetworkProxyProxyModel;
 
 class ProxyEditWindow : public QWidget
 {
 	Q_OBJECT
+
+public:
+	explicit ProxyEditWindow(QWidget *parent = nullptr);
+	virtual ~ProxyEditWindow();
+
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<NetworkProxyManager> m_networkProxyManager;
 
 	QListView *ProxyView;
 	NetworkProxyModel *ProxyModel;
@@ -74,18 +88,15 @@ class ProxyEditWindow : public QWidget
 	void selectProxy(NetworkProxy proxy);
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+	INJEQT_INIT void init();
+
 	void saveProxyButtonClicked();
 	void cancelButtonClicked();
 	void removeButtonClicked();
 
 	void dataChanged();
 	void proxySelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
-
-public:
-	explicit ProxyEditWindow(QWidget *parent = nullptr);
-	virtual ~ProxyEditWindow();
 
 };

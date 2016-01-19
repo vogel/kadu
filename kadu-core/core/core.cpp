@@ -101,7 +101,6 @@
 #include "misc/change-notifier-lock.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/paths-provider.h"
-#include "network/proxy/network-proxy-manager.h"
 #include "notification/listener/account-event-listener.h"
 #include "notification/listener/chat-event-listener.h"
 #include "notification/listener/group-event-listener.h"
@@ -773,11 +772,6 @@ Application * Core::application() const
 GroupManager * Core::groupManager() const
 {
 	return m_injector.get<GroupManager>();
-}
-
-NetworkProxyManager * Core::networkProxyManager() const
-{
-	return m_injector.get<NetworkProxyManager>();
 }
 
 ConfigurationManager * Core::configurationManager() const

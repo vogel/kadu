@@ -25,6 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class InjectedFactory;
 class ProxyEditWindow;
 
 class KADUAPI ProxyEditWindowService : public QObject
@@ -38,6 +39,10 @@ public:
 	void show();
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<ProxyEditWindow> m_proxyEditWindow;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };
