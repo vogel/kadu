@@ -33,10 +33,12 @@
 class ChatConfigurationHolder;
 class ChatImage;
 class ChatImageRequestService;
+class ChatStyleManager;
 class ChatStyleRendererConfiguration;
 class ChatStyleRendererFactory;
 class InjectedFactory;
 class Message;
+class PathsProvider;
 class WebkitMessagesViewHandler;
 class WebkitMessagesViewHandlerFactory;
 class SortedMessages;
@@ -93,7 +95,9 @@ protected:
 private:
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatImageRequestService> m_chatImageRequestService;
+	QPointer<ChatStyleManager> m_chatStyleManager;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<WebkitMessagesViewHandlerFactory> m_webkitMessagesViewHandlerFactory;
 
 	Chat m_chat;
@@ -113,7 +117,9 @@ private:
 private slots:
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
+	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 
 	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);

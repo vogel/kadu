@@ -24,8 +24,6 @@
 #include "chat-style/engine/chat-style-renderer-factory.h"
 #include "chat-style/engine/chat-style-renderer.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/scoped-updates-disabler.h"
@@ -63,18 +61,22 @@ void WebkitMessagesView::setChatConfigurationHolder(ChatConfigurationHolder *cha
 
 void WebkitMessagesView::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
 {
-	if (m_chatImageRequestService)
-		disconnect(m_chatImageRequestService.data(), nullptr, this, nullptr);
-
 	m_chatImageRequestService = chatImageRequestService;
+}
 
-	if (m_chatImageRequestService)
-		connect(m_chatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage,QString)), this, SLOT(chatImageStored(ChatImage,QString)));
+void WebkitMessagesView::setChatStyleManager(ChatStyleManager *chatStyleManager)
+{
+	m_chatStyleManager = chatStyleManager;
 }
 
 void WebkitMessagesView::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void WebkitMessagesView::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
 }
 
 void WebkitMessagesView::setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory)
@@ -84,6 +86,8 @@ void WebkitMessagesView::setWebkitMessagesViewHandlerFactory(WebkitMessagesViewH
 
 void WebkitMessagesView::init()
 {
+	connect(m_chatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage,QString)), this, SLOT(chatImageStored(ChatImage,QString)));
+
 	auto oldManager = page()->networkAccessManager();
 	auto newManager = m_injectedFactory->makeOwned<ChatViewNetworkAccessManager>(oldManager, this);
 	page()->setNetworkAccessManager(newManager.get());
@@ -115,8 +119,7 @@ void WebkitMessagesView::init()
 	);
 
 	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
-	connect(Core::instance()->chatStyleManager(), SIGNAL(chatStyleConfigurationUpdated()),
-			this, SLOT(chatStyleConfigurationUpdated()));
+	connect(m_chatStyleManager, SIGNAL(chatStyleConfigurationUpdated()), this, SLOT(chatStyleConfigurationUpdated()));
 
 	configurationUpdated();
 	connectChat();
@@ -204,7 +207,7 @@ void WebkitMessagesView::setForcePruneDisabled(bool disable)
 
 void WebkitMessagesView::chatStyleConfigurationUpdated()
 {
-	m_handler->setMessageLimit(Core::instance()->chatStyleManager()->prune());
+	m_handler->setMessageLimit(m_chatStyleManager->prune());
 }
 
 void WebkitMessagesView::refreshView()
@@ -219,7 +222,7 @@ void WebkitMessagesView::refreshView()
 
 ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
 {
-	QFile file{Core::instance()->pathsProvider()->dataPath() + QLatin1String("scripts/chat-scripts.js")};
+	QFile file{m_pathsProvider->dataPath() + QLatin1String("scripts/chat-scripts.js")};
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
 			: QString{};
