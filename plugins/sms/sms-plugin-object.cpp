@@ -77,7 +77,6 @@ void SmsPluginObject::init()
 {
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_smsConfigurationUiHandler);
-	m_smsScriptsManager->init();
 	m_smsGatewayManager->load();
 }
 

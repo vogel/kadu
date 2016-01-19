@@ -31,6 +31,7 @@
 #endif
 
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "misc/paths-provider.h"
 
 #include "scripts/network-access-manager-wrapper.h"
@@ -41,19 +42,24 @@
 SmsScriptsManager::SmsScriptsManager(QObject *parent) :
 		QObject{parent}
 {
-	Engine = new QScriptEngine(this);
-	Network = new NetworkAccessManagerWrapper(Engine, this);
-
-	Engine->globalObject().setProperty("network", Engine->newQObject(Network));
-	Engine->globalObject().setProperty("translator", Engine->newQObject(new SmsTranslator(this)));
 }
 
 SmsScriptsManager::~SmsScriptsManager()
 {
 }
 
+void SmsScriptsManager::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	Network = injectedFactory->makeInjected<NetworkAccessManagerWrapper>(Engine, this);
+}
+
 void SmsScriptsManager::init()
 {
+	Engine = new QScriptEngine(this);
+
+	Engine->globalObject().setProperty("network", Engine->newQObject(Network));
+	Engine->globalObject().setProperty("translator", Engine->newQObject(new SmsTranslator(this)));
+
 #if SMS_USE_DEBUGGER
  	QScriptEngineDebugger *debugger = new QScriptEngineDebugger(this);
  	debugger->attachTo(Engine);

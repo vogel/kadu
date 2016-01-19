@@ -19,39 +19,52 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "network-access-manager-wrapper.h"
+
+#include "scripts/network-reply-wrapper.h"
+
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "network/proxy/network-proxy-manager.h"
+
 #include <QtCore/QUrl>
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 #include <QtScript/QScriptEngine>
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "network/proxy/network-proxy-manager.h"
-
-#include "scripts/network-reply-wrapper.h"
-
-#include "network-access-manager-wrapper.h"
-
 NetworkAccessManagerWrapper::NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent) :
 		QNetworkAccessManager(parent), Engine(engine), Utf8(false)
 {
-	configurationUpdated();
 }
 
 NetworkAccessManagerWrapper::~NetworkAccessManagerWrapper()
 {
 }
 
+void NetworkAccessManagerWrapper::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void NetworkAccessManagerWrapper::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
+{
+	m_networkProxyManager = networkProxyManager;
+}
+
+void NetworkAccessManagerWrapper::init()
+{
+	configurationUpdated();
+}
+
 void NetworkAccessManagerWrapper::configurationUpdated()
 {
 	NetworkProxy networkProxy;
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("SMS", "DefaultProxy", true))
-		networkProxy = Core::instance()->networkProxyManager()->defaultProxy();
+	if (m_configuration->deprecatedApi()->readBoolEntry("SMS", "DefaultProxy", true))
+		networkProxy = m_networkProxyManager->defaultProxy();
 	else
-		networkProxy = Core::instance()->networkProxyManager()->byUuid(Core::instance()->configuration()->deprecatedApi()->readEntry("SMS", "Proxy"));
+		networkProxy = m_networkProxyManager->byUuid(m_configuration->deprecatedApi()->readEntry("SMS", "Proxy"));
 
 	QNetworkProxy proxy;
 

@@ -18,28 +18,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_ACCESS_MANAGER_WRAPPER_H
-#define NETWORK_ACCESS_MANAGER_WRAPPER_H
-
-#include <QtCore/QMap>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtScript/QScriptValue>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
+
+#include <QtCore/QMap>
+#include <QtCore/QPointer>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtScript/QScriptValue>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class NetworkProxyManager;
 
 class NetworkAccessManagerWrapper : public QNetworkAccessManager, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QScriptEngine *Engine;
-	bool Utf8;
-	QMap<QByteArray, QByteArray> Headers;
-
-protected:
-	void configurationUpdated();
-
 public:
-	explicit NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent = 0);
+	explicit NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent = nullptr);
 	virtual ~NetworkAccessManagerWrapper();
 
 public slots:
@@ -50,6 +47,20 @@ public slots:
 	QScriptValue get(const QString &url);
 	QScriptValue post(const QString &url, const QString &data);
 
-};
+protected:
+	void configurationUpdated();
 
-#endif // NETWORK_ACCESS_MANAGER_WRAPPER_H
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<NetworkProxyManager> m_networkProxyManager;
+
+	QScriptEngine *Engine;
+	bool Utf8;
+	QMap<QByteArray, QByteArray> Headers;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+	INJEQT_INIT void init();
+
+};

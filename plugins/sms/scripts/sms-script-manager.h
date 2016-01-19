@@ -21,17 +21,28 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <injeqt/injeqt.h>
 
 class QFileInfo;
 class QDir;
 class QScriptEngine;
 
+class InjectedFactory;
 class NetworkAccessManagerWrapper;
 
 class SmsScriptsManager : public QObject
 {
 	Q_OBJECT
 
+public:
+	Q_INVOKABLE explicit SmsScriptsManager(QObject *parent = nullptr);
+	virtual ~SmsScriptsManager();
+
+	void loadScript(const QFileInfo &fileInfo);
+
+	QScriptEngine * engine() { return Engine; }
+
+private:
 	QScriptEngine *Engine;
 	NetworkAccessManagerWrapper *Network;
 
@@ -39,14 +50,8 @@ class SmsScriptsManager : public QObject
 
 	void loadScripts(const QDir &dir);
 
-public:
-	Q_INVOKABLE explicit SmsScriptsManager(QObject *parent = nullptr);
-	virtual ~SmsScriptsManager();
-
-	void init();
-
-	void loadScript(const QFileInfo &fileInfo);
-
-	QScriptEngine * engine() { return Engine; }
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
 
 };
