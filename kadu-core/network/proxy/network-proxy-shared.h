@@ -19,30 +19,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NETWORK_PROXY_SHARED_H
-#define NETWORK_PROXY_SHARED_H
-
-#include <QtNetwork/QHostAddress>
-
-#include "exports.h"
+#pragma once
 
 #include "storage/shared.h"
+#include "exports.h"
+
+#include <QtNetwork/QHostAddress>
+#include <injeqt/injeqt.h>
+
+class NetworkProxyManager;
 
 class KADUAPI NetworkProxyShared : public Shared
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(NetworkProxyShared)
-
-	QString Type;
-	QString Address;
-	int Port;
-	QString User;
-	QString Password;
-	QString PollingUrl;
-
-protected:
-	virtual void load();
-	virtual void store();
 
 public:
 	static NetworkProxyShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &networkProxyStoragePoint);
@@ -66,6 +55,21 @@ public:
 signals:
 	void updated();
 
-};
+protected:
+	virtual void load();
+	virtual void store();
 
-#endif // NETWORK_PROXY_SHARED_H
+private:
+	QPointer<NetworkProxyManager> m_networkProxyManager;
+
+	QString Type;
+	QString Address;
+	int Port;
+	QString User;
+	QString Password;
+	QString PollingUrl;
+
+private slots:
+	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+
+};

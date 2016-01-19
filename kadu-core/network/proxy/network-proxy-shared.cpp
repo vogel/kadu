@@ -28,7 +28,7 @@
 
 NetworkProxyShared * NetworkProxyShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	NetworkProxyShared *result = loadFromStorage(storagePoint);
+	auto result = loadFromStorage(storagePoint);
 	result->loadStub();
 
 	return result;
@@ -36,7 +36,7 @@ NetworkProxyShared * NetworkProxyShared::loadStubFromStorage(const std::shared_p
 
 NetworkProxyShared * NetworkProxyShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	NetworkProxyShared *result = Core::instance()->injectedFactory()->makeInjected<NetworkProxyShared>();
+	auto result = Core::instance()->injectedFactory()->makeInjected<NetworkProxyShared>();
 	result->setStorage(storagePoint);
 
 	return result;
@@ -53,9 +53,14 @@ NetworkProxyShared::~NetworkProxyShared()
 	ref.ref();
 }
 
+void NetworkProxyShared::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
+{
+	m_networkProxyManager = networkProxyManager;
+}
+
 StorableObject * NetworkProxyShared::storageParent()
 {
-	return Core::instance()->networkProxyManager();
+	return m_networkProxyManager;
 }
 
 QString NetworkProxyShared::storageNodeName()
