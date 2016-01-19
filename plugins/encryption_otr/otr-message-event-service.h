@@ -17,28 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_MESSAGE_EVENT_SERVICE_H
-#define OTR_MESSAGE_EVENT_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 extern "C" {
 #	include <libotr/proto.h>
 #	include <libotr/message.h>
 }
 
-class ChatWidgetManager;
+class ChatWidgetRepository;
 class Contact;
 
 class OtrMessageEventService : public QObject
 {
 	Q_OBJECT
-
-	QPointer<ChatWidgetManager> CurrentChatWidgetManager;
-
-	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
-	QString gpgErrorString(gcry_error_t errorCode) const;
 
 public:
 	static void wrapperOtrHandleMessageEvent(void *data, OtrlMessageEvent event, ConnContext *context, const char *message, gcry_error_t error);
@@ -46,10 +41,15 @@ public:
 	Q_INVOKABLE OtrMessageEventService();
 	virtual ~OtrMessageEventService();
 
-	void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-
 	void handleMessageEvent(const Contact &contact, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
 
-};
+private:
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
-#endif // OTR_MESSAGE_EVENT_SERVICE_H
+	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
+	QString gpgErrorString(gcry_error_t errorCode) const;
+
+private slots:
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
+};

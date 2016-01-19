@@ -17,15 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/type/chat-type-contact.h"
-#include "core/core.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
+#include "otr-message-event-service.h"
 
 #include "otr-op-data.h"
 
-#include "otr-message-event-service.h"
+#include "chat/type/chat-type-contact.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 
 void OtrMessageEventService::wrapperOtrHandleMessageEvent(void *data, OtrlMessageEvent event, ConnContext *context, const char *message, gcry_error_t error)
 {
@@ -44,9 +42,9 @@ OtrMessageEventService::~OtrMessageEventService()
 {
 }
 
-void OtrMessageEventService::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+void OtrMessageEventService::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	CurrentChatWidgetManager = chatWidgetManager;
+	m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void OtrMessageEventService::handleMessageEvent(const Contact &contact, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const
@@ -57,7 +55,7 @@ void OtrMessageEventService::handleMessageEvent(const Contact &contact, OtrlMess
 		return;
 
 	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
+	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
 	if (chatWidget)
 		chatWidget->appendSystemMessage(errorMessage);
 }
