@@ -128,7 +128,6 @@
 #include "services/chat-image-request-service.h"
 #include "services/image-storage-service.h"
 #include "services/message-transformer-service.h"
-#include "services/raw-message-transformer-service.h"
 #include "ssl/ssl-certificate-manager.h"
 #include "status/description-manager.h"
 #include "status/status-changer-manager.h"
@@ -639,11 +638,6 @@ BuddyManager * Core::buddyManager() const
 NotificationManager * Core::notificationManager() const
 {
 	return m_injector.get<NotificationManager>();
-}
-
-RawMessageTransformerService * Core::rawMessageTransformerService() const
-{
-	return m_injector.get<RawMessageTransformerService>();
 }
 
 UnreadMessageRepository * Core::unreadMessageRepository() const

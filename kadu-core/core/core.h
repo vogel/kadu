@@ -80,7 +80,6 @@ class PluginStateManager;
 class PluginStateService;
 class ProtocolsManager;
 class ProxyEditWindowService;
-class RawMessageTransformerService;
 class Roster;
 class StatusChangerManager;
 class StatusContainerManager;
@@ -147,7 +146,6 @@ public:
 
 	BuddyManager * buddyManager() const;
 	NotificationManager * notificationManager() const;
-	RawMessageTransformerService * rawMessageTransformerService() const;
 	UnreadMessageRepository * unreadMessageRepository() const;
 	ChatWidgetManager * chatWidgetManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
