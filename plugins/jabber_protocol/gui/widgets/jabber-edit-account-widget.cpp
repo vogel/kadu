@@ -163,7 +163,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	formLayout->addRow(0, infoLabel);
 
-	AccountAvatarWidget *avatarWidget = new AccountAvatarWidget(account(), this);
+	AccountAvatarWidget *avatarWidget = m_injectedFactory->makeInjected<AccountAvatarWidget>(account(), this);
 	layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);
 
 	tabWidget->addTab(generalTab, tr("General"));

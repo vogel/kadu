@@ -19,15 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QMovie>
-#include <QtWidgets/QFileDialog>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QVBoxLayout>
+#include "account-avatar-widget.h"
 
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
-#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -35,26 +30,44 @@
 #include "protocols/services/avatar-service.h"
 #include "protocols/services/avatar-uploader.h"
 
-#include "account-avatar-widget.h"
+#include <QtGui/QMovie>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 
 AccountAvatarWidget::AccountAvatarWidget(Account account, QWidget *parent) :
 		QWidget(parent), MyAccount(account), Service(0), WaitMovie(0)
+{
+}
+
+AccountAvatarWidget::~AccountAvatarWidget()
+{
+}
+
+void AccountAvatarWidget::setAvatarManager(AvatarManager *avatarManager)
+{
+	m_avatarManager = avatarManager;
+}
+
+void AccountAvatarWidget::setProtocolsManager(ProtocolsManager *protocolsManager)
+{
+	m_protocolsManager = protocolsManager;
+}
+
+void AccountAvatarWidget::init()
 {
 	WaitMovie = new QMovie(KaduIcon("kadu_icons/please-wait", "16x16").fullPath(), QByteArray(), this);
 
 	createGui();
 
-	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
+	connect(m_protocolsManager, SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
 	        this, SLOT(protocolRegistered(ProtocolFactory*)));
-	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
+	connect(m_protocolsManager, SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
 	        this, SLOT(protocolUnregistered(ProtocolFactory*)));
 
-	foreach (ProtocolFactory *factory, Core::instance()->protocolsManager()->protocolFactories())
+	for (auto factory : m_protocolsManager->protocolFactories())
 		protocolRegistered(factory);
-}
-
-AccountAvatarWidget::~AccountAvatarWidget()
-{
 }
 
 void AccountAvatarWidget::serviceDestroyed()
@@ -79,14 +92,14 @@ void AccountAvatarWidget::createGui()
 
 	layout->addWidget(ChangePhotoButton, 0, Qt::AlignHCenter);
 
-	auto avatar = Core::instance()->avatarManager()->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
+	auto avatar = m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
 	connect(avatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 	avatarUpdated();
 }
 
 void AccountAvatarWidget::setupMode()
 {
-	auto avatar = Core::instance()->avatarManager()->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
+	auto avatar = m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
 	if (MyAccount.protocolHandler()->protocolFactory()->canRemoveAvatar() && !avatar.isEmpty())
 		Mode = ModeRemove;
 	else
@@ -182,7 +195,7 @@ void AccountAvatarWidget::removeAvatar()
 void AccountAvatarWidget::avatarUploaded(bool ok, QImage image)
 {
 	if (ok)
-		Core::instance()->avatarManager()->byContact(MyAccount.accountContact(), ActionCreateAndAdd).setPixmap(QPixmap::fromImage(image));
+		m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd).setPixmap(QPixmap::fromImage(image));
 
 	avatarUpdated();
 	ChangePhotoButton->setEnabled(true);

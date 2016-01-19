@@ -20,18 +20,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNT_AVATAR_WIDGET_H
-#define ACCOUNT_AVATAR_WIDGET_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "accounts/account.h"
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
 class QLabel;
 class QPushButton;
 
+class AvatarManager;
 class AvatarService;
+class ProtocolsManager;
 
 class KADUAPI AccountAvatarWidget : public QWidget
 {
@@ -42,6 +45,14 @@ class KADUAPI AccountAvatarWidget : public QWidget
 		ModeChange,
 		ModeRemove
 	} Mode;
+
+public:
+	explicit AccountAvatarWidget(Account account, QWidget *parent = 0);
+	virtual ~AccountAvatarWidget();
+
+private:
+	QPointer<AvatarManager> m_avatarManager;
+	QPointer<ProtocolsManager> m_protocolsManager;
 
 	Account MyAccount;
 	AvatarService *Service;
@@ -58,6 +69,10 @@ class KADUAPI AccountAvatarWidget : public QWidget
 	void removeAvatar();
 
 private slots:
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+	INJEQT_INIT void init();
+
 	void avatarUpdated();
 
 	void changeButtonClicked();
@@ -67,10 +82,4 @@ private slots:
 	void protocolRegistered(ProtocolFactory *protocolFactory);
 	void protocolUnregistered(ProtocolFactory *protocolFactory);
 
-public:
-	explicit AccountAvatarWidget(Account account, QWidget *parent = 0);
-	virtual ~AccountAvatarWidget();
-
 };
-
-#endif // ACCOUNT_AVATAR_WIDGET_H
