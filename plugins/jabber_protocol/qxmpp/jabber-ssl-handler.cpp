@@ -19,7 +19,6 @@
 
 #include "jabber-ssl-handler.h"
 
-#include "core/core.h"
 #include "ssl/ssl-certificate-manager.h"
 
 #include <QtNetwork/QSslError>
@@ -37,10 +36,15 @@ JabberSslHandler::~JabberSslHandler()
 {
 }
 
+void JabberSslHandler::setSslCertificateManager(SslCertificateManager *sslCertificateManager)
+{
+	m_sslCertificateManager = sslCertificateManager;
+}
+
 void JabberSslHandler::sslErrors(const QList<QSslError> &errors)
 {
 	auto client = static_cast<QXmppClient *>(parent());
-	if (errors.size() == 0 || Core::instance()->sslCertificateManager()->acceptCertificate(client->configuration().domain(), errors.first().certificate(), errors))
+	if (errors.size() == 0 || m_sslCertificateManager->acceptCertificate(client->configuration().domain(), errors.first().certificate(), errors))
 		client->configuration().setIgnoreSslErrors(true);
 }
 

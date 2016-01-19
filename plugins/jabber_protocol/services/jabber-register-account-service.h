@@ -21,7 +21,9 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class InjectedFactory;
 class JabberRegisterAccount;
 class JabberErrorService;
 class Jid;
@@ -39,6 +41,10 @@ public:
 	JabberRegisterAccount * registerAccount(Jid jid, QString password, QString email);
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<JabberErrorService> m_errorService;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

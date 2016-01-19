@@ -86,7 +86,6 @@ class ProtocolsManager;
 class ProxyEditWindowService;
 class RawMessageTransformerService;
 class Roster;
-class SslCertificateManager;
 class StatusChangerManager;
 class StatusContainerManager;
 class StatusSetter;
@@ -163,8 +162,6 @@ public:
 
 	PluginActivationService * pluginActivationService() const;
 	PluginStateService * pluginStateService() const;
-
-	SslCertificateManager * sslCertificateManager() const;
 
 	FileTransferHandlerManager * fileTransferHandlerManager() const;
 	FileTransferManager * fileTransferManager() const;

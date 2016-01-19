@@ -695,11 +695,6 @@ PluginStateService * Core::pluginStateService() const
 	return m_injector.get<PluginStateService>();
 }
 
-SslCertificateManager * Core::sslCertificateManager() const
-{
-	return m_injector.get<SslCertificateManager>();
-}
-
 FileTransferHandlerManager * Core::fileTransferHandlerManager() const
 {
 	return m_injector.get<FileTransferHandlerManager>();

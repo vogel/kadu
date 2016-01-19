@@ -24,6 +24,7 @@
 #include "services/jabber-error-service.h"
 #include "jid.h"
 
+#include "core/injected-factory.h"
 #include "misc/memory.h"
 
 #include <qxmpp/QXmppClient.h>
@@ -50,6 +51,11 @@ JabberRegisterAccount::~JabberRegisterAccount()
 void JabberRegisterAccount::setErrorService(JabberErrorService *errorService)
 {
 	m_errorService = errorService;
+}
+
+void JabberRegisterAccount::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 Jid JabberRegisterAccount::jid() const
@@ -99,7 +105,7 @@ void JabberRegisterAccount::start()
 	m_client = new QXmppClient{this};
 	m_client->addExtension(m_registerExtension.get());
 
-	new JabberSslHandler{m_client};
+	m_injectedFactory->makeInjected<JabberSslHandler>(m_client);
 
 	m_client->connectToServer(configuration);
 

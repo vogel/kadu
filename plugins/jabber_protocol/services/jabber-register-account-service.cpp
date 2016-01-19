@@ -22,6 +22,8 @@
 #include "services/jabber-error-service.h"
 #include "services/jabber-register-account.h"
 
+#include "core/injected-factory.h"
+
 #include <qxmpp/QXmppClient.h>
 
 JabberRegisterAccountService::JabberRegisterAccountService(QObject *parent) :
@@ -38,9 +40,14 @@ void JabberRegisterAccountService::setErrorService(JabberErrorService *errorServ
 	m_errorService = errorService;
 }
 
+void JabberRegisterAccountService::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 JabberRegisterAccount * JabberRegisterAccountService::registerAccount(Jid jid, QString password, QString email)
 {
-	auto result = new JabberRegisterAccount{std::move(jid), std::move(password), std::move(email), this};
+	auto result = m_injectedFactory->makeInjected<JabberRegisterAccount>(std::move(jid), std::move(password), std::move(email), this);
 	result->setErrorService(m_errorService);
 	return result;
 }

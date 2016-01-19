@@ -109,7 +109,7 @@ void JabberProtocol::init()
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 
-	new JabberSslHandler{m_client};
+	m_injectedFactory->makeInjected<JabberSslHandler>(m_client);
 
 	m_registerExtension = make_unique<JabberRegisterExtension>();
 	m_rosterExtension = make_unique<JabberRosterExtension>();

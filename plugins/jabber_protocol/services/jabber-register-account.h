@@ -23,9 +23,11 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injector.h>
 #include <qxmpp/QXmppClient.h>
 #include <memory>
 
+class InjectedFactory;
 class JabberErrorService;
 class JabberRegisterExtension;
 
@@ -59,6 +61,7 @@ private:
 		WaitForRegistrationConfirmation
 	};
 
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<JabberErrorService> m_errorService;
 
 	QPointer<QXmppClient> m_client;
@@ -75,6 +78,8 @@ private:
 	void handleError(const QString &errorMessage);
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 	void clientError(QXmppClient::Error error);
 	void askForRegistration();
 	void registerIqReceived(const QXmppRegisterIq &registerIq);

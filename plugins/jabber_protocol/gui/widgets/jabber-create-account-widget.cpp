@@ -211,7 +211,7 @@ void JabberCreateAccountWidget::apply()
 	}
 
 	auto errorService = new JabberErrorService{this};
-	auto registerAccountService = new JabberRegisterAccountService{this};
+	auto registerAccountService = m_injectedFactory->makeInjected<JabberRegisterAccountService>(this);
 	registerAccountService->setErrorService(errorService);
 
 	auto jid = Jid{Username->text(), Domain->currentText(), QString{}};

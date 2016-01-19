@@ -20,8 +20,11 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 #include <qxmpp/QXmppClient.h>
 
+class SslCertificateManager;
 class QSslError;
 
 class JabberSslHandler : public QObject
@@ -32,7 +35,12 @@ public:
 	explicit JabberSslHandler(QXmppClient *parent);
 	virtual ~JabberSslHandler();
 
+private:
+	QPointer<SslCertificateManager> m_sslCertificateManager;
+
 private slots:
+	INJEQT_SET void setSslCertificateManager(SslCertificateManager *sslCertificateManager);
+
 	void sslErrors(const QList<QSslError> &errors);
 
 };
