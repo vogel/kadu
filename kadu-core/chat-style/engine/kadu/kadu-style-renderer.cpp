@@ -22,7 +22,6 @@
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/kadu/kadu-chat-syntax.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "message/message-render-info.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
@@ -34,6 +33,19 @@
 KaduStyleRenderer::KaduStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent) :
 		ChatStyleRenderer{std::move(configuration), parent},
 		m_style{std::move(style)}
+{
+}
+
+KaduStyleRenderer::~KaduStyleRenderer()
+{
+}
+
+void KaduStyleRenderer::setChatStyleManager(ChatStyleManager *chatStyleManager)
+{
+	m_chatStyleManager = chatStyleManager;
+}
+
+void KaduStyleRenderer::init()
 {
 	auto top = Parser::parse(m_style->top(), Talkable(this->configuration().chat().contacts().toContact()), ParserEscape::HtmlEscape);
 	auto html = QString{
@@ -53,16 +65,12 @@ KaduStyleRenderer::KaduStyleRenderer(ChatStyleRendererConfiguration configuratio
 	};
 
 	this->configuration().webFrame().setHtml(html
-		.arg(Qt::escape(Core::instance()->chatStyleManager()->mainStyle()))
+		.arg(Qt::escape(m_chatStyleManager->mainStyle()))
 		.arg(this->configuration().javaScript())
 		.arg(top)
 	);
 
 	connect(&this->configuration().webFrame(), SIGNAL(loadFinished(bool)), this, SLOT(setReady()));
-}
-
-KaduStyleRenderer::~KaduStyleRenderer()
-{
 }
 
 void KaduStyleRenderer::clearMessages()

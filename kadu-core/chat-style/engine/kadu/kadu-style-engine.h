@@ -21,8 +21,11 @@
 
 #include "chat-style/engine/chat-style-engine.h"
 
+#include <QtCore/QPointer>
 #include <QtCore/QSharedPointer>
+#include <injeqt/injeqt.h>
 
+class InjectedFactory;
 class SyntaxList;
 
 class KaduStyleEngine : public ChatStyleEngine

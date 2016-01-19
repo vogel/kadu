@@ -20,8 +20,10 @@
 #include "kadu-style-renderer-factory.h"
 
 #include "chat-style/engine/kadu/kadu-style-renderer.h"
+#include "core/injected-factory.h"
 
-KaduStyleRendererFactory::KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style) :
+KaduStyleRendererFactory::KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style, QObject *parent) :
+		QObject{parent},
 		m_style{std::move(style)}
 {
 }
@@ -30,8 +32,15 @@ KaduStyleRendererFactory::~KaduStyleRendererFactory()
 {
 }
 
+void KaduStyleRendererFactory::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 not_owned_qptr<ChatStyleRenderer> KaduStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
 {
-	auto renderer = make_not_owned<KaduStyleRenderer>(std::move(configuration), m_style);
+	auto renderer = m_injectedFactory->makeNotOwned<KaduStyleRenderer>(std::move(configuration), m_style);
 	return not_owned_qptr<ChatStyleRenderer>{renderer.release()};
 }
+
+#include "moc_kadu-style-renderer-factory.cpp"

@@ -21,6 +21,10 @@
 
 #include "chat-style/engine/chat-style-renderer.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class ChatStyleManager;
 class KaduChatSyntax;
 
 class KaduStyleRenderer : public ChatStyleRenderer
@@ -39,8 +43,14 @@ public:
 	virtual void displayChatImage(const ChatImage &chatImage, const QString &fileName) override;
 
 private:
+	QPointer<ChatStyleManager> m_chatStyleManager;
+
 	std::shared_ptr<KaduChatSyntax> m_style;
 
 	QString formatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo);
+
+private slots:
+	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
+	INJEQT_INIT void init();
 
 };

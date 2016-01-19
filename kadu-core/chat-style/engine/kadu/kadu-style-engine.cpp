@@ -23,6 +23,8 @@
 #include "chat-style/engine/chat-style-renderer-factory.h"
 #include "chat-style/engine/kadu/kadu-chat-syntax.h"
 #include "chat-style/engine/kadu/kadu-style-renderer-factory.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "misc/syntax-list.h"
 
 #include <QtCore/QFileInfo>
@@ -52,5 +54,5 @@ std::unique_ptr<ChatStyleRendererFactory> KaduStyleEngine::createRendererFactory
 		"#{message}</font></p>"
 	);
 
-	return make_unique<KaduStyleRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
+	return Core::instance()->injectedFactory()->makeUnique<KaduStyleRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
 }

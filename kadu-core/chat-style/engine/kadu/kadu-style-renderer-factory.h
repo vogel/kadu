@@ -21,18 +21,29 @@
 
 #include "chat-style/engine/chat-style-renderer-factory.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
 class KaduChatSyntax;
 
-class KaduStyleRendererFactory : public ChatStyleRendererFactory
+class KaduStyleRendererFactory : public QObject, public ChatStyleRendererFactory
 {
+	Q_OBJECT
 
 public:
-	explicit KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style);
+	explicit KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style, QObject *parent = nullptr);
 	virtual ~KaduStyleRendererFactory();
 
 	virtual not_owned_qptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	std::shared_ptr<KaduChatSyntax> m_style;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };
