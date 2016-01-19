@@ -6,7 +6,6 @@ set (network_SRCS
 	proxy/network-proxy-manager.cpp
 	proxy/network-proxy-shared.cpp
 
-	network-aware-object.cpp
 	network-manager.cpp
 	network-module.cpp
 )

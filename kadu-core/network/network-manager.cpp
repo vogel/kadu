@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "network/network-aware-object.h"
-
 #include "network-manager.h"
 
 NetworkManager::NetworkManager(QObject *parent) :
@@ -42,7 +40,6 @@ NetworkManager::~NetworkManager()
  */
 void NetworkManager::onlineStateChanged(bool isOnline)
 {
-	NetworkAwareObject::notifyOnlineStateChanged(isOnline);
 	if (isOnline)
 		emit online();
 	else

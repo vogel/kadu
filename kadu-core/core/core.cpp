@@ -101,7 +101,6 @@
 #include "misc/change-notifier-lock.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/paths-provider.h"
-#include "network/network-manager.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "notification/listener/account-event-listener.h"
 #include "notification/listener/chat-event-listener.h"
@@ -814,11 +813,6 @@ Actions * Core::actions() const
 MenuInventory * Core::menuInventory() const
 {
 	return m_injector.get<MenuInventory>();
-}
-
-NetworkManager * Core::networkManager() const
-{
-	return m_injector.get<NetworkManager>();
 }
 
 Roster * Core::roster() const

@@ -73,7 +73,6 @@ class MenuInventory;
 class Message;
 class MessageTransformerService;
 class Myself;
-class NetworkManager;
 class NetworkProxyManager;
 class NotificationManager;
 class PathsProvider;
@@ -191,7 +190,6 @@ public:
 	ChatTypeManager * chatTypeManager() const;
 	Actions * actions() const;
 	MenuInventory * menuInventory() const;
-	NetworkManager * networkManager() const;
 	Roster * roster() const;
 	SystemInfo * systemInfo() const;
 	ProxyEditWindowService * proxyEditWindowService() const;
