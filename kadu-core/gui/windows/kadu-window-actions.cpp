@@ -478,7 +478,7 @@ void KaduWindowActions::init()
 	m_actions->unblockSignals();
 
 	ChangeStatus = new ChangeStatusAction(this);
-	DefaultProxy = new DefaultProxyAction(this);
+	DefaultProxy = m_injectedFactory->makeInjected<DefaultProxyAction>(this);
 }
 
 void KaduWindowActions::showMultilogonsActionCreated(Action *action)

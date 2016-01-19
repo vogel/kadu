@@ -18,31 +18,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DEFAULT_PROXY_ACTION_H
-#define DEFAULT_PROXY_ACTION_H
-
-#include <QtWidgets/QAction>
+#pragma once
 
 #include "gui/actions/action-description.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QAction>
+#include <injeqt/injeqt.h>
+
+class NetworkProxyManager;
 class NetworkProxy;
+class ProxyEditWindowService;
 
 class DefaultProxyAction : public ActionDescription
 {
 	Q_OBJECT
 
-	void populateMenu(QMenu *menu, QActionGroup *actionGroup, NetworkProxy defaultProxy);
-
-private slots:
-	void prepareMenu();
-	void selectProxyActionTriggered(QAction *action);
-	void editProxyConfiguration();
-
-protected:
-	virtual QMenu * menuForAction(Action *action);
-
 public:
-	explicit DefaultProxyAction(QObject *parent);
+	explicit DefaultProxyAction(QObject *parent = nullptr);
 	virtual ~DefaultProxyAction();
 
 	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const
@@ -50,6 +43,22 @@ public:
 		return QToolButton::InstantPopup;
 	}
 
-};
+protected:
+	virtual QMenu * menuForAction(Action *action);
 
-#endif // DEFAULT_PROXY_ACTION_H
+private:
+	QPointer<NetworkProxyManager> m_networkProxyManager;
+	QPointer<ProxyEditWindowService> m_proxyEditWindowService;
+
+	void populateMenu(QMenu *menu, QActionGroup *actionGroup, NetworkProxy defaultProxy);
+
+private slots:
+	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+	INJEQT_SET void setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService);
+	INJEQT_INIT void init();
+
+	void prepareMenu();
+	void selectProxyActionTriggered(QAction *action);
+	void editProxyConfiguration();
+
+};

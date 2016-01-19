@@ -18,10 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
+#include "default-proxy-action.h"
 
-#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/windows/proxy-edit-window-service.h"
 #include "model/roles.h"
@@ -29,7 +27,8 @@
 #include "network/proxy/model/network-proxy-proxy-model.h"
 #include "network/proxy/network-proxy-manager.h"
 
-#include "default-proxy-action.h"
+#include <QtWidgets/QAction>
+#include <QtWidgets/QMenu>
 
 DefaultProxyAction::DefaultProxyAction(QObject *parent) :
 		ActionDescription(parent)
@@ -37,12 +36,25 @@ DefaultProxyAction::DefaultProxyAction(QObject *parent) :
 	setType(ActionDescription::TypeGlobal);
 	setName("defaultProxyAction");
 	setText(tr("Select Default Proxy"));
-
-	registerAction();
 }
 
 DefaultProxyAction::~DefaultProxyAction()
 {
+}
+
+void DefaultProxyAction::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
+{
+	m_networkProxyManager = networkProxyManager;
+}
+
+void DefaultProxyAction::setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService)
+{
+	m_proxyEditWindowService = proxyEditWindowService;
+}
+
+void DefaultProxyAction::init()
+{
+	registerAction();
 }
 
 QMenu * DefaultProxyAction::menuForAction(Action *action)
@@ -90,7 +102,7 @@ void DefaultProxyAction::prepareMenu()
 
 	menu->clear();
 
-	NetworkProxy defaultProxy = Core::instance()->networkProxyManager()->defaultProxy();
+	NetworkProxy defaultProxy = m_networkProxyManager->defaultProxy();
 
 	QAction *proxyAction = menu->addAction(tr(" - No proxy - "));
 
@@ -111,12 +123,12 @@ void DefaultProxyAction::prepareMenu()
 void DefaultProxyAction::selectProxyActionTriggered(QAction *action)
 {
 	NetworkProxy defaultProxy = qvariant_cast<NetworkProxy>(action->data());
-	Core::instance()->networkProxyManager()->setDefaultProxy(defaultProxy);
+	m_networkProxyManager->setDefaultProxy(defaultProxy);
 }
 
 void DefaultProxyAction::editProxyConfiguration()
 {
-	Core::instance()->proxyEditWindowService()->show();
+	m_proxyEditWindowService->show();
 }
 
 #include "moc_default-proxy-action.cpp"
