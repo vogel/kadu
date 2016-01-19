@@ -24,6 +24,7 @@
 #include "avatars/avatar-job-runner.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
+#include "core/injected-factory.h"
 
 #include <QtCore/QTimer>
 
@@ -41,6 +42,11 @@ AvatarJobManager::~AvatarJobManager()
 void AvatarJobManager::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void AvatarJobManager::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void AvatarJobManager::scheduleJob()
@@ -68,8 +74,8 @@ void AvatarJobManager::runJob()
 
 	IsJobRunning = true;
 
-	Contact contact = nextJob();
-	AvatarJobRunner *runner = new AvatarJobRunner(contact, this);
+	auto contact = nextJob();
+	auto runner = m_injectedFactory->makeInjected<AvatarJobRunner>(contact, this);
 	connect(runner, SIGNAL(jobFinished(bool)), this, SLOT(jobFinished()));
 	runner->runJob();
 }

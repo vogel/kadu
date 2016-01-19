@@ -19,16 +19,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QTimer>
+#include "avatar-job-runner.h"
 
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
-#include "core/core.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-downloader.h"
 #include "protocols/services/avatar-service.h"
 
-#include "avatar-job-runner.h"
+#include <QtCore/QTimer>
 
 AvatarJobRunner::AvatarJobRunner(const Contact &contact, QObject *parent) :
 		QObject(parent), MyContact(contact), Timer(0)
@@ -37,6 +36,11 @@ AvatarJobRunner::AvatarJobRunner(const Contact &contact, QObject *parent) :
 
 AvatarJobRunner::~AvatarJobRunner()
 {
+}
+
+void AvatarJobRunner::setAvatarManager(AvatarManager *avatarManager)
+{
+	m_avatarManager = avatarManager;
 }
 
 void AvatarJobRunner::runJob()
@@ -72,7 +76,7 @@ void AvatarJobRunner::avatarDownloaded(bool ok, QImage avatar)
 	if (Timer)
 		Timer->stop();
 
-	Avatar contactAvatar = Core::instance()->avatarManager()->byContact(MyContact, ActionCreateAndAdd);
+	Avatar contactAvatar = m_avatarManager->byContact(MyContact, ActionCreateAndAdd);
 	contactAvatar.setLastUpdated(QDateTime::currentDateTime());
 	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
 	contactAvatar.setPixmap(QPixmap::fromImage(avatar));

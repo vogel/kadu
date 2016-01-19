@@ -32,6 +32,7 @@
 
 class Configuration;
 class Contact;
+class InjectedFactory;
 
 class KADUAPI AvatarJobManager : public QObject
 {
@@ -51,6 +52,7 @@ signals:
 
 private:
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QMutex Mutex;
 	bool IsJobRunning;
@@ -63,6 +65,7 @@ private:
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 	void runJob();
 	void jobFinished();

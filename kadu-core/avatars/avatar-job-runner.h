@@ -18,32 +18,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AVATAR_JOB_RUNNER_H
-#define AVATAR_JOB_RUNNER_H
-
-#include <QtCore/QObject>
-#include <QtGui/QPixmap>
+#pragma once
 
 #include "contacts/contact.h"
-
 #include "exports.h"
 
-class QTimer;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtGui/QPixmap>
+#include <injeqt/injeqt.h>
 
 class Account;
+class AvatarManager;
 class AvatarService;
+
+class QTimer;
 
 class KADUAPI AvatarJobRunner : public QObject
 {
 	Q_OBJECT
-
-	Contact MyContact;
-
-	QTimer *Timer;
-
-private slots:
-	void avatarDownloaded(bool ok , QImage avatar);
-	void timeout();
 
 public:
 	explicit AvatarJobRunner(const Contact &contact, QObject *parent);
@@ -54,6 +47,16 @@ public:
 signals:
 	void jobFinished(bool ok);
 
-};
+private:
+	QPointer<AvatarManager> m_avatarManager;
 
-#endif // AVATAR_JOB_RUNNER_H
+	Contact MyContact;
+	QTimer *Timer;
+
+private slots:
+	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+
+	void avatarDownloaded(bool ok , QImage avatar);
+	void timeout();
+
+};
