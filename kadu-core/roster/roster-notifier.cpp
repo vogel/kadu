@@ -49,6 +49,11 @@ RosterNotifier::~RosterNotifier()
 {
 }
 
+void RosterNotifier::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
+}
+
 QList<NotificationEvent> RosterNotifier::notifyEvents()
 {
 	return QList<NotificationEvent>{}
@@ -65,7 +70,7 @@ void RosterNotifier::notify(const QString &topic, const Account &account, const 
 	notification->setTitle(tr("Roster"));
 	notification->setText(message);
 
-	Core::instance()->notificationManager()->notify(notification);
+	m_notificationManager->notify(notification);
 }
 
 void RosterNotifier::notifyImportSucceeded(const Account &account)

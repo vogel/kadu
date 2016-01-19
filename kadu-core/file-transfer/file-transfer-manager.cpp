@@ -51,6 +51,7 @@
 #include "gui/windows/message-dialog.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-event-repository.h"
+#include "notification/notification-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 #include "storage/storage-point.h"
@@ -93,6 +94,11 @@ void FileTransferManager::setNotificationCallbackRepository(NotificationCallback
 void FileTransferManager::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
 {
 	m_notificationEventRepository = notificationEventRepository;
+}
+
+void FileTransferManager::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
 }
 
 void FileTransferManager::init()
@@ -319,7 +325,7 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
 	QMutexLocker locker(&mutex());
 	addItem(fileTransfer);
-	NewFileTransferNotification::notifyIncomingFileTransfer(fileTransfer);
+	NewFileTransferNotification::notifyIncomingFileTransfer(m_notificationManager, fileTransfer);
 }
 
 void FileTransferManager::itemAboutToBeAdded(FileTransfer fileTransfer)

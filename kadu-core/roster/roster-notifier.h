@@ -23,9 +23,12 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Account;
 class NotificationEvent;
+class NotificationManager;
 
 /**
  * @addtogroup Roster
@@ -68,6 +71,8 @@ private:
 	static QString sm_exportSucceededNotifyTopic;
 	static QString sm_exportFailedNotifyTopic;
 
+	QPointer<NotificationManager> m_notificationManager;
+
 	NotificationEvent m_rosterNotificationEvent;
 	NotificationEvent m_importSucceededNotificationEvent;
 	NotificationEvent m_importFailedNotificationEvent;
@@ -75,6 +80,9 @@ private:
 	NotificationEvent m_exportFailedNotificationEvent;
 
 	void notify(const QString &topic, const Account &account, const QString &message);
+
+private slots:
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };
 

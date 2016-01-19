@@ -84,14 +84,11 @@ void NewFileTransferNotification::registerEvents(NotificationEventRepository *no
 
 void NewFileTransferNotification::unregisterEvents(NotificationEventRepository *notificationEventRepository)
 {
-	if (Core::instance()) // TODO: hack
-	{
-		notificationEventRepository->removeNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
-		notificationEventRepository->removeNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
-	}
+	notificationEventRepository->removeNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
+	notificationEventRepository->removeNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
 }
 
-void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer &fileTransfer)
+void NewFileTransferNotification::notifyIncomingFileTransfer(NotificationManager *notificationManager, const FileTransfer &fileTransfer)
 {
 	auto chat = ChatTypeContact::findChat(fileTransfer.peer(), ActionCreateAndAdd);
 	auto notification = new NewFileTransferNotification{chat, "FileTransfer/IncomingFile", fileTransfer};
@@ -138,7 +135,7 @@ void NewFileTransferNotification::notifyIncomingFileTransfer(const FileTransfer 
 
 	notification->setText(text);
 
-	Core::instance()->notificationManager()->notify(notification);
+	notificationManager->notify(notification);
 }
 
 NewFileTransferNotification::NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer) :

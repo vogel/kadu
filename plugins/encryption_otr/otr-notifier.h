@@ -29,6 +29,7 @@
 class Account;
 class ChatWidgetRepository;
 class Contact;
+class NotificationManager;
 
 class OtrNotifier : public QObject
 {
@@ -39,6 +40,7 @@ class OtrNotifier : public QObject
 	static QString CreatePrivateKeyFinishedNotifyTopic;
 
 	QPointer<ChatWidgetRepository> MyChatWidgetRepository;
+	QPointer<NotificationManager> m_notificationManager;
 
 	NotificationEvent OtrNotificationEvent;
 	NotificationEvent CreatePrivateKeyStartedNotificationEvent;
@@ -55,6 +57,7 @@ public:
 
 public slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 	void notifyTryingToStartSession(const Contact &contact);
 	void notifyTryingToRefreshSession(const Contact &contact);

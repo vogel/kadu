@@ -28,6 +28,7 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
+#include "notification/notification-manager.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -40,7 +41,8 @@
 #include "screen-shot-saver.h"
 #include "screenshot.h"
 
-ScreenShot::ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget) :
+ScreenShot::ScreenShot(NotificationManager *notificationManager, ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget) :
+		m_notificationManager{notificationManager},
 		m_screenShotConfiguration{screenShotConfiguration},
 		Mode{},
 		MyScreenshotTaker{},
@@ -157,7 +159,7 @@ void ScreenShot::checkShotsSize()
 		size += f.size();
 
 	if (size/1024 >= limit)
-		ScreenshotNotification::notifySizeLimit(size);
+		ScreenshotNotification::notifySizeLimit(m_notificationManager, size);
 }
 
 #undef Bool

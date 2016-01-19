@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREENSHOT_H
-#define SCREENSHOT_H
+#pragma once
 
 #include <vector>
 
@@ -38,6 +37,7 @@ class ActionDescription;
 class ChatWidget;
 class ConfigurationUiHandler;
 class CropImageWidget;
+class NotificationManager;
 class ScreenShotConfiguration;
 class ScreenshotTaker;
 class ScreenshotToolBox;
@@ -47,6 +47,7 @@ class ScreenShot : public QObject
 {
 	Q_OBJECT
 
+	QPointer<NotificationManager> m_notificationManager;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
 	ScreenShotMode Mode;
@@ -67,7 +68,7 @@ private slots:
 	void screenshotReady(QPixmap pixmap);
 
 public:
-	explicit ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget);
+	explicit ScreenShot(NotificationManager *notificationManager, ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget);
 	virtual ~ScreenShot();
 
 	void takeStandardShot();
@@ -75,5 +76,3 @@ public:
 	void takeWindowShot();
 
 };
-
-#endif // SCREENSHOT_H

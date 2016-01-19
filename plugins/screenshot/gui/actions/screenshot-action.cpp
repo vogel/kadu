@@ -26,6 +26,7 @@
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "notification/notification-manager.h"
 #include "protocols/protocol.h"
 
 #include "configuration/screen-shot-configuration.h"
@@ -33,8 +34,9 @@
 
 #include "screenshot-action.h"
 
-ScreenshotAction::ScreenshotAction(ScreenShotConfiguration *screenShotConfiguration, QObject *parent) :
+ScreenshotAction::ScreenshotAction(NotificationManager *notificationManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent) :
 		ActionDescription(parent),
+		m_notificationManager{notificationManager},
 		m_screenShotConfiguration{screenShotConfiguration}
 {
 	setType(ActionDescription::TypeChat);
@@ -113,21 +115,21 @@ void ScreenshotAction::takeStandardShotSlot(ChatWidget *chatWidget)
 	if (!chatWidget)
 		chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(new ScreenShot(m_screenShotConfiguration, chatWidget))->takeStandardShot();
+		(new ScreenShot(m_notificationManager, m_screenShotConfiguration, chatWidget))->takeStandardShot();
 }
 
 void ScreenshotAction::takeShotWithChatWindowHiddenSlot()
 {
 	ChatWidget *chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(new ScreenShot(m_screenShotConfiguration, chatWidget))->takeShotWithChatWindowHidden();
+		(new ScreenShot(m_notificationManager, m_screenShotConfiguration, chatWidget))->takeShotWithChatWindowHidden();
 }
 
 void ScreenshotAction::takeWindowShotSlot()
 {
 	ChatWidget *chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(new ScreenShot(m_screenShotConfiguration, chatWidget))->takeWindowShot();
+		(new ScreenShot(m_notificationManager, m_screenShotConfiguration, chatWidget))->takeWindowShot();
 }
 
 #include "moc_screenshot-action.cpp"

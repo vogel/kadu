@@ -123,6 +123,11 @@ void FirewallMessageFilter::setMessageManager(MessageManager *messageManager)
 	m_messageManager = messageManager;
 }
 
+void FirewallMessageFilter::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
+}
+
 void FirewallMessageFilter::init()
 {
 	pattern.setCaseSensitivity(Qt::CaseSensitive);
@@ -184,7 +189,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 			ignore = true;
 			if (LastNotify.elapsed() > min_interval_notify)
 			{
-				FirewallNotification::notify(message.messageChat(), message.messageSender(), tr("flooding DoS attack with emoticons!"));
+				FirewallNotification::notify(m_notificationManager, message.messageChat(), message.messageSender(), tr("flooding DoS attack with emoticons!"));
 
 				writeLog(message.messageSender(), message.plainTextContent());
 
@@ -201,7 +206,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 		ignore = true;
 		if (LastNotify.elapsed() > min_interval_notify)
 		{
-			FirewallNotification::notify(message.messageChat(), message.messageSender(), tr("flooding DoS attack!"));
+			FirewallNotification::notify(m_notificationManager, message.messageChat(), message.messageSender(), tr("flooding DoS attack!"));
 
 			writeLog(message.messageSender(), message.plainTextContent());
 
@@ -223,9 +228,9 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 	if (ignore)
 	{
 		if (message.plainTextContent().length() > 50)
-			FirewallNotification::notify(message.messageChat(), message.messageSender(), message.plainTextContent().left(50).append("..."));
+			FirewallNotification::notify(m_notificationManager, message.messageChat(), message.messageSender(), message.plainTextContent().left(50).append("..."));
 		else
-			FirewallNotification::notify(message.messageChat(), message.messageSender(), message.plainTextContent());
+			FirewallNotification::notify(m_notificationManager, message.messageChat(), message.messageSender(), message.plainTextContent());
 
 		writeLog(message.messageSender(), message.plainTextContent());
 

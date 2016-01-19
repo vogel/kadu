@@ -19,19 +19,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "notification/notification-event.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
 
 #include "screenshot-notification.h"
 
-void ScreenshotNotification::notifySizeLimit(long size)
+void ScreenshotNotification::notifySizeLimit(NotificationManager *notificationManager, long size)
 {
 	ScreenshotNotification *notification = new ScreenshotNotification();
 	notification->setTitle(tr("ScreenShot size limit"));
 	notification->setText(tr("Images size limit exceed: %1 KB").arg(size/1024));
-	Core::instance()->notificationManager()->notify(notification);
+	notificationManager->notify(notification);
 }
 
 ScreenshotNotification::ScreenshotNotification(QObject *parent) :

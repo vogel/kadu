@@ -46,6 +46,7 @@ class IncomingMessageFirewallFilter;
 class InjectedFactory;
 class MessageManager;
 class Message;
+class NotificationManager;
 class OutgoingMessageFirewallFilter;
 
 class FirewallMessageFilter : public QObject, public MessageFilter, ConfigurationAwareObject, AccountsAwareObject
@@ -70,6 +71,7 @@ private:
 	QPointer<History> m_history;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MessageManager> m_messageManager;
+	QPointer<NotificationManager> m_notificationManager;
 
 	BuddySet SecuredTemporaryAllowed;
 	ContactSet Passed;
@@ -116,6 +118,7 @@ private slots:
 	INJEQT_SET void setHistory(History *history);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

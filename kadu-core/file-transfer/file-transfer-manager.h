@@ -39,6 +39,7 @@ class FileTransferHandlerManager;
 class FileTransferWindow;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
+class NotificationManager;
 
 class KADUAPI FileTransferManager : public SimpleManager<FileTransfer>, AccountsAwareObject
 {
@@ -86,6 +87,8 @@ private:
 	QPointer<FileTransferWindow> m_window;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
+	QPointer<NotificationManager> m_notificationManager;
+
 	int m_totalProgress;
 
 	void addFileTransferService(Account account);
@@ -98,6 +101,7 @@ private slots:
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

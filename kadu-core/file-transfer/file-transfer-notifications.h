@@ -28,6 +28,7 @@
 class FileTransferManager;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
+class NotificationManager;
 
 class NewFileTransferNotification : public Notification
 {
@@ -37,7 +38,7 @@ public:
 	static void registerEvents(NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository);
 	static void unregisterEvents(NotificationEventRepository *notificationEventRepository);
 
-	static void notifyIncomingFileTransfer(const FileTransfer &fileTransfer);
+	static void notifyIncomingFileTransfer(NotificationManager *notificationManager, const FileTransfer &fileTransfer);
 
 	NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer);
 

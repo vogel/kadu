@@ -23,12 +23,14 @@
 
 #include "notification/notification/notification.h"
 
+class NotificationManager;
+
 class ScreenshotNotification : public Notification
 {
 	Q_OBJECT
 
 public:
-	static void notifySizeLimit(long size);
+	static void notifySizeLimit(NotificationManager *notificationManager, long size);
 
 	explicit ScreenshotNotification(QObject *parent = nullptr);
 	virtual ~ScreenshotNotification();

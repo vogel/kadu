@@ -24,13 +24,14 @@
 #include "notification/notification/notification.h"
 
 class Chat;
+class NotificationManager;
 
 class FirewallNotification : public Notification
 {
 	Q_OBJECT
 
 public:
-	static void notify(const Chat &chat, const Contact &sender, const QString &message);
+	static void notify(NotificationManager *notificationManager, const Chat &chat, const Contact &sender, const QString &message);
 
 	explicit FirewallNotification(const Chat &chat);
 	virtual ~FirewallNotification();
