@@ -18,25 +18,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_EVENT_LISTENER_H
-#define CHAT_EVENT_LISTENER_H
+#pragma once
 
-#include "event-listener.h"
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class ChatWidgetRepository;
 class MessageManager;
 class Message;
+class NotificationService;
 
-class ChatEventListener : public EventListener
+class ChatEventListener : public QObject
 {
 	Q_OBJECT
-
-private slots:
-	void messageReceived(const Message &message);
+	//INJEQT_INSTANCE_IMMEDIATE
 
 public:
-	explicit ChatEventListener(MessageManager *messageManager, NotificationService *service);
+	Q_INVOKABLE explicit ChatEventListener(QObject *parent = nullptr);
 	virtual ~ChatEventListener();
 
-};
+private:
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<NotificationService> m_notificationService;
 
-#endif // CHAT_EVENT_LISTENER_H
+private slots:
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setNotificationService(NotificationService *notificationService);
+
+	void messageReceived(const Message &message);
+
+};

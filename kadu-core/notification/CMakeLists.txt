@@ -1,7 +1,6 @@
 set (notification_SRCS
 	listener/account-event-listener.cpp
 	listener/chat-event-listener.cpp
-	listener/event-listener.cpp
 	listener/group-event-listener.cpp
 
 	notification/aggregate-notification.cpp

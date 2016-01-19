@@ -19,6 +19,9 @@
 
 #include "notification-module.h"
 
+#include "notification/listener/account-event-listener.h"
+#include "notification/listener/chat-event-listener.h"
+#include "notification/listener/group-event-listener.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
@@ -27,6 +30,9 @@
 
 NotificationModule::NotificationModule()
 {
+	add_type<AccountEventListener>();
+	add_type<ChatEventListener>();
+	add_type<GroupEventListener>();
 	add_type<NotificationCallbackRepository>();
 	add_type<NotificationEventRepository>();
 	add_type<NotificationManager>();

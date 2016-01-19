@@ -33,8 +33,8 @@
 
 #include "account-event-listener.h"
 
-AccountEventListener::AccountEventListener(NotificationService *service)
-		: EventListener(service)
+AccountEventListener::AccountEventListener(QObject *parent) :
+			QObject(parent)
 {
 }
 
@@ -46,6 +46,11 @@ AccountEventListener::~AccountEventListener()
 void AccountEventListener::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
+}
+
+void AccountEventListener::setNotificationService(NotificationService *notificationService)
+{
+	m_notificationService = notificationService;
 }
 
 void AccountEventListener::setStatusTypeManager(StatusTypeManager *statusTypeManager)
@@ -60,7 +65,7 @@ void AccountEventListener::init()
 
 void AccountEventListener::accountRegistered(Account account)
 {
-	Protocol *protocol = account.protocolHandler();
+	auto protocol = account.protocolHandler();
 	if (!protocol)
 		return;
 
@@ -68,7 +73,7 @@ void AccountEventListener::accountRegistered(Account account)
 			this, SLOT(contactStatusChanged(Contact, Status)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 
-	MultilogonService *multilogonService = protocol->multilogonService();
+	auto multilogonService = protocol->multilogonService();
 	if (multilogonService)
 	{
 		connect(multilogonService, SIGNAL(multilogonSessionConnected(MultilogonSession*)),
@@ -80,14 +85,14 @@ void AccountEventListener::accountRegistered(Account account)
 
 void AccountEventListener::accountUnregistered(Account account)
 {
-	Protocol *protocol = account.protocolHandler();
+	auto protocol = account.protocolHandler();
 
 	if (!protocol)
 		return;
 
 	disconnect(account, 0, this, 0);
 
-	MultilogonService *multilogonService = protocol->multilogonService();
+	auto multilogonService = protocol->multilogonService();
 	if (multilogonService)
 		disconnect(multilogonService, 0, this, 0);
 }
@@ -99,7 +104,7 @@ void AccountEventListener::accountConnected()
 	if (!account)
 		return;
 
-	if (Service->notifyIgnoreOnConnection())
+	if (m_notificationService->notifyIgnoreOnConnection())
 		account.addProperty("notify:notify-account-connected", QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);
 }
 
@@ -112,7 +117,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 	if (!protocol || !protocol->isConnected())
 		return;
 
-	if (Service->notifyIgnoreOnConnection())
+	if (m_notificationService->notifyIgnoreOnConnection())
 	{
 		QDateTime dateTime = contact.contactAccount().property("notify:notify-account-connected", QDateTime()).toDateTime();
 		if (dateTime.isValid() && dateTime >= QDateTime::currentDateTime())
@@ -143,7 +148,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 			description.clear();
 	}
 
-	if (Service->ignoreOnlineToOnline() &&
+	if (m_notificationService->ignoreOnlineToOnline() &&
 			!status.isDisconnected() &&
 			!oldStatus.isDisconnected())
 		return;
@@ -152,7 +157,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 	QString changedTo = "/To" + typeData.name();
 
 	auto statusChangedNotification = new StatusChangedNotification(changedTo, contact, statusDisplayName, description);
-	Service->notify(statusChangedNotification);
+	m_notificationService->notify(statusChangedNotification);
 }
 
 void AccountEventListener::multilogonSessionConnected(MultilogonSession *session)
@@ -165,7 +170,7 @@ void AccountEventListener::multilogonSessionConnected(MultilogonSession *session
 			.arg(session->name())
 			.arg(session->account().id()));
 
-	Service->notify(notification);
+	m_notificationService->notify(notification);
 }
 
 void AccountEventListener::multilogonSessionDisconnected(MultilogonSession *session)
@@ -178,7 +183,7 @@ void AccountEventListener::multilogonSessionDisconnected(MultilogonSession *sess
 			.arg(session->name())
 			.arg(session->account().id()));
 
-	Service->notify(notification);
+	m_notificationService->notify(notification);
 }
 
 #include "moc_account-event-listener.cpp"

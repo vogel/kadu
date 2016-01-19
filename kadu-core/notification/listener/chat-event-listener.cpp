@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
@@ -31,24 +29,41 @@
 
 #include "chat-event-listener.h"
 
-ChatEventListener::ChatEventListener(MessageManager *messageManager, NotificationService *service)
-		: EventListener(service)
+ChatEventListener::ChatEventListener(QObject *parent) :
+		QObject{parent}
 {
-	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
 }
 
 ChatEventListener::~ChatEventListener()
 {
 }
 
+void ChatEventListener::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+}
+
+void ChatEventListener::setMessageManager(MessageManager *messageManager)
+{
+	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
+}
+
+void ChatEventListener::setNotificationService(NotificationService *notificationService)
+{
+	m_notificationService = notificationService;
+}
+
 void ChatEventListener::messageReceived(const Message &message)
 {
-	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(message.messageChat());
-
 	if (!message.messageChat().isOpen())
-		Service->notify(new MessageNotification(Core::instance()->chatWidgetRepository(), MessageNotification::NewChat, message));
-	else if (!Service->newMessageOnlyIfInactive() || !_isWindowActiveOrFullyVisible(chatWidget))
-		Service->notify(new MessageNotification(Core::instance()->chatWidgetRepository(), MessageNotification::NewMessage, message));
+	{
+		m_notificationService->notify(new MessageNotification{m_chatWidgetRepository, MessageNotification::NewChat, message});
+		return;
+	}
+
+	auto chatWidget = m_chatWidgetRepository->widgetForChat(message.messageChat());
+	if (!m_notificationService->newMessageOnlyIfInactive() || !_isWindowActiveOrFullyVisible(chatWidget))
+		m_notificationService->notify(new MessageNotification{m_chatWidgetRepository, MessageNotification::NewMessage, message});
 }
 
 #include "moc_chat-event-listener.cpp"

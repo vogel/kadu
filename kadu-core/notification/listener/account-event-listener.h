@@ -22,7 +22,6 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "contacts/contact.h"
-#include "event-listener.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -30,15 +29,17 @@
 class AccountManager;
 class Message;
 class MultilogonSession;
+class NotificationService;
 class StatusTypeManager;
 class Status;
 
-class AccountEventListener : public EventListener, AccountsAwareObject
+class AccountEventListener : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
+	//INJEQT_INSTANCE_IMMEDIATE
 
 public:
-	explicit AccountEventListener(NotificationService *service);
+	Q_INVOKABLE explicit AccountEventListener(QObject *parent = nullptr);
 	virtual ~AccountEventListener();
 
 protected:
@@ -47,10 +48,12 @@ protected:
 
 private:
 	QPointer<AccountManager> m_accountManager;
+	QPointer<NotificationService> m_notificationService;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
 

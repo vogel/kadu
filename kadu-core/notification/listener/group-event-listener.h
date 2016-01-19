@@ -18,25 +18,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GROUP_EVENT_LISTENER_H
-#define GROUP_EVENT_LISTENER_H
+#pragma once
 
-#include "event-listener.h"
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class BuddyManager;
+class GroupManager;
 class Group;
 class NotificationService;
 
-class GroupEventListener : public EventListener
+class GroupEventListener : public QObject
 {
 	Q_OBJECT
+	//INJEQT_INSTANCE_IMMEDIATE
+
+public:
+	Q_INVOKABLE explicit GroupEventListener(QObject *parent = nullptr);
+	virtual ~GroupEventListener();
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<GroupManager> m_groupManager;
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_INIT void init();
+
 	void groupAdded(const Group &group);
 	void groupUpdated();
 
-public:
-	GroupEventListener(NotificationService *service);
-	virtual ~GroupEventListener();
 };
-
-#endif // GROUP_EVENT_LISTENER_H

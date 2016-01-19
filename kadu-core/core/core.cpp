@@ -103,6 +103,9 @@
 #include "misc/paths-provider.h"
 #include "network/network-manager.h"
 #include "network/proxy/network-proxy-manager.h"
+#include "notification/listener/account-event-listener.h"
+#include "notification/listener/chat-event-listener.h"
+#include "notification/listener/group-event-listener.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-manager.h"
@@ -605,6 +608,10 @@ void Core::runServices()
 	m_injector.get<PluginStateManager>()->loadPluginStates();
 
 	m_injector.get<ConfigurationUiHandlerRepository>()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
+
+	m_injector.get<AccountEventListener>();
+	m_injector.get<ChatEventListener>();
+	m_injector.get<GroupEventListener>();
 }
 
 void Core::runGuiServices()

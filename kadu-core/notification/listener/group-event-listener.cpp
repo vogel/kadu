@@ -19,25 +19,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "group-event-listener.h"
+
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "notification/notification-service.h"
 
-#include "group-event-listener.h"
-
-GroupEventListener::GroupEventListener(NotificationService *service)
-		: EventListener(service)
+GroupEventListener::GroupEventListener(QObject *parent) :
+		QObject{parent}
 {
-	foreach (const Group &group, Core::instance()->groupManager()->items())
-		groupAdded(group);
 }
 
 GroupEventListener::~GroupEventListener()
 {
+}
+
+void GroupEventListener::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void GroupEventListener::setGroupManager(GroupManager *groupManager)
+{
+	m_groupManager = groupManager;
+}
+
+void GroupEventListener::init()
+{
+	for (auto const &group : m_groupManager->items())
+		groupAdded(group);
 }
 
 void GroupEventListener::groupAdded(const Group &group)
@@ -53,7 +63,7 @@ void GroupEventListener::groupUpdated()
 
 	bool notify = group.notifyAboutStatusChanges();
 
-	foreach (const Buddy &buddy, Core::instance()->buddyManager()->items())
+	for (auto &buddy : m_buddyManager->items())
 	{
 		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;
