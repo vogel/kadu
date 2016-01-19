@@ -46,7 +46,6 @@ class DefaultProvider;
 
 class Actions;
 class Application;
-class AvatarManager;
 class BuddyChatManager;
 class BuddyManager;
 class BuddyPreferredManager;
@@ -187,7 +186,6 @@ public:
 	GroupManager * groupManager() const;
 	NetworkProxyManager * networkProxyManager() const;
 	ConfigurationManager * configurationManager() const;
-	AvatarManager * avatarManager() const;
 	BuddyChatManager * buddyChatManager() const;
 	BuddyPreferredManager * buddyPreferredManager() const;
 	ChatTypeManager * chatTypeManager() const;

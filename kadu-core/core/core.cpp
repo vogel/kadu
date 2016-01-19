@@ -480,7 +480,7 @@ void Core::init()
 	// It has to happen earlier because UnreadMessageRepository::loaded() might add buddies to the BuddyManager
 	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
 	unreadMessageRepository()->ensureLoaded();
-	Core::instance()->avatarManager(); // initialize that
+	m_injector.get<AvatarManager>();
 
 #if WITH_LIBINDICATE_QT
 	// Use a symbol from libindicate-qt so that it will not get dropped for example by --as-needed.
@@ -782,11 +782,6 @@ NetworkProxyManager * Core::networkProxyManager() const
 ConfigurationManager * Core::configurationManager() const
 {
 	return m_injector.get<ConfigurationManager>();
-}
-
-AvatarManager * Core::avatarManager() const
-{
-	return m_injector.get<AvatarManager>();
 }
 
 BuddyChatManager * Core::buddyChatManager() const
