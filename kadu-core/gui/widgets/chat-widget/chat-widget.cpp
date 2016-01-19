@@ -45,7 +45,6 @@
 #include "contacts/model/contact-data-extractor.h"
 #include "contacts/model/contact-list-model.h"
 #include "core/core.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/actions/action.h"
@@ -135,9 +134,19 @@ void ChatWidget::setChatTypeManager(ChatTypeManager *chatTypeManager)
 	m_chatTypeManager = chatTypeManager;
 }
 
+void ChatWidget::setChatWidgetActions(ChatWidgetActions *chatWidgetActions)
+{
+	m_chatWidgetActions = chatWidgetActions;
+}
+
+void ChatWidget::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void ChatWidget::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	CurrentFormattedStringFactory = formattedStringFactory;
+	m_formattedStringFactory = formattedStringFactory;
 }
 
 void ChatWidget::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -420,8 +429,7 @@ SortedMessages ChatWidget::messages() const
 
 void ChatWidget::appendSystemMessage(const QString &content)
 {
-	FormattedStringFactory *formattedStringFactory = Core::instance()->formattedStringFactory();
-	appendSystemMessage(formattedStringFactory->fromText(content));
+	appendSystemMessage(m_formattedStringFactory->fromText(content));
 }
 
 void ChatWidget::appendSystemMessage(std::unique_ptr<FormattedString> &&content)
@@ -441,15 +449,15 @@ void ChatWidget::resetEditBox()
 	InputBox->inputBox()->clear();
 
 	Action *action;
-	action = Core::instance()->chatWidgetActions()->bold()->action(InputBox->actionContext());
+	action = m_chatWidgetActions->bold()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
 
-	action = Core::instance()->chatWidgetActions()->italic()->action(InputBox->actionContext());
+	action = m_chatWidgetActions->italic()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontItalic(action->isChecked());
 
-	action = Core::instance()->chatWidgetActions()->underline()->action(InputBox->actionContext());
+	action = m_chatWidgetActions->underline()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontUnderline(action->isChecked());
 }
@@ -462,7 +470,7 @@ void ChatWidget::clearChatWindow()
 	dialog->addButton(QMessageBox::Yes, tr("Clear chat window"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
+	if (!m_configuration->deprecatedApi()->readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
 	{
 		MessagesView->clearMessages();
 		MessagesView->setForcePruneDisabled(false);
@@ -739,9 +747,6 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatState state)
 	CurrentContactActivity = state;
 	emit chatStateChanged(CurrentContactActivity);
 
-	if (!CurrentFormattedStringFactory)
-		return;
-
 	if (m_chatConfigurationHolder->contactStateChats())
 		MessagesView->contactActivityChanged(contact, state);
 
@@ -752,7 +757,7 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatState state)
 		message.setMessageChat(CurrentChat);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
-		message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(msg));
+		message.setContent(m_formattedStringFactory->fromPlainText(msg));
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 
