@@ -18,43 +18,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MESSAGE_SHARED_H
-#define MESSAGE_SHARED_H
+#pragma once
+
+#include "message/message-common.h"
+#include "storage/shared.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QPointer>
 #include <QtCore/QSharedData>
 
-#include "message/message-common.h"
-#include "storage/shared.h"
-
+class ChatManager;
 class Chat;
+class ContactManager;
 class Contact;
 class FormattedString;
 class FormattedStringFactory;
+class UnreadMessageRepository;
 
 class MessageShared : public Shared
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(MessageShared)
-
-	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
-
-	Chat *MessageChat;
-	Contact *MessageSender;
-	std::unique_ptr<FormattedString> Content;
-	QString PlainTextContent;
-	QString HtmlContent;
-	QDateTime ReceiveDate;
-	QDateTime SendDate;
-	MessageStatus Status;
-	MessageType Type;
-	QString Id;
-
-protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
 
 public:
 	static MessageShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint);
@@ -62,8 +45,6 @@ public:
 
 	explicit MessageShared(const QUuid &uuid = QUuid());
 	virtual ~MessageShared();
-
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
@@ -94,6 +75,32 @@ signals:
 
 	void updated();
 
-};
+protected:
+	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
 
-#endif // MESSAGE_SHARED_H
+private:
+	QPointer<ChatManager> m_chatManager;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+
+	Chat *MessageChat;
+	Contact *MessageSender;
+	std::unique_ptr<FormattedString> Content;
+	QString PlainTextContent;
+	QString HtmlContent;
+	QDateTime ReceiveDate;
+	QDateTime SendDate;
+	MessageStatus Status;
+	MessageType Type;
+	QString Id;
+
+private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+
+};

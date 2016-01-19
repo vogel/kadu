@@ -38,7 +38,6 @@
 MessageShared * MessageShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint)
 {
 	MessageShared *result = loadFromStorage(messageStoragePoint);
-	result->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	result->loadStub();
 	return result;
 }
@@ -46,7 +45,6 @@ MessageShared * MessageShared::loadStubFromStorage(const std::shared_ptr<Storage
 MessageShared * MessageShared::loadFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint)
 {
 	MessageShared *result = Core::instance()->injectedFactory()->makeInjected<MessageShared>();
-	result->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	result->setStorage(messageStoragePoint);
 	return result;
 }
@@ -68,14 +66,29 @@ MessageShared::~MessageShared()
 	delete MessageChat;
 }
 
+void MessageShared::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void MessageShared::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 void MessageShared::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	CurrentFormattedStringFactory = formattedStringFactory;
+	m_formattedStringFactory = formattedStringFactory;
+}
+
+void MessageShared::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
+{
+	m_unreadMessageRepository = unreadMessageRepository;
 }
 
 StorableObject * MessageShared::storageParent()
 {
-	return Core::instance()->unreadMessageRepository();
+	return m_unreadMessageRepository;
 }
 
 QString MessageShared::storageNodeName()
@@ -90,11 +103,10 @@ void MessageShared::load()
 
 	Shared::load();
 
-	*MessageChat = Core::instance()->chatManager()->byUuid(loadValue<QString>("Chat"));
-	*MessageSender = Core::instance()->contactManager()->byUuid(loadValue<QString>("Sender"));
+	*MessageChat = m_chatManager->byUuid(loadValue<QString>("Chat"));
+	*MessageSender = m_contactManager->byUuid(loadValue<QString>("Sender"));
 
-	if (CurrentFormattedStringFactory)
-		setContent(CurrentFormattedStringFactory.data()->fromHtml(loadValue<QString>("Content")));
+	m_formattedStringFactory->fromHtml(loadValue<QString>("Content"));
 
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");
