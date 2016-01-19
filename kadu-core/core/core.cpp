@@ -67,7 +67,6 @@
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
@@ -650,11 +649,6 @@ RawMessageTransformerService * Core::rawMessageTransformerService() const
 UnreadMessageRepository * Core::unreadMessageRepository() const
 {
 	return m_injector.get<UnreadMessageRepository>();
-}
-
-ChatWidgetActions * Core::chatWidgetActions() const
-{
-	return m_injector.get<ChatWidgetActions>();
 }
 
 ChatWidgetManager * Core::chatWidgetManager() const
