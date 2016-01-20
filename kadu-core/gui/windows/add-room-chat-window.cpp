@@ -18,6 +18,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "add-room-chat-window.h"
+
+#include "accounts/filter/protocol-filter.h"
+#include "chat/chat-details-room.h"
+#include "chat/chat-manager.h"
+#include "chat/type/chat-type-room.h"
+#include "configuration/config-file-variant-wrapper.h"
+#include "core/injected-factory.h"
+#include "gui/widgets/accounts-combo-box.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "icons/kadu-icon.h"
+#include "os/generic/window-geometry-manager.h"
+#include "protocols/protocol.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFormLayout>
@@ -26,37 +40,38 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-#include "accounts/filter/protocol-filter.h"
-#include "chat/chat-details-room.h"
-#include "chat/chat-manager.h"
-#include "chat/type/chat-type-room.h"
-#include "configuration/config-file-variant-wrapper.h"
-#include "core/core.h"
-#include "core/injected-factory.h"
-#include "gui/widgets/accounts-combo-box.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "icons/kadu-icon.h"
-#include "os/generic/window-geometry-manager.h"
-#include "protocols/protocol.h"
-
-#include "add-room-chat-window.h"
-
 AddRoomChatWindow::AddRoomChatWindow(QWidget *parent) :
 		QDialog(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowRole("kadu-add-room-chat");
 	setWindowTitle(tr("Join Room"));
-
-	createGui();
-
-	validateData();
-
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AddRoomChatWindowGeometry"), QRect(0, 50, 430, 250), this);
 }
 
 AddRoomChatWindow::~AddRoomChatWindow()
 {
+}
+
+void AddRoomChatWindow::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void AddRoomChatWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
+void AddRoomChatWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void AddRoomChatWindow::init()
+{
+	createGui();
+	validateData();
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AddRoomChatWindowGeometry"), QRect(0, 50, 430, 250), this);
 }
 
 void AddRoomChatWindow::createGui()
@@ -68,7 +83,7 @@ void AddRoomChatWindow::createGui()
 
 	QFormLayout *layout = new QFormLayout(mainWidget);
 
-	AccountCombo = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo = m_injectedFactory->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 
 	// only xmpp rooms for now
@@ -171,7 +186,7 @@ void AddRoomChatWindow::validateData()
 	StartButton->setEnabled(true);
 
 	const QString &display = DisplayNameEdit->text();
-	if (!display.isEmpty() && Core::instance()->chatManager()->byDisplay(display))
+	if (!display.isEmpty() && m_chatManager->byDisplay(display))
 	{
 		displayErrorMessage(tr("Visible name is already used for another chat"));
 		return;
@@ -229,7 +244,7 @@ void AddRoomChatWindow::start()
 	if (!DisplayNameEdit->text().isEmpty())
 		chat.setDisplay(DisplayNameEdit->text());
 
-	Core::instance()->chatWidgetManager()->openChat(computeChat(), OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(computeChat(), OpenChatActivation::Activate);
 
 	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
 	Q_ASSERT(details);

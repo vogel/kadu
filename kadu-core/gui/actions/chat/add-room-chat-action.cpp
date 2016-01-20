@@ -21,7 +21,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 
 #include "gui/windows/add-room-chat-window.h"
@@ -45,14 +45,17 @@ void AddRoomChatAction::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
+void AddRoomChatAction::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void AddRoomChatAction::init()
 {
 	registerAction();
 
-	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
-	        this, SLOT(updateAddChatMenuItem()));
-	connect(m_accountManager, SIGNAL(accountUnregistered(Account)),
-	        this, SLOT(updateAddChatMenuItem()));
+	connect(m_accountManager, SIGNAL(accountRegistered(Account)), this, SLOT(updateAddChatMenuItem()));
+	connect(m_accountManager, SIGNAL(accountUnregistered(Account)), this, SLOT(updateAddChatMenuItem()));
 
 	updateAddChatMenuItem();
 }
@@ -62,7 +65,7 @@ void AddRoomChatAction::triggered(QWidget *widget, ActionContext *context, bool 
 	Q_UNUSED(context)
 	Q_UNUSED(toggled)
 
-	(new AddRoomChatWindow(widget))->show();
+	(m_injectedFactory->makeInjected<AddRoomChatWindow>(widget))->show();
 }
 
 void AddRoomChatAction::updateAddChatMenuItem()
