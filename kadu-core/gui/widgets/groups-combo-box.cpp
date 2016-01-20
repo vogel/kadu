@@ -36,18 +36,31 @@
 GroupsComboBox::GroupsComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
+}
+
+GroupsComboBox::~GroupsComboBox()
+{
+}
+
+void GroupsComboBox::setGroupManager(GroupManager *groupManager)
+{
+	m_groupManager = groupManager;
+}
+
+void GroupsComboBox::init()
+{
 	addBeforeAction(new QAction(tr(" - Do not add - "), this));
 
-	CreateNewGroupAction = new QAction(tr("Create a new group..."), this);
-	QFont createNewGroupActionFont = CreateNewGroupAction->font();
+	m_createNewGroupAction = new QAction(tr("Create a new group..."), this);
+	QFont createNewGroupActionFont = m_createNewGroupAction->font();
 	createNewGroupActionFont.setItalic(true);
-	CreateNewGroupAction->setFont(createNewGroupActionFont);
-	CreateNewGroupAction->setData(true);
-	connect(CreateNewGroupAction, SIGNAL(triggered()), this, SLOT(createNewGroup()));
-	addAfterAction(CreateNewGroupAction);
+	m_createNewGroupAction->setFont(createNewGroupActionFont);
+	m_createNewGroupAction->setData(true);
+	connect(m_createNewGroupAction, SIGNAL(triggered()), this, SLOT(createNewGroup()));
+	addAfterAction(m_createNewGroupAction);
 
 	ModelChain *chain = new ModelChain(this);
-	chain->setBaseModel(new GroupsModel(Core::instance()->groupManager(), chain));
+	chain->setBaseModel(new GroupsModel(m_groupManager, chain));
 	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
 	chain->addProxyModel(proxyModel);
 	setUpModel(GroupRole, chain);
@@ -55,10 +68,6 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 	proxyModel->sort(0);
 
 	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-}
-
-GroupsComboBox::~GroupsComboBox()
-{
 }
 
 void GroupsComboBox::setCurrentGroup(Group group)
@@ -82,11 +91,11 @@ void GroupsComboBox::createNewGroup()
 	if (!ok)
 		return;
 
-	ok = Core::instance()->groupManager()->acceptableGroupName(newGroupName, true);
+	ok = m_groupManager->acceptableGroupName(newGroupName, true);
 	if (!ok)
 		return;
 
-	Group newGroup = Core::instance()->groupManager()->byName(newGroupName, ok);
+	Group newGroup = m_groupManager->byName(newGroupName, ok);
 	if (newGroup)
 		setCurrentGroup(newGroup);
 }

@@ -20,20 +20,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GROUPS_COMBO_BOX_H
-#define GROUPS_COMBO_BOX_H
+#pragma once
 
 #include "buddies/group.h"
 #include "gui/widgets/actions-combo-box.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class GroupManager;
+
 class GroupsComboBox : public ActionsComboBox
 {
 	Q_OBJECT
-
-	QAction *CreateNewGroupAction;
-
-private slots:
-	void createNewGroup();
 
 public:
 	explicit GroupsComboBox(QWidget *parent = nullptr);
@@ -42,6 +41,15 @@ public:
 	void setCurrentGroup(Group group);
 	Group currentGroup();
 
-};
+private:
+	QPointer<GroupManager> m_groupManager;
 
-#endif // GROUPS_COMBO_BOX_H
+	QAction *m_createNewGroupAction;
+
+private slots:
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_INIT void init();
+
+	void createNewGroup();
+
+};

@@ -213,7 +213,7 @@ void AddBuddyWindow::createGui()
 
 	NonMergeWidgets.append(hintLabel);
 
-	GroupCombo = new GroupsComboBox(this);
+	GroupCombo = m_injectedFactory->makeInjected<GroupsComboBox>(this);
 	Layout->addRow(tr("Add in group:"), GroupCombo);
 
 	NonMergeWidgets.append(GroupCombo);
