@@ -29,6 +29,7 @@
 #include <memory>
 
 class ActivePlugin;
+class Configuration;
 class PathsProvider;
 class PluginActivationErrorHandler;
 class PluginDependencyHandler;
@@ -99,6 +100,7 @@ public:
 private:
 	using map = std::map<QString, std::unique_ptr<ActivePlugin>>;
 
+	QPointer<Configuration> m_configuration;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
@@ -137,6 +139,7 @@ private:
 	QString findActiveProviding(const QString &feature) const;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
 	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);

@@ -19,6 +19,8 @@
 
 #include "plugin-activation-service.h"
 
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
 #include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "misc/paths-provider.h"
@@ -37,6 +39,11 @@ PluginActivationService::PluginActivationService(QObject *parent) :
 
 PluginActivationService::~PluginActivationService()
 {
+}
+
+void PluginActivationService::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void PluginActivationService::setPathsProvider(PathsProvider *pathsProvider)
@@ -126,7 +133,12 @@ QVector<QString> PluginActivationService::deactivatePluginWithDependents(const Q
 void PluginActivationService::activatePlugin(const QString &pluginName)
 {
 	if (!contains(m_activePlugins, pluginName))
-		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(m_pathsProvider->pluginsLibPath(), pluginName, m_pluginInjectorProvider)));
+		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(
+			m_pathsProvider->pluginsLibPath(),
+			m_pathsProvider->dataPath() + QLatin1String{"plugins/translations"},
+			m_configuration->deprecatedApi()->readEntry("General", "Language"),
+			pluginName,
+			m_pluginInjectorProvider)));
 }
 
 void PluginActivationService::deactivatePlugin(const QString &pluginName)

@@ -21,8 +21,8 @@
 
 #include "misc/memory.h"
 
-ActivePlugin::ActivePlugin(const QString &pluginDirPath, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider) :
-		m_pluginTranslationsLoader{make_unique<PluginTranslationsLoader>(pluginName)},
+ActivePlugin::ActivePlugin(const QString &pluginDirPath, const QString &pluginTranslationDir, const QString &language, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider) :
+		m_pluginTranslationsLoader{make_unique<PluginTranslationsLoader>(pluginTranslationDir, language, pluginName)},
 		m_pluginLoader{make_unique<PluginLoader>(pluginDirPath, pluginName, pluginInjectorProvider)}
 {
 }

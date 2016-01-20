@@ -45,7 +45,7 @@ public:
 	 * Loads and installs plugin translation file in application. If for some reason it
 	 * was impossible - this constructor does nothing.
 	 */
-	explicit PluginTranslationsLoader(const QString &pluginName) noexcept;
+	explicit PluginTranslationsLoader(const QString &pluginTranslationDir, const QString &language, const QString &pluginName) noexcept;
 
 	/**
 	 * @short Unload plugin translation file.

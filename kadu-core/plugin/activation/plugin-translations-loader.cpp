@@ -22,20 +22,17 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "misc/memory.h"
-#include "misc/paths-provider.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QLatin1String>
 #include <QtCore/QTranslator>
 
-PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginName) noexcept :
+PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginTranslationDir, const QString &language, const QString &pluginName) noexcept :
 		m_translator{make_unique<QTranslator>()}
 {
-	auto const lang = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language");
-
-	if (m_translator->load(pluginName + '_' + lang, Core::instance()->pathsProvider()->dataPath() + QLatin1String{"plugins/translations"}))
+	
+	if (m_translator->load(pluginName + '_' + language, pluginTranslationDir))
 		QCoreApplication::installTranslator(m_translator.get());
 	else
 		m_translator.reset();

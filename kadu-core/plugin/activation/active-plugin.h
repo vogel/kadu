@@ -62,7 +62,7 @@ public:
 	 * In case of any error PluginActivationErrorException is thrown. All allocated data is properly
 	 * destroyed and memory is freed in this case.
 	 */
-	explicit ActivePlugin(const QString &pluginDirPath, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider);
+	explicit ActivePlugin(const QString &pluginDirPath, const QString &pluginTranslationDir, const QString &language, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider);
 
 	/**
 	 * @return Injector of plugin.
