@@ -96,7 +96,7 @@ SingleWindow::~SingleWindow()
 
 	m_configuration->deprecatedApi()->writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
 
-	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
+	disconnect(m_chatWidgetManager, 0, this, 0);
 	disconnect(m_tabs, 0, this, 0);
 	disconnect(kadu, 0, this, 0);
 
@@ -108,7 +108,7 @@ SingleWindow::~SingleWindow()
 			const Chat &chat = chatWidget->chat();
 			m_tabs->removeTab(i);
 			delete chatWidget;
-			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
+			m_chatWidgetManager->openChat(chat, OpenChatActivation::DoNotActivate);
 		}
 	}
 
@@ -125,6 +125,11 @@ void SingleWindow::setApplication(Application *application)
 void SingleWindow::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
 	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
+void SingleWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
 }
 
 void SingleWindow::setConfiguration(Configuration *configuration)
