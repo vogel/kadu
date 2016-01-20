@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class QFileInfo;
@@ -29,6 +30,7 @@ class QScriptEngine;
 
 class InjectedFactory;
 class NetworkAccessManagerWrapper;
+class PathsProvider;
 
 class SmsScriptsManager : public QObject
 {
@@ -43,6 +45,8 @@ public:
 	QScriptEngine * engine() { return Engine; }
 
 private:
+	QPointer<PathsProvider> m_pathsProvider;
+
 	QScriptEngine *Engine;
 	NetworkAccessManagerWrapper *Network;
 
@@ -52,6 +56,7 @@ private:
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 
 };

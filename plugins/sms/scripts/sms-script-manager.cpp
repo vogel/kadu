@@ -30,7 +30,6 @@
 #include <QtScriptTools/QScriptEngineDebugger>
 #endif
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "misc/paths-provider.h"
 
@@ -53,6 +52,11 @@ void SmsScriptsManager::setInjectedFactory(InjectedFactory *injectedFactory)
 	Network = injectedFactory->makeInjected<NetworkAccessManagerWrapper>(Engine, this);
 }
 
+void SmsScriptsManager::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
 void SmsScriptsManager::init()
 {
 	Engine = new QScriptEngine(this);
@@ -66,20 +70,20 @@ void SmsScriptsManager::init()
  	debugger->standardWindow()->show();
 #endif
 
-	QString scriptPath = Core::instance()->pathsProvider()->profilePath() + QLatin1String("plugins/data/sms/scripts/gateway.js");
+	QString scriptPath = m_pathsProvider->profilePath() + QLatin1String("plugins/data/sms/scripts/gateway.js");
 	if (QFile::exists(scriptPath))
 		loadScript(scriptPath);
 	else
 	{
-		scriptPath = Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/sms/scripts/gateway.js");
+		scriptPath = m_pathsProvider->dataPath() + QLatin1String("plugins/data/sms/scripts/gateway.js");
 		if (QFile::exists(scriptPath))
 			loadScript(scriptPath);
 		// TODO: maybe we should return here if no gateway.js was found?
 	}
 
 	// scripts from profile path can replace the ones from data path if the file name is the same
-	loadScripts(QDir(Core::instance()->pathsProvider()->profilePath() + QLatin1String("plugins/data/sms/scripts")));
-	loadScripts(QDir(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/data/sms/scripts")));
+	loadScripts(QDir(m_pathsProvider->profilePath() + QLatin1String("plugins/data/sms/scripts")));
+	loadScripts(QDir(m_pathsProvider->dataPath() + QLatin1String("plugins/data/sms/scripts")));
 }
 
 void SmsScriptsManager::loadScripts(const QDir &dir)
