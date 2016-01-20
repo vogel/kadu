@@ -18,6 +18,7 @@ class ConfigLineEdit;
 class ConfigurationUiHandlerRepository;
 class IconsManager;
 class InjectedFactory;
+class LanguagesManager;
 class PathsProvider;
 class PluginListWidget;
 class Preview;
@@ -41,6 +42,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<LanguagesManager> m_languagesManager;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<ToolTipClassManager> m_toolTipClassManager;
 
@@ -67,6 +69,7 @@ private slots:
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setLanguagesManager(LanguagesManager *languagesManager);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
 	INJEQT_INIT void init();

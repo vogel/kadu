@@ -19,27 +19,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LANGUAGES_MANAGER_H
-#define LANGUAGES_MANAGER_H
-
-#include <QtCore/QMap>
-#include <QtCore/QStringList>
+#pragma once
 
 #include "exports.h"
 
-class KADUAPI LanguagesManager
+#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QStringList>
+#include <injeqt/injeqt.h>
+
+class PathsProvider;
+
+class KADUAPI LanguagesManager : public QObject
 {
-	Q_DISABLE_COPY(LanguagesManager)
-
-	LanguagesManager();
-
-	static QMap<QString, QString> Languages;
-
-	static void loadLanguages();
+	Q_OBJECT
 
 public:
-	static const QMap<QString, QString> & languages();
+	Q_INVOKABLE explicit LanguagesManager(QObject *parent = nullptr);
+	virtual ~LanguagesManager();
+
+	QMap<QString, QString> languages() const;
+
+private:
+	QPointer<PathsProvider> m_pathsProvider;
+
+	QMap<QString, QString> m_languages;
+
+	void loadLanguages();
+
+private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
 
 };
-
-#endif // LANGUAGES_MANAGER_H

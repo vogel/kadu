@@ -41,6 +41,7 @@
 #include "storage/storage-point-factory.h"
 #include "url-handlers/url-handler-manager.h"
 #include "attention-service.h"
+#include "languages-manager.h"
 
 CoreModule::CoreModule(QString profileDirectory)
 {
@@ -59,6 +60,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<ImageStorageService>();
 	add_type<InjectedFactory>();
 	add_type<InjectorProvider>();
+	add_type<LanguagesManager>();
 	add_type<Myself>();
 	add_ready_object<PathsProvider>(m_pathsProvider.get());
 	add_type<ProtocolsManager>();

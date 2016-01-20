@@ -18,40 +18,53 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
-
-#include "core/core.h"
-#include "misc/paths-provider.h"
 
 #include "languages-manager.h"
 
-QMap<QString, QString> LanguagesManager::Languages;
+#include "misc/paths-provider.h"
+
+#include <QtCore/QDir>
+
+LanguagesManager::LanguagesManager(QObject *parent) :
+		QObject{parent}
+{
+}
+
+LanguagesManager::~LanguagesManager()
+{
+}
+
+void LanguagesManager::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void LanguagesManager::init()
+{
+	loadLanguages();
+}
 
 void LanguagesManager::loadLanguages()
 {
-	QDir tranlationsDir(Core::instance()->pathsProvider()->dataPath() + QLatin1String("translations"));
+	auto tranlationsDir = QDir{m_pathsProvider->dataPath() + QLatin1String{"translations"}};
+	auto languagesFilter = QStringList{} << "*.language";
+	auto languageFiles = tranlationsDir.entryInfoList(languagesFilter, QDir::Files);
 
-	QStringList languagesFilter;
-	languagesFilter << "*.language";
-	QFileInfoList languages = tranlationsDir.entryInfoList(languagesFilter, QDir::Files);
-
-	foreach (const QFileInfo &languageFileInfo, languages)
+	for (auto const &languageFileInfo : languageFiles)
 	{
-		QFile languageFile(languageFileInfo.filePath());
-		if (languageFile.open(QIODevice::ReadOnly))
-		{
-			auto fileName = languageFileInfo.fileName();
-			auto languageCode = fileName.left(fileName.length() - QString{".language"}.length());
-			Languages.insert(languageCode, QString::fromUtf8(languageFile.readAll()).trimmed());
-			languageFile.close();
-		}
+		QFile languageFile{languageFileInfo.filePath()};
+		if (!languageFile.open(QIODevice::ReadOnly))
+			continue;
+
+		auto fileName = languageFileInfo.fileName();
+		auto languageCode = fileName.left(fileName.length() - QString{".language"}.length());
+		m_languages.insert(languageCode, QString::fromUtf8(languageFile.readAll()).trimmed());
 	}
 }
 
-const QMap<QString, QString> & LanguagesManager::languages()
+QMap<QString, QString> LanguagesManager::languages() const
 {
-	if (Languages.isEmpty())
-		loadLanguages();
-
-	return Languages;
+	return m_languages;
 }
+
+#include "moc_languages-manager.cpp"

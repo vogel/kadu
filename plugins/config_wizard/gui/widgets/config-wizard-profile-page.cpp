@@ -46,6 +46,11 @@ void ConfigWizardProfilePage::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void ConfigWizardProfilePage::setLanguagesManager(LanguagesManager *languagesManager)
+{
+	m_languagesManager = languagesManager;
+}
+
 void ConfigWizardProfilePage::setMyself(Myself *myself)
 {
 	m_myself = myself;
@@ -81,7 +86,7 @@ void ConfigWizardProfilePage::createGui()
 
 void ConfigWizardProfilePage::setLanguages()
 {
-	for (QMap<QString, QString>::const_iterator it = LanguagesManager::languages().constBegin(), end = LanguagesManager::languages().constEnd(); it != end; ++it)
+	for (QMap<QString, QString>::const_iterator it = m_languagesManager->languages().constBegin(), end = m_languagesManager->languages().constEnd(); it != end; ++it)
 		LanguagesCombo->addItem(it.value(), it.key());
 }
 

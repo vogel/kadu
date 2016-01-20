@@ -25,6 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class Configuration;
+class LanguagesManager;
 class Myself;
 
 class QComboBox;
@@ -49,10 +50,12 @@ public:
 
 private:
 	QPointer<Configuration> m_configuration;
+	QPointer<LanguagesManager> m_languagesManager;
 	QPointer<Myself> m_myself;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setLanguagesManager(LanguagesManager *languagesManager);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_INIT void init();
 

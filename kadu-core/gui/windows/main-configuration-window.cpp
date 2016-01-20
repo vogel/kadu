@@ -140,6 +140,11 @@ void MainConfigurationWindow::setInjectedFactory(InjectedFactory *injectedFactor
 	m_injectedFactory = injectedFactory;
 }
 
+void MainConfigurationWindow::setLanguagesManager(LanguagesManager *languagesManager)
+{
+	m_languagesManager = languagesManager;
+}
+
 void MainConfigurationWindow::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -282,7 +287,7 @@ void MainConfigurationWindow::setLanguages()
 {
 	ConfigComboBox *languages = static_cast<ConfigComboBox *>(widget()->widgetById("languages"));
 
-	languages->setItems(LanguagesManager::languages().keys(), LanguagesManager::languages().values());
+	languages->setItems(m_languagesManager->languages().keys(), m_languagesManager->languages().values());
 }
 
 void MainConfigurationWindow::installIconTheme()
