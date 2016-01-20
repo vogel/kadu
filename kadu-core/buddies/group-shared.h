@@ -19,34 +19,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GROUP_SHARED_H
-#define GROUP_SHARED_H
+#pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QString>
+#include <injeqt/injeqt.h>
 
 #include "storage/shared.h"
+
+class Configuration;
+class GroupManager;
 
 class KADUAPI GroupShared : public Shared
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(GroupShared)
-
-	QString Name;
-	QString Icon;
-	bool NotifyAboutStatusChanges;
-	bool ShowInAllGroup;
-	bool OfflineToGroup;
-	bool ShowIcon;
-	bool ShowName;
-	int TabPosition;
-
-	friend class GroupManager;
-	void importConfiguration(const QString &name);
-
-protected:
-	virtual void load();
-	virtual void store();
 
 public:
 	static GroupShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &groupStoragePoint);
@@ -76,6 +63,28 @@ signals:
 	void nameChanged();
 	void groupAboutToBeRemoved();
 
-};
+protected:
+	virtual void load();
+	virtual void store();
 
-#endif // GROUP_SHARED_H
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<GroupManager> m_groupManager;
+
+	QString Name;
+	QString Icon;
+	bool NotifyAboutStatusChanges;
+	bool ShowInAllGroup;
+	bool OfflineToGroup;
+	bool ShowIcon;
+	bool ShowName;
+	int TabPosition;
+
+	friend class GroupManager;
+	void importConfiguration(const QString &name);
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+
+};

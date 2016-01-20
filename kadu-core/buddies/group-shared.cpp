@@ -58,9 +58,19 @@ GroupShared::~GroupShared()
 	ref.ref();
 }
 
+void GroupShared::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void GroupShared::setGroupManager(GroupManager *groupManager)
+{
+	m_groupManager = groupManager;
+}
+
 StorableObject * GroupShared::storageParent()
 {
-	return Core::instance()->groupManager();
+	return m_groupManager;
 }
 
 QString GroupShared::storageNodeName()
@@ -71,7 +81,7 @@ QString GroupShared::storageNodeName()
 void GroupShared::importConfiguration(const QString &name)
 {
 	Name = name;
-	Icon = Core::instance()->configuration()->deprecatedApi()->readEntry("GroupIcon", name);
+	Icon = m_configuration->deprecatedApi()->readEntry("GroupIcon", name);
 	NotifyAboutStatusChanges = true;
 	ShowInAllGroup= true;
 	OfflineToGroup= false;
