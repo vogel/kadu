@@ -49,7 +49,7 @@ class GaduEditAccountWidget : public AccountEditWidget
 	Q_OBJECT
 
 public:
-	explicit GaduEditAccountWidget(GaduServersManager *gaduServersManager, Account account, QWidget *parent = 0);
+	explicit GaduEditAccountWidget(GaduServersManager *gaduServersManager, Account account, QWidget *parent = nullptr);
 	virtual ~GaduEditAccountWidget();
 
 public slots:

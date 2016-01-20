@@ -47,7 +47,7 @@ class KADUAPI AccountAvatarWidget : public QWidget
 	} Mode;
 
 public:
-	explicit AccountAvatarWidget(Account account, QWidget *parent = 0);
+	explicit AccountAvatarWidget(Account account, QWidget *parent = nullptr);
 	virtual ~AccountAvatarWidget();
 
 private:

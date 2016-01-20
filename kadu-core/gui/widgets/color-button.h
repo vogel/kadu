@@ -15,7 +15,7 @@ class KADUAPI ColorButton : public QPushButton
 	QColor currentColor;
 
 public:
-	ColorButton(QWidget *parent = 0);
+	ColorButton(QWidget *parent = nullptr);
 	const QColor &color() const;
 	bool setColor(const QColor &color);
 

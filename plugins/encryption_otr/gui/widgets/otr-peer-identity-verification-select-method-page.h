@@ -30,7 +30,7 @@ class OtrPeerIdentityVerificationSelectMethodPage : public QWizardPage
 	QLabel * createDescirptionLabel(const QString &text);
 
 public:
-	explicit OtrPeerIdentityVerificationSelectMethodPage(QWidget *parent = 0);
+	explicit OtrPeerIdentityVerificationSelectMethodPage(QWidget *parent = nullptr);
 	virtual ~OtrPeerIdentityVerificationSelectMethodPage();
 
 	virtual int nextId() const;

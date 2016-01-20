@@ -48,7 +48,7 @@ private slots:
 	void talkableActivated(const Talkable &talkable);
 
 public:
-	explicit SelectTalkablePopup(QWidget *parent = 0);
+	explicit SelectTalkablePopup(QWidget *parent = nullptr);
 	virtual ~SelectTalkablePopup();
 
 	virtual QSize sizeHint() const;

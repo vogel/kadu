@@ -45,7 +45,7 @@ public:
 	 * @short Create new instance of SmsTranslator.
 	 * @param parent QObject parent of new instance of SmsTranslator
 	 */
-	explicit SmsTranslator(QObject *parent = 0);
+	explicit SmsTranslator(QObject *parent = nullptr);
 	virtual ~SmsTranslator();
 
 public slots:

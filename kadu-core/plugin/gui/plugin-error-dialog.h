@@ -34,7 +34,7 @@ class PluginErrorDialog : public QDialog, DesktopAwareObject
 	QCheckBox *LoadInFutureCheck;
 
 public:
-	PluginErrorDialog(QString pluginName, const QString &text, bool offerLoadInFutureChoice, QWidget *parent = 0);
+	PluginErrorDialog(QString pluginName, const QString &text, bool offerLoadInFutureChoice, QWidget *parent = nullptr);
 	virtual ~PluginErrorDialog();
 
 public slots:

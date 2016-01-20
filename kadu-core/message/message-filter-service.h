@@ -53,7 +53,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param parent QObject parent
 	 */
-	Q_INVOKABLE explicit MessageFilterService(QObject *parent = 0);
+	Q_INVOKABLE explicit MessageFilterService(QObject *parent = nullptr);
 	virtual ~MessageFilterService();
 
 	/**

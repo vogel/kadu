@@ -49,7 +49,7 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	Q_OBJECT
 
 public:
-	explicit JabberCreateAccountWidget(bool showButtons, QWidget *parent = 0);
+	explicit JabberCreateAccountWidget(bool showButtons, QWidget *parent = nullptr);
 	virtual ~JabberCreateAccountWidget();
 
 	void setJabberServersService(JabberServersService *serversService);

@@ -170,7 +170,7 @@ public:
 	 * @short Create new instance of TalkableProxyModel with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit TalkableProxyModel(QObject *parent = 0);
+	explicit TalkableProxyModel(QObject *parent = nullptr);
 	virtual ~TalkableProxyModel();
 
 	/**

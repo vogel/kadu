@@ -45,7 +45,7 @@ class OtrPeerIdentityVerificationFingerprintExchangePage : public QWizardPage
 	void createGui();
 
 public:
-	explicit OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, QWidget *parent = 0);
+	explicit OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, QWidget *parent = nullptr);
 	virtual ~OtrPeerIdentityVerificationFingerprintExchangePage();
 
 	void setFingerprintService(OtrFingerprintService *fingerprintService);

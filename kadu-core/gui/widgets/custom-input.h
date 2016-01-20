@@ -69,7 +69,7 @@ protected:
 	virtual void insertFromMimeData(const QMimeData *source);
 
 public:
-	explicit CustomInput(Chat chat, QWidget *parent = 0);
+	explicit CustomInput(Chat chat, QWidget *parent = nullptr);
 
 	void setFormattedString(const FormattedString &formattedString);
 	std::unique_ptr<FormattedString> formattedString() const;

@@ -43,7 +43,7 @@ class MPRISMediaPlayer : public QObject, public PlayerCommands, public PlayerInf
 	QString name;
 
 public:
-	explicit MPRISMediaPlayer(QObject *parent = 0);
+	explicit MPRISMediaPlayer(QObject *parent = nullptr);
 	virtual ~MPRISMediaPlayer();
 
 	QString getTitle();

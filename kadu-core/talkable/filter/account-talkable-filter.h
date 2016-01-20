@@ -52,7 +52,7 @@ public:
 	 *
 	 * Create new instance of AccountTalkableFilter with given parent.
 	 */
-	explicit AccountTalkableFilter(QObject *parent = 0);
+	explicit AccountTalkableFilter(QObject *parent = nullptr);
 	virtual ~AccountTalkableFilter();
 
 	virtual FilterResult filterChat(const Chat &chat);

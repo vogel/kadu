@@ -32,7 +32,7 @@ class KADUAPI RawMessageTransformerService : public QObject, public Configurable
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit RawMessageTransformerService(QObject *parent = 0);
+	Q_INVOKABLE explicit RawMessageTransformerService(QObject *parent = nullptr);
 	virtual ~RawMessageTransformerService();
 
 };

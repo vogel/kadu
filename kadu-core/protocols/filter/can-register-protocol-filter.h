@@ -33,7 +33,7 @@ class CanRegisterProtocolFilter : public AbstractProtocolFilter
 	bool Enabled;
 
 public:
-	CanRegisterProtocolFilter(QObject *parent = 0);
+	CanRegisterProtocolFilter(QObject *parent = nullptr);
 
 	void setEnabled(bool enabled);
 	virtual bool acceptProtocol(ProtocolFactory *factory);

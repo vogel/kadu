@@ -54,7 +54,7 @@ public:
 	 */
 	static bool containsEmotsTxt(const QString &dir);
 
-	explicit EmoticonThemeManager(QObject *parent = 0);
+	explicit EmoticonThemeManager(QObject *parent = nullptr);
 	virtual ~EmoticonThemeManager();
 
 };

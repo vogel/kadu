@@ -37,7 +37,7 @@ class OtrPeerIdentityVerificationSharedSecretPage : public QWizardPage
 	void createGui();
 
 public:
-	explicit OtrPeerIdentityVerificationSharedSecretPage(const Contact &contact, QWidget *parent = 0);
+	explicit OtrPeerIdentityVerificationSharedSecretPage(const Contact &contact, QWidget *parent = nullptr);
 	virtual ~OtrPeerIdentityVerificationSharedSecretPage();
 
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);

@@ -34,7 +34,7 @@ class SoundBuddyConfigurationWidget : public BuddyConfigurationWidget
 	Q_OBJECT
 
 public:
-	explicit SoundBuddyConfigurationWidget(const Buddy &buddy, SoundManager *soundManager, QWidget *parent = 0);
+	explicit SoundBuddyConfigurationWidget(const Buddy &buddy, SoundManager *soundManager, QWidget *parent = nullptr);
 	virtual ~SoundBuddyConfigurationWidget();
 
 	virtual const ConfigurationValueStateNotifier * stateNotifier() const override;

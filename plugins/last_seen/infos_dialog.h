@@ -42,7 +42,7 @@ private slots:
 
 public:
 	/*! Default constructor. */
-	explicit InfosDialog(const LastSeen &lastSeen, QWidget *parent = 0);
+	explicit InfosDialog(const LastSeen &lastSeen, QWidget *parent = nullptr);
 
 	/*! Default destructor. */
 	~InfosDialog();

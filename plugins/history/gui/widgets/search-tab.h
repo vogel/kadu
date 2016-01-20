@@ -82,7 +82,7 @@ private slots:
 	void messagesDisplayed();
 
 public:
-	explicit SearchTab(QWidget *parent = 0);
+	explicit SearchTab(QWidget *parent = nullptr);
 	virtual ~SearchTab();
 
 	void setChatStorage(HistoryMessagesStorage *storage);

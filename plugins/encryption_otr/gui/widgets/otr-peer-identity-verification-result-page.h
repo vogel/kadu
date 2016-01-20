@@ -40,7 +40,7 @@ class OtrPeerIdentityVerificationResultPage : public QWizardPage
 	QString stateToString(const OtrPeerIdentityVerificationState::State &state, OtrTrustLevelService::TrustLevel trustLevel);
 
 public:
-	explicit OtrPeerIdentityVerificationResultPage(const Contact &contact, QWidget *parent = 0);
+	explicit OtrPeerIdentityVerificationResultPage(const Contact &contact, QWidget *parent = nullptr);
 	virtual ~OtrPeerIdentityVerificationResultPage();
 
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);

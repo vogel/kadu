@@ -37,7 +37,7 @@ public:
 	Q_INVOKABLE explicit ChatNotifier(QObject *parent = nullptr);
 	virtual ~ChatNotifier();
 
-	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
+	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr);
 
 	virtual void notify(Notification *notification);
 

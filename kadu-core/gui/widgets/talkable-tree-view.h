@@ -57,7 +57,7 @@ class KADUAPI TalkableTreeView : public KaduTreeView, public ActionContextProvid
 	Q_OBJECT
 
 public:
-	explicit TalkableTreeView(QWidget *parent = 0);
+	explicit TalkableTreeView(QWidget *parent = nullptr);
 	virtual ~TalkableTreeView();
 
 	virtual void setChain(ModelChain *chain);

@@ -165,7 +165,7 @@ public:
 	virtual void showToolTip(const QPoint &point, Talkable talkable);
 	virtual void hideToolTip();
 
-	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
+	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr);
 
 	void prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkable talkable);
 

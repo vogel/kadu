@@ -277,7 +277,7 @@ protected:
 public:
 	static int token();
 
-	explicit ToolBarSeparator(QWidget *parent = 0);
+	explicit ToolBarSeparator(QWidget *parent = nullptr);
 
 signals:
 	void pressed();
@@ -296,7 +296,7 @@ protected:
 public:
 	static int token();
 
-	explicit ToolBarSpacer(QWidget *parent = 0);
+	explicit ToolBarSpacer(QWidget *parent = nullptr);
 
 signals:
 	void pressed();

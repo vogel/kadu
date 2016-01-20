@@ -44,7 +44,7 @@ class KADUAPI AvatarDownloader : public QObject
 	Q_OBJECT
 
 protected:
-	explicit AvatarDownloader(QObject *parent = 0) : QObject(parent) {}
+	explicit AvatarDownloader(QObject *parent = nullptr) : QObject(parent) {}
 	virtual ~AvatarDownloader() {}
 
 public:

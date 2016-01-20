@@ -71,7 +71,7 @@ public:
 	 * @short Create new instance of ActionFilterProxyModel
 	 * @param parent QObject parent of new model
 	 */
-	explicit ActionFilterProxyModel(QObject *parent = 0);
+	explicit ActionFilterProxyModel(QObject *parent = nullptr);
 	virtual ~ActionFilterProxyModel();
 
 	/**

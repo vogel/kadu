@@ -55,7 +55,7 @@ protected:
 	virtual void mouseDoubleClickEvent(QMouseEvent *e);
 
 public:
-	explicit TabBar(QWidget *parent = 0);
+	explicit TabBar(QWidget *parent = nullptr);
 
 signals:
 	void contextMenu(int id, const QPoint &pos);

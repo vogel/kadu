@@ -46,7 +46,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit HistoryChatConfigurationWidget(const Chat &chat, QWidget *parent = 0);
+	explicit HistoryChatConfigurationWidget(const Chat &chat, QWidget *parent = nullptr);
 	virtual ~HistoryChatConfigurationWidget();
 
 	virtual const ConfigurationValueStateNotifier * stateNotifier() const;

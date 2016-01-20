@@ -35,7 +35,7 @@ class KADUAPI ConfigurationValueStateNotifier : public QObject
 	Q_OBJECT
 
 public:
-	explicit ConfigurationValueStateNotifier(QObject *parent = 0);
+	explicit ConfigurationValueStateNotifier(QObject *parent = nullptr);
 	virtual ~ConfigurationValueStateNotifier();
 
 	virtual ConfigurationValueState state() const = 0;

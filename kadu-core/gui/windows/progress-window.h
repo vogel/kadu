@@ -84,7 +84,7 @@ public:
 	 * @param label label of progress window
 	 * @param parent parent QWidget of progress window
 	 */
-	explicit ProgressWindow(const QString &label, QWidget *parent = 0);
+	explicit ProgressWindow(const QString &label, QWidget *parent = nullptr);
 	virtual ~ProgressWindow();
 
 	/**

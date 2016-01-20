@@ -65,7 +65,7 @@ public:
 	 * @param pathProvider EmoticonPathProvider used to get image file name for emoticon
 	 * @param parent parent widget
 	 */
-	explicit EmoticonSelectorButtonPopup(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent = 0);
+	explicit EmoticonSelectorButtonPopup(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent = nullptr);
 	virtual ~EmoticonSelectorButtonPopup();
 
 signals:

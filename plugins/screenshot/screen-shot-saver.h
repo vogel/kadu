@@ -38,7 +38,7 @@ class ScreenShotSaver : public QObject
 	QString createScreenshotPath();
 
 public:
-	explicit ScreenShotSaver(ScreenShotConfiguration *screenShotConfiguration, QObject *parent = 0);
+	explicit ScreenShotSaver(ScreenShotConfiguration *screenShotConfiguration, QObject *parent = nullptr);
 	virtual ~ScreenShotSaver();
 
 	QString saveScreenShot(QPixmap pixmap);

@@ -47,7 +47,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	explicit ScreenshotWidget(QWidget *parent = 0);
+	explicit ScreenshotWidget(QWidget *parent = nullptr);
 	virtual ~ScreenshotWidget();
 
 	void setShotMode(ScreenShotMode shotMode);

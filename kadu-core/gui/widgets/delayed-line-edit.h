@@ -38,7 +38,7 @@ private slots:
 	void textChangedSlot(const QString &text);
 
 public:
-	DelayedLineEdit(QWidget *parent = 0);
+	DelayedLineEdit(QWidget *parent = nullptr);
 	virtual ~DelayedLineEdit();
 
 	void setDelay(int delay);

@@ -34,7 +34,7 @@ class OAuthManager : public QObject
 	QNetworkAccessManager *NetworkManager;
 
 public:
-	explicit OAuthManager(QObject *parent = 0);
+	explicit OAuthManager(QObject *parent = nullptr);
 	virtual ~OAuthManager();
 
 	void authorize(OAuthConsumer consumer);

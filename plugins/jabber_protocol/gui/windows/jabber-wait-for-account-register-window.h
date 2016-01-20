@@ -31,7 +31,7 @@ class JabberWaitForAccountRegisterWindow : public ProgressWindow
 	Q_OBJECT
 
 public:
-	explicit JabberWaitForAccountRegisterWindow(JabberRegisterAccount *jabberRegisterAccount, QWidget *parent = 0);
+	explicit JabberWaitForAccountRegisterWindow(JabberRegisterAccount *jabberRegisterAccount, QWidget *parent = nullptr);
 	virtual ~JabberWaitForAccountRegisterWindow();
 
 signals:

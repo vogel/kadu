@@ -51,7 +51,7 @@ private slots:
 	void factoryUnregistered(ChatTopBarWidgetFactory *factory);
 
 public:
-	explicit ChatTopBarContainerWidget(const Chat &chat, QWidget *parent = 0);
+	explicit ChatTopBarContainerWidget(const Chat &chat, QWidget *parent = nullptr);
 	virtual ~ChatTopBarContainerWidget();
 
 };

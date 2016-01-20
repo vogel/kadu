@@ -57,7 +57,7 @@ public:
 	 * @short Create new instance of GroupTalkableFilter with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit GroupTalkableFilter(QObject *parent = 0);
+	explicit GroupTalkableFilter(QObject *parent = nullptr);
 	virtual ~GroupTalkableFilter();
 
 	virtual FilterResult filterChat(const Chat &chat);

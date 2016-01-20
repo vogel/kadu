@@ -35,7 +35,7 @@ class ChatViewNetworkAccessManager : public QNetworkAccessManager
 	QPointer<ImageStorageService> CurrentImageStorageService;
 
 public:
-	explicit ChatViewNetworkAccessManager(QNetworkAccessManager *oldManager, QObject *parent = 0);
+	explicit ChatViewNetworkAccessManager(QNetworkAccessManager *oldManager, QObject *parent = nullptr);
 	virtual ~ChatViewNetworkAccessManager();
 
 	void setImageStorageService(ImageStorageService *imageStorageService);

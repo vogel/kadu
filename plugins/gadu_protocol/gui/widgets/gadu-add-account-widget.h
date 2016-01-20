@@ -39,7 +39,7 @@ class GaduAddAccountWidget : public AccountAddWidget
 	Q_OBJECT
 
 public:
-	explicit GaduAddAccountWidget(bool showButtons, QWidget *parent = 0);
+	explicit GaduAddAccountWidget(bool showButtons, QWidget *parent = nullptr);
 	virtual ~GaduAddAccountWidget();
 
 public slots:

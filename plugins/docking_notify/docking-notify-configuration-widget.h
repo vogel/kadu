@@ -42,7 +42,7 @@ private slots:
 	void showConfigurationWindow();
 
 public:
-	DockingNotifyConfigurationWidget(QWidget *parent = 0);
+	DockingNotifyConfigurationWidget(QWidget *parent = nullptr);
 
 	virtual void loadNotifyConfigurations() {}
 	virtual void saveNotifyConfigurations();

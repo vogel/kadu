@@ -63,7 +63,7 @@ public:
 	 * This contructor creates WaitOverlay widget and attaches to given parent.
 	 * Overlay will follow target widget and resize with it.
 	 */
-	explicit WaitOverlay(QWidget *parent = 0);
+	explicit WaitOverlay(QWidget *parent = nullptr);
 	virtual ~WaitOverlay();
 
 };

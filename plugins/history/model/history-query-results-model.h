@@ -62,7 +62,7 @@ public:
 	 * @short Create new model.
 	 * @param parent QObject parent of new model.
 	 */
-	explicit HistoryQueryResultsModel(QObject *parent = 0);
+	explicit HistoryQueryResultsModel(QObject *parent = nullptr);
 	virtual ~HistoryQueryResultsModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;

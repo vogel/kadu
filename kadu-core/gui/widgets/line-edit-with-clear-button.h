@@ -53,7 +53,7 @@ protected:
 	virtual void resizeEvent(QResizeEvent *e);
 
 public:
-	explicit LineEditWithClearButton(QWidget *parent = 0);
+	explicit LineEditWithClearButton(QWidget *parent = nullptr);
 	virtual ~LineEditWithClearButton();
 
 	bool isClearButtonVisible() const { return ClearButtonVisible; }

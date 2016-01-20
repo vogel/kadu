@@ -42,7 +42,7 @@ protected:
 	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
 
 public:
-	explicit AccountAddWidget(QWidget *parent = 0);
+	explicit AccountAddWidget(QWidget *parent = nullptr);
 	virtual ~AccountAddWidget();
 
 	virtual const ConfigurationValueStateNotifier * stateNotifier() const;

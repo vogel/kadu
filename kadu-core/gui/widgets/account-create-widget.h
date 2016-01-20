@@ -41,7 +41,7 @@ protected:
 	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
 
 public:
-	explicit AccountCreateWidget(QWidget *parent = 0);
+	explicit AccountCreateWidget(QWidget *parent = nullptr);
 	virtual ~AccountCreateWidget();
 
 	virtual const ConfigurationValueStateNotifier * stateNotifier() const;

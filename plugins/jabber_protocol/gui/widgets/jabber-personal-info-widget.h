@@ -54,7 +54,7 @@ private slots:
 	void personalInfoAvailable(Buddy buddy);
 
 public:
-	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = 0);
+	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = nullptr);
 	virtual ~JabberPersonalInfoWidget();
 
 	bool isModified();

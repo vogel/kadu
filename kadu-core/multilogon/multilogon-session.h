@@ -45,7 +45,7 @@ protected:
 	void setLogonTime(const QDateTime &logonTime);
 
 public:
-	explicit MultilogonSession(Account account, QObject *parent = 0);
+	explicit MultilogonSession(Account account, QObject *parent = nullptr);
 	virtual ~MultilogonSession();
 
 	Account account() const;

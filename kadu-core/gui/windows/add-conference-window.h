@@ -60,7 +60,7 @@ private slots:
 	void validateData();
 
 public:
-	explicit AddConferenceWindow(QWidget *parent = 0);
+	explicit AddConferenceWindow(QWidget *parent = nullptr);
 	virtual ~AddConferenceWindow();
 
 public slots:

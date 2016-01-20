@@ -43,7 +43,7 @@ protected:
 	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 public:
-	AccountsProxyModel(QObject *parent = 0);
+	AccountsProxyModel(QObject *parent = nullptr);
 	virtual ~AccountsProxyModel();
 
 	void addFilter(AbstractAccountFilter *filter);

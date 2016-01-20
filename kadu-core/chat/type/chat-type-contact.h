@@ -55,7 +55,7 @@ class KADUAPI ChatTypeContact : public ChatType
 public:
 	static Chat findChat(const Contact &contact, NotFoundAction notFoundAction);
 
-	explicit ChatTypeContact(QObject *parent = 0);
+	explicit ChatTypeContact(QObject *parent = nullptr);
 	virtual ~ChatTypeContact();
 
 	virtual QString name() const;

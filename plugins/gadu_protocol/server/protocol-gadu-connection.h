@@ -57,7 +57,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param parent QObject parent
 	 */
-	explicit ProtocolGaduConnection(QObject *parent = 0);
+	explicit ProtocolGaduConnection(QObject *parent = nullptr);
 	virtual ~ProtocolGaduConnection();
 
 	/**

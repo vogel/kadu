@@ -63,7 +63,7 @@ public:
 	 *
 	 * This contructor creates new chain.
 	 */
-	explicit ModelChain(QObject *parent = 0);
+	explicit ModelChain(QObject *parent = nullptr);
 	virtual ~ModelChain();
 
 	/**

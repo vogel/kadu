@@ -45,7 +45,7 @@ public slots:
 	void protocolChanged();
 
 public:
-	explicit ConfigWizardChooseNetworkPage(QWidget *parent = 0);
+	explicit ConfigWizardChooseNetworkPage(QWidget *parent = nullptr);
 	virtual ~ConfigWizardChooseNetworkPage();
 
 };

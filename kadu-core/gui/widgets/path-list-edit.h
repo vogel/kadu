@@ -42,7 +42,7 @@ private slots:
 	void pathListChanged(const QStringList &pathList);
 
 public:
-	PathListEdit(QWidget *parent = 0);
+	PathListEdit(QWidget *parent = nullptr);
 	virtual ~PathListEdit() {}
 
 	const QStringList & pathList() const { return PathList; }
@@ -71,7 +71,7 @@ private slots:
 	void keyPressEvent(QKeyEvent *e);
 
 public:
-	explicit PathListEditWindow(const QStringList &pathList, QWidget *parent = 0);
+	explicit PathListEditWindow(const QStringList &pathList, QWidget *parent = nullptr);
 	~PathListEditWindow();
 
 public slots:

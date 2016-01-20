@@ -71,7 +71,7 @@ public:
 	 *
 	 * This object gets ownership of pathProvider pointer.
 	 */
-	explicit EmoticonSelector(const QVector<Emoticon> &emoticons, EmoticonPathProvider *pathProvider, QWidget *parent = 0);
+	explicit EmoticonSelector(const QVector<Emoticon> &emoticons, EmoticonPathProvider *pathProvider, QWidget *parent = nullptr);
 	virtual ~EmoticonSelector();
 
 signals:

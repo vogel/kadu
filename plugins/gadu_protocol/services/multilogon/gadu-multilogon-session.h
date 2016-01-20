@@ -31,10 +31,10 @@ class GaduMultilogonSession : public MultilogonSession
 	gg_multilogon_id_t Id;
 
 public:
-	explicit GaduMultilogonSession(Account account, QObject *parent = 0);
+	explicit GaduMultilogonSession(Account account, QObject *parent = nullptr);
 	virtual ~GaduMultilogonSession();
 
-	GaduMultilogonSession(Account account, const gg_multilogon_session &session, QObject *parent = 0);
+	GaduMultilogonSession(Account account, const gg_multilogon_session &session, QObject *parent = nullptr);
 
 	const gg_multilogon_id_t & id() const;
 

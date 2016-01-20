@@ -43,7 +43,7 @@ private slots:
 	void deleteItem();
 
 public:
-	explicit ListEditWidget(QWidget *parent = 0);
+	explicit ListEditWidget(QWidget *parent = nullptr);
 	virtual ~ListEditWidget();
 
 	void setList(const QStringList &list);

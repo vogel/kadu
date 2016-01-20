@@ -55,7 +55,7 @@ public:
 	 * @short Create new window with given picture.
 	 * @param tokenPixmap pixmap to present to user
 	 */
-	explicit TokenWindow(const QPixmap &tokenPixmap, QWidget *parent = 0);
+	explicit TokenWindow(const QPixmap &tokenPixmap, QWidget *parent = nullptr);
 	virtual ~TokenWindow();
 
 public slots:

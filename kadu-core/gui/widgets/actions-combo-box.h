@@ -137,7 +137,7 @@ protected:
 	QVariant currentValue() const;
 
 public:
-	explicit ActionsComboBox(QWidget *parent = 0);
+	explicit ActionsComboBox(QWidget *parent = nullptr);
 	virtual ~ActionsComboBox();
 
 	/**

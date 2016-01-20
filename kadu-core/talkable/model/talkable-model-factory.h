@@ -40,7 +40,7 @@ namespace TalkableModelFactory
 	 * @param parent QObject parent of new object
 	 * @return new instance of TalkableModel with given parent
 	 */
-	QAbstractItemModel * createInstance(QObject *parent = 0);
+	QAbstractItemModel * createInstance(QObject *parent = nullptr);
 }
 
 /**

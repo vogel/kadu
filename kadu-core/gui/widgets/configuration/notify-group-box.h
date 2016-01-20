@@ -42,7 +42,7 @@ private slots:
 	void iconThemeChanged();
 
 public:
-	NotifyGroupBox(Notifier *Notificator, const QString &caption, QWidget *parent = 0);
+	NotifyGroupBox(Notifier *Notificator, const QString &caption, QWidget *parent = nullptr);
 	virtual ~NotifyGroupBox() {}
 
 	Notifier * notificator() { return Notificator; }

@@ -64,7 +64,7 @@ private slots:
 	void removeClicked();
 
 public:
-	explicit BuddyContactsTable(Buddy buddy, QWidget *parent = 0);
+	explicit BuddyContactsTable(Buddy buddy, QWidget *parent = nullptr);
 	virtual ~BuddyContactsTable();
 
 	const ConfigurationValueStateNotifier * valueStateNotifier() const;

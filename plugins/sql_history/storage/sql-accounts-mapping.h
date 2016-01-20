@@ -69,7 +69,7 @@ public:
 	 * Database provided in this constructor is not checked for existence or validity of kadu_accounts table. It is caller responsibility
 	 * to provide proper database.
 	 */
-	explicit SqlAccountsMapping(const QSqlDatabase &database, QObject *parent = 0);
+	explicit SqlAccountsMapping(const QSqlDatabase &database, QObject *parent = nullptr);
 	virtual ~SqlAccountsMapping();
 
 	/**

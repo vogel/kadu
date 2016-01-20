@@ -78,7 +78,7 @@ public:
 	 * @short Create new instance of TalkableFilter with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit TalkableFilter(QObject *parent = 0);
+	explicit TalkableFilter(QObject *parent = nullptr);
 	virtual ~TalkableFilter();
 
 	/**

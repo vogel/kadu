@@ -206,7 +206,7 @@ public:
 	 *
 	 * Creates new instance of MergedProxyModel.
 	 */
-	explicit MergedProxyModel(QObject *parent = 0);
+	explicit MergedProxyModel(QObject *parent = nullptr);
 	virtual ~MergedProxyModel();
 
 	/**

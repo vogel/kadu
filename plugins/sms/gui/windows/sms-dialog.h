@@ -95,7 +95,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	explicit SmsDialog(History *history, MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, QWidget *parent = 0);
+	explicit SmsDialog(History *history, MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, QWidget *parent = nullptr);
 	virtual ~SmsDialog();
 
 	void setRecipient(const QString &phone);

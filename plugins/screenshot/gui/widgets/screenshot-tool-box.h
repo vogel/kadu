@@ -34,7 +34,7 @@ class ScreenshotToolBox : public QFrame
 	QLabel *FileSizeLabel;
 
 public:
-	explicit ScreenshotToolBox(QWidget *parent = 0);
+	explicit ScreenshotToolBox(QWidget *parent = nullptr);
 	virtual ~ScreenshotToolBox();
 
 	void setGeometry(const QString &geometry);

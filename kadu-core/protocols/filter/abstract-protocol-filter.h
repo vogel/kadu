@@ -31,7 +31,7 @@ class AbstractProtocolFilter : public QObject
 	Q_OBJECT
 
 public:
-	explicit AbstractProtocolFilter(QObject *parent = 0)
+	explicit AbstractProtocolFilter(QObject *parent = nullptr)
 			: QObject(parent) {}
 	virtual ~AbstractProtocolFilter() {}
 

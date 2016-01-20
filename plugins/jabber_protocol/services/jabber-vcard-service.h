@@ -53,7 +53,7 @@ public:
 	 * @short Create new instance of JabberVCardService.
 	 * @param parent QObject parent
 	 */
-	explicit JabberVCardService(QXmppVCardManager *vcardManager, QObject *parent = 0);
+	explicit JabberVCardService(QXmppVCardManager *vcardManager, QObject *parent = nullptr);
 	virtual ~JabberVCardService();
 
 	/**

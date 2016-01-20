@@ -75,7 +75,7 @@ public:
 	 * @param account account bounded to this service
 	 * @param parent QObject parent
 	 */
-	explicit GaduChatImageService(Account account, QObject *parent = 0);
+	explicit GaduChatImageService(Account account, QObject *parent = nullptr);
 	virtual ~GaduChatImageService();
 
 	/**

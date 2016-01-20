@@ -32,7 +32,7 @@ class KADUAPI BuddyConfigurationWidget : public ModalConfigurationWidget
 	Buddy MyBuddy;
 
 public:
-	explicit BuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = 0);
+	explicit BuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
 	virtual ~BuddyConfigurationWidget();
 
 	Buddy buddy() const;

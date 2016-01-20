@@ -45,7 +45,7 @@ public:
 	 * @short Create new instance of UnreadMessagesTalkableFilter with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit UnreadMessagesTalkableFilter(QObject *parent = 0);
+	explicit UnreadMessagesTalkableFilter(QObject *parent = nullptr);
 	virtual ~UnreadMessagesTalkableFilter();
 
 	virtual FilterResult filterChat(const Chat &chat);

@@ -51,7 +51,7 @@ private slots:
 	void trustLevelUpdated();
 
 public:
-	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = 0);
+	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = nullptr);
 	virtual ~OtrChatTopBarWidget();
 
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);

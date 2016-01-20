@@ -56,7 +56,7 @@ class KADUAPI StatusContainer : public QObject
 	friend class Core;
 
 public:
-	explicit StatusContainer(QObject *parent = 0);
+	explicit StatusContainer(QObject *parent = nullptr);
 
 	virtual ~StatusContainer();
 

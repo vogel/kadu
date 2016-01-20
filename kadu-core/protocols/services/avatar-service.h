@@ -49,7 +49,7 @@ class KADUAPI AvatarService : public AccountService
 	Q_OBJECT
 
 protected:
-	explicit AvatarService(Account account, QObject *parent = 0);
+	explicit AvatarService(Account account, QObject *parent = nullptr);
 	virtual ~AvatarService();
 
 public:

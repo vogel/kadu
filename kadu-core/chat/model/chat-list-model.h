@@ -47,7 +47,7 @@ private slots:
 	void chatUpdated();
 
 public:
-	explicit ChatListModel(QObject *parent = 0);
+	explicit ChatListModel(QObject *parent = nullptr);
 	virtual ~ChatListModel();
 
 	void setChats(const QVector<Chat> &chats);

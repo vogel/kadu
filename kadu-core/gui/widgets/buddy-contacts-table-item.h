@@ -50,7 +50,7 @@ private:
 	bool isEditValid() const;
 
 public:
-	explicit BuddyContactsTableItem(Contact contact = Contact::null, QObject *parent = 0);
+	explicit BuddyContactsTableItem(Contact contact = Contact::null, QObject *parent = nullptr);
 	virtual ~BuddyContactsTableItem() {}
 
 	Contact itemContact() const { return ItemContact; }

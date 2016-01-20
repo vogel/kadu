@@ -36,7 +36,7 @@ protected:
 public:
 	static QString defaultTheme();
 
-	explicit IconThemeManager(QObject *parent = 0);
+	explicit IconThemeManager(QObject *parent = nullptr);
 	virtual ~IconThemeManager();
 
 };

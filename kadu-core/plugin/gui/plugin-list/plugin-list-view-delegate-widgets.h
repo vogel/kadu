@@ -83,7 +83,7 @@ class PluginListWidgetDelegateEventListener
         PluginListWidgetDelegateWidgets *Pool;
 
 public:
-        PluginListWidgetDelegateEventListener(PluginListWidgetDelegateWidgets *pool, QObject *parent = 0);
+        PluginListWidgetDelegateEventListener(PluginListWidgetDelegateWidgets *pool, QObject *parent = nullptr);
 
         virtual bool eventFilter(QObject *watched, QEvent *event);
 };

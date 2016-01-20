@@ -43,7 +43,7 @@ public:
 		ResultPage
 	};
 
-	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = 0);
+	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = nullptr);
 	virtual ~OtrPeerIdentityVerificationWindow();
 
 	void showRespondQuestionAndAnswer(const QString &question);

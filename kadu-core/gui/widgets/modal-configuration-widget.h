@@ -57,7 +57,7 @@ public:
 	 *
 	 * Creates new ModalConfigurationWidget.
 	 */
-	explicit ModalConfigurationWidget(QWidget *parent = 0);
+	explicit ModalConfigurationWidget(QWidget *parent = nullptr);
 	virtual ~ModalConfigurationWidget();
 
 	/**

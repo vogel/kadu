@@ -79,7 +79,7 @@ public:
 	 * @short Create new BuddyListModel.
 	 * @param parent QObject parent of new ContactListModel
 	 */
-	explicit ContactListModel(QObject *parent = 0);
+	explicit ContactListModel(QObject *parent = nullptr);
 	virtual ~ContactListModel();
 
 	/**

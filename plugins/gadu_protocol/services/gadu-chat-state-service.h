@@ -42,7 +42,7 @@ private slots:
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 
 public:
-	explicit GaduChatStateService(Account account, QObject *parent = 0);
+	explicit GaduChatStateService(Account account, QObject *parent = nullptr);
 	virtual ~GaduChatStateService();
 
 	void setConnection(GaduConnection *connection);

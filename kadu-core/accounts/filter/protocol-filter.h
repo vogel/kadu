@@ -33,7 +33,7 @@ protected:
 	virtual bool acceptAccount(Account account);
 
 public:
-	explicit ProtocolFilter(QObject *parent = 0);
+	explicit ProtocolFilter(QObject *parent = nullptr);
 	virtual ~ProtocolFilter();
 
 	void setProtocolName(const QString &protocolName);

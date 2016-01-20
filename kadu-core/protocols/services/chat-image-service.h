@@ -59,7 +59,7 @@ class KADUAPI ChatImageService : public AccountService
 	Q_OBJECT
 
 protected:
-	explicit ChatImageService(Account account, QObject *parent = 0);
+	explicit ChatImageService(Account account, QObject *parent = nullptr);
 	virtual ~ChatImageService();
 
 public:

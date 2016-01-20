@@ -183,7 +183,7 @@ public:
 	 *
 	 * This contructor cannot be called directly, as this class is abstract.
 	 */
-	explicit HistoryMessagesTab(QWidget *parent = 0);
+	explicit HistoryMessagesTab(QWidget *parent = nullptr);
 	virtual ~HistoryMessagesTab();
 
 	/**

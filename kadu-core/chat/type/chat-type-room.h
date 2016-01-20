@@ -52,7 +52,7 @@ class KADUAPI ChatTypeRoom : public ChatType
 public:
 	static Chat findChat(const Account &account, const QString &room, NotFoundAction notFoundAction);
 
-	explicit ChatTypeRoom(QObject *parent = 0);
+	explicit ChatTypeRoom(QObject *parent = nullptr);
 	virtual ~ChatTypeRoom();
 
 	virtual QString name() const;

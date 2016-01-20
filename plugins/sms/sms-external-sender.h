@@ -36,7 +36,7 @@ private slots:
 	void processFinished();
 
 public:
-	explicit SmsExternalSender(const QString &number, QObject *parent = 0);
+	explicit SmsExternalSender(const QString &number, QObject *parent = nullptr);
 	virtual ~SmsExternalSender();
 
 	virtual void sendMessage(const QString& message);

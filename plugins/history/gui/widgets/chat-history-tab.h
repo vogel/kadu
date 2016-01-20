@@ -30,7 +30,7 @@ class ChatHistoryTab : public HistoryMessagesTab
 	Q_OBJECT
 
 public:
-	explicit ChatHistoryTab(QWidget *parent = 0);
+	explicit ChatHistoryTab(QWidget *parent = nullptr);
 	virtual ~ChatHistoryTab();
 
 	void selectTalkable(const Talkable &talkable);

@@ -44,7 +44,7 @@ protected:
 	virtual bool isValidThemePath(const QString &themePath) const = 0;
 
 public:
-	explicit ThemeManager(QObject *parent = 0);
+	explicit ThemeManager(QObject *parent = nullptr);
 	virtual ~ThemeManager();
 
 	void loadThemes();

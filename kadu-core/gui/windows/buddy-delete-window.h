@@ -63,7 +63,7 @@ private slots:
 	void additionalDataListViewItemClicked(QListWidgetItem *item);
 
 public:
-	explicit BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *parent = 0);
+	explicit BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *parent = nullptr);
 	virtual ~BuddyDeleteWindow();
 
 public slots:

@@ -57,7 +57,7 @@ public:
                                            ///< CategoryDisplayRole.
     };
 
-    CategorizedSortFilterProxyModel(QObject *parent = 0);
+    CategorizedSortFilterProxyModel(QObject *parent = nullptr);
     virtual ~CategorizedSortFilterProxyModel();
 
     /**

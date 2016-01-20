@@ -57,7 +57,7 @@ private slots:
 	void validateData();
 
 public:
-	explicit AddRoomChatWindow(QWidget *parent = 0);
+	explicit AddRoomChatWindow(QWidget *parent = nullptr);
 	virtual ~AddRoomChatWindow();
 
 public slots:

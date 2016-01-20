@@ -29,7 +29,7 @@ class AbstractAccountFilter : public QObject
 	Q_OBJECT
 
 public:
-	AbstractAccountFilter(QObject *parent = 0)
+	AbstractAccountFilter(QObject *parent = nullptr)
 			: QObject(parent) {}
 
 	virtual bool acceptAccount(Account account) = 0;

@@ -40,7 +40,7 @@ private slots:
 	void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
 
 public:
-	explicit ProtocolsModel(QObject *parent = 0);
+	explicit ProtocolsModel(QObject *parent = nullptr);
 	virtual ~ProtocolsModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;

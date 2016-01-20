@@ -43,7 +43,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	explicit UpdatesDialog(const QString &newestVersion, QWidget *parent = 0);
+	explicit UpdatesDialog(const QString &newestVersion, QWidget *parent = nullptr);
 	virtual ~UpdatesDialog();
 };
 

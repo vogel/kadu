@@ -30,7 +30,7 @@ protected:
 	virtual bool acceptAccount(Account account);
 
 public:
-	explicit WriteableContactsListFilter(QObject *parent = 0);
+	explicit WriteableContactsListFilter(QObject *parent = nullptr);
 	virtual ~WriteableContactsListFilter();
 
 };

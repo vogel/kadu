@@ -63,7 +63,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param parent QObject parent
 	 */
-	explicit GaduAvatarUploader(QObject *parent = 0);
+	explicit GaduAvatarUploader(QObject *parent = nullptr);
 	virtual ~GaduAvatarUploader();
 
 	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);

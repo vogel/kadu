@@ -56,7 +56,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit StatusIcon(StatusContainer *statusContainer, QObject *parent = 0);
+	explicit StatusIcon(StatusContainer *statusContainer, QObject *parent = nullptr);
 	virtual ~StatusIcon();
 
 	const KaduIcon & icon() const { return Icon; }

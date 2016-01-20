@@ -38,7 +38,7 @@ class BuddyAvatarWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit BuddyAvatarWidget(Buddy buddy, QWidget *parent = 0);
+	explicit BuddyAvatarWidget(Buddy buddy, QWidget *parent = nullptr);
 
 	const QPixmap avatarPixmap();
 	bool buddyAvatar() const { return BuddyAvatar; }

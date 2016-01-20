@@ -43,7 +43,7 @@ public:
 	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent);
 	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
-	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
+	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr);
     virtual ProtocolMenuManager * protocolMenuManager();
 	virtual QList<StatusType> supportedStatusTypes();
 	virtual StatusAdapter * statusAdapter() { return m_statusAdapter.get(); }

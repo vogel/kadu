@@ -32,7 +32,7 @@ protected:
 	virtual void keyReleaseEvent(QKeyEvent *e);
 
 public:
-	HotKeyEdit(QWidget *parent = 0);
+	HotKeyEdit(QWidget *parent = nullptr);
 	/**
 	  Pobiera skr�t klawiszowy
 	**/

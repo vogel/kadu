@@ -74,7 +74,7 @@ public:
 	 * @param vcardService instance of JabberVCardService
 	 * @param parent QObject parent
 	 */
-	explicit JabberAvatarUploader(JabberVCardService *vcardService, QObject *parent = 0);
+	explicit JabberAvatarUploader(JabberVCardService *vcardService, QObject *parent = nullptr);
 	virtual ~JabberAvatarUploader();
 
 	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);

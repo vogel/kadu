@@ -64,7 +64,7 @@ public:
 	 * @short Creates new HistoryTalkableComboBox.
 	 * @param parent parent widget
 	 */
-	explicit HistoryTalkableComboBox(QWidget *parent = 0);
+	explicit HistoryTalkableComboBox(QWidget *parent = nullptr);
 	virtual ~HistoryTalkableComboBox();
 
 	/**

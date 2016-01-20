@@ -31,7 +31,7 @@ class GroupList : public QListWidget
 	Q_OBJECT
 
 public:
-	explicit GroupList(QWidget *parent = 0);
+	explicit GroupList(QWidget *parent = nullptr);
 	virtual ~GroupList();
 
 	void setCheckedGroups(const QSet<Group> groups);

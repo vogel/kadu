@@ -32,7 +32,7 @@ class KADUAPI StoragePointFactory : public QObject
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit StoragePointFactory(QObject *parent = 0);
+	Q_INVOKABLE explicit StoragePointFactory(QObject *parent = nullptr);
 	virtual ~StoragePointFactory();
 
 	void setConfigurationFile(ConfigurationApi *configurationFile);

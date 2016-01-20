@@ -27,7 +27,7 @@ public:
 
 	virtual void notify(Notification *notification);
 
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr);
 
 public slots:
 	void messageClicked();

@@ -33,7 +33,7 @@ class ChatWindowManager : public QObject
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatWindowManager(QObject *parent = 0);
+	Q_INVOKABLE explicit ChatWindowManager(QObject *parent = nullptr);
 	virtual ~ChatWindowManager();
 
 	void openStoredChatWindows();

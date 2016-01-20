@@ -44,7 +44,7 @@ class OtrPeerIdentityVerificationProgressPage : public QWizardPage
 	bool canCancelVerification() const;
 
 public:
-	explicit OtrPeerIdentityVerificationProgressPage(const Contact &contact, QWidget *parent = 0);
+	explicit OtrPeerIdentityVerificationProgressPage(const Contact &contact, QWidget *parent = nullptr);
 	virtual ~OtrPeerIdentityVerificationProgressPage();
 
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);

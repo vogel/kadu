@@ -29,7 +29,7 @@ class KADUAPI ConfigFileDataManager : public ConfigurationWindowDataManager
 	Q_OBJECT
 
 public:
-	ConfigFileDataManager(QObject *parent = 0) : ConfigurationWindowDataManager(parent) {}
+	ConfigFileDataManager(QObject *parent = nullptr) : ConfigurationWindowDataManager(parent) {}
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

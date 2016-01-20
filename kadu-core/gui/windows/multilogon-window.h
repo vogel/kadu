@@ -45,7 +45,7 @@ class KADUAPI MultilogonWindow : public QWidget, DesktopAwareObject
 	QTableView *SessionsTable;
 	QPushButton *KillSessionButton;
 
-	explicit MultilogonWindow(QWidget *parent = 0);
+	explicit MultilogonWindow(QWidget *parent = nullptr);
     virtual ~MultilogonWindow();
 
 	void createGui();

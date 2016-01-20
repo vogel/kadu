@@ -57,7 +57,7 @@ public:
 	 * @short Create new instance of ChatStateService bound to given Account.
 	 * @param account account to bound this service to
 	 */
-	explicit ChatStateService(Account account, QObject *parent = 0);
+	explicit ChatStateService(Account account, QObject *parent = nullptr);
 	virtual ~ChatStateService();
 
 	/**

@@ -37,7 +37,7 @@ private slots:
 	void updatePreview();
 
 public:
-	HintsConfigurationWidget(QWidget *parent = 0);
+	HintsConfigurationWidget(QWidget *parent = nullptr);
 
 	virtual void loadNotifyConfigurations() {}
 	virtual void saveNotifyConfigurations();

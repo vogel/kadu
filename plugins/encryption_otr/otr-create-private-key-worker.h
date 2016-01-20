@@ -29,7 +29,7 @@ class OtrCreatePrivateKeyWorker : public QObject
 	void *KeyPointer;
 
 public:
-	explicit OtrCreatePrivateKeyWorker(void *keyPointer, QObject *parent = 0);
+	explicit OtrCreatePrivateKeyWorker(void *keyPointer, QObject *parent = nullptr);
 	virtual ~OtrCreatePrivateKeyWorker();
 
 public slots:

@@ -138,7 +138,7 @@ protected:
 	bool keyPressEventHandled(QKeyEvent *);
 
 public:
-	explicit ChatWidget(Chat chat, QWidget *parent = 0);
+	explicit ChatWidget(Chat chat, QWidget *parent = nullptr);
 	virtual ~ChatWidget();
 
 	Chat chat() const { return CurrentChat; }

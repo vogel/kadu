@@ -34,7 +34,7 @@ protected:
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
 public:
-	NetworkProxyProxyModel(QObject *parent = 0);
+	NetworkProxyProxyModel(QObject *parent = nullptr);
 	virtual ~NetworkProxyProxyModel();
 
 };

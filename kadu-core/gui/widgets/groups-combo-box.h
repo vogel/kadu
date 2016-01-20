@@ -36,7 +36,7 @@ private slots:
 	void createNewGroup();
 
 public:
-	explicit GroupsComboBox(QWidget *parent = 0);
+	explicit GroupsComboBox(QWidget *parent = nullptr);
 	virtual ~GroupsComboBox();
 
 	void setCurrentGroup(Group group);

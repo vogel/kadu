@@ -41,7 +41,7 @@ class ConfigWizardProfilePage : public ConfigWizardPage
 	void setLanguages();
 
 public:
-	explicit ConfigWizardProfilePage(QWidget *parent = 0);
+	explicit ConfigWizardProfilePage(QWidget *parent = nullptr);
 	virtual ~ConfigWizardProfilePage();
 
 	virtual void initializePage();

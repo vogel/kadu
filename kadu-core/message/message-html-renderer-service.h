@@ -43,7 +43,7 @@ class MessageHtmlRendererService : public QObject
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MessageHtmlRendererService(QObject *parent = 0);
+	Q_INVOKABLE explicit MessageHtmlRendererService(QObject *parent = nullptr);
 	virtual ~MessageHtmlRendererService();
 
 	/**

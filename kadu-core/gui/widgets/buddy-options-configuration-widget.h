@@ -52,7 +52,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit BuddyOptionsConfigurationWidget(const Buddy &buddy, QWidget *parent = 0);
+	explicit BuddyOptionsConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
 	virtual ~BuddyOptionsConfigurationWidget();
 
 	void save();

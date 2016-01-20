@@ -52,7 +52,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *);
 
 public:
-	explicit FilterWidget(QWidget *parent = 0);
+	explicit FilterWidget(QWidget *parent = nullptr);
 	virtual ~FilterWidget();
 
 	void setLabel(const QString &label);

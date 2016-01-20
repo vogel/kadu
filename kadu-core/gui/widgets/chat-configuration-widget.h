@@ -32,7 +32,7 @@ class KADUAPI ChatConfigurationWidget : public ModalConfigurationWidget
 	Chat MyChat;
 
 public:
-	explicit ChatConfigurationWidget(const Chat &chat, QWidget *parent = 0);
+	explicit ChatConfigurationWidget(const Chat &chat, QWidget *parent = nullptr);
 	virtual ~ChatConfigurationWidget();
 
 	Chat chat() const;

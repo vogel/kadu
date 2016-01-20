@@ -52,7 +52,7 @@ private slots:
 	void updateState();
 
 public:
-	explicit OtrBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = 0);
+	explicit OtrBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
 	virtual ~OtrBuddyConfigurationWidget();
 
 	void setPolicyService(OtrPolicyService *policyService);

@@ -114,7 +114,7 @@ public:
 	 * Database provided in this constructor is not checked for existence or validity of kadu_contacts table. It is caller responsibility
 	 * to provide proper database.
 	 */
-	explicit SqlContactsMapping(const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, QObject *parent = 0);
+	explicit SqlContactsMapping(const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, QObject *parent = nullptr);
 	virtual ~SqlContactsMapping();
 
 	/**

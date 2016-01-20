@@ -49,7 +49,7 @@ public:
 	 * @short Creates new HistoryTab widget.
 	 * @param parent parent widget
 	 */
-	explicit HistoryTab(QWidget *parent = 0);
+	explicit HistoryTab(QWidget *parent = nullptr);
 	virtual ~HistoryTab();
 
 	/**

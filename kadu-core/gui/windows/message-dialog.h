@@ -37,16 +37,16 @@ class KADUAPI MessageDialog : public QObject
 	QMessageBox *Box;
 
 	MessageDialog(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
-				      QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+				      QWidget *parent = nullptr, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 
 protected slots:
 	void messageBoxFinished(int result);
 
 public:
 	static MessageDialog * create(const KaduIcon &icon, const QString &title, const QString &text,
-				      QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+				      QWidget *parent = nullptr, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 	static void show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-			  QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+			  QWidget *parent = nullptr, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 
 	MessageDialog * addButton(QMessageBox::StandardButton button, const QString &text = "");
 	void setDefaultButton(QMessageBox::StandardButton button);

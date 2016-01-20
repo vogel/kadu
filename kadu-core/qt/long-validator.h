@@ -34,7 +34,7 @@ class KADUAPI LongValidator : public QValidator
 	qlonglong Top;
 
 public:
-	LongValidator(qlonglong bottom, qlonglong top, QObject *parent = 0);
+	LongValidator(qlonglong bottom, qlonglong top, QObject *parent = nullptr);
 	virtual ~LongValidator();
 
 	virtual QValidator::State validate(QString &input, int &) const;

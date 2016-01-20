@@ -39,7 +39,7 @@ private slots:
 	void onClick();
 
 public:
-	SelectFont(QWidget *parent = 0);
+	SelectFont(QWidget *parent = nullptr);
 	const QFont &font() const;
 	void setFont(const QFont &font);
 

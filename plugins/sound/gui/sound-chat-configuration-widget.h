@@ -34,7 +34,7 @@ class SoundChatConfigurationWidget : public ChatConfigurationWidget
 	Q_OBJECT
 
 public:
-	explicit SoundChatConfigurationWidget(const Chat &chat, SoundManager *soundManager, QWidget *parent = 0);
+	explicit SoundChatConfigurationWidget(const Chat &chat, SoundManager *soundManager, QWidget *parent = nullptr);
 	virtual ~SoundChatConfigurationWidget();
 
 	virtual const ConfigurationValueStateNotifier * stateNotifier() const override;

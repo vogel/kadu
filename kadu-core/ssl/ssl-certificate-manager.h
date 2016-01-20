@@ -36,7 +36,7 @@ class KADUAPI SslCertificateManager : public QObject
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SslCertificateManager(QObject *parent = 0);
+	Q_INVOKABLE explicit SslCertificateManager(QObject *parent = nullptr);
 	virtual ~SslCertificateManager();
 
 	void loadPersistentSslCertificates();

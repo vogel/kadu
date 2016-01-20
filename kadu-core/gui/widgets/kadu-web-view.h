@@ -82,7 +82,7 @@ protected:
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 
 public:
-	explicit KaduWebView(QWidget *parent = 0);
+	explicit KaduWebView(QWidget *parent = nullptr);
 	virtual ~KaduWebView();
 
 	ImageStorageService * imageStorageService() const;

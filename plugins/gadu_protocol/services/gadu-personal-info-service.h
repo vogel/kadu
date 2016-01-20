@@ -50,7 +50,7 @@ private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 
 public:
-	explicit GaduPersonalInfoService(Account account, QObject *parent = 0);
+	explicit GaduPersonalInfoService(Account account, QObject *parent = nullptr);
 	virtual ~GaduPersonalInfoService();
 
 	void setConnection(GaduConnection *connection);

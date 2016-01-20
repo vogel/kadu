@@ -91,7 +91,7 @@ class CategorizedListView
         Q_PROPERTY(bool collapsibleBlocks READ collapsibleBlocks WRITE setCollapsibleBlocks)
 
 public:
-        CategorizedListView(QWidget *parent = 0);
+        CategorizedListView(QWidget *parent = nullptr);
 
         ~CategorizedListView();
 

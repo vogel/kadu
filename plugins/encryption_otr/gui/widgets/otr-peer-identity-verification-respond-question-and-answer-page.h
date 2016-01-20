@@ -40,7 +40,7 @@ class OtrPeerIdentityVerificationRespondQuestionAndAnswerPage : public QWizardPa
 	void createGui();
 
 public:
-	explicit OtrPeerIdentityVerificationRespondQuestionAndAnswerPage(const Contact &contact, QWidget *parent = 0);
+	explicit OtrPeerIdentityVerificationRespondQuestionAndAnswerPage(const Contact &contact, QWidget *parent = nullptr);
 	virtual ~OtrPeerIdentityVerificationRespondQuestionAndAnswerPage();
 
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);

@@ -53,7 +53,7 @@ public:
 	 * @param id id that will be emitted in chatImageKeyReceived() signal
 	 * @param parent QObject parent
 	 */
-	explicit FormattedStringImageKeyReceivedVisitor(const QString &id, QObject *parent = 0);
+	explicit FormattedStringImageKeyReceivedVisitor(const QString &id, QObject *parent = nullptr);
 	virtual ~FormattedStringImageKeyReceivedVisitor();
 
 	virtual void beginVisit(const CompositeFormattedString * const compositeFormattedString);

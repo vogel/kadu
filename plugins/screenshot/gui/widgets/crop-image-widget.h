@@ -78,7 +78,7 @@ protected:
 	virtual void showEvent(QShowEvent *event);
 
 public:
-	explicit CropImageWidget(QWidget *parent = 0);
+	explicit CropImageWidget(QWidget *parent = nullptr);
 	virtual ~CropImageWidget();
 
 	void setPixmap(QPixmap pixmap);

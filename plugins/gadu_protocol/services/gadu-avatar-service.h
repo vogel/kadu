@@ -53,7 +53,7 @@ public:
 	 * @param account account of service
 	 * @param parent QObject parent of service
 	 */
-	explicit GaduAvatarService(Account account, QObject *parent = 0);
+	explicit GaduAvatarService(Account account, QObject *parent = nullptr);
 	virtual ~GaduAvatarService();
 
 	virtual AvatarDownloader * createAvatarDownloader() override;

@@ -49,7 +49,7 @@ public:
 	 * @short Create new instance of BlockedTalkableFilter with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit BlockedTalkableFilter(QObject *parent = 0);
+	explicit BlockedTalkableFilter(QObject *parent = nullptr);
 	virtual ~BlockedTalkableFilter();
 
 	virtual FilterResult filterBuddy(const Buddy &buddy);

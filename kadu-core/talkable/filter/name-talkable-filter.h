@@ -113,7 +113,7 @@ public:
 	 * @param mode mode controlling return value when given item matches name
 	 * @param parent QObject parent of new object
 	 */
-	explicit NameTalkableFilter(NameFilterMatchingMode mode, QObject *parent = 0);
+	explicit NameTalkableFilter(NameFilterMatchingMode mode, QObject *parent = nullptr);
 	virtual ~NameTalkableFilter();
 
 	virtual FilterResult filterChat(const Chat &chat);

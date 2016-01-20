@@ -40,7 +40,7 @@ private slots:
 	virtual void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
 
 public:
-	explicit JabberPersonalInfoService(Account account, QObject *parent = 0);
+	explicit JabberPersonalInfoService(Account account, QObject *parent = nullptr);
 	virtual ~JabberPersonalInfoService();
 
 	void setVCardService(JabberVCardService *vCardService);

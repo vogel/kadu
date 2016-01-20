@@ -41,7 +41,7 @@ private slots:
 	void workerFinished(bool ok);
 
 public:
-	explicit OtrCreatePrivateKeyJob(QObject *parent = 0);
+	explicit OtrCreatePrivateKeyJob(QObject *parent = nullptr);
 	virtual ~OtrCreatePrivateKeyJob();
 
 	void setUserStateService(OtrUserStateService *userStateService);

@@ -42,7 +42,7 @@ protected:
 	virtual void connectionTimeout();
 
 public:
-	GaduPubdirSocketNotifiers(QObject *parent = 0) :
+	GaduPubdirSocketNotifiers(QObject *parent = nullptr) :
 			GaduSocketNotifiers(parent), H(0) {}
 
 	void watchFor(struct gg_http *h);

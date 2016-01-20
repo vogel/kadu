@@ -65,7 +65,7 @@ public:
 		CompletedPage
 	};
 
-	explicit ConfigWizardWindow(QWidget *parent = 0);
+	explicit ConfigWizardWindow(QWidget *parent = nullptr);
 	virtual ~ConfigWizardWindow();
 
 };

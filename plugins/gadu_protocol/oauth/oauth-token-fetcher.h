@@ -42,8 +42,8 @@ private slots:
 	void requestFinished();
 
 public:
-	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
-	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
+	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
+	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
 	virtual ~OAuthTokenFetcher();
 
 	void fetchToken();

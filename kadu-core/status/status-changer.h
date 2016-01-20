@@ -66,7 +66,7 @@ public:
 	 * Creates new instance of StatusChanger. Lower number of priority means that this class will be used first in
 	 * status calculations.
 	 */
-	explicit StatusChanger(int priority, QObject *parent = 0);
+	explicit StatusChanger(int priority, QObject *parent = nullptr);
 	virtual ~StatusChanger();
 
 	/**

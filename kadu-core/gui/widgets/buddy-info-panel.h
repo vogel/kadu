@@ -61,7 +61,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit BuddyInfoPanel(QWidget *parent = 0);
+	explicit BuddyInfoPanel(QWidget *parent = nullptr);
 	virtual ~BuddyInfoPanel();
 
 	virtual void setVisible(bool visible);

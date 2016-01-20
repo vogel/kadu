@@ -61,13 +61,13 @@ protected:
 
 public:
 	/**
-		\fn About(QWidget *parent = 0)
+		\fn About(QWidget *parent = nullptr)
 		Konstruktor tworzy okno, ustawia zak�adki z informacjami o autorach, podzi�kowaniach, licencji oraz list� zmian w programie. \n
 		Domy�lnie okno ma rozmiar 640x420.
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/
-	explicit About(QWidget *parent = 0);
+	explicit About(QWidget *parent = nullptr);
 
 	/**
 		\fn ~About()
@@ -87,7 +87,7 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *);
 
 public:
-	explicit KaduLink(const QByteArray &link, QWidget *parent = 0);
+	explicit KaduLink(const QByteArray &link, QWidget *parent = nullptr);
 	virtual ~KaduLink();
 
 };

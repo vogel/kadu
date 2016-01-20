@@ -51,7 +51,7 @@ private slots:
 	void updateState();
 
 public:
-	explicit OtrAccountConfigurationWidget(const Account &account, QWidget *parent = 0);
+	explicit OtrAccountConfigurationWidget(const Account &account, QWidget *parent = nullptr);
 	virtual ~OtrAccountConfigurationWidget();
 
 	void setPolicyService(OtrPolicyService *policyService);

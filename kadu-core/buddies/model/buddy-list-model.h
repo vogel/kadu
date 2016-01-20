@@ -64,7 +64,7 @@ public:
 	 * In this contructor connection to @link ContactManager @endlink is made to ensure that this model
 	 * is informed about changes in contacts' data.
 	 */
-	explicit BuddyListModel(QObject *parent = 0);
+	explicit BuddyListModel(QObject *parent = nullptr);
 	virtual ~BuddyListModel();
 
 	/**

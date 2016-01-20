@@ -78,7 +78,7 @@ private slots:
 public:
 	static void createDefaultToolbars(Configuration *configuration, QDomElement parentConfig);
 
-	ChatEditBox(const Chat &chat, QWidget *parent = 0);
+	ChatEditBox(const Chat &chat, QWidget *parent = nullptr);
 	virtual ~ChatEditBox();
 
 	// TODO: remove?

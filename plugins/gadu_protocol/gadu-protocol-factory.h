@@ -44,7 +44,7 @@ public:
 	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent);
 	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent);
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent);
-	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
+	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr);
 	virtual QList<StatusType> supportedStatusTypes();
 	virtual StatusAdapter * statusAdapter() { return MyStatusAdapter.get(); }
 	virtual QString idLabel();

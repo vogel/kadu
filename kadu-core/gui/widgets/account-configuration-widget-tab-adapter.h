@@ -40,7 +40,7 @@ private slots:
 	void widgetAdded(AccountConfigurationWidget *widget);
 
 public:
-	explicit AccountConfigurationWidgetTabAdapter(AccountEditWidget *accountEditWidget, QTabWidget *tabWidget, QObject *parent = 0);
+	explicit AccountConfigurationWidgetTabAdapter(AccountEditWidget *accountEditWidget, QTabWidget *tabWidget, QObject *parent = nullptr);
 	virtual ~AccountConfigurationWidgetTabAdapter();
 
 };

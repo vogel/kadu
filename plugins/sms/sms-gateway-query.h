@@ -30,7 +30,7 @@ class SmsGatewayQuery : public QObject
 	Q_OBJECT
 
 public:
-	explicit SmsGatewayQuery(QObject *parent = 0);
+	explicit SmsGatewayQuery(QObject *parent = nullptr);
 	virtual ~SmsGatewayQuery();
 
 public slots:

@@ -41,7 +41,7 @@ private slots:
 	void editProxy();
 
 public:
-	explicit ProxyComboBox(QWidget *parent = 0);
+	explicit ProxyComboBox(QWidget *parent = nullptr);
 	virtual ~ProxyComboBox();
 
 	void enableDefaultProxyAction();

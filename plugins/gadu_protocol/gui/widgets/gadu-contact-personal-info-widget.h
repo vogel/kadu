@@ -50,7 +50,7 @@ private slots:
 	void personalInfoAvailable(Buddy buddy);
 
 public:
-	explicit GaduContactPersonalInfoWidget(const Contact &contact, QWidget *parent = 0);
+	explicit GaduContactPersonalInfoWidget(const Contact &contact, QWidget *parent = nullptr);
 	virtual ~GaduContactPersonalInfoWidget();
 
 };

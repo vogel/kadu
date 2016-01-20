@@ -40,7 +40,7 @@ class KADUAPI ChatWindow : public QWidget, ConfigurationAwareObject, Compositing
 	Q_OBJECT
 
 public:
-	explicit ChatWindow(Chat chat, QWidget *parent = 0);
+	explicit ChatWindow(Chat chat, QWidget *parent = nullptr);
 	virtual ~ChatWindow();
 
 	Chat chat() const;

@@ -36,7 +36,7 @@ class AccountsComboBox : public ActionsComboBox
 	Q_OBJECT
 
 public:
-	explicit AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent = 0);
+	explicit AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent = nullptr);
 	virtual ~AccountsComboBox();
 
 	void setCurrentAccount(Account account);

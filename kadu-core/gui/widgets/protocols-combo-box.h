@@ -40,7 +40,7 @@ class KADUAPI ProtocolsComboBox : public ActionsComboBox
 	ProtocolsModelProxy *ProxyModel;
 
 public:
-	explicit ProtocolsComboBox(QWidget *parent = 0);
+	explicit ProtocolsComboBox(QWidget *parent = nullptr);
 	virtual ~ProtocolsComboBox();
 
 	void setCurrentProtocol(ProtocolFactory *protocol);

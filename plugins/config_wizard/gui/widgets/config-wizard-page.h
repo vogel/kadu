@@ -39,7 +39,7 @@ protected:
 	QFormLayout * formLayout() { return FormLayout; }
 
 public:
-	explicit ConfigWizardPage(QWidget *parent = 0);
+	explicit ConfigWizardPage(QWidget *parent = nullptr);
 	virtual ~ConfigWizardPage();
 
 	virtual void acceptPage();

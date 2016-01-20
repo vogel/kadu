@@ -44,7 +44,7 @@ class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 	Q_OBJECT
 
 public:
-	explicit AccountEditWidget(Account account, QWidget *parent = 0);
+	explicit AccountEditWidget(Account account, QWidget *parent = nullptr);
 	virtual ~AccountEditWidget();
 
 	virtual const ConfigurationValueStateNotifier * stateNotifier() const;

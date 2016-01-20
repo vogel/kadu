@@ -48,7 +48,7 @@ namespace MergedProxyModelFactory
 	 * @param parent qobject parent of new model
 	 * @return new instance of model that merges other models into one
 	 */
-	KADUAPI QAbstractItemModel * createInstance(QList<QAbstractItemModel *> models, QObject *parent = 0);
+	KADUAPI QAbstractItemModel * createInstance(QList<QAbstractItemModel *> models, QObject *parent = nullptr);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -62,7 +62,7 @@ namespace MergedProxyModelFactory
 	 *
 	 * Accepted items must either be ModelChain or QAbstractItemModel objects.
 	 */
-	KADUAPI QAbstractItemModel * createKaduModelInstance(QList<KaduAbstractModel *> models, QObject *parent = 0);
+	KADUAPI QAbstractItemModel * createKaduModelInstance(QList<KaduAbstractModel *> models, QObject *parent = nullptr);
 
 }
 

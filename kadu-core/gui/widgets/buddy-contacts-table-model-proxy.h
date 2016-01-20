@@ -32,7 +32,7 @@ protected:
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
 public:
-	explicit BuddyContactsTableModelProxy(QObject *parent = 0);
+	explicit BuddyContactsTableModelProxy(QObject *parent = nullptr);
 	virtual ~BuddyContactsTableModelProxy();
 
 };

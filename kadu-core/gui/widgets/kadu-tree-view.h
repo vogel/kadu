@@ -57,7 +57,7 @@ protected:
 	virtual void startDrag(Qt::DropActions supportedActions);
 
 public:
-	explicit KaduTreeView(QWidget *parent = 0);
+	explicit KaduTreeView(QWidget *parent = nullptr);
 	virtual ~KaduTreeView();
 
 	void setBackground(const QString& backgroundColor, const QString& alternateColor,

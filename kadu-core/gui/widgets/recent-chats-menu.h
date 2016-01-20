@@ -37,7 +37,7 @@ class KADUAPI RecentChatsMenu : public QMenu
 	Q_OBJECT
 
 public:
-	explicit RecentChatsMenu(QWidget *parent = 0);
+	explicit RecentChatsMenu(QWidget *parent = nullptr);
 	virtual ~RecentChatsMenu();
 
 signals:

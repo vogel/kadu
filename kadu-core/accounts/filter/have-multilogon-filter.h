@@ -30,7 +30,7 @@ protected:
 	virtual bool acceptAccount(Account account);
 
 public:
-	explicit HaveMultilogonFilter(QObject *parent = 0);
+	explicit HaveMultilogonFilter(QObject *parent = nullptr);
 	virtual ~HaveMultilogonFilter();
 };
 

@@ -45,7 +45,7 @@ public:
 	 * @short Create new instance of HideContactChatsTalkableFilter with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit HideContactChatsTalkableFilter(QObject *parent = 0);
+	explicit HideContactChatsTalkableFilter(QObject *parent = nullptr);
 	virtual ~HideContactChatsTalkableFilter();
 
 	virtual FilterResult filterChat(const Chat &chat);

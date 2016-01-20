@@ -47,7 +47,7 @@ class JabberAddAccountWidget : public AccountAddWidget
 	Q_OBJECT
 
 public:
-	explicit JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent = 0);
+	explicit JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent = nullptr);
 	virtual ~JabberAddAccountWidget();
 
 	void setJabberServersService(JabberServersService *serversService);

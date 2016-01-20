@@ -61,7 +61,7 @@ public:
 	 * @param vCardService vCard service to use in this class
 	 * @param parent QObject parent
 	 */
-	explicit JabberAvatarDownloader(JabberVCardService *vCardService, QObject *parent = 0);
+	explicit JabberAvatarDownloader(JabberVCardService *vCardService, QObject *parent = nullptr);
 	virtual ~JabberAvatarDownloader();
 
 	virtual void downloadAvatar(const QString &id);

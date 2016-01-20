@@ -37,7 +37,7 @@ class KADUAPI IdentitiesComboBox : public ActionsComboBox
 	Q_OBJECT
 
 public:
-	explicit IdentitiesComboBox(QWidget *parent = 0);
+	explicit IdentitiesComboBox(QWidget *parent = nullptr);
 	virtual ~IdentitiesComboBox();
 
 	void setCurrentIdentity(Identity identity);

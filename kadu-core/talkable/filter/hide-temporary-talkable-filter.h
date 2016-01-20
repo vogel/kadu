@@ -50,7 +50,7 @@ public:
 	 * @short Create new instance of HideTemporaryTalkableFilter with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit HideTemporaryTalkableFilter(QObject *parent = 0);
+	explicit HideTemporaryTalkableFilter(QObject *parent = nullptr);
 	virtual ~HideTemporaryTalkableFilter();
 
 	virtual FilterResult filterBuddy(const Buddy &buddy);

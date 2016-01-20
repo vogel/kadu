@@ -44,7 +44,7 @@ private slots:
 
 public:
 	explicit OAuthAuthorization(OAuthToken token, const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
-			QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
+			QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
 	virtual ~OAuthAuthorization();
 
 	void authorize();

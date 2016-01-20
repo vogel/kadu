@@ -47,7 +47,7 @@ public:
 	 * @short Create new instance of HideAnonymousTalkableFilter with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit HideAnonymousTalkableFilter(QObject *parent = 0);
+	explicit HideAnonymousTalkableFilter(QObject *parent = nullptr);
 	virtual ~HideAnonymousTalkableFilter();
 
 	void setEnabled(bool enabled);

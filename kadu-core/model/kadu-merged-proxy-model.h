@@ -52,7 +52,7 @@ public:
 	 *
 	 * Creates new instance of KaduMergedProxyModel.
 	 */
-	explicit KaduMergedProxyModel(QObject *parent = 0);
+	explicit KaduMergedProxyModel(QObject *parent = nullptr);
 	virtual ~KaduMergedProxyModel();
 
 	/**

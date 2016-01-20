@@ -48,7 +48,7 @@ class KADUAPI ChatTypeBuddy : public ChatType
 	QStringList Aliases;
 
 public:
-	explicit ChatTypeBuddy(QObject *parent = 0);
+	explicit ChatTypeBuddy(QObject *parent = nullptr);
 	virtual ~ChatTypeBuddy();
 
 	virtual QString name() const;

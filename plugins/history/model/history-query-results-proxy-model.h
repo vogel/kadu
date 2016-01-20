@@ -53,7 +53,7 @@ public:
 	 * @short Create new proxy model.
 	 * @param parent QObject parent of new proxy model.
 	 */
-	explicit HistoryQueryResultsProxyModel(QObject *parent = 0);
+	explicit HistoryQueryResultsProxyModel(QObject *parent = nullptr);
 	virtual ~HistoryQueryResultsProxyModel();
 
 	/**

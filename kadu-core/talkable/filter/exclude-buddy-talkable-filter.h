@@ -52,7 +52,7 @@ public:
 	 * Create new instance of ExcludeBuddyTalkableFilter with given parent. All Buddy items that
 	 * are equal to excludedBuddy will be rejected by this filter.
 	 */
-	explicit ExcludeBuddyTalkableFilter(const Buddy &excludedBuddy, QObject *parent = 0);
+	explicit ExcludeBuddyTalkableFilter(const Buddy &excludedBuddy, QObject *parent = nullptr);
 	virtual ~ExcludeBuddyTalkableFilter();
 
 	virtual FilterResult filterBuddy(const Buddy &buddy);

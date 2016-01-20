@@ -55,7 +55,7 @@ protected:
 	virtual void connectionTimeout() = 0;
 
 public:
-	GaduSocketNotifiers(QObject *parent = 0);
+	GaduSocketNotifiers(QObject *parent = nullptr);
 	virtual ~GaduSocketNotifiers();
 
 	void disable();

@@ -54,7 +54,7 @@ public:
 	 * @short Create new instance of object with given parent.
 	 * @param parent QObject parent of new model
 	 */
-	explicit ActionListModel(QObject *parent = 0);
+	explicit ActionListModel(QObject *parent = nullptr);
 	virtual ~ActionListModel();
 
 	/**

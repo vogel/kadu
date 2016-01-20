@@ -41,7 +41,7 @@ protected:
 	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 public:
-	explicit ProtocolsModelProxy(QObject *parent = 0);
+	explicit ProtocolsModelProxy(QObject *parent = nullptr);
 	virtual ~ProtocolsModelProxy();
 
 	void addFilter(AbstractProtocolFilter *filter);

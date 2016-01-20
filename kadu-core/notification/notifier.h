@@ -68,7 +68,7 @@ public:
 		na prawo od odpowiedniego CheckBoxa.
 		Mo�e zwr�ci� zero.
 	 **/
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) = 0;
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) = 0;
 
 };
 

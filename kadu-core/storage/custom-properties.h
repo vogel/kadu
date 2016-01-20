@@ -97,7 +97,7 @@ public:
 	 * @short Create new CustomProperties instance.
 	 * @param parent QObject parent of new instance
 	 */
-	explicit CustomProperties(QObject *parent = 0);
+	explicit CustomProperties(QObject *parent = nullptr);
 	virtual ~CustomProperties();
 
 	/**

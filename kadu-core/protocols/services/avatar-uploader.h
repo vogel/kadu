@@ -44,7 +44,7 @@ class KADUAPI AvatarUploader : public QObject
 	Q_OBJECT
 
 protected:
-	explicit AvatarUploader(QObject *parent = 0) : QObject(parent) {}
+	explicit AvatarUploader(QObject *parent = nullptr) : QObject(parent) {}
 	virtual ~AvatarUploader() {}
 
 public:

@@ -29,7 +29,7 @@ class KADUAPI ToolbarConfigurationManager : public QObject
 	Q_OBJECT
 
 public:
-	explicit ToolbarConfigurationManager(QObject *parent = 0);
+	explicit ToolbarConfigurationManager(QObject *parent = nullptr);
 	virtual ~ToolbarConfigurationManager();
 
 	void notifyConfigurationUpdated();

@@ -59,7 +59,7 @@ private slots:
 	void itemUpdated(BuddyContactsTableItem *item);
 
 public:
-	explicit BuddyContactsTableModel(Buddy buddy, QObject *parent = 0);
+	explicit BuddyContactsTableModel(Buddy buddy, QObject *parent = nullptr);
 	virtual ~BuddyContactsTableModel();
 
 	const ConfigurationValueStateNotifier * valueStateNotifier() const;

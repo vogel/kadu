@@ -38,7 +38,7 @@ protected:
 	bool validateSignature();
 
 public:
-	explicit SmsSender(const QString &number, QObject *parent = 0);
+	explicit SmsSender(const QString &number, QObject *parent = nullptr);
 	virtual ~SmsSender();
 
 	const QString & number() const { return Number; }

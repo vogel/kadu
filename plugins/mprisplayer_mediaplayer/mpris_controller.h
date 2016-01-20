@@ -73,7 +73,7 @@ private slots:
 	void propertiesChanged(const QDBusMessage &message);
 
 public:
-	explicit MPRISController(MediaPlayer *mediaPlayer, const QString &service, QObject *parent = 0);
+	explicit MPRISController(MediaPlayer *mediaPlayer, const QString &service, QObject *parent = nullptr);
 	virtual ~MPRISController();
 
 	void call(const QString &methodName);

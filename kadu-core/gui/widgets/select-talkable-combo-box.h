@@ -45,7 +45,7 @@ protected:
 	virtual void hidePopup();
 
 public:
-	explicit SelectTalkableComboBox(QWidget *parent = 0);
+	explicit SelectTalkableComboBox(QWidget *parent = nullptr);
 	virtual ~SelectTalkableComboBox();
 
 	void setBaseModel(QAbstractItemModel *model);

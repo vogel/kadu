@@ -76,7 +76,7 @@ public:
 	 * SearchBar is hidden by default. Use show() to make it visible or set up search widget to allow use show it by using Ctrl+F
 	 * shortcut.
 	 */
-	explicit SearchBar(QWidget *parent = 0);
+	explicit SearchBar(QWidget *parent = nullptr);
 	virtual ~SearchBar();
 
 	/**

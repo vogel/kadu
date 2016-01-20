@@ -60,7 +60,7 @@ public:
 	 * @param account account of service
 	 * @param parent QObject parent of service
 	 */
-	explicit JabberAvatarService(QXmppClient *client, Account account, QObject *parent = 0);
+	explicit JabberAvatarService(QXmppClient *client, Account account, QObject *parent = nullptr);
 	virtual ~JabberAvatarService();
 
 	/**

@@ -51,7 +51,7 @@ class KADUAPI ChangeNotifier : public QObject
 	bool Changed;
 
 public:
-	explicit ChangeNotifier(QObject *parent = 0);
+	explicit ChangeNotifier(QObject *parent = nullptr);
 	virtual ~ChangeNotifier();
 
 	/**

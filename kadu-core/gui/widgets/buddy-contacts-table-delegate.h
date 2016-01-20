@@ -36,7 +36,7 @@ protected:
 	virtual bool eventFilter(QObject *editor, QEvent *event);
 
 public:
-	explicit BuddyContactsTableDelegate(QObject *parent = 0);
+	explicit BuddyContactsTableDelegate(QObject *parent = nullptr);
 	virtual ~BuddyContactsTableDelegate();
 
 	virtual QWidget * createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;

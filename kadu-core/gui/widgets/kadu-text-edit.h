@@ -50,7 +50,7 @@ public:
 	 * @short Create new KaduTextEdit.
 	 * @param parent QWidget parent of KaduTextEdit
 	 */
-	explicit KaduTextEdit(QWidget *parent = 0);
+	explicit KaduTextEdit(QWidget *parent = nullptr);
 	virtual ~KaduTextEdit();
 
 	/**

@@ -29,7 +29,7 @@ private slots:
 	void test();
 
 public:
-	PCSpeakerConfigurationWidget(PCSpeakerNotifier *notifier, QWidget *parent = 0);
+	PCSpeakerConfigurationWidget(PCSpeakerNotifier *notifier, QWidget *parent = nullptr);
 	virtual ~PCSpeakerConfigurationWidget();
 
 	virtual void loadNotifyConfigurations() {};

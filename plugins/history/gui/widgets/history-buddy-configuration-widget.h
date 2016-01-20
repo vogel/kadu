@@ -46,7 +46,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	explicit HistoryBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = 0);
+	explicit HistoryBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
 	virtual ~HistoryBuddyConfigurationWidget();
 
 	virtual const ConfigurationValueStateNotifier * stateNotifier() const;

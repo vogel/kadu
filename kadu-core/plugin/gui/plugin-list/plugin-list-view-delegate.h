@@ -41,7 +41,7 @@ class PluginListWidgetDelegateWidgets;
 //         Q_OBJECT
 //
 // public:
-//         explicit PluginListWidgetDelegatePrivate(PluginListWidgetDelegate *q, QObject *parent = 0);
+//         explicit PluginListWidgetDelegatePrivate(PluginListWidgetDelegate *q, QObject *parent = nullptr);
 //         ~PluginListWidgetDelegatePrivate();
 
 //         void _k_slotRowsInserted(const QModelIndex &parent, int start, int end);
@@ -101,7 +101,7 @@ public:
          * @param itemView the item view the new delegate will monitor
          * @param parent the parent of this delegate
          */
-        explicit PluginListWidgetDelegate(QAbstractItemView *itemView, QObject *parent = 0);
+        explicit PluginListWidgetDelegate(QAbstractItemView *itemView, QObject *parent = nullptr);
 
         /**
          * Destroys an ItemDelegate.

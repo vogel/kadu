@@ -60,7 +60,7 @@ public:
 	 * @short Create new SmsTokenReadJob instance.
 	 * @param parent QObject parent of new object
 	 */
-	explicit SmsTokenReadJob(QObject *parent = 0);
+	explicit SmsTokenReadJob(QObject *parent = nullptr);
 	virtual ~SmsTokenReadJob();
 
 	/**

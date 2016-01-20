@@ -46,7 +46,7 @@ private slots:
 	void dataChanged();
 
 public:
-	explicit ChatRoomEditWidget(const Chat &chat, QWidget *parent = 0);
+	explicit ChatRoomEditWidget(const Chat &chat, QWidget *parent = nullptr);
 	virtual ~ChatRoomEditWidget();
 
 public slots:

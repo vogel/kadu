@@ -47,7 +47,7 @@ class MPRISPlayerDialog : public QDialog
 	void createGui();
 
 public:
-	explicit MPRISPlayerDialog(bool isEdit = false, QWidget *parent = 0);
+	explicit MPRISPlayerDialog(bool isEdit = false, QWidget *parent = nullptr);
 	virtual ~MPRISPlayerDialog();
 
 	void setPlayer(const QString &player);

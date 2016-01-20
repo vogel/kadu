@@ -54,7 +54,7 @@ public:
 	 * @short Create new instance of TalkableModel with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit TalkableModel(QObject *parent = 0);
+	explicit TalkableModel(QObject *parent = nullptr);
 	virtual ~TalkableModel();
 
 	/**

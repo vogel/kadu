@@ -47,7 +47,7 @@ public:
 	 * @short Create new instance of MobileTalkableFilter with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit MobileTalkableFilter(QObject *parent = 0);
+	explicit MobileTalkableFilter(QObject *parent = nullptr);
 	virtual ~MobileTalkableFilter();
 
 	virtual FilterResult filterChat(const Chat &chat);

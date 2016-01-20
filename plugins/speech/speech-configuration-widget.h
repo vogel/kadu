@@ -47,7 +47,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 
 public:
-	explicit SpeechConfigurationWidget(QWidget *parent = 0);
+	explicit SpeechConfigurationWidget(QWidget *parent = nullptr);
 	virtual ~SpeechConfigurationWidget();
 
 	virtual void loadNotifyConfigurations() {}

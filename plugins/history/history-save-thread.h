@@ -49,7 +49,7 @@ class HistorySaveThread : public QThread
 	void sync();
 
 public:
-	explicit HistorySaveThread(History *history, QObject *parent = 0);
+	explicit HistorySaveThread(History *history, QObject *parent = nullptr);
 	virtual ~HistorySaveThread();
 
 	virtual void run();

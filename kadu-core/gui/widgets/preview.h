@@ -34,7 +34,7 @@ class Preview : public QFrame
 	Q_OBJECT
 
 public:
-	explicit Preview(QWidget *parent = 0);
+	explicit Preview(QWidget *parent = nullptr);
 	virtual ~Preview();
 
 	KaduWebView * webView() const;

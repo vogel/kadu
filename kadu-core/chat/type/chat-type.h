@@ -56,7 +56,7 @@ class KADUAPI ChatType : public QObject
 	Q_DISABLE_COPY(ChatType)
 
 public:
-	explicit ChatType(QObject *parent = 0);
+	explicit ChatType(QObject *parent = nullptr);
 	virtual ~ChatType();
 
 	/**

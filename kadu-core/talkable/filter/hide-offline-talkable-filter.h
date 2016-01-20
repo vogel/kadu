@@ -52,7 +52,7 @@ public:
 	 * @short Create new instance of HideOfflineTalkableFilter with given parent.
 	 * @param parent QObject parent of new object
 	 */
-	explicit HideOfflineTalkableFilter(QObject *parent = 0);
+	explicit HideOfflineTalkableFilter(QObject *parent = nullptr);
 	virtual ~HideOfflineTalkableFilter();
 
 	virtual FilterResult filterBuddy(const Buddy &buddy);

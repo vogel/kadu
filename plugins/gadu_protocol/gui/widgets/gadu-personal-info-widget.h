@@ -63,7 +63,7 @@ private slots:
 	void personalInfoAvailable(Buddy buddy);
 
 public:
-	explicit GaduPersonalInfoWidget(Account account, QWidget *parent = 0);
+	explicit GaduPersonalInfoWidget(Account account, QWidget *parent = nullptr);
 	virtual ~GaduPersonalInfoWidget();
 
 	bool isModified();

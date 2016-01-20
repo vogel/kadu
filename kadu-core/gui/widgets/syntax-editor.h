@@ -47,7 +47,7 @@ private slots:
 	void syntaxListUpdated();
 
 public:
-	SyntaxEditor(QWidget *parent = 0);
+	SyntaxEditor(QWidget *parent = nullptr);
 	virtual ~SyntaxEditor();
 
 	QString currentSyntax();

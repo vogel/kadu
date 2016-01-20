@@ -79,7 +79,7 @@ protected:
 	void compositingDisabled();
 
 public:
-	explicit RosterWidget(QWidget *parent = 0);
+	explicit RosterWidget(QWidget *parent = nullptr);
 	virtual ~RosterWidget();
 
 	void clearFilter();

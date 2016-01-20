@@ -40,7 +40,7 @@ class KADUAPI NotifierConfigurationWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit NotifierConfigurationWidget(QWidget *parent = 0);
+	explicit NotifierConfigurationWidget(QWidget *parent = nullptr);
 
 	/**
 		W tej metodzie widget mo�e wczyta� konfigruacje wszystkich zdarze�.

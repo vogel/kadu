@@ -47,7 +47,7 @@ class CheckableBuddiesProxyModel : public QIdentityProxyModel
 	BuddySet CheckedBuddies;
 
 public:
-	explicit CheckableBuddiesProxyModel(QObject *parent = 0);
+	explicit CheckableBuddiesProxyModel(QObject *parent = nullptr);
 	virtual ~CheckableBuddiesProxyModel();
 
 	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;

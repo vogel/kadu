@@ -35,7 +35,7 @@ private slots:
 	void recomputeState();
 
 public:
-	explicit CompositeConfigurationValueStateNotifier(QObject *parent = 0);
+	explicit CompositeConfigurationValueStateNotifier(QObject *parent = nullptr);
 	virtual ~CompositeConfigurationValueStateNotifier();
 
 	void addConfigurationValueStateNotifier(const ConfigurationValueStateNotifier *configurationValueStateNotifier);

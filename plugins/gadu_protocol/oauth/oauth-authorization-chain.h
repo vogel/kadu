@@ -46,7 +46,7 @@ private slots:
 	void accessTokenFetched(OAuthToken token);
 
 public:
-	explicit OAuthAuthorizationChain(OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = 0);
+	explicit OAuthAuthorizationChain(OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
 	virtual ~OAuthAuthorizationChain();
 
 	void setRequestTokenUrl(const QString &requestTokenUrl);

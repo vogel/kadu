@@ -36,7 +36,7 @@ class KADUAPI NotifierConfigurationDataManager : public ConfigurationWindowDataM
 	static QMap<QString, NotifierConfigurationDataManager*> DataManagers;
 	static void dataManagerDestroyed(const QString &eventName);
 
-	explicit NotifierConfigurationDataManager(const QString &eventName, QObject *parent = 0);
+	explicit NotifierConfigurationDataManager(const QString &eventName, QObject *parent = nullptr);
 
 private slots:
 	void configurationWindowDestroyed();
