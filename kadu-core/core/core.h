@@ -79,7 +79,6 @@ class PluginStateService;
 class ProtocolsManager;
 class ProxyEditWindowService;
 class Roster;
-class StatusChangerManager;
 class StatusContainerManager;
 class StatusSetter;
 class StatusTypeManager;
@@ -154,7 +153,6 @@ public:
 	FileTransferHandlerManager * fileTransferHandlerManager() const;
 	FileTransferManager * fileTransferManager() const;
 
-	StatusChangerManager * statusChangerManager() const;
 	ProtocolsManager * protocolsManager() const;
 	UrlHandlerManager * urlHandlerManager() const;
 	ChatManager * chatManager() const;
