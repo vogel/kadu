@@ -38,7 +38,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "core/injected-factory.h"
 #include "gui/actions/actions.h"
@@ -63,7 +62,7 @@
 
 #include "history.h"
 
-void disableNonHistoryContacts(Action *action)
+void disableNonHistoryContacts(Myself *myself, Action *action)
 {
 	kdebugf();
 	action->setEnabled(false);
@@ -74,7 +73,7 @@ void disableNonHistoryContacts(Action *action)
 
 	foreach (const Contact &contact, contacts)
 	{
-		if (Core::instance()->myself()->buddy() == contact.ownerBuddy())
+		if (myself->buddy() == contact.ownerBuddy())
 			return;
 
 		Account account = contact.contactAccount();
@@ -106,6 +105,11 @@ void History::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void History::setBuddyChatManager(BuddyChatManager *buddyChatManager)
+{
+	m_buddyChatManager = buddyChatManager;
+}
+
 void History::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
@@ -130,6 +134,11 @@ void History::setMessageManager(MessageManager* messageManager)
 {
 	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(enqueueMessage(Message)));
 	connect(messageManager, SIGNAL(messageSent(Message)), this, SLOT(enqueueMessage(Message)));
+}
+
+void History::setMyself(Myself *myself)
+{
+	m_myself = myself;
 }
 
 void History::setShowHistoryActionDescription(ShowHistoryActionDescription *showHistoryActionDescription)
@@ -174,7 +183,7 @@ void History::createActionDescriptions()
 		ActionDescription::TypeUser, "clearHistoryAction",
 		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/clear-history"), tr("Clear History"), false,
-		disableNonHistoryContacts
+		[this](Action *action){ return disableNonHistoryContacts(m_myself, action); }
 	);
 
 }
@@ -216,11 +225,11 @@ void History::chatWidgetAdded(ChatWidget *chatWidget)
 	if (!CurrentStorage)
 		return;
 
-	WebkitMessagesView *chatMessagesView = chatWidget->chatMessagesView();
+	auto chatMessagesView = chatWidget->chatMessagesView();
 	if (!chatMessagesView)
 		return;
 
-	Chat chat = Core::instance()->buddyChatManager()->buddyChat(chatWidget->chat());
+	auto chat = m_buddyChatManager->buddyChat(chatWidget->chat());
 
 	HistoryQuery query;
 	query.setTalkable(chat ? chat : chatWidget->chat());
