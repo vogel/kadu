@@ -54,8 +54,24 @@
 About::About(QWidget *parent) :
 		QWidget(parent, Qt::Window), DesktopAwareObject(this)
 {
-	kdebugf();
+}
 
+About::~About()
+{
+}
+
+void About::setDomProcessorService(DomProcessorService *domProcessorService)
+{
+	m_domProcessorService = domProcessorService;
+}
+
+void About::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void About::init()
+{
 	// set window properties and flags
 	setWindowRole("kadu-about");
 	setWindowTitle(tr("About"));
@@ -192,23 +208,6 @@ About::About(QWidget *parent) :
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AboutGeometry"), QRect(0, 50, 480, 380), this);
 
-	kdebugf2();
-}
-
-About::~About()
-{
-	kdebugf();
-
-	kdebugf2();
-}
-
-void About::setDomProcessorService(DomProcessorService *domProcessorService)
-{
-	m_domProcessorService = domProcessorService;
-}
-
-void About::init()
-{
 	QString authors = loadFile("AUTHORS.html");
 	authors.remove(QRegExp("[\\[\\]]"));
 	// convert the email addresses
@@ -239,7 +238,7 @@ QString About::loadFile(const QString &name)
 {
 	kdebugf();
 
-	QFile file(Core::instance()->pathsProvider()->dataPath() + name);
+	QFile file(m_pathsProvider->dataPath() + name);
 	if (!file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", qPrintable(name));

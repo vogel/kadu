@@ -30,6 +30,7 @@
 #include <injeqt/injeqt.h>
 
 class DomProcessorService;
+class PathsProvider;
 
 class QUrl;
 class QKeyEvent;
@@ -46,12 +47,15 @@ class About : public QWidget, DesktopAwareObject
 	Q_OBJECT
 
 	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<PathsProvider> m_pathsProvider;
+
 	QTextEdit *tb_authors;
 
 	QString loadFile(const QString &name);
 
 private slots:
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 
 	void openUrl(const QUrl &url);
