@@ -21,6 +21,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/windows/add-conference-window.h"
 
@@ -38,6 +39,11 @@ AddConferenceAction::~AddConferenceAction()
 void AddConferenceAction::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
+}
+
+void AddConferenceAction::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void AddConferenceAction::init()
@@ -61,7 +67,7 @@ void AddConferenceAction::triggered(QWidget *widget, ActionContext *context, boo
 	Q_UNUSED(context)
 	Q_UNUSED(toggled)
 
-	(new AddConferenceWindow(widget))->show();
+	(m_injectedFactory->makeInjected<AddConferenceWindow>(widget))->show();
 }
 
 void AddConferenceAction::updateAddChatMenuItem()

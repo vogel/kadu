@@ -18,12 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QVBoxLayout>
+#include "add-conference-window.h"
 
 #include "accounts/filter/protocol-filter.h"
 #include "buddies/model/buddy-list-model.h"
@@ -31,7 +26,6 @@
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "configuration/config-file-variant-wrapper.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/accounts-combo-box.h"
@@ -49,7 +43,12 @@
 // will be used when Qt 4.8 .is required
 // #include "buddies/model/checkable-buddies-proxy-model.h"
 
-#include "add-conference-window.h"
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QVBoxLayout>
 
 AddConferenceWindow::AddConferenceWindow(QWidget *parent) :
 		QDialog(parent)
@@ -57,17 +56,35 @@ AddConferenceWindow::AddConferenceWindow(QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowRole("kadu-add-conference");
 	setWindowTitle(tr("Add Conference"));
+}
 
+AddConferenceWindow::~AddConferenceWindow()
+{
+}
+
+void AddConferenceWindow::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void AddConferenceWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
+void AddConferenceWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void AddConferenceWindow::init()
+{
 	createGui();
 
 	accountChanged();
 	validateData();
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AddConferenceWindowGeometry"), QRect(0, 50, 430, 400), this);
-}
-
-AddConferenceWindow::~AddConferenceWindow()
-{
 }
 
 void AddConferenceWindow::createGui()
@@ -79,7 +96,7 @@ void AddConferenceWindow::createGui()
 
 	QFormLayout *layout = new QFormLayout(mainWidget);
 
-	AccountCombo = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo = m_injectedFactory->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 
 	// only gadu supports conferences for now
@@ -106,8 +123,8 @@ void AddConferenceWindow::createGui()
 
 	ModelChain *chain = new ModelChain(this);
 
-	Model = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(chain);
-	Core::instance()->injectedFactory()->makeInjected<BuddyManagerAdapter>(Model);
+	Model = m_injectedFactory->makeInjected<BuddyListModel>(chain);
+	m_injectedFactory->makeInjected<BuddyManagerAdapter>(Model);
 
 	// will be removed when Qt 4.8 .is required
 	Model->setCheckable(true);
@@ -135,7 +152,7 @@ void AddConferenceWindow::createGui()
 	connect(buddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameFilter);
 
-	TalkableTreeView *view = Core::instance()->injectedFactory()->makeInjected<TalkableTreeView>(buddiesWidget);
+	TalkableTreeView *view = m_injectedFactory->makeInjected<TalkableTreeView>(buddiesWidget);
 	view->setModel(chain->lastModel());
 	view->setRootIsDecorated(false);
 	view->setShowIdentityNameIfMany(false);
@@ -203,7 +220,7 @@ void AddConferenceWindow::validateData()
 	StartButton->setEnabled(true);
 
 	const QString &display = DisplayNameEdit->text();
-	if (!display.isEmpty() && Core::instance()->chatManager()->byDisplay(display))
+	if (!display.isEmpty() && m_chatManager->byDisplay(display))
 	{
 		displayErrorMessage(tr("Visible name is already used for another chat"));
 		return;
@@ -278,7 +295,7 @@ void AddConferenceWindow::start()
 	if (!DisplayNameEdit->text().isEmpty())
 		chat.setDisplay(DisplayNameEdit->text());
 
-	Core::instance()->chatWidgetManager()->openChat(computeChat(), OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(computeChat(), OpenChatActivation::Activate);
 	QDialog::accept();
 }
 

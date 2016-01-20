@@ -18,12 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADD_CONFERENCE_WINDOW_H
-#define ADD_CONFERENCE_WINDOW_H
-
-#include <QtWidgets/QDialog>
+#pragma once
 
 #include "buddies/buddy-set.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
 
 class QLabel;
 class QLineEdit;
@@ -31,13 +32,29 @@ class QLineEdit;
 class AccountsComboBox;
 class AccountTalkableFilter;
 class BuddyListModel;
+class ChatManager;
+class ChatWidgetManager;
 class Chat;
 class CheckableBuddiesProxyModel;
+class InjectedFactory;
 class ModelChain;
 
 class AddConferenceWindow : public QDialog
 {
 	Q_OBJECT
+
+public:
+	explicit AddConferenceWindow(QWidget *parent = nullptr);
+	virtual ~AddConferenceWindow();
+
+public slots:
+	void accept();
+	void start();
+
+private:
+	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	AccountsComboBox *AccountCombo;
 	QLineEdit *DisplayNameEdit;
@@ -56,17 +73,12 @@ class AddConferenceWindow : public QDialog
 	BuddySet filterByAccount(const Account &account, const BuddySet &buddies) const;
 
 private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void accountChanged();
 	void validateData();
 
-public:
-	explicit AddConferenceWindow(QWidget *parent = nullptr);
-	virtual ~AddConferenceWindow();
-
-public slots:
-	void accept();
-	void start();
-
 };
-
-#endif // ADD_CONFERENCE_WINDOW_H

@@ -28,6 +28,7 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class InjectedFactory;
 
 class AddConferenceAction : public ActionDescription
 {
@@ -42,9 +43,11 @@ protected:
 
 private:
 	QPointer<AccountManager> m_accountManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void updateAddChatMenuItem();
