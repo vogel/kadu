@@ -47,15 +47,14 @@ ChatWidgetMessageHandler::~ChatWidgetMessageHandler()
 {
 }
 
+void ChatWidgetMessageHandler::setBuddyChatManager(BuddyChatManager *buddyChatManager)
+{
+	m_buddyChatManager = buddyChatManager;
+}
+
 void ChatWidgetMessageHandler::setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService)
 {
 	m_chatWidgetActivationService = chatWidgetActivationService;
-
-	if (!m_chatWidgetActivationService)
-		return;
-
-	connect(m_chatWidgetActivationService.data(), SIGNAL(chatWidgetActivated(ChatWidget*)),
-			this, SLOT(chatWidgetActivated(ChatWidget*)));
 }
 
 void ChatWidgetMessageHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
@@ -66,28 +65,16 @@ void ChatWidgetMessageHandler::setChatWidgetManager(ChatWidgetManager *chatWidge
 void ChatWidgetMessageHandler::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
+}
 
-	if (!m_chatWidgetRepository)
-		return;
-
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(chatWidgetAdded(ChatWidget*)));
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(chatWidgetRemoved(ChatWidget*)));
-
-	for (auto chatWidget : m_chatWidgetRepository.data())
-		chatWidgetAdded(chatWidget);
+void ChatWidgetMessageHandler::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void ChatWidgetMessageHandler::setMessageManager(MessageManager *messageManager)
 {
 	m_messageManager = messageManager;
-
-	if (!m_messageManager)
-		return;
-
-	// some other messageReceived slot may check if message chat is open and this
-	// slot can change this value, so let all other messageReceived be executed before this
-	connect(m_messageManager.data(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)), Qt::QueuedConnection);
-	connect(m_messageManager.data(), SIGNAL(messageSent(Message)), this, SLOT(messageSent(Message)), Qt::QueuedConnection);
 }
 
 void ChatWidgetMessageHandler::setNotificationService(NotificationService *notificationService)
@@ -98,14 +85,27 @@ void ChatWidgetMessageHandler::setNotificationService(NotificationService *notif
 void ChatWidgetMessageHandler::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
 	m_unreadMessageRepository = unreadMessageRepository;
-
-	if (!m_unreadMessageRepository)
-		return;
 }
 
-void ChatWidgetMessageHandler::setConfiguration(ChatWidgetMessageHandlerConfiguration configuration)
+void ChatWidgetMessageHandler::init()
 {
-	m_configuration = configuration;
+	connect(m_chatWidgetActivationService, SIGNAL(chatWidgetActivated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
+
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(chatWidgetAdded(ChatWidget*)));
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(chatWidgetRemoved(ChatWidget*)));
+
+	for (auto chatWidget : m_chatWidgetRepository.data())
+		chatWidgetAdded(chatWidget);
+
+	// some other messageReceived slot may check if message chat is open and this
+	// slot can change this value, so let all other messageReceived be executed before this
+	connect(m_messageManager.data(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)), Qt::QueuedConnection);
+	connect(m_messageManager.data(), SIGNAL(messageSent(Message)), this, SLOT(messageSent(Message)), Qt::QueuedConnection);
+}
+
+void ChatWidgetMessageHandler::setChatWidgetMessageHandlerConfiguration(ChatWidgetMessageHandlerConfiguration chatWidgetMessageHandlerConfiguration)
+{
+	m_chatWidgetMessageHandlerConfiguration = chatWidgetMessageHandlerConfiguration;
 }
 
 void ChatWidgetMessageHandler::chatWidgetAdded(ChatWidget *chatWidget)
@@ -147,7 +147,7 @@ void ChatWidgetMessageHandler::appendAllUnreadMessages(ChatWidget *chatWidget)
 SortedMessages ChatWidgetMessageHandler::loadAllUnreadMessages(const Chat &chat) const
 {
 	// TODO: BuddyChatManager cannot be injected here, because it crashes, find out why
-	auto buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
+	auto buddyChat = m_buddyChatManager->buddyChat(chat);
 	auto unreadChat = buddyChat ? buddyChat : chat;
 	return m_unreadMessageRepository.data()->unreadMessagesForChat(unreadChat);
 }
@@ -172,7 +172,7 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 
 	if (shouldOpenChatWidget(chat))
 	{
-		auto activation = m_configuration.openChatOnMessageMinimized()
+		auto activation = m_chatWidgetMessageHandlerConfiguration.openChatOnMessageMinimized()
 			? OpenChatActivation::Minimize
 			: OpenChatActivation::Activate;
 		m_chatWidgetManager.data()->openChat(chat, activation);
@@ -180,7 +180,7 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 	else
 	{
 #ifdef Q_OS_WIN
-		if (!Core::instance()->application()->configuration()->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
+		if (!m_configuration->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
 			qApp->alert(Core::instance()->kaduWindow());
 #else
 		qApp->alert(Core::instance()->kaduWindow());
@@ -190,7 +190,7 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 
 bool ChatWidgetMessageHandler::shouldOpenChatWidget(const Chat &chat) const
 {
-	if (!m_configuration.openChatOnMessage())
+	if (!m_chatWidgetMessageHandlerConfiguration.openChatOnMessage())
 		return false;
 
 	auto silentMode = m_notificationService ? m_notificationService.data()->silentMode() : false;
@@ -201,7 +201,7 @@ bool ChatWidgetMessageHandler::shouldOpenChatWidget(const Chat &chat) const
 	if (!handler)
 		return false;
 
-	if (m_configuration.openChatOnMessageOnlyWhenOnline())
+	if (m_chatWidgetMessageHandlerConfiguration.openChatOnMessageOnlyWhenOnline())
 		return StatusTypeGroupOnline == handler->status().group();
 	else
 		return true;

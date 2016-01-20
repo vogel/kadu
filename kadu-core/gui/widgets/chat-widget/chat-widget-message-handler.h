@@ -26,11 +26,13 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class BuddyChatManager;
 class Chat;
 class ChatWidget;
 class ChatWidgetActivationService;
 class ChatWidgetManager;
 class ChatWidgetRepository;
+class Configuration;
 class Message;
 class MessageManager;
 class NotificationService;
@@ -63,29 +65,34 @@ public:
 	Q_INVOKABLE explicit ChatWidgetMessageHandler(QObject *parent = nullptr);
 	virtual ~ChatWidgetMessageHandler();
 
-	void setConfiguration(ChatWidgetMessageHandlerConfiguration configuration);
+	void setChatWidgetMessageHandlerConfiguration(ChatWidgetMessageHandlerConfiguration chatWidgetMessageHandlerConfiguration);
 
 private:
+	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<ChatWidgetActivationService> m_chatWidgetActivationService;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<Configuration> m_configuration;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<NotificationService> m_notificationService;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
-	ChatWidgetMessageHandlerConfiguration m_configuration;
+	ChatWidgetMessageHandlerConfiguration m_chatWidgetMessageHandlerConfiguration;
 
 	void appendAllUnreadMessages(ChatWidget *chatWidget);
 	SortedMessages loadAllUnreadMessages(const Chat &chat) const;
 	bool shouldOpenChatWidget(const Chat &chat) const;
 
 private slots:
+	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+	INJEQT_INIT void init();
 
 	void chatWidgetAdded(ChatWidget *chatWidget);
 	void chatWidgetRemoved(ChatWidget *chatWidget);

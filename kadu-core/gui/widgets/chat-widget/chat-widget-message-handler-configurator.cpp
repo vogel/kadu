@@ -39,7 +39,7 @@ void ChatWidgetMessageHandlerConfigurator::setChatWidgetMessageHandler(ChatWidge
 void ChatWidgetMessageHandlerConfigurator::configurationUpdated()
 {
 	if (m_chatWidgetMessageHandler)
-		m_chatWidgetMessageHandler.data()->setConfiguration(loadConfiguration());
+		m_chatWidgetMessageHandler.data()->setChatWidgetMessageHandlerConfiguration(loadConfiguration());
 }
 
 void ChatWidgetMessageHandlerConfigurator::createDefaultConfiguration() const
