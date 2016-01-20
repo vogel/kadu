@@ -21,13 +21,17 @@
 
 #include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat-style/chat-style-manager.h"
+#include "chat-style/engine/adium/adium-style-engine.h"
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
+#include "chat-style/engine/kadu/kadu-style-engine.h"
 
 ChatStyleModule::ChatStyleModule()
 {
+	add_type<AdiumStyleEngine>();
 	add_type<ChatStyleConfigurationUiHandler>();
 	add_type<ChatStyleManager>();
 	add_type<ConfiguredChatStyleRendererFactoryProvider>();
+	add_type<KaduStyleEngine>();
 }
 
 ChatStyleModule::~ChatStyleModule()

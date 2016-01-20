@@ -21,13 +21,19 @@
 
 #include "chat-style/engine/chat-style-engine.h"
 
+#include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-class AdiumStyleEngine : public ChatStyleEngine
+class InjectedFactory;
+class PathsProvider;
+
+class AdiumStyleEngine : public QObject, public ChatStyleEngine
 {
+	Q_OBJECT
 
 public:
-	explicit AdiumStyleEngine();
+	Q_INVOKABLE explicit AdiumStyleEngine(QObject *parent = nullptr);
 	virtual ~AdiumStyleEngine();
 
 	virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle);
@@ -38,5 +44,13 @@ public:
 
 	virtual QStringList styleVariants(QString styleName);
 	virtual bool styleUsesTransparencyByDefault(QString styleName);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PathsProvider> m_pathsProvider;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };

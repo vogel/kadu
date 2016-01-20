@@ -31,11 +31,13 @@
 #include <memory>
 #include <injeqt/injeqt.h>
 
+class AdiumStyleEngine;
 class ChatConfigurationHolder;
 class ChatStyleEngine;
 class Configuration;
 class ConfiguredChatStyleRendererFactoryProvider;
 class FormattedStringFactory;
+class KaduStyleEngine;
 class PathsProvider;
 
 class QCheckBox;
@@ -54,13 +56,15 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<AdiumStyleEngine> m_adiumStyleEngine;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<Configuration> m_configuration;
 	QPointer<ConfiguredChatStyleRendererFactoryProvider> m_configuredChatStyleRendererFactoryProvider;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<KaduStyleEngine> m_kaduStyleEngine;
 	QPointer<PathsProvider> m_pathsProvider;
 
-	std::map<QString, std::unique_ptr<ChatStyleEngine>> RegisteredEngines;
+	std::map<QString, ChatStyleEngine *> m_engines;
 	ChatStyle m_currentChatStyle;
 	QMap<QString, StyleInfo> AvailableStyles;
 
@@ -82,10 +86,12 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 	QString fixedVariantName(const QString &styleName, QString variantName);
 
 private slots:
+	INJEQT_SET void setAdiumStyleEngine(AdiumStyleEngine *adiumStyleEngine);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setKaduStyleEngine(KaduStyleEngine *kaduStyleEngine);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 
@@ -96,7 +102,7 @@ public:
 	Q_INVOKABLE explicit ChatStyleManager(QObject *parent = nullptr);
 	virtual ~ChatStyleManager();
 
-	void registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine>);
+	void registerChatStyleEngine(const QString &name, ChatStyleEngine *engine);
 	void unregisterChatStyleEngine(const QString &name);
 
 	ChatStyle currentChatStyle() const { return m_currentChatStyle; }

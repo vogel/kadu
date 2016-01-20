@@ -21,6 +21,7 @@
 
 #include "chat-style/engine/chat-style-engine.h"
 
+#include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QSharedPointer>
 #include <injeqt/injeqt.h>
@@ -28,13 +29,14 @@
 class InjectedFactory;
 class SyntaxList;
 
-class KaduStyleEngine : public ChatStyleEngine
+class KaduStyleEngine : public QObject, public ChatStyleEngine
 {
-	QSharedPointer<SyntaxList> syntaxList;
+	Q_OBJECT
 
 public:
-	explicit KaduStyleEngine();
+	Q_INVOKABLE explicit KaduStyleEngine(QObject *parent = nullptr);
 	virtual ~KaduStyleEngine();
+
 	virtual bool supportVariants() { return false; }
 	virtual QString isStyleValid(QString styleName);
 	virtual bool styleUsesTransparencyByDefault(QString styleName)
@@ -44,5 +46,13 @@ public:
 	}
 
 	virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+	QSharedPointer<SyntaxList> syntaxList;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

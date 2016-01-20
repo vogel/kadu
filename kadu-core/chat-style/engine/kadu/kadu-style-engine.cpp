@@ -23,19 +23,24 @@
 #include "chat-style/engine/chat-style-renderer-factory.h"
 #include "chat-style/engine/kadu/kadu-chat-syntax.h"
 #include "chat-style/engine/kadu/kadu-style-renderer-factory.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "misc/syntax-list.h"
 
 #include <QtCore/QFileInfo>
 
-KaduStyleEngine::KaduStyleEngine()
+KaduStyleEngine::KaduStyleEngine(QObject *parent) :
+		QObject{parent}
 {
 	syntaxList = QSharedPointer<SyntaxList>(new SyntaxList("chat"));
 }
 
 KaduStyleEngine::~KaduStyleEngine()
 {
+}
+
+void KaduStyleEngine::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 QString KaduStyleEngine::isStyleValid(QString stylePath)
@@ -54,5 +59,5 @@ std::unique_ptr<ChatStyleRendererFactory> KaduStyleEngine::createRendererFactory
 		"#{message}</font></p>"
 	);
 
-	return Core::instance()->injectedFactory()->makeUnique<KaduStyleRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
+	return m_injectedFactory->makeUnique<KaduStyleRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
 }

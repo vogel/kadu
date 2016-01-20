@@ -22,19 +22,29 @@
 #include "chat-style/chat-style.h"
 #include "chat-style/engine/adium/adium-style-renderer-factory.h"
 #include "chat-style/engine/adium/adium-style.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "misc/memory.h"
 #include "misc/paths-provider.h"
 
 #include <QtCore/QDir>
 
-AdiumStyleEngine::AdiumStyleEngine()
+AdiumStyleEngine::AdiumStyleEngine(QObject *parent) :
+		QObject{parent}
 {
 }
 
 AdiumStyleEngine::~AdiumStyleEngine()
 {
+}
+
+void AdiumStyleEngine::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void AdiumStyleEngine::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
 }
 
 QString AdiumStyleEngine::isStyleValid(QString stylePath)
@@ -57,9 +67,9 @@ QString AdiumStyleEngine::defaultVariant(const QString &styleName)
 QStringList AdiumStyleEngine::styleVariants(QString styleName)
 {
 	QDir dir;
-	QString styleBaseHref = Core::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
+	QString styleBaseHref = m_pathsProvider->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
 	if (!dir.exists(styleBaseHref))
-		styleBaseHref = Core::instance()->pathsProvider()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
+		styleBaseHref = m_pathsProvider->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
 	dir.setPath(styleBaseHref);
 	dir.setNameFilters(QStringList("*.css"));
 	return dir.entryList();
@@ -70,5 +80,7 @@ std::unique_ptr<ChatStyleRendererFactory> AdiumStyleEngine::createRendererFactor
 	auto style = std::make_shared<AdiumStyle>(chatStyle.name());
 	style->setCurrentVariant(chatStyle.variant());
 
-	return Core::instance()->injectedFactory()->makeUnique<AdiumStyleRendererFactory>(style);
+	return m_injectedFactory->makeUnique<AdiumStyleRendererFactory>(style);
 }
+
+#include "moc_adium-style-engine.cpp"

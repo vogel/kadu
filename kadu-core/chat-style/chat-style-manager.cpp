@@ -59,6 +59,11 @@ ChatStyleManager::~ChatStyleManager()
 	unregisterChatStyleEngine("Adium");
 }
 
+void ChatStyleManager::setAdiumStyleEngine(AdiumStyleEngine *adiumStyleEngine)
+{
+	m_adiumStyleEngine = adiumStyleEngine;
+}
+
 void ChatStyleManager::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
 	m_chatConfigurationHolder = chatConfigurationHolder;
@@ -79,6 +84,11 @@ void ChatStyleManager::setFormattedStringFactory(FormattedStringFactory *formatt
 	m_formattedStringFactory = formattedStringFactory;
 }
 
+void ChatStyleManager::setKaduStyleEngine(KaduStyleEngine *kaduStyleEngine)
+{
+	m_kaduStyleEngine = kaduStyleEngine;
+}
+
 void ChatStyleManager::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -86,23 +96,22 @@ void ChatStyleManager::setPathsProvider(PathsProvider *pathsProvider)
 
 void ChatStyleManager::init()
 {
-	registerChatStyleEngine("Kadu", make_unique<KaduStyleEngine>());
-	registerChatStyleEngine("Adium", make_unique<AdiumStyleEngine>());
+	registerChatStyleEngine("Kadu", m_kaduStyleEngine);
+	registerChatStyleEngine("Adium", m_adiumStyleEngine);
 
 	loadStyles();
 	configurationUpdated();
 
 }
 
-void ChatStyleManager::registerChatStyleEngine(const QString &name, std::unique_ptr<ChatStyleEngine> engine)
+void ChatStyleManager::registerChatStyleEngine(const QString &name, ChatStyleEngine *engine)
 {
-	if (engine && !contains(RegisteredEngines, name))
-		RegisteredEngines.insert(std::make_pair(name, std::move(engine)));
+	m_engines.insert(std::make_pair(name, engine));
 }
 
 void ChatStyleManager::unregisterChatStyleEngine(const QString &name)
 {
-	RegisteredEngines.erase(name);
+	m_engines.erase(name);
 }
 
 void ChatStyleManager::configurationUpdated()
@@ -230,12 +239,12 @@ void ChatStyleManager::loadStyles()
 		fi.setFile(path + file);
 		if (fi.isReadable() && !AvailableStyles.contains(file))
 		{
-			for (auto &&engine : RegisteredEngines)
+			for (auto &&engine : m_engines)
 			{
 				StyleName = engine.second->isStyleValid(path + file);
 				if (!StyleName.isNull())
 				{
-					AvailableStyles[StyleName].engine = engine.second.get();
+					AvailableStyles[StyleName].engine = engine.second;
 					AvailableStyles[StyleName].global = false;
 					break;
 				}
@@ -253,12 +262,12 @@ void ChatStyleManager::loadStyles()
 		fi.setFile(path + file);
 		if (fi.isReadable() && !AvailableStyles.contains(file))
 		{
-			for (auto &&engine : RegisteredEngines)
+			for (auto &&engine : m_engines)
 			{
 				StyleName = engine.second->isStyleValid(path + file);
 				if (!StyleName.isNull())
 				{
-					AvailableStyles[StyleName].engine = engine.second.get();
+					AvailableStyles[StyleName].engine = engine.second;
 					AvailableStyles[StyleName].global = true;
 					break;
 				}
