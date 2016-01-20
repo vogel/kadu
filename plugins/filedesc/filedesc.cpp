@@ -48,26 +48,31 @@ FileDescription::~FileDescription()
 	m_timer->stop();
 }
 
+void FileDescription::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void FileDescription::setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger)
 {
 	m_fileDescStatusChanger = fileDescStatusChanger;
-	configurationUpdated();
 }
 
 void FileDescription::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
+}
+
+void FileDescription::init()
+{
 	configurationUpdated();
 }
 
 void FileDescription::configurationUpdated()
 {
-	if (!m_fileDescStatusChanger || !m_pathsProvider)
-		return;
-
-	m_file = Core::instance()->configuration()->deprecatedApi()->readEntry("FileDesc", "file", m_pathsProvider->profilePath() + QLatin1String("description.txt"));
-	m_forceDesc = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
-	m_allowOther = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
+	m_file = m_configuration->deprecatedApi()->readEntry("FileDesc", "file", m_pathsProvider->profilePath() + QLatin1String("description.txt"));
+	m_forceDesc = m_configuration->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
+	m_allowOther = m_configuration->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
 
 	checkTitle();
 }
@@ -93,9 +98,9 @@ void FileDescription::checkTitle()
 
 void FileDescription::createDefaultConfiguration()
 {
-	Core::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "file", Core::instance()->pathsProvider()->profilePath() + QLatin1String("description.txt"));
-	Core::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
+	m_configuration->deprecatedApi()->addVariable("FileDesc", "file", m_pathsProvider->profilePath() + QLatin1String("description.txt"));
+	m_configuration->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
+	m_configuration->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
 }
 
 #include "moc_filedesc.cpp"

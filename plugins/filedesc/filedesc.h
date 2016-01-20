@@ -26,6 +26,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Configuration;
 class FileDescStatusChanger;
 class PathsProvider;
 
@@ -49,6 +50,7 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<FileDescStatusChanger> m_fileDescStatusChanger;
 	QPointer<PathsProvider> m_pathsProvider;
 
@@ -61,7 +63,9 @@ private:
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
 
 };
