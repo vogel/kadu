@@ -125,6 +125,11 @@ void MediaPlayer::setNotificationManager(NotificationManager *notificationManage
 	m_notificationManager = notificationManager;
 }
 
+void MediaPlayer::setStatusChangerManager(StatusChangerManager *statusChangerManager)
+{
+	m_statusChangerManager = statusChangerManager;
+}
+
 void MediaPlayer::init()
 {
 	kdebugf();
@@ -152,7 +157,7 @@ void MediaPlayer::init()
 		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Enable MediaPlayer Statuses"), true
 	);
 
-	Core::instance()->actions()->blockSignals();
+	m_actions->blockSignals();
 
 	mediaPlayerMenu = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_button",
@@ -186,7 +191,7 @@ void MediaPlayer::init()
 	);
 
 	// The last ActionDescription will send actionLoaded() signal.
-	Core::instance()->actions()->unblockSignals();
+	m_actions->unblockSignals();
 
 	volDownAction = new ActionDescription(
 		this, ActionDescription::TypeChat, "mediaplayer_vol_down",
@@ -200,8 +205,8 @@ void MediaPlayer::init()
 	winKeyPressed = false;
 
 	Changer = new MediaPlayerStatusChanger(this);
-	Core::instance()->statusChangerManager()->registerStatusChanger(Changer);
-	connect(Core::instance()->statusChangerManager(), SIGNAL(manualStatusAboutToBeChanged(StatusContainer*,Status)),
+	m_statusChangerManager->registerStatusChanger(Changer);
+	connect(m_statusChangerManager, SIGNAL(manualStatusAboutToBeChanged(StatusContainer*,Status)),
 			this, SLOT(statusAboutToBeChanged()));
 
 	setControlsEnabled(false);
@@ -223,7 +228,7 @@ void MediaPlayer::done()
 
 	MediaPlayerNotification::unregisterNotifications(m_notificationEventRepository);
 
-	Core::instance()->statusChangerManager()->unregisterStatusChanger(Changer);
+	m_statusChangerManager->unregisterStatusChanger(Changer);
 
 	timer->stop();
 

@@ -27,6 +27,7 @@ class NotificationEventRepository;
 class NotificationManager;
 class PlayerCommands;
 class PlayerInfo;
+class StatusChangerManager;
 class ToolBar;
 class ToolButton;
 class UserGroup;
@@ -44,6 +45,7 @@ class MEDIAPLAYERAPI MediaPlayer : public QObject, ConfigurationAwareObject
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationManager> m_notificationManager;
+	QPointer<StatusChangerManager> m_statusChangerManager;
 
 	MediaPlayerStatusChanger *Changer;
 	PlayerInfo *playerInfo;
@@ -96,6 +98,7 @@ private slots:
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
