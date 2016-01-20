@@ -19,11 +19,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GROUP_LIST_H
-#define GROUP_LIST_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QListWidget>
+#include <injeqt/injeqt.h>
 
+class GroupManager;
 class Group;
 
 class GroupList : public QListWidget
@@ -37,6 +39,11 @@ public:
 	void setCheckedGroups(const QSet<Group> groups);
 	QSet<Group> checkedGroups();
 
-};
+private:
+	QPointer<GroupManager> m_groupManager;
 
-#endif // GROUP_LIST_H
+private slots:
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_INIT void init();
+
+};

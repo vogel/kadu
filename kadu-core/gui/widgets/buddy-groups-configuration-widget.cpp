@@ -23,6 +23,8 @@
 
 #include "buddies/group.h"
 #include "contacts/contact.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/group-list.h"
 #include "misc/misc.h"
 
@@ -51,7 +53,7 @@ void BuddyGroupsConfigurationWidget::createGui()
 	QLabel *label = new QLabel{tr("Add <b>%1</b> to the groups below by checking the box next to the appropriate groups.").arg(m_buddy.display()), this};
 	label->setWordWrap(true);
 
-	m_groupList = new GroupList{this};
+	m_groupList = Core::instance()->injectedFactory()->makeInjected<GroupList>(this);
 	m_groupList->setCheckedGroups(m_buddy.groups());
 
 	layout->addWidget(label);

@@ -19,23 +19,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/group-manager.h"
-#include "core/core.h"
-
 #include "group-list.h"
+
+#include "buddies/group-manager.h"
 
 GroupList::GroupList(QWidget *parent) :
 		QListWidget(parent)
 {
-	foreach (const Group &group, Core::instance()->groupManager()->items())
-	{
-		QListWidgetItem * const groupItem = new QListWidgetItem(this);
-		groupItem->setText(group.name());
-	}
 }
 
 GroupList::~GroupList()
 {
+}
+
+void GroupList::setGroupManager(GroupManager *groupManager)
+{
+	m_groupManager = groupManager;
+}
+
+void GroupList::init()
+{
+	for (auto const &group : m_groupManager->items())
+	{
+		auto groupItem = new QListWidgetItem(this);
+		groupItem->setText(group.name());
+	}
 }
 
 void GroupList::setCheckedGroups(const QSet<Group> groups)
@@ -64,7 +72,7 @@ QSet<Group> GroupList::checkedGroups()
 	{
 		const QListWidgetItem * const groupItem = item(i);
 		if (Qt::Checked == groupItem->checkState())
-			result.insert(Core::instance()->groupManager()->byName(groupItem->text()));
+			result.insert(m_groupManager->byName(groupItem->text()));
 	}
 
 	return result;
