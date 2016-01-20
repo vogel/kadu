@@ -23,6 +23,7 @@
 
 #include "chat/type/chat-type-contact.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-type.h"
 #include "identities/identity.h"
@@ -91,7 +92,7 @@ void NewFileTransferNotification::unregisterEvents(NotificationEventRepository *
 void NewFileTransferNotification::notifyIncomingFileTransfer(NotificationManager *notificationManager, const FileTransfer &fileTransfer)
 {
 	auto chat = ChatTypeContact::findChat(fileTransfer.peer(), ActionCreateAndAdd);
-	auto notification = new NewFileTransferNotification{chat, "FileTransfer/IncomingFile", fileTransfer};
+	auto notification = Core::instance()->injectedFactory()->makeInjected<NewFileTransferNotification>(chat, "FileTransfer/IncomingFile", fileTransfer);
 	notification->setTitle(tr("Incoming transfer"));
 
 	auto textFileSize = QString("%1 kB");

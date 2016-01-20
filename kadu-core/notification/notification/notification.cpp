@@ -89,11 +89,11 @@ Notification::Notification(QVariantMap data, const QString &type, const KaduIcon
 }
 
 Notification::Notification(Account account, Chat chat, const QString &type, const KaduIcon &icon) :
+		Closing(false),
 		Type(type),
 		Icon(icon),
 		m_account{account},
-		m_chat{chat},
-		Closing(false)
+		m_chat{chat}
 {
 	m_data.insert("account", account);
 	m_data.insert("chat", chat);
@@ -101,6 +101,16 @@ Notification::Notification(Account account, Chat chat, const QString &type, cons
 
 Notification::~Notification()
 {
+}
+
+void Notification::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
+void Notification::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
 }
 
 const QVariantMap & Notification::data() const
@@ -158,7 +168,7 @@ void Notification::callbackAccept()
 	close();
 
 	if (m_chat)
-		Core::instance()->chatWidgetManager()->openChat(m_chat, OpenChatActivation::Activate);
+		m_chatWidgetManager->openChat(m_chat, OpenChatActivation::Activate);
 }
 
 void Notification::callbackDiscard()
@@ -168,7 +178,7 @@ void Notification::callbackDiscard()
 
 QString Notification::key() const
 {
-	return Core::instance()->notificationManager()->notifyConfigurationKey(Type);
+	return m_notificationManager->notifyConfigurationKey(Type);
 }
 
 QString Notification::groupKey() const

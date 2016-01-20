@@ -18,6 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-event.h"
 #include "notification/notification-event-repository.h"
@@ -26,7 +28,7 @@
 
 void AntistringNotification::notifyStringReceived(NotificationManager *notificationManager, const Chat &chat)
 {
-	AntistringNotification *notification = new AntistringNotification(chat);
+	AntistringNotification *notification = Core::instance()->injectedFactory()->makeInjected<AntistringNotification>(chat);
 	notification->setTitle(tr("Antistring"));
 	notification->setText(tr("Your interlocutor send you love letter"));
 	notificationManager->notify(notification);

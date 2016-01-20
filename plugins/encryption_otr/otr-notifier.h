@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_NOTIFIER_H
-#define OTR_NOTIFIER_H
+#pragma once
 
 #include "notification/notification-event.h"
 
@@ -29,6 +28,7 @@
 class Account;
 class ChatWidgetRepository;
 class Contact;
+class InjectedFactory;
 class NotificationManager;
 
 class OtrNotifier : public QObject
@@ -40,6 +40,7 @@ class OtrNotifier : public QObject
 	static QString CreatePrivateKeyFinishedNotifyTopic;
 
 	QPointer<ChatWidgetRepository> MyChatWidgetRepository;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationManager> m_notificationManager;
 
 	NotificationEvent OtrNotificationEvent;
@@ -57,6 +58,7 @@ public:
 
 public slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 	void notifyTryingToStartSession(const Contact &contact);
@@ -69,5 +71,3 @@ public slots:
 	void notifyCreatePrivateKeyFinished(const Account &account, bool ok);
 
 };
-
-#endif // OTR_NOTIFIER_H

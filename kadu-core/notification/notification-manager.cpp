@@ -28,8 +28,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/windows/message-dialog.h"
 #include "notification/notification/aggregate-notification.h"
 #include "notification/notifier.h"
@@ -56,6 +55,11 @@ NotificationManager::~NotificationManager()
 void NotificationManager::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void NotificationManager::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void NotificationManager::registerNotifier(Notifier *notifier)
@@ -141,7 +145,7 @@ void NotificationManager::notify(Notification *rawNotification)
 	if (notification) // should update details
 		return;
 
-	notification = new AggregateNotification(rawNotification);
+	notification = m_injectedFactory->makeInjected<AggregateNotification>(rawNotification);
 	connect(notification, SIGNAL(closed(Notification*)), this, SLOT(removeGrouped(Notification*)));
 	ActiveNotifications.insert(notification->identifier(), notification);
 

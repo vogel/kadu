@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
@@ -43,6 +44,11 @@ void ChatEventListener::setChatWidgetRepository(ChatWidgetRepository *chatWidget
 	m_chatWidgetRepository = chatWidgetRepository;
 }
 
+void ChatEventListener::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void ChatEventListener::setMessageManager(MessageManager *messageManager)
 {
 	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
@@ -57,13 +63,13 @@ void ChatEventListener::messageReceived(const Message &message)
 {
 	if (!message.messageChat().isOpen())
 	{
-		m_notificationService->notify(new MessageNotification{m_chatWidgetRepository, MessageNotification::NewChat, message});
+		m_notificationService->notify(m_injectedFactory->makeInjected<MessageNotification>(m_chatWidgetRepository, MessageNotification::NewChat, message));
 		return;
 	}
 
 	auto chatWidget = m_chatWidgetRepository->widgetForChat(message.messageChat());
 	if (!m_notificationService->newMessageOnlyIfInactive() || !_isWindowActiveOrFullyVisible(chatWidget))
-		m_notificationService->notify(new MessageNotification{m_chatWidgetRepository, MessageNotification::NewMessage, message});
+		m_notificationService->notify(m_injectedFactory->makeInjected<MessageNotification>(m_chatWidgetRepository, MessageNotification::NewMessage, message));
 }
 
 #include "moc_chat-event-listener.cpp"

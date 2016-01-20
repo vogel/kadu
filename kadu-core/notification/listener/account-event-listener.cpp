@@ -22,6 +22,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
+#include "core/injected-factory.h"
 #include "multilogon/multilogon-session.h"
 #include "notification/notification/multilogon-notification.h"
 #include "notification/notification/status-changed-notification.h"
@@ -46,6 +47,11 @@ AccountEventListener::~AccountEventListener()
 void AccountEventListener::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
+}
+
+void AccountEventListener::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void AccountEventListener::setNotificationService(NotificationService *notificationService)
@@ -156,13 +162,13 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 	const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(status.type());
 	QString changedTo = "/To" + typeData.name();
 
-	auto statusChangedNotification = new StatusChangedNotification(changedTo, contact, statusDisplayName, description);
+	auto statusChangedNotification = m_injectedFactory->makeInjected<StatusChangedNotification>(changedTo, contact, statusDisplayName, description);
 	m_notificationService->notify(statusChangedNotification);
 }
 
 void AccountEventListener::multilogonSessionConnected(MultilogonSession *session)
 {
-	MultilogonNotification *notification = new MultilogonNotification(session, "multilogon/sessionConnected", true);
+	MultilogonNotification *notification = m_injectedFactory->makeInjected<MultilogonNotification>(session, "multilogon/sessionConnected", true);
 	notification->setTitle(tr("Multilogon"));
 	notification->setText(tr("Multilogon session connected from %1 at %2 with %3 for %4 account")
 			.arg(session->remoteAddress().toString())
@@ -175,7 +181,7 @@ void AccountEventListener::multilogonSessionConnected(MultilogonSession *session
 
 void AccountEventListener::multilogonSessionDisconnected(MultilogonSession *session)
 {
-	MultilogonNotification *notification = new MultilogonNotification(session, "multilogon/sessionDisconnected", false);
+	MultilogonNotification *notification = m_injectedFactory->makeInjected<MultilogonNotification>(session, "multilogon/sessionDisconnected", false);
 	notification->setTitle(tr("Multilogon"));
 	notification->setText(tr("Multilogon session disconnected from %1 at %2 with %3 for %4 account")
 			.arg(session->remoteAddress().toString())

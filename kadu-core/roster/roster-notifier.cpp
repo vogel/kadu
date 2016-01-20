@@ -17,12 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
+#include "roster-notifier.h"
+
+#include "core/injected-factory.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
 #include "notification/notification-event.h"
-
-#include "roster-notifier.h"
 
 QString RosterNotifier::sm_rosterNotifyTopic("Roster");
 QString RosterNotifier::sm_importSucceededNotifyTopic("Roster/ImportSucceeded");
@@ -49,6 +49,11 @@ RosterNotifier::~RosterNotifier()
 {
 }
 
+void RosterNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void RosterNotifier::setNotificationManager(NotificationManager *notificationManager)
 {
 	m_notificationManager = notificationManager;
@@ -66,7 +71,7 @@ QList<NotificationEvent> RosterNotifier::notifyEvents()
 
 void RosterNotifier::notify(const QString &topic, const Account &account, const QString &message)
 {
-	auto notification = new Notification{account, Chat::null, topic, KaduIcon{}};
+	auto notification = m_injectedFactory->makeInjected<Notification>(account, Chat::null, topic, KaduIcon{});
 	notification->setTitle(tr("Roster"));
 	notification->setText(message);
 

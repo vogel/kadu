@@ -25,6 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class ChatWidgetRepository;
+class InjectedFactory;
 class MessageManager;
 class Message;
 class NotificationService;
@@ -40,10 +41,12 @@ public:
 
 private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationService> m_notificationService;
 
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 

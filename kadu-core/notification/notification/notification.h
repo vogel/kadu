@@ -19,10 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NOTIFICATION_H
-#define NOTIFICATION_H
-
-#include <QtCore/QPair>
+#pragma once
 
 #include "accounts/account.h"
 #include "buddies/buddy-set.h"
@@ -31,31 +28,19 @@
 #include "parser/parser-data.h"
 #include "exports.h"
 
-class QTimer;
+#include <QtCore/QPair>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class ChatWidgetManager;
+class NotificationManager;
 class Notifier;
+
+class QTimer;
 
 class KADUAPI Notification : public QObject, public ParserData
 {
 	Q_OBJECT
-
-	QVariantMap m_data;
-
-	QString Type;
-
-	QString Title;
-	QString Text;
-	QStringList Details;
-	KaduIcon Icon;
-
-	Account m_account;
-	Chat m_chat;
-
-	QList<QString> Callbacks;
-
-protected:
-	QSet<Notifier *> Notifiers;
-	bool Closing;
 
 public:
 	static void registerParserTags();
@@ -106,7 +91,30 @@ signals:
 	void updated(Notification *);
 	void closed(Notification *);
 
+protected:
+	QSet<Notifier *> Notifiers;
+	bool Closing;
+
+private:
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<NotificationManager> m_notificationManager;
+
+	QVariantMap m_data;
+
+	QString Type;
+
+	QString Title;
+	QString Text;
+	QStringList Details;
+	KaduIcon Icon;
+
+	Account m_account;
+	Chat m_chat;
+
+	QList<QString> Callbacks;
+
+private slots:
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };
-
-#endif // NOTIFICATION_H

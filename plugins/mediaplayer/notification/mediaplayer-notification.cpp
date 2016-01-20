@@ -30,6 +30,8 @@
 
 #include <QtGui/QTextDocument>
 
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "notification/notification-event.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
@@ -48,7 +50,7 @@ void MediaPlayerNotification::unregisterNotifications(NotificationEventRepositor
 
 void MediaPlayerNotification::notifyTitleHint(NotificationManager *notificationManager, const QString &title)
 {
-	Notification *notification = new MediaPlayerNotification();
+	Notification *notification = Core::instance()->injectedFactory()->makeInjected<MediaPlayerNotification>();
 	notification->setText(Qt::escape(title));
 	notificationManager->notify(notification);
 }

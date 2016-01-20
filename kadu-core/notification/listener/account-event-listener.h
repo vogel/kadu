@@ -27,6 +27,7 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class InjectedFactory;
 class Message;
 class MultilogonSession;
 class NotificationService;
@@ -48,11 +49,13 @@ protected:
 
 private:
 	QPointer<AccountManager> m_accountManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationService> m_notificationService;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();

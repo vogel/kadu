@@ -22,8 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NOTIFICATION_MANAGER_H
-#define NOTIFICATION_MANAGER_H
+#pragma once
 
 #include <QtCore/QHash>
 #include <QtCore/QPointer>
@@ -42,6 +41,7 @@ class Action;
 class AggregateNotification;
 class Configuration;
 class Group;
+class InjectedFactory;
 class Message;
 class MultilogonSession;
 class Notification;
@@ -57,6 +57,7 @@ class KADUAPI NotificationManager : public QObject
 	Q_OBJECT
 
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QList<Notifier *> Notifiers;
 	QStringList IgnoredAccounts;
@@ -68,6 +69,7 @@ class KADUAPI NotificationManager : public QObject
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 	void removeGrouped(Notification *notification);
 	void removePeriodicEntries();
@@ -96,5 +98,3 @@ signals:
 };
 
 /** @} */
-
-#endif // NOTIFICATION_MANAGER_H
