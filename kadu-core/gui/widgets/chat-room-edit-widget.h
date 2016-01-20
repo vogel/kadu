@@ -17,20 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_ROOM_EDIT_WIDGET_H
-#define CHAT_ROOM_EDIT_WIDGET_H
+#pragma once
 
 #include "gui/widgets/chat-edit-widget.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class AccountsComboBox;
+class ChatDetailsRoom;
+class ChatManager;
+class InjectedFactory;
 
 class QCheckBox;
 class QLineEdit;
 
-class AccountsComboBox;
-class ChatDetailsRoom;
-
 class ChatRoomEditWidget : public ChatEditWidget
 {
 	Q_OBJECT
+
+public:
+	explicit ChatRoomEditWidget(const Chat &chat, QWidget *parent = nullptr);
+	virtual ~ChatRoomEditWidget();
+
+public slots:
+	virtual void apply();
+	virtual void cancel();
+
+private:
+	QPointer<ChatManager> m_chatManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	AccountsComboBox *AccountCombo;
 	QLineEdit *RoomEdit;
@@ -43,16 +59,10 @@ class ChatRoomEditWidget : public ChatEditWidget
 	void loadChatData();
 
 private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void dataChanged();
 
-public:
-	explicit ChatRoomEditWidget(const Chat &chat, QWidget *parent = nullptr);
-	virtual ~ChatRoomEditWidget();
-
-public slots:
-	virtual void apply();
-	virtual void cancel();
-
 };
-
-#endif // CHAT_ROOM_EDIT_WIDGET_H

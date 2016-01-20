@@ -20,19 +20,19 @@
 
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
-#include "chat/chat.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/chat-room-edit-widget.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-room.h"
 
-Chat ChatTypeRoom::findChat(const Account &account, const QString &room, NotFoundAction notFoundAction)
+Chat ChatTypeRoom::findChat(ChatManager *chatManager, const Account &account, const QString &room, NotFoundAction notFoundAction)
 {
 	if (!account)
 		return Chat::null;
 
-	foreach (const Chat &chat, Core::instance()->chatManager()->allItems())
+	foreach (const Chat &chat, chatManager->allItems())
 	{
 		if (chat.type() != "Room")
 			continue;
@@ -60,7 +60,7 @@ Chat ChatTypeRoom::findChat(const Account &account, const QString &room, NotFoun
 	details->setRoom(room);
 
 	if (ActionCreateAndAdd == notFoundAction)
-		Core::instance()->chatManager()->addItem(chat);
+		chatManager->addItem(chat);
 
 	return chat;
 }
@@ -145,7 +145,7 @@ ChatDetails * ChatTypeRoom::createChatDetails(ChatShared *chatData) const
 
 ChatEditWidget * ChatTypeRoom::createEditWidget(const Chat &chat, QWidget *parent) const
 {
-	return new ChatRoomEditWidget(chat, parent);
+	return Core::instance()->injectedFactory()->makeInjected<ChatRoomEditWidget>(chat, parent);
 }
 
 #include "moc_chat-type-room.cpp"

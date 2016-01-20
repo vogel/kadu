@@ -200,7 +200,7 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 	QString chatType = items.at(0);
 
 	if ("Room" == chatType)
-		return ChatTypeRoom::findChat(account, items.at(1), ActionCreateAndAdd);
+		return ChatTypeRoom::findChat(m_chatManager, account, items.at(1), ActionCreateAndAdd);
 
 	if ("Contact" == chatType)
 	{

@@ -30,6 +30,7 @@
 #include "exports.h"
 
 class Account;
+class ChatManager;
 class Chat;
 
 /**
@@ -50,7 +51,7 @@ class KADUAPI ChatTypeRoom : public ChatType
 	Q_DISABLE_COPY(ChatTypeRoom)
 
 public:
-	static Chat findChat(const Account &account, const QString &room, NotFoundAction notFoundAction);
+	static Chat findChat(ChatManager *chatManager, const Account &account, const QString &room, NotFoundAction notFoundAction);
 
 	explicit ChatTypeRoom(QObject *parent = nullptr);
 	virtual ~ChatTypeRoom();

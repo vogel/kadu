@@ -211,7 +211,7 @@ void AddRoomChatWindow::validateData()
 
 Chat AddRoomChatWindow::computeChat() const
 {
-	Chat chat = ChatTypeRoom::findChat(AccountCombo->currentAccount(), RoomEdit->text(), ActionCreateAndAdd);
+	Chat chat = ChatTypeRoom::findChat(m_chatManager, AccountCombo->currentAccount(), RoomEdit->text(), ActionCreateAndAdd);
 	if (!chat)
 		return Chat::null;
 

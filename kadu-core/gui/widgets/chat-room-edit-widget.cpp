@@ -18,38 +18,52 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QLineEdit>
+#include "chat-room-edit-widget.h"
 
 #include "accounts/filter/protocol-filter.h"
 #include "chat/chat-details-room.h"
+#include "chat/chat-manager.h"
 #include "chat/type/chat-type-room.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 
-#include "chat-room-edit-widget.h"
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLineEdit>
 
 ChatRoomEditWidget::ChatRoomEditWidget(const Chat &chat, QWidget *parent) :
 		ChatEditWidget(chat, parent)
 {
-	RoomDetails = qobject_cast<ChatDetailsRoom *>(chat.details());
-
-	createGui();
-	loadChatData();
 }
 
 ChatRoomEditWidget::~ChatRoomEditWidget()
 {
 }
 
+void ChatRoomEditWidget::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void ChatRoomEditWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ChatRoomEditWidget::init()
+{
+	RoomDetails = qobject_cast<ChatDetailsRoom *>(chat().details());
+
+	createGui();
+	loadChatData();
+}
+
 void ChatRoomEditWidget::createGui()
 {
 	QFormLayout *layout = new QFormLayout(this);
 
-	AccountCombo = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo = m_injectedFactory->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 
 	// only xmpp rooms for now
@@ -104,7 +118,7 @@ void ChatRoomEditWidget::dataChanged()
 		return;
 	}
 
-	Chat sameChat = ChatTypeRoom::findChat(AccountCombo->currentAccount(), RoomEdit->text(), ActionReturnNull);
+	Chat sameChat = ChatTypeRoom::findChat(m_chatManager, AccountCombo->currentAccount(), RoomEdit->text(), ActionReturnNull);
 	if (sameChat && (sameChat != chat()))
 	{
 		simpleStateNotifier()->setState(StateChangedDataInvalid);
