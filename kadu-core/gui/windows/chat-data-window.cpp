@@ -32,7 +32,6 @@
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
-#include "core/core.h"
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-configuration-widget-factory.h"
 #include "gui/widgets/chat-configuration-widget-group-boxes-adapter.h"
@@ -68,6 +67,16 @@ void ChatDataWindow::setChatConfigurationWidgetFactoryRepository(ChatConfigurati
 	m_chatConfigurationWidgetFactoryRepository = chatConfigurationWidgetFactoryRepository;
 }
 
+void ChatDataWindow::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void ChatDataWindow::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
 void ChatDataWindow::init()
 {
 	setWindowRole("kadu-chat-data");
@@ -78,8 +87,7 @@ void ChatDataWindow::init()
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ChatDataWindowGeometry"), QRect(0, 50, 425, 500), this);
 
-	connect(Core::instance()->chatManager(), SIGNAL(chatRemoved(Chat)),
-			this, SLOT(chatRemoved(Chat)));
+	connect(m_chatManager, SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
 
 	SimpleStateNotifier->setState(StateNotChanged);
 	ValueStateNotifier->addConfigurationValueStateNotifier(SimpleStateNotifier);
@@ -167,7 +175,7 @@ void ChatDataWindow::createGui()
 
 	TabWidget->addTab(GeneralTab, tr("General"));
 
-	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(MyChat.type());
+	auto chatType = m_chatTypeManager->chatType(MyChat.type());
 	if (chatType)
 	{
 		EditWidget = chatType->createEditWidget(MyChat, TabWidget);
@@ -276,7 +284,7 @@ void ChatDataWindow::displayEditChanged()
 		return;
 	}
 
-	const Chat &chat = Core::instance()->chatManager()->byDisplay(DisplayEdit->text());
+	const Chat &chat = m_chatManager->byDisplay(DisplayEdit->text());
 	if (chat)
 		SimpleStateNotifier->setState(StateChangedDataInvalid);
 	else

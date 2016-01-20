@@ -37,6 +37,8 @@ class ChatConfigurationWidgetFactory;
 class ChatConfigurationWidgetFactoryRepository;
 class ChatEditWidget;
 class ChatGroupsConfigurationWidget;
+class ChatManager;
+class ChatTypeManager;
 class CompositeConfigurationValueStateNotifier;
 class GroupList;
 class SimpleConfigurationValueStateNotifier;
@@ -69,6 +71,9 @@ protected:
 
 private:
 	QPointer<ChatConfigurationWidgetFactoryRepository> m_chatConfigurationWidgetFactoryRepository;
+	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatTypeManager> m_chatTypeManager;
+
 	QMap<ChatConfigurationWidgetFactory *, ChatConfigurationWidget *> ChatConfigurationWidgets;
 
 	CompositeConfigurationValueStateNotifier *ValueStateNotifier;
@@ -94,6 +99,8 @@ private:
 
 private slots:
 	INJEQT_SET void setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_INIT void init();
 
 	void factoryRegistered(ChatConfigurationWidgetFactory *factory);
