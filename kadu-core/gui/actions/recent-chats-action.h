@@ -18,22 +18,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RECENT_CHATS_ACTION_H
-#define RECENT_CHATS_ACTION_H
+#pragma once
 
 #include "gui/actions/action-description.h"
+#include "misc/memory.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class ChatWidgetManager;
+class InjectedFactory;
 class RecentChatsMenu;
 
 class RecentChatsAction : public ActionDescription
 {
 	Q_OBJECT
 
-	RecentChatsMenu *RecentChatsMenuInstance;
-
-private slots:
-	void openRecentChats(QAction *action);
-	
 protected:
 	virtual void actionInstanceCreated(Action *action);
 
@@ -41,6 +41,17 @@ public:
 	explicit RecentChatsAction(QObject *parent);
 	virtual ~RecentChatsAction();
 
-};
+private:
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
-#endif // RECENT_CHATS_ACTION_H
+	not_owned_qptr<RecentChatsMenu> m_recentChatsMenu;
+
+private slots:
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
+	void openRecentChats(QAction *action);
+
+};

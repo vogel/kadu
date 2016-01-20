@@ -19,17 +19,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QMenu>
+#include "recent-chats-action.h"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/recent-chats-menu.h"
 
-#include "recent-chats-action.h"
+#include <QtWidgets/QMenu>
 
 RecentChatsAction::RecentChatsAction(QObject *parent) :
 		ActionDescription(parent)
@@ -38,29 +37,38 @@ RecentChatsAction::RecentChatsAction(QObject *parent) :
 	setName("openRecentChatsAction");
 	setIcon(KaduIcon("internet-group-chat"));
 	setText(tr("Recent Chats"));
-
-	RecentChatsMenuInstance = Core::instance()->injectedFactory()->makeInjected<RecentChatsMenu>();
-	connect(RecentChatsMenuInstance, SIGNAL(triggered(QAction *)),
-		this, SLOT(openRecentChats(QAction *)));
 }
 
 RecentChatsAction::~RecentChatsAction()
 {
-	delete RecentChatsMenuInstance;
-	RecentChatsMenuInstance = 0;
+}
+
+void RecentChatsAction::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
+void RecentChatsAction::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void RecentChatsAction::init()
+{
+	m_recentChatsMenu = m_injectedFactory->makeNotOwned<RecentChatsMenu>();
+	connect(m_recentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 }
 
 void RecentChatsAction::actionInstanceCreated(Action *action)
 {
 	action->setEnabled(false);
-	action->setMenu(RecentChatsMenuInstance);
-	connect(RecentChatsMenuInstance, SIGNAL(chatsListAvailable(bool)),
-		action, SLOT(setEnabled(bool)));
+	action->setMenu(m_recentChatsMenu);
+	connect(m_recentChatsMenu, SIGNAL(chatsListAvailable(bool)), action, SLOT(setEnabled(bool)));
 }
 
 void RecentChatsAction::openRecentChats(QAction *action)
 {
-	Core::instance()->chatWidgetManager()->openChat(action->data().value<Chat>(), OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(action->data().value<Chat>(), OpenChatActivation::Activate);
 }
 
 #include "moc_recent-chats-action.cpp"

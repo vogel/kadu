@@ -261,7 +261,7 @@ void KaduWindowActions::init()
 		KaduIcon("x-office-address-book"), tr("Your Accounts")
 	);
 
-	RecentChats = new RecentChatsAction(this);
+	RecentChats = m_injectedFactory->makeInjected<RecentChatsAction>(this);
 
 	ShowMultilogons = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "showMultilogonsAction",
