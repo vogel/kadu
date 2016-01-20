@@ -21,6 +21,7 @@
 
 #include "misc/algorithm.h"
 #include "misc/memory.h"
+#include "misc/paths-provider.h"
 #include "plugin/activation/active-plugin.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
@@ -36,6 +37,11 @@ PluginActivationService::PluginActivationService(QObject *parent) :
 
 PluginActivationService::~PluginActivationService()
 {
+}
+
+void PluginActivationService::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
 }
 
 void PluginActivationService::setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler)
@@ -120,7 +126,7 @@ QVector<QString> PluginActivationService::deactivatePluginWithDependents(const Q
 void PluginActivationService::activatePlugin(const QString &pluginName)
 {
 	if (!contains(m_activePlugins, pluginName))
-		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(pluginName, m_pluginInjectorProvider)));
+		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(m_pathsProvider->pluginsLibPath(), pluginName, m_pluginInjectorProvider)));
 }
 
 void PluginActivationService::deactivatePlugin(const QString &pluginName)

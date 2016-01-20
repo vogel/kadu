@@ -20,13 +20,10 @@
 
 #include "plugin-loader.h"
 
-#include "core/core.h"
 #include "misc/memory.h"
-#include "misc/paths-provider.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/plugin-injector-provider.h"
 #include "plugin/plugin-modules-factory.h"
-#include "debug.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QEvent>
@@ -44,10 +41,10 @@
 	#define SO_EXT "so"
 #endif
 
-PluginLoader::PluginLoader(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider, QObject *parent) noexcept(false) :
+PluginLoader::PluginLoader(const QString &pluginDirPath, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider, QObject *parent) noexcept(false) :
 		// using C++ initializers breaks Qt's lupdate
 		QObject(parent),
-		m_pluginLoader{createPluginLoader(pluginName)},
+		m_pluginLoader{createPluginLoader(pluginDirPath, pluginName)},
 		m_pluginInjector{createPluginInjector(pluginName, pluginInjectorProvider)}
 {
 }
@@ -67,9 +64,9 @@ injeqt::injector & PluginLoader::injector() const noexcept
 	return m_pluginInjector;
 }
 
-std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginName) const
+std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginDirPath, const QString &pluginName) const
 {
-	auto result = make_unique<QPluginLoader>(Core::instance()->pathsProvider()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT));
+	auto result = make_unique<QPluginLoader>(pluginDirPath + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT));
 	result->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 	return result;
 }
