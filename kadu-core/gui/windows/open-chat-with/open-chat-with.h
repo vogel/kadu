@@ -20,31 +20,46 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OPEN_CHAT_WITH_H
-#define OPEN_CHAT_WITH_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "os/generic/desktop-aware-object.h"
-
 #include "open-chat-with-runner.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
+class BuddyListModel;
+class BuddyManager;
+class ChatWidgetManager;
+class InjectedFactory;
+class LineEditWithClearButton;
+class ModelChain;
+class PathsProvider;
 
 class QLabel;
 class QPushButton;
 class QQuickWidget;
 class QVBoxLayout;
 
-class BuddyListModel;
-class LineEditWithClearButton;
-class ModelChain;
-
 class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 
-	static OpenChatWith *Instance;
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
 
-	explicit OpenChatWith();
+public:
+	explicit OpenChatWith(QWidget *parent = nullptr);
+	virtual ~OpenChatWith();
+
+	void show();
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	QQuickWidget *BuddiesView;
 	LineEditWithClearButton *ContactID;
@@ -57,21 +72,14 @@ class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 	void focusQml();
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+
 	void inputAccepted();
 	void inputChanged(const QString &text);
 	void itemActivated(int index);
 
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
-
-public:
-  	static OpenChatWith * instance();
-
-	virtual ~OpenChatWith();
-
-	void show();
-    void contactIChain ( int index );
-
 };
-
-#endif // OPEN_CHAT_WITH_H

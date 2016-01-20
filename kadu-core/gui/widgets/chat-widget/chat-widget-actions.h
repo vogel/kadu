@@ -39,6 +39,7 @@ class InjectedFactory;
 class LeaveChatAction;
 class MenuInventory;
 class Myself;
+class OpenChatWithService;
 
 class ChatWidgetActions : public QObject, ConfigurationAwareObject
 {
@@ -51,6 +52,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<Myself> m_myself;
+	QPointer<OpenChatWithService> m_openChatWithService;
 
 	ActionDescription *MoreActions;
 	ActionDescription *AutoSend;
@@ -79,6 +81,7 @@ private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setOpenChatWithService(OpenChatWithService *openChatWithService);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

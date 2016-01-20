@@ -43,6 +43,7 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/open-chat-with/open-chat-with-service.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "model/roles.h"
 #include "debug.h"
@@ -180,6 +181,11 @@ void ChatWidgetActions::setMenuInventory(MenuInventory *menuInventory)
 void ChatWidgetActions::setMyself(Myself *myself)
 {
 	m_myself = myself;
+}
+
+void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWithService)
+{
+	m_openChatWithService = openChatWithService;
 }
 
 void ChatWidgetActions::init()
@@ -543,7 +549,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	Action *action = qobject_cast<Action *>(sender);
+	auto action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
@@ -558,11 +564,11 @@ void ChatWidgetActions::openChatWithActionActivated(QAction *sender, bool toggle
 
 	kdebugf();
 
-	Action *action = qobject_cast<Action *>(sender);
+	auto action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
-	OpenChatWith::instance()->show();
+	m_openChatWithService->show();
 
 	kdebugf2();
 }

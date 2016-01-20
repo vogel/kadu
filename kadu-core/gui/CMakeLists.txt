@@ -219,9 +219,10 @@ set (gui_SRCS
 	windows/your-accounts-window-service.cpp
 	windows/your-accounts.cpp
 
-	windows/open-chat-with/open-chat-with.cpp
 	windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	windows/open-chat-with/open-chat-with-runner-manager.cpp
+	windows/open-chat-with/open-chat-with-service.cpp
+	windows/open-chat-with/open-chat-with.cpp
 
 	gui-module.cpp
 	hot-key.cpp

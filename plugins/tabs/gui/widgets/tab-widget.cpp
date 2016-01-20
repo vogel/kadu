@@ -38,6 +38,7 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/recent-chats-menu.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/open-chat-with/open-chat-with-service.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "icons/kadu-icon.h"
 #include "message/unread-message-repository.h"
@@ -75,6 +76,11 @@ void TabWidget::setConfiguration(Configuration *configuration)
 void TabWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void TabWidget::setOpenChatWithService(OpenChatWithService *openChatWithService)
+{
+	m_openChatWithService = openChatWithService;
 }
 
 void TabWidget::init()
@@ -455,7 +461,7 @@ void TabWidget::mouseDoubleClickEvent(QMouseEvent *e)
 
 void TabWidget::newChat()
 {
-	OpenChatWith::instance()->show();
+	m_openChatWithService->show();
 }
 
 void TabWidget::openRecentChatsMenu()

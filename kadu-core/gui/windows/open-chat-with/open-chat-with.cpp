@@ -21,6 +21,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "open-chat-with.h"
+
+#include "open-chat-with-contact-list-runner.h"
+#include "open-chat-with-runner-manager.h"
+
+#include "buddies/buddy-manager.h"
+#include "buddies/buddy-set.h"
+#include "buddies/model/buddy-list-model.h"
+#include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact.h"
+#include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
+#include "contacts/contact.h"
+#include "core/injected-factory.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/line-edit-with-clear-button.h"
+#include "misc/paths-provider.h"
+#include "model/model-chain.h"
+#include "model/roles.h"
+#include "talkable/model/talkable-proxy-model.h"
+#include "activate.h"
+#include "debug.h"
+
 #include <QtCore/QTimer>
 #include <QtQml/QQmlContext>
 #include <QtQuick/QQuickItem>
@@ -35,46 +59,42 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-#include "buddies/buddy-manager.h"
-#include "buddies/buddy-set.h"
-#include "buddies/model/buddy-list-model.h"
-#include "chat/chat-manager.h"
-#include "chat/type/chat-type-contact.h"
-#include "configuration/configuration-api.h"
-#include "configuration/configuration.h"
-#include "contacts/contact.h"
-#include "core/core.h"
-#include "core/injected-factory.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/filtered-tree-view.h"
-#include "gui/widgets/line-edit-with-clear-button.h"
-#include "misc/paths-provider.h"
-#include "model/model-chain.h"
-#include "model/roles.h"
-#include "talkable/model/talkable-proxy-model.h"
-#include "activate.h"
-#include "debug.h"
-
-#include "open-chat-with-contact-list-runner.h"
-#include "open-chat-with-runner-manager.h"
-
-#include "open-chat-with.h"
-
-OpenChatWith *OpenChatWith::Instance = 0;
-
-OpenChatWith * OpenChatWith::instance()
+OpenChatWith::OpenChatWith(QWidget *parent) :
+		QWidget{parent, Qt::Window},
+		DesktopAwareObject{this}
 {
-	if (!Instance)
-		Instance = new OpenChatWith();
-
-	return Instance;
 }
 
-OpenChatWith::OpenChatWith() :
-		QWidget(0, Qt::Window), DesktopAwareObject(this)
+OpenChatWith::~OpenChatWith()
 {
-	kdebugf();
+	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 
+	delete OpenChatRunner;
+	OpenChatRunner = 0;
+}
+
+void OpenChatWith::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void OpenChatWith::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
+
+void OpenChatWith::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void OpenChatWith::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void OpenChatWith::init()
+{
 	setWindowRole("kadu-open-chat-with");
 
 	setWindowTitle(tr("Open chat with..."));
@@ -102,7 +122,7 @@ OpenChatWith::OpenChatWith() :
 	BuddiesView = new QQuickWidget();
 
 	Chain = new ModelChain(this);
-	ListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(Chain);
+	ListModel = m_injectedFactory->makeInjected<BuddyListModel>(Chain);
 	Chain->setBaseModel(ListModel);
 	Chain->addProxyModel(new TalkableProxyModel(Chain));
 
@@ -111,7 +131,7 @@ OpenChatWith::OpenChatWith() :
 
 	BuddiesView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	BuddiesView->setResizeMode(QQuickWidget::SizeRootObjectToView);
-	BuddiesView->setSource(QUrl("file:///" + Core::instance()->pathsProvider()->dataPath() + "qml/openChatWith.qml"));
+	BuddiesView->setSource(QUrl("file:///" + m_pathsProvider->dataPath() + "qml/openChatWith.qml"));
 
 	if (BuddiesView->rootObject())
 		connect(BuddiesView->rootObject(), SIGNAL(itemActivated(int)), this, SLOT(itemActivated(int)));
@@ -135,15 +155,6 @@ OpenChatWith::OpenChatWith() :
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 
 	inputChanged(QString());
-}
-
-OpenChatWith::~OpenChatWith()
-{
-	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
-	Instance = 0;
-
-	delete OpenChatRunner;
-	OpenChatRunner = 0;
 }
 
 void OpenChatWith::keyPressEvent(QKeyEvent *e)
@@ -205,7 +216,7 @@ void OpenChatWith::inputChanged(const QString &text)
 	kdebugf();
 
 	BuddyList matchingContacts = text.isEmpty()
-			? Core::instance()->buddyManager()->items().toList()
+			? m_buddyManager->items().toList()
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
 	ListModel->setBuddyList(matchingContacts);
@@ -225,7 +236,7 @@ void OpenChatWith::itemActivated(int index)
 	if (!chat)
 		return;
 
-	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
+	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 	QTimer::singleShot(50, this, SLOT(close()));
 }
 
