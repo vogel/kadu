@@ -27,6 +27,7 @@
 #include <injeqt/injeqt.h>
 
 class InjectedFactory;
+class PathsProvider;
 class SyntaxList;
 
 class KaduStyleEngine : public QObject, public ChatStyleEngine
@@ -49,10 +50,13 @@ public:
 
 private:
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	QSharedPointer<SyntaxList> syntaxList;
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
 
 };

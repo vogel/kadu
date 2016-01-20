@@ -29,6 +29,7 @@
 class QComboBox;
 class QPushButton;
 
+class InjectedFactory;
 class PathsProvider;
 class SyntaxList;
 
@@ -52,6 +53,7 @@ signals:
 	void syntaxChanged(const QString &newSyntax);
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<PathsProvider> m_pathsProvider;
 
 	QSharedPointer<SyntaxList> syntaxList;
@@ -63,6 +65,7 @@ private:
 	void updateSyntaxList();
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 	void syntaxChangedSlot(const QString &newSyntax);

@@ -18,11 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SYNTAX_LIST_H
-#define SYNTAX_LIST_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class PathsProvider;
 
 struct SyntaxInfo
 {
@@ -33,13 +36,11 @@ class SyntaxList : public QObject, public QMap<QString, SyntaxInfo>
 {
 	Q_OBJECT
 
-	QString category;
-
 public:
-	SyntaxList(const QString &category);
-	virtual ~SyntaxList() {}
+	static QString readSyntax(PathsProvider *pathsProvider, const QString &category, const QString &name, const QString &defaultSyntax);
 
-	static QString readSyntax(const QString &category, const QString &name, const QString &defaultSyntax);
+	explicit SyntaxList(const QString &category, QObject *parent = nullptr);
+	virtual ~SyntaxList();
 
 	void reload();
 
@@ -52,6 +53,13 @@ public:
 signals:
 	void updated();
 
-};
+private:
+	QPointer<PathsProvider> m_pathsProvider;
 
-#endif // SYNTAX_LIST_H
+	QString m_category;
+
+private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+	
+};

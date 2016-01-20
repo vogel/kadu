@@ -26,6 +26,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 
+#include "core/injected-factory.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/paths-provider.h"
 #include "misc/syntax-list.h"
@@ -45,6 +46,11 @@ SyntaxEditor::SyntaxEditor(QWidget *parent) :
 
 SyntaxEditor::~SyntaxEditor()
 {
+}
+
+void SyntaxEditor::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void SyntaxEditor::setPathsProvider(PathsProvider *pathsProvider)
@@ -109,7 +115,7 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 
 void SyntaxEditor::updateSyntaxList()
 {
-	syntaxList = QSharedPointer<SyntaxList>(new SyntaxList(category.toLower()));
+	syntaxList = QSharedPointer<SyntaxList>(m_injectedFactory->makeInjected<SyntaxList>(category.toLower()));
 
 	syntaxListCombo->clear();
 	syntaxListCombo->addItems(syntaxList->keys());

@@ -32,6 +32,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "dom/dom-processor-service.h"
+#include "misc/paths-provider.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
 #include "url-handlers/url-handler-manager.h"
@@ -61,6 +62,11 @@ void BuddyInfoPanel::setBuddyPreferredManager(BuddyPreferredManager *buddyPrefer
 void BuddyInfoPanel::setDomProcessorService(DomProcessorService *domProcessorService)
 {
 	m_domProcessorService = domProcessorService;
+}
+
+void BuddyInfoPanel::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
 }
 
 void BuddyInfoPanel::init()
@@ -156,7 +162,7 @@ void BuddyInfoPanel::update()
 		configuration()->deprecatedApi()->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
 	}
 
-	Syntax = SyntaxList::readSyntax("infopanel", syntaxFile,
+	Syntax = SyntaxList::readSyntax(m_pathsProvider, "infopanel", syntaxFile,
 		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"@{x-office-address-book:32x32}\"></td><td> "
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	Syntax = Syntax.remove("file:///");

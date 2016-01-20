@@ -19,32 +19,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "syntax-list.h"
+
+#include "misc/paths-provider.h"
+
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 
-#include "core/core.h"
-#include "misc/paths-provider.h"
+SyntaxList::SyntaxList(const QString &category, QObject *parent) :
+		QObject{parent},
+		m_category(category)
+{
+}
 
-#include "syntax-list.h"
+SyntaxList::~SyntaxList()
+{
+}
 
-SyntaxList::SyntaxList(const QString &category)
-	: category(category)
+void SyntaxList::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void SyntaxList::init()
 {
 	reload();
 }
 
-QString SyntaxList::readSyntax(const QString &category, const QString &name, const QString &defaultSyntax)
+QString SyntaxList::readSyntax(PathsProvider *pathsProvider, const QString &category, const QString &name, const QString &defaultSyntax)
 {
 	QString path;
 	QFile syntaxFile;
-	path = Core::instance()->pathsProvider()->dataPath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
+	path = pathsProvider->dataPath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
 
 	syntaxFile.setFileName(path);
 	if (!syntaxFile.open(QIODevice::ReadOnly))
 	{
-		path = Core::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
+		path = pathsProvider->profilePath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
 
 		syntaxFile.setFileName(path);
 		if (!syntaxFile.open(QIODevice::ReadOnly))
@@ -73,7 +86,7 @@ void SyntaxList::reload()
 	SyntaxInfo info;
 
 	info.global = false;
-	path = Core::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/") + category + '/';
+	path = m_pathsProvider->profilePath() + QLatin1String("syntax/") + m_category + '/';
 	dir.setPath(path);
 
 	dir.setNameFilters(QStringList("*.syntax"));
@@ -87,7 +100,7 @@ void SyntaxList::reload()
 	}
 
 	info.global = true;
-	path = Core::instance()->pathsProvider()->dataPath() + QLatin1String("syntax/") + category + '/';
+	path = m_pathsProvider->dataPath() + QLatin1String("syntax/") + m_category + '/';
 	dir.setPath(path);
 
 	files = dir.entryList();
@@ -110,13 +123,13 @@ void SyntaxList::reload()
 
 bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 {
-	QString path = Core::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/");
+	QString path = m_pathsProvider->profilePath() + QLatin1String("syntax/");
 	QDir dir(path);
 	if (!dir.exists())
 		if (!dir.mkdir(path))
 			return false;
 
-	path = Core::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/") + category + '/';
+	path = m_pathsProvider->profilePath() + QLatin1String("syntax/") + m_category + '/';
 	dir.setPath(path);
 	if (!dir.exists())
 		if (!dir.mkdir(path))
@@ -149,9 +162,9 @@ QString SyntaxList::readSyntax(const QString &name)
 	SyntaxInfo info = *(find(name));
 	QString path;
 	if (info.global)
-		path = Core::instance()->pathsProvider()->dataPath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
+		path = m_pathsProvider->dataPath() + QLatin1String("syntax/") + m_category + '/' + name + QLatin1String(".syntax");
 	else
-		path = Core::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
+		path = m_pathsProvider->profilePath() + QLatin1String("syntax/") + m_category + '/' + name + QLatin1String(".syntax");
 
 	QFile syntaxFile;
 	syntaxFile.setFileName(path);
@@ -176,7 +189,7 @@ bool SyntaxList::deleteSyntax(const QString &name)
 	if (info.global)
 		return false;
 
-	QString path = Core::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
+	QString path = m_pathsProvider->profilePath() + QLatin1String("syntax/") + m_category + '/' + name + QLatin1String(".syntax");
 	QFile file;
 	file.setFileName(path);
 

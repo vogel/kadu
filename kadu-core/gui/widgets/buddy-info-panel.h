@@ -32,6 +32,7 @@
 class AvatarManager;
 class BuddyPreferredManager;
 class DomProcessorService;
+class PathsProvider;
 
 class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 {
@@ -40,6 +41,7 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 	QPointer<AvatarManager> m_avatarManager;
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	Talkable Item;
 	QString Template;
@@ -53,6 +55,7 @@ private slots:
 	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 
 	void buddyUpdated(const Buddy &buddy);

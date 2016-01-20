@@ -24,6 +24,7 @@
 #include "chat-style/engine/kadu/kadu-chat-syntax.h"
 #include "chat-style/engine/kadu/kadu-style-renderer-factory.h"
 #include "core/injected-factory.h"
+#include "misc/paths-provider.h"
 #include "misc/syntax-list.h"
 
 #include <QtCore/QFileInfo>
@@ -31,7 +32,6 @@
 KaduStyleEngine::KaduStyleEngine(QObject *parent) :
 		QObject{parent}
 {
-	syntaxList = QSharedPointer<SyntaxList>(new SyntaxList("chat"));
 }
 
 KaduStyleEngine::~KaduStyleEngine()
@@ -43,6 +43,16 @@ void KaduStyleEngine::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void KaduStyleEngine::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void KaduStyleEngine::init()
+{
+	syntaxList = QSharedPointer<SyntaxList>(m_injectedFactory->makeInjected<SyntaxList>("chat"));
+}
+
 QString KaduStyleEngine::isStyleValid(QString stylePath)
 {
 	QFileInfo fi;
@@ -52,7 +62,7 @@ QString KaduStyleEngine::isStyleValid(QString stylePath)
 
 std::unique_ptr<ChatStyleRendererFactory> KaduStyleEngine::createRendererFactory(const ChatStyle &chatStyle)
 {
-	QString chatSyntax = SyntaxList::readSyntax("chat", chatStyle.name(),
+	QString chatSyntax = SyntaxList::readSyntax(m_pathsProvider, "chat", chatStyle.name(),
 		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
 		  "<font color=\"#{fontColor}\"><kadu:header><b><font color=\"#{nickColor}\">%a</font> :: "
 			"#{receivedDate}[ / S #{sentDate}]</b><br /></kadu:header>"
