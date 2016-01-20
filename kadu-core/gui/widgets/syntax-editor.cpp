@@ -26,7 +26,6 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 
-#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/paths-provider.h"
 #include "misc/syntax-list.h"
@@ -46,6 +45,11 @@ SyntaxEditor::SyntaxEditor(QWidget *parent) :
 
 SyntaxEditor::~SyntaxEditor()
 {
+}
+
+void SyntaxEditor::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
 }
 
 void SyntaxEditor::setCurrentSyntax(const QString &syntax)
@@ -87,9 +91,9 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 
 	SyntaxInfo info = (*syntaxList)[newSyntax];
 	if (info.global)
-		fileName = Core::instance()->pathsProvider()->dataPath() + QLatin1String("syntax/") + category.toLower() + '/' + newSyntax + QLatin1String(".syntax");
+		fileName = m_pathsProvider->dataPath() + QLatin1String("syntax/") + category.toLower() + '/' + newSyntax + QLatin1String(".syntax");
 	else
-		fileName = Core::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/") + category.toLower() + '/' + newSyntax + QLatin1String(".syntax");
+		fileName = m_pathsProvider->profilePath() + QLatin1String("syntax/") + category.toLower() + '/' + newSyntax + QLatin1String(".syntax");
 
 	file.setFileName(fileName);
 	if (!file.open(QIODevice::ReadOnly))

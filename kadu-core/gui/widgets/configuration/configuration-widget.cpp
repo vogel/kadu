@@ -372,7 +372,7 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	else if (tagName == "select-font")
 		widget = new ConfigSelectFont(configGroupBox, DataManager);
 	else if (tagName == "syntax-editor")
-		widget = new ConfigSyntaxEditor(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigSyntaxEditor>(configGroupBox, DataManager);
 	else if (tagName == "action-button")
 		widget = new ConfigActionButton(configGroupBox, DataManager);
 	else if (tagName == "select-file")

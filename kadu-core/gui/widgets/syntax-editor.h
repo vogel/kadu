@@ -19,35 +19,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SYNTAX_EDITOR_H
-#define SYNTAX_EDITOR_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtCore/QSharedPointer>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QComboBox;
 class QPushButton;
 
+class PathsProvider;
 class SyntaxList;
 
 class SyntaxEditor : public QWidget
 {
 	Q_OBJECT
 
-	QSharedPointer<SyntaxList> syntaxList;
-	QComboBox *syntaxListCombo;
-
-	QString category;
-	QString syntaxHint;
-
-	void updateSyntaxList();
-
-private slots:
-	void syntaxChangedSlot(const QString &newSyntax);
-	void syntaxListUpdated();
-
 public:
-	SyntaxEditor(QWidget *parent = nullptr);
+	explicit SyntaxEditor(QWidget *parent = nullptr);
 	virtual ~SyntaxEditor();
 
 	QString currentSyntax();
@@ -61,6 +51,21 @@ public slots:
 signals:
 	void syntaxChanged(const QString &newSyntax);
 
-};
+private:
+	QPointer<PathsProvider> m_pathsProvider;
 
-#endif // SYNTAX_EDITOR_H
+	QSharedPointer<SyntaxList> syntaxList;
+	QComboBox *syntaxListCombo;
+
+	QString category;
+	QString syntaxHint;
+
+	void updateSyntaxList();
+
+private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+
+	void syntaxChangedSlot(const QString &newSyntax);
+	void syntaxListUpdated();
+
+};
