@@ -21,13 +21,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIGURATION_WIDGET_H
-#define CONFIGURATION_WIDGET_H
-
-#include <QtWidgets/QDialog>
+#pragma once
 
 #include "configuration/configuration-window-data-manager.h"
 #include "icons/icons-manager.h"
+
+#include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
 
 class QDomNode;
 class QDialogButtonBox;
@@ -38,8 +38,11 @@ class QVBoxLayout;
 
 class ConfigGroupBox;
 class ConfigSection;
+class Configuration;
 class ConfigWidget;
+class InjectedFactory;
 class KaduIcon;
+class PathsProvider;
 
 /**
 	@class ConfigurationWidget
@@ -95,36 +98,6 @@ class KADUAPI ConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
-	QString Name;
-
-	QWidget *LeftWidget;
-	QMap<QString, ConfigSection *> ConfigSections;
-	ConfigSection *CurrentSection;
-
-	QMap<QString, QWidget *> Widgets;
-
-	QListWidget *SectionsListWidget;
-	QWidget *ContainerWidget;
-
-	void loadConfiguration(QObject *object);
-	void saveConfiguration(QObject *object);
-
-	ConfigSection * configSection(const KaduIcon &icon, const QString &name, bool create);
-
-	QList<ConfigWidget *> processUiFile(const QString &fileName, bool append);
-	QList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append);
-	QList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append);
-	QList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append);
-	ConfigWidget * appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
-	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
-
-private slots:
-	void changeSection(const QString &newSectionName);
-	void configSectionDestroyed(QObject *obj);
-
-protected:
-	ConfigurationWindowDataManager *DataManager;
-
 public:
 	/**
 		Tworzy okno konfiguracyjne o danej nazwie. Nazwa wykorzystywana
@@ -166,7 +139,7 @@ public:
 
 	ConfigSection * configSection(const QString &name);
 
-	void init();
+	void beforeShow();
 
 	void loadConfiguration();
 	void saveConfiguration();
@@ -180,6 +153,43 @@ signals:
 	 **/
 	void configurationWindowApplied();
 
-};
+protected:
+	ConfigurationWindowDataManager *DataManager;
 
-#endif
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PathsProvider> m_pathsProvider;
+
+	QString Name;
+
+	QWidget *LeftWidget;
+	QMap<QString, ConfigSection *> ConfigSections;
+	ConfigSection *CurrentSection;
+
+	QMap<QString, QWidget *> Widgets;
+
+	QListWidget *SectionsListWidget;
+	QWidget *ContainerWidget;
+
+	void loadConfiguration(QObject *object);
+	void saveConfiguration(QObject *object);
+
+	ConfigSection * configSection(const KaduIcon &icon, const QString &name, bool create);
+
+	QList<ConfigWidget *> processUiFile(const QString &fileName, bool append);
+	QList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append);
+	QList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append);
+	QList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append);
+	ConfigWidget * appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
+	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+
+	void changeSection(const QString &newSectionName);
+	void configSectionDestroyed(QObject *obj);
+
+};

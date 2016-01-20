@@ -35,6 +35,7 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-action-button.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-color-button.h"
@@ -76,7 +77,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 
 	QVBoxLayout *main_layout = new QVBoxLayout(this);
 
-	configurationWidget = new ConfigurationWidget(dataManager, this);
+	configurationWidget = Core::instance()->injectedFactory()->makeInjected<ConfigurationWidget>(dataManager, this);
 
 	QDialogButtonBox *buttons_layout = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -107,7 +108,7 @@ void ConfigurationWindow::show()
 {
 	if (!isVisible())
   	{
-		widget()->init();
+		widget()->beforeShow();
 		widget()->loadConfiguration();
 		QWidget::show();
 	}

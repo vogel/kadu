@@ -34,7 +34,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-action-button.h"
 #include "gui/widgets/configuration/config-check-box.h"
@@ -66,7 +65,7 @@
 #include "debug.h"
 
 ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent) :
-		QWidget(parent), CurrentSection(0), DataManager(dataManager)
+		QWidget(parent), DataManager(dataManager), CurrentSection(0)
 {
 	QHBoxLayout *center_layout = new QHBoxLayout(this);
 	center_layout->setMargin(0);
@@ -96,7 +95,7 @@ ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataMan
 ConfigurationWidget::~ConfigurationWidget()
 {
 	if (SectionsListWidget->currentItem())
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
+		m_configuration->deprecatedApi()->writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
 
 	disconnect(SectionsListWidget, 0, this, 0);
 
@@ -108,9 +107,24 @@ ConfigurationWidget::~ConfigurationWidget()
 	}
 }
 
-void ConfigurationWidget::init()
+void ConfigurationWidget::setConfiguration(Configuration *configuration)
 {
-	auto lastSection = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + Name);
+	m_configuration = configuration;
+}
+
+void ConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ConfigurationWidget::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void ConfigurationWidget::beforeShow()
+{
+	auto lastSection = m_configuration->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + Name);
 	auto section = ConfigSections.value(lastSection);
 	if (section)
 		section->activate();
@@ -219,7 +233,7 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 	QString iconPath = sectionElement.attribute("icon");
 	// Additional slash is needed so that QUrl would treat the rest as _path_, which is desired here.
 	if (iconPath.startsWith("datapath:///"))
-		iconPath = Core::instance()->pathsProvider()->dataPath() + iconPath.midRef(static_cast<int>(qstrlen("datapath:///")));
+		iconPath = m_pathsProvider->dataPath() + iconPath.midRef(static_cast<int>(qstrlen("datapath:///")));
 	configSection(KaduIcon(iconPath), QCoreApplication::translate("@default", sectionName.toUtf8().constData()), true);
 
 	const QDomNodeList children = sectionElement.childNodes();
@@ -364,9 +378,9 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	else if (tagName == "select-file")
 		widget = new ConfigSelectFile(configGroupBox, DataManager);
 	else if (tagName == "preview")
-		widget = Core::instance()->injectedFactory()->makeInjected<ConfigPreview>(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigPreview>(configGroupBox, DataManager);
 	else if (tagName == "proxy-combo-box")
-		widget = Core::instance()->injectedFactory()->makeInjected<ConfigPreview>(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigPreview>(configGroupBox, DataManager);
 	else if (tagName == "slider")
 		widget = new ConfigSlider(configGroupBox, DataManager);
 	else if (tagName == "label")
