@@ -645,11 +645,6 @@ UnreadMessageRepository * Core::unreadMessageRepository() const
 	return m_injector.get<UnreadMessageRepository>();
 }
 
-ChatWidgetManager * Core::chatWidgetManager() const
-{
-	return m_injector.get<ChatWidgetManager>();
-}
-
 ChatWidgetRepository * Core::chatWidgetRepository() const
 {
 	return m_injector.get<ChatWidgetRepository>();

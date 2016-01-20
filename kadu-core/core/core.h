@@ -53,7 +53,6 @@ class BuddyStorage;
 class ChatImageRequestService;
 class ChatManager;
 class ChatTypeManager;
-class ChatWidgetManager;
 class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ConfigurationManager;
@@ -147,7 +146,6 @@ public:
 	BuddyManager * buddyManager() const;
 	NotificationManager * notificationManager() const;
 	UnreadMessageRepository * unreadMessageRepository() const;
-	ChatWidgetManager * chatWidgetManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
 	StoragePointFactory * storagePointFactory() const;
 
