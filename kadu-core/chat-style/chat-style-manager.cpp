@@ -25,8 +25,6 @@
 #include "chat-style/engine/kadu/kadu-style-engine.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-style-preview.h"
@@ -79,6 +77,11 @@ void ChatStyleManager::setConfiguredChatStyleRendererFactoryProvider(ConfiguredC
 void ChatStyleManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	m_formattedStringFactory = formattedStringFactory;
+}
+
+void ChatStyleManager::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
 }
 
 void ChatStyleManager::init()
@@ -215,7 +218,7 @@ void ChatStyleManager::loadStyles()
 	QFileInfo fi;
 	QStringList files;
 
-	path = Core::instance()->pathsProvider()->profilePath() + QLatin1String("syntax/chat/");
+	path = m_pathsProvider->profilePath() + QLatin1String("syntax/chat/");
 	dir.setPath(path);
 
 	files = dir.entryList();
@@ -240,7 +243,7 @@ void ChatStyleManager::loadStyles()
 		}
 	}
 
-	path = Core::instance()->pathsProvider()->dataPath() + QLatin1String("syntax/chat/");
+	path = m_pathsProvider->dataPath() + QLatin1String("syntax/chat/");
 	dir.setPath(path);
 
 	files = dir.entryList();

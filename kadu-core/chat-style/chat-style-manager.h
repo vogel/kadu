@@ -36,6 +36,7 @@ class ChatStyleEngine;
 class Configuration;
 class ConfiguredChatStyleRendererFactoryProvider;
 class FormattedStringFactory;
+class PathsProvider;
 
 class QCheckBox;
 class QComboBox;
@@ -57,6 +58,7 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 	QPointer<Configuration> m_configuration;
 	QPointer<ConfiguredChatStyleRendererFactoryProvider> m_configuredChatStyleRendererFactoryProvider;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	std::map<QString, std::unique_ptr<ChatStyleEngine>> RegisteredEngines;
 	ChatStyle m_currentChatStyle;
@@ -84,6 +86,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 
 protected:
