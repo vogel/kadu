@@ -31,7 +31,6 @@
 #include "buddies/model/buddy-list-model.h"
 #include "chat/buddy-chat-manager.h"
 #include "chat/model/chat-list-model.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/filter-widget.h"
@@ -66,6 +65,11 @@ HistoryMessagesTab::HistoryMessagesTab(QWidget *parent) :
 
 HistoryMessagesTab::~HistoryMessagesTab()
 {
+}
+
+void HistoryMessagesTab::setBuddyChatManager(BuddyChatManager *buddyChatManager)
+{
+	m_buddyChatManager = buddyChatManager;
 }
 
 void HistoryMessagesTab::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -170,7 +174,7 @@ void HistoryMessagesTab::displayTalkable(const Talkable &talkable, bool force)
 	Chat chat = CurrentTalkable.toChat();
 	// if buddy do not have any contact we have to create chat manually
 	if (!chat)
-		chat = Core::instance()->buddyChatManager()->buddyChat(CurrentTalkable.toBuddy());
+		chat = m_buddyChatManager->buddyChat(CurrentTalkable.toBuddy());
 
 	TimelineView->messagesView()->setChat(chat);
 
@@ -295,7 +299,7 @@ void HistoryMessagesTab::currentDateChanged()
 	Chat chat = CurrentTalkable.toChat();
 	// if buddy do not have any contact we have to create chat manually
 	if (!chat)
-		chat = Core::instance()->buddyChatManager()->buddyChat(CurrentTalkable.toBuddy());
+		chat = m_buddyChatManager->buddyChat(CurrentTalkable.toBuddy());
 
 	timelineView()->messagesView()->setChat(chat);
 	TimelineView->setFutureMessages(Storage->messages(query));

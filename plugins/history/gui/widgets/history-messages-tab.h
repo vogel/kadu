@@ -34,6 +34,7 @@ class QMenu;
 class QSplitter;
 
 class ActionContext;
+class BuddyChatManager;
 class BuddyListModel;
 class ChatListModel;
 class FilteredTreeView;
@@ -66,6 +67,7 @@ class HistoryMessagesTab : public HistoryTab
 {
 	Q_OBJECT
 
+	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 
@@ -92,6 +94,7 @@ class HistoryMessagesTab : public HistoryTab
 	void createModelChain();
 
 private slots:
+	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_INIT void init();
