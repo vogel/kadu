@@ -41,7 +41,6 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-storage.h"
-#include "buddies/group-manager.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
@@ -738,11 +737,6 @@ PathsProvider * Core::pathsProvider() const
 Application * Core::application() const
 {
 	return m_injector.get<Application>();
-}
-
-GroupManager * Core::groupManager() const
-{
-	return m_injector.get<GroupManager>();
 }
 
 ConfigurationManager * Core::configurationManager() const

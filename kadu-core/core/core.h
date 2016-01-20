@@ -60,7 +60,6 @@ class Configuration;
 class ContactManager;
 class FileTransferHandlerManager;
 class FileTransferManager;
-class GroupManager;
 class IconsManager;
 class InjectedFactory;
 class KaduIcon;
@@ -168,7 +167,6 @@ public:
 	Configuration * configuration() const;
 	PathsProvider * pathsProvider() const;
 	Application * application() const;
-	GroupManager * groupManager() const;
 	ConfigurationManager * configurationManager() const;
 	BuddyChatManager * buddyChatManager() const;
 	BuddyPreferredManager * buddyPreferredManager() const;
