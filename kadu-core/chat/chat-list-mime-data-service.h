@@ -17,25 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_LIST_MIME_DATA_HELPER_H
-#define CHAT_LIST_MIME_DATA_HELPER_H
+#pragma once
 
 #include <QtCore/QList>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QStringList>
+#include <injeqt/injeqt.h>
+#include <memory>
+
+class ChatManager;
+class Chat;
 
 class QMimeData;
 
-class Chat;
-
-class ChatListMimeDataHelper
+class ChatListMimeDataService : public QObject
 {
-	static QLatin1String MimeType;
+	Q_OBJECT
 
 public:
-	static QStringList mimeTypes();
-	static QMimeData * toMimeData(const QList<Chat> &chatList);
-	static QList<Chat> fromMimeData(const QMimeData *mimeData);
+	Q_INVOKABLE explicit ChatListMimeDataService(QObject *parent = nullptr);
+	virtual ~ChatListMimeDataService();
+
+	QStringList mimeTypes();
+	std::unique_ptr<QMimeData> toMimeData(const QList<Chat> &chatList);
+
+	QList<Chat> fromMimeData(const QMimeData *mimeData);
+
+private:
+	QPointer<ChatManager> m_chatManager;
+
+	QLatin1String m_mimeType;
+
+private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 
 };
-
-#endif // CHAT_LIST_MIME_DATA_HELPER_H

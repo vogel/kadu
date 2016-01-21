@@ -18,14 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat-list-mime-data-helper.h"
+#include "chat/chat-list-mime-data-service.h"
 #include "chat/model/chat-data-extractor.h"
 #include "contacts/contact-set.h"
 #include "contacts/model/contact-data-extractor.h"
+#include "core/core.h"
 #include "model/roles.h"
 #include "talkable/talkable.h"
 
 #include "chat-list-model.h"
+
+#include <QtCore/QMimeData>
 
 #define NO_PARENT_ID 0xffffff
 
@@ -332,7 +335,7 @@ QModelIndexList ChatListModel::indexListForValue(const QVariant &value) const
 
 QStringList ChatListModel::mimeTypes() const
 {
-	return ChatListMimeDataHelper::mimeTypes();
+	return Core::instance()->chatListMimeDataService()->mimeTypes();
 }
 
 QMimeData * ChatListModel::mimeData(const QModelIndexList &indexes) const
@@ -345,7 +348,7 @@ QMimeData * ChatListModel::mimeData(const QModelIndexList &indexes) const
 			list << chat;
 	}
 
-	return ChatListMimeDataHelper::toMimeData(list);
+	return Core::instance()->chatListMimeDataService()->toMimeData(list).release();
 }
 
 #include "moc_chat-list-model.cpp"

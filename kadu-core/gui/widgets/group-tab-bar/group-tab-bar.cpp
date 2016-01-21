@@ -24,7 +24,7 @@
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
-#include "chat/chat-list-mime-data-helper.h"
+#include "chat/chat-list-mime-data-service.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/windows/add-buddy-window.h"
@@ -59,6 +59,11 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 
 GroupTabBar::~GroupTabBar()
 {
+}
+
+void GroupTabBar::setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService)
+{
+	m_chatListMimeDataService = chatListMimeDataService;
 }
 
 void GroupTabBar::setConfiguration(Configuration *configuration)
@@ -256,7 +261,7 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 	event->acceptProposedAction();
 
 	BuddyList buddies = BuddyListMimeDataHelper::fromMimeData(event->mimeData());
-	QList<Chat> chats = ChatListMimeDataHelper::fromMimeData(event->mimeData());
+	QList<Chat> chats = m_chatListMimeDataService->fromMimeData(event->mimeData());
 
 	QApplication::setOverrideCursor(Qt::ArrowCursor);
 	int tabIndex = tabAt(event->pos());

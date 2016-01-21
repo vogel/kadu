@@ -45,6 +45,7 @@
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
 #include "chat/buddy-chat-manager.h"
+#include "chat/chat-list-mime-data-service.h"
 #include "chat/chat-manager.h"
 #include "chat/recent-chat-manager.h"
 #include "chat/type/chat-type-manager.h"
@@ -786,6 +787,11 @@ Myself * Core::myself() const
 BuddyStorage * Core::buddyStorage() const
 {
 	return m_injector.get<BuddyStorage>();
+}
+
+ChatListMimeDataService * Core::chatListMimeDataService()
+{
+	return m_injector.get<ChatListMimeDataService>();
 }
 
 void Core::showMainWindow()

@@ -50,6 +50,7 @@ class BuddyChatManager;
 class BuddyManager;
 class BuddyPreferredManager;
 class BuddyStorage;
+class ChatListMimeDataService;
 class ChatImageRequestService;
 class ChatManager;
 class ChatTypeManager;
@@ -176,6 +177,7 @@ public:
 	ProxyEditWindowService * proxyEditWindowService() const;
 	Myself * myself() const;
 	BuddyStorage * buddyStorage() const;
+	ChatListMimeDataService * chatListMimeDataService();
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

@@ -29,6 +29,7 @@
 #include "buddies/group.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar-configuration.h"
 
+class ChatListMimeDataService;
 class Chat;
 class Configuration;
 class GroupManager;
@@ -39,6 +40,7 @@ class KADUAPI GroupTabBar : public QTabBar
 {
 	Q_OBJECT
 
+	QPointer<ChatListMimeDataService> m_chatListMimeDataService;
 	QPointer<Configuration> m_configuration;
 	QPointer<GroupManager> m_groupManager;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -59,6 +61,7 @@ class KADUAPI GroupTabBar : public QTabBar
 	bool shouldShowUngrouppedTab() const;
 
 private slots:
+	INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setGroupManager(GroupManager *groupManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
