@@ -789,11 +789,6 @@ BuddyStorage * Core::buddyStorage() const
 	return m_injector.get<BuddyStorage>();
 }
 
-ChatListMimeDataService * Core::chatListMimeDataService()
-{
-	return m_injector.get<ChatListMimeDataService>();
-}
-
 void Core::showMainWindow()
 {
 	if (ShowMainWindowOnStart)
