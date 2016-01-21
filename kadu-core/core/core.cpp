@@ -132,7 +132,6 @@
 #include "status/description-manager.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
-#include "status/status-setter.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
 #include "storage/storage-point-factory.h"
@@ -484,11 +483,6 @@ void Core::init()
 #endif
 }
 
-void Core::initialized()
-{
-	statusSetter()->coreInitialized();
-}
-
 void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
@@ -707,11 +701,6 @@ InjectedFactory * Core::injectedFactory() const
 IconsManager * Core::iconsManager() const
 {
 	return m_injector.get<IconsManager>();
-}
-
-StatusSetter * Core::statusSetter() const
-{
-	return m_injector.get<StatusSetter>();
 }
 
 ContactManager * Core::contactManager() const

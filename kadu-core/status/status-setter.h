@@ -99,7 +99,6 @@ private:
 	QPointer<StatusChangerManager> m_statusChangerManager;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 
-	bool CoreInitialized;
 	QString StartupStatus;
 	QString StartupDescription;
 	bool StartupLastDescription;

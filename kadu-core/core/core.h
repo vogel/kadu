@@ -80,7 +80,6 @@ class ProtocolsManager;
 class ProxyEditWindowService;
 class Roster;
 class StatusContainerManager;
-class StatusSetter;
 class StatusTypeManager;
 class StoragePointFactory;
 class SystemInfo;
@@ -160,7 +159,6 @@ public:
 	StatusTypeManager * statusTypeManager() const;
 	InjectedFactory * injectedFactory() const;
 	IconsManager * iconsManager() const;
-	StatusSetter * statusSetter() const;
 	ContactManager * contactManager() const;
 	Configuration * configuration() const;
 	PathsProvider * pathsProvider() const;
@@ -182,7 +180,6 @@ public:
 	void showMainWindow();
 	KaduWindow * kaduWindow();
 
-	void initialized();
 	void setIcon(const KaduIcon &icon);
 
 	const std::shared_ptr<DefaultProvider<QWidget *>> & mainWindowProvider() const;

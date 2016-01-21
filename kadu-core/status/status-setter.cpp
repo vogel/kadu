@@ -27,8 +27,7 @@
 #include "status/status-type-manager.h"
 
 StatusSetter::StatusSetter(QObject *parent) :
-		QObject{parent},
-		CoreInitialized{false}
+		QObject{parent}
 {
 }
 
@@ -54,6 +53,7 @@ void StatusSetter::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 void StatusSetter::init()
 {
 	configurationUpdated();
+	triggerAllStatusContainerRegistered();
 }
 
 void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
@@ -74,12 +74,6 @@ void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
 	setStatusManually(statusContainer, status);
 }
 
-void StatusSetter::coreInitialized()
-{
-	CoreInitialized = true;
-	triggerAllStatusContainerRegistered();
-}
-
 void StatusSetter::configurationUpdated()
 {
 	StartupStatus = m_configuration->deprecatedApi()->readEntry("General", "StartupStatus");
@@ -95,8 +89,7 @@ void StatusSetter::configurationUpdated()
 
 void StatusSetter::statusContainerRegistered(StatusContainer *statusContainer)
 {
-	if (CoreInitialized)
-		setDefaultStatus(statusContainer);
+	setDefaultStatus(statusContainer);
 }
 
 void StatusSetter::statusContainerUnregistered(StatusContainer *statusContainer)
