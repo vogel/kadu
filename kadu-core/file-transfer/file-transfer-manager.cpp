@@ -95,6 +95,11 @@ void FileTransferManager::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void FileTransferManager::setFileTransferActions(FileTransferActions *fileTransferActions)
+{
+	m_fileTransferActions = fileTransferActions;
+}
+
 void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
 {
 	m_fileTransferHandlerManager = fileTransferHandlerManager;
@@ -118,7 +123,6 @@ void FileTransferManager::setNotificationManager(NotificationManager *notificati
 void FileTransferManager::init()
 {
 	NewFileTransferNotification::registerEvents(m_notificationEventRepository, m_notificationCallbackRepository);
-	m_actions = new FileTransferActions{this};
 	m_configurationManager->registerStorableObject(this);
 	triggerAllAccountsRegistered(m_accountManager);
 }

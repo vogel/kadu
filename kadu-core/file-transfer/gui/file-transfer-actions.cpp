@@ -29,23 +29,35 @@ FileTransferActions::FileTransferActions(QObject *parent) :
 {
 	m_sendFileAction = new SendFileAction{this};
 	m_showFileTransferWindow = new ShowFileTransferWindowAction{this};
-
-	Core::instance()->menuInventory()
-		->menu("buddy-list")
-		->addAction(m_sendFileAction, KaduMenu::SectionSend, 100);
-
-	Core::instance()->menuInventory()
-		->menu("tools")
-		->addAction(m_showFileTransferWindow, KaduMenu::SectionTools, 5);
 }
 
 FileTransferActions::~FileTransferActions()
 {
-	Core::instance()->menuInventory()
+}
+
+void FileTransferActions::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
+void FileTransferActions::init()
+{
+	m_menuInventory
+		->menu("buddy-list")
+		->addAction(m_sendFileAction, KaduMenu::SectionSend, 100);
+
+	m_menuInventory
+		->menu("tools")
+		->addAction(m_showFileTransferWindow, KaduMenu::SectionTools, 5);
+}
+
+void FileTransferActions::done()
+{
+	m_menuInventory
 		->menu("buddy-list")
 		->removeAction(m_sendFileAction);
 
-	Core::instance()->menuInventory()
+	m_menuInventory
 		->menu("tools")
 		->removeAction(m_showFileTransferWindow);
 }

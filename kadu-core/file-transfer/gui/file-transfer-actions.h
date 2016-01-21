@@ -20,7 +20,10 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class MenuInventory;
 class SendFileAction;
 class ShowFileTransferWindowAction;
 
@@ -29,11 +32,18 @@ class FileTransferActions : public QObject
 	Q_OBJECT
 
 public:
-	explicit FileTransferActions(QObject *parent = nullptr);
+	Q_INVOKABLE explicit FileTransferActions(QObject *parent = nullptr);
 	virtual ~FileTransferActions();
 
 private:
+	QPointer<MenuInventory> m_menuInventory;
+
 	SendFileAction *m_sendFileAction;
 	ShowFileTransferWindowAction *m_showFileTransferWindow;
+
+private slots:
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

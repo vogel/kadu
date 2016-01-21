@@ -88,13 +88,12 @@ private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<Configuration> m_configuration;
+	QPointer<FileTransferActions> m_fileTransferActions;
 	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
 	QPointer<FileTransferWindow> m_window;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationManager> m_notificationManager;
-
-	FileTransferActions *m_actions;
 
 	int m_totalProgress;
 
@@ -108,6 +107,7 @@ private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setFileTransferActions(FileTransferActions *fileTransferActions);
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
