@@ -82,7 +82,6 @@
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/window-chat-widget-container-handler.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/proxy-edit-window-service.h"
 #include "gui/windows/search-window-actions.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts-window-service.h"
@@ -750,11 +749,6 @@ Roster * Core::roster() const
 SystemInfo * Core::systemInfo() const
 {
 	return m_injector.get<SystemInfo>();
-}
-
-ProxyEditWindowService * Core::proxyEditWindowService() const
-{
-	return m_injector.get<ProxyEditWindowService>();
 }
 
 Myself * Core::myself() const

@@ -76,7 +76,6 @@ class PluginRepository;
 class PluginStateManager;
 class PluginStateService;
 class ProtocolsManager;
-class ProxyEditWindowService;
 class Roster;
 class StatusContainerManager;
 class StatusTypeManager;
@@ -168,7 +167,6 @@ public:
 	Actions * actions() const;
 	Roster * roster() const;
 	SystemInfo * systemInfo() const;
-	ProxyEditWindowService * proxyEditWindowService() const;
 	Myself * myself() const;
 	BuddyStorage * buddyStorage() const;
 
