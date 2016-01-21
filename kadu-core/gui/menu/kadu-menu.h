@@ -19,17 +19,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_MENU_H
-#define KADU_MENU_H
-
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtWidgets/QMenu>
+#pragma once
 
 #include "exports.h"
 
+#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtCore/QPointer>
+#include <QtWidgets/QMenu>
+
 class ActionContext;
 class ActionDescription;
+class MenuInventory;
 class MenuItem;
 
 class KADUAPI KaduMenu : public QObject
@@ -58,25 +59,8 @@ public:
 		SectionManagement,
 	};
 
-	QString Category;
-	QList<MenuItem *> Items;
-	bool IsSorted;
-
-	QList<QMenu *> Menus;
-
-	void sort();
-	ActionContext * getActionContext();
-
-	void appendTo(QMenu *menu, ActionContext *context = 0);
-	void applyTo(QMenu *menu, ActionContext *context = 0);
-
-private slots:
-	void menuDestroyed(QObject *object);
-
-	void updateGuiMenuSlot();
-
 public:
-	explicit KaduMenu(const QString &category, KaduMenu *parent = 0);
+	explicit KaduMenu(MenuInventory *menuInventory, const QString &category, KaduMenu *parent = nullptr);
 	virtual ~KaduMenu();
 
 	void attachToMenu(QMenu *menu);
@@ -91,6 +75,24 @@ public:
 
 	static bool lessThan(const MenuItem *a, const MenuItem *b);
 
-};
+	QString Category;
+	QList<MenuItem *> Items;
+	bool IsSorted;
 
-#endif // KADU_MENU_H
+	QList<QMenu *> Menus;
+
+	void sort();
+	ActionContext * getActionContext();
+
+	void appendTo(QMenu *menu, ActionContext *context = 0);
+	void applyTo(QMenu *menu, ActionContext *context = 0);
+
+private:
+	QPointer<MenuInventory> m_menuInventory;
+
+private slots:
+	void menuDestroyed(QObject *object);
+
+	void updateGuiMenuSlot();
+
+};

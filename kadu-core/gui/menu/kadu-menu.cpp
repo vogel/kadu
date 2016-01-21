@@ -32,8 +32,11 @@
 
 #include "kadu-menu.h"
 
-KaduMenu::KaduMenu(const QString &category, KaduMenu *parent) :
-		QObject(parent), Category(category), IsSorted(true)
+KaduMenu::KaduMenu(MenuInventory *menuInventory, const QString &category, KaduMenu *parent) :
+		QObject{parent},
+		Category{category},
+		IsSorted{true},
+		m_menuInventory{menuInventory}
 {
 }
 
@@ -157,7 +160,7 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 	auto isOneContactbuddy = actionContext->roles().contains(BuddyRole) && 1 == actionContext->buddies().size() && 1 == actionContext->buddies().begin()->contacts().size();
 	if (isContact || isOneContactbuddy)
 	{
-		foreach (ProtocolMenuManager *manager, Core::instance()->menuInventory()->protocolMenuManagers())
+		foreach (ProtocolMenuManager *manager, m_menuInventory->protocolMenuManagers())
 		{
 			Contact contact = *actionContext->contacts().constBegin();
 			if (contact.contactAccount().protocolName() != manager->protocolName())

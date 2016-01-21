@@ -42,7 +42,7 @@ MenuInventory::~MenuInventory()
 KaduMenu * MenuInventory::menu(const QString &category)
 {
 	if (!Menus.contains(category))
-		Menus.insert(category, new KaduMenu(category));
+		Menus.insert(category, new KaduMenu(this, category));
 
 	return Menus.value(category);
 }

@@ -20,10 +20,10 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-
 #include "exports.h"
 #include "kadu-menu.h"
+
+#include <QtCore/QObject>
 
 class QMenu;
 class QWidget;
