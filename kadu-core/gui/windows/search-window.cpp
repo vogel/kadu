@@ -114,6 +114,11 @@ void SearchWindow::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferre
 	m_buddyPreferredManager = buddyPreferredManager;
 }
 
+void SearchWindow::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
 void SearchWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
 	m_chatWidgetManager = chatWidgetManager;
@@ -376,7 +381,7 @@ void SearchWindow::chatFound()
 	if (!contacts.isEmpty())
 	{
 		const Chat &chat = 1 == contacts.size()
-				? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
+				? ChatTypeContact::findChat(m_chatManager, *contacts.constBegin(), ActionCreateAndAdd)
 				: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
 		m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 	}

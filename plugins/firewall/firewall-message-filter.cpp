@@ -90,6 +90,11 @@ void FirewallMessageFilter::setBuddyManager(BuddyManager *buddyManager)
 	m_buddyManager = buddyManager;
 }
 
+void FirewallMessageFilter::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
 void FirewallMessageFilter::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
@@ -453,7 +458,7 @@ bool FirewallMessageFilter::acceptOutgoingMessage(const Message &message)
 {
 	foreach (const Contact &contact, message.messageChat().contacts())
 	{
-		Chat chat = ChatTypeContact::findChat(contact, ActionReturnNull);
+		Chat chat = ChatTypeContact::findChat(m_chatManager, contact, ActionReturnNull);
 		if (!chat)
 			continue;
 

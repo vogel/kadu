@@ -28,7 +28,10 @@
 #include <injeqt/injeqt.h>
 #include <qxmpp/QXmppMessage.h>
 
+class ChatManager;
+class ChatTypeManager;
 class Chat;
+class ContactManager;
 class FormattedStringFactory;
 
 class JabberChatStateService;
@@ -68,11 +71,14 @@ signals:
 	void messageAboutToSend(Message &message);
 
 private:
-	QPointer<QXmppClient> m_client;
+	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<ContactManager> m_contactManager;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<JabberChatStateService> m_chatStateService;
 	QPointer<JabberResourceService> m_resourceService;
 	QPointer<JabberRoomChatService> m_roomChatService;
+	QPointer<QXmppClient> m_client;
 
 	QMap<QString, QXmppMessage::Type> m_contactMessageTypes;
 
@@ -80,6 +86,9 @@ private:
 	Message handleNormalReceivedMessage(const QXmppMessage &xmppMessage);
 
 private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 };

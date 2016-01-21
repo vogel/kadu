@@ -208,7 +208,7 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 		if (!contact)
 			return Chat::null;
 
-		return ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+		return ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
 	}
 
 	if ("ContactSet" == chatType)

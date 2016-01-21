@@ -26,6 +26,7 @@
 #include <injeqt/injeqt.h>
 
 class Account;
+class ChatManager;
 class ChatWidgetRepository;
 class Contact;
 class InjectedFactory;
@@ -39,6 +40,7 @@ class OtrNotifier : public QObject
 	static QString CreatePrivateKeyStartedNotifyTopic;
 	static QString CreatePrivateKeyFinishedNotifyTopic;
 
+	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetRepository> MyChatWidgetRepository;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationManager> m_notificationManager;
@@ -57,6 +59,7 @@ public:
 	QList<NotificationEvent> notifyEvents();
 
 public slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);

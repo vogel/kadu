@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_MESSAGE_SERVICE_H
-#define OTR_MESSAGE_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -29,14 +28,13 @@ extern "C" {
 }
 
 class Account;
+class ChatManager;
 class Contact;
 class MessageManager;
 
 class OtrMessageService : public QObject
 {
 	Q_OBJECT
-
-	QPointer<MessageManager> CurrentMessageManager;
 
 public:
 	static void wrapperOtrInjectMessage(void *data, const char *accountName, const char *protocol, const char *recipient, const char *message);
@@ -51,9 +49,12 @@ public:
 	int maxMessageSize(const Account &account) const;
 	QString resentMessagePrefix() const;
 
+private:
+	QPointer<ChatManager> m_chatManager;
+	QPointer<MessageManager> CurrentMessageManager;
+
 private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 
 };
-
-#endif // OTR_MESSAGE_SERVICE_H

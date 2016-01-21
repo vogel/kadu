@@ -24,6 +24,7 @@
 #include <QtCore/QScopedArrayPointer>
 #include <QtCore/QTimer>
 
+#include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration.h"
@@ -67,6 +68,11 @@ GaduChatService::GaduChatService(Account account, QObject *parent) :
 
 GaduChatService::~GaduChatService()
 {
+}
+
+void GaduChatService::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
 }
 
 void GaduChatService::setConfiguration(Configuration *configuration)
@@ -251,7 +257,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		return;
 
 	Chat chat = 1 == chatContacts.size()
-			? ChatTypeContact::findChat(*chatContacts.constBegin(), ActionCreateAndAdd)
+			? ChatTypeContact::findChat(m_chatManager, *chatContacts.constBegin(), ActionCreateAndAdd)
 			: ChatTypeContactSet::findChat(chatContacts, ActionCreateAndAdd);
 
 	// create=true in our call for findChat(), but chat might be null for example if chatContacts was empty

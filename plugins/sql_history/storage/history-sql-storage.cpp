@@ -115,6 +115,11 @@ void HistorySqlStorage::setBuddyStorage(BuddyStorage *buddyStorage)
 	m_buddyStorage = buddyStorage;
 }
 
+void HistorySqlStorage::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
 void HistorySqlStorage::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	m_formattedStringFactory = formattedStringFactory;
@@ -510,7 +515,7 @@ void HistorySqlStorage::deleteHistory(const Talkable &talkable)
 {
 	foreach (const Contact &contact, talkable.toBuddy().contacts())
 	{
-		Chat chat = ChatTypeContact::findChat(contact, ActionReturnNull);
+		Chat chat = ChatTypeContact::findChat(m_chatManager, contact, ActionReturnNull);
 		clearChatHistory(chat, QDate());
 	}
 

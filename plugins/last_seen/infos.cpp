@@ -27,6 +27,7 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "misc/paths-provider.h"
@@ -54,6 +55,11 @@ void Infos::setAccountManager(AccountManager *accountManager)
 void Infos::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
+}
+
+void Infos::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void Infos::setMenuInventory(MenuInventory *menuInventory)
@@ -167,7 +173,7 @@ void Infos::onShowInfos()
 {
 	kdebugf();
 	updateTimes();
-	InfosDialog *infosDialog = new InfosDialog(lastSeen);
+	InfosDialog *infosDialog = m_injectedFactory->makeInjected<InfosDialog>(lastSeen);
 	infosDialog->show();
 	kdebugf2();
 }

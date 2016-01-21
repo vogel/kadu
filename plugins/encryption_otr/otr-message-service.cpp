@@ -18,6 +18,7 @@
  */
 
 #include "accounts/account.h"
+#include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "message/message-manager.h"
@@ -77,6 +78,11 @@ OtrMessageService::~OtrMessageService()
 {
 }
 
+void OtrMessageService::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
 void OtrMessageService::setMessageManager(MessageManager *messageManager)
 {
 	CurrentMessageManager = messageManager;
@@ -87,7 +93,7 @@ void OtrMessageService::injectMessage(const Contact &contact, const QByteArray &
 	if (!CurrentMessageManager)
 		return;
 
-	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
 	CurrentMessageManager.data()->sendRawMessage(chat, message);
 }
 

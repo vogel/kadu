@@ -33,7 +33,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-notifications.h"
@@ -76,9 +75,24 @@ void FileTransferManager::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
+void FileTransferManager::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void FileTransferManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+}
+
 void FileTransferManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
 	m_configurationManager = configurationManager;
+}
+
+void FileTransferManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
@@ -186,8 +200,8 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, QString loca
 	if (!m_fileTransferHandlerManager->ensureHandler(transfer))
 		return;
 
-	auto chat = ChatTypeContact::findChat(transfer.peer(), ActionReturnNull);
-	QWidget *parent = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
+	auto chat = ChatTypeContact::findChat(m_chatManager, transfer.peer(), ActionReturnNull);
+	QWidget *parent = m_chatWidgetRepository->widgetForChat(chat);
 	if (parent == nullptr)
 		parent = Core::instance()->kaduWindow();
 
@@ -271,13 +285,13 @@ QString FileTransferManager::getSaveFileName(QString fileName, QString remoteFil
 	{
 		if (fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(parent, tr("Select file location"),
-					Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastDownloadDirectory") + remoteFileName,
+					m_configuration->deprecatedApi()->readEntry("Network", "LastDownloadDirectory") + remoteFileName,
 							QString(), 0, QFileDialog::DontConfirmOverwrite);
 
 		if (fileName.isEmpty())
 			return fileName;
 
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
+		m_configuration->deprecatedApi()->writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
 		auto info = QFileInfo{fileName};
 
 		if (!haveFileName && info.exists())
@@ -325,7 +339,7 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
 	QMutexLocker locker(&mutex());
 	addItem(fileTransfer);
-	NewFileTransferNotification::notifyIncomingFileTransfer(m_notificationManager, fileTransfer);
+	NewFileTransferNotification::notifyIncomingFileTransfer(m_chatManager, m_notificationManager, fileTransfer);
 }
 
 void FileTransferManager::itemAboutToBeAdded(FileTransfer fileTransfer)

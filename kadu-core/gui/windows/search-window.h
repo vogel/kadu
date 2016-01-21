@@ -36,6 +36,7 @@ class AccountManager;
 class BaseActionContext;
 class BuddyManager;
 class BuddyPreferredManager;
+class ChatManager;
 class ChatWidgetManager;
 class ContactManager;
 class InjectedFactory;
@@ -82,6 +83,7 @@ private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -122,6 +124,7 @@ private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);

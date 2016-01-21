@@ -22,6 +22,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
+#include "chat/chat-manager.h"
 #include "core/injected-factory.h"
 #include "multilogon/multilogon-session.h"
 #include "notification/notification/multilogon-notification.h"
@@ -47,6 +48,11 @@ AccountEventListener::~AccountEventListener()
 void AccountEventListener::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
+}
+
+void AccountEventListener::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
 }
 
 void AccountEventListener::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -162,7 +168,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 	const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(status.type());
 	QString changedTo = "/To" + typeData.name();
 
-	auto statusChangedNotification = m_injectedFactory->makeInjected<StatusChangedNotification>(changedTo, contact, statusDisplayName, description);
+	auto statusChangedNotification = m_injectedFactory->makeInjected<StatusChangedNotification>(m_chatManager, changedTo, contact, statusDisplayName, description);
 	m_notificationService->notify(statusChangedNotification);
 }
 

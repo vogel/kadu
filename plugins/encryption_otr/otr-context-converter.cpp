@@ -22,6 +22,7 @@ extern "C" {
 }
 
 #include "accounts/account-manager.h"
+#include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -44,6 +45,11 @@ void OtrContextConverter::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
+void OtrContextConverter::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
 void OtrContextConverter::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
@@ -57,7 +63,7 @@ void OtrContextConverter::setUserStateService(OtrUserStateService *userStateServ
 Chat OtrContextConverter::connectionContextToChat(ConnContext *context) const
 {
 	auto contact = connectionContextToContact(context);
-	return ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	return ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
 }
 
 Contact OtrContextConverter::connectionContextToContact(ConnContext *context) const

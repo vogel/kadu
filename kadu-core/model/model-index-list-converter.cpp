@@ -113,7 +113,7 @@ Chat ModelIndexListConverter::chatFromBuddies() const
 		return Chat::null;
 
 	if (1 == buddies.size())
-		return ChatTypeContact::findChat(Core::instance()->buddyPreferredManager()->preferredContact2(*buddies.begin()), ActionCreateAndAdd);
+		return ChatTypeContact::findChat(Core::instance()->chatManager(), Core::instance()->buddyPreferredManager()->preferredContact2(*buddies.begin()), ActionCreateAndAdd);
 	else
 		return ChatTypeContactSet::findChat(Core::instance()->buddyPreferredManager()->preferredContacts(buddies), ActionCreateAndAdd);
 }
@@ -136,7 +136,7 @@ Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
 	if (contacts.isEmpty())
 		return Chat::null;
 	return 1 == contacts.size()
-			? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
+			? ChatTypeContact::findChat(Core::instance()->chatManager(), *contacts.constBegin(), ActionCreateAndAdd)
 			: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
 }
 

@@ -68,6 +68,11 @@ void JabberUrlHandler::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
+void JabberUrlHandler::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
 void JabberUrlHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
 	m_chatWidgetManager = chatWidgetManager;
@@ -102,7 +107,7 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 	if (jabberAccounts.count() == 1 || disableMenu)
 	{
 		const Contact &contact = m_contactManager->byId(jabberAccounts[0], jabberId, ActionCreateAndAdd);
-		const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+		const Chat &chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
 		if (chat)
 		{
 			m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
@@ -141,7 +146,7 @@ void JabberUrlHandler::accountSelected(QAction *action)
 		return;
 
 	const Contact &contact = m_contactManager->byId(account, ids[1], ActionCreateAndAdd);
-	const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	const Chat &chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
 	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
 

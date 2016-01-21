@@ -31,6 +31,7 @@
 
 class BuddyListModel;
 class BuddyManager;
+class ChatManager;
 class ChatWidgetManager;
 class InjectedFactory;
 class LineEditWithClearButton;
@@ -57,6 +58,7 @@ public:
 
 private:
 	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<PathsProvider> m_pathsProvider;
@@ -73,6 +75,7 @@ private:
 
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);

@@ -32,8 +32,11 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class ChatManager;
+class ChatWidgetRepository;
 class ConfigurationApi;
 class ConfigurationManager;
+class Configuration;
 class FileTransferActions;
 class FileTransferHandlerManager;
 class FileTransferWindow;
@@ -80,14 +83,18 @@ protected:
 	virtual void itemRemoved(FileTransfer fileTransfer);
 
 private:
-	FileTransferActions *m_actions;
 	QPointer<AccountManager> m_accountManager;
+	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
 	QPointer<FileTransferWindow> m_window;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationManager> m_notificationManager;
+
+	FileTransferActions *m_actions;
 
 	int m_totalProgress;
 
@@ -97,7 +104,10 @@ private:
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);

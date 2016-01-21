@@ -38,7 +38,7 @@ public:
 	static void registerEvents(NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository);
 	static void unregisterEvents(NotificationEventRepository *notificationEventRepository);
 
-	static void notifyIncomingFileTransfer(NotificationManager *notificationManager, const FileTransfer &fileTransfer);
+	static void notifyIncomingFileTransfer(ChatManager *chatManager, NotificationManager *notificationManager, const FileTransfer &fileTransfer);
 
 	NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer);
 

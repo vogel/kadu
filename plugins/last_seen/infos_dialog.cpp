@@ -19,6 +19,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "infos_dialog.h"
+
+#include "infos.h"
+
+#include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact.h"
+#include "configuration/config-file-variant-wrapper.h"
+#include "contacts/contact-manager.h"
+#include "gui/actions/base-action-context.h"
+#include "gui/menu/menu-inventory.h"
+#include "model/roles.h"
+#include "os/generic/window-geometry-manager.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
+#include "debug.h"
+
 #include <QtCore/QStringList>
 #include <QtNetwork/QHostAddress>
 #include <QtWidgets/QApplication>
@@ -28,29 +44,39 @@
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 
-#include "chat/type/chat-type-contact.h"
-#include "configuration/config-file-variant-wrapper.h"
-#include "contacts/contact-manager.h"
-#include "core/core.h"
-#include "gui/actions/base-action-context.h"
-#include "gui/menu/menu-inventory.h"
-#include "model/roles.h"
-#include "os/generic/window-geometry-manager.h"
-#include "status/status-type-data.h"
-#include "status/status-type-manager.h"
-#include "debug.h"
-
-#include "infos.h"
-
-#include "infos_dialog.h"
-
 InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
-	QDialog(parent)
+	QDialog(parent), m_lastSeen{lastSeen}
 {
-	kdebugf();
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Buddies Information"));
+}
 
+InfosDialog::~InfosDialog()
+{
+}
+
+void InfosDialog::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void InfosDialog::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void InfosDialog::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
+}
+
+void InfosDialog::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
+void InfosDialog::init()
+{
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	ListView = new QTreeWidget(this);
@@ -73,7 +99,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 			<< tr("Last time seen on");
 	ListView->setHeaderLabels(labels);
 
-	foreach (const Contact &contact, Core::instance()->contactManager()->items())
+	foreach (const Contact &contact, m_contactManager->items())
 	{
 		if (contact.isAnonymous())
 			continue;
@@ -89,8 +115,8 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 				<< contact.id()
 				<< contact.ownerBuddy().nickName()
 				<< desc
-				<< Core::instance()->statusTypeManager()->statusTypeData(contact.currentStatus().type()).name()
-				<< lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())];
+				<< m_statusTypeManager->statusTypeData(contact.currentStatus().type()).name()
+				<< m_lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())];
 
 		QTreeWidgetItem *item = new QTreeWidgetItem(labels);
 		item->setData(0, ContactRole, contact);
@@ -111,15 +137,6 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("LastSeen", "LastSeenWidgetGeometry"), QRect(0, 0, 800, 300), this);
-
-	kdebugf2();
-}
-
-InfosDialog::~InfosDialog()
-{
-	kdebugf();
-
-	kdebugf2();
 }
 
 void InfosDialog::customContextMenuRequested(const QPoint &point)
@@ -140,14 +157,14 @@ void InfosDialog::customContextMenuRequested(const QPoint &point)
 
 	BaseActionContext actionContext{this};
 	actionContext.setBuddies(BuddySet(contact.ownerBuddy()));
-	actionContext.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
+	actionContext.setChat(ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd));
 	actionContext.setContacts(ContactSet(contact));
 	actionContext.setRoles(RoleSet() << ContactRole);
 
 	QScopedPointer<QMenu> menu(new QMenu());
-	Core::instance()->menuInventory()->menu("buddy-list")->attachToMenu(menu.data());
-	Core::instance()->menuInventory()->menu("buddy-list")->applyTo(menu.data(), &actionContext);
-	Core::instance()->menuInventory()->menu("buddy-list")->update();
+	m_menuInventory->menu("buddy-list")->attachToMenu(menu.data());
+	m_menuInventory->menu("buddy-list")->applyTo(menu.data(), &actionContext);
+	m_menuInventory->menu("buddy-list")->update();
 	menu->exec(QCursor::pos());
 }
 

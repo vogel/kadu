@@ -30,6 +30,7 @@
 #include "exports.h"
 
 class Buddy;
+class ChatManager;
 class Chat;
 class Contact;
 
@@ -53,7 +54,7 @@ class KADUAPI ChatTypeContact : public ChatType
 	QStringList Aliases;
 
 public:
-	static Chat findChat(const Contact &contact, NotFoundAction notFoundAction);
+	static Chat findChat(ChatManager *chatManager, const Contact &contact, NotFoundAction notFoundAction);
 
 	explicit ChatTypeContact(QObject *parent = nullptr);
 	virtual ~ChatTypeContact();

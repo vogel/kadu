@@ -28,6 +28,7 @@ extern "C" {
 #	include <libotr/message.h>
 }
 
+class ChatManager;
 class ChatWidgetRepository;
 class Contact;
 
@@ -44,12 +45,14 @@ public:
 	void handleMessageEvent(const Contact &contact, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
 
 private:
+	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
 	QString gpgErrorString(gcry_error_t errorCode) const;
 
 private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 };

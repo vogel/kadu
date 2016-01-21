@@ -21,6 +21,7 @@
 
 #include "otr-op-data.h"
 
+#include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -42,6 +43,11 @@ OtrMessageEventService::~OtrMessageEventService()
 {
 }
 
+void OtrMessageEventService::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
 void OtrMessageEventService::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
@@ -54,7 +60,7 @@ void OtrMessageEventService::handleMessageEvent(const Contact &contact, OtrlMess
 	if (errorMessage.isEmpty())
 		return;
 
-	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	auto chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
 	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
 	if (chatWidget)
 		chatWidget->appendSystemMessage(errorMessage);

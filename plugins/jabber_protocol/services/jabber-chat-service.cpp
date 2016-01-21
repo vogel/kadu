@@ -38,7 +38,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
@@ -63,14 +62,29 @@ JabberChatService::~JabberChatService()
 {
 }
 
-void JabberChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+void JabberChatService::setChatManager(ChatManager *chatManager)
 {
-	m_formattedStringFactory = formattedStringFactory;
+	m_chatManager = chatManager;
+}
+
+void JabberChatService::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
+void JabberChatService::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
 }
 
 void JabberChatService::setChatStateService(JabberChatStateService *chatStateService)
 {
 	m_chatStateService = chatStateService;
+}
+
+void JabberChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	m_formattedStringFactory = formattedStringFactory;
 }
 
 void JabberChatService::setResourceService(JabberResourceService *resourceService)
@@ -90,7 +104,7 @@ int JabberChatService::maxMessageLength() const
 
 QXmppMessage::Type JabberChatService::chatMessageType(const Chat &chat, const QString &bareJid) const
 {
-	auto chatType = Core::instance()->chatTypeManager()->chatType(chat.type());
+	auto chatType = m_chatTypeManager->chatType(chat.type());
 	if (!chatType)
 		return QXmppMessage::QXmppMessage::Normal;
 
@@ -201,8 +215,8 @@ Message JabberChatService::handleNormalReceivedMessage(const QXmppMessage &xmppM
 {
 	auto jid = Jid::parse(xmppMessage.from());
 
-	auto contact = Core::instance()->contactManager()->byId(account(), jid.bare(), ActionCreateAndAdd);
-	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	auto contact = m_contactManager->byId(account(), jid.bare(), ActionCreateAndAdd);
+	auto chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
 
 	contact.addProperty("jabber:chat-resource", jid.resource(), CustomProperties::NonStorable);
 

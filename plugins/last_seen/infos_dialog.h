@@ -18,12 +18,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INFOS_DIALOG_H
-#define INFOS_DIALOG_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
 
 typedef QMap<QPair<QString, QString>, QString> LastSeen;
+
+class ChatManager;
+class ContactManager;
+class MenuInventory;
+class StatusTypeManager;
 
 class QTreeWidget;
 
@@ -35,9 +41,22 @@ class InfosDialog : public QDialog
 {
 	Q_OBJECT
 
+	QPointer<ChatManager> m_chatManager;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<MenuInventory> m_menuInventory;
+	QPointer<StatusTypeManager> m_statusTypeManager;
+
+	const LastSeen &m_lastSeen;
+
 	QTreeWidget *ListView;
 
 private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_INIT void init();
+
 	void customContextMenuRequested(const QPoint &point);
 
 public:
@@ -45,7 +64,6 @@ public:
 	explicit InfosDialog(const LastSeen &lastSeen, QWidget *parent = nullptr);
 
 	/*! Default destructor. */
-	~InfosDialog();
-};
+	virtual ~InfosDialog();
 
-#endif // INFOS_DIALOG_H
+};

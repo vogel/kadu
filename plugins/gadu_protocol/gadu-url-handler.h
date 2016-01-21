@@ -28,6 +28,7 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class ChatManager;
 class ChatWidgetManager;
 class ContactManager;
 
@@ -46,12 +47,14 @@ public:
 
 private:
 	QPointer<AccountManager> m_accountManager;
+	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ContactManager> m_contactManager;
 	QRegExp m_gaduRegExp;
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 

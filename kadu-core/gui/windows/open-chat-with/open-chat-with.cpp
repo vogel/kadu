@@ -78,6 +78,11 @@ void OpenChatWith::setBuddyManager(BuddyManager *buddyManager)
 	m_buddyManager = buddyManager;
 }
 
+void OpenChatWith::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
 void OpenChatWith::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
 	m_chatWidgetManager = chatWidgetManager;
@@ -232,7 +237,7 @@ void OpenChatWith::itemActivated(int index)
 	if (!contact)
 		return;
 
-	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
 	if (!chat)
 		return;
 

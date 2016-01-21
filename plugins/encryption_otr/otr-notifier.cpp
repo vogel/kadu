@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "core/injected-factory.h"
@@ -41,6 +42,11 @@ OtrNotifier::OtrNotifier()
 
 OtrNotifier::~OtrNotifier()
 {
+}
+
+void OtrNotifier::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
 }
 
 void OtrNotifier::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -80,7 +86,7 @@ void OtrNotifier::notify(const Contact &contact, const QString &message)
 	if (!MyChatWidgetRepository)
 		return;
 
-	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	auto chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
 	auto widget = MyChatWidgetRepository->widgetForChat(chat);
 	if (!widget)
 		return;
