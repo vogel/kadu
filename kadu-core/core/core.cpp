@@ -64,7 +64,6 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
-#include "gui/menu/menu-inventory.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
@@ -746,11 +745,6 @@ ChatTypeManager * Core::chatTypeManager() const
 Actions * Core::actions() const
 {
 	return m_injector.get<Actions>();
-}
-
-MenuInventory * Core::menuInventory() const
-{
-	return m_injector.get<MenuInventory>();
 }
 
 Roster * Core::roster() const

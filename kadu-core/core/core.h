@@ -64,7 +64,6 @@ class IconsManager;
 class InjectedFactory;
 class KaduIcon;
 class KaduWindow;
-class MenuInventory;
 class Message;
 class MessageTransformerService;
 class Myself;
@@ -168,7 +167,6 @@ public:
 	BuddyPreferredManager * buddyPreferredManager() const;
 	ChatTypeManager * chatTypeManager() const;
 	Actions * actions() const;
-	MenuInventory * menuInventory() const;
 	Roster * roster() const;
 	SystemInfo * systemInfo() const;
 	ProxyEditWindowService * proxyEditWindowService() const;
