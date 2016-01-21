@@ -40,7 +40,7 @@ HistoryTalkableComboBox::HistoryTalkableComboBox(QWidget *parent) :
 	AllAction = new QAction(this);
 	actionModel->appendAction(AllAction);
 
-	ChatsModel = new ChatListModel(this);
+	ChatsModel = Core::instance()->injectedFactory()->makeInjected<ChatListModel>(this);
 	BuddiesModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(this);
 
 	QList<KaduAbstractModel *> models;

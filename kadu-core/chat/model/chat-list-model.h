@@ -17,34 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_LIST_MODEL_H
-#define CHAT_LIST_MODEL_H
-
-#include <QtCore/QAbstractItemModel>
-#include <QtCore/QVector>
+#pragma once
 
 #include "chat/chat.h"
 #include "model/kadu-abstract-model.h"
 #include "exports.h"
 
+#include <QtCore/QAbstractItemModel>
+#include <QtCore/QPointer>
+#include <QtCore/QVector>
+#include <injeqt/injeqt.h>
+
+class ChatListMimeDataService;
+
 class KADUAPI ChatListModel : public QAbstractItemModel, public KaduAbstractModel
 {
 	Q_OBJECT
-
-	QVector<Chat> List;
-
-	void connectChat(const Chat &chat);
-	void disconnectChat(const Chat &chat);
-
-	Chat chatFromVariant(const QVariant &variant) const;
-
-private slots:
-	void contactAboutToBeAdded(const Contact &contact);
-	void contactAdded(const Contact &contact);
-	void contactAboutToBeRemoved(const Contact &contact);
-	void contactRemoved(const Contact &contact);
-
-	void chatUpdated();
 
 public:
 	explicit ChatListModel(QObject *parent = nullptr);
@@ -71,6 +59,24 @@ public:
 	virtual QStringList mimeTypes() const;
 	virtual QMimeData * mimeData(const QModelIndexList &indexes) const;
 
-};
+private:
+	QPointer<ChatListMimeDataService> m_chatListMimeDataService;
 
-#endif // CHAT_LIST_MODEL_H
+	QVector<Chat> List;
+
+	void connectChat(const Chat &chat);
+	void disconnectChat(const Chat &chat);
+
+	Chat chatFromVariant(const QVariant &variant) const;
+
+private slots:
+	INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
+
+	void contactAboutToBeAdded(const Contact &contact);
+	void contactAdded(const Contact &contact);
+	void contactAboutToBeRemoved(const Contact &contact);
+	void contactRemoved(const Contact &contact);
+
+	void chatUpdated();
+
+};

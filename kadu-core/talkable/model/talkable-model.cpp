@@ -31,7 +31,7 @@
 TalkableModel::TalkableModel(QObject *parent) :
 		KaduMergedProxyModel(parent), IncludeMyself(false)
 {
-	Chats = new ChatListModel(this);
+	Chats = Core::instance()->injectedFactory()->makeInjected<ChatListModel>(this);
 	new ChatManagerAdapter(Chats);
 	Buddies = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(this);
 	BuddiesAdapter = Core::instance()->injectedFactory()->makeInjected<BuddyManagerAdapter>(Buddies);

@@ -18,15 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-list-model.h"
+
 #include "chat/chat-list-mime-data-service.h"
 #include "chat/model/chat-data-extractor.h"
 #include "contacts/contact-set.h"
 #include "contacts/model/contact-data-extractor.h"
-#include "core/core.h"
 #include "model/roles.h"
 #include "talkable/talkable.h"
-
-#include "chat-list-model.h"
 
 #include <QtCore/QMimeData>
 
@@ -39,6 +38,11 @@ ChatListModel::ChatListModel(QObject *parent) :
 
 ChatListModel::~ChatListModel()
 {
+}
+
+void ChatListModel::setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService)
+{
+	m_chatListMimeDataService = chatListMimeDataService;
 }
 
 void ChatListModel::connectChat(const Chat &chat)
@@ -335,7 +339,7 @@ QModelIndexList ChatListModel::indexListForValue(const QVariant &value) const
 
 QStringList ChatListModel::mimeTypes() const
 {
-	return Core::instance()->chatListMimeDataService()->mimeTypes();
+	return m_chatListMimeDataService->mimeTypes();
 }
 
 QMimeData * ChatListModel::mimeData(const QModelIndexList &indexes) const
@@ -348,7 +352,7 @@ QMimeData * ChatListModel::mimeData(const QModelIndexList &indexes) const
 			list << chat;
 	}
 
-	return Core::instance()->chatListMimeDataService()->toMimeData(list).release();
+	return m_chatListMimeDataService->toMimeData(list).release();
 }
 
 #include "moc_chat-list-model.cpp"
