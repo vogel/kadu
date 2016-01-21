@@ -117,7 +117,6 @@
 #include "plugin/state/plugin-state-storage.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
-#include "protocols/protocols-manager.h"
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
 #include "roster/roster-notifier.h"
@@ -659,11 +658,6 @@ PluginStateService * Core::pluginStateService() const
 FileTransferManager * Core::fileTransferManager() const
 {
 	return m_injector.get<FileTransferManager>();
-}
-
-ProtocolsManager * Core::protocolsManager() const
-{
-	return m_injector.get<ProtocolsManager>();
 }
 
 ChatManager * Core::chatManager() const

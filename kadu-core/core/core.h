@@ -74,7 +74,6 @@ class PluginDependencyHandler;
 class PluginRepository;
 class PluginStateManager;
 class PluginStateService;
-class ProtocolsManager;
 class Roster;
 class StatusContainerManager;
 class StatusTypeManager;
@@ -148,7 +147,6 @@ public:
 
 	FileTransferManager * fileTransferManager() const;
 
-	ProtocolsManager * protocolsManager() const;
 	ChatManager * chatManager() const;
 	StatusContainerManager * statusContainerManager() const;
 	StatusTypeManager * statusTypeManager() const;
