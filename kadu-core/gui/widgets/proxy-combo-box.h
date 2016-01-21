@@ -18,27 +18,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROXY_COMBO_BOX_H
-#define PROXY_COMBO_BOX_H
+#pragma once
 
+#include "gui/widgets/actions-combo-box.h"
+#include "misc/memory.h"
 #include "network/proxy/network-proxy.h"
 #include "exports.h"
 
-#include "gui/widgets/actions-combo-box.h"
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class InjectedFactory;
 class NetworkProxyModel;
+class ProxyEditWindowService;
 
 class KADUAPI ProxyComboBox : public ActionsComboBox
 {
 	Q_OBJECT
-
-	NetworkProxyModel *Model;
-
-	QAction *EditProxyAction;
-	QAction *DefaultProxyAction;
-
-private slots:
-	void editProxy();
 
 public:
 	explicit ProxyComboBox(QWidget *parent = nullptr);
@@ -51,6 +47,19 @@ public:
 	void setCurrentProxy(const NetworkProxy &networkProxy);
 	NetworkProxy currentProxy();
 
-};
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<ProxyEditWindowService> m_proxyEditWindowService;
 
-#endif // PROXY_COMBO_BOX_H
+	owned_qptr<NetworkProxyModel> m_model;
+	owned_qptr<QAction> m_editProxyAction;
+	owned_qptr<QAction> m_defaultProxyAction;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService);
+	INJEQT_INIT void init();
+
+	void editProxy();
+
+};

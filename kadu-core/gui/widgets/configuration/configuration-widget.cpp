@@ -48,7 +48,6 @@
 #include "gui/widgets/configuration/config-list-widget.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
 #include "gui/widgets/configuration/config-preview.h"
-#include "gui/widgets/configuration/config-proxy-combo-box.h"
 #include "gui/widgets/configuration/config-radio-button.h"
 #include "gui/widgets/configuration/config-section.h"
 #include "gui/widgets/configuration/config-select-file.h"

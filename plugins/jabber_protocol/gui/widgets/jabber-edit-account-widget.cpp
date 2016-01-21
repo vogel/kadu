@@ -269,7 +269,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connectionBoxLayout->addWidget(RequireDataTransferProxy);
 
 	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), connection);
-	ProxyCombo = new ProxyComboBox(connection);
+	ProxyCombo = m_injectedFactory->makeInjected<ProxyComboBox>(connection);
 	ProxyCombo->enableDefaultProxyAction();
 	connect(ProxyCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 
