@@ -37,16 +37,16 @@
 
 #include <QtWidgets/QFileDialog>
 
-SendFileAction::SendFileAction(QObject *parent) :
+SendFileAction::SendFileAction(Actions *actions, QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+		ActionDescription(actions, parent)
 {
 	setIcon(KaduIcon("document-send"));
 	setName("sendFileAction");
 	setText(tr("Send File..."));
 	setType(ActionDescription::TypeUser);
 
-	registerAction();
+	registerAction(actions);
 }
 
 SendFileAction::~SendFileAction()

@@ -28,6 +28,7 @@
 
 #include "gui/actions/action-description.h"
 
+class Actions;
 class BuddyChatManager;
 class Configuration;
 class HistoryWindowService;
@@ -38,6 +39,7 @@ class HISTORYAPI ShowHistoryActionDescription : public ActionDescription
 {
 	Q_OBJECT
 
+	QPointer<Actions> m_actions;
 	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<HistoryWindowService> m_historyWindowService;
@@ -48,6 +50,7 @@ class HISTORYAPI ShowHistoryActionDescription : public ActionDescription
 	void showDaysMessages(QAction *action, int days);
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setHistoryWindowService(HistoryWindowService *historyWindowService);

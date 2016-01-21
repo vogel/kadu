@@ -35,8 +35,8 @@
 
 #include "delete-talkable-action.h"
 
-DeleteTalkableAction::DeleteTalkableAction(QObject *parent) :
-		ActionDescription(parent)
+DeleteTalkableAction::DeleteTalkableAction(Actions *actions, QObject *parent) :
+		ActionDescription(actions, parent)
 {
 	// TODO: TypeChat | TypeUser or TypeTalkables
 	setType(TypeUser);
@@ -45,7 +45,7 @@ DeleteTalkableAction::DeleteTalkableAction(QObject *parent) :
 	setShortcut("kadu_deleteuser");
 	setText(tr("Delete Buddy"));
 
-	registerAction();
+	registerAction(actions);
 }
 
 DeleteTalkableAction::~DeleteTalkableAction()

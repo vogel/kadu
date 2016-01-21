@@ -108,11 +108,6 @@ void KaduWindow::setFileTransferManager(FileTransferManager *fileTransferManager
 	m_fileTransferManager = fileTransferManager;
 }
 
-void KaduWindow::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void KaduWindow::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -147,7 +142,7 @@ void KaduWindow::init()
 	Context = static_cast<ProxyActionContext *>(actionContext());
 	Context->setForwardActionContext(Roster->actionContext());
 
-	Actions = m_injectedFactory->makeInjected<KaduWindowActions>(this);
+	Actions = injectedFactory()->makeInjected<KaduWindowActions>(this);
 	loadToolBarsFromConfig();
 	createMenu();
 
@@ -165,13 +160,13 @@ void KaduWindow::createGui()
 
 	Split = new QSplitter(Qt::Vertical, MainWidget);
 
-	Roster = m_injectedFactory->makeInjected<RosterWidget>(Split);
-	InfoPanel = m_injectedFactory->makeInjected<BuddyInfoPanel>(Split);
+	Roster = injectedFactory()->makeInjected<RosterWidget>(Split);
+	InfoPanel = injectedFactory()->makeInjected<BuddyInfoPanel>(Split);
 
 	connect(Roster, SIGNAL(currentChanged(Talkable)), InfoPanel, SLOT(displayItem(Talkable)));
 	connect(Roster, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
 
-	ChangeStatusButtons = m_injectedFactory->makeInjected<StatusButtons>(MainWidget);
+	ChangeStatusButtons = injectedFactory()->makeInjected<StatusButtons>(MainWidget);
 
 	if (!configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->setVisible(false);

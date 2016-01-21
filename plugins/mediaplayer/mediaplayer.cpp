@@ -151,7 +151,7 @@ void MediaPlayer::init()
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
 
-	enableMediaPlayerStatuses = new ActionDescription(
+	enableMediaPlayerStatuses = new ActionDescription(m_actions,
 		this, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
 		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Enable MediaPlayer Statuses"), true
@@ -159,32 +159,32 @@ void MediaPlayer::init()
 
 	m_actions->blockSignals();
 
-	mediaPlayerMenu = new ActionDescription(
+	mediaPlayerMenu = new ActionDescription(m_actions,
 		this, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
 		KaduIcon("external_modules/mediaplayer"), tr("MediaPlayer"), false
 	);
-	playAction = new ActionDescription(
+	playAction = new ActionDescription(m_actions,
 		this, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
 		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Play"), false
 	);
-	stopAction = new ActionDescription(
+	stopAction = new ActionDescription(m_actions,
 		this, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
 		KaduIcon("external_modules/mediaplayer-media-playback-stop"), tr("Stop"), false
 	);
-	prevAction = new ActionDescription(
+	prevAction = new ActionDescription(m_actions,
 		this, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
 		KaduIcon("external_modules/mediaplayer-media-skip-backward"), tr("Previous Track"), false
 	);
-	nextAction = new ActionDescription(
+	nextAction = new ActionDescription(m_actions,
 		this, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
 		KaduIcon("external_modules/mediaplayer-media-skip-forward"), tr("Next Track"), false
 	);
-	volUpAction = new ActionDescription(
+	volUpAction = new ActionDescription(m_actions,
 		this, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
 		KaduIcon("audio-volume-high"), tr("Volume Up"), false
@@ -193,7 +193,7 @@ void MediaPlayer::init()
 	// The last ActionDescription will send actionLoaded() signal.
 	m_actions->unblockSignals();
 
-	volDownAction = new ActionDescription(
+	volDownAction = new ActionDescription(m_actions,
 		this, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
 		KaduIcon("audio-volume-low"), tr("Volume Down"), false

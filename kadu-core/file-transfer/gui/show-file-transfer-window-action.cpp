@@ -22,16 +22,16 @@
 #include "core/core.h"
 #include "file-transfer/file-transfer-manager.h"
 
-ShowFileTransferWindowAction::ShowFileTransferWindowAction(QObject *parent) :
+ShowFileTransferWindowAction::ShowFileTransferWindowAction(Actions *actions, QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+		ActionDescription(actions, parent)
 {
 	setIcon(KaduIcon("document-send"));
 	setName("sendFileWindowAction");
 	setText(tr("View File Transfers"));
 	setType(ActionDescription::TypeMainMenu);
 
-	registerAction();
+	registerAction(actions);
 }
 
 ShowFileTransferWindowAction::~ShowFileTransferWindowAction()

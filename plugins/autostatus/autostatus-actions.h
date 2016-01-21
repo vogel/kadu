@@ -26,6 +26,7 @@
 class AutostatusService;
 
 class ActionDescription;
+class Actions;
 class MenuInventory;
 
 class QAction;
@@ -42,12 +43,14 @@ public:
 	void unregisterActions();
 
 private:
+	QPointer<Actions> m_actions;
 	QPointer<AutostatusService> m_autostatusService;
 	QPointer<MenuInventory> m_menuInventory;
 
 	ActionDescription *AutostatusActionDescription;
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_INIT void init();

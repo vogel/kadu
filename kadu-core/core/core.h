@@ -44,7 +44,6 @@
 template<class T>
 class DefaultProvider;
 
-class Actions;
 class Application;
 class BuddyChatManager;
 class BuddyManager;
@@ -160,7 +159,6 @@ public:
 	BuddyChatManager * buddyChatManager() const;
 	BuddyPreferredManager * buddyPreferredManager() const;
 	ChatTypeManager * chatTypeManager() const;
-	Actions * actions() const;
 	Roster * roster() const;
 	SystemInfo * systemInfo() const;
 	Myself * myself() const;

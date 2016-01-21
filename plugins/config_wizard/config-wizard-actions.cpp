@@ -26,6 +26,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -38,14 +39,16 @@
 ConfigWizardActions::ConfigWizardActions(QObject *parent) :
 		QObject{parent}
 {
-	m_showConfigWizardActionDescription = new ActionDescription(this, ActionDescription::TypeMainMenu,
-			"showConfigWizard", this, SLOT(showConfigWizardSlot()), KaduIcon(),
-			tr("Start Configuration Wizard"));
 }
 
 ConfigWizardActions::~ConfigWizardActions()
 {
 	delete m_wizard.data();
+}
+
+void ConfigWizardActions::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void ConfigWizardActions::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -56,6 +59,13 @@ void ConfigWizardActions::setInjectedFactory(InjectedFactory *injectedFactory)
 void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
+}
+
+void ConfigWizardActions::init()
+{
+	m_showConfigWizardActionDescription = new ActionDescription(m_actions, this, ActionDescription::TypeMainMenu,
+			"showConfigWizard", this, SLOT(showConfigWizardSlot()), KaduIcon(),
+			tr("Start Configuration Wizard"));
 }
 
 void ConfigWizardActions::registerActions()

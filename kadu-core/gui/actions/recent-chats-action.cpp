@@ -30,8 +30,8 @@
 
 #include <QtWidgets/QMenu>
 
-RecentChatsAction::RecentChatsAction(QObject *parent) :
-		ActionDescription(parent)
+RecentChatsAction::RecentChatsAction(Actions *actions, QObject *parent) :
+		ActionDescription(actions, parent)
 {
 	setType(ActionDescription::TypeMainMenu);
 	setName("openRecentChatsAction");

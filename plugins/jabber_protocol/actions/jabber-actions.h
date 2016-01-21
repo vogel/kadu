@@ -21,13 +21,18 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QAction;
 class QMenu;
 
-class Action;
 class ActionDescription;
+class Actions;
+class Action;
 class Contact;
+class InjectedFactory;
+class Myself;
 class SubscriptionService;
 
 // TODO: this class can be moved to core and just check for SubscriptionService
@@ -44,6 +49,10 @@ public:
 	ActionDescription * askForSubscription() { return AskForSubscription; }
 
 private:
+	QPointer<Actions> m_actions;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<Myself> m_myself;
+
 	ActionDescription *ResendSubscription;
 	ActionDescription *RemoveSubscription;
 	ActionDescription *AskForSubscription;
@@ -52,6 +61,11 @@ private:
 	SubscriptionService * subscriptionServiceFromContact(const Contact &contact);
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_INIT void init();
+
 	void resendSubscriptionActionActivated(QAction *sender);
 	void removeSubscriptionActionActivated(QAction *sender);
 	void askForSubscriptionActionActivated(QAction *sender);

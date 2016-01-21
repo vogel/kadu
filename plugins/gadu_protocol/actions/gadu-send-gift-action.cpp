@@ -30,15 +30,15 @@
 #include "protocols/services/file-transfer-service.h"
 #include "url-handlers/url-handler-manager.h"
 
-GaduSendGiftAction::GaduSendGiftAction(QObject *parent) :
+GaduSendGiftAction::GaduSendGiftAction(Actions *actions, QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+		ActionDescription(actions, parent)
 {
 	setName("gaduSendGiftAction");
 	setText(tr("Send Gift..."));
 	setType(ActionDescription::TypeUser);
 
-	registerAction();
+	registerAction(actions);
 }
 
 GaduSendGiftAction::~GaduSendGiftAction()

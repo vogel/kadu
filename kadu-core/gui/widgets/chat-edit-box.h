@@ -37,7 +37,6 @@ class ChatConfigurationHolder;
 class ChatWidgetActions;
 class ChatWidget;
 class CustomInput;
-class InjectedFactory;
 class StatusConfigurationHolder;
 class StatusContainerManager;
 
@@ -47,7 +46,6 @@ class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
-	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
 	QPointer<StatusContainerManager> m_statusContainerManager;
 
@@ -62,7 +60,6 @@ class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 private slots:
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_INIT void init();

@@ -28,6 +28,7 @@
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
 #include "core/injected-factory.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "misc/paths-provider.h"
@@ -50,6 +51,11 @@ Infos::~Infos()
 void Infos::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
+}
+
+void Infos::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void Infos::setContactManager(ContactManager *contactManager)
@@ -123,7 +129,7 @@ void Infos::init()
 	}
 
 	// Main menu entry
-	lastSeenActionDescription = new ActionDescription(
+	lastSeenActionDescription = new ActionDescription(m_actions,
 		this, ActionDescription::TypeMainMenu, "lastSeenAction",
 		this, SLOT(onShowInfos()),
 		KaduIcon(), qApp->translate("Infos", "&Show infos about buddies")

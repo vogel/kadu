@@ -21,17 +21,27 @@
 
 #include "actions/gadu-send-gift-action.h"
 
+#include "gui/actions/actions.h"
 #include "misc/memory.h"
 
 GaduProtocolMenuManager::GaduProtocolMenuManager(QObject *parent) :
 		QObject{parent}
 {
-	m_sendGiftAction = make_unique<GaduSendGiftAction>();
-	m_actions << m_sendGiftAction.get();
 }
 
 GaduProtocolMenuManager::~GaduProtocolMenuManager()
 {
+}
+
+void GaduProtocolMenuManager::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
+void GaduProtocolMenuManager::init()
+{
+	m_sendGiftAction = make_unique<GaduSendGiftAction>(m_actions);
+	m_actionDescriptions << m_sendGiftAction.get();
 }
 
 const QString GaduProtocolMenuManager::protocolName() const
@@ -41,7 +51,7 @@ const QString GaduProtocolMenuManager::protocolName() const
 
 const QList<ActionDescription *> & GaduProtocolMenuManager::protocolActions() const
 {
-	return m_actions;
+	return m_actionDescriptions;
 }
 
 #include "moc_gadu-protocol-menu-manager.cpp"

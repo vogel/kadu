@@ -25,6 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Actions;
 class NotificationManager;
 class ScreenshotAction;
 class ScreenShotConfiguration;
@@ -38,12 +39,14 @@ public:
 	virtual ~ScreenshotActions();
 
 private:
+	QPointer<Actions> m_actions;
 	QPointer<NotificationManager> m_notificationManager;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 	
 	owned_qptr<ScreenshotAction> m_screenShotActionDescription;
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
 	INJEQT_INIT void init();

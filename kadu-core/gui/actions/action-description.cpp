@@ -30,18 +30,20 @@
 
 #include "action-description.h"
 
-ActionDescription::ActionDescription(QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
+ActionDescription::ActionDescription(Actions *actions, QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
 		const KaduIcon &icon, const QString &text, bool checkable, ActionBoolCallback enableCallback) :
-		QObject(parent), Type(type), Name(name), Object(object), Slot(slot), Icon(icon), Text(text),
+		QObject(parent), m_actions{actions},
+		Type(type), Name(name), Object(object), Slot(slot), Icon(icon), Text(text),
 		Checkable(checkable), EnableCallback(enableCallback), ShortcutContext(Qt::WidgetShortcut)
 {
 	Deleting = false;
 
-	registerAction();
+	registerAction(actions);
 }
 
-ActionDescription::ActionDescription(QObject *parent) :
-		QObject(parent), Type(TypeAll), Object(0), Slot(0),
+ActionDescription::ActionDescription(Actions *actions, QObject *parent) :
+		QObject(parent), m_actions{actions},
+		Type(TypeAll), Object(0), Slot(0),
 		Checkable(false), EnableCallback(0), ShortcutContext(Qt::WidgetShortcut)
 {
 	Deleting = false;
@@ -54,17 +56,22 @@ ActionDescription::~ActionDescription()
 	qDeleteAll(MappedActions);
 	MappedActions.clear();
 
-	unregisterAction();
+	unregisterAction(m_actions);
 }
 
-void ActionDescription::registerAction()
+void ActionDescription::setActions(Actions *actions)
 {
-	Core::instance()->actions()->insert(this);
+	m_actions = actions;
 }
 
-void ActionDescription::unregisterAction()
+void ActionDescription::registerAction(Actions *actions)
 {
-	Core::instance()->actions()->remove(this);
+	actions->insert(this);
+}
+
+void ActionDescription::unregisterAction(Actions *actions)
+{
+	actions->remove(this);
 }
 
 void ActionDescription::actionAboutToBeDestroyed(Action *action)

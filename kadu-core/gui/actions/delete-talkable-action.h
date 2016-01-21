@@ -36,7 +36,7 @@ class DeleteTalkableAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit DeleteTalkableAction(QObject *parent);
+	explicit DeleteTalkableAction(Actions *actions, QObject *parent);
 	virtual ~DeleteTalkableAction();
 
 	void trigger(ActionContext *context);

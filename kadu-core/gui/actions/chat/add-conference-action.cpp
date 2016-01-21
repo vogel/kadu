@@ -22,13 +22,14 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "core/injected-factory.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/windows/add-conference-window.h"
 
 #include "add-conference-action.h"
 
-AddConferenceAction::AddConferenceAction(QObject *parent) :
-		ActionDescription(parent)
+AddConferenceAction::AddConferenceAction(Actions *actions, QObject *parent) :
+		ActionDescription(actions, parent)
 {
 }
 
@@ -39,6 +40,11 @@ AddConferenceAction::~AddConferenceAction()
 void AddConferenceAction::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
+}
+
+void AddConferenceAction::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void AddConferenceAction::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -52,7 +58,7 @@ void AddConferenceAction::init()
 	setName("addConferenceAction");
 	setText(tr("Add Conference..."));
 
-	registerAction();
+	registerAction(m_actions);
 
 	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
 	        this, SLOT(updateAddChatMenuItem()));

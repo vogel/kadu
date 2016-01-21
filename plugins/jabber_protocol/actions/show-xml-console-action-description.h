@@ -26,6 +26,7 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class Actions;
 class MenuInventory;
 
 class ShowXmlConsoleActionDescription : public ActionDescription
@@ -37,14 +38,16 @@ protected:
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
-	explicit ShowXmlConsoleActionDescription(QObject *parent);
+	explicit ShowXmlConsoleActionDescription(Actions *actions, QObject *parent);
 	virtual ~ShowXmlConsoleActionDescription();
 
 private:
+	QPointer<Actions> m_actions;
 	QPointer<AccountManager> m_accountManager;
 	QPointer<MenuInventory> m_menuInventory;
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_INIT void init();

@@ -50,35 +50,35 @@ void SearchWindowActions::init()
 {
 	m_actions->blockSignals();
 
-	FirstSearch = new ActionDescription(this,
+	FirstSearch = new ActionDescription(m_actions, this,
 		ActionDescription::TypeSearch, "firstSearchAction",
 		this, SLOT(firstSearchActionActivated(QAction*)),
 		KaduIcon("edit-find"), tr("&Search")
 	);
 	connect(FirstSearch, SIGNAL(actionCreated(Action*)), this, SLOT(firstSearchActionCreated(Action*)));
 
-	NextResults = new ActionDescription(this,
+	NextResults = new ActionDescription(m_actions, this,
 		ActionDescription::TypeSearch, "nextResultsAction",
 		this, SLOT(nextResultsActionActivated(QAction*)),
 		KaduIcon("go-next"), tr("&Next results")
 	);
 	connect(NextResults, SIGNAL(actionCreated(Action*)), this, SLOT(nextResultsActionCreated(Action*)));
 
-	StopSearch = new ActionDescription(this,
+	StopSearch = new ActionDescription(m_actions, this,
 		ActionDescription::TypeSearch, "stopSearchAction",
 		this, SLOT(stopSearchActionActivated(QAction*)),
 		KaduIcon("dialog-cancel"), tr("Stop")
 	);
 	connect(StopSearch, SIGNAL(actionCreated(Action*)), this, SLOT(stopSearchActionCreated(Action*)));
 
-	ClearResults = new ActionDescription(this,
+	ClearResults = new ActionDescription(m_actions, this,
 		ActionDescription::TypeSearch, "clearSearchAction",
 		this, SLOT(clearResultsActionActivated(QAction*)),
 		KaduIcon("edit-clear"), tr("Clear results")
 	);
 	connect(ClearResults, SIGNAL(actionCreated(Action*)), this, SLOT(clearResultsActionCreated(Action*)));
 
-	AddFound = new ActionDescription(this,
+	AddFound = new ActionDescription(m_actions, this,
 		ActionDescription::TypeSearch, "addSearchedAction",
 		this, SLOT(addFoundActionActivated(QAction*)),
 		KaduIcon("contact-new"), tr("Add selected user")
@@ -88,7 +88,7 @@ void SearchWindowActions::init()
 	// The last ActionDescription will send actionLoaded() signal.
 	m_actions->unblockSignals();
 
-	ChatFound = new ActionDescription(this,
+	ChatFound = new ActionDescription(m_actions, this,
 		ActionDescription::TypeSearch, "chatSearchedAction",
 		this, SLOT(chatFoundActionActivated(QAction*)),
 		KaduIcon("internet-group-chat"), tr("&Chat")

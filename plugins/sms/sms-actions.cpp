@@ -25,6 +25,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
@@ -51,6 +52,11 @@ SmsActions::SmsActions(QObject *parent) :
 
 SmsActions::~SmsActions()
 {
+}
+
+void SmsActions::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void SmsActions::setHistory(History *history)
@@ -93,7 +99,7 @@ void SmsActions::init()
 	connect(Core::instance()->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
 			this, SLOT(talkableActivated(Talkable)));
 
-	sendSmsActionDescription = new ActionDescription(this,
+	sendSmsActionDescription = new ActionDescription(m_actions, this,
 		ActionDescription::TypeGlobal, "sendSmsAction",
 		this, SLOT(sendSmsActionActivated(QAction *)),
 		KaduIcon("phone"), tr("Send SMS...")

@@ -38,6 +38,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/configuration/chat-configuration-holder.h"
@@ -88,6 +89,11 @@ TabsManager::TabsManager(QObject *parent) :
 
 TabsManager::~TabsManager()
 {
+}
+
+void TabsManager::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void TabsManager::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
@@ -151,7 +157,7 @@ void TabsManager::init()
 	// pozycja tabów
 	configurationUpdated();
 
-	OpenInNewTabActionDescription = new ActionDescription(this,
+	OpenInNewTabActionDescription = new ActionDescription(m_actions, this,
 		ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
 		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false,
@@ -163,7 +169,7 @@ void TabsManager::init()
 		->addAction(OpenInNewTabActionDescription, KaduMenu::SectionChat, 20)
 		->update();
 
-	AttachToTabsActionDescription = new ActionDescription(this,
+	AttachToTabsActionDescription = new ActionDescription(m_actions, this,
 		ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
 		KaduIcon("kadu_icons/tab-detach"), tr("Attach Chat to Tabs"), true

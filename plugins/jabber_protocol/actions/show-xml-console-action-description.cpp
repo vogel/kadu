@@ -24,6 +24,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/windows/xml-console.h"
@@ -31,8 +32,8 @@
 
 #include "show-xml-console-action-description.h"
 
-ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent) :
-		ActionDescription(parent)
+ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(Actions *actions, QObject *parent) :
+		ActionDescription(actions, parent)
 {
 	setType(ActionDescription::TypeMainMenu);
 	setName("showXmlConsole");
@@ -48,6 +49,11 @@ ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
 		->update();
 }
 
+void ShowXmlConsoleActionDescription::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
 void ShowXmlConsoleActionDescription::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
@@ -60,7 +66,7 @@ void ShowXmlConsoleActionDescription::setMenuInventory(MenuInventory *menuInvent
 
 void ShowXmlConsoleActionDescription::init()
 {
-	registerAction();
+	registerAction(m_actions);
 
 	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
 			this, SLOT(updateShowXmlConsoleMenu()));

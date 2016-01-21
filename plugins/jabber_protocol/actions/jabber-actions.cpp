@@ -21,7 +21,6 @@
 #include "accounts/account.h"
 #include "buddies/buddy-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/actions/action-context.h"
@@ -35,7 +34,7 @@
 
 #include "jabber-actions.h"
 
-static void disableNoRosterContact(Action *action)
+static void disableNoRosterContact(Myself *myself, Action *action)
 {
 	action->setEnabled(false);
 
@@ -46,7 +45,7 @@ static void disableNoRosterContact(Action *action)
 	if (!contact)
 		return;
 
-	if (action->context()->buddies().contains(Core::instance()->myself()->buddy()))
+	if (action->context()->buddies().contains(myself->buddy()))
 		return;
 
 	Account account = contact.contactAccount();
@@ -62,27 +61,49 @@ static void disableNoRosterContact(Action *action)
 JabberActions::JabberActions(QObject *parent) :
 		QObject{parent}
 {
-	Core::instance()->injectedFactory()->makeInjected<ShowXmlConsoleActionDescription>(this);
-
-	Core::instance()->actions()->blockSignals();
-
-	ResendSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterResendSubscription",
-			this, SLOT(resendSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Resend Subscription"),
-			false, disableNoRosterContact);
-	RemoveSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterRemoveSubscription",
-			this, SLOT(removeSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Remove Subscription"),
-			false, disableNoRosterContact);
-
-	// The last ActionDescription will send actionLoaded() signal.
-	Core::instance()->actions()->unblockSignals();
-
-	AskForSubscription = new ActionDescription(this, ActionDescription::TypeUser, "rosterAskForSubscription",
-			this, SLOT(askForSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Ask for Subscription"),
-			false, disableNoRosterContact);
 }
 
 JabberActions::~JabberActions()
 {
+}
+
+void JabberActions::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
+void JabberActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void JabberActions::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void JabberActions::init()
+{
+	m_injectedFactory->makeInjected<ShowXmlConsoleActionDescription>(m_actions, this);
+
+	m_actions->blockSignals();
+
+	ResendSubscription = new ActionDescription(m_actions, this, ActionDescription::TypeUser, "rosterResendSubscription",
+			this, SLOT(resendSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Resend Subscription"),
+			false,
+			[this](Action *action){ return disableNoRosterContact(m_myself, action); });
+	RemoveSubscription = new ActionDescription(m_actions, this, ActionDescription::TypeUser, "rosterRemoveSubscription",
+			this, SLOT(removeSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Remove Subscription"),
+			false,
+			[this](Action *action){ return disableNoRosterContact(m_myself, action); });
+
+	// The last ActionDescription will send actionLoaded() signal.
+	m_actions->unblockSignals();
+
+	AskForSubscription = new ActionDescription(m_actions, this, ActionDescription::TypeUser, "rosterAskForSubscription",
+			this, SLOT(askForSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Ask for Subscription"),
+			false,
+			[this](Action *action){ return disableNoRosterContact(m_myself, action); });
 }
 
 Contact JabberActions::contactFromAction(QAction *action)

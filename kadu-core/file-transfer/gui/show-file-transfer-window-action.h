@@ -28,7 +28,7 @@ class ShowFileTransferWindowAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit ShowFileTransferWindowAction(QObject *parent = nullptr);
+	explicit ShowFileTransferWindowAction(Actions *actions, QObject *parent = nullptr);
 	virtual ~ShowFileTransferWindowAction();
 
 protected:

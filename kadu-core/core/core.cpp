@@ -62,7 +62,6 @@
 #include "dom/dom-processor-service.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
-#include "gui/actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -723,11 +722,6 @@ BuddyPreferredManager * Core::buddyPreferredManager() const
 ChatTypeManager * Core::chatTypeManager() const
 {
 	return m_injector.get<ChatTypeManager>();
-}
-
-Actions * Core::actions() const
-{
-	return m_injector.get<Actions>();
 }
 
 Roster * Core::roster() const

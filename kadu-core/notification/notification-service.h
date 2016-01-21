@@ -30,8 +30,9 @@
 
 class QAction;
 
-class Action;
+class Actions;
 class ActionDescription;
+class Action;
 class ChatWidgetManager;
 class ConfigurationUiHandlerRepository;
 class Configuration;
@@ -51,6 +52,7 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<Actions> m_actions;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<Configuration> m_configuration;
@@ -110,6 +112,7 @@ signals:
 	void silentModeToggled(bool);
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);

@@ -21,6 +21,7 @@
 #include "screenshot-actions.h"
 
 #include "configuration/screen-shot-configuration.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/screenshot-action.h"
 
 #include "notification/notification-manager.h"
@@ -32,6 +33,11 @@ ScreenshotActions::ScreenshotActions(QObject *parent) :
 
 ScreenshotActions::~ScreenshotActions()
 {
+}
+
+void ScreenshotActions::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void ScreenshotActions::setNotificationManager(NotificationManager *notificationManager)
@@ -46,7 +52,7 @@ void ScreenshotActions::setScreenShotConfiguration(ScreenShotConfiguration *scre
 
 void ScreenshotActions::init()
 {
-	m_screenShotActionDescription = make_owned<ScreenshotAction>(m_notificationManager, m_screenShotConfiguration, this);
+	m_screenShotActionDescription = make_owned<ScreenshotAction>(m_actions, m_notificationManager, m_screenShotConfiguration, this);
 }
 
 #include "moc_screenshot-actions.cpp"

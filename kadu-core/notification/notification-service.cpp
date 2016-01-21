@@ -22,6 +22,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -61,6 +62,11 @@ NotificationService::NotificationService(QObject *parent) :
 
 NotificationService::~NotificationService()
 {
+}
+
+void NotificationService::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void NotificationService::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
@@ -186,7 +192,7 @@ void NotificationService::done()
 
 void NotificationService::createActionDescriptions()
 {
-	notifyAboutUserActionDescription = new ActionDescription(this,
+	notifyAboutUserActionDescription = new ActionDescription(m_actions, this,
 		ActionDescription::TypeUser, "notifyAboutUserAction",
 		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/notify-about-buddy"), tr("Notify About Buddy"), true,
@@ -197,7 +203,7 @@ void NotificationService::createActionDescriptions()
 		->menu("buddy-list")
 		->addAction(notifyAboutUserActionDescription, KaduMenu::SectionActions);
 
-	SilentModeActionDescription = new ActionDescription(this,
+	SilentModeActionDescription = new ActionDescription(m_actions, this,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/enable-notifications"), tr("Silent Mode"), true

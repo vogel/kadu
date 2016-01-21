@@ -27,6 +27,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -42,12 +43,18 @@
 #include "show-history-action-description.h"
 
 ShowHistoryActionDescription::ShowHistoryActionDescription(QObject *parent) :
-		ActionDescription(parent)
+		ActionDescription(nullptr, parent)
 {
 }
 
 ShowHistoryActionDescription::~ShowHistoryActionDescription()
 {
+}
+
+void ShowHistoryActionDescription::setActions(Actions *actions)
+{
+	ActionDescription::setActions(actions);
+	m_actions = actions;
 }
 
 void ShowHistoryActionDescription::setBuddyChatManager(BuddyChatManager *buddyChatManager)
@@ -78,7 +85,7 @@ void ShowHistoryActionDescription::init()
 	setText(tr("View Chat History"));
 	setShortcut("kadu_viewhistory");
 
-	registerAction();
+	registerAction(m_actions);
 
 	configurationUpdated();
 }

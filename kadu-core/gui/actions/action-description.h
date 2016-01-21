@@ -25,6 +25,7 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtWidgets/QToolButton>
 #include <functional>
 
@@ -34,8 +35,9 @@
 class QAction;
 class QMenu;
 
-class Action;
 class ActionContext;
+class Actions;
+class Action;
 
 using ActionBoolCallback = std::function<void(Action *)>;
 
@@ -96,6 +98,8 @@ public:
 private:
 	friend class Action;
 
+	QPointer<Actions> m_actions;
+
 	QMap<ActionContext *, Action *> MappedActions;
 	bool Deleting;
 
@@ -123,7 +127,9 @@ protected:
 	 * Created new empty instance of ActionDescription. Call setters and registerActions to
 	 * make this action description useable.
 	 */
-	ActionDescription(QObject *parent);
+	ActionDescription(Actions *actions, QObject *parent);
+
+	void setActions(Actions *actions);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -133,7 +139,7 @@ protected:
 	 * constructor. In new implementation this should be called from subclasses after all apprioprate
 	 * setters were called.
 	 */
-	void registerAction();
+	void registerAction(Actions *actions);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -142,7 +148,7 @@ protected:
 	 * Registers this action from global action list. Called automatically by destructor. No need to call
 	 * this manually.
 	 */
-	void unregisterAction();
+	void unregisterAction(Actions *actions);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -236,7 +242,7 @@ public:
 	 *
 	 * Depreceated contructor.
 	 */
-	ActionDescription(QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
+	ActionDescription(Actions *actions, QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
 			const KaduIcon &icon, const QString &text, bool checkable = false, ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 

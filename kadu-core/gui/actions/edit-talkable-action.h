@@ -71,7 +71,7 @@ protected:
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
 public:
-	explicit EditTalkableAction(QObject *parent);
+	explicit EditTalkableAction(Actions *actions, QObject *parent);
 	virtual ~EditTalkableAction();
 
 	void trigger(ActionContext *context);

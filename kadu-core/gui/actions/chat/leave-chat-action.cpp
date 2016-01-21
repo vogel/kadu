@@ -31,15 +31,15 @@
 
 #include "leave-chat-action.h"
 
-LeaveChatAction::LeaveChatAction(QObject *parent) :
-		ActionDescription(parent)
+LeaveChatAction::LeaveChatAction(Actions *actions, QObject *parent) :
+		ActionDescription(actions, parent)
 {
 	setType(ActionDescription::TypeChat);
 	setName("leaveChatAction");
 	setIcon(KaduIcon("kadu_icons/block-buddy"));
 	setText(tr("Leave"));
 
-	registerAction();
+	registerAction(actions);
 }
 
 LeaveChatAction::~LeaveChatAction()

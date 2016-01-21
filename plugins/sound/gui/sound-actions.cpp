@@ -22,6 +22,7 @@
 #include "gui/sound-mute-action.h"
 #include "sound-manager.h"
 
+#include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 
 SoundActions::SoundActions(QObject *parent) :
@@ -31,6 +32,11 @@ SoundActions::SoundActions(QObject *parent) :
 
 SoundActions::~SoundActions()
 {
+}
+
+void SoundActions::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void SoundActions::setMenuInventory(MenuInventory *menuInventory)
@@ -45,7 +51,7 @@ void SoundActions::setSoundManager(SoundManager *soundManager)
 
 void SoundActions::init()
 {
-	m_soundMuteAction = new SoundMuteAction{this};
+	m_soundMuteAction = new SoundMuteAction{m_actions, this};
 
 	m_menuInventory
 		->menu("main")

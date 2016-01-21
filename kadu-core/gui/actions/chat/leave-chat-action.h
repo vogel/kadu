@@ -33,7 +33,7 @@ protected:
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
 public:
-	explicit LeaveChatAction(QObject *parent);
+	explicit LeaveChatAction(Actions *actions, QObject *parent);
 	virtual ~LeaveChatAction();
 
 };

@@ -86,11 +86,6 @@ void ChatEditBox::setChatWidgetActions(ChatWidgetActions *chatWidgetActions)
 	m_chatWidgetActions = chatWidgetActions;
 }
 
-void ChatEditBox::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void ChatEditBox::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
 {
 	m_statusConfigurationHolder = statusConfigurationHolder;
@@ -123,7 +118,7 @@ void ChatEditBox::init()
 
 	connect(m_statusConfigurationHolder, SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
-	InputBox = m_injectedFactory->makeInjected<CustomInput>(CurrentChat, this);
+	InputBox = injectedFactory()->makeInjected<CustomInput>(CurrentChat, this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
 
 	setCentralWidget(InputBox);

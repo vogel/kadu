@@ -179,7 +179,7 @@ void History::createActionDescriptions()
 	// The last ActionDescription will send actionLoaded() signal.
 	m_actions->unblockSignals();
 
-	ClearHistoryActionDescription = new ActionDescription(this,
+	ClearHistoryActionDescription = new ActionDescription(m_actions, this,
 		ActionDescription::TypeUser, "clearHistoryAction",
 		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/clear-history"), tr("Clear History"), false,

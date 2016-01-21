@@ -38,7 +38,7 @@ protected:
 	virtual void actionInstanceCreated(Action *action);
 
 public:
-	explicit RecentChatsAction(QObject *parent);
+	explicit RecentChatsAction(Actions *actions, QObject *parent);
 	virtual ~RecentChatsAction();
 
 private:

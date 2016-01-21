@@ -21,6 +21,7 @@
 
 #include <QtWidgets/QAction>
 
+#include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/windows/kadu-window.h"
 
@@ -36,6 +37,11 @@ AutostatusActions::AutostatusActions(QObject *parent) :
 
 AutostatusActions::~AutostatusActions()
 {
+}
+
+void AutostatusActions::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void AutostatusActions::setAutostatusService(AutostatusService *autostatusService)
@@ -60,7 +66,7 @@ void AutostatusActions::done()
 
 void AutostatusActions::registerActions()
 {
-	AutostatusActionDescription = new ActionDescription(this,
+	AutostatusActionDescription = new ActionDescription(m_actions, this,
 		ActionDescription::TypeMainMenu, "autostatusAction",
 		this, SLOT(autostatusActionActivated(QAction *, bool)),
 		KaduIcon(), tr("&Autostatus"), true

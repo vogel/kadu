@@ -23,7 +23,11 @@
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 #include <memory>
+
+class Actions;
 
 class GaduProtocolMenuManager : public QObject, public ProtocolMenuManager
 {
@@ -37,7 +41,13 @@ public:
 	virtual const QString protocolName() const override;
 
 private:
-	QList<ActionDescription *> m_actions;
+	QPointer<Actions> m_actions;
+
+	QList<ActionDescription *> m_actionDescriptions;
 	std::unique_ptr<ActionDescription> m_sendGiftAction;
+
+private slots:
+	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_INIT void init();
 
 };

@@ -31,18 +31,22 @@
 #include "insert-emoticon-action.h"
 
 InsertEmoticonAction::InsertEmoticonAction(QObject *parent) :
-		ActionDescription(parent)
+		ActionDescription(nullptr, parent)
 {
 	setType(ActionDescription::TypeChat);
 	setName("insertEmoticonAction");
 	setIcon(KaduIcon("face-smile"));
 	setText(tr("Insert Emoticon"));
-
-	registerAction();
 }
 
 InsertEmoticonAction::~InsertEmoticonAction()
 {
+}
+
+void InsertEmoticonAction::setActions(Actions *actions)
+{
+	registerAction(actions);
+	ActionDescription::setActions(actions);
 }
 
 void InsertEmoticonAction::actionInstanceCreated(Action *action)

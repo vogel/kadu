@@ -22,6 +22,7 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QTextEdit>
 
+#include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/custom-input-menu-manager.h"
@@ -41,6 +42,11 @@ Suggester::Suggester(QObject *parent) :
 Suggester::~Suggester()
 {
 	clearWordMenu();
+}
+
+void Suggester::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void Suggester::setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager)
@@ -69,7 +75,7 @@ void Suggester::addWordListToMenu(const QTextCursor &textCursor)
 
 	// Add new actions
 	foreach (const QString &listWord, SuggestionWordList)
-		SuggestActions.append(new ActionDescription(this, ActionDescription::TypeGlobal,
+		SuggestActions.append(new ActionDescription(m_actions, this, ActionDescription::TypeGlobal,
 					"spellcheckerSuggest#" + listWord, this, SLOT(replaceWithSuggest(QAction *)), KaduIcon(), listWord));
 
 	unsigned int actionPriority = 0;

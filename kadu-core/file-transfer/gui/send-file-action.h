@@ -28,7 +28,7 @@ class SendFileAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit SendFileAction(QObject *parent = nullptr);
+	explicit SendFileAction(Actions *actions, QObject *parent = nullptr);
 	virtual ~SendFileAction();
 
 protected:

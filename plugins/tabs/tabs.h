@@ -43,8 +43,9 @@
 class QAction;
 class QMenu;
 
-class Action;
+class Actions;
 class ActionDescription;
+class Action;
 class ChatConfigurationHolder;
 class ChatManager;
 class ChatWidget;
@@ -64,6 +65,7 @@ class TabsManager : public StorableObject, ConfigurationAwareObject
 	// that one more friend class wont do a difference
 	friend class TabWidget;
 
+	QPointer<Actions> m_actions;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
@@ -102,6 +104,7 @@ class TabsManager : public StorableObject, ConfigurationAwareObject
 	void setConfiguration(ChatWidget *chatWidget);
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);

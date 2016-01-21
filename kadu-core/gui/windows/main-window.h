@@ -44,6 +44,7 @@ class ConfigurationManager;
 class Configuration;
 class Contact;
 class ContactSet;
+class InjectedFactory;
 class StatusContainer;
 class TalkableProxyModel;
 class ToolBar;
@@ -80,6 +81,8 @@ public slots:
 	void addRightToolbar();
 
 protected:
+	InjectedFactory * injectedFactory() const;
+
 	void loadToolBarsFromConfig();
 	void loadToolBarsFromConfig(Qt::ToolBarArea area);
 
@@ -110,6 +113,7 @@ private:
 	QPointer<Actions> m_actions;
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QString WindowName;
 	bool TransparencyEnabled;
@@ -125,6 +129,7 @@ private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void actionLoadedOrUnloaded(ActionDescription *action);

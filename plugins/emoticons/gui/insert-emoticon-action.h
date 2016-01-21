@@ -21,10 +21,12 @@
 #define INSERT_EMOTICON_ACTION_H
 
 #include "gui/actions/action-description.h"
-
 #include "configuration/emoticon-configuration.h"
-
 #include "emoticon.h"
+
+#include <injeqt/injeqt.h>
+
+class Actions;
 
 /**
  * @addtogroup Emoticons
@@ -62,6 +64,9 @@ public:
 	 * This configuration is used to get list of emoticons to pass to EmoticonSelector widget.
 	 */
 	void setConfiguration(const EmoticonConfiguration &configuration);
+
+private slots:
+	INJEQT_SET void setActions(Actions *actions);
 
 };
 

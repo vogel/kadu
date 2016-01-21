@@ -21,23 +21,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOOLBAR_H
-#define TOOLBAR_H
-
-#include <QtGui/QDrag>
-#include <QtWidgets/QToolBar>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "misc/change-notifier.h"
-
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtGui/QDrag>
+#include <QtWidgets/QToolBar>
+#include <injeqt/injeqt.h>
+
+class Actions;
+class Configuration;
+class IconsManager;
+class ToolBarSeparator;
+class ToolBarSpacer;
 
 class QDomElement;
 class QMenu;
 class QToolButton;
-
-class ToolBarSeparator;
-class ToolBarSpacer;
 
 #define TOOLBAR_SEPARATOR_SIZE 12 /*px*/
 
@@ -72,6 +75,10 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 	Q_OBJECT
 
 	friend class DisabledActionsWatcher;
+
+	QPointer<Actions> m_actions;
+	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
 
 	ChangeNotifier MyChangeNotifier;
 
@@ -130,6 +137,11 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 	void paintDropMarker();
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
 	/**
 		\fn void addButtonClicked()
 		Slot dodający wybrany przycisk
@@ -202,7 +214,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static bool isBlockToolbars();
+	static bool isBlockToolbars(Configuration *configuration);
 
 	/**
 		Konstruktor paska narzędzi
@@ -302,5 +314,3 @@ signals:
 	void pressed();
 
 };
-
-#endif // TOOLBAR_H

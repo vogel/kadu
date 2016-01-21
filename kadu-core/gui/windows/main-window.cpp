@@ -33,7 +33,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/configuration/toolbar-configuration-manager.h"
@@ -100,6 +100,11 @@ Configuration * MainWindow::configuration() const
 	return m_configuration;
 }
 
+void MainWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void MainWindow::init()
 {
 	connect(m_configurationManager->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
@@ -108,6 +113,11 @@ void MainWindow::init()
 			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
 	connect(m_actions, SIGNAL(actionUnloaded(ActionDescription*)),
 			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
+}
+
+InjectedFactory * MainWindow::injectedFactory() const
+{
+	return m_injectedFactory;
 }
 
 void MainWindow::loadToolBarsFromConfig()
@@ -366,7 +376,7 @@ void MainWindow::refreshToolBars()
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 {
-	if (!ToolBar::isBlockToolbars())
+	if (!ToolBar::isBlockToolbars(m_configuration))
 	{
 		QMenu menu;
 		menu.addAction(tr("Create new toolbar"), this, SLOT(addTopToolbar()));
@@ -376,7 +386,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 
 ToolBar *MainWindow::newToolbar(QWidget *parent)
 {
-	ToolBar *toolBar = new ToolBar(parent);
+	auto toolBar = m_injectedFactory->makeInjected<ToolBar>(parent);
 	toolBar->setAttribute(Qt::WA_NoSystemBackground, !TransparencyEnabled);
 	toolBar->setAutoFillBackground(TransparencyEnabled);
 

@@ -30,7 +30,7 @@ protected:
     virtual void updateActionState(Action *action);
 
 public:
-	explicit ExpandAction(QObject *parent);
+	explicit ExpandAction(Actions *actions, QObject *parent);
 	virtual ~ExpandAction();
 
 };

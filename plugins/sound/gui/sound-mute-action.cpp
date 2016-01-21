@@ -26,9 +26,9 @@
 #include "core/core.h"
 #include "gui/actions/action.h"
 
-SoundMuteAction::SoundMuteAction(QObject *parent) :
+SoundMuteAction::SoundMuteAction(Actions *actions, QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+		ActionDescription(actions, parent)
 {
 	setCheckable(true);
 	setIcon(KaduIcon("audio-volume-high"));
@@ -36,7 +36,7 @@ SoundMuteAction::SoundMuteAction(QObject *parent) :
 	setText(tr("Play Sounds"));
 	setType(ActionDescription::TypeGlobal);
 
-	registerAction();
+	registerAction(actions);
 }
 
 SoundMuteAction::~SoundMuteAction()

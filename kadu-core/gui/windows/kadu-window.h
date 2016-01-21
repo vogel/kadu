@@ -79,7 +79,6 @@ private:
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<FileTransferManager> m_fileTransferManager;
-	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<Myself> m_myself;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
@@ -133,7 +132,6 @@ private slots:
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);

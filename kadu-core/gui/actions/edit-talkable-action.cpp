@@ -37,8 +37,8 @@
 
 #include "edit-talkable-action.h"
 
-EditTalkableAction::EditTalkableAction(QObject *parent) :
-		ActionDescription(parent)
+EditTalkableAction::EditTalkableAction(Actions *actions, QObject *parent) :
+		ActionDescription(actions, parent)
 {
 	// TODO: TypeChat | TypeUser or TypeTalkables
 	setType(TypeGlobal);
@@ -46,7 +46,7 @@ EditTalkableAction::EditTalkableAction(QObject *parent) :
 	setIcon(KaduIcon("x-office-address-book"));
 	setText(tr("View Buddy Properties"));
 
-	registerAction();
+	registerAction(actions);
 }
 
 EditTalkableAction::~EditTalkableAction()
