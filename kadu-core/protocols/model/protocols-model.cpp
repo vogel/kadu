@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "protocols-model.h"
+
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "core/core.h"
@@ -29,18 +31,17 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
 
-#include "protocols-model.h"
-
-ProtocolsModel::ProtocolsModel(QObject *parent) :
-		QAbstractListModel(parent)
+ProtocolsModel::ProtocolsModel(ProtocolsManager *protocolsManager, QObject *parent) :
+		QAbstractListModel{parent},
+		m_protocolsManager{protocolsManager}
 {
-	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryAboutToBeRegistered(ProtocolFactory *)),
+	connect(m_protocolsManager, SIGNAL(protocolFactoryAboutToBeRegistered(ProtocolFactory *)),
 		this, SLOT(protocolFactoryAboutToBeRegistered(ProtocolFactory *)));
-	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
+	connect(m_protocolsManager, SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
 		this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
-	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryAboutToBeUnregistered(ProtocolFactory *)),
+	connect(m_protocolsManager, SIGNAL(protocolFactoryAboutToBeUnregistered(ProtocolFactory *)),
 		this, SLOT(protocolFactoryAboutToBeUnregistered(ProtocolFactory *)));
-	connect(Core::instance()->protocolsManager(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
+	connect(m_protocolsManager, SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
 		this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
 }
 
@@ -50,14 +51,14 @@ ProtocolsModel::~ProtocolsModel()
 
 int ProtocolsModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : Core::instance()->protocolsManager()->protocolFactories().count();
+	return parent.isValid() ? 0 : m_protocolsManager->protocolFactories().count();
 }
 
 QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 {
-	ProtocolFactory *pf = protocolFactory(index);
+	auto pf = protocolFactory(index);
 	if (0 == pf)
-		return QVariant();
+		return QVariant{};
 
 	switch (role)
 	{
@@ -68,24 +69,24 @@ QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 		case ProtocolRole:
 			return QVariant::fromValue<ProtocolFactory *>(pf);
 		default:
-			return QVariant();
+			return QVariant{};
 	}
 }
 
 ProtocolFactory * ProtocolsModel::protocolFactory(const QModelIndex &index) const
 {
 	if (!index.isValid())
-		return 0;
+		return nullptr;
 
 	if (index.row() >= rowCount())
-		return 0;
+		return nullptr;
 
-	return Core::instance()->protocolsManager()->byIndex(index.row());
+	return m_protocolsManager->byIndex(index.row());
 }
 
 int ProtocolsModel::protocolFactoryIndex(ProtocolFactory *protocolFactory) const
 {
-	return Core::instance()->protocolsManager()->indexOf(protocolFactory);
+	return m_protocolsManager->indexOf(protocolFactory);
 }
 
 QModelIndexList ProtocolsModel::indexListForValue(const QVariant &value) const
@@ -103,7 +104,7 @@ void ProtocolsModel::protocolFactoryAboutToBeRegistered(ProtocolFactory *protoco
 {
 	Q_UNUSED(protocolFactory)
 
-	int count = rowCount();
+	auto count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
 }
 
@@ -116,7 +117,7 @@ void ProtocolsModel::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 
 void ProtocolsModel::protocolFactoryAboutToBeUnregistered(ProtocolFactory *protocolFactory)
 {
-	int index = protocolFactoryIndex(protocolFactory);
+	auto index = protocolFactoryIndex(protocolFactory);
 	beginRemoveRows(QModelIndex(), index, index);
 }
 

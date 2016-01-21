@@ -23,6 +23,7 @@
 #include <QtWidgets/QRadioButton>
 
 #include "accounts/account-manager.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/protocols-combo-box.h"
 #include "gui/windows/your-accounts.h"
 
@@ -31,20 +32,28 @@
 ConfigWizardChooseNetworkPage::ConfigWizardChooseNetworkPage(QWidget *parent) :
 		ConfigWizardPage(parent), LastProtocol(0)
 {
-	setDescription(tr("<p>Please choose the network for the account that you would like to set up.</p><p>You can also create a new account in the wizard if you don't already have one</p>"));
-
-	createGui();
 }
 
 ConfigWizardChooseNetworkPage::~ConfigWizardChooseNetworkPage()
 {
 }
 
+void ConfigWizardChooseNetworkPage::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ConfigWizardChooseNetworkPage::init()
+{
+	setDescription(tr("<p>Please choose the network for the account that you would like to set up.</p><p>You can also create a new account in the wizard if you don't already have one</p>"));
+	createGui();
+}
+
 void ConfigWizardChooseNetworkPage::createGui()
 {
 	formLayout()->addRow(new QLabel(tr("<h3>Account Setup</h3>"), this));
 
-	SelectProtocol = new ProtocolsComboBox(this);
+	SelectProtocol = m_injectedFactory->makeInjected<ProtocolsComboBox>(this);
 	connect(SelectProtocol, SIGNAL(currentIndexChanged(int)),
 			this, SLOT(protocolChanged()));
 

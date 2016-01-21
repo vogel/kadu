@@ -20,29 +20,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QAction>
+#include "protocols-combo-box.h"
 
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "protocols/model/protocols-model-proxy.h"
 #include "protocols/model/protocols-model.h"
+#include "protocols/protocols-manager.h"
 
-#include "protocols-combo-box.h"
+#include <QtWidgets/QAction>
 
 ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
-	addBeforeAction(new QAction(tr(" - Select network - "), this), NotVisibleWithOneRowSourceModel);
-
-	ProxyModel = new ProtocolsModelProxy(this);
-	ModelChain *chain = new ModelChain(this);
-	chain->setBaseModel(new ProtocolsModel(chain));
-	chain->addProxyModel(ProxyModel);
-	setUpModel(ProtocolRole, chain);
 }
 
 ProtocolsComboBox::~ProtocolsComboBox()
 {
+}
+
+void ProtocolsComboBox::setProtocolsManager(ProtocolsManager *protocolsManager)
+{
+	m_protocolsManager = protocolsManager;
+}
+
+void ProtocolsComboBox::init()
+{
+	addBeforeAction(make_owned<QAction>(tr(" - Select network - "), this), NotVisibleWithOneRowSourceModel);
+
+	m_proxyModel = make_owned<ProtocolsModelProxy>(this);
+	auto chain = make_owned<ModelChain>(this);
+	chain->setBaseModel(make_owned<ProtocolsModel>(m_protocolsManager, chain));
+	chain->addProxyModel(m_proxyModel);
+	setUpModel(ProtocolRole, chain);
 }
 
 void ProtocolsComboBox::setCurrentProtocol(ProtocolFactory *protocol)
@@ -57,12 +67,12 @@ ProtocolFactory * ProtocolsComboBox::currentProtocol()
 
 void ProtocolsComboBox::addFilter(AbstractProtocolFilter *filter)
 {
-	ProxyModel->addFilter(filter);
+	m_proxyModel->addFilter(filter);
 }
 
 void ProtocolsComboBox::removeFilter(AbstractProtocolFilter *filter)
 {
-	ProxyModel->removeFilter(filter);
+	m_proxyModel->removeFilter(filter);
 }
 
 #include "moc_protocols-combo-box.cpp"

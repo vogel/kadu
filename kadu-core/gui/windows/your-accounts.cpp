@@ -85,6 +85,11 @@ void YourAccounts::setConfigurationManager(ConfigurationManager *configurationMa
 	m_configurationManager = configurationManager;
 }
 
+void YourAccounts::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void YourAccounts::setMyself(Myself *myself)
 {
 	m_myself = myself;
@@ -208,7 +213,7 @@ void YourAccounts::createAccountWidget()
 	QFormLayout *selectNetworkLayout = new QFormLayout(selectNetworkGroupbox);
 
 	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ':', CreateAddAccountContainer);
-	Protocols = new ProtocolsComboBox(CreateAddAccountContainer);
+	Protocols = m_injectedFactory->makeInjected<ProtocolsComboBox>(CreateAddAccountContainer);
 	Protocols->addFilter(CanRegisterFilter);
 	selectNetworkLayout->addRow(imNetworkLabel, Protocols);
 

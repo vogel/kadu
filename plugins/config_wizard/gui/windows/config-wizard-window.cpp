@@ -83,7 +83,7 @@ void ConfigWizardWindow::init()
 #endif
 
 	setPage(ProfilePage, m_injectedFactory->makeInjected<ConfigWizardProfilePage>(this));
-	setPage(ChooseNetworkPage, new ConfigWizardChooseNetworkPage(this));
+	setPage(ChooseNetworkPage, m_injectedFactory->makeInjected<ConfigWizardChooseNetworkPage>(this));
 	setPage(SetUpAccountPage, m_injectedFactory->makeInjected<ConfigWizardSetUpAccountPage>(this));
 	setPage(CompletedPage, m_injectedFactory->makeInjected<ConfigWizardCompletedPage>(this));
 

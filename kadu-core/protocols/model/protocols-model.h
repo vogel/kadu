@@ -19,28 +19,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROTOCOLS_MODEL
-#define PROTOCOLS_MODEL
-
-#include <QtCore/QAbstractListModel>
-#include <QtCore/QModelIndex>
+#pragma once
 
 #include "model/kadu-abstract-model.h"
 
+#include <QtCore/QAbstractListModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QPointer>
+
 class ProtocolFactory;
+class ProtocolsManager;
 
 class ProtocolsModel : public QAbstractListModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
-private slots:
-	void protocolFactoryAboutToBeRegistered(ProtocolFactory *protocolFactory);
-	void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
-	void protocolFactoryAboutToBeUnregistered(ProtocolFactory *protocolFactory);
-	void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
-
 public:
-	explicit ProtocolsModel(QObject *parent = nullptr);
+	explicit ProtocolsModel(ProtocolsManager *protocolsManager, QObject *parent = nullptr);
 	virtual ~ProtocolsModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -51,6 +46,13 @@ public:
 	int protocolFactoryIndex(ProtocolFactory *protocolFactory) const;
 	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
-};
+private:
+	QPointer<ProtocolsManager> m_protocolsManager;
 
-#endif // PROTOCOLS_MODEL
+private slots:
+	void protocolFactoryAboutToBeRegistered(ProtocolFactory *protocolFactory);
+	void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
+	void protocolFactoryAboutToBeUnregistered(ProtocolFactory *protocolFactory);
+	void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
+
+};

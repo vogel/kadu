@@ -18,19 +18,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_WIZARD_CHOOSE_NETWORK_PAGE_H
-#define CONFIG_WIZARD_CHOOSE_NETWORK_PAGE_H
+#pragma once
 
 #include "gui/widgets/config-wizard-page.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class QRadioButton;
 
+class InjectedFactory;
 class ProtocolFactory;
 class ProtocolsComboBox;
 
 class ConfigWizardChooseNetworkPage : public ConfigWizardPage
 {
 	Q_OBJECT
+
+public:
+	explicit ConfigWizardChooseNetworkPage(QWidget *parent = nullptr);
+	virtual ~ConfigWizardChooseNetworkPage();
+
+public slots:
+	void protocolChanged();
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	ProtocolFactory *LastProtocol;
 	ProtocolsComboBox *SelectProtocol;
@@ -41,13 +54,8 @@ class ConfigWizardChooseNetworkPage : public ConfigWizardPage
 
 	void createGui();
 
-public slots:
-	void protocolChanged();
-
-public:
-	explicit ConfigWizardChooseNetworkPage(QWidget *parent = nullptr);
-	virtual ~ConfigWizardChooseNetworkPage();
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
 
 };
-
-#endif // CONFIG_WIZARD_CHOOSE_NETWORK_PAGE_H

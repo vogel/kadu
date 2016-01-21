@@ -49,6 +49,7 @@ class AccountManager;
 class AccountsModel;
 class CanRegisterProtocolFilter;
 class ConfigurationManager;
+class InjectedFactory;
 class ModalConfigurationWidget;
 class Myself;
 class ProtocolFactory;
@@ -60,6 +61,7 @@ class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareOb
 
 	QPointer<AccountManager> m_accountManager;
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<Myself> m_myself;
 
 	QListView *AccountsView;
@@ -114,6 +116,7 @@ class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareOb
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_INIT void init();
 

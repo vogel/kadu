@@ -21,23 +21,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROTOCOLS_COMBO_BOX_H
-#define PROTOCOLS_COMBO_BOX_H
+#pragma once
 
+#include "gui/widgets/actions-combo-box.h"
+#include "misc/memory.h"
 #include "protocols/protocol-factory.h"
 #include "exports.h"
 
-#include "gui/widgets/actions-combo-box.h"
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class AbstractProtocolFilter;
+class ProtocolsManager;
 class ProtocolsModelProxy;
 
 class KADUAPI ProtocolsComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 	Q_PROPERTY(ProtocolFactory* currentProtocol READ currentProtocol WRITE setCurrentProtocol)
-
-	ProtocolsModelProxy *ProxyModel;
 
 public:
 	explicit ProtocolsComboBox(QWidget *parent = nullptr);
@@ -49,6 +50,13 @@ public:
 	void addFilter(AbstractProtocolFilter *filter);
 	void removeFilter(AbstractProtocolFilter *filter);
 
-};
+private:
+	QPointer<ProtocolsManager> m_protocolsManager;
 
-#endif // PROTOCOLS_COMBO_BOX_H
+	owned_qptr<ProtocolsModelProxy> m_proxyModel;
+
+private slots:
+	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+	INJEQT_INIT void init();
+
+};
