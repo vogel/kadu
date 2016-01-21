@@ -672,11 +672,6 @@ ProtocolsManager * Core::protocolsManager() const
 	return m_injector.get<ProtocolsManager>();
 }
 
-UrlHandlerManager * Core::urlHandlerManager() const
-{
-	return m_injector.get<UrlHandlerManager>();
-}
-
 ChatManager * Core::chatManager() const
 {
 	return m_injector.get<ChatManager>();
@@ -801,7 +796,7 @@ void Core::executeRemoteCommand(const QString &remoteCommand)
 	if ("activate" == remoteCommand)
 		_activateWindow(MainWindowProvider->provide());
 	else
-		urlHandlerManager()->openUrl(remoteCommand.toUtf8(), true);
+		m_injector.get<UrlHandlerManager>()->openUrl(remoteCommand.toUtf8(), true);
 }
 
 void Core::quit()

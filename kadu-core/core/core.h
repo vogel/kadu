@@ -152,7 +152,6 @@ public:
 	FileTransferManager * fileTransferManager() const;
 
 	ProtocolsManager * protocolsManager() const;
-	UrlHandlerManager * urlHandlerManager() const;
 	ChatManager * chatManager() const;
 	StatusContainerManager * statusContainerManager() const;
 	StatusTypeManager * statusTypeManager() const;
