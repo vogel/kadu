@@ -26,6 +26,7 @@
 #include <QtWidgets/QActionGroup>
 #include <QtWidgets/QMenu>
 
+#include "core/injected-factory.h"
 #include "gui/window-manager.h"
 #include "gui/windows/status-window-service.h"
 #include "gui/windows/status-window.h"
@@ -39,22 +40,17 @@
 #include "status-menu.h"
 
 StatusMenu::StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMenu *menu) :
-		QObject(menu), Menu(menu), Container(statusContainer)
+		QObject(menu), Menu(menu), Container(statusContainer), m_includePrefix{includePrefix}
 {
-	Actions = new StatusActions(statusContainer, includePrefix, this);
-
-	connect(Actions, SIGNAL(statusActionsRecreated()), this, SLOT(addStatusActions()));
-	connect(Actions, SIGNAL(statusActionsRecreated()), this, SIGNAL(menuRecreated()));
-	connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
-	connect(Actions, SIGNAL(changeDescriptionActionTriggered(bool)), this, SLOT(changeDescription()));
-
-	connect(Menu, SIGNAL(aboutToHide()), this, SLOT(aboutToHide()));
-
-	addStatusActions();
 }
 
 StatusMenu::~StatusMenu()
 {
+}
+
+void StatusMenu::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void StatusMenu::setStatusSetter(StatusSetter *statusSetter)
@@ -70,6 +66,20 @@ void StatusMenu::setStatusWindowService(StatusWindowService *statusWindowService
 void StatusMenu::setWindowManager(WindowManager *windowManager)
 {
 	m_windowManager = windowManager;
+}
+
+void StatusMenu::init()
+{
+	Actions = m_injectedFactory->makeInjected<StatusActions>(Container, m_includePrefix, this);
+
+	connect(Actions, SIGNAL(statusActionsRecreated()), this, SLOT(addStatusActions()));
+	connect(Actions, SIGNAL(statusActionsRecreated()), this, SIGNAL(menuRecreated()));
+	connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
+	connect(Actions, SIGNAL(changeDescriptionActionTriggered(bool)), this, SLOT(changeDescription()));
+
+	connect(Menu, SIGNAL(aboutToHide()), this, SLOT(aboutToHide()));
+
+	addStatusActions();
 }
 
 void StatusMenu::addStatusActions()

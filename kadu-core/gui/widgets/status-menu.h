@@ -34,6 +34,7 @@ class QAction;
 class QActionGroup;
 class QMenu;
 
+class InjectedFactory;
 class StatusActions;
 class StatusContainer;
 class StatusSetter;
@@ -44,6 +45,7 @@ class KADUAPI StatusMenu : public QObject
 {
 	Q_OBJECT
 
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<StatusSetter> m_statusSetter;
 	QPointer<StatusWindowService> m_statusWindowService;
 	QPointer<WindowManager> m_windowManager;
@@ -54,11 +56,14 @@ class KADUAPI StatusMenu : public QObject
 	QPoint MousePositionBeforeMenuHide;
 
 	StatusContainer *Container;
+	bool m_includePrefix;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
 	INJEQT_SET void setStatusWindowService(StatusWindowService *statusWindowService);
 	INJEQT_SET void setWindowManager(WindowManager *windowManager);
+	INJEQT_INIT void init();
 
 	void addStatusActions();
 	void aboutToHide();

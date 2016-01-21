@@ -21,12 +21,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QAction>
+#include "status-actions.h"
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
@@ -38,10 +37,38 @@
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
 
-#include "status-actions.h"
+#include <QtWidgets/QAction>
 
 StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefix, QObject *parent) :
 		QObject(parent), MyStatusContainer(statusContainer), IncludePrefix(includePrefix), ChangeDescription(0)
+{
+}
+
+StatusActions::~StatusActions()
+{
+}
+
+void StatusActions::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void StatusActions::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
+}
+
+void StatusActions::setStatusSetter(StatusSetter *statusSetter)
+{
+	m_statusSetter = statusSetter;
+}
+
+void StatusActions::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
+void StatusActions::init()
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(true); // HACK
@@ -50,11 +77,7 @@ StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefi
 	statusUpdated();
 	connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
-	connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
-}
-
-StatusActions::~StatusActions()
-{
+	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 void StatusActions::createActions()
@@ -70,7 +93,7 @@ void StatusActions::createActions()
 		if (StatusTypeNone == statusType)
 			continue;
 
-		const StatusTypeData & typeData = Core::instance()->statusTypeManager()->statusTypeData(statusType);
+		const StatusTypeData & typeData = m_statusTypeManager->statusTypeData(statusType);
 
 		if (StatusTypeGroupNone == currentGroup)
 			currentGroup = typeData.typeGroup();
@@ -149,7 +172,7 @@ void StatusActions::statusUpdated(StatusContainer *container)
 
 	StatusType currentStatusType = container
 		? container->status().type()
-		: Core::instance()->statusSetter()->manuallySetStatus(MyStatusContainer).type();
+		: m_statusSetter->manuallySetStatus(MyStatusContainer).type();
 
 	if (!MyStatusContainer->supportedStatusTypes().contains(currentStatusType))
 		currentStatusType = MyStatusContainer->status().type();
@@ -164,8 +187,8 @@ void StatusActions::statusUpdated(StatusContainer *container)
 		if (!MyStatusContainer->isStatusSettingInProgress())
 		{
 			// For 'All xxx' status menu items - check only if all accounts have the same status
-			if (Core::instance()->statusContainerManager() == MyStatusContainer)
-				action->setChecked(Core::instance()->statusContainerManager()->allStatusOfType(statusType));
+			if (m_statusContainerManager == MyStatusContainer)
+				action->setChecked(m_statusContainerManager->allStatusOfType(statusType));
 			else
 				action->setChecked(currentStatusType == statusType);
 		}

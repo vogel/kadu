@@ -21,23 +21,46 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_ACTIONS_H
-#define STATUS_ACTIONS_H
+#pragma once
+
+#include "status/status-type.h"
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-#include "status/status-type.h"
+class IconsManager;
+class StatusContainerManager;
+class StatusContainer;
+class StatusSetter;
+class StatusTypeData;
+class StatusTypeManager;
 
 class QAction;
 class QActionGroup;
 
-class StatusContainer;
-class StatusTypeData;
-
 class StatusActions : public QObject
 {
 	Q_OBJECT
+
+public:
+	explicit StatusActions(StatusContainer *statusContainer, bool includePrefix, QObject *parent);
+	virtual ~StatusActions();
+
+	const QList<QAction *> & actions() const { return Actions; }
+
+signals:
+	void statusActionsRecreated();
+
+	void statusActionTriggered(QAction *);
+	void changeDescriptionActionTriggered(bool);
+
+private:
+	QPointer<IconsManager> m_iconsManager;
+	QPointer<StatusContainerManager> m_statusContainerManager;
+	QPointer<StatusSetter> m_statusSetter;
+	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	StatusContainer *MyStatusContainer;
 	bool IncludePrefix;
@@ -55,21 +78,13 @@ class StatusActions : public QObject
 	void cleanUpActions();
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_INIT void init();
+
 	void statusUpdated(StatusContainer *container = 0);
 	void iconThemeChanged();
 
-public:
-	StatusActions(StatusContainer *statusContainer, bool includePrefix, QObject *parent);
-	virtual ~StatusActions();
-
-	const QList<QAction *> & actions() const { return Actions; }
-
-signals:
-	void statusActionsRecreated();
-
-	void statusActionTriggered(QAction *);
-	void changeDescriptionActionTriggered(bool);
-
 };
-
-#endif // STATUS_ACTIONS_H
