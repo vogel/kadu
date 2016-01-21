@@ -656,11 +656,6 @@ PluginStateService * Core::pluginStateService() const
 	return m_injector.get<PluginStateService>();
 }
 
-FileTransferHandlerManager * Core::fileTransferHandlerManager() const
-{
-	return m_injector.get<FileTransferHandlerManager>();
-}
-
 FileTransferManager * Core::fileTransferManager() const
 {
 	return m_injector.get<FileTransferManager>();

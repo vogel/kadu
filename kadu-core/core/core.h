@@ -58,7 +58,6 @@ class ChatWidgetRepository;
 class ConfigurationManager;
 class Configuration;
 class ContactManager;
-class FileTransferHandlerManager;
 class FileTransferManager;
 class IconsManager;
 class InjectedFactory;
@@ -147,7 +146,6 @@ public:
 	PluginActivationService * pluginActivationService() const;
 	PluginStateService * pluginStateService() const;
 
-	FileTransferHandlerManager * fileTransferHandlerManager() const;
 	FileTransferManager * fileTransferManager() const;
 
 	ProtocolsManager * protocolsManager() const;
