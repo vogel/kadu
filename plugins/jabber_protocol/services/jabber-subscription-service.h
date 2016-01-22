@@ -29,6 +29,7 @@
 class JabberProtocol;
 
 class ContactManager;
+class InjectedFactory;
 
 class QXmppRosterManager;
 
@@ -48,6 +49,7 @@ public slots:
 	virtual void authorizeContact(Contact contact, bool authorized);
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<QXmppRosterManager> m_roster;
 	JabberProtocol *m_protocol;
 
@@ -55,6 +57,7 @@ private:
 
 private slots:
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 	void subscriptionReceived(const QString &bareJid);
 

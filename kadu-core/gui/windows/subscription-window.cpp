@@ -21,15 +21,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QVBoxLayout>
+#include "subscription-window.h"
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/windows/add-buddy-window.h"
 #include "icons/icons-manager.h"
@@ -37,41 +32,67 @@
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
 
-#include "subscription-window.h"
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 
-void SubscriptionWindow::getSubscription(Contact contact, QObject *receiver, const char *slot)
+void SubscriptionWindow::getSubscription(InjectedFactory *injectedFactory, Contact contact, QObject *receiver, const char *slot)
 {
-	SubscriptionWindow *window = new SubscriptionWindow(contact);
+	SubscriptionWindow *window = injectedFactory->makeInjected<SubscriptionWindow>(contact);
 	connect(window, SIGNAL(requestConsidered(Contact, bool)), receiver, slot);
 
 	window->exec();
 }
 
 SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
-		QDialog(parent), DesktopAwareObject(this), CurrentContact(contact)
+		QDialog{parent},
+		DesktopAwareObject{this},
+		m_contact{contact}
 {
 	setWindowRole("kadu-subscription");
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Ask For Sharing Status"));
 	resize(500, 120);
+}
 
+SubscriptionWindow::~SubscriptionWindow()
+{
+}
+
+void SubscriptionWindow::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void SubscriptionWindow::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void SubscriptionWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SubscriptionWindow::init()
+{
 	// It'd be too unsafe to not add this contact to the manager now and rely later on addItem()
 	// as the contact might be added in the meantime. See bug #2222.
-	Contact knownContact = Core::instance()->contactManager()->byId(CurrentContact.contactAccount(), CurrentContact.id(), ActionReturnNull);
+	auto knownContact = m_contactManager->byId(m_contact.contactAccount(), m_contact.id(), ActionReturnNull);
 	if (knownContact)
-		CurrentContact = knownContact;
+		m_contact = knownContact;
 
-	QGridLayout *layout = new QGridLayout(this);
+	auto layout = new QGridLayout(this);
 	layout->setColumnStretch(2, 4);
 
-	QLabel *messageLabel = new QLabel(tr("User <b>%1</b> wants to add you to his contact list.").arg(CurrentContact.id()), this);
+	auto messageLabel = new QLabel(tr("User <b>%1</b> wants to add you to his contact list.").arg(m_contact.id()), this);
+	auto finalQuestionLabel = new QLabel(tr("Do you want this person to see your status?"), this);
+	auto buttons = new QDialogButtonBox(Qt::Horizontal, this);
+	auto shareAndAdd = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Allow and add buddy..."), this);
 
-	QLabel *finalQuestionLabel = new QLabel(tr("Do you want this person to see your status?"), this);
-
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
-
-	QPushButton *shareAndAdd = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Allow and add buddy..."), this);
 	if (knownContact && !knownContact.isAnonymous())
 	{
 		shareAndAdd->setVisible(false);
@@ -82,11 +103,11 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 		buttons->addButton(shareAndAdd, QDialogButtonBox::AcceptRole);
 	}
 
-	QPushButton *share = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Allow"), this);
+	auto share = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Allow"), this);
 	share->setDefault(true);
 	buttons->addButton(share, QDialogButtonBox::AcceptRole);
 
-	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Ignore"), this);
+	auto cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Ignore"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(shareAndAdd, SIGNAL(clicked(bool)), this, SLOT(accepted()));
@@ -100,27 +121,23 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	shareAndAdd->setFocus();
 }
 
-SubscriptionWindow::~SubscriptionWindow()
-{
-}
-
 void SubscriptionWindow::accepted()
 {
-	Buddy buddy = Core::instance()->buddyManager()->byContact(CurrentContact, ActionCreate);
+	auto buddy = m_buddyManager->byContact(m_contact, ActionCreate);
 	buddy.setAnonymous(true);
-	(Core::instance()->injectedFactory()->makeInjected<AddBuddyWindow>(nullptr, buddy))->show();
+	(m_injectedFactory->makeInjected<AddBuddyWindow>(nullptr, buddy))->show();
 	allowed();
 }
 
 void SubscriptionWindow::allowed()
 {
-	emit requestConsidered(CurrentContact, true);
+	emit requestConsidered(m_contact, true);
 	close();
 }
 
 void SubscriptionWindow::rejected()
 {
-	emit requestConsidered(CurrentContact, false);
+	emit requestConsidered(m_contact, false);
 	close();
 }
 

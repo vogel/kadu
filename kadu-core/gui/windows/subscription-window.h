@@ -22,36 +22,49 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SUBSCRIPTION_WINDOW_H
-#define SUBSCRIPTION_WINDOW_H
-
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDialog>
+#pragma once
 
 #include "contacts/contact.h"
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
+#include <QtCore/QObject>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
+
+class BuddyManager;
+class ContactManager;
+class InjectedFactory;
+
 class KADUAPI SubscriptionWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
-	Contact CurrentContact;
-
-private slots:
-	void accepted();
-	void allowed();
-	void rejected();
-
 public:
-	static void getSubscription(Contact contact, QObject* receiver, const char* slot);
+	static void getSubscription(InjectedFactory *injectedFactory, Contact contact, QObject* receiver, const char* slot);
 
-	explicit SubscriptionWindow(Contact contact, QWidget* parent = 0);
+	explicit SubscriptionWindow(Contact contact, QWidget* parent = nullptr);
 	virtual ~SubscriptionWindow();
 
 signals:
 	void requestConsidered(Contact contact, bool accepted);
 
-};
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
-#endif // SUBSCRIPTION_WINDOW_H
+	Contact m_contact;
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
+	void accepted();
+	void allowed();
+	void rejected();
+
+};

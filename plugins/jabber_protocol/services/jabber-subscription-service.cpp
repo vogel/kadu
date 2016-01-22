@@ -21,6 +21,7 @@
 
 #include "jabber-subscription-service.h"
 
+#include "core/injected-factory.h"
 #include "gui/windows/subscription-window.h"
 #include "jabber-protocol.h"
 
@@ -45,10 +46,15 @@ void JabberSubscriptionService::setContactManager(ContactManager *contactManager
 	m_contactManager = contactManager;
 }
 
+void JabberSubscriptionService::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void JabberSubscriptionService::subscriptionReceived(const QString &bareJid)
 {
 	auto contact = m_contactManager->byId(m_protocol->account(), bareJid, ActionCreate);
-	SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
+	SubscriptionWindow::getSubscription(m_injectedFactory, contact, this, SLOT(authorizeContact(Contact, bool)));
 }
 
 void JabberSubscriptionService::authorizeContact(Contact contact, bool authorized)
