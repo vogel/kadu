@@ -22,6 +22,7 @@
 
 #include "notification/notification/notification.h"
 
+class InjectedFactory;
 class NotificationManager;
 
 class AntistringNotification : public Notification
@@ -29,7 +30,7 @@ class AntistringNotification : public Notification
 	Q_OBJECT
 
 public:
-	static void notifyStringReceived(NotificationManager *notificationManager, const Chat &chat);
+	static void notifyStringReceived(InjectedFactory *injectedFactory, NotificationManager *notificationManager, const Chat &chat);
 
 	explicit AntistringNotification(const Chat &chat);
 	virtual ~AntistringNotification();

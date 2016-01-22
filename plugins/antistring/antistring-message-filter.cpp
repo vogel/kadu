@@ -23,6 +23,7 @@
 #include "antistring-configuration.h"
 #include "antistring-notification.h"
 
+#include "core/injected-factory.h"
 #include "message/message-manager.h"
 #include "notification/notification-manager.h"
 
@@ -40,6 +41,11 @@ AntistringMessageFilter::~AntistringMessageFilter()
 void AntistringMessageFilter::setAntistringConfiguration(AntistringConfiguration *antistringConfiguration)
 {
 	m_antistringConfiguration = antistringConfiguration;
+}
+
+void AntistringMessageFilter::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void AntistringMessageFilter::setMessageManager(MessageManager *messageManager)
@@ -63,7 +69,7 @@ bool AntistringMessageFilter::acceptMessage(const Message &message)
 	if (points(message.plainTextContent()) < 3)
 		return true;
 
-	AntistringNotification::notifyStringReceived(m_notificationManager, message.messageChat());
+	AntistringNotification::notifyStringReceived(m_injectedFactory, m_notificationManager, message.messageChat());
 	m_messageManager->sendMessage(message.messageChat(), m_antistringConfiguration->returnMessage(), true);
 
 	if (m_antistringConfiguration->logMessage())

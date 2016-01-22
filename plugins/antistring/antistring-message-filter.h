@@ -29,6 +29,7 @@
 class Account;
 class AntistringConfiguration;
 class Contact;
+class InjectedFactory;
 class MessageManager;
 class NotificationManager;
 
@@ -44,6 +45,7 @@ public:
 
 private:
 	QPointer<AntistringConfiguration> m_antistringConfiguration;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<NotificationManager> m_notificationManager;
 
@@ -52,6 +54,7 @@ private:
 
 private slots:
 	INJEQT_SET void setAntistringConfiguration(AntistringConfiguration *antistringConfiguration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 

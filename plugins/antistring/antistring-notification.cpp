@@ -26,9 +26,9 @@
 
 #include "antistring-notification.h"
 
-void AntistringNotification::notifyStringReceived(NotificationManager *notificationManager, const Chat &chat)
+void AntistringNotification::notifyStringReceived(InjectedFactory *injectedFactory, NotificationManager *notificationManager, const Chat &chat)
 {
-	AntistringNotification *notification = Core::instance()->injectedFactory()->makeInjected<AntistringNotification>(chat);
+	AntistringNotification *notification = injectedFactory->makeInjected<AntistringNotification>(chat);
 	notification->setTitle(tr("Antistring"));
 	notification->setText(tr("Your interlocutor send you love letter"));
 	notificationManager->notify(notification);
