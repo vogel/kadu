@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-manager.h"
@@ -26,9 +25,9 @@
 
 #include "cenzor-notification.h"
 
-void CenzorNotification::notifyCenzored(NotificationManager *notificationManager, const Chat &chat)
+void CenzorNotification::notifyCenzored(InjectedFactory *injectedFactory, NotificationManager *notificationManager, const Chat &chat)
 {
-	CenzorNotification *notification = Core::instance()->injectedFactory()->makeInjected<CenzorNotification>(chat);
+	CenzorNotification *notification = injectedFactory->makeInjected<CenzorNotification>(chat);
 	notification->setTitle(tr("Cenzor"));
 	notification->setText(tr("Message was cenzored"));
 	notification->setDetails(tr("Your interlocutor used obscene word and became admonished"));

@@ -29,6 +29,7 @@
 class CenzorConfiguration;
 class Chat;
 class Contact;
+class InjectedFactory;
 class MessageManager;
 class NotificationManager;
 
@@ -45,6 +46,7 @@ protected:
 
 private:
 	QPointer<CenzorConfiguration> m_cenzorConfiguration;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<NotificationManager> m_notificationManager;
 
@@ -53,6 +55,7 @@ private:
 
 private slots:
 	INJEQT_SET void setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 

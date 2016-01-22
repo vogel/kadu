@@ -21,6 +21,7 @@
 #include "cenzor-message-filter.h"
 
 #include "configuration/cenzor-configuration.h"
+#include "core/injected-factory.h"
 #include "notification/cenzor-notification.h"
 
 #include "message/message-manager.h"
@@ -38,6 +39,11 @@ CenzorMessageFilter::~CenzorMessageFilter()
 void CenzorMessageFilter::setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration)
 {
 	m_cenzorConfiguration = cenzorConfiguration;
+}
+
+void CenzorMessageFilter::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void CenzorMessageFilter::setMessageManager(MessageManager *messageManager)
@@ -69,7 +75,7 @@ bool CenzorMessageFilter::acceptMessage(const Message &message)
 
 
 	if (m_messageManager->sendMessage(message.messageChat(), m_cenzorConfiguration->admonition(), true))
-		CenzorNotification::notifyCenzored(m_notificationManager, message.messageChat());
+		CenzorNotification::notifyCenzored(m_injectedFactory, m_notificationManager, message.messageChat());
 
 	return false;
 }

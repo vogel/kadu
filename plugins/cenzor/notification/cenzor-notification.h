@@ -22,6 +22,7 @@
 
 #include "notification/notification/notification.h"
 
+class InjectedFactory;
 class NotificationManager;
 
 class CenzorNotification : public Notification
@@ -29,7 +30,7 @@ class CenzorNotification : public Notification
 	Q_OBJECT
 
 public:
-	static void notifyCenzored(NotificationManager *notificationManager, const Chat &chat);
+	static void notifyCenzored(InjectedFactory *injectedFactory, NotificationManager *notificationManager, const Chat &chat);
 
 	explicit CenzorNotification(const Chat &chat);
 	virtual ~CenzorNotification();
