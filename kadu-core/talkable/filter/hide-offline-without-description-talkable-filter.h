@@ -30,7 +30,7 @@
  */
 
 /**
- * @class HideOfflineTalkableFilter
+ * @class HideOfflineWithoutDescriptionTalkableFilter
  * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes items that are not available and have no description.
  *

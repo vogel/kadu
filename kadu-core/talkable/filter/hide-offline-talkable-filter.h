@@ -17,12 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HIDE_OFFLINE_TALKABLE_FILTER_H
-#define HIDE_OFFLINE_TALKABLE_FILTER_H
-
-#include <QtCore/QMetaType>
+#pragma once
 
 #include "talkable/filter/talkable-filter.h"
+
+#include <QtCore/QMetaType>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyManager;
+class BuddyPreferredManager;
+class ContactManager;
 
 /**
  * @addtogroup Talkable
@@ -44,8 +49,6 @@ class HideOfflineTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 
-	bool Enabled;
-
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -65,6 +68,18 @@ public:
 	 */
 	void setEnabled(bool enabled);
 
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<ContactManager> m_contactManager;
+
+	bool m_enabled;
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+
 };
 
 /**
@@ -72,5 +87,3 @@ public:
  */
 
 Q_DECLARE_METATYPE(HideOfflineTalkableFilter *)
-
-#endif // HIDE_OFFLINE_TALKABLE_FILTER_H

@@ -18,17 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "hide-offline-talkable-filter.h"
+
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
-
-#include "hide-offline-talkable-filter.h"
 
 HideOfflineTalkableFilter::HideOfflineTalkableFilter(QObject *parent) :
-		TalkableFilter(parent), Enabled(false)
+		TalkableFilter{parent},
+		m_enabled{false}
 {
 }
 
@@ -36,12 +36,27 @@ HideOfflineTalkableFilter::~HideOfflineTalkableFilter()
 {
 }
 
+void HideOfflineTalkableFilter::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void HideOfflineTalkableFilter::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void HideOfflineTalkableFilter::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 TalkableFilter::FilterResult HideOfflineTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (!Enabled)
+	if (!m_enabled)
 		return Undecided;
 
-	const Contact &contact = Core::instance()->buddyPreferredManager()->preferredContact(buddy, false);
+	auto contact = m_buddyPreferredManager->preferredContact(buddy, false);
 	if (!contact)
 		return Rejected;
 
@@ -50,10 +65,10 @@ TalkableFilter::FilterResult HideOfflineTalkableFilter::filterBuddy(const Buddy 
 
 TalkableFilter::FilterResult HideOfflineTalkableFilter::filterContact(const Contact &contact)
 {
-	if (!Enabled)
+	if (!m_enabled)
 		return Undecided;
 
-	const Status &status = contact.currentStatus();
+	auto status = contact.currentStatus();
 	if (status.isDisconnected())
 		return Rejected;
 	else
@@ -62,10 +77,10 @@ TalkableFilter::FilterResult HideOfflineTalkableFilter::filterContact(const Cont
 
 void HideOfflineTalkableFilter::setEnabled(bool enabled)
 {
-	if (Enabled == enabled)
+	if (m_enabled == enabled)
 		return;
 
-	Enabled = enabled;
+	m_enabled = enabled;
 	emit filterChanged();
 
 	// Without it, Kadu crashes either on login or on clicking on the contacts list
@@ -74,13 +89,13 @@ void HideOfflineTalkableFilter::setEnabled(bool enabled)
 	// TODO Qt5: Check whether we actually need it (QTBUG-27122 is fixed in Qt5) and remove if not.
 	if (enabled)
 	{
-		connect(Core::instance()->buddyManager(), SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
-		connect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
+		connect(m_buddyManager, SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
+		connect(m_contactManager, SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
 	}
 	else
 	{
-		disconnect(Core::instance()->buddyManager(), SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
-		disconnect(Core::instance()->contactManager(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
+		disconnect(m_buddyManager, SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
+		disconnect(m_contactManager, SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
 	}
 }
 
