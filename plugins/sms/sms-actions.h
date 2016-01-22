@@ -40,6 +40,7 @@ class MobileNumberManager;
 class SmsDialogRepository;
 class SmsGatewayManager;
 class SmsScriptsManager;
+class TalkableConverter;
 
 class SmsActions : public QObject
 {
@@ -54,6 +55,7 @@ class SmsActions : public QObject
 	QPointer<SmsDialogRepository> m_smsDialogRepository;
 	QPointer<SmsGatewayManager> m_smsGatewayManager;
 	QPointer<SmsScriptsManager> m_smsScriptsManager;
+	QPointer<TalkableConverter> m_talkableConverter;
 
 	ActionDescription *sendSmsActionDescription;
 
@@ -67,6 +69,7 @@ private slots:
 	INJEQT_SET void setSmsDialogRepository(SmsDialogRepository *smsDialogRepository);
 	INJEQT_SET void setSmsGatewayManager(SmsGatewayManager *smsGatewayManager);
 	INJEQT_SET void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

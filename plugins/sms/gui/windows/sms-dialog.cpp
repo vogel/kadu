@@ -44,6 +44,7 @@
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
 #include "talkable/filter/mobile-talkable-filter.h"
+#include "talkable/talkable-converter.h"
 #include "debug.h"
 
 #include "plugins/history/history-plugin-object.h"
@@ -87,6 +88,11 @@ void SmsDialog::setConfiguration(Configuration *configuration)
 void SmsDialog::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void SmsDialog::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
 }
 
 void SmsDialog::init()
@@ -227,7 +233,7 @@ void SmsDialog::setRecipient(const QString &phone)
 
 void SmsDialog::recipientBuddyChanged()
 {
-	RecipientEdit->setText(RecipientComboBox->currentTalkable().toBuddy().mobile());
+	RecipientEdit->setText(m_talkableConverter->toBuddy(RecipientComboBox->currentTalkable()).mobile());
 }
 
 void SmsDialog::recipientNumberChanged(const QString &number)

@@ -41,6 +41,7 @@ class HistoryQuery;
 class InjectedFactory;
 class ProgressWindow;
 class StatusTypeManager;
+class TalkableConverter;
 
 class SqlAccountsMapping;
 class SqlChatsMapping;
@@ -62,6 +63,7 @@ class HistorySqlStorage : public HistoryStorage
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<StatusTypeManager> m_statusTypeManager;
+	QPointer<TalkableConverter> m_talkableConverter;
 
 	QThread *InitializerThread;
 	ProgressWindow *ImportProgressWindow;
@@ -124,6 +126,7 @@ private slots:
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();
 
 	virtual void messageReceived(const Message &message);

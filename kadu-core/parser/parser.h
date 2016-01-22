@@ -24,6 +24,7 @@
 
 #include <QtCore/QMap>
 #include <functional>
+#include <injeqt/injeqt.h>
 
 #include "parser/parser-token-type.h"
 #include "talkable/talkable.h"

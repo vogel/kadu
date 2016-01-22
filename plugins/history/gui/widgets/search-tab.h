@@ -35,6 +35,7 @@ class QSplitter;
 class HistoryMessagesStorage;
 class HistoryTalkableComboBox;
 class InjectedFactory;
+class TalkableConverter;
 class TimelineChatMessagesView;
 
 class SearchTab : public HistoryTab
@@ -42,6 +43,7 @@ class SearchTab : public HistoryTab
 	Q_OBJECT
 
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<TalkableConverter> m_talkableConverter;
 
 	HistoryMessagesStorage *ChatStorage;
 	HistoryMessagesStorage *StatusStorage;
@@ -70,6 +72,7 @@ class SearchTab : public HistoryTab
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();
 
 	void kindChanged(QAbstractButton *button);

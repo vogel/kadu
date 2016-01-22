@@ -79,6 +79,7 @@ class StatusContainerManager;
 class StatusTypeManager;
 class StoragePointFactory;
 class SystemInfo;
+class TalkableConverter;
 class UnreadMessageRepository;
 class UrlHandlerManager;
 
@@ -159,6 +160,7 @@ public:
 	Myself * myself() const;
 	BuddyStorage * buddyStorage() const;
 	KaduWindowService * kaduWindowService() const;
+	TalkableConverter * talkableConverter() const;
 
 	void setIcon(const KaduIcon &icon);
 

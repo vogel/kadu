@@ -68,6 +68,7 @@
 #include "gui/windows/proxy-action-context.h"
 #include "os/generic/url-opener.h"
 #include "os/generic/window-geometry-manager.h"
+#include "talkable/talkable-converter.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 
@@ -116,6 +117,11 @@ void KaduWindow::setMenuInventory(MenuInventory *menuInventory)
 void KaduWindow::setMyself(Myself *myself)
 {
 	m_myself = myself;
+}
+
+void KaduWindow::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
 }
 
 void KaduWindow::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
@@ -311,11 +317,11 @@ void KaduWindow::compositingDisabled()
 
 void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 {
-	auto buddy = talkable.toBuddy();
+	auto buddy = m_talkableConverter->toBuddy(talkable);
 	if (buddy.isTemporary())
 		return;
 
-	auto chat = talkable.toChat();
+	auto chat = m_talkableConverter->toChat(talkable);
 	if (chat && !chat.contacts().toBuddySet().contains(m_myself->buddy()))
 	{
 		m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);

@@ -35,6 +35,7 @@
 #include "misc/paths-provider.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
+#include "talkable/talkable-converter.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
 
@@ -69,6 +70,11 @@ void BuddyInfoPanel::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
+void BuddyInfoPanel::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
+}
+
 void BuddyInfoPanel::init()
 {
 	QPalette p = palette();
@@ -95,7 +101,7 @@ void BuddyInfoPanel::configurationUpdated()
 
 void BuddyInfoPanel::buddyUpdated(const Buddy &buddy)
 {
-	if (buddy == Item.toBuddy())
+	if (buddy == m_talkableConverter->toBuddy(Item))
 		update();
 }
 
@@ -176,7 +182,7 @@ void BuddyInfoPanel::update()
 
 void BuddyInfoPanel::connectItem()
 {
-	Buddy buddy = Item.toBuddy();
+	Buddy buddy = m_talkableConverter->toBuddy(Item);
 	if (buddy)
 	{
 		connect(buddy, SIGNAL(updated()), this, SLOT(update()));
@@ -184,7 +190,7 @@ void BuddyInfoPanel::connectItem()
 			connect(buddy.buddyAvatar(), SIGNAL(updated()), this, SLOT(update()));
 	}
 
-	Contact contact = Item.toContact();
+	Contact contact = m_talkableConverter->toContact(Item);
 	if (contact)
 	{
 		connect(contact, SIGNAL(updated()), this, SLOT(update()));
@@ -196,7 +202,7 @@ void BuddyInfoPanel::connectItem()
 
 void BuddyInfoPanel::disconnectItem()
 {
-	Buddy buddy = Item.toBuddy();
+	Buddy buddy = m_talkableConverter->toBuddy(Item);
 	if (buddy)
 	{
 		disconnect(buddy, 0, this, 0);
@@ -204,7 +210,7 @@ void BuddyInfoPanel::disconnectItem()
 			disconnect(buddy.buddyAvatar(), 0, this, 0);
 	}
 
-	Contact contact = Item.toContact();
+	Contact contact = m_talkableConverter->toContact(Item);
 	if (contact)
 	{
 		disconnect(contact, 0, this, 0);

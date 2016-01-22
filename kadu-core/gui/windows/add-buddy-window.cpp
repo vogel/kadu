@@ -58,6 +58,7 @@
 #include "roster/roster-service.h"
 #include "roster/roster.h"
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
+#include "talkable/talkable-converter.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include <QtCore/QSortFilterProxyModel>
@@ -117,6 +118,11 @@ void AddBuddyWindow::setMyself(Myself *myself)
 void AddBuddyWindow::setRoster(Roster *roster)
 {
 	m_roster = roster;
+}
+
+void AddBuddyWindow::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
 }
 
 void AddBuddyWindow::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
@@ -551,7 +557,7 @@ bool AddBuddyWindow::addContact()
 	}
 	else
 	{
-		buddy = SelectBuddy->currentTalkable().toBuddy();
+		buddy = m_talkableConverter->toBuddy(SelectBuddy->currentTalkable());
 		if (buddy.isNull())
 			return false;
 	}

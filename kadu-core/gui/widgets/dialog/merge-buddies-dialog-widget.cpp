@@ -19,35 +19,57 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QIcon>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QLabel>
+#include "merge-buddies-dialog-widget.h"
 
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/kadu-icon.h"
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
+#include "talkable/talkable-converter.h"
 
-
-#include "merge-buddies-dialog-widget.h"
+#include <QtGui/QIcon>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLabel>
 
 MergeBuddiesDialogWidget::MergeBuddiesDialogWidget(Buddy buddy, const QString &message, QWidget *parent) :
 		DialogWidget(tr("Merge Buddies"), message, QPixmap(), parent), MyBuddy(buddy)
 {
 	QIcon icon = KaduIcon("kadu_icons/kadu").icon();
 	Pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)));
-
-	createGui();
 }
 
 MergeBuddiesDialogWidget::~MergeBuddiesDialogWidget()
 {
+}
+
+void MergeBuddiesDialogWidget::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void MergeBuddiesDialogWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void MergeBuddiesDialogWidget::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void MergeBuddiesDialogWidget::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
+}
+
+void MergeBuddiesDialogWidget::init()
+{
+	createGui();
 }
 
 void MergeBuddiesDialogWidget::createGui()
@@ -60,11 +82,11 @@ void MergeBuddiesDialogWidget::createGui()
 	SelectCombo = new SelectTalkableComboBox(this);
 	SelectCombo->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectCombo));
 
-	auto buddyListModel = Core::instance()->injectedFactory()->makeInjected<BuddyListModel>(SelectCombo);
-	Core::instance()->injectedFactory()->makeInjected<BuddyManagerAdapter>(buddyListModel);
+	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(SelectCombo);
+	m_injectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
 	SelectCombo->setBaseModel(buddyListModel);
 	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(MyBuddy, SelectCombo));
-	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself()->buddy(), SelectCombo));
+	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(m_myself->buddy(), SelectCombo));
 	connect(SelectCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(selectedBuddyChanged()));
 	formLayout->addRow(selectLabel, SelectCombo);
 
@@ -78,12 +100,12 @@ void MergeBuddiesDialogWidget::selectedBuddyChanged()
 
 void MergeBuddiesDialogWidget::dialogAccepted()
 {
-	Buddy mergeWith = SelectCombo->currentTalkable().toBuddy();
+	Buddy mergeWith = m_talkableConverter->toBuddy(SelectCombo->currentTalkable());
 
 	if (mergeWith.isNull() || MyBuddy.isNull())
 		return;
 
-	Core::instance()->buddyManager()->mergeBuddies(mergeWith, MyBuddy);
+	m_buddyManager->mergeBuddies(mergeWith, MyBuddy);
 }
 
 void MergeBuddiesDialogWidget::dialogRejected()

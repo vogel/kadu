@@ -30,6 +30,7 @@
 #include "contacts/model/contact-data-extractor.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
+#include "talkable/talkable-converter.h"
 #include "talkable/talkable.h"
 
 #include "buddy-data-extractor.h"
@@ -69,6 +70,11 @@ void BuddyListModel::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
+void BuddyListModel::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
+}
+
 void BuddyListModel::init()
 {
 	QHash<int, QByteArray> roles;
@@ -90,7 +96,7 @@ Buddy BuddyListModel::buddyFromVariant(const QVariant &variant) const
 		return buddy;
 	Talkable talkable = variant.value<Talkable>();
 	if (talkable.isValidBuddy())
-		return talkable.toBuddy();
+		return m_talkableConverter->toBuddy(talkable);
 	else
 		return Buddy::null;
 }
@@ -102,7 +108,7 @@ Contact BuddyListModel::contactFromVariant(const QVariant &variant) const
 		return contact;
 	Talkable talkable = variant.value<Talkable>();
 	if (talkable.isValidContact())
-		return talkable.toContact();
+		return m_talkableConverter->toContact(talkable);
 	else
 		return Contact::null;
 }

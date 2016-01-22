@@ -26,6 +26,7 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
+#include "talkable/talkable-converter.h"
 #include "talkable/talkable.h"
 
 #include <QtCore/QSet>
@@ -56,14 +57,19 @@ void ChatsBuddiesSplitter::setChatTypeManager(ChatTypeManager *chatTypeManager)
 	m_chatTypeManager = chatTypeManager;
 }
 
+void ChatsBuddiesSplitter::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
+}
+
 void ChatsBuddiesSplitter::init()
 {
 	// we ignore contacts
-	foreach (const Talkable &talkable, m_talkables)
+	for (auto const &talkable : m_talkables)
 		if (talkable.isValidChat())
-			processChat(talkable.toChat());
+			processChat(m_talkableConverter->toChat(talkable));
 		else if (talkable.isValidBuddy())
-			Buddies.insert(talkable.toBuddy());
+			Buddies.insert(m_talkableConverter->toBuddy(talkable));
 }
 
 void ChatsBuddiesSplitter::processChat(const Chat &chat)
@@ -71,7 +77,7 @@ void ChatsBuddiesSplitter::processChat(const Chat &chat)
 	if (UsedChats.contains(chat))
 		return;
 
-	Chat buddyChat = m_buddyChatManager->buddyChat(chat);
+	auto buddyChat = m_buddyChatManager->buddyChat(chat);
 	if (!buddyChat)
 	{
 		UsedChats.insert(chat);

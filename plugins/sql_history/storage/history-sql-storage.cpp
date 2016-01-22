@@ -55,6 +55,7 @@
 #include "misc/misc.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
+#include "talkable/talkable-converter.h"
 #include "talkable/talkable.h"
 #include "debug.h"
 
@@ -133,6 +134,11 @@ void HistorySqlStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 void HistorySqlStorage::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
 	m_statusTypeManager = statusTypeManager;
+}
+
+void HistorySqlStorage::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
 }
 
 void HistorySqlStorage::init()
@@ -271,9 +277,9 @@ QString HistorySqlStorage::chatIdList(const Chat &chat)
 QString HistorySqlStorage::talkableContactsWhere(const Talkable &talkable)
 {
 	if (talkable.isValidBuddy())
-		return buddyContactsWhere(talkable.toBuddy());
+		return buddyContactsWhere(m_talkableConverter->toBuddy(talkable));
 	else if (talkable.isValidContact())
-		return QString("contact_id = %1").arg(ContactsMapping->idByContact(talkable.toContact(), true));
+		return QString("contact_id = %1").arg(ContactsMapping->idByContact(m_talkableConverter->toContact(talkable), true));
 
 	return QLatin1String("1");
 }
@@ -443,7 +449,7 @@ void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "DELETE FROM kadu_messages WHERE chat_id IN " + chatIdList(talkable.toChat());
+	QString queryString = "DELETE FROM kadu_messages WHERE chat_id IN " + chatIdList(m_talkableConverter->toChat(talkable));
 	if (!date.isNull())
 		queryString += " AND date_id IN (SELECT id FROM kadu_dates WHERE date = :date)";
 
@@ -461,7 +467,7 @@ void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &
 
 	executeQuery(removeChatsQuery);
 
-	ChatsMapping->removeChat(talkable.toChat());
+	ChatsMapping->removeChat(m_talkableConverter->toChat(talkable));
 }
 
 void HistorySqlStorage::clearStatusHistory(const Talkable &talkable, const QDate &date)
@@ -489,7 +495,7 @@ void HistorySqlStorage::clearStatusHistory(const Talkable &talkable, const QDate
 
 void HistorySqlStorage::clearSmsHistory(const Talkable &talkable, const QDate &date)
 {
-	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
+	if (!talkable.isValidBuddy() || m_talkableConverter->toBuddy(talkable).mobile().isEmpty())
 		return;
 
 	if (!waitForDatabase())
@@ -504,7 +510,7 @@ void HistorySqlStorage::clearSmsHistory(const Talkable &talkable, const QDate &d
 
 	query.prepare(queryString);
 
-	query.bindValue(":receipient", talkable.toBuddy().mobile());
+	query.bindValue(":receipient", m_talkableConverter->toBuddy(talkable).mobile());
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
@@ -513,13 +519,13 @@ void HistorySqlStorage::clearSmsHistory(const Talkable &talkable, const QDate &d
 
 void HistorySqlStorage::deleteHistory(const Talkable &talkable)
 {
-	foreach (const Contact &contact, talkable.toBuddy().contacts())
+	foreach (const Contact &contact, m_talkableConverter->toBuddy(talkable).contacts())
 	{
 		Chat chat = ChatTypeContact::findChat(m_chatManager, contact, ActionReturnNull);
 		clearChatHistory(chat, QDate());
 	}
 
-	clearStatusHistory(talkable.toBuddy(), QDate());
+	clearStatusHistory(m_talkableConverter->toBuddy(talkable), QDate());
 }
 
 QVector<Talkable> HistorySqlStorage::syncChats()
@@ -618,7 +624,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 		"LEFT JOIN kadu_dates d ON (km.date_id=d.id) WHERE 1";
 
 	if (!talkable.isEmpty())
-		queryString += QString(" AND chat_id IN %1").arg(chatIdList(talkable.toChat()));
+		queryString += QString(" AND chat_id IN %1").arg(chatIdList(m_talkableConverter->toChat(talkable)));
 	if (!historyQuery.string().isEmpty())
 		queryString += " AND kmc.content LIKE :query";
 	if (historyQuery.fromDate().isValid())
@@ -813,7 +819,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncSmsRecipientDates(const Histo
 	QString queryString = "SELECT count(1), substr(send_time,0,11), receipient, content";
 	queryString += " FROM (SELECT send_time, receipient, content FROM kadu_sms WHERE ";
 
-	if (talkable.isValidBuddy() && !talkable.toBuddy().mobile().isEmpty())
+	if (talkable.isValidBuddy() && !m_talkableConverter->toBuddy(talkable).mobile().isEmpty())
 		queryString += "receipient = :receipient";
 	else
 		queryString += "1";
@@ -830,8 +836,8 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncSmsRecipientDates(const Histo
 
 	query.prepare(queryString);
 
-	if (talkable.isValidBuddy() && !talkable.toBuddy().mobile().isEmpty())
-		query.bindValue(":receipient", talkable.toBuddy().mobile());
+	if (talkable.isValidBuddy() && !m_talkableConverter->toBuddy(talkable).mobile().isEmpty())
+		query.bindValue(":receipient", m_talkableConverter->toBuddy(talkable).mobile());
 
 	if (!historyQuery.string().isEmpty())
 		query.bindValue(":query", QString("%%%1%%").arg(historyQuery.string()));
@@ -885,7 +891,7 @@ SortedMessages HistorySqlStorage::syncMessages(const HistoryQuery &historyQuery)
 			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE 1";
 
 	if (!talkable.isEmpty())
-		queryString += QString(" AND chat_id IN %1").arg(chatIdList(talkable.toChat()));
+		queryString += QString(" AND chat_id IN %1").arg(chatIdList(m_talkableConverter->toChat(talkable)));
 	if (historyQuery.fromDate().isValid())
 		queryString += " AND date >= :fromDate";
 	if (historyQuery.toDate().isValid())
@@ -956,7 +962,7 @@ SortedMessages HistorySqlStorage::syncStatuses(const HistoryQuery &historyQuery)
 		query.bindValue(":toDate", historyQuery.toDate().toString("yyyyMMdd"));
 
 	executeQuery(query);
-	statuses = statusesFromQuery(talkable.toContact(), query);
+	statuses = statusesFromQuery(m_talkableConverter->toContact(talkable), query);
 
 	return statuses;
 }
@@ -978,7 +984,7 @@ SortedMessages HistorySqlStorage::syncSmses(const HistoryQuery &historyQuery)
 	QSqlQuery query(Database);
 	QString queryString = "SELECT content, send_time FROM kadu_sms WHERE 1";
 
-	if (talkable.isValidBuddy() && !talkable.toBuddy().mobile().isEmpty())
+	if (talkable.isValidBuddy() && !m_talkableConverter->toBuddy(talkable).mobile().isEmpty())
 		queryString += " AND receipient = :receipient";
 	if (historyQuery.fromDate().isValid())
 		queryString += " AND replace(substr(send_time,0,11), '-', '') >= :fromDate";
@@ -989,8 +995,8 @@ SortedMessages HistorySqlStorage::syncSmses(const HistoryQuery &historyQuery)
 
 	query.prepare(queryString);
 
-	if (talkable.isValidBuddy() && !talkable.toBuddy().mobile().isEmpty())
-		query.bindValue(":receipient", talkable.toBuddy().mobile());
+	if (talkable.isValidBuddy() && !m_talkableConverter->toBuddy(talkable).mobile().isEmpty())
+		query.bindValue(":receipient", m_talkableConverter->toBuddy(talkable).mobile());
 
 	if (historyQuery.fromDate().isValid())
 		query.bindValue(":fromDate", historyQuery.fromDate().toString("yyyyMMdd"));

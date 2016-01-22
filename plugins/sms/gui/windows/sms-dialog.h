@@ -41,6 +41,7 @@ class MobileNumberManager;
 class SelectTalkableComboBox;
 class SmsGatewayManager;
 class SmsScriptsManager;
+class TalkableConverter;
 
 class SmsDialog : public QWidget, ConfigurationAwareObject
 {
@@ -53,6 +54,7 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 	QPointer<MobileNumberManager> m_mobileNumberManager;
 	QPointer<SmsGatewayManager> m_smsGatewayManager;
 	QPointer<SmsScriptsManager> m_smsScriptsManager;
+	QPointer<TalkableConverter> m_talkableConverter;
 
 	QLineEdit *RecipientEdit;
 	SelectTalkableComboBox *RecipientComboBox;
@@ -72,6 +74,7 @@ private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();
 
 	void validate();

@@ -23,7 +23,10 @@
 #include "gui/widgets/history-messages-tab.h"
 #include "talkable/talkable.h"
 
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
+
+class TalkableConverter;
 
 class ChatHistoryTab : public HistoryMessagesTab
 {
@@ -39,9 +42,12 @@ protected:
 	virtual void talkablesAvailable();
 
 private:
+	QPointer<TalkableConverter> m_talkableConverter;
+
 	Talkable m_talkableToSelect;
 
 private slots:
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();
 
 };

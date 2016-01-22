@@ -132,6 +132,7 @@
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
 #include "storage/storage-point-factory.h"
+#include "talkable/talkable-converter.h"
 #include "themes/icon-theme-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
@@ -743,6 +744,11 @@ BuddyStorage * Core::buddyStorage() const
 KaduWindowService * Core::kaduWindowService() const
 {
 	return m_injector.get<KaduWindowService>();
+}
+
+TalkableConverter * Core::talkableConverter() const
+{
+	return m_injector.get<TalkableConverter>();
 }
 
 void Core::executeRemoteCommand(const QString &remoteCommand)

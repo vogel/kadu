@@ -33,6 +33,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
+#include "talkable/talkable-converter.h"
 #include "debug.h"
 
 #include "plugins/history/history.h"
@@ -99,6 +100,11 @@ void SmsActions::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
 	m_smsScriptsManager = smsScriptsManager;
 }
 
+void SmsActions::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
+}
+
 void SmsActions::init()
 {
 	connect(m_kaduWindowService->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
@@ -147,7 +153,7 @@ void SmsActions::newSms(const QString &mobile)
 
 void SmsActions::talkableActivated(const Talkable &talkable)
 {
-	const Buddy &buddy = talkable.toBuddy();
+	const Buddy &buddy = m_talkableConverter->toBuddy(talkable);
 	if (buddy.contacts().isEmpty() && !buddy.mobile().isEmpty())
 		newSms(buddy.mobile());
 }

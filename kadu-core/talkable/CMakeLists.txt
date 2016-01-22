@@ -19,6 +19,8 @@ set (talkable_SRCS
 	model/talkable-model-factory.cpp
 	model/talkable-proxy-model.cpp
 
+	talkable-converter.cpp
+	talkable-module.cpp
 	talkable.cpp
 )
 

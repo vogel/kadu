@@ -29,13 +29,14 @@
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
 #include "status/status-type-manager.h"
+#include "talkable/talkable-converter.h"
 
 #include "contact-parser-tags.h"
 
 static QString getAvatarPath(Talkable talkable)
 {
-	const Avatar &avatar = talkable.avatar();
-	if (talkable.avatar().pixmap().isNull())
+	auto avatar = Core::instance()->talkableConverter()->toAvatar(talkable);
+	if (avatar.pixmap().isNull())
 		return QString();
 	else
 		return PathsProvider::webKitPath(avatar.filePath());
@@ -43,15 +44,16 @@ static QString getAvatarPath(Talkable talkable)
 
 static QString getStatusIconPath(Talkable talkable)
 {
-	if (talkable.isBlocked())
+	if (Core::instance()->talkableConverter()->toBuddy(talkable).isBlocked())
 		return KaduIcon("kadu_icons/blocked", "16x16").webKitPath();
 
-	if (talkable.isBlocking())
+	if (Core::instance()->talkableConverter()->toContact(talkable).isBlocking())
 		return KaduIcon("kadu_icons/blocking", "16x16").webKitPath();
 
-	const Status &status = talkable.currentStatus();
+	auto status = Core::instance()->talkableConverter()->toStatus(talkable);
+	auto account = Core::instance()->talkableConverter()->toAccount(talkable);
 
-	if (auto protocol = talkable.account().protocolHandler())
+	if (auto protocol = account.protocolHandler())
 		return Core::instance()->statusTypeManager()->statusIcon(protocol->statusPixmapPath(), status).webKitPath();
 	else
 		return Core::instance()->statusContainerManager()->statusIcon(status.type()).webKitPath();

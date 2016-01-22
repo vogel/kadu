@@ -42,6 +42,7 @@ class InjectedFactory;
 class Myself;
 class Roster;
 class SelectTalkableComboBox;
+class TalkableConverter;
 class UrlHandlerManager;
 
 class QCheckBox;
@@ -71,6 +72,7 @@ private:
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<Myself> m_myself;
 	QPointer<Roster> m_roster;
+	QPointer<TalkableConverter> m_talkableConverter;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 
 	QFormLayout *Layout;
@@ -127,6 +129,7 @@ private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setRoster(Roster *roster);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_INIT void init();
 

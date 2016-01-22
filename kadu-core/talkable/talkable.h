@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TALKABLE_H
-#define TALKABLE_H
+#pragma once
 
 #include "buddies/buddy.h"
 #include "chat/chat.h"
@@ -149,42 +148,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns Buddy instance from this Talkable instance.
-	 * @return Buddy instance from this Talkable instance
-	 *
-	 * If current Talkable instance is of type ItemBuddy, then Buddy used to create this instance is returned.
-	 * If current Talkable instance is of type ItemContact, then ownerBuddy of Contact used to create this instance is returned.
-	 * If current Talkable instance is of type ItemChat, then if this Chat is composed only of one Contact, this Contact's
-	 * ownerBuddy is returned. In other case null Buddy is returned.
-	 */
-	Buddy toBuddy() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns Contact instance from this Talkable instance.
-	 * @return Contact instance from this Talkable instance
-	 *
-	 * If current Talkable instance is of type ItemContact, then Contact used to create this instance is returned.
-	 * If current Talkable instance is of type ItemBuddy, then preffered contact of Buddy used to create this
-	 * instance is returned. For computation of preffered contact @see BuddyPreferredManager.
-	 * If current Talkable instance is of type ItemChat, then if this Chat is composed only of one Contact, this Contact
-	 * is returned. In other case null Contact is returned.
-	 */
-	Contact toContact() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns Contact instance from this Talkable instance.
-	 * @return Contact instance from this Talkable instance
-	 *
-	 * If current Talkable instance is of type ItemChat, then Chat used to create this instance is returned.
-	 * When current Talkable is of type ItemBuddy then AggreagetChat is returned. In other case, Chat build
-	 * from one Contact is returned.
-	 */
-	Chat toChat() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns true if this Talkable instance does not contains non-null object.
 	 * @return true if this Talkable instance does not contains non-null object
 	 *
@@ -192,40 +155,11 @@ public:
 	 */
 	bool isEmpty() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns avatar assigned to this Talkable.
-	 * @return avatar assigned to this Talkable
-	 *
-	 * If current Talkable instance is of type ItemBuddy and Buddy instance contains non-empty avatar, then it is used.
-	 * If not, avatar of contact returned by toContact() is used and returned.
-	 */
-	Avatar avatar() const;
+	Buddy buddy() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if Buddy returnd by toBuddy() is blocked.
-	 * @return true if Buddy returned by toBuddy() is blocked
-	 */
-	bool isBlocked() const;
+	Chat chat() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if Contact returnd by toContact() is blocking.
-	 * @return true if Contact returned by toContact() is blocking
-	 */
-	bool isBlocking() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns account assigned to this Talkable instance.
-	 * @return account assigned to this Talkable instance
-	 *
-	 * For Talkables of type ItemChat or ItemContact account assigned to contained Chat or Contact object
-	 * is returned. For Talkables of type ItemBuddy account assigned to preferred contact of contained Buddy is
-	 * returned. For computation of preffered contact @see BuddyPreferredManager.
-	 */
-	Account account() const;
+	Contact contact() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -233,13 +167,6 @@ public:
 	 * @return display value of this Talkable instance
 	 */
 	QString display() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns current status of Contact returnd by toContact().
-	 * @return current status of Contact returnd by toContact()
-	 */
-	Status currentStatus() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -269,5 +196,3 @@ Q_DECLARE_METATYPE(Talkable)
 /**
  * @}
  */
-
-#endif // TALKABLE_H

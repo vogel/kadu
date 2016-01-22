@@ -25,6 +25,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/model/contact-data-extractor.h"
 #include "model/roles.h"
+#include "talkable/talkable-converter.h"
 #include "talkable/talkable.h"
 
 #include <QtCore/QMimeData>
@@ -43,6 +44,11 @@ ChatListModel::~ChatListModel()
 void ChatListModel::setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService)
 {
 	m_chatListMimeDataService = chatListMimeDataService;
+}
+
+void ChatListModel::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
 }
 
 void ChatListModel::connectChat(const Chat &chat)
@@ -295,7 +301,7 @@ Chat ChatListModel::chatFromVariant(const QVariant &variant) const
 
 	const Talkable &talkable = variant.value<Talkable>();
 	if (talkable.isValidChat())
-		return talkable.toChat();
+		return m_talkableConverter->toChat(talkable);
 
 	return Chat::null;
 }

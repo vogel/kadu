@@ -678,7 +678,7 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	if (!buddy)
 		return;
 
-	MergeBuddiesDialogWidget *mergeWidget = new MergeBuddiesDialogWidget(buddy,
+	MergeBuddiesDialogWidget *mergeWidget = m_injectedFactory->makeInjected<MergeBuddiesDialogWidget>(buddy,
 			tr("Choose which buddy would you like to merge with <i>%1</i>")
 			.arg(buddy.display()), sender->parentWidget());
 	KaduDialog *window = new KaduDialog(mergeWidget, sender->parentWidget());

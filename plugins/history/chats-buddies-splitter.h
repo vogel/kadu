@@ -30,6 +30,7 @@ class BuddyManager;
 class Buddy;
 class ChatTypeManager;
 class Chat;
+class TalkableConverter;
 class Talkable;
 
 class ChatsBuddiesSplitter : public QObject
@@ -47,6 +48,7 @@ private:
 	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<TalkableConverter> m_talkableConverter;
 
 	QVector<Talkable> m_talkables;
 	QSet<Chat> UsedChats;
@@ -61,6 +63,7 @@ private slots:
 	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();
 
 };

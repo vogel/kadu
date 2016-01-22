@@ -19,20 +19,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MERGE_BUDDIES_DIALOG_WIDGET_H
-#define MERGE_BUDDIES_DIALOG_WIDGET_H
-
-#include <QtCore/QVariant>
-#include <QtWidgets/QDialog>
+#pragma once
 
 #include "buddies/buddy.h"
 #include "gui/widgets/dialog/dialog-widget.h"
 
+#include <QtCore/QPointer>
+#include <QtCore/QVariant>
+#include <QtWidgets/QDialog>
+
+class BuddyManager;
+class InjectedFactory;
+class Myself;
 class SelectTalkableComboBox;
+class TalkableConverter;
 
 class MergeBuddiesDialogWidget : public DialogWidget
 {
 	Q_OBJECT
+
+public:
+	explicit MergeBuddiesDialogWidget(Buddy buddy, const QString &message, QWidget* parent);
+	virtual ~MergeBuddiesDialogWidget();
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<Myself> m_myself;
+	QPointer<TalkableConverter> m_talkableConverter;
 
 	Buddy MyBuddy;
 
@@ -41,13 +55,14 @@ class MergeBuddiesDialogWidget : public DialogWidget
 	virtual void createGui();
 
 private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+	INJEQT_INIT void init();
+
 	void selectedBuddyChanged();
 	virtual void dialogAccepted();
 	virtual void dialogRejected();
 
-public:
-	explicit MergeBuddiesDialogWidget(Buddy buddy, const QString &message, QWidget* parent);
-	virtual ~MergeBuddiesDialogWidget();
 };
-
-#endif // MERGE_BUDDIES_DIALOG_WIDGET_H

@@ -18,15 +18,10 @@
  */
 
 #include "avatars/avatar.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-set.h"
-#include "chat/buddy-chat-manager.h"
-#include "chat/chat-manager.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "model/roles.h"
 #include "status/status-container.h"
 
@@ -115,51 +110,6 @@ bool Talkable::operator != (const Talkable &compareTo) const
 	return !(*this == compareTo);
 }
 
-Buddy Talkable::toBuddy() const
-{
-	switch (Type)
-	{
-		case ItemBuddy: return MyBuddy;
-		case ItemContact: return Core::instance()->buddyManager()->byContact(MyContact, ActionCreateAndAdd);
-		case ItemChat: return Core::instance()->buddyManager()->byContact(toContact(), ActionCreateAndAdd);
-		default:
-			return Buddy::null;
-	}
-}
-
-Contact Talkable::toContact() const
-{
-	switch (Type)
-	{
-		case ItemBuddy: return Core::instance()->buddyPreferredManager()->preferredContact(MyBuddy);
-		case ItemContact: return MyContact;
-		case ItemChat:
-			if (MyChat.contacts().size() == 1)
-				return *MyChat.contacts().begin();
-			else
-				return Contact::null;
-		default:
-			return Contact::null;
-	}
-}
-
-Chat Talkable::toChat() const
-{
-	switch (Type)
-	{
-		case ItemBuddy:
-		{
-			const Chat &chat = ChatTypeContact::findChat(Core::instance()->chatManager(), Core::instance()->buddyPreferredManager()->preferredContact2(MyBuddy), ActionCreateAndAdd);
-			const Chat &buddyChat = Core::instance()->buddyChatManager()->buddyChat(chat);
-			return buddyChat ? buddyChat : chat;
-		}
-		case ItemContact: return ChatTypeContact::findChat(Core::instance()->chatManager(), MyContact, ActionCreateAndAdd);
-		case ItemChat: return MyChat;
-		default:
-			return Chat::null;
-	}
-}
-
 bool Talkable::isEmpty() const
 {
 	switch (Type)
@@ -172,36 +122,19 @@ bool Talkable::isEmpty() const
 	}
 }
 
-Avatar Talkable::avatar() const
+Buddy Talkable::buddy() const
 {
-	Avatar avatar;
-	if (Talkable::ItemBuddy == Type)
-		avatar = toBuddy().buddyAvatar();
-
-	if (!avatar || avatar.pixmap().isNull())
-		avatar = toContact().avatar(true);
-
-	return avatar;
+	return MyBuddy;
 }
 
-bool Talkable::isBlocked() const
+Chat Talkable::chat() const
 {
-	return toBuddy().isBlocked();
+	return MyChat;
 }
 
-bool Talkable::isBlocking() const
+Contact Talkable::contact() const
 {
-	return toContact().isBlocking();
-}
-
-Account Talkable::account() const
-{
-	switch (Type)
-	{
-		case ItemChat: return MyChat.chatAccount();
-		default:
-			return toContact().contactAccount();
-	}
+	return MyContact;
 }
 
 QString Talkable::display() const
@@ -214,14 +147,6 @@ QString Talkable::display() const
 		default:
 			return QString();
 	}
-}
-
-Status Talkable::currentStatus() const
-{
-	if (isValidChat())
-		return MyChat.chatAccount().statusContainer() ? MyChat.chatAccount().statusContainer()->status() : Status();
-	else
-		return toContact().currentStatus();
 }
 
 bool Talkable::isValidChat() const

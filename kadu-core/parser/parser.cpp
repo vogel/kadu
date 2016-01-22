@@ -47,6 +47,7 @@
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
+#include "talkable/talkable-converter.h"
 #include "debug.h"
 
 #include "parser.h"
@@ -223,9 +224,9 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 	ParserToken pe;
 	pe.setType(PT_STRING);
 
-	Chat chat = talkable.toChat();
-	Buddy buddy = talkable.toBuddy();
-	Contact contact = talkable.toContact();
+	Chat chat = Core::instance()->talkableConverter()->toChat(talkable);
+	Buddy buddy = Core::instance()->talkableConverter()->toBuddy(talkable);
+	Contact contact = Core::instance()->talkableConverter()->toContact(talkable);
 
 	switch (s.at(idx).toAscii())
 	{

@@ -29,6 +29,7 @@
 #include <injeqt/injeqt.h>
 
 class ChatListMimeDataService;
+class TalkableConverter;
 
 class KADUAPI ChatListModel : public QAbstractItemModel, public KaduAbstractModel
 {
@@ -61,6 +62,7 @@ public:
 
 private:
 	QPointer<ChatListMimeDataService> m_chatListMimeDataService;
+	QPointer<TalkableConverter> m_talkableConverter;
 
 	QVector<Chat> List;
 
@@ -71,6 +73,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 
 	void contactAboutToBeAdded(const Contact &contact);
 	void contactAdded(const Contact &contact);

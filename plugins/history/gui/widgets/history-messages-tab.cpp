@@ -49,6 +49,7 @@
 #include "talkable/filter/hide-temporary-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
+#include "talkable/talkable-converter.h"
 
 #include "storage/history-messages-storage.h"
 #include "chats-buddies-splitter.h"
@@ -80,6 +81,11 @@ void HistoryMessagesTab::setInjectedFactory(InjectedFactory *injectedFactory)
 void HistoryMessagesTab::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
+}
+
+void HistoryMessagesTab::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
 }
 
 void HistoryMessagesTab::init()
@@ -171,10 +177,10 @@ void HistoryMessagesTab::displayTalkable(const Talkable &talkable, bool force)
 		return;
 
 	CurrentTalkable = talkable;
-	Chat chat = CurrentTalkable.toChat();
+	auto chat = m_talkableConverter->toChat(CurrentTalkable);
 	// if buddy do not have any contact we have to create chat manually
 	if (!chat)
-		chat = m_buddyChatManager->buddyChat(CurrentTalkable.toBuddy());
+		chat = m_buddyChatManager->buddyChat(m_talkableConverter->toBuddy(CurrentTalkable));
 
 	TimelineView->messagesView()->setChat(chat);
 
@@ -296,10 +302,10 @@ void HistoryMessagesTab::currentDateChanged()
 	query.setFromDate(date);
 	query.setToDate(date);
 
-	Chat chat = CurrentTalkable.toChat();
+	auto chat = m_talkableConverter->toChat(CurrentTalkable);
 	// if buddy do not have any contact we have to create chat manually
 	if (!chat)
-		chat = m_buddyChatManager->buddyChat(CurrentTalkable.toBuddy());
+		chat = m_buddyChatManager->buddyChat(m_talkableConverter->toBuddy(CurrentTalkable));
 
 	timelineView()->messagesView()->setChat(chat);
 	TimelineView->setFutureMessages(Storage->messages(query));

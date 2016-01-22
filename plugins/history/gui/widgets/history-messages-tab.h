@@ -44,6 +44,7 @@ class InjectedFactory;
 class MenuInventory;
 class Message;
 class ModelChain;
+class TalkableConverter;
 class TalkableTreeView;
 class TimelineChatMessagesView;
 class WaitOverlay;
@@ -70,6 +71,7 @@ class HistoryMessagesTab : public HistoryTab
 	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
+	QPointer<TalkableConverter> m_talkableConverter;
 
 	HistoryMessagesStorage *Storage;
 
@@ -97,6 +99,7 @@ private slots:
 	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();
 
 	void futureTalkablesAvailable();

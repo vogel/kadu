@@ -26,6 +26,7 @@
 #include "contacts/contact-set.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "model/model-chain.h"
+#include "talkable/talkable-converter.h"
 
 #include <QtCore/QModelIndexList>
 #include <QtWidgets/QAbstractItemView>
@@ -37,6 +38,11 @@ ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
 
 ChatHistoryTab::~ChatHistoryTab()
 {
+}
+
+void ChatHistoryTab::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
 }
 
 void ChatHistoryTab::init()
@@ -54,7 +60,7 @@ void ChatHistoryTab::talkablesAvailable()
 
 	QModelIndexList indexesToSelect;
 
-	auto chat = m_talkableToSelect.toChat();
+	auto chat = m_talkableConverter->toChat(m_talkableToSelect);
 	m_talkableToSelect = Talkable();
 
 	if (chat.contacts().size() == 1)

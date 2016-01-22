@@ -46,6 +46,7 @@
 #include "gui/widgets/history-talkable-combo-box.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "storage/history-messages-storage.h"
+#include "talkable/talkable-converter.h"
 #include "history-query.h"
 
 #include "search-tab.h"
@@ -62,6 +63,11 @@ SearchTab::~SearchTab()
 void SearchTab::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void SearchTab::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
 }
 
 void SearchTab::init()
@@ -306,7 +312,7 @@ void SearchTab::currentDateChanged()
 	const Talkable talkable = currentIndex.data(TalkableRole).value<Talkable>();
 	const QDate date = currentIndex.data(DateRole).value<QDate>();
 
-	Chat chat = talkable.toChat();
+	auto chat = m_talkableConverter->toChat(talkable);
 	if (!chat)
 	{
 		chat = Chat::create();

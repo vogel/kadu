@@ -38,6 +38,7 @@ class BuddyListMimeDataService;
 class BuddyPreferredManager;
 class Buddy;
 class ContactManager;
+class TalkableConverter;
 
 /**
  * @addtogroup Buddy
@@ -266,6 +267,7 @@ private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 	QPointer<ContactManager> m_contactManager;
+	QPointer<TalkableConverter> m_talkableConverter;
 
 	bool Checkable;
 	BuddyList List;
@@ -407,6 +409,7 @@ private:
 
 private slots:
 	INJEQT_SET void setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 
 };
 
