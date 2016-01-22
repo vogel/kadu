@@ -27,8 +27,8 @@
 ChatModule::ChatModule()
 {
 	add_type<BuddyChatManager>();
-	add_type<ChatTypeManager>();
 	add_type<ChatListMimeDataService>();
+	add_type<ChatTypeManager>();
 	add_type<RecentChatManager>();
 }
 

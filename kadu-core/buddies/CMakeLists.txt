@@ -4,7 +4,7 @@ set (buddies_SRCS
 	buddy-additional-data-delete-handler-manager.cpp
 	buddy-dummy-factory.cpp
 	buddy-list.cpp
-	buddy-list-mime-data-helper.cpp
+	buddy-list-mime-data-service.cpp
 	buddy-manager.cpp
 	buddy-module.cpp
 	buddy-preferred-manager.cpp

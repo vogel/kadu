@@ -21,6 +21,7 @@
 
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-dummy-factory.h"
+#include "buddies/buddy-list-mime-data-service.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-storage.h"
@@ -32,6 +33,7 @@ BuddyModule::BuddyModule()
 	add_type<BuddyAdditionalDataDeleteHandlerManager>();
 	add_type<BuddyConfigurationWidgetFactoryRepository>();
 	add_type<BuddyDummyFactory>();
+	add_type<BuddyListMimeDataService>();
 	add_type<BuddyManager>();
 	add_type<BuddyPreferredManager>();
 	add_type<BuddyStorage>();

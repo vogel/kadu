@@ -34,6 +34,7 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class BuddyListMimeDataService;
 class BuddyPreferredManager;
 class Buddy;
 class ContactManager;
@@ -400,6 +401,12 @@ private slots:
 	 * This slot is connected to every buddy in list. Updated buddy is read from QObject::sender() method.
 	 */
 	void contactRemoved(const Contact &contact);
+
+private:
+	QPointer<BuddyListMimeDataService> m_buddyListMimeDataService;
+
+private slots:
+	INJEQT_SET void setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService);
 
 };
 

@@ -19,10 +19,8 @@
 
 #pragma once
 
-#include <QtCore/QList>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtCore/QStringList>
 #include <injeqt/injeqt.h>
 #include <memory>
 
@@ -41,7 +39,6 @@ public:
 
 	QStringList mimeTypes();
 	std::unique_ptr<QMimeData> toMimeData(const QList<Chat> &chatList);
-
 	QList<Chat> fromMimeData(const QMimeData *mimeData);
 
 private:

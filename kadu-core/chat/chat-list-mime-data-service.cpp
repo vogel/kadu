@@ -51,7 +51,6 @@ std::unique_ptr<QMimeData> ChatListMimeDataService::toMimeData(const QList<Chat>
 		return 0;
 
 	auto mimeData = make_unique<QMimeData>();
-
 	auto chatListStrings = QStringList{};
 	for (auto const &chat : chatList)
 		chatListStrings << chat.uuid().toString();

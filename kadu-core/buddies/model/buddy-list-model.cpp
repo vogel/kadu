@@ -22,7 +22,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 
-#include "buddies/buddy-list-mime-data-helper.h"
+#include "buddies/buddy-list-mime-data-service.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
@@ -35,6 +35,8 @@
 #include "buddy-data-extractor.h"
 #include "buddy-list-model.h"
 
+#include <QtCore/QMimeData>
+
 BuddyListModel::BuddyListModel(QObject *parent) :
 		QAbstractItemModel(parent), Checkable(false)
 {
@@ -45,6 +47,11 @@ BuddyListModel::~BuddyListModel()
 	setBuddyList(BuddyList());
 
 	triggerAllAccountsUnregistered(m_accountManager);
+}
+
+void BuddyListModel::setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService)
+{
+	m_buddyListMimeDataService = buddyListMimeDataService;
 }
 
 void BuddyListModel::setAccountManager(AccountManager *accountManager)
@@ -520,7 +527,7 @@ QModelIndexList BuddyListModel::indexListForValue(const QVariant &value) const
 
 QStringList BuddyListModel::mimeTypes() const
 {
-	return BuddyListMimeDataHelper::mimeTypes();
+	return m_buddyListMimeDataService->mimeTypes();
 }
 
 QMimeData * BuddyListModel::mimeData(const QModelIndexList &indexes) const
@@ -534,7 +541,7 @@ QMimeData * BuddyListModel::mimeData(const QModelIndexList &indexes) const
 		list << con;
 	}
 
-	return BuddyListMimeDataHelper::toMimeData(list);
+	return m_buddyListMimeDataService->toMimeData(list).release();
 }
 
 void BuddyListModel::accountRegistered(Account account)

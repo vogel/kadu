@@ -18,24 +18,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_LIST_MIME_DATA_HELPER_H
-#define BUDDY_LIST_MIME_DATA_HELPER_H
+#pragma once
 
 #include "buddies/buddy-list.h"
 
-class QMimeData;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+#include <memory>
 
 class BuddyList;
+class BuddyManager;
 
-class BuddyListMimeDataHelper
+class QMimeData;
+
+class BuddyListMimeDataService : public QObject
 {
-	static QLatin1String MimeType;
+	Q_OBJECT
 
 public:
-	static QStringList mimeTypes();
-	static QMimeData * toMimeData(const BuddyList &buddyList);
-	static BuddyList fromMimeData(const QMimeData *mimeData);
+	Q_INVOKABLE explicit BuddyListMimeDataService(QObject *parent = nullptr);
+	virtual ~BuddyListMimeDataService();
+
+	QStringList mimeTypes();
+	std::unique_ptr<QMimeData> toMimeData(const BuddyList &buddyList);
+	BuddyList fromMimeData(const QMimeData *mimeData);
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+
+	QLatin1String m_mimeType;
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 
 };
-
-#endif // BUDDY_LIST_MIME_DATA_HELPER_H
