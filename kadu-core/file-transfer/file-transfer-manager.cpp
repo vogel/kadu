@@ -32,7 +32,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-notifications.h"
@@ -46,6 +45,7 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "notification/notification-callback-repository.h"
@@ -103,6 +103,11 @@ void FileTransferManager::setFileTransferActions(FileTransferActions *fileTransf
 void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
 {
 	m_fileTransferHandlerManager = fileTransferHandlerManager;
+}
+
+void FileTransferManager::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void FileTransferManager::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
@@ -207,7 +212,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, QString loca
 	auto chat = ChatTypeContact::findChat(m_chatManager, transfer.peer(), ActionReturnNull);
 	QWidget *parent = m_chatWidgetRepository->widgetForChat(chat);
 	if (parent == nullptr)
-		parent = Core::instance()->kaduWindow();
+		parent = m_kaduWindowService->kaduWindow();
 
 	auto remoteFileName = transfer.remoteFileName();
 	auto saveFileName = localFileName;

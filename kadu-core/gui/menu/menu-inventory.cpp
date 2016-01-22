@@ -23,6 +23,7 @@
 
 #include "accounts/account.h"
 #include "contacts/contact-set.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -39,10 +40,15 @@ MenuInventory::~MenuInventory()
 {
 }
 
+void MenuInventory::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 KaduMenu * MenuInventory::menu(const QString &category)
 {
 	if (!Menus.contains(category))
-		Menus.insert(category, new KaduMenu(this, category));
+		Menus.insert(category, m_injectedFactory->makeInjected<KaduMenu>(category));
 
 	return Menus.value(category);
 }

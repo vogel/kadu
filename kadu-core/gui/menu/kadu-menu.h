@@ -27,9 +27,11 @@
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
 #include <QtWidgets/QMenu>
+#include <injeqt/injeqt.h>
 
 class ActionContext;
 class ActionDescription;
+class KaduWindowService;
 class MenuInventory;
 class MenuItem;
 
@@ -60,7 +62,7 @@ public:
 	};
 
 public:
-	explicit KaduMenu(MenuInventory *menuInventory, const QString &category, KaduMenu *parent = nullptr);
+	explicit KaduMenu(const QString &category, KaduMenu *parent = nullptr);
 	virtual ~KaduMenu();
 
 	void attachToMenu(QMenu *menu);
@@ -88,9 +90,13 @@ public:
 	void applyTo(QMenu *menu, ActionContext *context = 0);
 
 private:
+	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MenuInventory> m_menuInventory;
 
 private slots:
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+
 	void menuDestroyed(QObject *object);
 
 	void updateGuiMenuSlot();

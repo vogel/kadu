@@ -22,9 +22,9 @@
 #include "docking-menu-action-repository.h"
 #include "status-notifier-item.h"
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/status-menu.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-service.h"
@@ -64,6 +64,11 @@ void DockingMenuHandler::setIconsManager(IconsManager *iconsManager)
 void DockingMenuHandler::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void DockingMenuHandler::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void DockingMenuHandler::setNotificationService(NotificationService *notificationService)
@@ -148,7 +153,7 @@ void DockingMenuHandler::doUpdate()
 	m_menu->addAction(m_silentModeAction);
 	m_menu->addSeparator();
 #if defined(Q_OS_UNIX)
-	m_mainWindowLastVisible = Core::instance()->kaduWindow()->window()->isVisible();
+	m_mainWindowLastVisible = m_kaduWindowService->kaduWindow()->window()->isVisible();
 	m_menu->addAction(m_mainWindowLastVisible ? m_hideKaduAction : m_showKaduAction);
 #endif
 	m_menu->addAction(m_closeKaduAction);
@@ -196,12 +201,12 @@ void DockingMenuHandler::addActionRepositoryMenus()
 
 void DockingMenuHandler::showKaduWindow()
 {
-	_activateWindow(Core::instance()->kaduWindow());
+	_activateWindow(m_kaduWindowService->kaduWindow());
 }
 
 void DockingMenuHandler::hideKaduWindow()
 {
-	Core::instance()->kaduWindow()->window()->hide();
+	m_kaduWindowService->kaduWindow()->window()->hide();
 }
 
 void DockingMenuHandler::silentModeToggled(bool enabled)

@@ -63,8 +63,8 @@
 
 #include "activate.h"
 
-ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager) :
-		QDialog(Core::instance()->kaduWindow(), Qt::Window),
+ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager, QWidget *parent) :
+		QDialog(parent, Qt::Window),
 		DesktopAwareObject(this),
 		m_dataManager{dataManager},
 		Name(name),

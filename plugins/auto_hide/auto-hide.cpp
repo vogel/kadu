@@ -25,8 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/core.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 
 AutoHide::AutoHide(QObject *parent) :
@@ -52,6 +51,11 @@ void AutoHide::setIdle(Idle *idle)
 	m_idle = idle;
 }
 
+void AutoHide::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
+}
+
 void AutoHide::init()
 {
 	configurationUpdated();
@@ -64,7 +68,7 @@ void AutoHide::timerTimeoutSlot()
 
 	if (m_idle->secondsIdle() >= m_idleTime)
 	{
-		auto window = Core::instance()->kaduWindow();
+		auto window = m_kaduWindowService->kaduWindow();
 		if (window->docked())
 			window->window()->hide();
 	}

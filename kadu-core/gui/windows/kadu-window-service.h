@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2012, 2013 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,43 +19,44 @@
 
 #pragma once
 
+#include "provider/default-provider.h"
+#include "provider/simple-provider.h"
 #include "exports.h"
-#include "kadu-menu.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class QMenu;
-class QWidget;
-
-class ActionContext;
-class ActionDescription;
-class Contact;
 class InjectedFactory;
-class ProtocolMenuManager;
+class KaduWindow;
 
-class KADUAPI MenuInventory : public QObject
+class KADUAPI KaduWindowService : public QObject
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MenuInventory(QObject *parent = nullptr);
-    virtual ~MenuInventory();
+	Q_INVOKABLE explicit KaduWindowService(QObject *parent = nullptr);
+	virtual ~KaduWindowService();
 
-	KaduMenu * menu(const QString &category);
+	void createWindow();
 
-	void registerProtocolMenuManager(ProtocolMenuManager *manager);
-	void unregisterProtocolMenuManager(ProtocolMenuManager *manager);
+	KaduWindow * kaduWindow();
+	void showMainWindow();
 
-	QList<ProtocolMenuManager *> & protocolMenuManagers() { return ProtocolMenuManagers; }
+	void setShowMainWindowOnStart(bool showMainWindowOnStart);
+	std::shared_ptr<DefaultProvider<QWidget *>> mainWindowProvider() const;
 
 private:
 	QPointer<InjectedFactory> m_injectedFactory;
 
-	QMap<QString, KaduMenu *> Menus;
-	QList<ProtocolMenuManager *> ProtocolMenuManagers;
+	KaduWindow *m_kaduWindow;
+	std::shared_ptr<SimpleProvider<QWidget *>> m_kaduWindowProvider;
+	std::shared_ptr<DefaultProvider<QWidget *>> m_mainWindowProvider;
+	bool m_showMainWindowOnStart; // TODO: it is a hack for docking
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
+	void kaduWindowDestroyed();
 
 };

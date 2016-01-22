@@ -39,7 +39,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 #include "core/application.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/actions/action.h"
@@ -65,6 +64,7 @@
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/buddy-delete-window.h"
 #include "gui/windows/kadu-dialog.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/group-edit-window.h"
 #include "gui/windows/main-configuration-window-service.h"
@@ -151,20 +151,20 @@ void disableNoEMail(UrlHandlerManager *urlHandlerManager, Action *action)
 	action->setEnabled(hasMail);
 }
 
-void disableIfContactSelected(Action *action)
+void disableIfContactSelected(Myself *myself, Action *action)
 {
 	if (!action || action->context())
 		return;
 
 	action->setEnabled(!action->context()->roles().contains(ContactRole) && !action->context()->buddies().isEmpty());
 
-	if (action->context()->buddies().contains(Core::instance()->myself()->buddy()))
+	if (action->context()->buddies().contains(myself->buddy()))
 		action->setEnabled(false);
 	else
 		action->setEnabled(true);
 }
 
-void disableMerge(Action *action)
+void disableMerge(Myself *myself, Action *action)
 {
 	if (action->context()->buddies().isAnyTemporary())
 	{
@@ -172,7 +172,7 @@ void disableMerge(Action *action)
 		return;
 	}
 
-	if (action->context()->buddies().contains(Core::instance()->myself()->buddy()))
+	if (action->context()->buddies().contains(myself->buddy()))
 		action->setEnabled(false);
 	else
 		action->setEnabled(true);
@@ -224,6 +224,11 @@ void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void KaduWindowActions::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
+}
+
 void KaduWindowActions::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
 {
 	m_mainConfigurationWindowService = mainConfigurationWindowService;
@@ -232,6 +237,11 @@ void KaduWindowActions::setMainConfigurationWindowService(MainConfigurationWindo
 void KaduWindowActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
+}
+
+void KaduWindowActions::setMyself(Myself *myself)
+{
+	m_myself = myself;
 }
 
 void KaduWindowActions::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
@@ -455,7 +465,7 @@ void KaduWindowActions::init()
 		ActionDescription::TypeUser, "mergeContactAction",
 		this, SLOT(mergeContactActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/merge-buddies"), tr("Merge Buddies..."), false,
-		disableMerge
+		[this](Action *action){ return disableMerge(m_myself, action); }
 	);
 
 	m_menuInventory
@@ -731,7 +741,7 @@ void KaduWindowActions::aboutActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	m_injectedFactory->makeInjected<::About>(Core::instance()->kaduWindow())->show();
+	m_injectedFactory->makeInjected<::About>(m_kaduWindowService->kaduWindow())->show();
 }
 
 void KaduWindowActions::translateActionActivated(QAction *sender, bool toggled)
@@ -747,7 +757,7 @@ void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggl
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	Core::instance()->kaduWindow()->infoPanel()->setVisible(toggled);
+	m_kaduWindowService->kaduWindow()->infoPanel()->setVisible(toggled);
 
 	m_configuration->deprecatedApi()->writeEntry("Look", "ShowInfoPanel", toggled);
 }
@@ -893,11 +903,11 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 	const Buddy &buddy = action->context()->buddies().toBuddy();
 	if (!buddy)
 	{
-		(m_injectedFactory->makeInjected<SearchWindow>(Core::instance()->kaduWindow()))->show();
+		(m_injectedFactory->makeInjected<SearchWindow>(m_kaduWindowService->kaduWindow()))->show();
 		return;
 	}
 
-	auto sd = m_injectedFactory->makeInjected<SearchWindow>(Core::instance()->kaduWindow(), buddy);
+	auto sd = m_injectedFactory->makeInjected<SearchWindow>(m_kaduWindowService->kaduWindow(), buddy);
 	sd->show();
 	sd->firstSearch();
 
@@ -947,7 +957,7 @@ void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool 
 
 void KaduWindowActions::configurationUpdated()
 {
-	ActionContext *context = Core::instance()->kaduWindow()->actionContext();
+	ActionContext *context = m_kaduWindowService->kaduWindow()->actionContext();
 
 	if (ShowInfoPanel->action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 		ShowInfoPanel->action(context)->trigger();

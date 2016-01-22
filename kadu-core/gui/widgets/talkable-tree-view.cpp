@@ -29,7 +29,6 @@
 #include <QtWidgets/QMenu>
 
 #include "accounts/account.h"
-#include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
@@ -38,7 +37,6 @@
 #include "chat/chat-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -52,6 +50,7 @@
 #include "gui/widgets/talkable-delegate.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window-actions.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
@@ -84,6 +83,11 @@ TalkableTreeView::~TalkableTreeView()
 void TalkableTreeView::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void TalkableTreeView::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void TalkableTreeView::setMenuInventory(MenuInventory *menuInventory)
@@ -207,9 +211,9 @@ void TalkableTreeView::keyPressEvent(QKeyEvent *event)
 {
 	// TODO 0.10.0: add proper shortcuts handling
 	if (HotKey::shortCut(event, "ShortCuts", "kadu_deleteuser"))
-		Core::instance()->kaduWindow()->kaduWindowActions()->deleteTalkable()->trigger(Context);
+		m_kaduWindowService->kaduWindow()->kaduWindowActions()->deleteTalkable()->trigger(Context);
 	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))
-		Core::instance()->kaduWindow()->kaduWindowActions()->editTalkable()->trigger(Context);
+		m_kaduWindowService->kaduWindow()->kaduWindowActions()->editTalkable()->trigger(Context);
 	else
 	{
 		switch (event->key())

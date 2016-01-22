@@ -62,8 +62,8 @@ UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
 
 	connect(messageLabel, SIGNAL(linkActivated(QString)), this, SLOT(downloadClicked()));
 
-	CheckForUpdates = new QCheckBox(tr("Check for updates when Kadu is opened"));
-	CheckForUpdates->setChecked(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "CheckUpdates", true));
+	m_checkForUpdates = new QCheckBox(tr("Check for updates when Kadu is opened"));
+	m_checkForUpdates->setChecked(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "CheckUpdates", true));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -75,8 +75,8 @@ UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
 
 	layout->addWidget(messageLabel);
 	layout->addSpacing(5);
-	layout->addWidget(CheckForUpdates);
-	layout->setAlignment(CheckForUpdates, Qt::AlignRight);
+	layout->addWidget(m_checkForUpdates);
+	layout->setAlignment(m_checkForUpdates, Qt::AlignRight);
 	layout->addStretch(100);
 	layout->addWidget(buttons);
 }
@@ -95,7 +95,7 @@ void UpdatesDialog::downloadClicked()
 
 void UpdatesDialog::accepted()
 {
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "CheckUpdates", CheckForUpdates->isChecked());
+	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "CheckUpdates", m_checkForUpdates->isChecked());
 
 	close();
 }

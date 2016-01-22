@@ -28,6 +28,7 @@
 
 class Configuration;
 class Idle;
+class KaduWindowService;
 
 class AutoHide : public QObject, ConfigurationAwareObject
 {
@@ -40,6 +41,7 @@ public:
 private:
 	QPointer<Configuration> m_configuration;
 	QPointer<Idle> m_idle;
+	QPointer<KaduWindowService> m_kaduWindowService;
 
 	QTimer m_timer;
 	int m_idleTime;
@@ -48,6 +50,7 @@ private:
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIdle(Idle *idle);
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_INIT void init();
 
 	void timerTimeoutSlot();

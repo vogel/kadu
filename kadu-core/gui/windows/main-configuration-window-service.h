@@ -27,6 +27,7 @@
 
 class ConfigurationUiHandlerRepository;
 class InjectedFactory;
+class KaduWindowService;
 class MainConfigurationWindow;
 
 class KADUAPI MainConfigurationWindowService : public QObject
@@ -45,6 +46,7 @@ public:
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MainConfigurationWindow> m_mainConfigurationWindow;
 
 	QList<QString> m_uiFiles;
@@ -52,5 +54,6 @@ private:
 private slots:
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 
 };

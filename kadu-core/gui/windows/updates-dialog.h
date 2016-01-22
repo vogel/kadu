@@ -20,12 +20,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UPDATES_DIALOG_H
-#define UPDATES_DIALOG_H
-
-#include <QtWidgets/QDialog>
+#pragma once
 
 #include "os/generic/desktop-aware-object.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
 
 class QCheckBox;
 
@@ -33,18 +34,18 @@ class UpdatesDialog : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
-	QCheckBox *CheckForUpdates;
+public:
+	explicit UpdatesDialog(const QString &newestVersion, QWidget *parent = nullptr);
+	virtual ~UpdatesDialog();
+
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
+private:
+	QCheckBox *m_checkForUpdates;
 
 private slots:
 	void accepted();
 	void downloadClicked();
 
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
-
-public:
-	explicit UpdatesDialog(const QString &newestVersion, QWidget *parent = nullptr);
-	virtual ~UpdatesDialog();
 };
-
-#endif // UPDATES_DIALOG_H

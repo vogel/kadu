@@ -26,22 +26,32 @@
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "protocols/protocol-menu-manager.h"
 #include "menu-item.h"
 
 #include "kadu-menu.h"
 
-KaduMenu::KaduMenu(MenuInventory *menuInventory, const QString &category, KaduMenu *parent) :
+KaduMenu::KaduMenu(const QString &category, KaduMenu *parent) :
 		QObject{parent},
 		Category{category},
-		IsSorted{true},
-		m_menuInventory{menuInventory}
+		IsSorted{true}
 {
 }
 
 KaduMenu::~KaduMenu()
 {
+}
+
+void KaduMenu::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
+}
+
+void KaduMenu::setMenuInventory(MenuInventory *menuInventory)
+{
+	m_menuInventory = menuInventory;
 }
 
 void KaduMenu::menuDestroyed(QObject *object)
@@ -208,7 +218,7 @@ void KaduMenu::updateGuiMenuSlot()
 
 ActionContext * KaduMenu::getActionContext()
 {
-	return Core::instance()->kaduWindow()->actionContext();
+	return m_kaduWindowService->kaduWindow()->actionContext();
 }
 
 void KaduMenu::update()

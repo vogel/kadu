@@ -9,6 +9,12 @@ set (os_SRCS
 	os-module.cpp
 )
 
+if (NOT WIN32)
+	list (APPEND os_SRCS
+		unix/signal-handler.cpp
+	)
+endif ()
+
 set (os_MOC_SRCS
 	generic/desktop-aware-object-helper.h
 	generic/window-geometry-manager.h

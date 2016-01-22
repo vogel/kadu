@@ -33,6 +33,7 @@ class ChatDataWindowRepository;
 class ChatTypeManager;
 class Chat;
 class InjectedFactory;
+class KaduWindowService;
 class Myself;
 
 class EditTalkableAction : public ActionDescription
@@ -43,6 +44,7 @@ class EditTalkableAction : public ActionDescription
 	QPointer<ChatDataWindowRepository> m_chatDataWindowRepository;
 	QPointer<ChatTypeManager> m_chatTypeManager;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<Myself> m_myself;
 
 	int actionRole(ActionContext *context) const;
@@ -63,6 +65,7 @@ private slots:
 	INJEQT_SET void setChatDataWindowRepository(ChatDataWindowRepository *chatDataWindowRepository);
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMyself(Myself *myself);
 
 protected:

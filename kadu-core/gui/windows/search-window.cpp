@@ -37,12 +37,12 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/windows/add-buddy-window.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/search-window-actions.h"
@@ -132,6 +132,11 @@ void SearchWindow::setContactManager(ContactManager *contactManager)
 void SearchWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void SearchWindow::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void SearchWindow::setSearchWindowActions(SearchWindowActions *searchWindowActions)
@@ -372,7 +377,7 @@ ContactSet SearchWindow::selectedContacts() const
 void SearchWindow::addFound()
 {
 	foreach (const Buddy &buddy, selectedContacts().toBuddySet())
-		(m_injectedFactory->makeInjected<AddBuddyWindow>(Core::instance()->kaduWindow(), buddy))->show();
+		(m_injectedFactory->makeInjected<AddBuddyWindow>(m_kaduWindowService->kaduWindow(), buddy))->show();
 }
 
 void SearchWindow::chatFound()

@@ -30,6 +30,7 @@
 #include "gui/widgets/chat-widget/chat-widget-title.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/kadu-icon.h"
 #include "message/unread-message-repository.h"
@@ -55,6 +56,11 @@ void SingleWindowManager::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void SingleWindowManager::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
+}
+
 void SingleWindowManager::setSingleWindow(SingleWindow *singleWindow)
 {
 	m_singleWindow = singleWindow;
@@ -67,12 +73,12 @@ void SingleWindowManager::init()
 
 	m_windowProvider->provideValue(m_singleWindow);
 
-	Core::instance()->mainWindowProvider()->installCustomProvider(m_windowProvider);
+	m_kaduWindowService->mainWindowProvider()->installCustomProvider(m_windowProvider);
 }
 
 void SingleWindowManager::done()
 {
-	Core::instance()->mainWindowProvider()->removeCustomProvider(m_windowProvider);
+	m_kaduWindowService->mainWindowProvider()->removeCustomProvider(m_windowProvider);
 
 	m_windowProvider->provideValue(0);
 }
@@ -91,7 +97,7 @@ SingleWindow::SingleWindow(QWidget *parent) :
 
 SingleWindow::~SingleWindow()
 {
-	KaduWindow *kadu = Core::instance()->kaduWindow();
+	KaduWindow *kadu = m_kaduWindowService->kaduWindow();
 	bool visible = isVisible();
 
 	m_configuration->deprecatedApi()->writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
@@ -147,12 +153,17 @@ void SingleWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void SingleWindow::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
+}
+
 void SingleWindow::init()
 {
 	new TaskbarProgress{m_fileTransferManager, this};
 	setWindowRole("kadu-single-window");
 
-	KaduWindow *kadu = Core::instance()->kaduWindow();
+	KaduWindow *kadu = m_kaduWindowService->kaduWindow();
 	bool visible = kadu->isVisible();
 
 	m_split = new QSplitter(Qt::Horizontal, this);
@@ -231,7 +242,7 @@ void SingleWindow::changeEvent(QEvent *event)
 void SingleWindow::changeRosterPos(int newRosterPos)
 {
 	m_rosterPos = newRosterPos;
-	m_split->insertWidget(m_rosterPos, Core::instance()->kaduWindow());
+	m_split->insertWidget(m_rosterPos, m_kaduWindowService->kaduWindow());
 }
 
 ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
@@ -333,7 +344,7 @@ void SingleWindow::closeEvent(QCloseEvent *event)
 		return;
 	}
 
-	if (Core::instance()->kaduWindow()->docked())
+	if (m_kaduWindowService->kaduWindow()->docked())
 	{
 		event->ignore();
 		hide();
@@ -347,7 +358,7 @@ void SingleWindow::closeEvent(QCloseEvent *event)
 
 void SingleWindow::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape && Core::instance()->kaduWindow()->docked())
+	if (event->key() == Qt::Key_Escape && m_kaduWindowService->kaduWindow()->docked())
 	{
 		hide();
 		return;

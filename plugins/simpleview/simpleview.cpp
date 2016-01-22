@@ -27,8 +27,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar.h"
@@ -36,37 +34,24 @@
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/main-configuration-window.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-window.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
-#include <plugin/plugin-repository.h>
+#include "plugin/plugin-repository.h"
 
 #include "plugins/docking/docking.h"
 #include "plugins/docking/docking-menu-action-repository.h"
+#include "plugins/docking/docking-plugin-object.h"
 
 #include "simpleview-config-ui.h"
 #include "simpleview.h"
-#include <docking-plugin-object.h>
 
 SimpleView::SimpleView(QObject *parent) :
 	QObject{parent},
 	SimpleViewActive(false)
 {
-	RosterWidget *roster;
-
-	SimpleViewConfigUi::createDefaultConfiguration();
-
-	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
-	DockAction->setCheckable(true);
-	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
-
-	KaduWindowHandle = Core::instance()->kaduWindow();
-	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
-	roster = KaduWindowHandle->findChild<RosterWidget *>();
-	GroupTabBarHandle = roster->findChild<GroupTabBar *>();
-	TalkableTreeViewHandle = roster->talkableTreeView();
-	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
 }
 
 SimpleView::~SimpleView()
@@ -84,8 +69,26 @@ void SimpleView::setDockingMenuActionRepository(DockingMenuActionRepository *doc
 	m_dockingMenuActionRepository = dockingMenuActionRepository;
 }
 
+void SimpleView::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
+}
+
 void SimpleView::init()
 {
+	SimpleViewConfigUi::createDefaultConfiguration();
+
+	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
+	DockAction->setCheckable(true);
+	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
+
+	KaduWindowHandle = m_kaduWindowService->kaduWindow();
+	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
+	auto roster = KaduWindowHandle->findChild<RosterWidget *>();
+	GroupTabBarHandle = roster->findChild<GroupTabBar *>();
+	TalkableTreeViewHandle = roster->talkableTreeView();
+	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
+
 	m_dockingMenuActionRepository->addAction(DockAction);
 
 	DiffRect = m_configuration->deprecatedApi()->readRectEntry("Look", "SimpleViewGeometry");
@@ -204,10 +207,10 @@ void SimpleView::simpleViewToggle(bool activate)
 			MainWindowHandle->setGeometry(r);
 
 			/* Status button */
-			StatusButtonsHandle->setVisible(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
+			StatusButtonsHandle->setVisible(m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
 
 			/* Info panel*/
-			if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+			if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 				KaduWindowHandle->infoPanel()->show();
 
 			/* ScrollBar */
@@ -219,7 +222,7 @@ void SimpleView::simpleViewToggle(bool activate)
 			 */
 
 			/* GroupBar */
-			if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs"))
+			if (m_configuration->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs"))
 				GroupTabBarHandle->setVisible(true);
 
 			/* Menu bar */
@@ -256,9 +259,9 @@ void SimpleView::configurationUpdated()
 	/* Give the kadu update the GUI with old configuration */
 	simpleViewToggle(false);
 
-	KeepSize = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
-	NoScrollBar = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
-	Borderless = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
+	KeepSize = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
+	NoScrollBar = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
+	Borderless = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
 
 }
 

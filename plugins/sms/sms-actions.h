@@ -34,6 +34,7 @@ class Actions;
 class ChatWidget;
 class History;
 class InjectedFactory;
+class KaduWindowService;
 class MenuInventory;
 class MobileNumberManager;
 class SmsDialogRepository;
@@ -47,6 +48,7 @@ class SmsActions : public QObject
 	QPointer<Actions> m_actions;
 	QPointer<History> m_history;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MobileNumberManager> m_mobileNumberManager;
 	QPointer<SmsDialogRepository> m_smsDialogRepository;
@@ -59,6 +61,7 @@ private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setHistory(History *history);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMobileNumberManager(MobileNumberManager *mobileNumberManager);
 	INJEQT_SET void setSmsDialogRepository(SmsDialogRepository *smsDialogRepository);

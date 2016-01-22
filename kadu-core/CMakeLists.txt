@@ -83,10 +83,6 @@ if (WIN32)
 		main_win32.cpp
 		kadu.rc
 	)
-else ()
-	list (APPEND main_SRCS
-		main_unix.cpp
-	)
 endif ()
 
 set (kadu_MOC_SRCS

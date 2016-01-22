@@ -48,9 +48,11 @@ class DefaultProxyAction;
 class EditTalkableAction;
 class GroupManager;
 class InjectedFactory;
+class KaduWindowService;
 class MainConfigurationWindowService;
 class MainWindow;
 class MenuInventory;
+class Myself;
 class RecentChatsAction;
 class StatusContainer;
 class UrlHandlerManager;
@@ -67,8 +69,10 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<Configuration> m_configuration;
 	QPointer<GroupManager> m_groupManager;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MenuInventory> m_menuInventory;
+	QPointer<Myself> m_myself;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
@@ -117,8 +121,10 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setGroupManager(GroupManager *groupManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 	INJEQT_INIT void init();
@@ -176,8 +182,6 @@ public:
 
 };
 
-void disableNonIdUles(Action *action);
-void disableNotOneUles(Action *action);
 void disableNoContact(Action *action);
 void disableNoDescription(Action *action);
 void disableNoDescriptionUrl(Action *action);

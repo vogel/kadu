@@ -23,7 +23,6 @@
 #include <QtWidgets/QMenu>
 
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
@@ -32,6 +31,7 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "debug.h"
 
@@ -69,6 +69,11 @@ void SmsActions::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void SmsActions::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
+}
+
 void SmsActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -96,7 +101,7 @@ void SmsActions::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
 
 void SmsActions::init()
 {
-	connect(Core::instance()->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
+	connect(m_kaduWindowService->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
 			this, SLOT(talkableActivated(Talkable)));
 
 	sendSmsActionDescription = new ActionDescription(m_actions, this,
@@ -118,7 +123,7 @@ void SmsActions::init()
 
 void SmsActions::done()
 {
-	disconnect(Core::instance()->kaduWindow(), 0, this, 0);
+	disconnect(m_kaduWindowService->kaduWindow(), 0, this, 0);
 
 	m_menuInventory
 		->menu("buddy-list")

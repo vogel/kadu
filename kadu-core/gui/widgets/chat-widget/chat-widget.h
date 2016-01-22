@@ -51,6 +51,7 @@ class CustomInput;
 class FilteredTreeView;
 class FormattedStringFactory;
 class InjectedFactory;
+class KaduWindowService;
 class MessageManager;
 class Protocol;
 class SortedMessages;
@@ -73,6 +74,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	QPointer<Configuration> m_configuration;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
 
@@ -114,6 +116,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
 	INJEQT_INIT void init();
@@ -145,8 +148,6 @@ public:
 
 	void appendSystemMessage(const QString &content);
 	void appendSystemMessage(std::unique_ptr<FormattedString> &&content);
-
-	void repaintMessages();
 
 	CustomInput * edit() const;
 	TalkableProxyModel * talkableProxyModel() const;

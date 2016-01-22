@@ -80,6 +80,7 @@
 #include "gui/windows/chat-window/chat-window-storage-configurator.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/window-chat-widget-container-handler.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window-actions.h"
 #include "gui/windows/search-window.h"
@@ -138,6 +139,10 @@
 #include "kadu-config.h"
 #include "updates.h"
 
+#ifdef Q_OS_LINUX
+#	include "os/unix/signal-handler.h"
+#endif
+
 #if WITH_LIBINDICATE_QT
 #include <libindicate-qt/qindicateserver.h>
 #endif
@@ -174,11 +179,7 @@ QString Core::nameWithVersion()
 
 Core::Core(injeqt::injector &&injector) :
 		m_injector{std::move(injector)},
-		KaduWindowProvider{new SimpleProvider<QWidget *>(0)},
-		MainWindowProvider{new DefaultProvider<QWidget *>(KaduWindowProvider)},
-		Window(0),
-		IsClosing(false),
-		ShowMainWindowOnStart(true)
+		IsClosing(false)
 {
 	// must be created first
 	// TODO: should be maybe created by factory factory?
@@ -223,12 +224,6 @@ Core::~Core()
 
 	configurationManager()->flush();
 	application()->backupConfiguration();
-
-	KaduWindowProvider->provideValue(0);
-	QWidget *hiddenParent = Window->parentWidget();
-	delete Window;
-	Window = 0;
-	delete hiddenParent;
 }
 
 void Core::importPre10Configuration()
@@ -514,12 +509,6 @@ void Core::updateIcon()
 	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
 }
 
-void Core::kaduWindowDestroyed()
-{
-	KaduWindowProvider->provideValue(0);
-	Window = 0;
-}
-
 void Core::accountRegistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();
@@ -558,9 +547,7 @@ void Core::configurationUpdated()
 
 void Core::createGui()
 {
-	Window = m_injector.get<InjectedFactory>()->makeInjected<KaduWindow>();
-	connect(Window, SIGNAL(destroyed()), this, SLOT(kaduWindowDestroyed()));
-	KaduWindowProvider->provideValue(Window);
+	m_injector.get<KaduWindowService>()->createWindow();
 
 	// initialize file transfers
 	m_injector.get<FileTransferHandlerManager>();
@@ -617,6 +604,15 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
+
+// TODO: move somewhere
+#ifdef Q_OS_LINUX
+	g_application = m_injector.get<Application>();
+	g_kaduWindowService = m_injector.get<KaduWindowService>();
+	g_pathsProvider = m_injector.get<PathsProvider>();
+	g_pluginActivationService = m_injector.get<PluginActivationService>();
+#endif
+
 }
 
 BuddyManager * Core::buddyManager() const
@@ -744,34 +740,15 @@ BuddyStorage * Core::buddyStorage() const
 	return m_injector.get<BuddyStorage>();
 }
 
-void Core::showMainWindow()
+KaduWindowService * Core::kaduWindowService() const
 {
-	if (ShowMainWindowOnStart)
-		MainWindowProvider->provide()->show();
-
-	// after first call which has to be placed in main(), this method should always show main window
-	ShowMainWindowOnStart = true;
-}
-
-void Core::setShowMainWindowOnStart(bool show)
-{
-	ShowMainWindowOnStart = show;
-}
-
-KaduWindow * Core::kaduWindow()
-{
-	return Window;
-}
-
-const std::shared_ptr<DefaultProvider<QWidget *>> & Core::mainWindowProvider() const
-{
-	return MainWindowProvider;
+	return m_injector.get<KaduWindowService>();
 }
 
 void Core::executeRemoteCommand(const QString &remoteCommand)
 {
 	if ("activate" == remoteCommand)
-		_activateWindow(MainWindowProvider->provide());
+		_activateWindow(m_injector.get<KaduWindowService>()->mainWindowProvider()->provide());
 	else
 		m_injector.get<UrlHandlerManager>()->openUrl(remoteCommand.toUtf8(), true);
 }

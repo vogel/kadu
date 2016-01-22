@@ -194,6 +194,7 @@ set (gui_SRCS
 	windows/configuration-window.cpp
 	windows/group-edit-window.cpp
 	windows/kadu-dialog.cpp
+	windows/kadu-window-service.cpp
 	windows/kadu-window.cpp
 	windows/kadu-window-actions.cpp
 	windows/main-configuration-window-service.cpp

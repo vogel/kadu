@@ -23,7 +23,6 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/actions/action-context.h"
@@ -33,6 +32,7 @@
 #include "gui/windows/buddy-data-window.h"
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/chat-data-window.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 
 #include "edit-talkable-action.h"
@@ -71,6 +71,11 @@ void EditTalkableAction::setChatTypeManager(ChatTypeManager *chatTypeManager)
 void EditTalkableAction::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void EditTalkableAction::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void EditTalkableAction::setMyself(Myself *myself)
@@ -192,7 +197,7 @@ void EditTalkableAction::buddyActionTriggered(ActionContext *context)
 	if (!buddy)
 		return;
 	if (buddy.isAnonymous())
-		(m_injectedFactory->makeInjected<AddBuddyWindow>(Core::instance()->kaduWindow(), buddy, true))->show();
+		(m_injectedFactory->makeInjected<AddBuddyWindow>(m_kaduWindowService->kaduWindow(), buddy, true))->show();
 	else
 		m_buddyDataWindowRepository->showBuddyWindow(buddy);
 }

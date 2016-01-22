@@ -21,6 +21,7 @@
 #ifndef DEFAULT_PROVIDER_H
 #define DEFAULT_PROVIDER_H
 
+#include <QtCore/QDebug>
 #include <memory>
 
 #include "provider/provider.h"

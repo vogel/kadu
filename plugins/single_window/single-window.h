@@ -22,6 +22,7 @@ class ChatWidgetSetTitle;
 class Configuration;
 class FileTransferManager;
 class InjectedFactory;
+class KaduWindowService;
 
 enum class OpenChatActivation;
 
@@ -70,6 +71,7 @@ private:
 	QPointer<Configuration> m_configuration;
 	QPointer<FileTransferManager> m_fileTransferManager;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<KaduWindowService> m_kaduWindowService;
 
 	QSplitter *m_split;
 	QTabWidget *m_tabs;
@@ -87,6 +89,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_INIT void init();
 
 	void titleChanged();
@@ -106,12 +109,14 @@ protected:
 
 private:
 	QPointer<Configuration> m_configuration;
+	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<SingleWindow> m_singleWindow;
 
 	std::shared_ptr<SimpleProvider<QWidget *>> m_windowProvider;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setSingleWindow(SingleWindow *singleWindow);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

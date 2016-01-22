@@ -114,7 +114,7 @@ public:
 		jest przy zapamiętywaniu pozycji okna oraz jego ostatnio
 		otwartej karty.
 	 **/
-	ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager);
+	ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager, QWidget *parent = nullptr);
 	virtual ~ConfigurationWindow();
 
 	ConfigurationWindowDataManager * dataManager() const { return m_dataManager; }

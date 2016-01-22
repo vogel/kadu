@@ -22,13 +22,14 @@
 #include "gui/actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/menu/menu-inventory.h"
+#include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
 #include "gui/windows/buddy-data-window-repository.h"
-#include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/windows/chat-data-window-repository.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/open-chat-with/open-chat-with-service.h"
 #include "gui/windows/proxy-edit-window-service.h"
@@ -47,6 +48,7 @@ GuiModule::GuiModule()
 	add_type<ChatEditBoxSizeManager>();
 	add_type<ChatWidgetActions>();
 	add_type<CustomInputMenuManager>();
+	add_type<KaduWindowService>();
 	add_type<MainConfigurationWindowService>();
 	add_type<MenuInventory>();
 	add_type<OpenChatWithService>();

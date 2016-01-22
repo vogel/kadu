@@ -35,6 +35,7 @@
 #include "core/core.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/kadu-icon.h"
 #include "message/message.h"
@@ -52,8 +53,8 @@ Docking::Docking(QObject *parent) :
 Docking::~Docking()
 {
 	if (!Core::instance()->isClosing())
-		Core::instance()->kaduWindow()->window()->show();
-	Core::instance()->kaduWindow()->setDocked(false);
+		m_kaduWindowService->kaduWindow()->window()->show();
+	m_kaduWindowService->kaduWindow()->setDocked(false);
 }
 
 void Docking::setAttentionService(AttentionService *attentionService)
@@ -69,6 +70,11 @@ void Docking::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 void Docking::setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider)
 {
 	m_dockingConfigurationProvider = dockingConfigurationProvider;
+}
+
+void Docking::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void Docking::setStatusContainerManager(StatusContainerManager *statusContainerManager)
@@ -100,8 +106,8 @@ void Docking::init()
 	configurationUpdated();
 
 	if (m_dockingConfigurationProvider->configuration().RunDocked)
-		Core::instance()->setShowMainWindowOnStart(false);
-	Core::instance()->kaduWindow()->setDocked(true);
+		m_kaduWindowService->setShowMainWindowOnStart(false);
+	m_kaduWindowService->kaduWindow()->setDocked(true);
 }
 
 void Docking::needAttentionChanged(bool needAttention)
@@ -128,7 +134,7 @@ void Docking::activateRequested()
 		return;
 	}
 
-	auto kaduWindow = Core::instance()->kaduWindow()->window();
+	auto kaduWindow = m_kaduWindowService->kaduWindow()->window();
 	if (kaduWindow->isMinimized() || !kaduWindow->isVisible()
 #ifndef Q_OS_WIN
 			// NOTE: It won't work as expected on Windows since when you click on tray icon,

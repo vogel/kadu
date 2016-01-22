@@ -36,6 +36,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "core/core.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/updates-dialog.h"
 #include "debug.h"
@@ -64,6 +65,11 @@ void Updates::setConfigurationManager(ConfigurationManager *configurationManager
 void Updates::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void Updates::setMainWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void Updates::init()
@@ -240,7 +246,7 @@ void Updates::gotUpdatesInfo(QNetworkReply *reply)
 
 		if (isNewerVersionThan(newestVersion))
 		{
-			UpdatesDialog *dialog = new UpdatesDialog(newestVersion, Core::instance()->kaduWindow());
+			UpdatesDialog *dialog = new UpdatesDialog(newestVersion, m_kaduWindowService->kaduWindow());
 			dialog->show();
 		}
 	}

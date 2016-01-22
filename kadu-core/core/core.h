@@ -61,6 +61,7 @@ class FileTransferManager;
 class IconsManager;
 class InjectedFactory;
 class KaduIcon;
+class KaduWindowService;
 class KaduWindow;
 class Message;
 class MessageTransformerService;
@@ -89,13 +90,8 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	static Core *Instance;
 
 	mutable injeqt::v1::injector m_injector;
-	std::shared_ptr<SimpleProvider<QWidget *>> KaduWindowProvider;
-	std::shared_ptr<DefaultProvider<QWidget *>> MainWindowProvider;
-
-	KaduWindow *Window;
 
 	bool IsClosing;
-	bool ShowMainWindowOnStart; // TODO: 0.11.0, it is a hack
 
 	Core(injeqt::v1::injector &&injector);
 	virtual ~Core();
@@ -111,7 +107,6 @@ private slots:
 	void updateIcon();
 
 	void deleteOldConfigurationFiles();
-	void kaduWindowDestroyed();
 
 protected:
 	virtual void accountRegistered(Account account);
@@ -163,15 +158,9 @@ public:
 	SystemInfo * systemInfo() const;
 	Myself * myself() const;
 	BuddyStorage * buddyStorage() const;
-
-	void setShowMainWindowOnStart(bool show);
-	void setMainWindow(QWidget *window);
-	void showMainWindow();
-	KaduWindow * kaduWindow();
+	KaduWindowService * kaduWindowService() const;
 
 	void setIcon(const KaduIcon &icon);
-
-	const std::shared_ptr<DefaultProvider<QWidget *>> & mainWindowProvider() const;
 
 public slots:
 	void executeRemoteCommand(const QString &signal);

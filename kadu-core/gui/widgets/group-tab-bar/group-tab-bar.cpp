@@ -21,7 +21,7 @@
 #include "group-filter-tab-data.h"
 #include "group-tab-bar.h"
 
-#include "buddies/buddy-list-mime-data-helper.h"
+#include "buddies/buddy-list-mime-data-service.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "chat/chat-list-mime-data-service.h"
@@ -30,6 +30,7 @@
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-edit-window.h"
 #include "gui/windows/kadu-dialog.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
@@ -61,6 +62,11 @@ GroupTabBar::~GroupTabBar()
 {
 }
 
+void GroupTabBar::setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService)
+{
+	m_buddyListMimeDataService = buddyListMimeDataService;
+}
+
 void GroupTabBar::setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService)
 {
 	m_chatListMimeDataService = chatListMimeDataService;
@@ -79,6 +85,11 @@ void GroupTabBar::setGroupManager(GroupManager *groupManager)
 void GroupTabBar::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void GroupTabBar::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void GroupTabBar::init()
@@ -260,8 +271,8 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 	event->acceptProposedAction();
 
-	BuddyList buddies = BuddyListMimeDataHelper::fromMimeData(event->mimeData());
-	QList<Chat> chats = m_chatListMimeDataService->fromMimeData(event->mimeData());
+	auto buddies = m_buddyListMimeDataService->fromMimeData(event->mimeData());
+	auto chats = m_chatListMimeDataService->fromMimeData(event->mimeData());
 
 	QApplication::setOverrideCursor(Qt::ArrowCursor);
 	int tabIndex = tabAt(event->pos());
@@ -323,7 +334,7 @@ void GroupTabBar::addBuddy()
 	if (!action)
 		return;
 
-	auto addBuddyWindow = m_injectedFactory->makeInjected<AddBuddyWindow>(Core::instance()->kaduWindow());
+	auto addBuddyWindow = m_injectedFactory->makeInjected<AddBuddyWindow>(m_kaduWindowService->kaduWindow());
 	addBuddyWindow->setGroup(action->data().value<Group>());
 	addBuddyWindow->show();
 }
@@ -341,7 +352,7 @@ void GroupTabBar::deleteGroup()
 	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"),
 						      tr("Delete group"),
 						      tr("Group <i>%0</i> will be deleted, but without buddies. Are you sure?").arg(group.name()),
-						      Core::instance()->kaduWindow());
+						      m_kaduWindowService->kaduWindow());
 	dialog->addButton(QMessageBox::Yes, tr("Delete group"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
@@ -351,7 +362,7 @@ void GroupTabBar::deleteGroup()
 
 void GroupTabBar::createNewGroup()
 {
-	auto editWindow = new GroupEditWindow{m_groupManager, m_configuration->deprecatedApi(), Group::null, Core::instance()->kaduWindow()};
+	auto editWindow = new GroupEditWindow{m_groupManager, m_configuration->deprecatedApi(), Group::null, m_kaduWindowService->kaduWindow()};
 	editWindow->show();
 }
 
@@ -365,7 +376,7 @@ void GroupTabBar::groupProperties()
 	if (!group)
 		return;
 
-	auto editWindow = new GroupEditWindow{m_groupManager, m_configuration->deprecatedApi(), group, Core::instance()->kaduWindow()};
+	auto editWindow = new GroupEditWindow{m_groupManager, m_configuration->deprecatedApi(), group, m_kaduWindowService->kaduWindow()};
 	editWindow->show();
 }
 

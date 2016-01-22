@@ -67,6 +67,7 @@
 #include "gui/gui-module.h"
 #include "gui/widgets/chat-widget/chat-widget-module.h"
 #include "gui/windows/chat-window/chat-window-module.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "icons/icons-module.h"
@@ -318,7 +319,7 @@ int main(int argc, char *argv[]) try
 			Core::instance()->executeRemoteCommand(id);
 
 		// it has to be called after loading modules (docking might want to block showing the window)
-		Core::instance()->showMainWindow();
+		Core::instance()->kaduWindowService()->showMainWindow();
 
 		ret = QApplication::exec();
 		kdebugm(KDEBUG_INFO, "after exec\n");

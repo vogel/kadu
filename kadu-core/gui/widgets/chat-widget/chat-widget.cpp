@@ -44,7 +44,6 @@
 #include "contacts/model/chat-adapter.h"
 #include "contacts/model/contact-data-extractor.h"
 #include "contacts/model/contact-list-model.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/actions/action.h"
@@ -65,6 +64,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
@@ -152,6 +152,11 @@ void ChatWidget::setFormattedStringFactory(FormattedStringFactory *formattedStri
 void ChatWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void ChatWidget::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void ChatWidget::setMessageManager(MessageManager *messageManager)
@@ -299,7 +304,7 @@ void ChatWidget::createContactsList()
 	view->setContextMenuEnabled(true);
 
 	connect(view, SIGNAL(talkableActivated(Talkable)),
-			Core::instance()->kaduWindow(), SLOT(talkableActivatedSlot(Talkable)));
+			m_kaduWindowService->kaduWindow(), SLOT(talkableActivatedSlot(Talkable)));
 
 	BuddiesWidget->setView(view);
 

@@ -23,12 +23,11 @@
 #include "chat/buddy-chat-manager.h"
 #include "configuration/configuration-api.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"
@@ -70,6 +69,11 @@ void ChatWidgetMessageHandler::setChatWidgetRepository(ChatWidgetRepository *cha
 void ChatWidgetMessageHandler::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void ChatWidgetMessageHandler::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void ChatWidgetMessageHandler::setMessageManager(MessageManager *messageManager)
@@ -181,9 +185,9 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 	{
 #ifdef Q_OS_WIN
 		if (!m_configuration->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
-			qApp->alert(Core::instance()->kaduWindow());
+			qApp->alert(m_kaduWindowService->kaduWindow());
 #else
-		qApp->alert(Core::instance()->kaduWindow());
+		qApp->alert(m_kaduWindowService->kaduWindow());
 #endif
 	}
 }

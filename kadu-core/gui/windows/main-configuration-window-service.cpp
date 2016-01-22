@@ -23,6 +23,8 @@
 #include "configuration/gui/configuration-ui-handler.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/kadu-window-service.h"
+#include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
 
 MainConfigurationWindowService::MainConfigurationWindowService(QObject *parent) :
@@ -45,6 +47,11 @@ void MainConfigurationWindowService::setInjectedFactory(InjectedFactory *injecte
 	m_injectedFactory = injectedFactory;
 }
 
+void MainConfigurationWindowService::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
+}
+
 void MainConfigurationWindowService::registerUiFile(const QString &uiFile)
 {
 	m_uiFiles.append(uiFile);
@@ -63,7 +70,7 @@ void MainConfigurationWindowService::show()
 {
 	if (!m_mainConfigurationWindow)
 	{
-		m_mainConfigurationWindow = m_injectedFactory->makeInjected<MainConfigurationWindow>();
+		m_mainConfigurationWindow = m_injectedFactory->makeInjected<MainConfigurationWindow>(m_kaduWindowService->kaduWindow());
 		for (auto const &uiFile : m_uiFiles)
 			m_mainConfigurationWindow->widget()->appendUiFile(uiFile);
 		for (auto configurationUiHandler : m_configurationUiHandlerRepository)

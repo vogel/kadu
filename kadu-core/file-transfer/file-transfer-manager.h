@@ -40,6 +40,7 @@ class Configuration;
 class FileTransferActions;
 class FileTransferHandlerManager;
 class FileTransferWindow;
+class KaduWindowService;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationManager;
@@ -91,6 +92,7 @@ private:
 	QPointer<FileTransferActions> m_fileTransferActions;
 	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
 	QPointer<FileTransferWindow> m_window;
+	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationManager> m_notificationManager;
@@ -109,6 +111,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFileTransferActions(FileTransferActions *fileTransferActions);
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);

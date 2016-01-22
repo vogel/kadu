@@ -44,6 +44,7 @@ class BuddySet;
 class BuddiesModelProxy;
 class ContactSet;
 class InjectedFactory;
+class KaduWindowService;
 class MenuInventory;
 class ModelChain;
 class StatusConfigurationHolder;
@@ -98,6 +99,7 @@ private:
 	friend class TalkableDelegateConfiguration;
 
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<StatusContainerManager> m_statusContainerManager;
 	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
@@ -124,6 +126,7 @@ private:
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);

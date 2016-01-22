@@ -45,7 +45,6 @@
 #include "configuration/gui/configuration-ui-handler.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
@@ -60,6 +59,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/proxy-combo-box.h"
 #include "gui/widgets/tool-tip-class-manager.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/paths-provider.h"
@@ -107,11 +107,9 @@ void MainConfigurationWindow::configurationUiHandlerRemoved(ConfigurationUiHandl
 	Q_UNUSED(configurationUiHandler)
 }
 
-MainConfigurationWindow::MainConfigurationWindow(QObject *parent) :
-		ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", new ConfigFileDataManager())
+MainConfigurationWindow::MainConfigurationWindow(QWidget *parent) :
+		ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", new ConfigFileDataManager(), parent)
 {
-	Q_UNUSED(parent);
-
 }
 
 MainConfigurationWindow::~MainConfigurationWindow()
@@ -138,6 +136,11 @@ void MainConfigurationWindow::setIconsManager(IconsManager *iconsManager)
 void MainConfigurationWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void MainConfigurationWindow::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void MainConfigurationWindow::setLanguagesManager(LanguagesManager *languagesManager)
@@ -204,7 +207,7 @@ void MainConfigurationWindow::init()
 	connect(widget()->widgetById("installIconTheme"), SIGNAL(clicked()), this, SLOT(installIconTheme()));
 
 	Preview *infoPanelSyntaxPreview = static_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));
-	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), Core::instance()->kaduWindow()->infoPanel(), SLOT(styleFixup(QString &)));
+	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), m_kaduWindowService->kaduWindow()->infoPanel(), SLOT(styleFixup(QString &)));
 	connect(widget()->widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), infoPanelSyntaxPreview, SLOT(syntaxChanged(const QString &)));
 
 	widget()->widgetById("parseStatus")->setToolTip(QCoreApplication::translate("@default", SyntaxText));

@@ -21,6 +21,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "signal-handler.h"
+
+#include "configuration/configuration-api.h"
+#include "configuration/configuration.h"
+#include "core/application.h"
+#include "core/core.h"
+#include "core/crash-aware-object.h"
+#include "gui/windows/kadu-window-service.h"
+#include "gui/windows/kadu-window.h"
+#include "misc/paths-provider.h"
+#include "plugin/activation/plugin-activation-service.h"
+#include "activate.h"
+#include "debug.h"
+#include "exports.h"
+#include "kadu-config.h"
+
+#include <QtCore/QCoreApplication>
+#include <QtCore/QDateTime>
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -28,24 +46,14 @@
 #include <signal.h>
 #include <stdio.h>
 
-#include "configuration/configuration-api.h"
-#include "configuration/configuration.h"
-#include "core/application.h"
-#include "core/core.h"
-#include "core/crash-aware-object.h"
-#include "gui/windows/kadu-window.h"
-#include "misc/paths-provider.h"
-#include "plugin/activation/plugin-activation-service.h"
-#include "activate.h"
-#include "debug.h"
-#include "kadu-config.h"
-
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDateTime>
-
 #if HAVE_EXECINFO
 #include <execinfo.h>
 #endif // HAVE_EXECINFO
+
+Application *g_application{nullptr};
+KaduWindowService *g_kaduWindowService{nullptr};
+PathsProvider *g_pathsProvider{nullptr};
+PluginActivationService *g_pluginActivationService{nullptr};
 
 static void kadu_signal_handler(int signal)
 {
@@ -90,7 +98,7 @@ static void kadu_signal_handler(int signal)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		FILE *backtraceFile = fopen(qPrintable(QString(Core::instance()->pathsProvider()->profilePath() + backtraceFileName)), "w");
+		FILE *backtraceFile = fopen(qPrintable(QString(g_pathsProvider->profilePath() + backtraceFileName)), "w");
 		if (backtraceFile)
 		{
 			fprintf(backtraceFile, "======= BEGIN OF BACKTRACE =====\n");
@@ -99,7 +107,7 @@ static void kadu_signal_handler(int signal)
 			fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
 
 			fprintf(backtraceFile, "loaded plugins:\n");
-			auto pluginNames = Core::instance()->pluginActivationService()->activePlugins();
+			auto pluginNames = g_pluginActivationService->activePlugins();
 			for (auto const &pluginName : pluginNames)
 				fprintf(backtraceFile, "> %s\n", qPrintable(pluginName));
 			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));
@@ -119,19 +127,19 @@ static void kadu_signal_handler(int signal)
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif // HAVE_EXECINFO
 
-		Core::instance()->application()->backupConfiguration();
+		g_application->backupConfiguration();
 		abort();
 	}
 	else if (signal == SIGUSR1)
 	{
 		kdebugm(KDEBUG_INFO, "ok, got a signal to show up\n");
-		_activateWindow(Core::instance()->kaduWindow());
+		_activateWindow(g_kaduWindowService->kaduWindow());
 	}
 	else if (signal == SIGINT || signal == SIGTERM)
 		QCoreApplication::quit();
 }
 
-void enableSignalHandling()
+KADUAPI void enableSignalHandling()
 {
 	char *d = getenv("SIGNAL_HANDLING");
 	bool signalHandlingEnabled = d ? (atoi(d) != 0) : true;

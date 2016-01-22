@@ -55,6 +55,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
@@ -121,6 +122,11 @@ void FirewallMessageFilter::setHistory(History *history)
 void FirewallMessageFilter::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void FirewallMessageFilter::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	m_kaduWindowService = kaduWindowService;
 }
 
 void FirewallMessageFilter::setMessageManager(MessageManager *messageManager)
@@ -358,8 +364,8 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 	{
 		if (LastContact != sender && Search)
 		{
-			SearchWindow *sd = m_injectedFactory->makeInjected<SearchWindow>(Core::instance()->kaduWindow(),
-			                                    m_buddyManager->byContact(sender, ActionCreateAndAdd));
+			SearchWindow *sd = m_injectedFactory->makeInjected<SearchWindow>(
+				m_kaduWindowService->kaduWindow(), m_buddyManager->byContact(sender, ActionCreateAndAdd));
 			sd->show();
 			sd->firstSearch();
 
