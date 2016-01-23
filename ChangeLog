@@ -1,5 +1,6 @@
 +++ version 3.0-rc4
 * icons: #3058 fixed: remove too big icons (Vogel)
+* hints: #3060 fixed: crash (Vogel)
 
 +++ version 3.0-rc3
 * docking: #3050 fixed: try icon is now visible everywhere (Vogel)

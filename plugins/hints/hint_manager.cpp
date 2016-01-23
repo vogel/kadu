@@ -261,13 +261,15 @@ void HintManager::deleteHint(Hint *hint)
 
 	Notification *notification = hint->getNotification();
 
-	DisplayedNotifications.removeAll(hint->getNotification()->identifier());
+	if (notification)
+		DisplayedNotifications.removeAll(notification->identifier());
 	hints.removeAll(hint);
 
 	layout->removeWidget(hint);
 
 	hint->deleteLater();
-	notification->release(this);
+	if (notification)
+		notification->release(this);
 
 	if (hints.isEmpty())
 	{
@@ -289,7 +291,7 @@ void HintManager::oneSecond(void)
 	kdebugf();
 
 	bool removed = false;
-	for (int i = 0; i < hints.count(); ++i)
+	for (int i = hints.count() - 1; i >= 0; i--)
 	{
 		hints.at(i)->nextSecond();
 
@@ -381,10 +383,10 @@ void HintManager::chatUpdated(const Chat &chat)
 	if (chat.unreadMessagesCount() > 0)
 		return;
 
-	foreach (Hint *h, hints)
+	for (int i = hints.count() - 1; i >= 0; i--)
 	{
-		if (h->chat() == chat)
-			deleteHint(h);
+		if (hints[i]->chat() == chat)
+			deleteHint(hints[i]);
 	}
 
 	setHint();
@@ -395,10 +397,10 @@ void HintManager::deleteAllHints()
 	kdebugf();
 	hint_timer->stop();
 
-	foreach (Hint *h, hints)
+	for (int i = hints.count() - 1; i >= 0; i--)
 	{
-		h->discardNotification();
-		deleteHint(h);
+		hints[i]->discardNotification();
+		deleteHint(hints[i]);
 	}
 
 	if (hints.isEmpty())
