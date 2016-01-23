@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sizes="16 22 32 48 64 96 128 256 512"
+sizes="16 22 32 48 64 96"
 
 for svg_file in `find -name "*.svg"`; do
 	echo "Converting $svg_file ..."
