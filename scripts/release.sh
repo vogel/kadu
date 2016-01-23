@@ -33,11 +33,11 @@ function prepare_links()
 	export SOURCE_KADU=http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2
 	export SOURCE_KADU_MD5=http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.md5
 	export SOURCE_KADU_SHA1=http://download.kadu.im/unstable/kadu-$VERSION.tar.bz2.sha1
-	export EXE_GDRIVE=https://googledrive.com/host/$GDRIVE_FOLDER/Kadu-$VERSION.exe
-	export EXE_SF=http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.exe/download
-	export EXE_KADU=http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe
-	export EXE_KADU_MD5=http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.md5
-	export EXE_KADU_SHA1=http://download.kadu.im/unstable/windows/Kadu-$VERSION.exe.sha1
+	export EXE_GDRIVE=https://googledrive.com/host/$GDRIVE_FOLDER/Kadu-$VERSION.x86.exe
+	export EXE_SF=http://sourceforge.net/projects/kadu/files/kadu/$VERSION/Kadu-$VERSION.x86.exe/download
+	export EXE_KADU=http://download.kadu.im/unstable/windows/Kadu-$VERSION.x86.exe
+	export EXE_KADU_MD5=http://download.kadu.im/unstable/windows/Kadu-$VERSION.x86.exe.md5
+	export EXE_KADU_SHA1=http://download.kadu.im/unstable/windows/Kadu-$VERSION.x86.exe.sha1
 	export EXTERNAL_PLUGINS=http://download.kadu.im/external-plugins/2.0/
 }
 
