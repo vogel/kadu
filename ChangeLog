@@ -9,6 +9,9 @@
 * phonon_sound: plugin removed (Vogel)
 * falf_mediaplayer: plugin removed (Vogel)
 
++++ version 3.0-rc4
+* icons: #3058 fixed: remove too big icons (Vogel)
+
 +++ version 3.0-rc3
 * docking: #3050 fixed: try icon is now visible everywhere (Vogel)
 * docking: #3044 fixed: proper context menu appears on tray every time (Vogel)
