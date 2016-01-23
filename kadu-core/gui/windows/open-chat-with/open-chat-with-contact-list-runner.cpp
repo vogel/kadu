@@ -18,23 +18,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account-manager.h"
 
+#include "open-chat-with-contact-list-runner.h"
+
+#include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 
-#include "open-chat-with-contact-list-runner.h"
+OpenChatWithContactListRunner::OpenChatWithContactListRunner(QObject *parent) :
+		QObject{parent}
+{
+}
+
+OpenChatWithContactListRunner::~OpenChatWithContactListRunner()
+{
+}
+
+void OpenChatWithContactListRunner::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
 
 BuddyList OpenChatWithContactListRunner::matchingContacts(const QString &query)
 {
 	BuddyList matchedContacts;
 
-	foreach (const Buddy &buddy, Core::instance()->buddyManager()->items())
+	for (auto const &buddy : m_buddyManager->items())
 	{
-		bool found = false;
-		foreach (const Contact &data, buddy.contacts())
+		auto found = false;
+		for (auto const &data : buddy.contacts())
 			if (data.id().contains(query, Qt::CaseInsensitive))
 			{
 				matchedContacts.append(buddy);

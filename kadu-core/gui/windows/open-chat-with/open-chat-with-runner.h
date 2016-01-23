@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OPEN_CHAT_WITH_RUNNER_H
-#define OPEN_CHAT_WITH_RUNNER_H
+#pragma once
 
 #include "buddies/buddy-list.h"
 
@@ -32,5 +31,3 @@ public:
 	virtual BuddyList matchingContacts(const QString &query) = 0;
 
 };
-
-#endif // OPEN_CHAT_WITH_RUNNER_H

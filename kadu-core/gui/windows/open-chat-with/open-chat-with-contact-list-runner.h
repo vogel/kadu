@@ -17,16 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OPEN_CHAT_WITH_CONTACT_LIST_RUNNER_H
-#define OPEN_CHAT_WITH_CONTACT_LIST_RUNNER_H
+#pragma once
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "open-chat-with-runner.h"
 
-class KADUAPI OpenChatWithContactListRunner : public OpenChatWithRunner
+class BuddyManager;
+
+class KADUAPI OpenChatWithContactListRunner : public QObject, public OpenChatWithRunner
 {
+	Q_OBJECT
 
 public:
-	virtual BuddyList matchingContacts(const QString &query);
-};
+	explicit OpenChatWithContactListRunner(QObject *parent = nullptr);
+	virtual ~OpenChatWithContactListRunner();
 
-#endif // OPEN_CHAT_WITH_CONTACT_LIST_RUNNER_H
+	virtual BuddyList matchingContacts(const QString &query);
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+
+};

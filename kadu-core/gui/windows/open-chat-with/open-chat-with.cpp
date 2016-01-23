@@ -156,7 +156,7 @@ void OpenChatWith::init()
 	MainLayout->addSpacing(16);
 	MainLayout->addWidget(buttons);
 
-	OpenChatRunner = new OpenChatWithContactListRunner();
+	OpenChatRunner = m_injectedFactory->makeInjected<OpenChatWithContactListRunner>();
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 
 	inputChanged(QString());
