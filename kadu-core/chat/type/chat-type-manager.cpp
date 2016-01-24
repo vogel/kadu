@@ -19,14 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-type-manager.h"
+
 #include "chat/type/chat-type-aware-object.h"
 #include "chat/type/chat-type-buddy.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-room.h"
 #include "icons/icons-manager.h"
-
-#include "chat-type-manager.h"
 
 ChatTypeManager::ChatTypeManager(QObject *parent) :
 		QObject{parent}
@@ -37,9 +37,14 @@ ChatTypeManager::~ChatTypeManager()
 {
 }
 
+void ChatTypeManager::setChatTypeBuddy(ChatTypeBuddy *chatTypeBuddy)
+{
+	m_chatTypeBuddy = chatTypeBuddy;
+}
+
 void ChatTypeManager::init()
 {
-	registerChatType(new ChatTypeBuddy());
+	registerChatType(m_chatTypeBuddy);
 	registerChatType(new ChatTypeContact());
 	registerChatType(new ChatTypeContactSet());
 	registerChatType(new ChatTypeRoom());

@@ -21,7 +21,6 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 
 #include "chat-details-buddy.h"
 
@@ -38,6 +37,11 @@ ChatDetailsBuddy::ChatDetailsBuddy(ChatShared *chatData) :
 
 ChatDetailsBuddy::~ChatDetailsBuddy()
 {
+}
+
+void ChatDetailsBuddy::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
 }
 
 /**
@@ -60,7 +64,7 @@ bool ChatDetailsBuddy::shouldStore()
  */
 ChatType * ChatDetailsBuddy::type() const
 {
-	return Core::instance()->chatTypeManager()->chatType("Buddy");
+	return m_chatTypeManager->chatType("Buddy");
 }
 
 /**
@@ -72,7 +76,7 @@ ChatType * ChatDetailsBuddy::type() const
  */
 ContactSet ChatDetailsBuddy::contacts() const
 {
-	return Chats.isEmpty() ? ContactSet() : Chats.at(0).contacts();
+	return m_chats.isEmpty() ? ContactSet() : m_chats.at(0).contacts();
 }
 
 /**
@@ -84,7 +88,7 @@ ContactSet ChatDetailsBuddy::contacts() const
  */
 QString ChatDetailsBuddy::name() const
 {
-	return Chats.isEmpty() ? MyBuddy.isEmpty() ? QString() : MyBuddy.display() : Chats.at(0).name();
+	return m_chats.isEmpty() ? m_buddy.isEmpty() ? QString() : m_buddy.display() : m_chats.at(0).name();
 }
 
 bool ChatDetailsBuddy::isConnected() const
@@ -94,12 +98,12 @@ bool ChatDetailsBuddy::isConnected() const
 
 void ChatDetailsBuddy::setBuddy(const Buddy &buddy)
 {
-	MyBuddy = buddy;
+	m_buddy = buddy;
 }
 
 Buddy ChatDetailsBuddy::buddy() const
 {
-	return MyBuddy;
+	return m_buddy;
 }
 
 /**
@@ -110,7 +114,7 @@ Buddy ChatDetailsBuddy::buddy() const
  */
 void ChatDetailsBuddy::setChats(const QVector<Chat> &chats)
 {
-	Chats.clear();
+	m_chats.clear();
 	for (auto &&chat : chats)
 		addChat(chat);
 }
@@ -123,20 +127,20 @@ void ChatDetailsBuddy::setChats(const QVector<Chat> &chats)
  */
 const QVector<Chat> & ChatDetailsBuddy::chats() const
 {
-	return Chats;
+	return m_chats;
 }
 
 void ChatDetailsBuddy::addChat(const Chat &chat)
 {
-	if (chat && !Chats.contains(chat))
-		Chats.append(chat);
+	if (chat && !m_chats.contains(chat))
+		m_chats.append(chat);
 }
 
 void ChatDetailsBuddy::removeChat(const Chat &chat)
 {
-	int indexOf = Chats.indexOf(chat);
+	int indexOf = m_chats.indexOf(chat);
 	if (indexOf >= 0)
-		Chats.remove(indexOf);
+		m_chats.remove(indexOf);
 }
 
 #include "moc_chat-details-buddy.cpp"

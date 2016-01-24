@@ -17,12 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DETAILS_BUDDY_H
-#define CHAT_DETAILS_BUDDY_H
+#pragma once
 
 #include "chat/chat-details.h"
 #include "contacts/contact.h"
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class ChatTypeManager;
 
 /**
  * @addtogroup Chat
@@ -39,9 +43,6 @@
 class KADUAPI ChatDetailsBuddy : public ChatDetails
 {
 	Q_OBJECT
-
-	Buddy MyBuddy;
-	QVector<Chat> Chats;
 
 public:
 	explicit ChatDetailsBuddy(ChatShared *chatData);
@@ -64,10 +65,17 @@ public:
 	void addChat(const Chat &chat);
 	void removeChat(const Chat &chat);
 
+private:
+	QPointer<ChatTypeManager> m_chatTypeManager;
+
+	Buddy m_buddy;
+	QVector<Chat> m_chats;
+
+private slots:
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+
 };
 
 /**
  * @}
  */
-
-#endif // CHAT_DETAILS_BUDDY_H

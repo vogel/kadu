@@ -18,21 +18,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-type-buddy.h"
+
 #include "chat/chat-details-buddy.h"
 #include "chat/chat.h"
+#include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
-
-#include "chat-type-buddy.h"
 
 ChatTypeBuddy::ChatTypeBuddy(QObject *parent) :
 		ChatType(parent)
 {
-	Aliases.append("Buddy");
-	Aliases.append("Aggregate");
+	m_aliases.append("Buddy");
+	m_aliases.append("Aggregate");
 }
 
 ChatTypeBuddy::~ChatTypeBuddy()
 {
+}
+
+void ChatTypeBuddy::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 /**
@@ -61,7 +67,7 @@ QString ChatTypeBuddy::name() const
  */
 QStringList ChatTypeBuddy::aliases() const
 {
-	return Aliases;
+	return m_aliases;
 }
 
 /**
@@ -101,7 +107,7 @@ QString ChatTypeBuddy::windowRole() const
  */
 ChatDetails * ChatTypeBuddy::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsBuddy(chatData);
+	return m_injectedFactory->makeInjected<ChatDetailsBuddy>(chatData);
 }
 
 ChatEditWidget * ChatTypeBuddy::createEditWidget(const Chat &chat, QWidget *parent) const

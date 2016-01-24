@@ -27,7 +27,10 @@
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
+
+class ChatTypeBuddy;
 
 /**
  * @addtogroup Chat
@@ -47,6 +50,8 @@ class KADUAPI ChatTypeManager : public QObject
 	Q_OBJECT
 
 private:
+	QPointer<ChatTypeBuddy> m_chatTypeBuddy;
+
 	QList<ChatType *> ChatTypes;
 	QMap<QString, ChatType *> ChatTypesMap;
 
@@ -98,6 +103,7 @@ signals:
 	void chatTypeRemoved(ChatType *chatType);
 
 private slots:
+	INJEQT_SET void setChatTypeBuddy(ChatTypeBuddy *chatTypeBuddy);
 	INJEQT_INIT void init();
 
 };

@@ -17,16 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_TYPE_BUDDY_H
-#define CHAT_TYPE_BUDDY_H
+#pragma once
 
+#include "chat/type/chat-type.h"
+#include "exports.h"
+
+#include <QtCore/QPointer>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
+#include <injeqt/injeqt.h>
 
-#include "chat/type/chat-type.h"
-
-#include "exports.h"
+class InjectedFactory;
 
 /**
  * @addtogroup Chat
@@ -43,12 +45,9 @@
 class KADUAPI ChatTypeBuddy : public ChatType
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatTypeBuddy)
-
-	QStringList Aliases;
 
 public:
-	explicit ChatTypeBuddy(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ChatTypeBuddy(QObject *parent = nullptr);
 	virtual ~ChatTypeBuddy();
 
 	virtual QString name() const;
@@ -59,6 +58,14 @@ public:
 	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;
 	virtual ChatEditWidget *createEditWidget(const Chat &chat, QWidget *parent) const;
 
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+	QStringList m_aliases;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 };
 
 Q_DECLARE_METATYPE(ChatTypeBuddy *)
@@ -66,5 +73,3 @@ Q_DECLARE_METATYPE(ChatTypeBuddy *)
 /**
  * @}
  */
-
-#endif // CHAT_TYPE_BUDDY_H
