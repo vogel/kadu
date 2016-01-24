@@ -17,12 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DETAILS_CONTACT_H
-#define CHAT_DETAILS_CONTACT_H
-
-#include "contacts/contact.h"
+#pragma once
 
 #include "chat/chat-details.h"
+#include "contacts/contact.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyManager;
+class ChatTypeManager;
+class ContactManager;
 
 /**
  * @addtogroup Chat
@@ -41,17 +46,11 @@ class ChatDetailsContact : public ChatDetails
 {
 	Q_OBJECT
 
-	Contact CurrentContact;
-
-protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
-
 public:
 	explicit ChatDetailsContact(ChatShared *chatData);
 	virtual ~ChatDetailsContact();
 
+	// TODO: should probably return just string
 	virtual ChatType * type() const;
 	virtual ContactSet contacts() const;
 	virtual QString name() const;
@@ -61,10 +60,25 @@ public:
 	void setContact(const Contact &contact);
 	Contact contact();
 
+protected:
+	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
+
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<ContactManager> m_contactManager;
+
+	Contact CurrentContact;
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+
 };
 
 /**
  * @}
  */
-
-#endif // CHAT_DETAILS_CONTACT_H

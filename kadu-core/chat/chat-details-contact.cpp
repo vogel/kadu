@@ -18,16 +18,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-details-contact.h"
+
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "protocols/protocol.h"
-
-#include "chat-details-contact.h"
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -52,6 +51,21 @@ ChatDetailsContact::~ChatDetailsContact()
 {
 }
 
+void ChatDetailsContact::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void ChatDetailsContact::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
+void ChatDetailsContact::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Loads ChatDetailsContact object from storage.
@@ -68,11 +82,11 @@ void ChatDetailsContact::load()
 
 	QString cadUuid = loadValue<QString>("Contact");
 
-	CurrentContact = Core::instance()->contactManager()->byUuid(cadUuid);
+	CurrentContact = m_contactManager->byUuid(cadUuid);
 	if (!CurrentContact)
 	{
 		// import from old 0.6.6 releases
-		Buddy buddy = Core::instance()->buddyManager()->byUuid(cadUuid);
+		Buddy buddy = m_buddyManager->byUuid(cadUuid);
 		if (buddy)
 		{
 			QVector<Contact> contactList = buddy.contacts(mainData()->chatAccount());
@@ -125,7 +139,7 @@ bool ChatDetailsContact::shouldStore()
  */
 ChatType * ChatDetailsContact::type() const
 {
-	return Core::instance()->chatTypeManager()->chatType("Contact");
+	return m_chatTypeManager->chatType("Contact");
 }
 
 /**

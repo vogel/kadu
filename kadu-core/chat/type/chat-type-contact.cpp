@@ -22,6 +22,8 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-contact.h"
@@ -141,7 +143,7 @@ QString ChatTypeContact::windowRole() const
  */
 ChatDetails * ChatTypeContact::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsContact(chatData);
+	return Core::instance()->injectedFactory()->makeInjected<ChatDetailsContact>(chatData);
 }
 
 ChatEditWidget * ChatTypeContact::createEditWidget(const Chat &chat, QWidget *parent) const
