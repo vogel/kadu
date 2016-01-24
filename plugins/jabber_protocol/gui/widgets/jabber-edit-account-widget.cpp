@@ -171,7 +171,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 void JabberEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
-	PersonalInfoWidget = new JabberPersonalInfoWidget(account(), tabWidget);
+	PersonalInfoWidget = m_injectedFactory->makeInjected<JabberPersonalInfoWidget>(account(), tabWidget);
 	connect(PersonalInfoWidget, SIGNAL(dataChanged()), this, SLOT(dataChanged()));
 	tabWidget->addTab(PersonalInfoWidget, tr("Personal Information"));
 }

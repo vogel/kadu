@@ -18,22 +18,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_PERSONAL_INFO_WIDGET_H
-#define JABBER_PERSONAL_INFO_WIDGET_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "buddies/buddy.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
+class Account;
+class BuddyStorage;
+class PersonalInfoService;
 
 class QComboBox;
 class QLineEdit;
 
-class Account;
-class PersonalInfoService;
-
 class JabberPersonalInfoWidget : public QWidget
 {
 	Q_OBJECT
+
+public:
+	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = nullptr);
+	virtual ~JabberPersonalInfoWidget();
+
+	bool isModified();
+
+	void apply();
+	void cancel();
+
+signals:
+	void dataChanged();
+
+private:
+	QPointer<BuddyStorage> m_buddyStorage;
 
 	PersonalInfoService *Service;
 	QString Id;
@@ -51,20 +68,9 @@ class JabberPersonalInfoWidget : public QWidget
 	void fillForm();
 
 private slots:
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_INIT void init();
+
 	void personalInfoAvailable(Buddy buddy);
 
-public:
-	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = nullptr);
-	virtual ~JabberPersonalInfoWidget();
-
-	bool isModified();
-
-	void apply();
-	void cancel();
-
-signals:
-	void dataChanged();
-
 };
-
-#endif // JABBER_PERSONAL_INFO_WIDGET_H

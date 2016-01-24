@@ -18,25 +18,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "jabber-personal-info-widget.h"
+
+#include "accounts/account.h"
+#include "buddies/buddy-storage.h"
+#include "protocols/protocol.h"
+#include "protocols/services/personal-info-service.h"
+
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 
-#include "accounts/account.h"
-#include "buddies/buddy-storage.h"
-#include "core/core.h"
-#include "protocols/protocol.h"
-#include "protocols/services/personal-info-service.h"
-
-#include "jabber-personal-info-widget.h"
-
 JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget* parent) :
-		QWidget(parent), Id(account.id()), MyBuddy(Core::instance()->buddyStorage()->create())
+		QWidget(parent), Id(account.id())
 {
-	createGui();
-	fillForm();
-
 	if (account.isNull() || !account.protocolHandler())
 		return;
 
@@ -50,6 +46,19 @@ JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget* par
 
 JabberPersonalInfoWidget::~JabberPersonalInfoWidget()
 {
+}
+
+void JabberPersonalInfoWidget::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
+}
+
+void JabberPersonalInfoWidget::init()
+{
+	MyBuddy = m_buddyStorage->create();
+
+	createGui();
+	fillForm();
 }
 
 void JabberPersonalInfoWidget::createGui()
@@ -117,7 +126,7 @@ bool JabberPersonalInfoWidget::isModified()
 
 void JabberPersonalInfoWidget::apply()
 {
-	Buddy buddy = Core::instance()->buddyStorage()->create();
+	Buddy buddy = m_buddyStorage->create();
 
 	buddy.setNickName((*NickName).text());
 	buddy.setFirstName((*FullName).text());
