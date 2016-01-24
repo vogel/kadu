@@ -65,7 +65,6 @@ class KaduWindow;
 class Message;
 class MessageTransformerService;
 class Myself;
-class NotificationManager;
 class PathsProvider;
 class PluginActivationService;
 class PluginConflictResolver;
@@ -129,7 +128,6 @@ public:
 
 	void activatePlugins();
 
-	NotificationManager * notificationManager() const;
 	UnreadMessageRepository * unreadMessageRepository() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
 	StoragePointFactory * storagePointFactory() const;

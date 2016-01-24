@@ -58,7 +58,7 @@
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
-#include "myself.h"
+#include "core/myself.h"
 #include "dom/dom-processor-service.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -436,7 +436,7 @@ void Core::init()
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	// TODO: add some life-cycle management
-	notificationManager();
+	m_injector.get<NotificationManager>();
 	m_injector.get<SearchWindowActions>(); // temporary, during full-injection-port
 
 	contactManager()->ensureLoaded();
@@ -591,11 +591,6 @@ void Core::activatePlugins()
 	g_pluginActivationService = m_injector.get<PluginActivationService>();
 #endif
 
-}
-
-NotificationManager * Core::notificationManager() const
-{
-	return m_injector.get<NotificationManager>();
 }
 
 UnreadMessageRepository * Core::unreadMessageRepository() const
