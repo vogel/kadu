@@ -26,7 +26,6 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-storage.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 
 #include <QtCore/QDate>
 #include <qxmpp/QXmppVCardIq.h>
@@ -40,6 +39,11 @@ JabberContactPersonalInfoService::~JabberContactPersonalInfoService()
 {
 }
 
+void JabberContactPersonalInfoService::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
+}
+
 void JabberContactPersonalInfoService::setVCardService(JabberVCardService *vCardService)
 {
 	VCardService = vCardService;
@@ -47,7 +51,7 @@ void JabberContactPersonalInfoService::setVCardService(JabberVCardService *vCard
 
 void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
-	CurrentBuddy = Core::instance()->buddyStorage()->create();
+	CurrentBuddy = m_buddyStorage->create();
 	if (!VCardService)
 		return;
 

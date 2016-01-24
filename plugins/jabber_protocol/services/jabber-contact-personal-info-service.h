@@ -18,13 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_CONTACT_PERSONAL_INFO_SERVICE_H
-#define JABBER_CONTACT_PERSONAL_INFO_SERVICE_H
+#pragma once
 
 #include "protocols/services/contact-personal-info-service.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class BuddyStorage;
 class JabberVCardService;
 
 class QXmppVCardIq;
@@ -32,12 +33,6 @@ class QXmppVCardIq;
 class JabberContactPersonalInfoService : public ContactPersonalInfoService
 {
 	Q_OBJECT
-
-	QPointer<JabberVCardService> VCardService;
-	Buddy CurrentBuddy;
-
-private slots:
-	void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
 
 public:
 	explicit JabberContactPersonalInfoService(Account account, QObject *parent = nullptr);
@@ -47,7 +42,14 @@ public:
 
 	virtual void fetchPersonalInfo(Contact contact);
 
+private:
+	QPointer<BuddyStorage> m_buddyStorage;
+	QPointer<JabberVCardService> VCardService;
+	Buddy CurrentBuddy;
+
+private slots:
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+
+	void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
+
 };
-
-#endif // JABBER_CONTACT_PERSONAL_INFO_SERVICE_H
-
