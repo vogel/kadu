@@ -126,7 +126,7 @@ void JabberProtocol::init()
 	m_changePasswordService = new JabberChangePasswordService{m_registerExtension.get(), this};
 	m_changePasswordService->setErrorService(m_errorService);
 
-	m_resourceService = new JabberResourceService{this};
+	m_resourceService = m_injectedFactory->makeInjected<JabberResourceService>(this);
 
 	m_roomChatService = m_injectedFactory->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account(), this);
 

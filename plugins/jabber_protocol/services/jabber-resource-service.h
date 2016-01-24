@@ -22,10 +22,13 @@
 #include "jabber-resource.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QVector>
+#include <injeqt/injeqt.h>
 
 class Jid;
 
+class ChatTypeManager;
 class Chat;
 class Contact;
 
@@ -48,6 +51,11 @@ public:
 	Jid bestContactJid(const Contact &chat) const;
 
 private:
+	QPointer<ChatTypeManager> m_chatTypeManager;
+
 	QVector<JabberResource> m_resources;
+
+private slots:
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 
 };
