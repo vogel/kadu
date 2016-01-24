@@ -19,44 +19,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_CONTACTS_TABLE_MODEL_H
-#define BUDDY_CONTACTS_TABLE_MODEL_H
-
-#include <QtCore/QAbstractTableModel>
+#pragma once
 
 #include "buddies/buddy.h"
 
+#include <QtCore/QAbstractTableModel>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class BuddyContactsTableItem;
+class BuddyManager;
 class ConfigurationValueStateNotifier;
+class ContactManager;
+class Roster;
 class SimpleConfigurationValueStateNotifier;
 
 class BuddyContactsTableModel : public QAbstractTableModel
 {
 	Q_OBJECT
-
-	Buddy ModelBuddy;
-	QList<BuddyContactsTableItem *> Contacts;
-	SimpleConfigurationValueStateNotifier *StateNotifier;
-
-	int CurrentMaxPriority;
-
-	void contactsFromBuddy();
-	void buddyFromContacts();
-	void performItemAction(BuddyContactsTableItem *);
-	void performItemActionEdit(BuddyContactsTableItem *item);
-	void performItemActionAdd(BuddyContactsTableItem *);
-	void performItemActionDetach(BuddyContactsTableItem *);
-	void performItemActionRemove(BuddyContactsTableItem *);
-
-	void addItem(BuddyContactsTableItem *item, bool emitRowsInserted = true);
-
-	void sendAuthorization(const Contact &contact);
-
-	bool isValid() const;
-	void updateStateNotifier();
-
-private slots:
-	void itemUpdated(BuddyContactsTableItem *item);
 
 public:
 	explicit BuddyContactsTableModel(Buddy buddy, QObject *parent = nullptr);
@@ -82,6 +62,38 @@ public:
 
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
-};
+private:
+	QPointer<BuddyManager> m_buddyManager;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<Roster> m_roster;
 
-#endif // BUDDY_CONTACTS_TABLE_MODEL_H
+	Buddy ModelBuddy;
+	QList<BuddyContactsTableItem *> Contacts;
+	SimpleConfigurationValueStateNotifier *StateNotifier;
+
+	int CurrentMaxPriority;
+
+	void contactsFromBuddy();
+	void buddyFromContacts();
+	void performItemAction(BuddyContactsTableItem *);
+	void performItemActionEdit(BuddyContactsTableItem *item);
+	void performItemActionAdd(BuddyContactsTableItem *);
+	void performItemActionDetach(BuddyContactsTableItem *);
+	void performItemActionRemove(BuddyContactsTableItem *);
+
+	void addItem(BuddyContactsTableItem *item, bool emitRowsInserted = true);
+
+	void sendAuthorization(const Contact &contact);
+
+	bool isValid() const;
+	void updateStateNotifier();
+
+private slots:
+	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setRoster(Roster *roster);
+	INJEQT_INIT void init();
+
+	void itemUpdated(BuddyContactsTableItem *item);
+
+};

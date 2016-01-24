@@ -20,12 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QColor>
-#include <QtGui/QIcon>
+#include "buddy-contacts-table-model.h"
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "gui/widgets/buddy-contacts-table-item.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "icons/kadu-icon.h"
@@ -37,18 +35,38 @@
 #include "roster/roster-entry.h"
 #include "roster/roster.h"
 
-#include "buddy-contacts-table-model.h"
+#include <QtGui/QColor>
+#include <QtGui/QIcon>
 
 BuddyContactsTableModel::BuddyContactsTableModel(Buddy buddy, QObject *parent) :
 		QAbstractTableModel(parent), ModelBuddy(buddy),
 		StateNotifier(new SimpleConfigurationValueStateNotifier(this)), CurrentMaxPriority(-1)
 {
-	contactsFromBuddy();
-	updateStateNotifier();
 }
 
 BuddyContactsTableModel::~BuddyContactsTableModel()
 {
+}
+
+void BuddyContactsTableModel::setBuddyManager(BuddyManager *buddyManager)
+{
+	m_buddyManager = buddyManager;
+}
+
+void BuddyContactsTableModel::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void BuddyContactsTableModel::setRoster(Roster *roster)
+{
+	m_roster = roster;
+}
+
+void BuddyContactsTableModel::init()
+{
+	contactsFromBuddy();
+	updateStateNotifier();
 }
 
 const ConfigurationValueStateNotifier * BuddyContactsTableModel::valueStateNotifier() const
@@ -160,24 +178,24 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 	}
 
 	// First we need to remove existing contact from the manager to avoid duplicates.
-	Contact existingContact = Core::instance()->contactManager()->byId(item->itemAccount(), item->id(), ActionReturnNull);
+	Contact existingContact = m_contactManager->byId(item->itemAccount(), item->id(), ActionReturnNull);
 	if (existingContact)
-		Core::instance()->contactManager()->removeItem(existingContact);
+		m_contactManager->removeItem(existingContact);
 
-	Core::instance()->roster()->removeContact(contact);
+	m_roster->removeContact(contact);
 	contact.setContactAccount(item->itemAccount());
 	contact.setId(item->id());
 	if (item->rosterDetached())
 		contact.rosterEntry()->setDetached();
 	else
 		contact.rosterEntry()->setSynchronized();
-	Core::instance()->roster()->addContact(contact);
+	m_roster->addContact(contact);
 	sendAuthorization(contact);
 }
 
 void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 {
-	Contact contact = Core::instance()->contactManager()->byId(item->itemAccount(), item->id(), ActionCreateAndAdd);
+	Contact contact = m_contactManager->byId(item->itemAccount(), item->id(), ActionCreateAndAdd);
 	contact.setOwnerBuddy(ModelBuddy);
 	contact.setPriority(item->itemContactPriority());
 	if (item->rosterDetached())
@@ -185,7 +203,7 @@ void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 	else
 		contact.rosterEntry()->setSynchronized();
 
-	Core::instance()->roster()->addContact(contact);
+	m_roster->addContact(contact);
 	sendAuthorization(contact);
 }
 
@@ -199,7 +217,7 @@ void BuddyContactsTableModel::performItemActionDetach(BuddyContactsTableItem *it
 	if (display.isEmpty())
 		return;
 
-	Buddy newBuddy = Core::instance()->buddyManager()->byDisplay(display, ActionCreateAndAdd);
+	Buddy newBuddy = m_buddyManager->byDisplay(display, ActionCreateAndAdd);
 	newBuddy.setAnonymous(false);
 	contact.setOwnerBuddy(newBuddy);
 }
@@ -223,7 +241,7 @@ void BuddyContactsTableModel::performItemActionRemove(BuddyContactsTableItem *it
 	Contact contact = item->itemContact();
 	contact.setOwnerBuddy(Buddy::null);
 
-	Core::instance()->roster()->removeContact(contact);
+	m_roster->removeContact(contact);
 }
 
 void BuddyContactsTableModel::addItem(BuddyContactsTableItem *item, bool emitRowsInserted)
