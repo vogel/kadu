@@ -389,7 +389,7 @@ void SearchWindow::chatFound()
 	{
 		const Chat &chat = 1 == contacts.size()
 				? ChatTypeContact::findChat(m_chatManager, *contacts.constBegin(), ActionCreateAndAdd)
-				: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
+				: ChatTypeContactSet::findChat(m_chatManager, contacts, ActionCreateAndAdd);
 		m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 	}
 }

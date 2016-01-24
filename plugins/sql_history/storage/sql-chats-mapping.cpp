@@ -223,7 +223,7 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 			contacts.insert(contact);
 		}
 
-		return ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
+		return ChatTypeContactSet::findChat(m_chatManager, contacts, ActionCreateAndAdd);
 	}
 
 	return Chat::create();

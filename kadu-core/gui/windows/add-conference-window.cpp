@@ -258,7 +258,7 @@ Chat AddConferenceWindow::computeChat() const
 	foreach (const Buddy &buddy, conferenceBuddies)
 		conferenceContacts.insert(buddy.contacts(account).first());
 
-	return ChatTypeContactSet::findChat(conferenceContacts, ActionCreateAndAdd);
+	return ChatTypeContactSet::findChat(m_chatManager, conferenceContacts, ActionCreateAndAdd);
 }
 
 // we need to filter by account here because CheckableBuddiesProxyModel does not do filtering at all

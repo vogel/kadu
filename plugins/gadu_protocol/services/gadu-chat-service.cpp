@@ -258,7 +258,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 
 	Chat chat = 1 == chatContacts.size()
 			? ChatTypeContact::findChat(m_chatManager, *chatContacts.constBegin(), ActionCreateAndAdd)
-			: ChatTypeContactSet::findChat(chatContacts, ActionCreateAndAdd);
+			: ChatTypeContactSet::findChat(m_chatManager, chatContacts, ActionCreateAndAdd);
 
 	// create=true in our call for findChat(), but chat might be null for example if chatContacts was empty
 	if (!chat || chat.isIgnoreAllMessages())

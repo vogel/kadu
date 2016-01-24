@@ -20,12 +20,11 @@
 
 #include "chat/chat-details-contact-set.h"
 #include "chat/chat-manager.h"
-#include "core/core.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-contact-set.h"
 
-Chat ChatTypeContactSet::findChat(const ContactSet &contacts, NotFoundAction notFoundAction)
+Chat ChatTypeContactSet::findChat(ChatManager *chatManager, const ContactSet &contacts, NotFoundAction notFoundAction)
 {
 	if (contacts.count() < 2)
 		return Chat::null;
@@ -45,7 +44,7 @@ Chat ChatTypeContactSet::findChat(const ContactSet &contacts, NotFoundAction not
 		if (contact.id() == account.id())
 			return Chat::null;
 
-	foreach (const Chat &chat, Core::instance()->chatManager()->allItems()) // search allItems, chats can be not loaded yet
+	foreach (const Chat &chat, chatManager->allItems()) // search allItems, chats can be not loaded yet
 		if (chat.type() == QLatin1String("ContactSet") || chat.type() == QLatin1String("Conference"))
 			if (chat.contacts() == contacts)
 			{
@@ -77,7 +76,7 @@ Chat ChatTypeContactSet::findChat(const ContactSet &contacts, NotFoundAction not
 	}
 
 	if (ActionCreateAndAdd == notFoundAction)
-		Core::instance()->chatManager()->addItem(chat);
+		chatManager->addItem(chat);
 
 	return chat;
 }
