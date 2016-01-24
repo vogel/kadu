@@ -35,7 +35,6 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "contacts/contact-manager.h"
 #include "core/application.h"
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
@@ -388,7 +387,6 @@ void Core::init()
 	m_injector.get<NotificationManager>();
 	m_injector.get<SearchWindowActions>(); // temporary, during full-injection-port
 
-	contactManager()->ensureLoaded();
 	// Without that UnreadMessageRepository is loaded while filtering buddies list for the first time.
 	// It has to happen earlier because UnreadMessageRepository::loaded() might add buddies to the BuddyManager
 	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
@@ -580,11 +578,6 @@ InjectedFactory * Core::injectedFactory() const
 IconsManager * Core::iconsManager() const
 {
 	return m_injector.get<IconsManager>();
-}
-
-ContactManager * Core::contactManager() const
-{
-	return m_injector.get<ContactManager>();
 }
 
 Configuration * Core::configuration() const

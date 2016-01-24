@@ -36,7 +36,6 @@ template<class T>
 class DefaultProvider;
 
 class Configuration;
-class ContactManager;
 class FileTransferManager;
 class IconsManager;
 class InjectedFactory;
@@ -76,7 +75,6 @@ public:
 	void activatePlugins();
 
 	Configuration * configuration() const;
-	ContactManager * contactManager() const;
 	FileTransferManager * fileTransferManager() const;
 	IconsManager * iconsManager() const;
 	InjectedFactory * injectedFactory() const;

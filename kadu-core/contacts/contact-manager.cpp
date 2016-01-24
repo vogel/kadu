@@ -87,6 +87,8 @@ void ContactManager::init()
 	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
 
 	m_configurationManager->registerStorableObject(this);
+
+	ensureLoaded();
 }
 
 void ContactManager::done()
