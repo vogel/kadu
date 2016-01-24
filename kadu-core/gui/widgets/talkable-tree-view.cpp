@@ -294,15 +294,15 @@ void TalkableTreeView::updateContext()
 	// cuurent index is part of context
 	setCurrentTalkable(talkableAt(currentIndex()));
 
-	ModelIndexListConverter converter(selectedIndexes());
+	auto converter = m_injectedFactory->makeNotOwned<ModelIndexListConverter>(selectedIndexes());
 
 	ChangeNotifierLock lock(Context->changeNotifier());
 
-	Context->setRoles(converter.roles());
-	Context->setBuddies(converter.buddies());
-	Context->setContacts(converter.contacts());
-	Context->setChat(converter.chat());
-	Context->setStatusContainer(statusContainerForChat(converter.chat()));
+	Context->setRoles(converter->roles());
+	Context->setBuddies(converter->buddies());
+	Context->setContacts(converter->contacts());
+	Context->setChat(converter->chat());
+	Context->setStatusContainer(statusContainerForChat(converter->chat()));
 }
 
 ActionContext * TalkableTreeView::actionContext()

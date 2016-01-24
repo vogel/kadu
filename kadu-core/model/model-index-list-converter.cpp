@@ -17,18 +17,41 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "model-index-list-converter.h"
+
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "chat/type/chat-type-contact.h"
-#include "core/core.h"
 #include "message/unread-message-repository.h"
 #include "model/roles.h"
 
-#include "model-index-list-converter.h"
-
-ModelIndexListConverter::ModelIndexListConverter(const QModelIndexList &modelIndexList) :
+ModelIndexListConverter::ModelIndexListConverter(const QModelIndexList &modelIndexList, QObject *parent) :
+		QObject{parent},
 		ModelIndexList(modelIndexList)
+{
+}
+
+ModelIndexListConverter::~ModelIndexListConverter()
+{
+}
+
+void ModelIndexListConverter::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void ModelIndexListConverter::setChatManager(ChatManager *chatManager)
+{
+	m_chatManager = chatManager;
+}
+
+void ModelIndexListConverter::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
+{
+	m_unreadMessageRepository = unreadMessageRepository;
+}
+
+void ModelIndexListConverter::init()
 {
 	buildRoles();
 	buildBuddies();
@@ -95,9 +118,9 @@ Chat ModelIndexListConverter::chatFromIndex(const QModelIndex &index) const
 				return Chat::null;
 		}
 		case BuddyRole:
-			return Core::instance()->unreadMessageRepository()->unreadMessageForBuddy(index.data(BuddyRole).value<Buddy>()).messageChat();
+			return m_unreadMessageRepository->unreadMessageForBuddy(index.data(BuddyRole).value<Buddy>()).messageChat();
 		case ContactRole:
-			return Core::instance()->unreadMessageRepository()->unreadMessageForContact(index.data(ContactRole).value<Contact>()).messageChat();
+			return m_unreadMessageRepository->unreadMessageForContact(index.data(ContactRole).value<Contact>()).messageChat();
 	}
 
 	return Chat::null;
@@ -113,9 +136,9 @@ Chat ModelIndexListConverter::chatFromBuddies() const
 		return Chat::null;
 
 	if (1 == buddies.size())
-		return ChatTypeContact::findChat(Core::instance()->chatManager(), Core::instance()->buddyPreferredManager()->preferredContact2(*buddies.begin()), ActionCreateAndAdd);
+		return ChatTypeContact::findChat(m_chatManager, m_buddyPreferredManager->preferredContact2(*buddies.begin()), ActionCreateAndAdd);
 	else
-		return ChatTypeContactSet::findChat(Core::instance()->buddyPreferredManager()->preferredContacts(buddies), ActionCreateAndAdd);
+		return ChatTypeContactSet::findChat(m_buddyPreferredManager->preferredContacts(buddies), ActionCreateAndAdd);
 }
 
 Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
@@ -136,7 +159,7 @@ Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
 	if (contacts.isEmpty())
 		return Chat::null;
 	return 1 == contacts.size()
-			? ChatTypeContact::findChat(Core::instance()->chatManager(), *contacts.constBegin(), ActionCreateAndAdd)
+			? ChatTypeContact::findChat(m_chatManager, *contacts.constBegin(), ActionCreateAndAdd)
 			: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
 }
 
@@ -158,7 +181,7 @@ Account ModelIndexListConverter::commonAccount() const
 Contact ModelIndexListConverter::contactForAccount(const QModelIndex &index, const Account &account) const
 {
 	if (index.data(ItemTypeRole) == BuddyRole)
-		return Core::instance()->buddyPreferredManager()->preferredContact(index.data(BuddyRole).value<Buddy>(), account);
+		return m_buddyPreferredManager->preferredContact(index.data(BuddyRole).value<Buddy>(), account);
 
 	const Contact &contact = index.data(ContactRole).value<Contact>();
 	if (contact.contactAccount() == account)

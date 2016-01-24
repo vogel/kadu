@@ -17,18 +17,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MODEL_INDEX_LIST_CONVERTER_H
-#define MODEL_INDEX_LIST_CONVERTER_H
-
-#include <QtCore/QModelIndexList>
+#pragma once
 
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
 #include "model/roles.h"
 
-class ModelIndexListConverter
+#include <QtCore/QModelIndexList>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyPreferredManager;
+class ChatManager;
+class UnreadMessageRepository;
+
+class ModelIndexListConverter : public QObject
 {
+	Q_OBJECT
+
+public:
+	explicit ModelIndexListConverter(const QModelIndexList &modelIndexList, QObject *parent = nullptr);
+	virtual ~ModelIndexListConverter();
+
+	RoleSet roles() const;
+	BuddySet buddies() const;
+	ContactSet contacts() const;
+	Chat chat() const;
+
+private:
+	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<ChatManager> m_chatManager;
+	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+
 	const QModelIndexList &ModelIndexList;
 
 	RoleSet Roles;
@@ -48,14 +70,10 @@ class ModelIndexListConverter
 	Account commonAccount() const;
 	Contact contactForAccount(const QModelIndex &inde, const Account &account) const;
 
-public:
-	explicit ModelIndexListConverter(const QModelIndexList &modelIndexList);
-
-	RoleSet roles() const;
-	BuddySet buddies() const;
-	ContactSet contacts() const;
-	Chat chat() const;
+private slots:
+	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+	INJEQT_INIT void init();
 
 };
-
-#endif // MODEL_INDEX_LIST_CONVERTER_H
