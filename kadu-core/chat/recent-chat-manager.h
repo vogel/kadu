@@ -33,8 +33,10 @@
 
 class QTimer;
 
+class ChatManager;
 class Chat;
 class ConfigurationManager;
+class Configuration;
 class MessageManager;
 class Message;
 
@@ -130,7 +132,9 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<ChatManager> m_chatManager;
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<MessageManager> m_messageManager;
 
 	QList<Chat> RecentChats;
@@ -142,7 +146,9 @@ private:
 	void removeRecentChat(Chat chat);
 
 private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
