@@ -33,7 +33,6 @@
 #include "avatars/avatar-manager.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat/model/chat-data-extractor.h"
-#include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
@@ -612,11 +611,6 @@ ConfigurationManager * Core::configurationManager() const
 ChatDataExtractor * Core::chatDataExtractor() const
 {
 	return m_injector.get<ChatDataExtractor>();
-}
-
-ChatTypeManager * Core::chatTypeManager() const
-{
-	return m_injector.get<ChatTypeManager>();
 }
 
 Roster * Core::roster() const
