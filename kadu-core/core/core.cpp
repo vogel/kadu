@@ -169,7 +169,7 @@ Core::~Core()
 	// some plugins crash on deactivation
 	// ensure we have at least some configuration stored
 	configurationManager()->flush();
-	application()->backupConfiguration();
+	m_injector.get<Application>()->backupConfiguration();
 
 	m_injector.get<PluginManager>()->deactivatePlugins();
 	// CurrentPluginManager->deactivatePlugins();
@@ -177,7 +177,7 @@ Core::~Core()
 	stopServices();
 
 	configurationManager()->flush();
-	application()->backupConfiguration();
+	m_injector.get<Application>()->backupConfiguration();
 }
 
 void Core::createDefaultConfiguration()
@@ -365,7 +365,7 @@ void Core::createAllDefaultToolbars()
 	ChatEditBox::createDefaultToolbars(configuration(), toolbarsConfig);
 	SearchWindow::createDefaultToolbars(configuration(), toolbarsConfig);
 
-	application()->flushConfiguration();
+	m_injector.get<Application>()->flushConfiguration();
 }
 
 void Core::init()
@@ -608,11 +608,6 @@ Configuration * Core::configuration() const
 PathsProvider * Core::pathsProvider() const
 {
 	return m_injector.get<PathsProvider>();
-}
-
-Application * Core::application() const
-{
-	return m_injector.get<Application>();
 }
 
 ConfigurationManager * Core::configurationManager() const

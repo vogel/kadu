@@ -35,7 +35,6 @@
 template<class T>
 class DefaultProvider;
 
-class Application;
 class BuddyStorage;
 class ChatManager;
 class ChatTypeManager;
@@ -81,7 +80,6 @@ public:
 
 	void activatePlugins();
 
-	Application * application() const;
 	BuddyStorage * buddyStorage() const;
 	ChatManager * chatManager() const;
 	ChatTypeManager * chatTypeManager() const;
