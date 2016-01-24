@@ -30,8 +30,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -61,14 +59,14 @@
 
 Q_GLOBAL_STATIC(QSet<QChar>, searchChars)
 
-static void prepareSearchChars(bool forceExecSeachChars = false)
+static void prepareSearchChars(Configuration *configuration, bool forceExecSeachChars = false)
 {
 	QSet<QChar> &chars = *searchChars();
 	if (chars.isEmpty())
 		foreach (QChar c, QString(SEARCH_CHARS))
 			chars.insert(c);
 
-	bool allowExec = forceExecSeachChars || Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
+	bool allowExec = forceExecSeachChars || configuration->deprecatedApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
 	foreach (QChar c, QString(EXEC_SEARCH_CHARS))
 		if (allowExec)
 			chars.insert(c);
@@ -85,9 +83,34 @@ Parser::~Parser()
 {
 }
 
+void Parser::setChatDataExtractor(ChatDataExtractor *chatDataExtractor)
+{
+	m_chatDataExtractor = chatDataExtractor;
+}
+
+void Parser::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void Parser::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
+}
+
+void Parser::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
+void Parser::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
+}
+
 QString Parser::escape(const QString &string)
 {
-	prepareSearchChars(true);
+	prepareSearchChars(m_configuration, true);
 
 	QString escaped;
 	escaped.reserve(string.size() * 2);
@@ -229,9 +252,9 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 	ParserToken pe;
 	pe.setType(PT_STRING);
 
-	Chat chat = Core::instance()->talkableConverter()->toChat(talkable);
-	Buddy buddy = Core::instance()->talkableConverter()->toBuddy(talkable);
-	Contact contact = Core::instance()->talkableConverter()->toContact(talkable);
+	Chat chat = m_talkableConverter->toChat(talkable);
+	Buddy buddy = m_talkableConverter->toBuddy(talkable);
+	Contact contact = m_talkableConverter->toContact(talkable);
 
 	switch (s.at(idx).toAscii())
 	{
@@ -253,13 +276,13 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 					pe.setContent(QCoreApplication::translate("@default", "Blocking"));
 				else
 				{
-					const StatusTypeData & typeData = Core::instance()->statusTypeManager()->statusTypeData(contact.currentStatus().type());
+					const StatusTypeData & typeData = m_statusTypeManager->statusTypeData(contact.currentStatus().type());
 					pe.setContent(typeData.displayName());
 				}
 			}
 			else if (chat && chat.chatAccount().statusContainer())
 			{
-				const StatusTypeData & typeData = Core::instance()->statusTypeManager()->statusTypeData(chat.chatAccount().statusContainer()->status().type());
+				const StatusTypeData & typeData = m_statusTypeManager->statusTypeData(chat.chatAccount().statusContainer()->status().type());
 				pe.setContent(typeData.displayName());
 			}
 
@@ -273,7 +296,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 				if (container)
 					pe.setContent(container->statusIcon(contact.currentStatus().type()).path());
 				else
-					pe.setContent(Core::instance()->statusContainerManager()->statusIcon(contact.currentStatus().type()).path());
+					pe.setContent(m_statusContainerManager->statusIcon(contact.currentStatus().type()).path());
 			}
 			else if (chat)
 			{
@@ -281,7 +304,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 				if (container)
 					pe.setContent(container->statusIcon().path());
 				else
-					pe.setContent(Core::instance()->statusContainerManager()->statusIcon(Status()).path());
+					pe.setContent(m_statusContainerManager->statusIcon(Status()).path());
 			}
 
 			break;
@@ -296,7 +319,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 
 				pe.setContent(description);
 
-				if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc"))
+				if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc"))
 				{
 					QString content = pe.decodedContent();
 					content.replace('\n', QLatin1String("<br/>"));
@@ -331,7 +354,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 		{
 			++idx;
 
-			QString nickName = chat ? Core::instance()->chatDataExtractor()->data(chat, Qt::DisplayRole).toString() : buddy.nickName();
+			QString nickName = chat ? m_chatDataExtractor->data(chat, Qt::DisplayRole).toString() : buddy.nickName();
 			if (escape == ParserEscape::HtmlEscape)
 				nickName = Qt::escape(nickName);
 
@@ -343,7 +366,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 		{
 			++idx;
 
-			QString display = chat ? Core::instance()->chatDataExtractor()->data(chat, Qt::DisplayRole).toString() : buddy.display();
+			QString display = chat ? m_chatDataExtractor->data(chat, Qt::DisplayRole).toString() : buddy.display();
 			if (escape == ParserEscape::HtmlEscape)
 				display = Qt::escape(display);
 
@@ -482,7 +505,7 @@ QString Parser::parse(const QString &s, Talkable talkable, const ParserData * co
 {
 	kdebugmf(KDEBUG_DUMP, "%s htmlEscape=%i\n", qPrintable(s), static_cast<int>(escape));
 
-	prepareSearchChars();
+	prepareSearchChars(m_configuration);
 
 	QStack<ParserToken> parseStack;
 	int idx = 0, len = s.length();

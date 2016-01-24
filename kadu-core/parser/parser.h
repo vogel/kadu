@@ -32,8 +32,13 @@
 
 template<typename T> class QStack;
 
+class ChatDataExtractor;
+class Configuration;
 class ParserData;
 class ParserToken;
+class StatusContainerManager;
+class StatusTypeManager;
+class TalkableConverter;
 
 enum class ParserEscape
 {
@@ -73,6 +78,12 @@ public:
 	bool unregisterObjectTag(const QString &name);
 
 private:
+	QPointer<ChatDataExtractor> m_chatDataExtractor;
+	QPointer<Configuration> m_configuration;
+	QPointer<StatusContainerManager> m_statusContainerManager;
+	QPointer<StatusTypeManager> m_statusTypeManager;
+	QPointer<TalkableConverter> m_talkableConverter;
+
 	QMap<QString, TalkableTagCallback> m_registeredTalkableTags;
 	QMap<QString, ObjectTagCallback> m_registeredObjectTags;
 
@@ -83,5 +94,12 @@ private:
 
 	template<typename ContainerClass>
 	QString joinParserTokens(const ContainerClass &parseStack);
+
+private slots:
+	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 
 };
