@@ -26,17 +26,20 @@
 #include <injeqt/injeqt.h>
 
 class ConfigurationWindow;
+class InjectedFactory;
 class PathsProvider;
 
 class DockingNotifyConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
 
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<PathsProvider> m_pathsProvider;
 
 	QString currentNotificationEvent;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 	void showConfigurationWindow();

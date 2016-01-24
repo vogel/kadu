@@ -22,7 +22,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/notify-group-box.h"
@@ -47,6 +47,11 @@ DockingNotifyConfigurationWidget::DockingNotifyConfigurationWidget(QWidget *pare
 	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
+void DockingNotifyConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void DockingNotifyConfigurationWidget::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -66,7 +71,7 @@ void DockingNotifyConfigurationWidget::switchToEvent(const QString &event)
 void DockingNotifyConfigurationWidget::showConfigurationWindow()
 {
 	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(currentNotificationEvent);
-	ConfigurationWindow *configWindow = new ConfigurationWindow("Qt4DockingNotificationEventConfiguration", tr("Tray icon balloon's look configuration"), "Qt4DockingNotify", dataManager);
+	ConfigurationWindow *configWindow = m_injectedFactory->makeInjected<ConfigurationWindow>("Qt4DockingNotificationEventConfiguration", tr("Tray icon balloon's look configuration"), "Qt4DockingNotify", dataManager);
 
 	dataManager->configurationWindowCreated(configWindow);
 

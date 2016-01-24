@@ -23,6 +23,7 @@
 #include <QtWidgets/QSpinBox>
 
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-color-button.h"
 #include "gui/widgets/configuration/config-label.h"
 #include "gui/widgets/configuration/config-select-font.h"
@@ -81,7 +82,7 @@ HintsConfigurationWindow * HintsConfigurationWindow::configWindowForEvent(const 
 	else
 	{
 		NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(eventName);
-		return ConfigurationWindows[eventName] = new HintsConfigurationWindow(eventName, dataManager);
+		return ConfigurationWindows[eventName] = Core::instance()->injectedFactory()->makeInjected<HintsConfigurationWindow>(eventName, dataManager);
 	}
 }
 

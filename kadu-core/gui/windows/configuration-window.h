@@ -23,20 +23,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIGURATION_WINDOW_H
-#define CONFIGURATION_WINDOW_H
-
-#include <QtWidgets/QDialog>
+#pragma once
 
 #include "configuration/configuration-window-data-manager.h"
 #include "icons/icons-manager.h"
 #include "os/generic/desktop-aware-object.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
+
 class QWidget;
 class ConfigSection;
 class ConfigWidget;
+class ConfigurationManager;
 class ConfigurationWidget;
 class ConfigGroupBox;
+class InjectedFactory;
 class QHBoxLayout;
 class QVBoxLayout;
 class QDialogButtonBox;
@@ -95,6 +98,9 @@ class KADUAPI ConfigurationWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
+	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	ConfigurationWindowDataManager *m_dataManager;
 	QString Name;
 	QString Section;
@@ -102,10 +108,16 @@ class KADUAPI ConfigurationWindow : public QDialog, DesktopAwareObject
 	ConfigurationWidget *configurationWidget;
 
 private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void updateAndCloseConfig();
 	void updateConfig();
 
 protected:
+	InjectedFactory * injectedFactory() const;
+
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
@@ -141,5 +153,3 @@ signals:
 	void configurationSaved();
 
 };
-
-#endif

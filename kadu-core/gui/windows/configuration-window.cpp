@@ -34,7 +34,6 @@
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-manager.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-action-button.h"
 #include "gui/widgets/configuration/config-check-box.h"
@@ -74,10 +73,27 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(caption);
+}
 
+ConfigurationWindow::~ConfigurationWindow()
+{
+}
+
+void ConfigurationWindow::setConfigurationManager(ConfigurationManager *configurationManager)
+{
+	m_configurationManager = configurationManager;
+}
+
+void ConfigurationWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ConfigurationWindow::init()
+{
 	QVBoxLayout *main_layout = new QVBoxLayout(this);
 
-	configurationWidget = Core::instance()->injectedFactory()->makeInjected<ConfigurationWidget>(dataManager, this);
+	configurationWidget = m_injectedFactory->makeInjected<ConfigurationWidget>(dataManager(), this);
 
 	QDialogButtonBox *buttons_layout = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -97,11 +113,12 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	main_layout->addSpacing(16);
 	main_layout->addWidget(buttons_layout);
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper(section, name + "_Geometry"), QRect(0, 50, 790, 580), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(section(), name() + "_Geometry"), QRect(0, 50, 790, 580), this);
 }
 
-ConfigurationWindow::~ConfigurationWindow()
+InjectedFactory * ConfigurationWindow::injectedFactory() const
 {
+	return m_injectedFactory;
 }
 
 void ConfigurationWindow::show()
@@ -134,7 +151,7 @@ void ConfigurationWindow::updateConfig()
 	emit configurationSaved();
 	ConfigurationAwareObject::notifyAll();
 
-	Core::instance()->configurationManager()->flush();
+	m_configurationManager->flush();
 }
 
 void ConfigurationWindow::keyPressEvent(QKeyEvent *e)

@@ -180,7 +180,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 {
 	if (!AdvancedWindow)
 	{
-		AdvancedWindow = new ConfigurationWindow("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", m_mainConfigurationWindow->dataManager());
+		AdvancedWindow = m_injectedFactory->makeInjected<ConfigurationWindow>("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", m_mainConfigurationWindow->dataManager());
 		AdvancedWindow->widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
 
 		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));

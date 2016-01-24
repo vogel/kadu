@@ -133,11 +133,6 @@ void MainConfigurationWindow::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void MainConfigurationWindow::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void MainConfigurationWindow::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
 	m_kaduWindowService = kaduWindowService;
@@ -219,7 +214,7 @@ void MainConfigurationWindow::init()
 
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
 
-	PluginList = m_injectedFactory->makeInjected<PluginListWidget>(this);
+	PluginList = injectedFactory()->makeInjected<PluginListWidget>(this);
 	PluginList->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
 
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(applied()));

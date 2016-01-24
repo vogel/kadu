@@ -35,7 +35,6 @@
 template<class T>
 class DefaultProvider;
 
-class ConfigurationManager;
 class Configuration;
 class ContactManager;
 class FileTransferManager;
@@ -76,7 +75,6 @@ public:
 
 	void activatePlugins();
 
-	ConfigurationManager * configurationManager() const;
 	Configuration * configuration() const;
 	ContactManager * contactManager() const;
 	FileTransferManager * fileTransferManager() const;

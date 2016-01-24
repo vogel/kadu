@@ -165,7 +165,7 @@ Core::~Core()
 
 	// some plugins crash on deactivation
 	// ensure we have at least some configuration stored
-	configurationManager()->flush();
+	m_injector.get<ConfigurationManager>()->flush();
 	m_injector.get<Application>()->backupConfiguration();
 
 	m_injector.get<PluginManager>()->deactivatePlugins();
@@ -173,7 +173,7 @@ Core::~Core()
 
 	stopServices();
 
-	configurationManager()->flush();
+	m_injector.get<ConfigurationManager>()->flush();
 	m_injector.get<Application>()->backupConfiguration();
 }
 
@@ -595,11 +595,6 @@ Configuration * Core::configuration() const
 PathsProvider * Core::pathsProvider() const
 {
 	return m_injector.get<PathsProvider>();
-}
-
-ConfigurationManager * Core::configurationManager() const
-{
-	return m_injector.get<ConfigurationManager>();
 }
 
 Roster * Core::roster() const

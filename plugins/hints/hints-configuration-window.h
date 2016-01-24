@@ -35,8 +35,6 @@ class HintsConfigurationWindow : public ConfigurationWindow
 
 	QString EventName;
 
-    	explicit HintsConfigurationWindow(const QString &eventName, NotifierConfigurationDataManager *dataManager);
-
 	static QMap<QString, HintsConfigurationWindow *> ConfigurationWindows;
 	static void windowDestroyed(const QString &eventName);
 
@@ -48,7 +46,9 @@ private slots:
 public:
 	static HintsConfigurationWindow * configWindowForEvent(const QString &eventName);
 
+	explicit HintsConfigurationWindow(const QString &eventName, NotifierConfigurationDataManager *dataManager);
 	~HintsConfigurationWindow();
+
 };
 
 #endif // HINT_SCONFIGURATION_WINDOW_H
