@@ -34,7 +34,6 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-storage.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
-#include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-manager.h"
@@ -620,11 +619,6 @@ Application * Core::application() const
 ConfigurationManager * Core::configurationManager() const
 {
 	return m_injector.get<ConfigurationManager>();
-}
-
-BuddyChatManager * Core::buddyChatManager() const
-{
-	return m_injector.get<BuddyChatManager>();
 }
 
 BuddyPreferredManager * Core::buddyPreferredManager() const
