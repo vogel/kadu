@@ -530,7 +530,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = !m_configuration->deprecatedApi()->readBoolEntry("General", "ShowWithoutDescription");
-	HideWithoutDescriptionTalkableFilter *filter = new HideWithoutDescriptionTalkableFilter(action);
+	auto filter = m_injectedFactory->makeInjected<HideWithoutDescriptionTalkableFilter>(action);
 	filter->setEnabled(enabled);
 
 	action->setData(QVariant::fromValue(filter));
@@ -930,7 +930,7 @@ void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool to
 	QVariant v = sender->data();
 	if (v.canConvert<HideWithoutDescriptionTalkableFilter *>())
 	{
-		HideWithoutDescriptionTalkableFilter *filter = v.value<HideWithoutDescriptionTalkableFilter *>();
+		auto filter = v.value<HideWithoutDescriptionTalkableFilter *>();
 		filter->setEnabled(toggled);
 	}
 }

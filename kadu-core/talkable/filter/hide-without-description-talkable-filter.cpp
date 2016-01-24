@@ -18,15 +18,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "hide-without-description-talkable-filter.h"
+
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
-#include "core/core.h"
-
-#include "hide-without-description-talkable-filter.h"
 
 HideWithoutDescriptionTalkableFilter::HideWithoutDescriptionTalkableFilter(QObject *parent) :
-		TalkableFilter(parent), Enabled(false)
+		TalkableFilter{parent},
+		m_enabled{false}
 {
 }
 
@@ -34,12 +34,17 @@ HideWithoutDescriptionTalkableFilter::~HideWithoutDescriptionTalkableFilter()
 {
 }
 
+void HideWithoutDescriptionTalkableFilter::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
+
 TalkableFilter::FilterResult HideWithoutDescriptionTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (!Enabled)
+	if (!m_enabled)
 		return Undecided;
 
-	const Contact &contact = Core::instance()->buddyPreferredManager()->preferredContact(buddy);
+	auto const &contact = m_buddyPreferredManager->preferredContact(buddy);
 	if (contact.isNull())
 		return Rejected;
 
@@ -51,10 +56,10 @@ TalkableFilter::FilterResult HideWithoutDescriptionTalkableFilter::filterBuddy(c
 
 void HideWithoutDescriptionTalkableFilter::setEnabled(bool enabled)
 {
-	if (Enabled == enabled)
+	if (m_enabled == enabled)
 		return;
 
-	Enabled = enabled;
+	m_enabled = enabled;
 	emit filterChanged();
 }
 

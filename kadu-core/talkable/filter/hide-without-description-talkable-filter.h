@@ -17,12 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HIDE_WITHOUT_DESCRIPTION_TALKABLE_FILTER_H
-#define HIDE_WITHOUT_DESCRIPTION_TALKABLE_FILTER_H
-
-#include <QtCore/QMetaType>
+#pragma once
 
 #include "talkable/filter/talkable-filter.h"
+
+#include <QtCore/QMetaType>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyPreferredManager;
 
 /**
  * @addtogroup Talkable
@@ -44,8 +47,6 @@ class HideWithoutDescriptionTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 
-	bool Enabled;
-
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -64,6 +65,14 @@ public:
 	 */
 	void setEnabled(bool enabled);
 
+private:
+	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+
+	bool m_enabled;
+
+private slots:
+	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+
 };
 
 /**
@@ -71,5 +80,3 @@ public:
  */
 
 Q_DECLARE_METATYPE(HideWithoutDescriptionTalkableFilter *)
-
-#endif // HIDE_WITHOUT_DESCRIPTION_TALKABLE_FILTER_H
