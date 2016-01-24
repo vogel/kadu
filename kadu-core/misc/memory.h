@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <QtCore/QObject>
 #include <cassert>
 #include <memory>
 
@@ -36,8 +37,8 @@ struct not_owned_qobject_deleter
 		if (!qobject)
 			return;
 
-		assert(qobject->parent() == nullptr);
-		if (!qobject->parent())
+		assert(qobject->QObject::parent() == nullptr);
+		if (!qobject->QObject::parent())
 			delete qobject;
 	}
 };
@@ -54,7 +55,7 @@ public:
 	not_owned_qptr(T *qobject) :
 			std::unique_ptr<T, not_owned_qobject_deleter<T>>(qobject)
 	{
-		assert(qobject->parent() == nullptr);
+		assert(qobject->QObject::parent() == nullptr);
 	}
 
 	operator T*() const { return this->get(); }
@@ -64,7 +65,7 @@ template<typename T, typename ...Args>
 not_owned_qptr<T> make_not_owned(Args&& ...args)
 {
 	auto result = not_owned_qptr<T>(new T(std::forward<Args>(args)...));
-	assert(result->parent() == nullptr);
+	assert(result->QObject::parent() == nullptr);
 	return result;
 }
 
@@ -93,7 +94,7 @@ public:
 	owned_qptr(T *qobject) :
 			std::unique_ptr<T, owned_qobject_deleter<T>>(qobject)
 	{
-		assert(qobject->parent() != nullptr);
+		assert(qobject->QObject::parent() != nullptr);
 	}
 
 	operator T*() const { return this->get(); }
@@ -103,6 +104,6 @@ template<typename T, typename ...Args>
 owned_qptr<T> make_owned(Args&& ...args)
 {
 	auto result = owned_qptr<T>(new T(std::forward<Args>(args)...));
-	assert(result->parent() != nullptr);
+	assert(result->QObject::parent() != nullptr);
 	return result;
 }

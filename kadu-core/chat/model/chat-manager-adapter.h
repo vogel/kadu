@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_MANAGER_ADAPTER_H
-#define CHAT_MANAGER_ADAPTER_H
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -44,7 +43,20 @@ class ChatManagerAdapter : public QObject
 {
 	Q_OBJECT
 
-	ChatListModel *Model;
+public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
+	 * @param model model to adapt @link BuddiesManager @endlink to
+	 *
+	 * Given @link BuddyListModel @endlink will now have exactly the same data as @link BuddiesManager @endlink singleton.
+	 * Non-managable buddies can be added or removed from this model.
+	 */
+	explicit ChatManagerAdapter(ChatManager *chatManager, ChatListModel *model);
+	virtual ~ChatManagerAdapter();
+
+private:
+	ChatListModel *m_model;
 
 private slots:
 	/**
@@ -65,22 +77,8 @@ private slots:
 	 */
 	void chatRemoved(const Chat &chat);
 
-public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
-	 * @param model model to adapt @link BuddiesManager @endlink to
-	 *
-	 * Given @link BuddyListModel @endlink will now have exactly the same data as @link BuddiesManager @endlink singleton.
-	 * Non-managable buddies can be added or removed from this model.
-	 */
-	explicit ChatManagerAdapter(ChatListModel *model);
-	virtual ~ChatManagerAdapter();
-
 };
 
 /**
  * @}
  */
-
-#endif // CHAT_MANAGER_ADAPTER_H

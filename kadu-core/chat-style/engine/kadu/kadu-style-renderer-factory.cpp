@@ -22,6 +22,8 @@
 #include "chat-style/engine/kadu/kadu-style-renderer.h"
 #include "core/injected-factory.h"
 
+#include <QtCore/QObject>
+
 KaduStyleRendererFactory::KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style, QObject *parent) :
 		QObject{parent},
 		m_style{std::move(style)}

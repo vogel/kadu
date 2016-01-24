@@ -16,7 +16,6 @@ set (talkable_SRCS
 	filter/unread-messages-talkable-filter.cpp
 
 	model/talkable-model.cpp
-	model/talkable-model-factory.cpp
 	model/talkable-proxy-model.cpp
 
 	talkable-converter.cpp

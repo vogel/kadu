@@ -37,7 +37,7 @@
 #include "talkable/filter/hide-temporary-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/filter/unread-messages-talkable-filter.h"
-#include "talkable/model/talkable-model-factory.h"
+#include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
 
 #include <QtWidgets/QButtonGroup>
@@ -194,8 +194,8 @@ void RosterWidget::compositingDisabled()
 
 ModelChain * RosterWidget::createModelChain()
 {
-	ModelChain *chain = new ModelChain(TalkableTree);
-	chain->setBaseModel(TalkableModelFactory::createInstance(chain));
+	auto chain = new ModelChain(TalkableTree);
+	chain->setBaseModel(m_injectedFactory->makeInjected<TalkableModel>(chain));
 
 	ProxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(chain);
 	ProxyModel->addFilter(new HideContactChatsTalkableFilter(ProxyModel));

@@ -17,14 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TALKABLE_MODEL_H
-#define TALKABLE_MODEL_H
+#pragma once
 
+#include "misc/memory.h"
 #include "model/kadu-merged-proxy-model.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class BuddyListModel;
 class BuddyManagerAdapter;
 class ChatListModel;
+class ChatManager;
+class InjectedFactory;
+class Myself;
 
 /**
  * @addtogroup Talkable
@@ -42,11 +48,6 @@ class ChatListModel;
 class TalkableModel : public KaduMergedProxyModel
 {
 	Q_OBJECT
-
-	ChatListModel *Chats;
-	BuddyListModel *Buddies;
-	BuddyManagerAdapter *BuddiesAdapter;
-	bool IncludeMyself;
 
 public:
 	/**
@@ -77,10 +78,24 @@ public:
 	 */
 	bool includeMyself() const;
 
+private:
+	QPointer<ChatManager> m_chatManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<Myself> m_myself;
+
+	owned_qptr<ChatListModel> m_chats;
+	owned_qptr<BuddyListModel> m_buddies;
+	owned_qptr<BuddyManagerAdapter> m_buddiesAdapter;
+	bool m_includeMyself;
+
+private slots:
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_INIT void init();
+
 };
 
 /**
  * @}
  */
-
-#endif // TALKABLE_MODEL_H

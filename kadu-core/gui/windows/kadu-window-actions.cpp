@@ -594,8 +594,8 @@ void KaduWindowActions::showMyselfActionCreated(Action *action)
 	if (!window->talkableProxyModel())
 		return;
 
-	bool enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself", false);
-	TalkableModel *model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
+	auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself", false);
+	auto model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
 	if (model)
 	{
 		model->setIncludeMyself(enabled);
@@ -775,13 +775,13 @@ void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled
 
 void KaduWindowActions::showMyselfActionActivated(QAction *sender, bool toggled)
 {
-	MainWindow *window = qobject_cast<MainWindow *>(sender->parentWidget());
+	auto window = qobject_cast<MainWindow *>(sender->parentWidget());
 	if (!window)
 		return;
 	if (!window->talkableProxyModel())
 		return;
 
-	TalkableModel *model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
+	auto model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
 	if (model)
 	{
 		model->setIncludeMyself(toggled);

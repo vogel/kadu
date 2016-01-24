@@ -20,36 +20,31 @@
 
 #include "chat/chat-manager.h"
 #include "chat/model/chat-list-model.h"
-#include "core/core.h"
 
 #include "chat-manager-adapter.h"
 
-ChatManagerAdapter::ChatManagerAdapter(ChatListModel *model) :
-		QObject(model), Model(model)
+ChatManagerAdapter::ChatManagerAdapter(ChatManager *chatManager, ChatListModel *model) :
+		QObject{model},
+		m_model{model}
 {
-	Model->setChats(Core::instance()->chatManager()->allItems().values().toVector());
+	m_model->setChats(chatManager->allItems().values().toVector());
 
-	ChatManager *manager = Core::instance()->chatManager();
-	connect(manager, SIGNAL(chatAdded(Chat)),
-			this, SLOT(chatAdded(Chat)), Qt::DirectConnection);
-	connect(manager, SIGNAL(chatRemoved(Chat)),
-			this, SLOT(chatRemoved(Chat)), Qt::DirectConnection);
+	connect(chatManager, SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)), Qt::DirectConnection);
+	connect(chatManager, SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)), Qt::DirectConnection);
 }
 
 ChatManagerAdapter::~ChatManagerAdapter()
 {
-	ChatManager *manager = Core::instance()->chatManager();
-	disconnect(manager, 0, this, 0);
 }
 
 void ChatManagerAdapter::chatAdded(const Chat &chat)
 {
-	Model->addChat(chat);
+	m_model->addChat(chat);
 }
 
 void ChatManagerAdapter::chatRemoved(const Chat &chat)
 {
-	Model->removeChat(chat);
+	m_model->removeChat(chat);
 }
 
 #include "moc_chat-manager-adapter.cpp"
