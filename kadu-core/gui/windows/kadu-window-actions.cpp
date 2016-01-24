@@ -554,7 +554,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 		return;
 
 	bool enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOnlineAndDescription");
-	HideOfflineWithoutDescriptionTalkableFilter *filter = new HideOfflineWithoutDescriptionTalkableFilter(action);
+	auto filter = m_injectedFactory->makeInjected<HideOfflineWithoutDescriptionTalkableFilter>(action);
 	filter->setEnabled(enabled);
 
 	action->setData(QVariant::fromValue(filter));
@@ -950,7 +950,7 @@ void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool 
 	QVariant v = sender->data();
 	if (v.canConvert<HideOfflineWithoutDescriptionTalkableFilter *>())
 	{
-		HideOfflineWithoutDescriptionTalkableFilter *filter = v.value<HideOfflineWithoutDescriptionTalkableFilter *>();
+		auto filter = v.value<HideOfflineWithoutDescriptionTalkableFilter *>();
 		filter->setEnabled(toggled);
 	}
 }
