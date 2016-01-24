@@ -19,17 +19,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_DATA_EXTRACTOR_H
-#define BUDDY_DATA_EXTRACTOR_H
+#pragma once
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyPreferredManager;
+class Buddy;
 
 class QVariant;
 
-class Buddy;
-
-namespace BuddyDataExtractor
+class BuddyDataExtractor : public QObject
 {
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit BuddyDataExtractor(QObject *parent = nullptr);
+	virtual ~BuddyDataExtractor();
+
 	QVariant decoration(const Buddy &buddy);
 	QVariant data(const Buddy &buddy, int role);
-}
 
-#endif // BUDDY_DATA_EXTRACTOR_H
+private:
+	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+
+private slots:
+	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+
+};
+

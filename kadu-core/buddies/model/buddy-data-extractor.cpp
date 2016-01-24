@@ -19,18 +19,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
+#include "buddy-data-extractor.h"
 
 #include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
-#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "talkable/talkable.h"
 
-#include "buddy-data-extractor.h"
+#include <QtCore/QVariant>
+#include <QtGui/QIcon>
+
+BuddyDataExtractor::BuddyDataExtractor(QObject *parent) :
+		QObject{parent}
+{
+}
+
+BuddyDataExtractor::~BuddyDataExtractor()
+{
+}
+
+void BuddyDataExtractor::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
 
 QVariant BuddyDataExtractor::decoration(const Buddy &buddy)
 {
@@ -55,7 +68,7 @@ QVariant BuddyDataExtractor::data(const Buddy &buddy, int role)
 		case AvatarRole:
 			return buddy.buddyAvatar().pixmap();
 		case StatusRole:
-			return QVariant::fromValue(Core::instance()->buddyPreferredManager()->preferredContact(buddy, false).currentStatus());
+			return QVariant::fromValue(m_buddyPreferredManager->preferredContact(buddy, false).currentStatus());
 		case ItemTypeRole:
 			return BuddyRole;
 		case TalkableRole:

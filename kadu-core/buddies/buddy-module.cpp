@@ -26,12 +26,14 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-storage.h"
 #include "buddies/group-manager.h"
+#include "buddies/model/buddy-data-extractor.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 
 BuddyModule::BuddyModule()
 {
 	add_type<BuddyAdditionalDataDeleteHandlerManager>();
 	add_type<BuddyConfigurationWidgetFactoryRepository>();
+	add_type<BuddyDataExtractor>();
 	add_type<BuddyDummyFactory>();
 	add_type<BuddyListMimeDataService>();
 	add_type<BuddyManager>();

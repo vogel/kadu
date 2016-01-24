@@ -50,14 +50,19 @@ BuddyListModel::~BuddyListModel()
 	triggerAllAccountsUnregistered(m_accountManager);
 }
 
-void BuddyListModel::setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService)
-{
-	m_buddyListMimeDataService = buddyListMimeDataService;
-}
-
 void BuddyListModel::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
+}
+
+void BuddyListModel::setBuddyDataExtractor(BuddyDataExtractor *buddyDataExtractor)
+{
+	m_buddyDataExtractor = buddyDataExtractor;
+}
+
+void BuddyListModel::setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService)
+{
+	m_buddyListMimeDataService = buddyListMimeDataService;
 }
 
 void BuddyListModel::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
@@ -447,7 +452,7 @@ QVariant BuddyListModel::data(const QModelIndex &index, int role) const
 
 		return TalkableRole != role && !contact.isNull()
 				? ContactDataExtractor::data(contact, role, true)
-				: BuddyDataExtractor::data(buddy, role);
+				: m_buddyDataExtractor->data(buddy, role);
 	}
 
 	ContactShared *contactShared = qobject_cast<ContactShared *>(sharedData);

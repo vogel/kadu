@@ -34,6 +34,7 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class BuddyDataExtractor;
 class BuddyListMimeDataService;
 class BuddyPreferredManager;
 class Buddy;
@@ -265,6 +266,8 @@ protected:
 
 private:
 	QPointer<AccountManager> m_accountManager;
+	QPointer<BuddyDataExtractor> m_buddyDataExtractor;
+	QPointer<BuddyListMimeDataService> m_buddyListMimeDataService;
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<TalkableConverter> m_talkableConverter;
@@ -335,8 +338,11 @@ private:
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setBuddyDataExtractor(BuddyDataExtractor *buddyDataExtractor);
+	INJEQT_SET void setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService);
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();
 
 	/**
@@ -403,13 +409,6 @@ private slots:
 	 * This slot is connected to every buddy in list. Updated buddy is read from QObject::sender() method.
 	 */
 	void contactRemoved(const Contact &contact);
-
-private:
-	QPointer<BuddyListMimeDataService> m_buddyListMimeDataService;
-
-private slots:
-	INJEQT_SET void setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService);
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 
 };
 
