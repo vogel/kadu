@@ -22,7 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QTextDocument>
+#include "protocol.h"
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
@@ -44,12 +44,50 @@
 #include "status/status.h"
 #include "debug.h"
 
-#include "protocol.h"
+#include <QtGui/QTextDocument>
 
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
 		Factory(factory), CurrentAccount(account)
 {
-	Machine = Core::instance()->injectedFactory()->makeInjected<ProtocolStateMachine>(this);
+}
+
+Protocol::~Protocol()
+{
+}
+
+void Protocol::setChatService(ChatService * const chatService)
+{
+	m_chatService = chatService;
+}
+
+void Protocol::setChatStateService(ChatStateService * const chatStateService)
+{
+	m_chatStateService = chatStateService;
+}
+
+void Protocol::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void Protocol::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void Protocol::setRosterService(RosterService * const rosterService)
+{
+	m_rosterService = rosterService;
+}
+
+void Protocol::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
+void Protocol::init()
+{
+	Machine = m_injectedFactory->makeInjected<ProtocolStateMachine>(this);
 	/*
 	 * after machine is started we need to re-call changeStatus
 	 * so proper transition can be called
@@ -68,8 +106,29 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 	connect(Machine, SIGNAL(passwordRequiredStateEntered()), this, SLOT(passwordRequiredStateEntered()));
 }
 
-Protocol::~Protocol()
+ContactManager * Protocol::contactManager() const
 {
+	return m_contactManager;
+}
+
+InjectedFactory *Protocol::injectedFactory() const
+{
+	return m_injectedFactory;
+}
+
+ChatService * Protocol::chatService()
+{
+	return m_chatService.data();
+}
+
+ChatStateService * Protocol::chatStateService()
+{
+	return m_chatStateService.data();
+}
+
+RosterService * Protocol::rosterService() const
+{
+	return m_rosterService.data();
 }
 
 KaduIcon Protocol::icon()
@@ -103,7 +162,7 @@ void Protocol::setAllOffline()
 	Status status;
 	Status oldStatus;
 
-	foreach (const Contact &contact, Core::instance()->contactManager()->contacts(CurrentAccount))
+	foreach (const Contact &contact, m_contactManager->contacts(CurrentAccount))
 	{
 		oldStatus = contact.currentStatus();
 
@@ -202,7 +261,7 @@ KaduIcon Protocol::statusIcon()
 
 KaduIcon Protocol::statusIcon(const Status &status)
 {
-	return Core::instance()->statusTypeManager()->statusIcon(statusPixmapPath(), status);
+	return m_statusTypeManager->statusIcon(statusPixmapPath(), status);
 }
 
 void Protocol::loggingInStateEntered()
@@ -290,36 +349,6 @@ bool Protocol::isConnecting() const
 bool Protocol::isDisconnecting() const
 {
 	return Machine->isLoggingOut();
-}
-
-void Protocol::setChatService(ChatService * const chatService)
-{
-	CurrentChatService = chatService;
-}
-
-ChatService * Protocol::chatService()
-{
-	return CurrentChatService.data();
-}
-
-void Protocol::setChatStateService(ChatStateService * const chatStateService)
-{
-	CurrentChatStateService = chatStateService;
-}
-
-ChatStateService * Protocol::chatStateService()
-{
-	return CurrentChatStateService.data();
-}
-
-void Protocol::setRosterService(RosterService * const rosterService)
-{
-	CurrentRosterService = rosterService;
-}
-
-RosterService * Protocol::rosterService() const
-{
-	return CurrentRosterService.data();
 }
 
 #include "moc_protocol.cpp"

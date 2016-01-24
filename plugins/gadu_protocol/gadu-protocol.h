@@ -48,14 +48,12 @@
 
 class AvatarManager;
 class Configuration;
-class ContactManager;
 class GaduContactListHandler;
 class GaduDriveService;
 class GaduIMTokenService;
 class GaduNotifyService;
 class GaduProtocolSocketNotifiers;
 class GaduUserDataService;
-class InjectedFactory;
 class NetworkProxyManager;
 class ProtocolGaduConnection;
 
@@ -86,9 +84,7 @@ public:
 private:
 	QPointer<AvatarManager> m_avatarManager;
 	QPointer<Configuration> m_configuration;
-	QPointer<ContactManager> m_contactManager;
 	QPointer<GaduServersManager> m_gaduServersManager;
-	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NetworkProxyManager> m_networkProxyManager;
 
 	ProtocolGaduConnection *Connection;
@@ -140,8 +136,6 @@ private:
 private slots:
 	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
 	INJEQT_INIT void init();
 

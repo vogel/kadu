@@ -35,9 +35,7 @@
 #include <injeqt/injeqt.h>
 #include <qxmpp/QXmppClient.h>
 
-class ContactManager;
-class InjectedFactory;
-class JabberChangePasswordService;
+class InjectedFactory;class JabberChangePasswordService;
 class JabberErrorService;
 class JabberPresenceService;
 class JabberRegisterExtension;
@@ -84,9 +82,6 @@ protected:
 	virtual void changePrivateMode() override;
 
 private:
-	QPointer<ContactManager> m_contactManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-
 	JabberAvatarService *m_avatarService;
 	JabberChangePasswordService *m_changePasswordService;
 	JabberContactPersonalInfoService *m_contactPersonalInfoService;
@@ -109,8 +104,6 @@ private:
 	bool m_contactsListReadOnly;
 
 private slots:
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void connectedToServer();

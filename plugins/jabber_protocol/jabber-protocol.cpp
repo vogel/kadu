@@ -81,16 +81,6 @@ JabberProtocol::~JabberProtocol()
 	logout();
 }
 
-void JabberProtocol::setContactManager(ContactManager *contactManager)
-{
-	m_contactManager = contactManager;
-}
-
-void JabberProtocol::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void JabberProtocol::init()
 {
 	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
@@ -109,7 +99,7 @@ void JabberProtocol::init()
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 
-	m_injectedFactory->makeInjected<JabberSslHandler>(m_client);
+	injectedFactory()->makeInjected<JabberSslHandler>(m_client);
 
 	m_registerExtension = make_unique<JabberRegisterExtension>();
 	m_rosterExtension = make_unique<JabberRosterExtension>();
@@ -126,22 +116,22 @@ void JabberProtocol::init()
 	m_changePasswordService = new JabberChangePasswordService{m_registerExtension.get(), this};
 	m_changePasswordService->setErrorService(m_errorService);
 
-	m_resourceService = m_injectedFactory->makeInjected<JabberResourceService>(this);
+	m_resourceService = injectedFactory()->makeInjected<JabberResourceService>(this);
 
-	m_roomChatService = m_injectedFactory->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account(), this);
+	m_roomChatService = injectedFactory()->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account(), this);
 
-	auto chatStateService = m_injectedFactory->makeInjected<JabberChatStateService>(m_client, account(), this);
+	auto chatStateService = injectedFactory()->makeInjected<JabberChatStateService>(m_client, account(), this);
 	chatStateService->setResourceService(m_resourceService);
 
-	m_avatarService = m_injectedFactory->makeInjected<JabberAvatarService>(m_client, account(), this);
+	m_avatarService = injectedFactory()->makeInjected<JabberAvatarService>(m_client, account(), this);
 
-	auto chatService = m_injectedFactory->makeInjected<JabberChatService>(m_client, account(), this);
+	auto chatService = injectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
 	chatService->setChatStateService(chatStateService);
 	chatService->setResourceService(m_resourceService);
 	chatService->setRoomChatService(m_roomChatService);
 
-	m_contactPersonalInfoService = m_injectedFactory->makeInjected<JabberContactPersonalInfoService>(account(), this);
-	m_personalInfoService = m_injectedFactory->makeInjected<JabberPersonalInfoService>(account(), this);
+	m_contactPersonalInfoService = injectedFactory()->makeInjected<JabberContactPersonalInfoService>(account(), this);
+	m_personalInfoService = injectedFactory()->makeInjected<JabberPersonalInfoService>(account(), this);
 	m_streamDebugService = new JabberStreamDebugService{m_client, this};
 
 	m_fileTransferService = new JabberFileTransferService{m_transferManager.get(), account(), this};
@@ -153,8 +143,8 @@ void JabberProtocol::init()
 	m_contactPersonalInfoService->setVCardService(m_vcardService);
 	m_personalInfoService->setVCardService(m_vcardService);
 
-	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
-	auto rosterService = m_injectedFactory->makeInjected<JabberRosterService>(&m_client->rosterManager(), m_rosterExtension.get(), contacts, this);
+	auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
+	auto rosterService = injectedFactory()->makeInjected<JabberRosterService>(&m_client->rosterManager(), m_rosterExtension.get(), contacts, this);
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 
@@ -162,7 +152,7 @@ void JabberProtocol::init()
 	setChatStateService(chatStateService);
 	setRosterService(rosterService);
 
-	m_subscriptionService = m_injectedFactory->makeInjected<JabberSubscriptionService>(&m_client->rosterManager(), this);
+	m_subscriptionService = injectedFactory()->makeInjected<JabberSubscriptionService>(&m_client->rosterManager(), this);
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
@@ -353,7 +343,7 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 
 	auto jid = Jid::parse(presence.from());
 	auto id = jid.bare();
-	auto contact = m_contactManager->byId(account(), id, ActionReturnNull);
+	auto contact = contactManager()->byId(account(), id, ActionReturnNull);
 	if (!contact)
 		return;
 

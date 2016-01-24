@@ -99,16 +99,6 @@ void GaduProtocol::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void GaduProtocol::setContactManager(ContactManager *contactManager)
-{
-	m_contactManager = contactManager;
-}
-
-void GaduProtocol::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void GaduProtocol::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
 {
 	m_networkProxyManager = networkProxyManager;
@@ -128,28 +118,28 @@ void GaduProtocol::init()
 
 	CurrentImTokenService = new GaduIMTokenService{this};
 
-	CurrentFileTransferService = m_injectedFactory->makeInjected<GaduFileTransferService>(this);
+	CurrentFileTransferService = injectedFactory()->makeInjected<GaduFileTransferService>(this);
 	CurrentFileTransferService->setGaduIMTokenService(CurrentImTokenService);
 
-	CurrentChatService = m_injectedFactory->makeInjected<GaduChatService>(account(), this);
+	CurrentChatService = injectedFactory()->makeInjected<GaduChatService>(account(), this);
 	CurrentChatService->setConnection(Connection);
 	CurrentChatService->setGaduChatImageService(CurrentChatImageService);
 	CurrentChatService->setGaduFileTransferService(CurrentFileTransferService);
 	CurrentChatImageService->setGaduChatService(CurrentChatService);
 
-	CurrentContactPersonalInfoService = m_injectedFactory->makeInjected<GaduContactPersonalInfoService>(account(), this);
+	CurrentContactPersonalInfoService = injectedFactory()->makeInjected<GaduContactPersonalInfoService>(account(), this);
 	CurrentContactPersonalInfoService->setConnection(Connection);
 
-	CurrentPersonalInfoService = m_injectedFactory->makeInjected<GaduPersonalInfoService>(account(), this);
+	CurrentPersonalInfoService = injectedFactory()->makeInjected<GaduPersonalInfoService>(account(), this);
 	CurrentPersonalInfoService->setConnection(Connection);
 
-	CurrentSearchService = m_injectedFactory->makeInjected<GaduSearchService>(account(), this);
+	CurrentSearchService = injectedFactory()->makeInjected<GaduSearchService>(account(), this);
 	CurrentSearchService->setConnection(Connection);
 
 	CurrentMultilogonService = new GaduMultilogonService(account(), this);
 	CurrentMultilogonService->setConnection(Connection);
 
-	CurrentChatStateService = m_injectedFactory->makeInjected<GaduChatStateService>(account(), this);
+	CurrentChatStateService = injectedFactory()->makeInjected<GaduChatStateService>(account(), this);
 	CurrentChatStateService->setConnection(Connection);
 
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
@@ -158,10 +148,10 @@ void GaduProtocol::init()
 	CurrentDriveService = new GaduDriveService{account(), this};
 	CurrentDriveService->setGaduIMTokenService(CurrentImTokenService);
 
-	CurrentUserDataService = m_injectedFactory->makeInjected<GaduUserDataService>(account(), this);
+	CurrentUserDataService = injectedFactory()->makeInjected<GaduUserDataService>(account(), this);
 
-	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
-	auto rosterService = m_injectedFactory->makeInjected<GaduRosterService>(m_gaduListHelper, contacts, this);
+	auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
+	auto rosterService = injectedFactory()->makeInjected<GaduRosterService>(m_gaduListHelper, contacts, this);
 	rosterService->setConnection(Connection);
 
 	CurrentNotifyService = new GaduNotifyService{Connection, this};
@@ -362,7 +352,7 @@ void GaduProtocol::afterLoggedIn()
 	// fetch current avatar after connection
 	m_avatarManager->updateAvatar(account().accountContact(), true);
 
-	auto contacts = m_contactManager->contacts(account(), ContactManager::ExcludeAnonymous);
+	auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
 	CurrentNotifyService->sendInitialData(contacts);
 
 	static_cast<GaduRosterService *>(rosterService())->prepareRoster();
@@ -478,7 +468,7 @@ void GaduProtocol::cleanUpLoginParams()
 
 void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)
 {
-	Contact contact = m_contactManager->byId(account(), QString::number(uin), ActionReturnNull);
+	Contact contact = contactManager()->byId(account(), QString::number(uin), ActionReturnNull);
 
 	if (contact.isAnonymous())
 	{

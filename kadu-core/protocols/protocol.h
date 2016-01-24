@@ -22,19 +22,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROTOCOL_H
-#define PROTOCOL_H
-
-#include <QtCore/QDateTime>
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
-
-#include "exports.h"
+#pragma once
 
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "status/status-change-source.h"
 #include "status/status.h"
+#include "exports.h"
+
+#include <QtCore/QDateTime>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 
 typedef quint32 UinType;
 
@@ -46,9 +44,11 @@ class BuddyListSerializationService;
 class ChatImageService;
 class ChatService;
 class ChatStateService;
+class ContactManager;
 class ContactPersonalInfoService;
 class ContactSet;
 class FileTransferService;
+class InjectedFactory;
 class Message;
 class MultilogonService;
 class PersonalInfoService;
@@ -56,6 +56,7 @@ class ProtocolFactory;
 class ProtocolStateMachine;
 class RosterService;
 class SearchService;
+class StatusTypeManager;
 class Status;
 class SubscriptionService;
 class KaduIcon;
@@ -63,62 +64,6 @@ class KaduIcon;
 class KADUAPI Protocol : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(Protocol)
-
-	ProtocolFactory *Factory;
-	ProtocolStateMachine *Machine;
-
-	Account CurrentAccount;
-
-	// services
-	QPointer<ChatService> CurrentChatService;
-	QPointer<ChatStateService> CurrentChatStateService;
-	QPointer<RosterService> CurrentRosterService;
-
-	// real status, can be offline after connection error
-	Status CurrentStatus;
-	// status used by user to login, after connection error its value does not change
-	// it can only by changed by user or status changer
-	Status LoginStatus;
-
-	void setAllOffline();
-
-private slots:
-	// state machine slots
-	void prepareStateMachine();
-
-	void loggingInStateEntered();
-	void loggedInStateEntered();
-	void loggingOutStateEntered();
-	void loggedOutAnyStateEntered();
-	void wantToLogInStateEntered();
-	void passwordRequiredStateEntered();
-
-protected:
-	Status loginStatus() const;
-
-	virtual void login() = 0;
-	virtual void afterLoggedIn() {}
-	virtual void logout() = 0;
-	virtual void sendStatusToServer() = 0;
-
-	virtual void disconnectedCleanup();
-	void statusChanged(Status newStatus);
-
-	void doSetStatus(Status status);
-
-	// services
-	void setChatService(ChatService * const chatService);
-	void setChatStateService(ChatStateService * const chatStateService);
-	void setRosterService(RosterService * const rosterService);
-
-protected slots:
-	void loggedIn();
-	void loggedOut();
-	void passwordRequired();
-	void connectionError();
-	void connectionClosed();
-	void reconnect();
 
 public:
 	Protocol(Account account, ProtocolFactory *factory);
@@ -196,6 +141,70 @@ signals:
 	void stateMachineConnectionError();
 	void stateMachineConnectionClosed();
 
-};
+protected:
+	ContactManager * contactManager() const;
+	InjectedFactory * injectedFactory() const;
 
-#endif // PROTOCOL_H
+	Status loginStatus() const;
+
+	virtual void login() = 0;
+	virtual void afterLoggedIn() {}
+	virtual void logout() = 0;
+	virtual void sendStatusToServer() = 0;
+
+	virtual void disconnectedCleanup();
+	void statusChanged(Status newStatus);
+
+	void doSetStatus(Status status);
+
+	// services
+	void setChatService(ChatService * const chatService);
+	void setChatStateService(ChatStateService * const chatStateService);
+	void setRosterService(RosterService * const rosterService);
+
+protected slots:
+	void loggedIn();
+	void loggedOut();
+	void passwordRequired();
+	void connectionError();
+	void connectionClosed();
+	void reconnect();
+
+private:
+	QPointer<ChatService> m_chatService;
+	QPointer<ChatStateService> m_chatStateService;
+	QPointer<ContactManager> m_contactManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<RosterService> m_rosterService;
+	QPointer<StatusTypeManager> m_statusTypeManager;
+
+	ProtocolFactory *Factory;
+	ProtocolStateMachine *Machine;
+
+	Account CurrentAccount;
+
+	// real status, can be offline after connection error
+	Status CurrentStatus;
+	// status used by user to login, after connection error its value does not change
+	// it can only by changed by user or status changer
+	Status LoginStatus;
+
+	void setAllOffline();
+
+private slots:
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_INIT void init();
+
+	// state machine slots
+	void prepareStateMachine();
+
+	void loggingInStateEntered();
+	void loggedInStateEntered();
+	void loggingOutStateEntered();
+	void loggedOutAnyStateEntered();
+	void wantToLogInStateEntered();
+	void passwordRequiredStateEntered();
+
+};
