@@ -27,6 +27,7 @@
 
 #include "aware-object.h"
 
+class ChatTypeManager;
 class ChatType;
 
 /**
@@ -71,8 +72,8 @@ public:
 	static void notifyChatTypeRegistered(ChatType *chatType);
 	static void notifyChatTypeUnregistered(ChatType *chatType);
 
-	void triggerAllChatTypesRegistered();
-	void triggerAllChatTypesUnregistered();
+	void triggerAllChatTypesRegistered(ChatTypeManager *chatTypeManager);
+	void triggerAllChatTypesUnregistered(ChatTypeManager *chatTypeManager);
 
 };
 

@@ -92,7 +92,7 @@ ChatShared::~ChatShared()
 {
 	ref.ref();
 
-	triggerAllChatTypesUnregistered();
+	triggerAllChatTypesUnregistered(m_chatTypeManager);
 
 	delete ChatAccount;
 }
@@ -204,7 +204,7 @@ void ChatShared::load()
 	if (Type == "Contact")
 		Display.clear();
 
-	triggerAllChatTypesRegistered();
+	triggerAllChatTypesRegistered(m_chatTypeManager);
 }
 
 /**
