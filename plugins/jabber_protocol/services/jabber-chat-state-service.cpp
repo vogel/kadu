@@ -27,7 +27,6 @@
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "protocols/services/chat-state.h"
 
 #include <qxmpp/QXmppClient.h>
@@ -89,6 +88,11 @@ JabberChatStateService::~JabberChatStateService()
 {
 }
 
+void JabberChatStateService::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 void JabberChatStateService::setResourceService(JabberResourceService *resourceService)
 {
 	m_resourceService = resourceService;
@@ -97,7 +101,7 @@ void JabberChatStateService::setResourceService(JabberResourceService *resourceS
 void JabberChatStateService::extractReceivedChatState(const QXmppMessage &message)
 {
 	auto jid = Jid::parse(message.from());
-	auto contact = Core::instance()->contactManager()->byId(account(), jid.bare(), ActionCreateAndAdd);
+	auto contact = m_contactManager->byId(account(), jid.bare(), ActionCreateAndAdd);
 
 	contact.addProperty("jabber:received-chat-state", static_cast<int>(message.state()), CustomProperties::NonStorable);
 	emit peerStateChanged(contact, xmppStateToState(message.state()));
@@ -106,7 +110,7 @@ void JabberChatStateService::extractReceivedChatState(const QXmppMessage &messag
 QXmppMessage JabberChatStateService::withSentChatState(QXmppMessage message)
 {
 	auto jid = Jid::parse(message.to());
-	auto contact = Core::instance()->contactManager()->byId(account(), jid.bare(), ActionCreateAndAdd);
+	auto contact = m_contactManager->byId(account(), jid.bare(), ActionCreateAndAdd);
 
 	message.setState(QXmppMessage::State::Active);
 	contact.addProperty("jabber:sent-chat-state", static_cast<int>(QXmppMessage::State::Active), CustomProperties::NonStorable);

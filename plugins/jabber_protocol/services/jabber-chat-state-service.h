@@ -24,7 +24,9 @@
 
 #include <QtCore/QHash>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class ContactManager;
 class JabberResourceService;
 class Jid;
 
@@ -47,7 +49,11 @@ public:
 	QXmppMessage withSentChatState(QXmppMessage message);
 
 private:
+	QPointer<ContactManager> m_contactManager;
 	QPointer<QXmppClient> m_client;
 	QPointer<JabberResourceService> m_resourceService;
+
+private slots:
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 
 };

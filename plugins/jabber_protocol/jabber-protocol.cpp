@@ -130,7 +130,7 @@ void JabberProtocol::init()
 
 	m_roomChatService = m_injectedFactory->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account(), this);
 
-	auto chatStateService = new JabberChatStateService{m_client, account(), this};
+	auto chatStateService = m_injectedFactory->makeInjected<JabberChatStateService>(m_client, account(), this);
 	chatStateService->setResourceService(m_resourceService);
 
 	m_avatarService = m_injectedFactory->makeInjected<JabberAvatarService>(m_client, account(), this);
