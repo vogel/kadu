@@ -439,7 +439,6 @@ void Core::init()
 	notificationManager();
 	m_injector.get<SearchWindowActions>(); // temporary, during full-injection-port
 
-	buddyManager()->ensureLoaded();
 	contactManager()->ensureLoaded();
 	// Without that UnreadMessageRepository is loaded while filtering buddies list for the first time.
 	// It has to happen earlier because UnreadMessageRepository::loaded() might add buddies to the BuddyManager
@@ -592,11 +591,6 @@ void Core::activatePlugins()
 	g_pluginActivationService = m_injector.get<PluginActivationService>();
 #endif
 
-}
-
-BuddyManager * Core::buddyManager() const
-{
-	return m_injector.get<BuddyManager>();
 }
 
 NotificationManager * Core::notificationManager() const

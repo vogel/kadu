@@ -67,6 +67,8 @@ void BuddyManager::setContactManager(ContactManager *contactManager)
 void BuddyManager::init()
 {
 	m_configurationManager->registerStorableObject(this);
+
+	ensureLoaded();
 }
 
 void BuddyManager::done()

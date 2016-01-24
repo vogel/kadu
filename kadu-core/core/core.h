@@ -46,7 +46,6 @@ class DefaultProvider;
 
 class Application;
 class BuddyChatManager;
-class BuddyManager;
 class BuddyPreferredManager;
 class BuddyStorage;
 class ChatImageRequestService;
@@ -130,7 +129,6 @@ public:
 
 	void activatePlugins();
 
-	BuddyManager * buddyManager() const;
 	NotificationManager * notificationManager() const;
 	UnreadMessageRepository * unreadMessageRepository() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
