@@ -18,11 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-type-contact-set.h"
+
 #include "chat/chat-details-contact-set.h"
 #include "chat/chat-manager.h"
+#include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
-
-#include "chat-type-contact-set.h"
 
 Chat ChatTypeContactSet::findChat(ChatManager *chatManager, const ContactSet &contacts, NotFoundAction notFoundAction)
 {
@@ -84,12 +85,17 @@ Chat ChatTypeContactSet::findChat(ChatManager *chatManager, const ContactSet &co
 ChatTypeContactSet::ChatTypeContactSet(QObject *parent) :
 		ChatType(parent)
 {
-	Aliases.append("ContactSet");
-	Aliases.append("Conference");
+	m_aliases.append("ContactSet");
+	m_aliases.append("Conference");
 }
 
 ChatTypeContactSet::~ChatTypeContactSet()
 {
+}
+
+void ChatTypeContactSet::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 /**
@@ -118,7 +124,7 @@ QString ChatTypeContactSet::name() const
  */
 QStringList ChatTypeContactSet::aliases() const
 {
-	return Aliases;
+	return m_aliases;
 }
 
 /**
@@ -158,7 +164,7 @@ QString ChatTypeContactSet::windowRole() const
  */
 ChatDetails * ChatTypeContactSet::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsContactSet(chatData);
+	return m_injectedFactory->makeInjected<ChatDetailsContactSet>(chatData);
 }
 
 ChatEditWidget * ChatTypeContactSet::createEditWidget(const Chat &chat, QWidget *parent) const

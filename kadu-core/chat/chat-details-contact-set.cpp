@@ -18,14 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-details-contact-set.h"
+
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set-configuration-helper.h"
-#include "core/core.h"
 #include "protocols/protocol.h"
-
-#include "chat-details-contact-set.h"
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -50,6 +49,11 @@ ChatDetailsContactSet::~ChatDetailsContactSet()
 {
 }
 
+void ChatDetailsContactSet::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Loads ChatDetailsContactSet object from storage.
@@ -64,7 +68,7 @@ void ChatDetailsContactSet::load()
 
 	ChatDetails::load();
 
-	Contacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts");
+	m_contacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "m_contacts");
 }
 
 /**
@@ -72,7 +76,7 @@ void ChatDetailsContactSet::load()
  * @short Stores ChatDetailsContactSet object to storage.
  *
  * Stores ChatDetailsContactSet object to the same storage assigned Chat object is
- * using. This stores set of contacts into 'Contacts' subnode.
+ * using. This stores set of contacts into 'm_contacts' subnode.
  */
 void ChatDetailsContactSet::store()
 {
@@ -81,7 +85,7 @@ void ChatDetailsContactSet::store()
 
 	ensureLoaded();
 
-	ContactSetConfigurationHelper::saveToConfiguration(this, "Contacts", Contacts);
+	ContactSetConfigurationHelper::saveToConfiguration(this, "m_contacts", m_contacts);
 }
 
 /**
@@ -96,7 +100,7 @@ bool ChatDetailsContactSet::shouldStore()
 {
 	ensureLoaded();
 
-	return StorableObject::shouldStore() && !Contacts.isEmpty();
+	return StorableObject::shouldStore() && !m_contacts.isEmpty();
 }
 
 /**
@@ -108,7 +112,7 @@ bool ChatDetailsContactSet::shouldStore()
  */
 ChatType * ChatDetailsContactSet::type() const
 {
-	return Core::instance()->chatTypeManager()->chatType("ContactSet");
+	return m_chatTypeManager->chatType("ContactSet");
 }
 
 /**
@@ -122,7 +126,7 @@ ChatType * ChatDetailsContactSet::type() const
 QString ChatDetailsContactSet::name() const
 {
 	QStringList displays;
-	foreach (const Contact &contact, Contacts)
+	foreach (const Contact &contact, m_contacts)
 		displays.append(contact.display(true));
 
 	displays.sort();
@@ -145,7 +149,7 @@ void ChatDetailsContactSet::setContacts(const ContactSet &contacts)
 {
 	ensureLoaded();
 
-	Contacts = contacts;
+	m_contacts = contacts;
 }
 
 #include "moc_chat-details-contact-set.cpp"
