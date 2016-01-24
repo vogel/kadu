@@ -18,24 +18,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LEAVE_CHAT_ACTION_H
-#define LEAVE_CHAT_ACTION_H
-
-#include <QtWidgets/QAction>
+#pragma once
 
 #include "gui/actions/action-description.h"
+
+#include <injeqt/injeqt.h>
+
+class ChatWidgetRepository;
 
 class LeaveChatAction : public ActionDescription
 {
 	Q_OBJECT
 
-protected:
-	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
-
 public:
 	explicit LeaveChatAction(Actions *actions, QObject *parent);
 	virtual ~LeaveChatAction();
 
-};
+protected:
+	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
-#endif // LEAVE_CHAT_ACTION_H
+private:
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+
+private slots:
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
+};

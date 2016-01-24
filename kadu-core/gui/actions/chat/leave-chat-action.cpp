@@ -19,8 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "leave-chat-action.h"
+
 #include "chat/chat.h"
-#include "core/core.h"
 #include "gui/actions/action-context.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
@@ -28,8 +29,6 @@
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
-
-#include "leave-chat-action.h"
 
 LeaveChatAction::LeaveChatAction(Actions *actions, QObject *parent) :
 		ActionDescription(actions, parent)
@@ -44,6 +43,11 @@ LeaveChatAction::LeaveChatAction(Actions *actions, QObject *parent) :
 
 LeaveChatAction::~LeaveChatAction()
 {
+}
+
+void LeaveChatAction::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
@@ -63,7 +67,7 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chatService)
 		return;
 
-	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
+	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
 	if (!chatWidget)
 		return;
 

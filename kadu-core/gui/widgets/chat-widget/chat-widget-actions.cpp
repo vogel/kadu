@@ -284,7 +284,7 @@ void ChatWidgetActions::init()
 	);*/
 
 	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(m_actions, this);
-	LeaveChat = new LeaveChatAction(m_actions, this);
+	LeaveChat = m_injectedFactory->makeInjected<LeaveChatAction>(m_actions, this);
 }
 
 void ChatWidgetActions::done()
