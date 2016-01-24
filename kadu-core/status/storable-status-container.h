@@ -17,13 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BASE_STATUS_CONTAINER_H
-#define BASE_STATUS_CONTAINER_H
+#pragma once
 
 #include "status/status-container.h"
-
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class ConfigurationManager;
+class StatusTypeManager;
 class StorableObject;
 
 /**
@@ -44,8 +47,6 @@ class KADUAPI StorableStatusContainer : public StatusContainer
 {
 	Q_OBJECT
 
-	StorableObject *MyStorableObject;
-
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -55,7 +56,7 @@ public:
 	 * This constructor creates new StorableStatusContainer instance associated with given storableObject.
 	 * Each status loading and storing will be performed using this storable object.
 	 */
-	explicit StorableStatusContainer(StorableObject *storableObject);
+	explicit StorableStatusContainer(StorableObject *storableObject, QObject *parent = nullptr);
 	virtual ~StorableStatusContainer();
 
 	/**
@@ -76,10 +77,21 @@ public:
 	 */
 	virtual void storeStatus(Status status);
 
+protected:
+	StatusTypeManager * statusTypeManager() const;
+
+private:
+	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<StatusTypeManager> m_statusTypeManager;
+
+	StorableObject *m_storableObject;
+
+private slots:
+	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+
 };
 
 /**
  * @}
  */
-
-#endif // BASE_STATUS_CONTAINER_H

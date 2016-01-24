@@ -27,7 +27,6 @@
 class Account;
 class IdentityShared;
 class StatusConfigurationHolder;
-class StatusTypeManager;
 
 class IdentityStatusContainer : public StorableStatusContainer
 {
@@ -54,13 +53,11 @@ public:
 
 private:
 	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
-	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	IdentityShared *m_identityShared;
 	Status m_lastSetStatus;
 
 private slots:
 	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 };

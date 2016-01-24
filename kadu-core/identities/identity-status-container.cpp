@@ -40,11 +40,6 @@ void IdentityStatusContainer::setStatusConfigurationHolder(StatusConfigurationHo
 	m_statusConfigurationHolder = statusConfigurationHolder;
 }
 
-void IdentityStatusContainer::setStatusTypeManager(StatusTypeManager *statusTypeManager)
-{
-	m_statusTypeManager = statusTypeManager;
-}
-
 QString IdentityStatusContainer::statusContainerName()
 {
 	return m_identityShared->name();
@@ -82,7 +77,7 @@ KaduIcon IdentityStatusContainer::statusIcon(const Status &status)
 		protocols.insert(account.protocolName());
 
 	if (protocols.count() > 1)
-		return m_statusTypeManager->statusIcon("common", status);
+		return statusTypeManager()->statusIcon("common", status);
 
 	auto account = AccountManager::bestAccount(m_identityShared->accounts());
 	return account ? account.statusContainer()->statusIcon(status) : KaduIcon();

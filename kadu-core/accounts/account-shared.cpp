@@ -46,7 +46,7 @@
 
 AccountShared::AccountShared(const QString &protocolName, QObject *parent) :
 		Shared(QUuid(), parent), ProtocolName(protocolName),
-		ProtocolHandler(0), MyStatusContainer(new AccountStatusContainer(this)), Details(0),
+		ProtocolHandler(0), MyStatusContainer(Core::instance()->injectedFactory()->makeInjected<AccountStatusContainer>(this)), Details(0),
 		RememberPassword(false), HasPassword(false), UseDefaultProxy(true), PrivateStatus(true)
 {
 	AccountIdentity = new Identity();
