@@ -102,6 +102,7 @@
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-manager.h"
+#include "notification/notify-configuration-importer.h"
 #include "os/generic/system-info.h"
 #include "parser/parser.h"
 #include "plugin/activation/plugin-activation-error-handler.h"
@@ -198,7 +199,7 @@ Core::Core(injeqt::injector &&injector) :
 	Parser::GlobalVariables.insert(QLatin1String("KADU_CONFIG"), pathsProvider()->profilePath());
 	DateTimeParserTags::registerParserTags();
 
-	importPre10Configuration();
+	m_injector.get<NotifyConfigurationImporter>()->import();
 }
 
 Core::~Core()
@@ -225,29 +226,6 @@ Core::~Core()
 
 	configurationManager()->flush();
 	application()->backupConfiguration();
-}
-
-void Core::importPre10Configuration()
-{
-	if (configuration()->deprecatedApi()->readBoolEntry("General", "ImportedPre10"))
-	{
-		return;
-	}
-
-	foreach (const Buddy &buddy, buddyManager()->items())
-	{
-		if (buddy.isNull() || buddy.isAnonymous())
-			continue;
-
-		bool notify = buddy.property("notify:Notify", false).toBool() || configuration()->deprecatedApi()->readBoolEntry("Notify", "NotifyAboutAll");
-
-		if (notify)
-			buddy.removeProperty("notify:Notify");
-		else
-			buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
-	}
-
-	configuration()->deprecatedApi()->addVariable("General", "ImportedPre10", true);
 }
 
 void Core::createDefaultConfiguration()

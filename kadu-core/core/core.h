@@ -97,7 +97,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	Core(injeqt::v1::injector &&injector);
 	virtual ~Core();
 
-	void importPre10Configuration();
 	void createDefaultConfiguration();
 	void createAllDefaultToolbars();
 
