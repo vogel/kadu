@@ -141,7 +141,7 @@ void JabberProtocol::init()
 	chatService->setRoomChatService(m_roomChatService);
 
 	m_contactPersonalInfoService = new JabberContactPersonalInfoService{account(), this};
-	m_personalInfoService = new JabberPersonalInfoService{account(), this};
+	m_personalInfoService = m_injectedFactory->makeInjected<JabberPersonalInfoService>(account(), this);
 	m_streamDebugService = new JabberStreamDebugService{m_client, this};
 
 	m_fileTransferService = new JabberFileTransferService{m_transferManager.get(), account(), this};

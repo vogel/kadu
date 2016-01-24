@@ -18,13 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_PERSONAL_INFO_SERVICE_H
-#define JABBER_PERSONAL_INFO_SERVICE_H
-
-#include "buddies/buddy.h"
+#pragma once
 
 #include "protocols/services/personal-info-service.h"
 
+#include "buddies/buddy.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyStorage;
 class JabberVCardService;
 
 class QXmppVCardIq;
@@ -32,12 +35,6 @@ class QXmppVCardIq;
 class JabberPersonalInfoService : public PersonalInfoService
 {
 	Q_OBJECT
-
-	QPointer<JabberVCardService> VCardService;
-	Buddy CurrentBuddy;
-
-private slots:
-	virtual void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
 
 public:
 	explicit JabberPersonalInfoService(Account account, QObject *parent = nullptr);
@@ -48,6 +45,14 @@ public:
 	virtual void fetchPersonalInfo(const QString &id);
 	virtual void updatePersonalInfo(const QString &id, Buddy buddy);
 
-};
+private:
+	QPointer<BuddyStorage> m_buddyStorage;
+	QPointer<JabberVCardService> VCardService;
+	Buddy CurrentBuddy;
 
-#endif // JABBER_PERSONAL_INFO_SERVICE_H
+private slots:
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+
+	virtual void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
+
+};
