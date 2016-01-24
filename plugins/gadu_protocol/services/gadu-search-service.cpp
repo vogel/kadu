@@ -29,7 +29,7 @@
 #include "gadu-search-service.h"
 
 GaduSearchService::GaduSearchService(Account account, QObject *parent) :
-		SearchService(account, parent), Query(BuddySearchCriteria()),
+		SearchService(account, parent),
 		SearchSeq(0), From(0), Stopped(false)
 {
 }
@@ -48,7 +48,7 @@ void GaduSearchService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-void GaduSearchService::searchFirst(BuddySearchCriteria criteria)
+void GaduSearchService::searchFirst(BuddySearchCriteria *criteria)
 {
 	Query = criteria;
 	From = 0;
@@ -63,23 +63,23 @@ void GaduSearchService::searchNext()
 	Stopped = false;
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
-	if (Query.SearchBuddy.hasContact(account()))
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, Query.SearchBuddy.id(account()).toUtf8().constData());
-	if (!Query.SearchBuddy.firstName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, Query.SearchBuddy.firstName().toUtf8().constData());
-	if (!Query.SearchBuddy.lastName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, Query.SearchBuddy.lastName().toUtf8().constData());
-	if (!Query.SearchBuddy.nickName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, Query.SearchBuddy.nickName().toUtf8().constData());
-	if (!Query.SearchBuddy.city().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, Query.SearchBuddy.city().toUtf8().constData());
-	if (!Query.BirthYearFrom.isEmpty())
+	if (Query->SearchBuddy.hasContact(account()))
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, Query->SearchBuddy.id(account()).toUtf8().constData());
+	if (!Query->SearchBuddy.firstName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, Query->SearchBuddy.firstName().toUtf8().constData());
+	if (!Query->SearchBuddy.lastName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, Query->SearchBuddy.lastName().toUtf8().constData());
+	if (!Query->SearchBuddy.nickName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, Query->SearchBuddy.nickName().toUtf8().constData());
+	if (!Query->SearchBuddy.city().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, Query->SearchBuddy.city().toUtf8().constData());
+	if (!Query->BirthYearFrom.isEmpty())
 	{
-		QString bufYear = Query.BirthYearFrom + ' ' + Query.BirthYearTo;
+		QString bufYear = Query->BirthYearFrom + ' ' + Query->BirthYearTo;
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, bufYear.toUtf8().constData());
 	}
 
-	switch (Query.SearchBuddy.gender())
+	switch (Query->SearchBuddy.gender())
 	{
 		case GenderMale:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);
@@ -92,7 +92,7 @@ void GaduSearchService::searchNext()
 			break;
 	}
 
-	if (Query.Active)
+	if (Query->Active)
 		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
 
 	gg_pubdir50_add(req, GG_PUBDIR50_START, QString::number(From).toUtf8().constData());

@@ -18,22 +18,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_SEARCH_CRITERIA_H
-#define BUDDY_SEARCH_CRITERIA_H
+#pragma once
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 
-struct KADUAPI BuddySearchCriteria
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class BuddyStorage;
+
+class KADUAPI BuddySearchCriteria : public QObject
 {
+	Q_OBJECT
+
+public:
+	explicit BuddySearchCriteria(QObject *parent = nullptr);
+	virtual ~BuddySearchCriteria();
+
 	Buddy SearchBuddy;
 	QString BirthYearFrom;
 	QString BirthYearTo;
 	bool Active;
 	bool IgnoreResults;
-
-	BuddySearchCriteria();
-	virtual ~BuddySearchCriteria();
 
 	void reqUin(Account account, const QString& uin);
 	void reqFirstName(const QString& firstName);
@@ -46,6 +54,11 @@ struct KADUAPI BuddySearchCriteria
 
 	void clearData();
 
-};
+private:
+	QPointer<BuddyStorage> m_buddyStorage;
 
-#endif // BUDDY_SEARCH_CRITERIA_H
+private slots:
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_INIT void init();
+
+};

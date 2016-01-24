@@ -37,7 +37,7 @@ class GaduSearchService : public SearchService
 
 	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<GaduConnection> Connection;
-	BuddySearchCriteria Query;
+	QPointer<BuddySearchCriteria> Query;
 	unsigned int SearchSeq;
 	unsigned int From;
 	bool Stopped;
@@ -54,7 +54,7 @@ public:
 
 	void setConnection(GaduConnection *connection);
 
-	virtual void searchFirst(BuddySearchCriteria criteria);
+	virtual void searchFirst(BuddySearchCriteria *criteria);
 	virtual void searchNext();
 	virtual void stop();
 

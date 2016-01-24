@@ -41,7 +41,7 @@ public:
 	explicit SearchService(Account account, QObject *parent) : AccountService(account, parent) {}
 	virtual ~SearchService() {}
 
-	virtual void searchFirst(BuddySearchCriteria criteria) = 0;
+	virtual void searchFirst(BuddySearchCriteria *criteria) = 0;
 	virtual void searchNext() = 0;
 	virtual void stop() = 0;
 

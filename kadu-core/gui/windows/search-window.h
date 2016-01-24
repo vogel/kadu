@@ -28,6 +28,7 @@
 #include "chat/chat.h"
 #include "gui/actions/action.h"
 #include "gui/windows/main-window.h"
+#include "misc/memory.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -95,7 +96,7 @@ private:
 	Account CurrentAccount;
 	SearchService *CurrentSearchService;
 
-	BuddySearchCriteria CurrentSearchCriteria;
+	owned_qptr<BuddySearchCriteria> CurrentSearchCriteria;
 
 	QLineEdit *UinEdit;
 	QLineEdit *FirstNameEdit;

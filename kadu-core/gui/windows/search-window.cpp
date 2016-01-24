@@ -150,11 +150,13 @@ void SearchWindow::init()
 	roles.insert(ContactRole);
 	static_cast<BaseActionContext *>(actionContext())->setRoles(roles);
 
+	CurrentSearchCriteria = m_injectedFactory->makeOwned<BuddySearchCriteria>(this);
+
 	if (m_buddy)
 	{
 		CurrentAccount = m_buddyPreferredManager->preferredAccount(m_buddy);
 
-		CurrentSearchCriteria.SearchBuddy = m_buddy;
+		CurrentSearchCriteria->SearchBuddy = m_buddy;
 	}
 	else
 	{
@@ -184,9 +186,9 @@ void SearchWindow::init()
 	else
 		loadToolBarsFromConfig();
 
-	if (CurrentSearchCriteria.SearchBuddy)
+	if (CurrentSearchCriteria->SearchBuddy)
 	{
-		QVector<Contact> contacts = CurrentSearchCriteria.SearchBuddy.contacts(CurrentAccount);
+		QVector<Contact> contacts = CurrentSearchCriteria->SearchBuddy.contacts(CurrentAccount);
 		Contact contact = contacts.isEmpty() ? Contact::null : contacts.at(0);
 		if (contact)
 			// it should call uinTyped() slot
@@ -456,34 +458,34 @@ void SearchWindow::firstSearch()
 	if (SearchInProgress)
 		CurrentSearchService->stop();
 
-	CurrentSearchCriteria.clearData();
+	CurrentSearchCriteria->clearData();
 
 	if (PersonalDataRadioButton->isChecked())
 	{
-		CurrentSearchCriteria.reqFirstName(FirstNameEdit->text());
-		CurrentSearchCriteria.reqLastName(LastNameEdit->text());
-		CurrentSearchCriteria.reqNickName(NickNameEdit->text());
-		CurrentSearchCriteria.reqCity(CityEdit->text());
+		CurrentSearchCriteria->reqFirstName(FirstNameEdit->text());
+		CurrentSearchCriteria->reqLastName(LastNameEdit->text());
+		CurrentSearchCriteria->reqNickName(NickNameEdit->text());
+		CurrentSearchCriteria->reqCity(CityEdit->text());
 		if (((EndBirthYearEdit->text().isEmpty()) && (!StartBirthYearEdit->text().isEmpty()))
 				|| ((EndBirthYearEdit->text().toInt()) < (StartBirthYearEdit->text().toInt())))
 			EndBirthYearEdit->setText(StartBirthYearEdit->text());
-		CurrentSearchCriteria.reqBirthYear(StartBirthYearEdit->text(), EndBirthYearEdit->text());
+		CurrentSearchCriteria->reqBirthYear(StartBirthYearEdit->text(), EndBirthYearEdit->text());
 
 		switch (GenderComboBox->currentIndex())
 		{
 			case 1:
-				CurrentSearchCriteria.reqGender(false);
+				CurrentSearchCriteria->reqGender(false);
 				break;
 			case 2:
-				CurrentSearchCriteria.reqGender(true);
+				CurrentSearchCriteria->reqGender(true);
 				break;
 		}
 
 		if (OnlyActiveCheckBox->isChecked())
-			CurrentSearchCriteria.reqActive();
+			CurrentSearchCriteria->reqActive();
 	}
 	else if (UinRadioButton->isChecked())
-		CurrentSearchCriteria.reqUin(CurrentAccount, UinEdit->text());
+		CurrentSearchCriteria->reqUin(CurrentAccount, UinEdit->text());
 
 	SearchInProgress = true;
 

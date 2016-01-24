@@ -22,17 +22,27 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy-storage.h"
-#include "core/core.h"
 
 #include "buddy-search-criteria.h"
 
-BuddySearchCriteria::BuddySearchCriteria() :
-		SearchBuddy(Core::instance()->buddyStorage()->create()), BirthYearTo(), Active(false), IgnoreResults(false)
+BuddySearchCriteria::BuddySearchCriteria(QObject *parent) :
+		QObject{parent},
+		BirthYearTo(), Active(false), IgnoreResults(false)
 {
 }
 
 BuddySearchCriteria::~BuddySearchCriteria()
 {
+}
+
+void BuddySearchCriteria::setBuddyStorage(BuddyStorage *buddyStorage)
+{
+	m_buddyStorage = buddyStorage;
+}
+
+void BuddySearchCriteria::init()
+{
+	SearchBuddy = m_buddyStorage->create();
 }
 
 void BuddySearchCriteria::reqUin(Account account, const QString &uin)
@@ -87,7 +97,7 @@ void BuddySearchCriteria::reqActive()
 
 void BuddySearchCriteria::clearData()
 {
-	SearchBuddy = Core::instance()->buddyStorage()->create();
+	SearchBuddy = m_buddyStorage->create();
 	BirthYearFrom.clear();
 	BirthYearTo.clear();
 	Active = false;
