@@ -131,7 +131,7 @@ void AddConferenceWindow::createGui()
 	connect(Model, SIGNAL(checkedBuddiesChanged(BuddySet)), this, SLOT(validateData()));
 
 	chain->setBaseModel(Model);
-	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
+	TalkableProxyModel *proxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(chain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 
 	AccountFilter = new AccountTalkableFilter(proxyModel);

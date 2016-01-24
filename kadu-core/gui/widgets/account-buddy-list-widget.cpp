@@ -86,7 +86,7 @@ void AccountBuddyListWidget::init()
 	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(chain);
 	m_injectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
 	chain->setBaseModel(buddyListModel);
-	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
+	auto proxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(chain);
 
 	AccountTalkableFilter *accountTalkableFilter = new AccountTalkableFilter(proxyModel);
 	accountTalkableFilter->setAccount(CurrentAccount);

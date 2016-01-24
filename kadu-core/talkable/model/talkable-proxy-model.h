@@ -22,13 +22,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TALKABLE_PROXY_MODEL_H
-#define TALKABLE_PROXY_MODEL_H
-
-#include <QtCore/QSortFilterProxyModel>
+#pragma once
 
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <QtCore/QSortFilterProxyModel>
+#include <injeqt/injeqt.h>
+
+class BuddyPreferredManager;
 class Buddy;
 class Chat;
 class Contact;
@@ -61,6 +63,85 @@ class TalkableFilter;
 class KADUAPI TalkableProxyModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
+
+public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of TalkableProxyModel with given parent.
+	 * @param parent QObject parent of new object
+	 */
+	explicit TalkableProxyModel(QObject *parent = nullptr);
+	virtual ~TalkableProxyModel();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Adds new filter to this object.
+	 * @param filter new filter to add
+	 *
+	 * This method adds new filter to this object. Filter will be only added if it not already present.
+	 * Current model is invalidated after adding new filter.
+	 */
+	void addFilter(TalkableFilter *filter);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Remove filter from this object.
+	 * @param filter filter to remove
+	 *
+	 * This method removes filter from this object. Filter will not be removed if not present.
+	 * Current model is invalidated after removing filter.
+	 */
+	void removeFilter(TalkableFilter *filter);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Enable or disable sorting by status and unread messages.
+	 * @param sortByStatusAndUnreadMessages if true, sorting by status and unread messages will be enabled
+	 *
+	 * This method enables or disables sorting by status and unread messages. If method of sorting is changed then
+	 * current model will be invalidated.
+	 *
+	 * Default value is true.
+	 */
+	void setSortByStatusAndUnreadMessages(bool sortByStatusAndUnreadMessages);
+
+signals:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Signal emited after filtering or sorting was changed.
+	 */
+	void invalidated();
+
+protected:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Compares two indexes.
+	 * @param left QModelIndex to compare
+	 * @param right QModelIndex to compare
+	 * @return true if left index contains data that should be displayed before right one
+	 *
+	 * This method compares two QModelIndex instances. If these indexes contains objects of different types,
+	 * then Chat is displayed first, then Buddy, then Contact. If these indexes contains objects of the same
+	 * types, then lessThan(Chat,Chat) method is used for Chat object and lessThan(Buddy,Buddy) method is
+	 * used to compare two Buddy object and Contact objects (using owner buddy of these Contact objects).
+	 */
+	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Decide if given item should be displayed.
+	 * @param sourceRow row of item in source model
+	 * @param sourceParent parent of item in source model
+	 * @return true if given item should be displayed
+	 *
+	 * This method received object from source model and checks its type. For every supported type - Chat,
+	 * Buddy and Contact suitable filter() method is called to get answer for this method. For any other
+	 * type assertion is thrown.
+	 */
+	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+
+private:
+	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 
 	QList<TalkableFilter *> TalkableFilters;
 
@@ -136,86 +217,12 @@ class KADUAPI TalkableProxyModel : public QSortFilterProxyModel
 	 */
 	bool accept(const Contact &contact) const;
 
-protected:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Compares two indexes.
-	 * @param left QModelIndex to compare
-	 * @param right QModelIndex to compare
-	 * @return true if left index contains data that should be displayed before right one
-	 *
-	 * This method compares two QModelIndex instances. If these indexes contains objects of different types,
-	 * then Chat is displayed first, then Buddy, then Contact. If these indexes contains objects of the same
-	 * types, then lessThan(Chat,Chat) method is used for Chat object and lessThan(Buddy,Buddy) method is
-	 * used to compare two Buddy object and Contact objects (using owner buddy of these Contact objects).
-	 */
-	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Decide if given item should be displayed.
-	 * @param sourceRow row of item in source model
-	 * @param sourceParent parent of item in source model
-	 * @return true if given item should be displayed
-	 *
-	 * This method received object from source model and checks its type. For every supported type - Chat,
-	 * Buddy and Contact suitable filter() method is called to get answer for this method. For any other
-	 * type assertion is thrown.
-	 */
-	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-
-public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of TalkableProxyModel with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit TalkableProxyModel(QObject *parent = nullptr);
-	virtual ~TalkableProxyModel();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Adds new filter to this object.
-	 * @param filter new filter to add
-	 *
-	 * This method adds new filter to this object. Filter will be only added if it not already present.
-	 * Current model is invalidated after adding new filter.
-	 */
-	void addFilter(TalkableFilter *filter);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Remove filter from this object.
-	 * @param filter filter to remove
-	 *
-	 * This method removes filter from this object. Filter will not be removed if not present.
-	 * Current model is invalidated after removing filter.
-	 */
-	void removeFilter(TalkableFilter *filter);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Enable or disable sorting by status and unread messages.
-	 * @param sortByStatusAndUnreadMessages if true, sorting by status and unread messages will be enabled
-	 *
-	 * This method enables or disables sorting by status and unread messages. If method of sorting is changed then
-	 * current model will be invalidated.
-	 *
-	 * Default value is true.
-	 */
-	void setSortByStatusAndUnreadMessages(bool sortByStatusAndUnreadMessages);
-
-signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited after filtering or sorting was changed.
-	 */
-	void invalidated();
+private slots:
+	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_INIT void init();
 
 };
 
 /**
  * @}
  */
-
-#endif // TALKABLE_PROXY_MODEL_H

@@ -158,7 +158,7 @@ void HistoryMessagesTab::createModelChain()
 	Chain = new ModelChain(TalkableTree);
 	Chain->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(models, Chain));
 
-	TalkableProxyModel *proxyModel = new TalkableProxyModel(Chain);
+	TalkableProxyModel *proxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(Chain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 
 	proxyModel->addFilter(new HideTemporaryTalkableFilter(proxyModel));

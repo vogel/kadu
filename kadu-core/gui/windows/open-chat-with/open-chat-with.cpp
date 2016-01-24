@@ -129,7 +129,7 @@ void OpenChatWith::init()
 	Chain = new ModelChain(this);
 	ListModel = m_injectedFactory->makeInjected<BuddyListModel>(Chain);
 	Chain->setBaseModel(ListModel);
-	Chain->addProxyModel(new TalkableProxyModel(Chain));
+	Chain->addProxyModel(m_injectedFactory->makeInjected<TalkableProxyModel>(Chain));
 
 	QQmlContext *declarativeContext = BuddiesView->rootContext();
 	declarativeContext->setContextProperty("buddies", Chain->lastModel());

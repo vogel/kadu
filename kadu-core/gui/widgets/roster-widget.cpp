@@ -197,7 +197,7 @@ ModelChain * RosterWidget::createModelChain()
 	ModelChain *chain = new ModelChain(TalkableTree);
 	chain->setBaseModel(TalkableModelFactory::createInstance(chain));
 
-	ProxyModel = new TalkableProxyModel(chain);
+	ProxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(chain);
 	ProxyModel->addFilter(new HideContactChatsTalkableFilter(ProxyModel));
 	ProxyModel->addFilter(new HideTemporaryTalkableFilter(ProxyModel));
 	ProxyModel->addFilter(new UnreadMessagesTalkableFilter(ProxyModel));

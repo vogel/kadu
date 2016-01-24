@@ -23,21 +23,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "talkable-proxy-model.h"
+
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "chat/chat.h"
 #include "chat/model/chat-data-extractor.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "model/roles.h"
 #include "status/status-type.h"
 #include "status/status.h"
 #include "talkable/filter/talkable-filter.h"
 
-#include "talkable-proxy-model.h"
-
 TalkableProxyModel::TalkableProxyModel(QObject *parent) :
 		QSortFilterProxyModel(parent), SortByStatusAndUnreadMessages(true)
+{
+}
+
+TalkableProxyModel::~TalkableProxyModel()
+{
+}
+
+void TalkableProxyModel::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
+{
+	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void TalkableProxyModel::init()
 {
 	setDynamicSortFilter(true);
 	sort(0);
@@ -45,10 +57,6 @@ TalkableProxyModel::TalkableProxyModel(QObject *parent) :
 	BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
 	if (BrokenStringCompare)
 		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
-}
-
-TalkableProxyModel::~TalkableProxyModel()
-{
 }
 
 void TalkableProxyModel::setSortByStatusAndUnreadMessages(bool sortByStatusAndUnreadMessages)
@@ -109,8 +117,8 @@ bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 		if (left.isAnonymous() && !right.isAnonymous())
 			return false;
 
-		const Contact &leftContact = Core::instance()->buddyPreferredManager()->preferredContact(left, false);
-		const Contact &rightContact = Core::instance()->buddyPreferredManager()->preferredContact(right, false);
+		const Contact &leftContact = m_buddyPreferredManager->preferredContact(left, false);
+		const Contact &rightContact = m_buddyPreferredManager->preferredContact(right, false);
 
 		if (!leftContact.isBlocking() && rightContact.isBlocking())
 			return true;

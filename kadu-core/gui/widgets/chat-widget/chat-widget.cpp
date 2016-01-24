@@ -290,7 +290,7 @@ void ChatWidget::createContactsList()
 	ContactListModel *contactListModel = new ContactListModel(chain);
 	new ChatAdapter(contactListModel, CurrentChat);
 	chain->setBaseModel(contactListModel);
-	ProxyModel = new TalkableProxyModel(chain);
+	ProxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(chain);
 
 	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, ProxyModel);
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));

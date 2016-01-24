@@ -20,6 +20,8 @@
 
 #include <QtWidgets/QAction>
 
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/select-talkable-popup.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
@@ -33,7 +35,7 @@ SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
 	Chain = new ModelChain(this);
-	ProxyModel = new TalkableProxyModel(Chain);
+	ProxyModel = Core::instance()->injectedFactory()->makeInjected<TalkableProxyModel>(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 	Chain->addProxyModel(ProxyModel);
 	setUpModel(TalkableRole, Chain);

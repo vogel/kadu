@@ -44,7 +44,7 @@ SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
 
 	Chain = new ModelChain(this);
 
-	ProxyModel = new TalkableProxyModel(Chain);
+	ProxyModel = Core::instance()->injectedFactory()->makeInjected<TalkableProxyModel>(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 
 	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
