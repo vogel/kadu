@@ -130,6 +130,7 @@ protected:
 	ActionDescription(Actions *actions, QObject *parent);
 
 	void setActions(Actions *actions);
+	Actions * actionsRegistry() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

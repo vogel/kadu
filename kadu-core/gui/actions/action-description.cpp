@@ -64,6 +64,11 @@ void ActionDescription::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+Actions * ActionDescription::actionsRegistry() const
+{
+	return m_actions;
+}
+
 void ActionDescription::registerAction(Actions *actions)
 {
 	actions->insert(this);

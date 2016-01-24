@@ -24,7 +24,6 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/actions/action-context.h"
@@ -44,17 +43,30 @@ DeleteTalkableAction::DeleteTalkableAction(Actions *actions, QObject *parent) :
 	setIcon(KaduIcon("edit-delete"));
 	setShortcut("kadu_deleteuser");
 	setText(tr("Delete Buddy"));
-
-	registerAction(actions);
 }
 
 DeleteTalkableAction::~DeleteTalkableAction()
 {
 }
 
+void DeleteTalkableAction::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
+
 void DeleteTalkableAction::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void DeleteTalkableAction::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void DeleteTalkableAction::init()
+{
+	registerAction(actionsRegistry());
 }
 
 int DeleteTalkableAction::actionRole(ActionContext *context) const
@@ -95,8 +107,8 @@ void DeleteTalkableAction::updateChatActionState(Action *action)
 {
 	setChatActionTitleAndIcon(action);
 
-	const Chat &chat = actionChat(action->context());
-	ChatType *chatType = Core::instance()->chatTypeManager()->chatType(chat.type());
+	auto const &chat = actionChat(action->context());
+	auto chatType = m_chatTypeManager->chatType(chat.type());
 	action->setEnabled(chat && (!chatType || (chatType->name() != "Contact" && !chat.display().isEmpty())));
 }
 
@@ -105,7 +117,7 @@ void DeleteTalkableAction::updateBuddyActionState(Action *action)
 	setBuddyActionTitleAndIcon(action);
 
 	const BuddySet &buddies = action->context()->buddies();
-	if (buddies.isEmpty() || buddies.contains(Core::instance()->myself()->buddy()))
+	if (buddies.isEmpty() || buddies.contains(m_myself->buddy()))
 		return;
 
 	action->setEnabled(true);

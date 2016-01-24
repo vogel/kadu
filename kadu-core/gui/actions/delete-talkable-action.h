@@ -28,8 +28,10 @@
 #include <injeqt/injeqt.h>
 
 class Buddy;
+class ChatTypeManager;
 class Chat;
 class InjectedFactory;
+class Myself;
 
 class DeleteTalkableAction : public ActionDescription
 {
@@ -47,7 +49,9 @@ protected:
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
 private:
+	QPointer<ChatTypeManager> m_chatTypeManager;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<Myself> m_myself;
 
 	int actionRole(ActionContext *context) const;
 	Chat actionChat(ActionContext *context) const;
@@ -63,6 +67,9 @@ private:
 	void buddyActionTriggered(ActionContext *context);
 
 private slots:
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_INIT void init();
 
 };
