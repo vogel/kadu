@@ -20,17 +20,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTACT_SET_CONFIGURATION_HELPER_H
-#define CONTACT_SET_CONFIGURATION_HELPER_H
+#pragma once
 
 #include "contacts/contact-set.h"
 
+class ContactManager;
+
 namespace ContactSetConfigurationHelper
 {
-	ContactSet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
-	ContactSet loadFromConfiguration(ConfigurationApi *configurationStorage, QDomElement contactSetNode);
+	ContactSet loadFromConfiguration(ContactManager *contactManager, StorableObject *parent, const QString &nodeName);
+	ContactSet loadFromConfiguration(ContactManager *contactManager, ConfigurationApi *configurationStorage, QDomElement contactSetNode);
 	void saveToConfiguration(StorableObject *parent, const QString &nodeName, const ContactSet &contactSet);
 	void saveToConfiguration(ConfigurationApi *configurationStorage, QDomElement contactSetNode, const ContactSet &contactSet);
 }
-
-#endif // CONTACT_SET_CONFIGURATION_HELPER_H

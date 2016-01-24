@@ -23,8 +23,13 @@
 
 #include "storage/shared.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class ContactManager;
 class Contact;
 class FileTransferHandler;
+class FileTransferManager;
 
 enum class FileTransferDirection;
 enum class FileTransferStatus;
@@ -70,6 +75,9 @@ protected:
 	virtual void store();
 
 private:
+	QPointer<ContactManager> m_contactManager;
+	QPointer<FileTransferManager> m_fileTransferManager;
+
 	Contact *m_peer;
 	QString m_localFileName;
 	QString m_remoteFileName;
@@ -85,6 +93,9 @@ private:
 	FileTransferHandler *m_handler;
 
 private slots:
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+
 	void handlerDestroyed();
 
 };

@@ -19,11 +19,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_CONTACTS_TABLE_ITEM_H
-#define BUDDY_CONTACTS_TABLE_ITEM_H
+#pragma once
 
 #include "accounts/account.h"
 #include "contacts/contact.h"
+
+#include <QtCore/QPointer>
 
 class BuddyContactsTableItem : public QObject
 {
@@ -38,6 +39,8 @@ public:
 	};
 
 private:
+	QPointer<ContactManager> m_contactManager;
+
 	Contact ItemContact;
 	int ItemContactPriority;
 	Account ItemAccount;
@@ -50,7 +53,7 @@ private:
 	bool isEditValid() const;
 
 public:
-	explicit BuddyContactsTableItem(Contact contact = Contact::null, QObject *parent = nullptr);
+	explicit BuddyContactsTableItem(ContactManager *contactManager, Contact contact = Contact::null, QObject *parent = nullptr);
 	virtual ~BuddyContactsTableItem() {}
 
 	Contact itemContact() const { return ItemContact; }
@@ -81,5 +84,3 @@ signals:
 };
 
 Q_DECLARE_METATYPE(BuddyContactsTableItem *)
-
-#endif // BUDDY_CONTACTS_TABLE_ITEM_H

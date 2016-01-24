@@ -23,6 +23,7 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact-set-configuration-helper.h"
 #include "protocols/protocol.h"
 
@@ -54,6 +55,11 @@ void ChatDetailsContactSet::setChatTypeManager(ChatTypeManager *chatTypeManager)
 	m_chatTypeManager = chatTypeManager;
 }
 
+void ChatDetailsContactSet::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Loads ChatDetailsContactSet object from storage.
@@ -68,7 +74,7 @@ void ChatDetailsContactSet::load()
 
 	ChatDetails::load();
 
-	m_contacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "m_contacts");
+	m_contacts = ContactSetConfigurationHelper::loadFromConfiguration(m_contactManager, this, "Contacts");
 }
 
 /**
@@ -85,7 +91,7 @@ void ChatDetailsContactSet::store()
 
 	ensureLoaded();
 
-	ContactSetConfigurationHelper::saveToConfiguration(this, "m_contacts", m_contacts);
+	ContactSetConfigurationHelper::saveToConfiguration(this, "Contacts", m_contacts);
 }
 
 /**

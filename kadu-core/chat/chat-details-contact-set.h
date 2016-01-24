@@ -28,6 +28,7 @@
 #include <injeqt/injeqt.h>
 
 class ChatTypeManager;
+class ContactManager;
 
 /**
  * @addtogroup Chat
@@ -66,11 +67,13 @@ protected:
 
 private:
 	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<ContactManager> m_contactManager;
 
 	ContactSet m_contacts;
 
 private slots:
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setContactManager(ContactManager *contactManager);
 
 };
 

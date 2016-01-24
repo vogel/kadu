@@ -71,9 +71,19 @@ FileTransferShared::~FileTransferShared()
 	delete m_peer;
 }
 
+void FileTransferShared::setContactManager(ContactManager *contactManager)
+{
+	m_contactManager = contactManager;
+}
+
+void FileTransferShared::setFileTransferManager(FileTransferManager *fileTransferManager)
+{
+	m_fileTransferManager = fileTransferManager;
+}
+
 StorableObject * FileTransferShared::storageParent()
 {
-	return Core::instance()->fileTransferManager();
+	return m_fileTransferManager;
 }
 
 QString FileTransferShared::storageNodeName()
@@ -88,7 +98,7 @@ void FileTransferShared::load()
 
 	Shared::load();
 
-	*m_peer = Core::instance()->contactManager()->byUuid(loadValue<QString>("Peer"));
+	*m_peer = m_contactManager->byUuid(loadValue<QString>("Peer"));
 	m_localFileName = loadValue<QString>("LocalFileName");
 	m_remoteFileName = loadValue<QString>("RemoteFileName");
 

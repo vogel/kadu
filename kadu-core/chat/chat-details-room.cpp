@@ -70,7 +70,7 @@ void ChatDetailsRoom::load()
 	m_room = loadValue<QString>("Room");
 	m_nick = loadValue<QString>("Nick");
 	m_password = pwHash(loadValue<QString>("Password"));
-	m_stayInRoomAfterClosingWindow = loadValue<bool>("m_stayInRoomAfterClosingWindow", false);
+	m_stayInRoomAfterClosingWindow = loadValue<bool>("StayInRoomAfterClosingWindow", false);
 }
 
 /**
@@ -90,7 +90,7 @@ void ChatDetailsRoom::store()
 	storeValue("Room", m_room);
 	storeValue("Nick", m_nick);
 	storeValue("Password", pwHash(m_password));
-	storeValue("m_stayInRoomAfterClosingWindow", m_stayInRoomAfterClosingWindow);
+	storeValue("StayInRoomAfterClosingWindow", m_stayInRoomAfterClosingWindow);
 }
 
 /**

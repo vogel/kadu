@@ -19,17 +19,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddy-contacts-table-item.h"
+
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
 
-#include "buddy-contacts-table-item.h"
-
-BuddyContactsTableItem::BuddyContactsTableItem(Contact contact, QObject *parent) :
-		QObject(parent)
+BuddyContactsTableItem::BuddyContactsTableItem(ContactManager *contactManager, Contact contact, QObject *parent) :
+		QObject{parent},
+		m_contactManager{contactManager}
 {
 	ItemContact = contact;
 	ItemContactPriority = contact.priority();
@@ -126,7 +126,7 @@ bool BuddyContactsTableItem::isAddValid() const
 		return false;
 
 	// allow contacts without buddy or new ones
-	Contact contact = Core::instance()->contactManager()->byId(ItemAccount, Id, ActionReturnNull);
+	Contact contact = m_contactManager->byId(ItemAccount, Id, ActionReturnNull);
 	return contact.ownerBuddy().isAnonymous();
 }
 
@@ -151,7 +151,7 @@ bool BuddyContactsTableItem::isEditValid() const
 	if (ItemAccount != ItemContact.contactAccount() || Id != ItemContact.id())
 	{
 		// allow contacts without buddy or new ones
-		Contact contact = Core::instance()->contactManager()->byId(ItemAccount, Id, ActionReturnNull);
+		Contact contact = m_contactManager->byId(ItemAccount, Id, ActionReturnNull);
 		return contact.ownerBuddy().isAnonymous();
 	}
 

@@ -124,7 +124,7 @@ void BuddyContactsTableModel::contactsFromBuddy()
 
 	if (!ModelBuddy.contacts().isEmpty())
 		foreach (const Contact &contact, ModelBuddy.contacts())
-			addItem(new BuddyContactsTableItem(contact, this), false);
+			addItem(new BuddyContactsTableItem(m_contactManager, contact, this), false);
 
 	endResetModel();
 }
@@ -294,7 +294,7 @@ bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex &
 	{
 		CurrentMaxPriority++;
 
-		BuddyContactsTableItem *item = new BuddyContactsTableItem(Contact::null, this);
+		BuddyContactsTableItem *item = new BuddyContactsTableItem(m_contactManager, Contact::null, this);
 		item->setAction(BuddyContactsTableItem::ItemAdd);
 		item->setItemContactPriority(CurrentMaxPriority);
 		item->setRosterDetached(false);

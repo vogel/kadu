@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtXml/QDomElement>
+#include "contact-set-configuration-helper.h"
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
@@ -32,9 +32,9 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 
-#include "contact-set-configuration-helper.h"
+#include <QtXml/QDomElement>
 
-ContactSet ContactSetConfigurationHelper::loadFromConfiguration(StorableObject *parent, const QString &nodeName)
+ContactSet ContactSetConfigurationHelper::loadFromConfiguration(ContactManager *contactManager, StorableObject *parent, const QString &nodeName)
 {
 	if (!parent->isValidStorage())
 		return ContactSet();
@@ -42,10 +42,10 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(StorableObject *
 	ConfigurationApi *configurationStorage = parent->storage()->storage();
 	QDomElement contactSetNode = configurationStorage->getNode(parent->storage()->point(), nodeName);
 
-	return loadFromConfiguration(configurationStorage, contactSetNode);
+	return loadFromConfiguration(contactManager, configurationStorage, contactSetNode);
 }
 
-ContactSet ContactSetConfigurationHelper::loadFromConfiguration(ConfigurationApi *configurationStorage, QDomElement contactSetNode)
+ContactSet ContactSetConfigurationHelper::loadFromConfiguration(ContactManager *contactManager, ConfigurationApi *configurationStorage, QDomElement contactSetNode)
 {
 	ContactSet result;
 
@@ -53,7 +53,7 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(ConfigurationApi
 	result.reserve(contactElements.count());
 	foreach (const QDomElement &contactElement, contactElements)
 	{
-		Contact contact = Core::instance()->contactManager()->byUuid(contactElement.text());
+		Contact contact = contactManager->byUuid(contactElement.text());
 		if (!contact.isNull())
 			result.insert(contact);
 	}
