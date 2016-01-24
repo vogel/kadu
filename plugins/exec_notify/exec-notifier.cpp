@@ -26,8 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include <notification/notification/notification.h>
+#include "notification/notification/notification.h"
 #include "parser/parser.h"
 
 #include <QtCore/QProcess>
@@ -36,25 +35,39 @@ ExecNotifier::ExecNotifier(QObject *parent) :
 		QObject{parent},
 		Notifier("Exec", QT_TRANSLATE_NOOP("@default", "Run command"), KaduIcon("external_modules/execnotify"))
 {
-	createDefaultConfiguration();
 }
 
 ExecNotifier::~ExecNotifier()
 {
 }
 
+void ExecNotifier::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ExecNotifier::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
+void ExecNotifier::init()
+{
+	createDefaultConfiguration();
+}
+
 void ExecNotifier::createDefaultConfiguration()
 {
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "ConnectionErrorCmd", "Xdialog --msgbox \"#{protocol} #{event}\" 10 100");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToFreeForChatCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOnlineCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToAwayCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToNotAvailableCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToDoNotDisturbCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	m_configuration->deprecatedApi()->addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
+	m_configuration->deprecatedApi()->addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
+	m_configuration->deprecatedApi()->addVariable("Exec Notify", "ConnectionErrorCmd", "Xdialog --msgbox \"#{protocol} #{event}\" 10 100");
+	m_configuration->deprecatedApi()->addVariable("Exec Notify", "StatusChanged", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	m_configuration->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToFreeForChatCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
+	m_configuration->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOnlineCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
+	m_configuration->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToAwayCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	m_configuration->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToNotAvailableCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	m_configuration->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToDoNotDisturbCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	m_configuration->deprecatedApi()->addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
 }
 
 // TODO: merge with HistoryManager version
@@ -145,7 +158,7 @@ QStringList mySplit(const QChar &sep, const QString &str)
 
 void ExecNotifier::notify(Notification *notification)
 {
-	auto syntax = Core::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", notification->key() + "Cmd");
+	auto syntax = m_configuration->deprecatedApi()->readEntry("Exec Notify", notification->key() + "Cmd");
 	if (syntax.isEmpty())
 		return;
 	auto s = mySplit(' ', syntax);
@@ -158,16 +171,16 @@ void ExecNotifier::notify(Notification *notification)
 
 		auto sendersList = QStringList{};
 		for (auto contact : contacts)
-			sendersList.append(Parser::escape(contact.id()));
+			sendersList.append(m_parser->escape(contact.id()));
 		QString sendersString = sendersList.join(",");
 
 		Contact contact = *contacts.constBegin();
 		foreach (QString it, s)
-			result.append(Parser::parse(it.replace("%ids", sendersString), Talkable(contact), notification, ParserEscape::HtmlEscape));
+			result.append(m_parser->parse(it.replace("%ids", sendersString), Talkable(contact), notification, ParserEscape::HtmlEscape));
 	}
 	else
 		foreach (const QString &it, s)
-			result.append(Parser::parse(it, notification, ParserEscape::HtmlEscape));
+			result.append(m_parser->parse(it, notification, ParserEscape::HtmlEscape));
 
 	run(result);
 }

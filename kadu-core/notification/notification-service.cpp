@@ -41,6 +41,7 @@
 #include "notification/notification/status-changed-notification.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/window-notifier.h"
+#include "parser/parser.h"
 #include "status/status-container-manager.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
@@ -114,6 +115,11 @@ void NotificationService::setNotifyConfigurationUiHandler(NotifyConfigurationUiH
 	m_notifyConfigurationUiHandler = notifyConfigurationUiHandler;
 }
 
+void NotificationService::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void NotificationService::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
 	m_statusContainerManager = statusContainerManager;
@@ -146,7 +152,7 @@ void NotificationService::init()
 	m_notificationCallbackRepository->addCallback(ignoreCallback);
 	m_notificationCallbackRepository->addCallback(openChatCallback);
 
-	Notification::registerParserTags();
+	Notification::registerParserTags(m_parser);
 
 	MessageNotification::registerEvents(m_notificationEventRepository);
 
@@ -172,7 +178,7 @@ void NotificationService::init()
 
 void NotificationService::done()
 {
-	Notification::unregisterParserTags();
+	Notification::unregisterParserTags(m_parser);
 
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_notifyConfigurationUiHandler);
 

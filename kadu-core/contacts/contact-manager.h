@@ -38,6 +38,7 @@
 class Account;
 class BuddyStorage;
 class ConfigurationManager;
+class Parser;
 class UnreadMessageRepository;
 
 class KADUAPI ContactManager : public SimpleManager<Contact>
@@ -80,11 +81,13 @@ protected:
 private:
 	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Parser> m_parser;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

@@ -26,6 +26,7 @@
 
 class ChatStyleManager;
 class KaduChatSyntax;
+class Parser;
 
 class KaduStyleRenderer : public ChatStyleRenderer
 {
@@ -44,6 +45,7 @@ public:
 
 private:
 	QPointer<ChatStyleManager> m_chatStyleManager;
+	QPointer<Parser> m_parser;
 
 	std::shared_ptr<KaduChatSyntax> m_style;
 
@@ -51,6 +53,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
+	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 
 };

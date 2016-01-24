@@ -65,6 +65,11 @@ void BuddyInfoPanel::setDomProcessorService(DomProcessorService *domProcessorSer
 	m_domProcessorService = domProcessorService;
 }
 
+void BuddyInfoPanel::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void BuddyInfoPanel::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -236,7 +241,7 @@ void BuddyInfoPanel::displayItem(Talkable item)
 	}
 
 	QDomDocument domDocument;
-	domDocument.setContent(Template.arg(Parser::parse(Syntax, item, ParserEscape::HtmlEscape)));
+	domDocument.setContent(Template.arg(m_parser->parse(Syntax, item, ParserEscape::HtmlEscape)));
 
 	m_domProcessorService->process(domDocument);
 

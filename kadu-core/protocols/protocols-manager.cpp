@@ -25,6 +25,7 @@
 #include "misc/misc.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-event-repository.h"
+#include "parser/parser.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol-factory.h"
 
@@ -51,14 +52,19 @@ void ProtocolsManager::setNotificationEventRepository(NotificationEventRepositor
 	m_notificationEventRepository = notificationEventRepository;
 }
 
+void ProtocolsManager::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void ProtocolsManager::init()
 {
-	ConnectionErrorNotification::registerEvent(m_notificationEventRepository, m_notificationCallbackRepository);
+	ConnectionErrorNotification::registerEvent(m_parser, m_notificationEventRepository, m_notificationCallbackRepository);
 }
 
 void ProtocolsManager::done()
 {
-	ConnectionErrorNotification::unregisterEvent(m_notificationEventRepository);
+	ConnectionErrorNotification::unregisterEvent(m_parser, m_notificationEventRepository);
 }
 
 void ProtocolsManager::registerProtocolFactory(ProtocolFactory *factory)

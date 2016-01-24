@@ -19,17 +19,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PARSER_H
-#define PARSER_H
-
-#include <QtCore/QMap>
-#include <functional>
-#include <injeqt/injeqt.h>
+#pragma once
 
 #include "parser/parser-token-type.h"
 #include "talkable/talkable.h"
-
 #include "exports.h"
+
+#include <QtCore/QMap>
+#include <QtCore/QPointer>
+#include <functional>
+#include <injeqt/injeqt.h>
 
 template<typename T> class QStack;
 
@@ -42,43 +41,47 @@ enum class ParserEscape
 	HtmlEscape
 };
 
-class KADUAPI Parser
+class KADUAPI Parser : public QObject
 {
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit Parser(QObject *parent = nullptr);
+	virtual ~Parser();
+
 	using ObjectTagCallback = std::function<QString(const ParserData * const)>;
 	using TalkableTagCallback = std::function<QString(Talkable)>;
 
-	static QMap<QString, TalkableTagCallback> RegisteredTalkableTags;
-	static QMap<QString, ObjectTagCallback> RegisteredObjectTags;
+	QMap<QString, QString> GlobalVariables;
 
-	static QString executeCmd(const QString &cmd);
+	QString escape(const QString &string);
 
-	static bool isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, const QVector<ParserTokenType> &acceptedTokens);
-	static ParserToken parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, ParserEscape escape);
+	QString parse(const QString &s, const ParserData * const parserData, ParserEscape escape)
+	{
+		return parse(s, Talkable{}, parserData, escape);
+	}
+	QString parse(const QString &s, Talkable talkable, ParserEscape escape)
+	{
+		return parse(s, talkable, nullptr, escape);
+	}
+	QString parse(const QString &s, Talkable talkable, const ParserData * const parserData, ParserEscape escape);
+
+	bool registerTag(const QString &name, TalkableTagCallback);
+	bool unregisterTag(const QString &name);
+
+	bool registerObjectTag(const QString &name, ObjectTagCallback);
+	bool unregisterObjectTag(const QString &name);
+
+private:
+	QMap<QString, TalkableTagCallback> m_registeredTalkableTags;
+	QMap<QString, ObjectTagCallback> m_registeredObjectTags;
+
+	QString executeCmd(const QString &cmd);
+
+	bool isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, const QVector<ParserTokenType> &acceptedTokens);
+	ParserToken parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, ParserEscape escape);
 
 	template<typename ContainerClass>
-	static QString joinParserTokens(const ContainerClass &parseStack);
-
-public:
-	static QMap<QString, QString> GlobalVariables;
-
-	static QString escape(const QString &string);
-
-	static QString parse(const QString &s, const ParserData * const parserData, ParserEscape escape)
-	{
-		return parse(s, Talkable(), parserData, escape);
-	}
-	static QString parse(const QString &s, Talkable talkable, ParserEscape escape)
-	{
-		return parse(s, talkable, 0, escape);
-	}
-	static QString parse(const QString &s, Talkable talkable, const ParserData * const parserData, ParserEscape escape);
-
-	static bool registerTag(const QString &name, TalkableTagCallback);
-	static bool unregisterTag(const QString &name);
-
-	static bool registerObjectTag(const QString &name, ObjectTagCallback);
-	static bool unregisterObjectTag(const QString &name);
+	QString joinParserTokens(const ContainerClass &parseStack);
 
 };
-
-#endif // PARSER_H

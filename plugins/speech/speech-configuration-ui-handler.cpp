@@ -67,6 +67,11 @@ void SpeechConfigurationUiHandler::setConfiguration(Configuration *configuration
 	m_configuration = configuration;
 }
 
+void SpeechConfigurationUiHandler::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void SpeechConfigurationUiHandler::setSpeech(Speech *speech)
 {
 	m_speech = speech;
@@ -131,7 +136,7 @@ void SpeechConfigurationUiHandler::testSpeech()
 	kdebugm(KDEBUG_INFO, "%d %d %d\n", frequency, tempo, baseFrequency);
 
 	QString text;
-	text = Parser::parse(formatF, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
+	text = m_parser->parse(formatF, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
 
 	m_speech->say(text.contains("%1") ? text.arg("Test") : QString("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
 

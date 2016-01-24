@@ -29,6 +29,7 @@
 
 class Configuration;
 class Notification;
+class Parser;
 
 /**
  * @defgroup speech Speech
@@ -56,9 +57,11 @@ public:
 
 private:
 	QPointer<Configuration> m_configuration;
+	QPointer<Parser> m_parser;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 
 };

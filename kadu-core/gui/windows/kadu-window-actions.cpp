@@ -244,6 +244,11 @@ void KaduWindowActions::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
+void KaduWindowActions::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void KaduWindowActions::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
 {
 	m_urlHandlerManager = urlHandlerManager;
@@ -872,13 +877,13 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 	ContactSet contacts = action->context()->contacts();
 
 	QStringList infoList;
-	QString defaultSyntax = Parser::escape(tr("Contact:")) + " %a[ (%u)]\n["
-			+ Parser::escape(tr("First name:")) + " %f\n]["
-			+ Parser::escape(tr("Last name:")) + " %r\n]["
-			+ Parser::escape(tr("Mobile:")) + " %m\n]";
+	QString defaultSyntax = m_parser->escape(tr("Contact:")) + " %a[ (%u)]\n["
+			+ m_parser->escape(tr("First name:")) + " %f\n]["
+			+ m_parser->escape(tr("Last name:")) + " %r\n]["
+			+ m_parser->escape(tr("Mobile:")) + " %m\n]";
 	QString copyPersonalDataSyntax = m_configuration->deprecatedApi()->readEntry("General", "CopyPersonalDataSyntax", defaultSyntax);
 	foreach (Contact contact, contacts)
-		infoList.append(Parser::parse(copyPersonalDataSyntax, Talkable(contact), ParserEscape::NoEscape));
+		infoList.append(m_parser->parse(copyPersonalDataSyntax, Talkable(contact), ParserEscape::NoEscape));
 
 	QString info = infoList.join("\n");
 	if (info.isEmpty())

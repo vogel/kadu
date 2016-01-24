@@ -31,13 +31,14 @@
 
 class ChatConfigurationHolder;
 class MessageHtmlRendererService;
+class Parser;
 
 class KADUAPI MessageRenderInfo : public ParserData
 {
 
 public:
-	static void registerParserTags(ChatConfigurationHolder *chatConfigurationHolder, MessageHtmlRendererService *messageHtmlRendererService);
-	static void unregisterParserTags();
+	static void registerParserTags(Parser *parser, ChatConfigurationHolder *chatConfigurationHolder, MessageHtmlRendererService *messageHtmlRendererService);
+	static void unregisterParserTags(Parser *parser);
 
 	MessageRenderInfo(Message message, QString backgroundColor, QString fontColor, QString nickColor,
 			bool includeHeader, int separatorSize, bool showServerTime);

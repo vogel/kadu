@@ -60,6 +60,11 @@ void Speech::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void Speech::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void Speech::init()
 {
 	m_configuration->deprecatedApi()->addVariable("Notify", "NewChat_Speech", true);
@@ -161,10 +166,10 @@ void Speech::notify(Notification *notification)
 		if (chat)
 		{
 			Contact contact = *chat.contacts().begin();
-			text = Parser::parse(syntax, Talkable(contact), notification, ParserEscape::HtmlEscape);
+			text = m_parser->parse(syntax, Talkable(contact), notification, ParserEscape::HtmlEscape);
 		}
 		else
-			text= Parser::parse(syntax, notification, ParserEscape::HtmlEscape);
+			text= m_parser->parse(syntax, notification, ParserEscape::HtmlEscape);
 	}
 
 	QTextDocument document;

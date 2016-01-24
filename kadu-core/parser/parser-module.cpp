@@ -1,9 +1,7 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
- * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,15 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DATE_TIME_PARSER_TAGS_H
-#define DATE_TIME_PARSER_TAGS_H
+#include "parser-module.h"
 
-class Parser;
+#include "parser/parser.h"
 
-namespace DateTimeParserTags
+ParserModule::ParserModule()
 {
-	void registerParserTags(Parser *parser);
-
+	add_type<Parser>();
 }
 
-#endif // DATE_TIME_PARSER_TAGS_H
+ParserModule::~ParserModule()
+{
+}

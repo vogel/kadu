@@ -94,6 +94,11 @@ void Autoaway::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
+void Autoaway::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void Autoaway::init()
 {
 	createDefaultConfiguration();
@@ -205,7 +210,7 @@ void Autoaway::configurationUpdated()
 QString Autoaway::parseDescription(const QString &parseDescription)
 {
 	if (m_parseAutoStatus)
-		return (Parser::parse(parseDescription, Talkable(m_myself->buddy()), ParserEscape::HtmlEscape));
+		return (m_parser->parse(parseDescription, Talkable(m_myself->buddy()), ParserEscape::HtmlEscape));
 	else
 		return parseDescription;
 }

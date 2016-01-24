@@ -45,9 +45,14 @@ void KaduStyleRenderer::setChatStyleManager(ChatStyleManager *chatStyleManager)
 	m_chatStyleManager = chatStyleManager;
 }
 
+void KaduStyleRenderer::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void KaduStyleRenderer::init()
 {
-	auto top = Parser::parse(m_style->top(), Talkable(this->configuration().chat().contacts().toContact()), ParserEscape::HtmlEscape);
+	auto top = m_parser->parse(m_style->top(), Talkable(this->configuration().chat().contacts().toContact()), ParserEscape::HtmlEscape);
 	auto html = QString{
 		"<html>"
 		"	<head>"
@@ -119,7 +124,7 @@ QString KaduStyleRenderer::formatMessage(const Message &message, const MessageRe
 			? m_style->withHeader()
 			: m_style->withoutHeader();
 
-	return Parser::parse(format, Talkable{sender}, &messageRenderInfo, ParserEscape::HtmlEscape);
+	return m_parser->parse(format, Talkable{sender}, &messageRenderInfo, ParserEscape::HtmlEscape);
 }
 
 #include "moc_kadu-style-renderer.cpp"

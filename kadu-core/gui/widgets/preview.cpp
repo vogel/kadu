@@ -59,6 +59,11 @@ void Preview::setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory)
 	m_buddyDummyFactory = buddyDummyFactory;
 }
 
+void Preview::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 KaduWebView * Preview::webView() const
 {
 	return m_webView;
@@ -67,7 +72,7 @@ KaduWebView * Preview::webView() const
 void Preview::syntaxChanged(const QString &content)
 {
 	QString syntax = content;
-	QString text = Parser::parse(syntax, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
+	QString text = m_parser->parse(syntax, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
 	emit needFixup(text);
 
 	m_webView->setHtml(text);

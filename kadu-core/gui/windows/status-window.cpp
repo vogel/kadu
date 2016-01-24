@@ -77,6 +77,11 @@ void StatusWindow::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
+void StatusWindow::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void StatusWindow::setStatusSetter(StatusSetter *statusSetter)
 {
 	m_statusSetter = statusSetter;
@@ -296,7 +301,7 @@ void StatusWindow::applyStatus()
 	m_descriptionManager->addDescription(description);
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
-		description = Parser::parse(description, Talkable(m_myself->buddy()), ParserEscape::NoEscape);
+		description = m_parser->parse(description, Talkable(m_myself->buddy()), ParserEscape::NoEscape);
 
 	for (auto &&container : Container->subStatusContainers())
 	{

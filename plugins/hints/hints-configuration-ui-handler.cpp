@@ -371,7 +371,7 @@ void HintsConfigurationUiHandler::showOverUserConfigurationWindow()
 		_activateWindow(overUserConfigurationWindow.data());
 	else
 	{
-		overUserConfigurationWindow = new HintOverUserConfigurationWindow(m_hintManager, m_buddyDummyFactory->dummy(), m_mainConfigurationWindow->dataManager());
+		overUserConfigurationWindow = m_injectedFactory->makeInjected<HintOverUserConfigurationWindow>(m_hintManager, m_buddyDummyFactory->dummy(), m_mainConfigurationWindow->dataManager());
 		connect(overUserConfigurationWindow.data(), SIGNAL(configurationSaved()), this, SLOT(updateOverUserPreview()));
 		overUserConfigurationWindow->show();
 	}

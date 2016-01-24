@@ -33,6 +33,7 @@
 class ChatWidgetRepository;
 class ChatWidget;
 class MessageManager;
+class Parser;
 
 class AutoresponderMessageFilter : public QObject, public MessageFilter
 {
@@ -52,6 +53,7 @@ public slots:
 private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<MessageManager> m_messageManager;
+	QPointer<Parser> m_parser;
 
 	AutoresponderConfiguration Configuration;
 
@@ -60,6 +62,7 @@ private:
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 
 };

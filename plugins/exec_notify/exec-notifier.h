@@ -22,6 +22,11 @@
 #include "notification/notifier.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class Parser;
 
 class ExecNotifier : public QObject, public Notifier
 {
@@ -35,8 +40,15 @@ public:
 	virtual void notify(Notification *notification);
 
 private:
-	void createDefaultConfiguration();
+	QPointer<Configuration> m_configuration;
+	QPointer<Parser> m_parser;
 
+	void createDefaultConfiguration();
 	void run(const QStringList &args);
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setParser(Parser *parser);
+	INJEQT_INIT void init();
 
 };

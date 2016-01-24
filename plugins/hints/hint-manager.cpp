@@ -95,6 +95,11 @@ void HintManager::setNotificationManager(NotificationManager *notificationManage
 	m_notificationManager = notificationManager;
 }
 
+void HintManager::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void HintManager::setToolTipClassManager(ToolTipClassManager *toolTipClassManager)
 {
 	m_toolTipClassManager = toolTipClassManager;
@@ -527,7 +532,7 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkab
 	// file:/// is added by parser where required
 	syntax = syntax.remove("file:///");
 
-	auto text = Parser::parse(syntax, talkable, ParserEscape::HtmlEscape);
+	auto text = m_parser->parse(syntax, talkable, ParserEscape::HtmlEscape);
 	while (text.endsWith(QLatin1String("<br/>")))
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 	while (text.startsWith(QLatin1String("<br/>")))

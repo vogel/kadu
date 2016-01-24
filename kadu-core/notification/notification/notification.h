@@ -35,6 +35,7 @@
 class ChatWidgetManager;
 class NotificationManager;
 class Notifier;
+class Parser;
 
 class QTimer;
 
@@ -43,8 +44,8 @@ class KADUAPI Notification : public QObject, public ParserData
 	Q_OBJECT
 
 public:
-	static void registerParserTags();
-	static void unregisterParserTags();
+	static void registerParserTags(Parser *parser);
+	static void unregisterParserTags(Parser *parser);
 
 	Notification(QVariantMap data, const QString &type, const KaduIcon &icon);
 	Notification(Account account, Chat chat, const QString &type, const KaduIcon &icon);

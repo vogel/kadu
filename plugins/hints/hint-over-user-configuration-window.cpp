@@ -30,7 +30,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "gui/widgets/configuration/config-color-button.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -46,11 +45,35 @@
 #include "hint-over-user-configuration-window.h"
 
 HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(HintManager *hintManager, Buddy exampleBuddy, ConfigurationWindowDataManager *dataManager) :
-	ConfigurationWindow("HintOverUser", tr("Hint Over Buddy Configuration"), "Hints", dataManager),
-	ExampleBuddy(exampleBuddy)
+		ConfigurationWindow("HintOverUser", tr("Hint Over Buddy Configuration"), "Hints", dataManager),
+		ExampleBuddy(exampleBuddy),
+		m_hintManager{hintManager}
+{
+}
+
+HintOverUserConfigurationWindow::~HintOverUserConfigurationWindow()
+{
+}
+
+void HintOverUserConfigurationWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void HintOverUserConfigurationWindow::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
+void HintOverUserConfigurationWindow::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void HintOverUserConfigurationWindow::init()
 {
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
-	widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hint-over-user.ui"));
+	widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hint-over-user.ui"));
 
 	connect(static_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
 			this, SLOT(fontChanged(QFont)));
@@ -81,7 +104,7 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(HintManager *hi
 	lay = new QHBoxLayout(syntaxWidget);
 	hintSyntax = new QTextEdit;
 	hintSyntax->setAcceptRichText(true);
-	hintSyntax->setPlainText(Core::instance()->configuration()->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax"));
+	hintSyntax->setPlainText(m_configuration->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax"));
 	hintSyntax->setToolTip(tr(MainConfigurationWindow::SyntaxText));
 
 	QPushButton *syntaxChangedButton = new QPushButton(tr("Update preview"));
@@ -92,12 +115,12 @@ HintOverUserConfigurationWindow::HintOverUserConfigurationWindow(HintManager *hi
 	lay->addWidget(syntaxChangedButton);
 	groupBox->addWidget(syntaxWidget, true);
 
-	hintManager->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy);
+	m_hintManager->prepareOverUserHint(previewFrame, previewTipLabel, ExampleBuddy);
 
-	bgcolor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name();
-	fgcolor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name();
-	bdcolor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name();
-	bdwidth = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Hints", "HintOverUser_borderWidth", 1);
+	bgcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name();
+	fgcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name();
+	bdcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name();
+	bdwidth = m_configuration->deprecatedApi()->readNumEntry("Hints", "HintOverUser_borderWidth", 1);
 }
 
 void HintOverUserConfigurationWindow::fontChanged(QFont font)
@@ -150,7 +173,7 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 	if (!hintSyntax->document()->isModified())
 		return;
 
-	QString text = Parser::parse(hintSyntax->toPlainText(), Talkable(ExampleBuddy), ParserEscape::HtmlEscape);
+	QString text = m_parser->parse(hintSyntax->toPlainText(), Talkable(ExampleBuddy), ParserEscape::HtmlEscape);
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://
@@ -167,7 +190,7 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 
 void HintOverUserConfigurationWindow::configurationWindowApplied()
 {
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", hintSyntax->toPlainText());
+	m_configuration->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", hintSyntax->toPlainText());
 }
 
 #include "moc_hint-over-user-configuration-window.cpp"

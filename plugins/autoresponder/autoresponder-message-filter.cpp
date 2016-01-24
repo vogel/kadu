@@ -58,6 +58,11 @@ void AutoresponderMessageFilter::setMessageManager(MessageManager *messageManage
 	m_messageManager = messageManager;
 }
 
+void AutoresponderMessageFilter::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void AutoresponderMessageFilter::init()
 {
 	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)),
@@ -88,7 +93,7 @@ bool AutoresponderMessageFilter::acceptMessage(const Message &message)
 			|| (Configuration.statusBusy() && protocol->status().group() == StatusTypeGroupAway))
 	{
 		m_messageManager->sendMessage(message.messageChat(), tr("KADU AUTORESPONDER:") + '\n'
-				+ Parser::parse(Configuration.autoRespondText(), Talkable(message.messageSender()), ParserEscape::HtmlEscape), true);
+				+ m_parser->parse(Configuration.autoRespondText(), Talkable(message.messageSender()), ParserEscape::HtmlEscape), true);
 
 		RepliedChats.insert(message.messageChat());
 	}

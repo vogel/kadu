@@ -109,30 +109,30 @@ static QString getSeparator(const ParserData * const object)
 		return QString();
 }
 
-void MessageRenderInfo::registerParserTags(ChatConfigurationHolder *chatConfigurationHolder, MessageHtmlRendererService *messageHtmlRendererService)
+void MessageRenderInfo::registerParserTags(Parser *parser, ChatConfigurationHolder *chatConfigurationHolder, MessageHtmlRendererService *messageHtmlRendererService)
 {
-	Parser::registerObjectTag("message", [messageHtmlRendererService](const ParserData * const object){ return getMessage(messageHtmlRendererService, object); });
-	Parser::registerObjectTag("messageId", getMessageId);
-	Parser::registerObjectTag("messageStatus", getMessageStatus);
-	Parser::registerObjectTag("backgroundColor", getBackgroundColor);
-	Parser::registerObjectTag("fontColor", getFontColor);
-	Parser::registerObjectTag("nickColor", getNickColor);
-	Parser::registerObjectTag("sentDate", [chatConfigurationHolder](const ParserData * const object){ return getSentDate(chatConfigurationHolder->niceDateFormat(), object); } );
-	Parser::registerObjectTag("receivedDate", [chatConfigurationHolder](const ParserData * const object){ return getReceivedDate(chatConfigurationHolder->niceDateFormat(), object); });
-	Parser::registerObjectTag("separator", getSeparator);
+	parser->registerObjectTag("message", [messageHtmlRendererService](const ParserData * const object){ return getMessage(messageHtmlRendererService, object); });
+	parser->registerObjectTag("messageId", getMessageId);
+	parser->registerObjectTag("messageStatus", getMessageStatus);
+	parser->registerObjectTag("backgroundColor", getBackgroundColor);
+	parser->registerObjectTag("fontColor", getFontColor);
+	parser->registerObjectTag("nickColor", getNickColor);
+	parser->registerObjectTag("sentDate", [chatConfigurationHolder](const ParserData * const object){ return getSentDate(chatConfigurationHolder->niceDateFormat(), object); } );
+	parser->registerObjectTag("receivedDate", [chatConfigurationHolder](const ParserData * const object){ return getReceivedDate(chatConfigurationHolder->niceDateFormat(), object); });
+	parser->registerObjectTag("separator", getSeparator);
 }
 
-void MessageRenderInfo::unregisterParserTags()
+void MessageRenderInfo::unregisterParserTags(Parser *parser)
 {
-	Parser::unregisterObjectTag("message");
-	Parser::unregisterObjectTag("messageId");
-	Parser::unregisterObjectTag("messageStatus");
-	Parser::unregisterObjectTag("backgroundColor");
-	Parser::unregisterObjectTag("fontColor");
-	Parser::unregisterObjectTag("nickColor");
-	Parser::unregisterObjectTag("sentDate");
-	Parser::unregisterObjectTag("receivedDate");
-	Parser::unregisterObjectTag("separator");
+	parser->unregisterObjectTag("message");
+	parser->unregisterObjectTag("messageId");
+	parser->unregisterObjectTag("messageStatus");
+	parser->unregisterObjectTag("backgroundColor");
+	parser->unregisterObjectTag("fontColor");
+	parser->unregisterObjectTag("nickColor");
+	parser->unregisterObjectTag("sentDate");
+	parser->unregisterObjectTag("receivedDate");
+	parser->unregisterObjectTag("separator");
 }
 
 MessageRenderInfo::MessageRenderInfo(Message message, QString backgroundColor, QString fontColor, QString nickColor,

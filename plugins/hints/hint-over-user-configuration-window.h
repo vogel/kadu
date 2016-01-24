@@ -17,13 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HINT_OVER_USER_CONFIGURATION_WINDOW_H
-#define HINT_OVER_USER_CONFIGURATION_WINDOW_H
+#pragma once
 
 #include "buddies/buddy.h"
 #include "gui/windows/configuration-window.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 class HintManager;
+class Parser;
+class PathsProvider;
 
 class QFrame;
 class QLabel;
@@ -33,8 +38,17 @@ class HintOverUserConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
 
+public:
+	explicit HintOverUserConfigurationWindow(HintManager *hintManager, Buddy exampleContact, ConfigurationWindowDataManager *dataManager);
+	virtual ~HintOverUserConfigurationWindow();
+
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<Parser> m_parser;
+	QPointer<PathsProvider> m_pathsProvider;
 	Buddy ExampleBuddy;
 
+	HintManager *m_hintManager;
 	QFrame *previewFrame;
 	QLabel *previewTipLabel;
 	QTextEdit *hintSyntax;
@@ -45,6 +59,11 @@ class HintOverUserConfigurationWindow : public ConfigurationWindow
 	int bdwidth;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setParser(Parser *parser);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+
 	void configurationWindowApplied();
 
 	void fontChanged(QFont font);
@@ -55,9 +74,4 @@ private slots:
 
 	void syntaxChanged();
 
-public:
-	HintOverUserConfigurationWindow(HintManager *hintManager, Buddy exampleContact, ConfigurationWindowDataManager *dataManager);
-
 };
-
-#endif // HINT_OVER_USER_CONFIGURATION_WINDOW_H

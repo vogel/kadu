@@ -19,14 +19,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTACT_PARSER_TAGS_H
-#define CONTACT_PARSER_TAGS_H
+#pragma once
+
+class Parser;
 
 namespace ContactParserTags
 {
-	void registerParserTags();
-	void unregisterParserTags();
+	void registerParserTags(Parser *parser);
+	void unregisterParserTags(Parser *parser);
 
 }
-
-#endif // CONTACT_PARSER_TAGS_H

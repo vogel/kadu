@@ -59,14 +59,14 @@ static QString getStatusIconPath(Talkable talkable)
 		return Core::instance()->statusContainerManager()->statusIcon(status.type()).webKitPath();
 }
 
-void ContactParserTags::registerParserTags()
+void ContactParserTags::registerParserTags(Parser *parser)
 {
-	Parser::registerTag("avatarPath", getAvatarPath);
-	Parser::registerTag("statusIconPath", getStatusIconPath);
+	parser->registerTag("avatarPath", getAvatarPath);
+	parser->registerTag("statusIconPath", getStatusIconPath);
 }
 
-void ContactParserTags::unregisterParserTags()
+void ContactParserTags::unregisterParserTags(Parser *parser)
 {
-	Parser::unregisterTag("avatarPath");
-	Parser::unregisterTag("statusIconPath");
+	parser->unregisterTag("avatarPath");
+	parser->unregisterTag("statusIconPath");
 }

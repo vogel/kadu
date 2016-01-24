@@ -33,6 +33,7 @@ class BuddyDummyFactory;
 class ConfigComboBox;
 class Configuration;
 class MainConfigurationWindow;
+class Parser;
 class SelectFile;
 class Speech;
 
@@ -42,6 +43,7 @@ class SpeechConfigurationUiHandler : public QObject, public ConfigurationUiHandl
 
 	QPointer<BuddyDummyFactory> m_buddyDummyFactory;
 	QPointer<Configuration> m_configuration;
+	QPointer<Parser> m_parser;
 	QPointer<Speech> m_speech;
 
 	QSlider *frequencySlider;
@@ -58,6 +60,7 @@ class SpeechConfigurationUiHandler : public QObject, public ConfigurationUiHandl
 private slots:
 	INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setSpeech(Speech *speech);
 
 	void testSpeech();

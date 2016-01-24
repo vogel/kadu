@@ -38,6 +38,7 @@ class Chat;
 class Configuration;
 class NotificationCallbackRepository;
 class Notification;
+class Parser;
 
 // Hint needs to inherit QFrame (not just QWidget) for better stylesheets support.
 class Hint : public QFrame, ConfigurationAwareObject
@@ -46,6 +47,7 @@ class Hint : public QFrame, ConfigurationAwareObject
 
 	QPointer<Configuration> m_configuration;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+	QPointer<Parser> m_parser;
 
 	QVBoxLayout *vbox;
 
@@ -72,6 +74,7 @@ class Hint : public QFrame, ConfigurationAwareObject
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 
 	void notificationClosed();

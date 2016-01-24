@@ -39,6 +39,7 @@ class QCheckBox;
 class Configuration;
 class Idle;
 class Myself;
+class Parser;
 
 /**
  * @defgroup autoaway Autoaway
@@ -63,6 +64,7 @@ private:
 	QPointer<Configuration> m_configuration;
 	QPointer<Idle> m_idle;
 	QPointer<Myself> m_myself;
+	QPointer<Parser> m_parser;
 
 	owned_qptr<QTimer> m_timer;
 
@@ -99,6 +101,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIdle(Idle *idle);
 	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 
 	void checkIdleTime();

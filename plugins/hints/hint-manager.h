@@ -43,6 +43,7 @@ class HintsConfigurationWidget;
 class HintOverUserConfigurationWindow;
 class InjectedFactory;
 class NotificationManager;
+class Parser;
 class ToolTipClassManager;
 class UnreadMessageRepository;
 
@@ -55,6 +56,7 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationManager> m_notificationManager;
+	QPointer<Parser> m_parser;
 	QPointer<ToolTipClassManager> m_toolTipClassManager;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
@@ -87,6 +89,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();

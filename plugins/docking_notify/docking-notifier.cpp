@@ -74,6 +74,11 @@ void DockingNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void DockingNotifier::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void DockingNotifier::init()
 {
 	createDefaultConfiguration();
@@ -97,10 +102,10 @@ QString DockingNotifier::parseText(const QString &text, Notification *notificati
 		if (chat)
 		{
 			Contact contact = *chat.contacts().constBegin();
-			ret = Parser::parse(text, Talkable(contact), notification, ParserEscape::HtmlEscape);
+			ret = m_parser->parse(text, Talkable(contact), notification, ParserEscape::HtmlEscape);
 		}
 		else
-			ret = Parser::parse(text, notification, ParserEscape::HtmlEscape);
+			ret = m_parser->parse(text, notification, ParserEscape::HtmlEscape);
 
 		ret = ret.replace("%&m", notification->text());
 		ret = ret.replace("%&t", notification->title());

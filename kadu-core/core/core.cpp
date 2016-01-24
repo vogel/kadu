@@ -144,10 +144,10 @@ Core::Core(injeqt::injector &&injector) :
 	createDefaultConfiguration();
 	configurationUpdated();
 
-	Parser::GlobalVariables.insert(QLatin1String("DATA_PATH"), pathsProvider()->dataPath());
-	Parser::GlobalVariables.insert(QLatin1String("HOME"), PathsProvider::homePath());
-	Parser::GlobalVariables.insert(QLatin1String("KADU_CONFIG"), pathsProvider()->profilePath());
-	DateTimeParserTags::registerParserTags();
+	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("DATA_PATH"), pathsProvider()->dataPath());
+	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("HOME"), PathsProvider::homePath());
+	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("KADU_CONFIG"), pathsProvider()->profilePath());
+	DateTimeParserTags::registerParserTags(m_injector.get<Parser>());
 
 	m_injector.get<NotifyConfigurationImporter>()->import();
 }
@@ -368,7 +368,7 @@ void Core::createAllDefaultToolbars()
 
 void Core::init()
 {
-	MessageRenderInfo::registerParserTags(m_injector.get<ChatConfigurationHolder>(), m_injector.get<MessageHtmlRendererService>());
+	MessageRenderInfo::registerParserTags(m_injector.get<Parser>(), m_injector.get<ChatConfigurationHolder>(), m_injector.get<MessageHtmlRendererService>());
 
 	runServices();
 

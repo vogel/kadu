@@ -67,18 +67,18 @@ static QString getNotificationTitle(const ParserData * const object)
 		return QString();
 }
 
-void Notification::registerParserTags()
+void Notification::registerParserTags(Parser *parser)
 {
-	Parser::registerObjectTag("account", getAccountName);
-	Parser::registerObjectTag("event", getNotificationTitle);
-	Parser::registerObjectTag("protocol", getProtocolName);
+	parser->registerObjectTag("account", getAccountName);
+	parser->registerObjectTag("event", getNotificationTitle);
+	parser->registerObjectTag("protocol", getProtocolName);
 }
 
-void Notification::unregisterParserTags()
+void Notification::unregisterParserTags(Parser *parser)
 {
-	Parser::unregisterObjectTag("account");
-	Parser::unregisterObjectTag("event");
-	Parser::unregisterObjectTag("protocol");
+	parser->unregisterObjectTag("account");
+	parser->unregisterObjectTag("event");
+	parser->unregisterObjectTag("protocol");
 }
 
 Notification::Notification(QVariantMap data, const QString &type, const KaduIcon &icon) :

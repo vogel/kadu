@@ -28,6 +28,7 @@
 
 class BuddyDummyFactory;
 class KaduWebView;
+class Parser;
 
 class Preview : public QFrame
 {
@@ -47,10 +48,12 @@ signals:
 
 private:
 	QPointer<BuddyDummyFactory> m_buddyDummyFactory;
+	QPointer<Parser> m_parser;
 
 	KaduWebView *m_webView;
 
 private slots:
 	INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
+	INJEQT_SET void setParser(Parser *parser);
 
 };

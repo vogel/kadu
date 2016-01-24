@@ -191,19 +191,19 @@ static QString parseLongKaduUptime(Talkable talkable)
 	return getKaduUptime(true);
 }
 
-void DateTimeParserTags::registerParserTags()
+void DateTimeParserTags::registerParserTags(Parser *parser)
 {
 	// TODO: do it pretty, possibly in Core
 	started = QDateTime::currentDateTime();
 
-	Parser::registerTag("time", parseTime);
-	Parser::registerTag("time-long", parseLongTime);
-	Parser::registerTag("date", parseDate);
-	Parser::registerTag("date-long", parseLongDate);
-	Parser::registerTag("start", parseStartTime);
-	Parser::registerTag("start-long", parseLongStartTime);
-	Parser::registerTag("uptime", parseUptime);
-	Parser::registerTag("uptime-long", parseLongUptime);
-	Parser::registerTag("kuptime", parseKaduUptime);
-	Parser::registerTag("kuptime-long", parseLongKaduUptime);
+	parser->registerTag("time", parseTime);
+	parser->registerTag("time-long", parseLongTime);
+	parser->registerTag("date", parseDate);
+	parser->registerTag("date-long", parseLongDate);
+	parser->registerTag("start", parseStartTime);
+	parser->registerTag("start-long", parseLongStartTime);
+	parser->registerTag("uptime", parseUptime);
+	parser->registerTag("uptime-long", parseLongUptime);
+	parser->registerTag("kuptime", parseKaduUptime);
+	parser->registerTag("kuptime-long", parseLongKaduUptime);
 }

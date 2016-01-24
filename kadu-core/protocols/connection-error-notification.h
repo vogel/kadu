@@ -46,8 +46,8 @@ private slots:
 	void ignoreErrors();
 
 public:
-	static void registerEvent(NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository);
-	static void unregisterEvent(NotificationEventRepository *notificationEventRepository);
+	static void registerEvent(Parser *parser, NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository);
+	static void unregisterEvent(Parser *parser, NotificationEventRepository *notificationEventRepository);
 
 	static void notifyConnectionError(NotificationManager *notificationManager, const Account &account, const QString &errorServer, const QString &errorMessage);
 

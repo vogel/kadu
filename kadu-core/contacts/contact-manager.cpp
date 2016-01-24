@@ -34,6 +34,7 @@
 #include "core/myself.h"
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier-lock.h"
+#include "parser/parser.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "roster/roster-entry-state.h"
@@ -62,6 +63,11 @@ void ContactManager::setConfigurationManager(ConfigurationManager *configuration
 	m_configurationManager = configurationManager;
 }
 
+void ContactManager::setParser(Parser *parser)
+{
+	m_parser = parser;
+}
+
 void ContactManager::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
 	m_unreadMessageRepository = unreadMessageRepository;
@@ -72,7 +78,7 @@ void ContactManager::init()
 	// needed for QueuedConnection
 	qRegisterMetaType<Contact>("Contact");
 
-	ContactParserTags::registerParserTags();
+	ContactParserTags::registerParserTags(m_parser);
 
 	foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
 		unreadMessageAdded(message);
@@ -90,7 +96,7 @@ void ContactManager::done()
 	foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
 		unreadMessageRemoved(message);
 
-	ContactParserTags::unregisterParserTags();
+	ContactParserTags::unregisterParserTags(m_parser);
 
 	m_configurationManager->unregisterStorableObject(this);
 }

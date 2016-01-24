@@ -22,13 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QProcess>
-#include <QtCore/QStack>
-#include <QtCore/QVariant>
-#include <QtGui/QTextDocument>
-#include <QtNetwork/QHostAddress>
-#include <QtWidgets/QApplication>
+#include "parser.h"
 
 #include "accounts/account-manager.h"
 #include "buddies/group.h"
@@ -50,7 +44,13 @@
 #include "talkable/talkable-converter.h"
 #include "debug.h"
 
-#include "parser.h"
+#include <QtCore/QFileInfo>
+#include <QtCore/QProcess>
+#include <QtCore/QStack>
+#include <QtCore/QVariant>
+#include <QtGui/QTextDocument>
+#include <QtNetwork/QHostAddress>
+#include <QtWidgets/QApplication>
 
 #define SEARCH_CHARS "%[{\\$@#}]"
 #define EXEC_SEARCH_CHARS "`\'"
@@ -76,9 +76,14 @@ static void prepareSearchChars(bool forceExecSeachChars = false)
 			chars.remove(c);
 }
 
-QMap<QString, QString> Parser::GlobalVariables;
-QMap<QString, Parser::TalkableTagCallback> Parser::RegisteredTalkableTags;
-QMap<QString, Parser::ObjectTagCallback> Parser::RegisteredObjectTags;
+Parser::Parser(QObject *parent) :
+		QObject{parent}
+{
+}
+
+Parser::~Parser()
+{
+}
 
 QString Parser::escape(const QString &string)
 {
@@ -101,19 +106,19 @@ bool Parser::registerTag(const QString &name, TalkableTagCallback func)
 {
 	kdebugf();
 
-	if (RegisteredTalkableTags.contains(name))
+	if (m_registeredTalkableTags.contains(name))
 	{
 		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", qPrintable(name));
 		return false;
 	}
 
-	if (RegisteredObjectTags.contains(name))
+	if (m_registeredObjectTags.contains(name))
 	{
 		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered (as object tag)!\n", qPrintable(name));
 		return false;
 	}
 
-	RegisteredTalkableTags.insert(name, func);
+	m_registeredTalkableTags.insert(name, func);
 
 	kdebugf2();
 	return true;
@@ -123,13 +128,13 @@ bool Parser::unregisterTag(const QString &name)
 {
 	kdebugf();
 
-	if (!RegisteredTalkableTags.contains(name))
+	if (!m_registeredTalkableTags.contains(name))
 	{
 		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "Talkable tag %s not registered!\n", qPrintable(name));
 		return false;
 	}
 
-	RegisteredTalkableTags.remove(name);
+	m_registeredTalkableTags.remove(name);
 
 	kdebugf2();
 	return true;
@@ -139,19 +144,19 @@ bool Parser::registerObjectTag(const QString &name, ObjectTagCallback func)
 {
 	kdebugf();
 
-	if (RegisteredObjectTags.contains(name))
+	if (m_registeredObjectTags.contains(name))
 	{
 		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", qPrintable(name));
 		return false;
 	}
 
-	if (RegisteredTalkableTags.contains(name))
+	if (m_registeredTalkableTags.contains(name))
 	{
 		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered (as Talkable tag)!\n", qPrintable(name));
 		return false;
 	}
 
-	RegisteredObjectTags.insert(name, func);
+	m_registeredObjectTags.insert(name, func);
 
 	kdebugf2();
 	return true;
@@ -161,13 +166,13 @@ bool Parser::unregisterObjectTag(const QString &name)
 {
 	kdebugf();
 
-	if (!RegisteredObjectTags.contains(name))
+	if (!m_registeredObjectTags.contains(name))
 	{
 		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "object tag %s not registered!\n", qPrintable(name));
 		return false;
 	}
 
-	RegisteredObjectTags.remove(name);
+	m_registeredObjectTags.remove(name);
 
 	kdebugf2();
 	return true;
@@ -727,10 +732,10 @@ QString Parser::parse(const QString &s, Talkable talkable, const ParserData * co
 
 						pe.setType(PT_STRING);
 
-						if (RegisteredTalkableTags.contains(content))
-							pe.setContent(RegisteredTalkableTags[content](talkable));
-						else if (parserData && RegisteredObjectTags.contains(content))
-							pe.setContent(RegisteredObjectTags[content](parserData));
+						if (m_registeredTalkableTags.contains(content))
+							pe.setContent(m_registeredTalkableTags[content](talkable));
+						else if (parserData && m_registeredObjectTags.contains(content))
+							pe.setContent(m_registeredObjectTags[content](parserData));
 						else
 						{
 							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", qPrintable(pe.decodedContent()));
@@ -900,3 +905,5 @@ QString Parser::parse(const QString &s, Talkable talkable, const ParserData * co
 
 	return ret;
 }
+
+#include "moc_parser.cpp"
