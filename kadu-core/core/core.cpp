@@ -32,7 +32,6 @@
 
 #include "avatars/avatar-manager.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
-#include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -567,11 +566,6 @@ PluginStateService * Core::pluginStateService() const
 FileTransferManager * Core::fileTransferManager() const
 {
 	return m_injector.get<FileTransferManager>();
-}
-
-ChatManager * Core::chatManager() const
-{
-	return m_injector.get<ChatManager>();
 }
 
 StatusContainerManager * Core::statusContainerManager() const
