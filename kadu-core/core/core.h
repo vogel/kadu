@@ -36,7 +36,6 @@ template<class T>
 class DefaultProvider;
 
 class ChatDataExtractor;
-class ChatWidgetRepository;
 class ConfigurationManager;
 class Configuration;
 class ContactManager;
@@ -79,7 +78,6 @@ public:
 	void activatePlugins();
 
 	ChatDataExtractor * chatDataExtractor() const;
-	ChatWidgetRepository * chatWidgetRepository() const;
 	ConfigurationManager * configurationManager() const;
 	Configuration * configuration() const;
 	ContactManager * contactManager() const;

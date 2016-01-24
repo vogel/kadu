@@ -543,11 +543,6 @@ UnreadMessageRepository * Core::unreadMessageRepository() const
 	return m_injector.get<UnreadMessageRepository>();
 }
 
-ChatWidgetRepository * Core::chatWidgetRepository() const
-{
-	return m_injector.get<ChatWidgetRepository>();
-}
-
 StoragePointFactory * Core::storagePointFactory() const
 {
 	return m_injector.get<StoragePointFactory>();
