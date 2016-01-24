@@ -35,6 +35,7 @@
 template<class T>
 class DefaultProvider;
 
+class ChatDataExtractor;
 class ChatTypeManager;
 class ChatWidgetRepository;
 class ConfigurationManager;
@@ -78,6 +79,7 @@ public:
 
 	void activatePlugins();
 
+	ChatDataExtractor * chatDataExtractor() const;
 	ChatTypeManager * chatTypeManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
 	ConfigurationManager * configurationManager() const;

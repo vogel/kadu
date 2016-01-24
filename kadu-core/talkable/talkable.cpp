@@ -137,18 +137,6 @@ Contact Talkable::contact() const
 	return MyContact;
 }
 
-QString Talkable::display() const
-{
-	switch (Type)
-	{
-		case ItemBuddy: return MyBuddy.display();
-		case ItemContact: return MyContact.display(true);
-		case ItemChat: return ChatDataExtractor::data(MyChat, Qt::DisplayRole).toString();
-		default:
-			return QString();
-	}
-}
-
 bool Talkable::isValidChat() const
 {
 	return ItemChat == Type && MyChat;

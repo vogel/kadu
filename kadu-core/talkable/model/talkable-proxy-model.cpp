@@ -49,6 +49,11 @@ void TalkableProxyModel::setBuddyPreferredManager(BuddyPreferredManager *buddyPr
 	m_buddyPreferredManager = buddyPreferredManager;
 }
 
+void TalkableProxyModel::setChatDataExtractor(ChatDataExtractor *chatDataExtractor)
+{
+	m_chatDataExtractor = chatDataExtractor;
+}
+
 void TalkableProxyModel::init()
 {
 	setDynamicSortFilter(true);
@@ -84,8 +89,8 @@ bool TalkableProxyModel::lessThan(const Chat &left, const Chat &right) const
 	if (left.unreadMessagesCount() == 0 && right.unreadMessagesCount() > 0)
 		return false;
 
-	const QString &leftChatDisplay = ChatDataExtractor::data(left, Qt::DisplayRole).toString();
-	const QString &rightChatDisplay = ChatDataExtractor::data(right, Qt::DisplayRole).toString();
+	const QString &leftChatDisplay = m_chatDataExtractor->data(left, Qt::DisplayRole).toString();
+	const QString &rightChatDisplay = m_chatDataExtractor->data(right, Qt::DisplayRole).toString();
 
 	return lessThan(leftChatDisplay, rightChatDisplay);
 }

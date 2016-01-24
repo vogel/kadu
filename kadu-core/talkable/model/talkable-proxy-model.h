@@ -32,6 +32,7 @@
 
 class BuddyPreferredManager;
 class Buddy;
+class ChatDataExtractor;
 class Chat;
 class Contact;
 class TalkableFilter;
@@ -142,6 +143,7 @@ protected:
 
 private:
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<ChatDataExtractor> m_chatDataExtractor;
 
 	QList<TalkableFilter *> TalkableFilters;
 
@@ -219,6 +221,7 @@ private:
 
 private slots:
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
 	INJEQT_INIT void init();
 
 };

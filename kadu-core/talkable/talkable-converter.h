@@ -31,9 +31,10 @@ class BuddyChatManager;
 class BuddyManager;
 class BuddyPreferredManager;
 class Buddy;
-class Contact;
+class ChatDataExtractor;
 class ChatManager;
 class Chat;
+class Contact;
 class Status;
 class Talkable;
 
@@ -104,6 +105,13 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns display value of this Talkable instance.
+	 * @return display value of this Talkable instance
+	 */
+	QString toDisplay(const Talkable &talkable) const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns current status of Contact returnd by toContact().
 	 * @return current status of Contact returnd by toContact()
 	 */
@@ -113,12 +121,14 @@ private:
 	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<ChatDataExtractor> m_chatDataExtractor;
 	QPointer<ChatManager> m_chatManager;
 
 private slots:
 	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 
 };

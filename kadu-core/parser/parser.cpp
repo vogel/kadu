@@ -326,7 +326,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 		{
 			++idx;
 
-			QString nickName = chat ? ChatDataExtractor::data(chat, Qt::DisplayRole).toString() : buddy.nickName();
+			QString nickName = chat ? Core::instance()->chatDataExtractor()->data(chat, Qt::DisplayRole).toString() : buddy.nickName();
 			if (escape == ParserEscape::HtmlEscape)
 				nickName = Qt::escape(nickName);
 
@@ -338,7 +338,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 		{
 			++idx;
 
-			QString display = chat ? ChatDataExtractor::data(chat, Qt::DisplayRole).toString() : buddy.display();
+			QString display = chat ? Core::instance()->chatDataExtractor()->data(chat, Qt::DisplayRole).toString() : buddy.display();
 			if (escape == ParserEscape::HtmlEscape)
 				display = Qt::escape(display);
 

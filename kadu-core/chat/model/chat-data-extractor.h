@@ -18,18 +18,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DATA_EXTRACTOR_H
-#define CHAT_DATA_EXTRACTOR_H
+#pragma once
 
 #include "exports.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class QVariant;
 
+class ChatTypeManager;
 class Chat;
 
-namespace ChatDataExtractor
+class KADUAPI ChatDataExtractor : public QObject
 {
-	KADUAPI QVariant data(const Chat &chat, int role);
-}
+	Q_OBJECT
 
-#endif // CHAT_DATA_EXTRACTOR_H
+public:
+	Q_INVOKABLE explicit ChatDataExtractor(QObject *parent = nullptr);
+	virtual ~ChatDataExtractor();
+
+	QVariant data(const Chat &chat, int role);
+
+private:
+	QPointer<ChatTypeManager> m_chatTypeManager;
+
+private slots:
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+
+};

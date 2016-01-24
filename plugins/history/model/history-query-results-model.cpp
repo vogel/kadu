@@ -19,7 +19,9 @@
  */
 
 #include "chat/chat.h"
+#include "core/core.h"
 #include "model/roles.h"
+#include "talkable/talkable-converter.h"
 
 #include "history-query-result.h"
 #include "history.h"
@@ -80,7 +82,7 @@ QVariant HistoryQueryResultsModel::data(const QModelIndex &index, int role) cons
 		{
 			switch (col)
 			{
-				case 0: return Results.at(row).talkable().display();
+				case 0: return Core::instance()->talkableConverter()->toDisplay(Results.at(row).talkable());
 				case 1: return Results.at(row).date().toString("dd.MM.yyyy");
 				case 2: return Results.at(row).count();
 				case 3: return Results.at(row).title();

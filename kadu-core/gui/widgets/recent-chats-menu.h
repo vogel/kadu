@@ -27,8 +27,9 @@
 #include <QtWidgets/QMenu>
 #include <injeqt/injeqt.h>
 
-class ChatWidgetRepository;
+class ChatDataExtractor;
 class ChatTypeManager;
+class ChatWidgetRepository;
 class IconsManager;
 class RecentChatManager;
 
@@ -44,16 +45,18 @@ signals:
 	void chatsListAvailable(bool available);
 
 private:
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<ChatDataExtractor> m_chatDataExtractor;
 	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<RecentChatManager> m_recentChatManager;
 
 	bool m_recentChatsMenuNeedsUpdate;
 
 private slots:
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setRecentChatManager(RecentChatManager *recentChatManager);
 	INJEQT_INIT void init();

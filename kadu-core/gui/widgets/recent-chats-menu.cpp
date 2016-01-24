@@ -40,6 +40,11 @@ RecentChatsMenu::~RecentChatsMenu()
 {
 }
 
+void RecentChatsMenu::setChatDataExtractor(ChatDataExtractor *chatDataExtractor)
+{
+	m_chatDataExtractor = chatDataExtractor;
+}
+
 void RecentChatsMenu::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
 	m_chatTypeManager = chatTypeManager;
@@ -107,7 +112,7 @@ void RecentChatsMenu::update()
 		{
 			ChatType *type = m_chatTypeManager->chatType(chat.type());
 			QAction *action = new QAction(type ? type->icon().icon() : QIcon(),
-			                              ChatDataExtractor::data(chat, Qt::DisplayRole).toString(),
+			                              m_chatDataExtractor->data(chat, Qt::DisplayRole).toString(),
 			                              this);
 			action->setData(QVariant::fromValue<Chat>(chat));
 			this->addAction(action);

@@ -24,6 +24,7 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/model/chat-data-extractor.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
 #include "status/status-container.h"
@@ -51,6 +52,11 @@ void TalkableConverter::setBuddyManager(BuddyManager *buddyManager)
 void TalkableConverter::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
 {
 	m_buddyPreferredManager = buddyPreferredManager;
+}
+
+void TalkableConverter::setChatDataExtractor(ChatDataExtractor *chatDataExtractor)
+{
+	m_chatDataExtractor = chatDataExtractor;
 }
 
 void TalkableConverter::setChatManager(ChatManager *chatManager)
@@ -122,6 +128,18 @@ Chat TalkableConverter::toChat(const Talkable &talkable) const
 		case Talkable::ItemChat: return talkable.chat();
 		default:
 			return Chat::null;
+	}
+}
+
+QString TalkableConverter::toDisplay(const Talkable &talkable) const
+{
+	switch (talkable.type())
+	{
+		case Talkable::ItemBuddy: return talkable.buddy().display();
+		case Talkable::ItemContact: return talkable.contact().display(true);
+		case Talkable::ItemChat: return m_chatDataExtractor->data(talkable.chat(), Qt::DisplayRole).toString();
+		default:
+			return QString();
 	}
 }
 

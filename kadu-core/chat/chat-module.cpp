@@ -20,6 +20,7 @@
 #include "chat-module.h"
 
 #include "chat/buddy-chat-manager.h"
+#include "chat/model/chat-data-extractor.h"
 #include "chat/recent-chat-manager.h"
 #include "chat/type/chat-type-buddy.h"
 #include "chat/type/chat-type-contact-set.h"
@@ -30,6 +31,7 @@
 ChatModule::ChatModule()
 {
 	add_type<BuddyChatManager>();
+	add_type<ChatDataExtractor>();
 	add_type<ChatListMimeDataService>();
 	add_type<ChatTypeBuddy>();
 	add_type<ChatTypeContactSet>();

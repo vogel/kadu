@@ -18,18 +18,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
-
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
-#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "talkable/talkable.h"
 
 #include "chat-data-extractor.h"
+
+#include <QtCore/QVariant>
+#include <QtGui/QIcon>
+
+ChatDataExtractor::ChatDataExtractor(QObject *parent) :
+		QObject{parent}
+{
+}
+
+ChatDataExtractor::~ChatDataExtractor()
+{
+}
+
+void ChatDataExtractor::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
+}
 
 QVariant ChatDataExtractor::data(const Chat &chat, int role)
 {
@@ -50,7 +63,7 @@ QVariant ChatDataExtractor::data(const Chat &chat, int role)
 		case Qt::DecorationRole:
 		{
 			QString chatTypeName = chat.type();
-			ChatType *chatType = Core::instance()->chatTypeManager()->chatType(chatTypeName);
+			ChatType *chatType = m_chatTypeManager->chatType(chatTypeName);
 			if (chatType)
 				return chatType->icon().icon();
 			else

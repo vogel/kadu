@@ -163,13 +163,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns display value of this Talkable instance.
-	 * @return display value of this Talkable instance
-	 */
-	QString display() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns true if Talkable is not-null Chat.
 	 * @return true if current item is not-null Chat
 	 */

@@ -28,6 +28,7 @@
 #include <QtCore/QVector>
 #include <injeqt/injeqt.h>
 
+class ChatDataExtractor;
 class ChatListMimeDataService;
 class TalkableConverter;
 
@@ -61,6 +62,7 @@ public:
 	virtual QMimeData * mimeData(const QModelIndexList &indexes) const;
 
 private:
+	QPointer<ChatDataExtractor> m_chatDataExtractor;
 	QPointer<ChatListMimeDataService> m_chatListMimeDataService;
 	QPointer<TalkableConverter> m_talkableConverter;
 
@@ -72,6 +74,7 @@ private:
 	Chat chatFromVariant(const QVariant &variant) const;
 
 private slots:
+	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
 	INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 

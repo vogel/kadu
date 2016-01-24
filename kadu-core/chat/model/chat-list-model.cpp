@@ -41,6 +41,11 @@ ChatListModel::~ChatListModel()
 {
 }
 
+void ChatListModel::setChatDataExtractor(ChatDataExtractor *chatDataExtractor)
+{
+	m_chatDataExtractor = chatDataExtractor;
+}
+
 void ChatListModel::setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService)
 {
 	m_chatListMimeDataService = chatListMimeDataService;
@@ -164,7 +169,7 @@ QVariant ChatListModel::data(const QModelIndex &index, int role) const
 		if (ItemTypeRole == role)
 			return ChatRole;
 
-		return ChatDataExtractor::data(chatAt(index), role);
+		return m_chatDataExtractor->data(chatAt(index), role);
 	}
 
 	if (!parentIndex.parent().isValid())
