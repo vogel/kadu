@@ -28,55 +28,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QLocale>
-#include <QtCore/QSettings>
-#include <QtCore/QTimer>
-#include <QtWidgets/QApplication>
-#include <injeqt/injector.h>
+#include "core.h"
 
-#include "accounts/account-storage.h"
 #include "avatars/avatar-manager.h"
-#include "buddies/buddy-additional-data-delete-handler-manager.h"
-#include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-storage.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
-#include "chat-style/engine/chat-style-renderer-factory-provider.h"
-#include "chat-style/engine/configured-chat-style-renderer-factory-provider.h"
 #include "chat/buddy-chat-manager.h"
-#include "chat/chat-list-mime-data-service.h"
 #include "chat/chat-manager.h"
-#include "chat/recent-chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-manager.h"
-#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact-manager.h"
 #include "core/application.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
 #include "core/myself.h"
-#include "dom/dom-processor-service.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/configuration/chat-configuration-holder.h"
-#include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget/chat-widget-activation-service.h"
-#include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
+#include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/widgets/tool-tip-class-manager.h"
-#include "gui/windows/buddy-data-window-repository.h"
-#include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/chat-window/chat-window-manager.h"
-#include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/chat-window/chat-window-storage-configurator.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/window-chat-widget-container-handler.h"
@@ -84,13 +61,8 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window-actions.h"
 #include "gui/windows/search-window.h"
-#include "gui/windows/your-accounts-window-service.h"
 #include "icons/icons-manager.h"
-#include "icons/kadu-icon.h"
-#include "message/message-filter-service.h"
 #include "message/message-html-renderer-service.h"
-#include "message/message-manager.h"
-#include "message/message-render-info-factory.h"
 #include "message/message-render-info.h"
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier-lock.h"
@@ -100,38 +72,22 @@
 #include "notification/listener/chat-event-listener.h"
 #include "notification/listener/group-event-listener.h"
 #include "notification/notification-event-repository.h"
-#include "notification/notification-event.h"
 #include "notification/notification-manager.h"
 #include "notification/notify-configuration-importer.h"
 #include "os/generic/system-info.h"
 #include "parser/parser.h"
-#include "plugin/activation/plugin-activation-error-handler.h"
-#include "plugin/activation/plugin-activation-service.h"
-#include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugin/metadata/plugin-metadata-finder.h"
-#include "plugin/metadata/plugin-metadata-reader.h"
-#include "plugin/plugin-conflict-resolver.h"
-#include "plugin/plugin-dependency-handler.h"
 #include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state-manager.h"
 #include "plugin/state/plugin-state-service.h"
-#include "plugin/state/plugin-state-storage.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocol.h"
-#include "provider/default-provider.h"
-#include "provider/simple-provider.h"
+#include "plugin/metadata/plugin-metadata-finder.h"
+#include "plugin/activation/plugin-activation-service.h"
 #include "roster/roster-notifier.h"
 #include "roster/roster.h"
 #include "services/chat-image-request-service-configurator.h"
 #include "services/chat-image-request-service.h"
-#include "services/image-storage-service.h"
-#include "services/message-transformer-service.h"
 #include "ssl/ssl-certificate-manager.h"
-#include "status/description-manager.h"
-#include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
 #include "status/status-type-manager.h"
-#include "status/status-type.h"
 #include "storage/storage-point-factory.h"
 #include "talkable/talkable-converter.h"
 #include "themes/icon-theme-manager.h"
@@ -145,23 +101,21 @@
 #	include "os/unix/signal-handler.h"
 #endif
 
-#if WITH_LIBINDICATE_QT
-#include <libindicate-qt/qindicateserver.h>
-#endif
+#include <QtCore/QDir>
+#include <QtCore/QTimer>
+#include <QtWidgets/QApplication>
 
-#include "core.h"
-
-Core * Core::Instance = 0;
+Core * Core::m_instance = 0;
 
 void Core::createInstance(injeqt::injector &&injector)
 {
-	Instance = new Core(std::move(injector));
-	Instance->init();
+	m_instance = new Core(std::move(injector));
+	m_instance->init();
 }
 
 Core * Core::instance()
 {
-	return Instance;
+	return m_instance;
 }
 
 QString Core::name()
@@ -181,13 +135,13 @@ QString Core::nameWithVersion()
 
 Core::Core(injeqt::injector &&injector) :
 		m_injector{std::move(injector)},
-		IsClosing(false)
+		m_isClosing{false}
 {
 	// must be created first
 	// TODO: should be maybe created by factory factory?
 	m_injector.get<InjectorProvider>()->setInjector(&m_injector);
 	m_injector.get<StoragePointFactory>()->setConfigurationFile(configuration()->api());
-	Instance = this; // TODO: fix this hack
+	m_instance = this; // TODO: fix this hack
 
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 
@@ -204,7 +158,7 @@ Core::Core(injeqt::injector &&injector) :
 
 Core::~Core()
 {
-	IsClosing = true;
+	m_isClosing = true;
 
 	m_injector.get<PluginStateManager>()->storePluginStates();
 	// CurrentPluginStateManager->storePluginStates();
@@ -445,11 +399,6 @@ void Core::init()
 	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
 	unreadMessageRepository()->ensureLoaded();
 	m_injector.get<AvatarManager>();
-
-#if WITH_LIBINDICATE_QT
-	// Use a symbol from libindicate-qt so that it will not get dropped for example by --as-needed.
-	(void)QIndicate::Server::defaultInstance();
-#endif
 }
 
 void Core::deleteOldConfigurationFiles()
@@ -549,7 +498,7 @@ void Core::runServices()
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
-	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
+	auto configurator = new ChatImageRequestServiceConfigurator();
 	configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 
 	m_injector.get<PluginMetadataFinder>()->setDirectory(pathsProvider()->dataPath() + QLatin1String{"plugins"});
@@ -728,11 +677,11 @@ void Core::executeRemoteCommand(const QString &remoteCommand)
 
 void Core::quit()
 {
-	if (!Instance)
+	if (!m_instance)
 		return;
 
-	delete Instance;
-	Instance = 0;
+	delete m_instance;
+	m_instance = nullptr;
 }
 
 #include "moc_core.cpp"

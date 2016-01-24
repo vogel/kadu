@@ -18,6 +18,7 @@
  */
 
 #include <QtCore/QDateTime>
+#include <QtCore/QVector>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNodeList>
 

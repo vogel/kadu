@@ -23,23 +23,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CORE_H
-#define CORE_H
+#pragma once
+
+#include "accounts/accounts-aware-object.h"
+#include "configuration/configuration-aware-object.h"
+#include "exports.h"
 
 #include <QtCore/QObject>
 #include <injeqt/injector.h>
-
-#include "accounts/accounts-aware-object.h"
-#include "buddies/buddy-list.h"
-#include "buddies/buddy.h"
-#include "chat/chat.h"
-#include "configuration/configuration-aware-object.h"
-#include "icons/kadu-icon.h"
-#include "misc/memory.h"
-#include "provider/simple-provider.h"
-#include "status/status.h"
-
-#include "exports.h"
 
 template<class T>
 class DefaultProvider;
@@ -48,10 +39,8 @@ class Application;
 class BuddyChatManager;
 class BuddyPreferredManager;
 class BuddyStorage;
-class ChatImageRequestService;
 class ChatManager;
 class ChatTypeManager;
-class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ConfigurationManager;
 class Configuration;
@@ -61,16 +50,9 @@ class IconsManager;
 class InjectedFactory;
 class KaduIcon;
 class KaduWindowService;
-class KaduWindow;
-class Message;
-class MessageTransformerService;
 class Myself;
 class PathsProvider;
 class PluginActivationService;
-class PluginConflictResolver;
-class PluginDependencyHandler;
-class PluginRepository;
-class PluginStateManager;
 class PluginStateService;
 class Roster;
 class StatusContainerManager;
@@ -79,37 +61,10 @@ class StoragePointFactory;
 class SystemInfo;
 class TalkableConverter;
 class UnreadMessageRepository;
-class UrlHandlerManager;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(Core)
-
-	static Core *Instance;
-
-	mutable injeqt::v1::injector m_injector;
-
-	bool IsClosing;
-
-	Core(injeqt::v1::injector &&injector);
-	virtual ~Core();
-
-	void createDefaultConfiguration();
-	void createAllDefaultToolbars();
-
-	void init();
-	void loadDefaultStatus();
-
-private slots:
-	void updateIcon();
-
-	void deleteOldConfigurationFiles();
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-	virtual void configurationUpdated();
 
 public:
 	static void createInstance(injeqt::v1::injector &&injector);
@@ -119,7 +74,7 @@ public:
 	static QString version();
 	static QString nameWithVersion();
 
-	bool isClosing() { return IsClosing; }
+	bool isClosing() { return m_isClosing; }
 
 	void createGui();
 	void runServices();
@@ -128,33 +83,30 @@ public:
 
 	void activatePlugins();
 
-	UnreadMessageRepository * unreadMessageRepository() const;
-	ChatWidgetRepository * chatWidgetRepository() const;
-	StoragePointFactory * storagePointFactory() const;
-
-	PluginActivationService * pluginActivationService() const;
-	PluginStateService * pluginStateService() const;
-
-	FileTransferManager * fileTransferManager() const;
-
-	ChatManager * chatManager() const;
-	StatusContainerManager * statusContainerManager() const;
-	StatusTypeManager * statusTypeManager() const;
-	InjectedFactory * injectedFactory() const;
-	IconsManager * iconsManager() const;
-	ContactManager * contactManager() const;
-	Configuration * configuration() const;
-	PathsProvider * pathsProvider() const;
 	Application * application() const;
-	ConfigurationManager * configurationManager() const;
 	BuddyChatManager * buddyChatManager() const;
 	BuddyPreferredManager * buddyPreferredManager() const;
-	ChatTypeManager * chatTypeManager() const;
-	Roster * roster() const;
-	SystemInfo * systemInfo() const;
-	Myself * myself() const;
 	BuddyStorage * buddyStorage() const;
+	ChatManager * chatManager() const;
+	ChatTypeManager * chatTypeManager() const;
+	ChatWidgetRepository * chatWidgetRepository() const;
+	ConfigurationManager * configurationManager() const;
+	Configuration * configuration() const;
+	ContactManager * contactManager() const;
+	FileTransferManager * fileTransferManager() const;
+	IconsManager * iconsManager() const;
+	InjectedFactory * injectedFactory() const;
 	KaduWindowService * kaduWindowService() const;
+	Myself * myself() const;
+	PathsProvider * pathsProvider() const;
+	PluginActivationService * pluginActivationService() const;
+	PluginStateService * pluginStateService() const;
+	Roster * roster() const;
+	UnreadMessageRepository * unreadMessageRepository() const;
+	StatusContainerManager * statusContainerManager() const;
+	StatusTypeManager * statusTypeManager() const;
+	StoragePointFactory * storagePointFactory() const;
+	SystemInfo * systemInfo() const;
 	TalkableConverter * talkableConverter() const;
 
 	void setIcon(const KaduIcon &icon);
@@ -172,6 +124,29 @@ signals:
 	//TODO:
 	void searchingForTrayPosition(QPoint &);
 
-};
+protected:
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
+	virtual void configurationUpdated();
 
-#endif // CORE_H
+private:
+	static Core *m_instance;
+
+	mutable injeqt::v1::injector m_injector;
+	bool m_isClosing;
+
+	Core(injeqt::v1::injector &&injector);
+	virtual ~Core();
+
+	void createDefaultConfiguration();
+	void createAllDefaultToolbars();
+
+	void init();
+	void loadDefaultStatus();
+
+private slots:
+	void updateIcon();
+
+	void deleteOldConfigurationFiles();
+
+};
