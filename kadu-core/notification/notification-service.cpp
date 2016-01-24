@@ -109,14 +109,19 @@ void NotificationService::setNotificationManager(NotificationManager *notificati
 	m_notificationManager = notificationManager;
 }
 
+void NotificationService::setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler)
+{
+	m_notifyConfigurationUiHandler = notifyConfigurationUiHandler;
+}
+
 void NotificationService::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
 	m_statusContainerManager = statusContainerManager;
 }
 
-void NotificationService::setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler)
+void NotificationService::setWindowNotifier(WindowNotifier *windowNotifier)
 {
-	m_notifyConfigurationUiHandler = notifyConfigurationUiHandler;
+	m_windowNotifier = windowNotifier;
 }
 
 void NotificationService::init()
@@ -153,14 +158,13 @@ void NotificationService::init()
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
 
+	m_notificationManager->registerNotifier(m_windowNotifier);
+
 	MultilogonNotification::registerEvents(m_notificationEventRepository, m_notificationCallbackRepository);
 
 	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
 	createActionDescriptions();
-
-	CurrentWindowNotifier = new WindowNotifier(this);
-	CurrentWindowNotifier->setNotificationCallbackRepository(m_notificationCallbackRepository);
 
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -172,6 +176,8 @@ void NotificationService::done()
 
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_notifyConfigurationUiHandler);
 
+	m_notificationManager->unregisterNotifier(m_windowNotifier);
+
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
@@ -182,9 +188,6 @@ void NotificationService::done()
 
 	MessageNotification::unregisterEvents(m_notificationEventRepository);
 	MultilogonNotification::unregisterEvents(m_notificationEventRepository);
-
-	delete CurrentWindowNotifier;
-	CurrentWindowNotifier = nullptr;
 
 	delete notifyAboutUserActionDescription;
 	delete SilentModeActionDescription;

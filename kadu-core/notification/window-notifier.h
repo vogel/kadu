@@ -24,12 +24,14 @@
 #include "notification/notifier.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 /**
  * @defgroup window_notify Window notify
  * @{
  */
 
+class Configuration;
 class NotificationCallbackRepository;
 
 class WindowNotifier : public QObject, public Notifier
@@ -37,21 +39,23 @@ class WindowNotifier : public QObject, public Notifier
 	Q_OBJECT
 
 public:
-	explicit WindowNotifier(QObject *parent = nullptr);
+	Q_INVOKABLE explicit WindowNotifier(QObject *parent = nullptr);
 	virtual ~WindowNotifier();
 
-	void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-
 	virtual void notify(Notification *notification);
-
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) { Q_UNUSED(parent) return nullptr; }
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_INIT void init();
+
 	void notificationClosed(Notification *notification);
 
 };

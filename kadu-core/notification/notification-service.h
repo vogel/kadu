@@ -63,6 +63,7 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 	QPointer<NotificationManager> m_notificationManager;
 	QPointer<NotifyConfigurationUiHandler> m_notifyConfigurationUiHandler;
 	QPointer<StatusContainerManager> m_statusContainerManager;
+	QPointer<WindowNotifier> m_windowNotifier;
 
 	bool NewMessageOnlyIfInactive;
 	bool NotifyIgnoreOnConnection;
@@ -77,8 +78,6 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 
 	ActionDescription *notifyAboutUserActionDescription;
 	ActionDescription *SilentModeActionDescription;
-
-	WindowNotifier *CurrentWindowNotifier;
 
 	void createDefaultConfiguration();
 	bool ignoreNotifications();
@@ -123,6 +122,7 @@ private slots:
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setWindowNotifier(WindowNotifier *windowNotifier);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

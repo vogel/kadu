@@ -25,8 +25,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "gui/windows/window-notifier-window.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-manager.h"
@@ -43,21 +41,25 @@ WindowNotifier::WindowNotifier(QObject *parent) :
 		QObject{parent},
 		Notifier{"Window", QT_TRANSLATE_NOOP("@default", "Show a window with notification"), KaduIcon("dialog-information")}
 {
-	createDefaultConfiguration();
-	Core::instance()->notificationManager()->registerNotifier(this);
 }
 
 WindowNotifier::~WindowNotifier()
 {
-	if (Core::instance()) // TODO: hack
-	{
-		Core::instance()->notificationManager()->unregisterNotifier(this);
-	}
+}
+
+void WindowNotifier::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void WindowNotifier::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
 {
 	m_notificationCallbackRepository = notificationCallbackRepository;
+}
+
+void WindowNotifier::init()
+{
+	createDefaultConfiguration();
 }
 
 void WindowNotifier::notify(Notification *notification)
@@ -79,7 +81,7 @@ void WindowNotifier::notificationClosed(Notification *notification)
 
 void WindowNotifier::createDefaultConfiguration()
 {
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
+	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
 }
 
 /** @} */
