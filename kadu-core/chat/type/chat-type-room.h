@@ -17,21 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_TYPE_ROOM_H
-#define CHAT_TYPE_ROOM_H
-
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
+#pragma once
 
 #include "chat/type/chat-type.h"
 #include "storage/manager-common.h"
-
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QVariant>
+#include <injeqt/injeqt.h>
 
 class Account;
 class ChatManager;
 class Chat;
+class InjectedFactory;
 
 /**
  * @addtogroup Chat
@@ -48,12 +49,11 @@ class Chat;
 class KADUAPI ChatTypeRoom : public ChatType
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatTypeRoom)
 
 public:
 	static Chat findChat(ChatManager *chatManager, const Account &account, const QString &room, NotFoundAction notFoundAction);
 
-	explicit ChatTypeRoom(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ChatTypeRoom(QObject *parent = nullptr);
 	virtual ~ChatTypeRoom();
 
 	virtual QString name() const;
@@ -64,6 +64,12 @@ public:
 	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;
 	virtual ChatEditWidget *createEditWidget(const Chat &chat, QWidget *parent) const;
 
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 };
 
 Q_DECLARE_METATYPE(ChatTypeRoom *)
@@ -71,5 +77,3 @@ Q_DECLARE_METATYPE(ChatTypeRoom *)
 /**
  * @}
  */
-
-#endif // CHAT_TYPE_ROOM_H

@@ -20,7 +20,6 @@
 
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/chat-room-edit-widget.h"
 #include "icons/kadu-icon.h"
@@ -72,6 +71,11 @@ ChatTypeRoom::ChatTypeRoom(QObject *parent) :
 
 ChatTypeRoom::~ChatTypeRoom()
 {
+}
+
+void ChatTypeRoom::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 /**
@@ -140,12 +144,12 @@ QString ChatTypeRoom::windowRole() const
  */
 ChatDetails * ChatTypeRoom::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsRoom(chatData);
+	return m_injectedFactory->makeInjected<ChatDetailsRoom>(chatData);
 }
 
 ChatEditWidget * ChatTypeRoom::createEditWidget(const Chat &chat, QWidget *parent) const
 {
-	return Core::instance()->injectedFactory()->makeInjected<ChatRoomEditWidget>(chat, parent);
+	return m_injectedFactory->makeInjected<ChatRoomEditWidget>(chat, parent);
 }
 
 #include "moc_chat-type-room.cpp"

@@ -47,12 +47,17 @@ void ChatTypeManager::setChatTypeContactSet(ChatTypeContactSet *chatTypeContactS
 	m_chatTypeContactSet = chatTypeContactSet;
 }
 
+void ChatTypeManager::setChatTypeRoom(ChatTypeRoom *chatTypeRoom)
+{
+	m_chatTypeRoom = chatTypeRoom;
+}
+
 void ChatTypeManager::init()
 {
 	registerChatType(m_chatTypeBuddy);
 	registerChatType(new ChatTypeContact());
 	registerChatType(m_chatTypeContactSet);
-	registerChatType(new ChatTypeRoom());
+	registerChatType(m_chatTypeRoom);
 }
 
 

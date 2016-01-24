@@ -18,15 +18,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DETAILS_ROOM_H
-#define CHAT_DETAILS_ROOM_H
+#pragma once
 
 #include "buddies/buddy-set.h"
+#include "chat/chat-details.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "exports.h"
 
-#include "chat/chat-details.h"
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class ChatTypeManager;
 
 /**
  * @addtogroup Chat
@@ -44,25 +47,6 @@ class KADUAPI ChatDetailsRoom : public ChatDetails
 {
 	Q_OBJECT
 
-	QString Room;
-	QString Nick;
-	QString Password;
-	bool StayInRoomAfterClosingWindow;
-
-	ContactSet Contacts;
-
-	bool Connected;
-
-private slots:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Slot called when a protocol's connection state changes.
-	 *
-	 * This slot is called when a protocol's connection state changes. If protocol is disconnected then value of Connected property
-	 * is set to false and @link disconnected @endlink may be emited.
-	 */
-	void updateConnected();
-
 protected:
 	virtual void load();
 	virtual void store();
@@ -73,7 +57,7 @@ public:
 	virtual ~ChatDetailsRoom();
 
 	virtual ChatType * type() const;
-	virtual ContactSet contacts() const { return Contacts; }
+	virtual ContactSet contacts() const { return m_contacts; }
 	virtual QString name() const;
 
 	/**
@@ -155,10 +139,32 @@ public:
 	 */
 	void removeContact(const Contact &contact);
 
+private:
+	QPointer<ChatTypeManager> m_chatTypeManager;
+
+	QString m_room;
+	QString m_nick;
+	QString m_password;
+	bool m_stayInRoomAfterClosingWindow;
+
+	ContactSet m_contacts;
+
+	bool m_connected;
+
+private slots:
+	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Slot called when a protocol's connection state changes.
+	 *
+	 * This slot is called when a protocol's connection state changes. If protocol is disconnected then value of Connected property
+	 * is set to false and @link disconnected @endlink may be emited.
+	 */
+	void updateConnected();
+
 };
 
 /**
  * @}
  */
-
-#endif // CHAT_DETAILS_ROOM_H

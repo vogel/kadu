@@ -24,6 +24,7 @@
 #include "chat/type/chat-type-buddy.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "chat/type/chat-type-manager.h"
+#include "chat/type/chat-type-room.h"
 #include "chat-list-mime-data-service.h"
 
 ChatModule::ChatModule()
@@ -33,6 +34,7 @@ ChatModule::ChatModule()
 	add_type<ChatTypeBuddy>();
 	add_type<ChatTypeContactSet>();
 	add_type<ChatTypeManager>();
+	add_type<ChatTypeRoom>();
 	add_type<RecentChatManager>();
 }
 

@@ -18,14 +18,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-details-room.h"
+
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "core/core.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
-
-#include "chat-details-room.h"
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -36,12 +36,17 @@
  */
 ChatDetailsRoom::ChatDetailsRoom(ChatShared *chatData) :
 		ChatDetails{chatData},
-		StayInRoomAfterClosingWindow{false},
-		Connected{false}
+		m_stayInRoomAfterClosingWindow{false},
+		m_connected{false}
 {
 	Protocol *protocol = mainData()->chatAccount().protocolHandler();
 	if (protocol)
 		connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(updateConnected()));
+}
+
+void ChatDetailsRoom::setChatTypeManager(ChatTypeManager *chatTypeManager)
+{
+	m_chatTypeManager = chatTypeManager;
 }
 
 ChatDetailsRoom::~ChatDetailsRoom()
@@ -62,10 +67,10 @@ void ChatDetailsRoom::load()
 
 	ChatDetails::load();
 
-	Room = loadValue<QString>("Room");
-	Nick = loadValue<QString>("Nick");
-	Password = pwHash(loadValue<QString>("Password"));
-	StayInRoomAfterClosingWindow = loadValue<bool>("StayInRoomAfterClosingWindow", false);
+	m_room = loadValue<QString>("Room");
+	m_nick = loadValue<QString>("Nick");
+	m_password = pwHash(loadValue<QString>("Password"));
+	m_stayInRoomAfterClosingWindow = loadValue<bool>("m_stayInRoomAfterClosingWindow", false);
 }
 
 /**
@@ -82,10 +87,10 @@ void ChatDetailsRoom::store()
 
 	ensureLoaded();
 
-	storeValue("Room", Room);
-	storeValue("Nick", Nick);
-	storeValue("Password", pwHash(Password));
-	storeValue("StayInRoomAfterClosingWindow", StayInRoomAfterClosingWindow);
+	storeValue("Room", m_room);
+	storeValue("Nick", m_nick);
+	storeValue("Password", pwHash(m_password));
+	storeValue("m_stayInRoomAfterClosingWindow", m_stayInRoomAfterClosingWindow);
 }
 
 /**
@@ -99,7 +104,7 @@ bool ChatDetailsRoom::shouldStore()
 {
 	ensureLoaded();
 
-	return StorableObject::shouldStore() && !Room.isEmpty();
+	return StorableObject::shouldStore() && !m_room.isEmpty();
 }
 
 /**
@@ -111,63 +116,63 @@ bool ChatDetailsRoom::shouldStore()
  */
 ChatType * ChatDetailsRoom::type() const
 {
-	return Core::instance()->chatTypeManager()->chatType("Room");
+	return m_chatTypeManager->chatType("Room");
 }
 
 void ChatDetailsRoom::setRoom(const QString &room)
 {
-	if (room != Room)
+	if (room != m_room)
 	{
-		Room = room;
+		m_room = room;
 		notifyChanged();
 	}
 }
 
 QString ChatDetailsRoom::room() const
 {
-	return Room;
+	return m_room;
 }
 
 void ChatDetailsRoom::setNick(const QString &nick)
 {
-	if (Nick != nick)
+	if (m_nick != nick)
 	{
-		Nick = nick;
+		m_nick = nick;
 		notifyChanged();
 	}
 }
 
 QString ChatDetailsRoom::nick() const
 {
-	return Nick;
+	return m_nick;
 }
 
 void ChatDetailsRoom::setPassword(const QString &password)
 {
-	if (Password != password)
+	if (m_password != password)
 	{
-		Password = password;
+		m_password = password;
 		notifyChanged();
 	}
 }
 
 QString ChatDetailsRoom::password() const
 {
-	return Password;
+	return m_password;
 }
 
 void ChatDetailsRoom::setStayInRoomAfterClosingWindow(bool stayInRoomAfterClosingWindow)
 {
-	if (StayInRoomAfterClosingWindow != stayInRoomAfterClosingWindow)
+	if (m_stayInRoomAfterClosingWindow != stayInRoomAfterClosingWindow)
 	{
-		StayInRoomAfterClosingWindow = stayInRoomAfterClosingWindow;
+		m_stayInRoomAfterClosingWindow = stayInRoomAfterClosingWindow;
 		notifyChanged();
 	}
 }
 
 bool ChatDetailsRoom::stayInRoomAfterClosingWindow() const
 {
-	return StayInRoomAfterClosingWindow;
+	return m_stayInRoomAfterClosingWindow;
 }
 
 /**
@@ -179,7 +184,7 @@ bool ChatDetailsRoom::stayInRoomAfterClosingWindow() const
  */
 QString ChatDetailsRoom::name() const
 {
-	return Room;
+	return m_room;
 }
 
 void ChatDetailsRoom::updateConnected()
@@ -195,11 +200,11 @@ void ChatDetailsRoom::setConnected(bool newConnected)
 	if (protocol && !protocol->isConnected())
 		newConnected = false;
 
-	if (Connected == newConnected)
+	if (m_connected == newConnected)
 		return;
 
-	Connected = newConnected;
-	if (Connected)
+	m_connected = newConnected;
+	if (m_connected)
 		emit connected();
 	else
 		emit disconnected();
@@ -209,18 +214,18 @@ bool ChatDetailsRoom::isConnected() const
 {
 	Protocol *protocol = mainData()->chatAccount().protocolHandler();
 
-	return protocol && protocol->isConnected() && Connected;
+	return protocol && protocol->isConnected() && m_connected;
 }
 
 void ChatDetailsRoom::addContact(const Contact &contact)
 {
 	ensureLoaded();
 
-	if (Contacts.contains(contact))
+	if (m_contacts.contains(contact))
 		return;
 
 	emit contactAboutToBeAdded(contact);
-	Contacts.insert(contact);
+	m_contacts.insert(contact);
 	emit contactAdded(contact);
 }
 
@@ -228,11 +233,11 @@ void ChatDetailsRoom::removeContact(const Contact &contact)
 {
 	ensureLoaded();
 
-	if (!Contacts.contains(contact))
+	if (!m_contacts.contains(contact))
 		return;
 
 	emit contactAboutToBeRemoved(contact);
-	Contacts.remove(contact);
+	m_contacts.remove(contact);
 	emit contactRemoved(contact);
 }
 
