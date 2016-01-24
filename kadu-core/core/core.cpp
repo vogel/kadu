@@ -31,7 +31,6 @@
 #include "core.h"
 
 #include "avatars/avatar-manager.h"
-#include "buddies/buddy-storage.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
@@ -633,11 +632,6 @@ SystemInfo * Core::systemInfo() const
 Myself * Core::myself() const
 {
 	return m_injector.get<Myself>();
-}
-
-BuddyStorage * Core::buddyStorage() const
-{
-	return m_injector.get<BuddyStorage>();
 }
 
 KaduWindowService * Core::kaduWindowService() const
