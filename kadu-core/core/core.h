@@ -35,7 +35,6 @@
 template<class T>
 class DefaultProvider;
 
-class ChatDataExtractor;
 class ConfigurationManager;
 class Configuration;
 class ContactManager;
@@ -77,7 +76,6 @@ public:
 
 	void activatePlugins();
 
-	ChatDataExtractor * chatDataExtractor() const;
 	ConfigurationManager * configurationManager() const;
 	Configuration * configuration() const;
 	ContactManager * contactManager() const;
