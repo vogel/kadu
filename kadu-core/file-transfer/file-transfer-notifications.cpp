@@ -21,8 +21,8 @@
 
 #include "file-transfer-notifications.h"
 
-#include "chat/type/chat-type-contact.h"
 #include "core/core.h"
+#include "chat/type/chat-type-contact.h"
 #include "core/injected-factory.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-type.h"
@@ -155,18 +155,23 @@ NewFileTransferNotification::NewFileTransferNotification(Chat chat, const QStrin
 	}
 }
 
+void NewFileTransferNotification::setFileTransferManager(FileTransferManager *fileTransferManager)
+{
+	m_fileTransferManager = fileTransferManager;
+}
+
 void NewFileTransferNotification::callbackAccept()
 {
 	close();
 
-	Core::instance()->fileTransferManager()->acceptFileTransfer(m_transfer, m_transfer.localFileName());
+	m_fileTransferManager->acceptFileTransfer(m_transfer, m_transfer.localFileName());
 }
 
 void NewFileTransferNotification::callbackReject()
 {
 	close();
 
-	Core::instance()->fileTransferManager()->rejectFileTransfer(m_transfer);
+	m_fileTransferManager->rejectFileTransfer(m_transfer);
 }
 
 #include "moc_file-transfer-notifications.cpp"

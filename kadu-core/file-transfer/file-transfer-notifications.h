@@ -25,6 +25,9 @@
 #include "file-transfer/file-transfer.h"
 #include "notification/notification/notification.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class FileTransferManager;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
@@ -47,7 +50,12 @@ public slots:
 	virtual void callbackReject();
 
 private:
+	QPointer<FileTransferManager> m_fileTransferManager;
+
 	FileTransfer m_transfer;
 	QString m_fileName;
+
+private slots:
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 
 };
