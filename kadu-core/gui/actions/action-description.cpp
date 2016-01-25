@@ -23,6 +23,7 @@
 #include <QtCore/QMetaMethod>
 
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/hot-key.h"
@@ -178,7 +179,7 @@ Action * ActionDescription::createAction(ActionContext *context, QObject *parent
 		return result;
 	}
 
-	result = new Action(this, context, parent);
+	result = Core::instance()->injectedFactory()->makeInjected<Action>(this, context, parent);
 	MappedActions.insert(context, result);
 
 	actionInstanceCreated(result);

@@ -26,7 +26,6 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
-#include "core/core.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/hot-key.h"
@@ -39,13 +38,6 @@ Action::Action(ActionDescription *description, ActionContext *context, QObject *
 		QAction(parent), Description(description), Context(context)
 {
 	setText(Description->Text);
-
-	if (!Description->icon().isNull())
-	{
-		connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
-		setIcon(Description->icon());
-	}
-
 	setCheckable(Description->Checkable);
 
 	connect(this, SIGNAL(changed()), this, SLOT(changedSlot()));
@@ -65,6 +57,20 @@ Action::~Action()
 	{
 		delete menu();
 		setMenu(0);
+	}
+}
+
+void Action::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void Action::init()
+{
+	if (!Description->icon().isNull())
+	{
+		connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(updateIcon()));
+		setIcon(Description->icon());
 	}
 }
 

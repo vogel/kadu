@@ -20,16 +20,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACTION_H
-#define ACTION_H
-
-#include <QtCore/QMultiMap>
-#include <QtWidgets/QAction>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"
-
 #include "exports.h"
+
+#include <QtCore/QMultiMap>
+#include <QtCore/QPointer>
+#include <QtWidgets/QAction>
+#include <injeqt/injeqt.h>
 
 class ActionContext;
 class ActionDescription;
@@ -38,6 +38,7 @@ class BuddySet;
 class Chat;
 class Contact;
 class ContactSet;
+class IconsManager;
 class MainWindow;
 class StatusContainer;
 
@@ -58,14 +59,6 @@ class StatusContainer;
 class KADUAPI Action : public QAction
 {
 	Q_OBJECT
-
-	ActionDescription *Description;
-	ActionContext *Context;
-
-private slots:
-	void changedSlot();
-	void hoveredSlot();
-	void triggeredSlot(bool checked);
 
 public:
 	/**
@@ -169,6 +162,20 @@ signals:
 	 */
 	void triggered(QAction *action, bool checked = false);
 
+private:
+	QPointer<IconsManager> m_iconsManager;
+
+	ActionDescription *Description;
+	ActionContext *Context;
+
+private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
+	void changedSlot();
+	void hoveredSlot();
+	void triggeredSlot(bool checked);
+
 };
 
 void disableEmptyContacts(Action *action);
@@ -177,5 +184,3 @@ void disableNoChat(Action *action);
 /**
  * @}
  */
-
-#endif // ACTION_H
