@@ -36,7 +36,6 @@ template<class T>
 class DefaultProvider;
 
 class Configuration;
-class FileTransferManager;
 class IconsManager;
 class InjectedFactory;
 class KaduIcon;
@@ -75,7 +74,6 @@ public:
 	void activatePlugins();
 
 	Configuration * configuration() const;
-	FileTransferManager * fileTransferManager() const;
 	IconsManager * iconsManager() const;
 	InjectedFactory * injectedFactory() const;
 	KaduWindowService * kaduWindowService() const;
