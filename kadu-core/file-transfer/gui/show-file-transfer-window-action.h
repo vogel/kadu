@@ -21,7 +21,11 @@
 
 #include "gui/actions/action-description.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class ContactSet;
+class FileTransferManager;
 
 class ShowFileTransferWindowAction : public ActionDescription
 {
@@ -33,5 +37,11 @@ public:
 
 protected:
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled) override;
+
+private:
+	QPointer<FileTransferManager> m_fileTransferManager;
+
+private slots:
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 
 };

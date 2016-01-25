@@ -52,7 +52,7 @@ void FileTransferActions::setMenuInventory(MenuInventory *menuInventory)
 void FileTransferActions::init()
 {
 	m_sendFileAction = m_injectedFactory->makeOwned<SendFileAction>(m_actions, this);
-	m_showFileTransferWindow = make_owned<ShowFileTransferWindowAction>(m_actions, this);
+	m_showFileTransferWindow = m_injectedFactory->makeOwned<ShowFileTransferWindowAction>(m_actions, this);
 
 	m_menuInventory
 		->menu("buddy-list")
