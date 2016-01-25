@@ -26,6 +26,7 @@
 #include <injeqt/injeqt.h>
 
 class Actions;
+class InjectedFactory;
 class MenuInventory;
 class SendFileAction;
 class ShowFileTransferWindowAction;
@@ -40,6 +41,7 @@ public:
 
 private:
 	QPointer<Actions> m_actions;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 
 	owned_qptr<SendFileAction> m_sendFileAction;
@@ -47,6 +49,7 @@ private:
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

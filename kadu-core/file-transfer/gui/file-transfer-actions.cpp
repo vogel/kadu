@@ -19,7 +19,7 @@
 
 #include "file-transfer-actions.h"
 
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "file-transfer/gui/send-file-action.h"
 #include "file-transfer/gui/show-file-transfer-window-action.h"
 #include "gui/actions/actions.h"
@@ -39,6 +39,11 @@ void FileTransferActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void FileTransferActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void FileTransferActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -46,7 +51,7 @@ void FileTransferActions::setMenuInventory(MenuInventory *menuInventory)
 
 void FileTransferActions::init()
 {
-	m_sendFileAction = make_owned<SendFileAction>(m_actions, this);
+	m_sendFileAction = m_injectedFactory->makeOwned<SendFileAction>(m_actions, this);
 	m_showFileTransferWindow = make_owned<ShowFileTransferWindowAction>(m_actions, this);
 
 	m_menuInventory

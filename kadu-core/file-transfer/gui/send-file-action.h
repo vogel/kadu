@@ -21,7 +21,13 @@
 
 #include "gui/actions/action-description.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 class ContactSet;
+class FileTransferManager;
+class Myself;
 
 class SendFileAction : public ActionDescription
 {
@@ -37,7 +43,17 @@ protected:
 	virtual void updateActionState(Action *action) override;
 
 private:
+	QPointer<Configuration> m_configuration;
+	QPointer<FileTransferManager> m_fileTransferManager;
+	QPointer<Myself> m_myself;
+
 	void selectFilesAndSend(const ContactSet &contacts);
 	QStringList selectFilesToSend() const;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_INIT void init();
 
 };

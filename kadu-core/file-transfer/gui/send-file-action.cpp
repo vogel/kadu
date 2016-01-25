@@ -23,7 +23,6 @@
 #include "chat/chat.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler.h"
@@ -45,12 +44,30 @@ SendFileAction::SendFileAction(Actions *actions, QObject *parent) :
 	setName("sendFileAction");
 	setText(tr("Send File..."));
 	setType(ActionDescription::TypeUser);
-
-	registerAction(actions);
 }
 
 SendFileAction::~SendFileAction()
 {
+}
+
+void SendFileAction::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void SendFileAction::setFileTransferManager(FileTransferManager *fileTransferManager)
+{
+	m_fileTransferManager = fileTransferManager;
+}
+
+void SendFileAction::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
+void SendFileAction::init()
+{
+	registerAction(actionsRegistry());
 }
 
 void SendFileAction::actionInstanceCreated(Action *action)
@@ -90,7 +107,7 @@ void SendFileAction::updateActionState(Action *action)
 
 	for (auto &contact : contacts)
 	{
-		if (Core::instance()->myself()->buddy() == contact.ownerBuddy())
+		if (m_myself->buddy() == contact.ownerBuddy())
 			return;
 
 		auto account = contact.contactAccount();
@@ -131,9 +148,9 @@ void SendFileAction::selectFilesAndSend(const ContactSet &contacts)
 			fileTransfer.setPeer(contact);
 			fileTransfer.setTransferDirection(FileTransferDirection::Outgoing);
 
-			Core::instance()->fileTransferManager()->addItem(fileTransfer);
-			Core::instance()->fileTransferManager()->sendFile(fileTransfer, fileName);
-			Core::instance()->fileTransferManager()->showFileTransferWindow();
+			m_fileTransferManager->addItem(fileTransfer);
+			m_fileTransferManager->sendFile(fileTransfer, fileName);
+			m_fileTransferManager->showFileTransferWindow();
 		}
 	}
 }
@@ -142,7 +159,7 @@ QStringList SendFileAction::selectFilesToSend() const
 {
 	return QFileDialog::getOpenFileNames(
 			nullptr, tr("Select file location"),
-			Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
+			m_configuration->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
 }
 
 #include "moc_send-file-action.cpp"
