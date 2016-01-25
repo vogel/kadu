@@ -96,7 +96,7 @@ void NotifyConfigurationUiHandler::init()
 
 void NotifyConfigurationUiHandler::addConfigurationWidget(Notifier *notifier)
 {
-	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifier,
+	NotifyGroupBox *configurationGroupBox = m_injectedFactory->makeInjected<NotifyGroupBox>(notifier,
 			QCoreApplication::translate("@default", notifier->description().toUtf8().constData()), notificationsGroupBox->widget());
 	connect(configurationGroupBox, SIGNAL(toggled(Notifier *, bool)), this, SLOT(notifierToggled(Notifier *, bool)));
 	if (!NotifierGui.contains(notifier))

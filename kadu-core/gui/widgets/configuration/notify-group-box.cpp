@@ -19,47 +19,60 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "notify-group-box.h"
+
+#include "icons/icons-manager.h"
+
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QHBoxLayout>
 
-#include "core/core.h"
-#include "icons/icons-manager.h"
-
-#include "notify-group-box.h"
-
 NotifyGroupBox::NotifyGroupBox(Notifier *notificator, const QString &caption, QWidget *parent) :
-		QWidget(parent), Notificator(notificator)
+		QWidget{parent},
+		m_notificator{notificator}
 {
 	auto layout = new QHBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
-	NotifierCheckBox = new QCheckBox(caption);
-	layout->addWidget(NotifierCheckBox);
-	connect(NotifierCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggledSlot(bool)));
-	connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+	m_notifierCheckBox = make_owned<QCheckBox>(caption, this);
+	layout->addWidget(m_notifierCheckBox);
+	connect(m_notifierCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggledSlot(bool)));
+}
+
+NotifyGroupBox::~NotifyGroupBox()
+{
+}
+
+void NotifyGroupBox::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void NotifyGroupBox::init()
+{
+	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 void NotifyGroupBox::setChecked(bool checked)
 {
-	NotifierCheckBox->setChecked(checked);
+	m_notifierCheckBox->setChecked(checked);
 }
 
 void NotifyGroupBox::addWidget(QWidget *widget)
 {
 	layout()->addWidget(widget);
-	widget->setEnabled(NotifierCheckBox->isChecked());
-	connect(NotifierCheckBox, SIGNAL(toggled(bool)), widget, SLOT(setEnabled(bool)));
+	widget->setEnabled(m_notifierCheckBox->isChecked());
+	connect(m_notifierCheckBox, SIGNAL(toggled(bool)), widget, SLOT(setEnabled(bool)));
 }
 
 void NotifyGroupBox::toggledSlot(bool toggle)
 {
-	emit toggled(Notificator, toggle);
+	emit toggled(m_notificator, toggle);
 }
 
 void NotifyGroupBox::iconThemeChanged()
 {
-	NotifierCheckBox->setIcon(Notificator->icon().icon());
+	m_notifierCheckBox->setIcon(m_notificator->icon().icon());
 }
 
 #include "moc_notify-group-box.cpp"

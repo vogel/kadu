@@ -20,12 +20,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NOTIFY_GROUP_BOX
-#define NOTIFY_GROUP_BOX
+#pragma once
 
-#include <QtWidgets/QWidget>
-
+#include "misc/memory.h"
 #include "notification/notifier.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
+class IconsManager;
 
 class QCheckBox;
 
@@ -33,19 +37,11 @@ class KADUAPI NotifyGroupBox : public QWidget
 {
 	Q_OBJECT
 
-	QCheckBox *NotifierCheckBox;
-
-	Notifier *Notificator;
-
-private slots:
-	void toggledSlot(bool toggled);
-	void iconThemeChanged();
-
 public:
-	NotifyGroupBox(Notifier *Notificator, const QString &caption, QWidget *parent = nullptr);
-	virtual ~NotifyGroupBox() {}
+	explicit NotifyGroupBox(Notifier *Notificator, const QString &caption, QWidget *parent = nullptr);
+	virtual ~NotifyGroupBox();
 
-	Notifier * notificator() { return Notificator; }
+	Notifier * notificator() { return m_notificator; }
 
 	void setChecked(bool checked);
 	void addWidget(QWidget *widget);
@@ -53,6 +49,17 @@ public:
 signals:
 	void toggled(Notifier *notificator, bool toggled);
 
-};
+private:
+	QPointer<IconsManager> m_iconsManager;
 
-#endif // NOTIFY_GROUP_BOX
+	owned_qptr<QCheckBox> m_notifierCheckBox;
+	Notifier *m_notificator;
+
+private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
+	void toggledSlot(bool toggled);
+	void iconThemeChanged();
+
+};
