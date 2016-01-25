@@ -30,6 +30,7 @@
 class Chat;
 class ChatTypeManager;
 class ChatWidget;
+class ContactDataExtractor;
 class IconsManager;
 
 enum class ChatWidgetTitleComposingStatePosition;
@@ -62,6 +63,7 @@ signals:
 
 private:
 	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<ContactDataExtractor> m_contactDataExtractor;
 
 	QString m_title;
 	QString m_fullTitle;
@@ -86,6 +88,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setContactDataExtractor(ContactDataExtractor *contactDataExtractor);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
 	void startBlinking();

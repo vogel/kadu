@@ -18,12 +18,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WAIT_OVERLAY_H
-#define WAIT_OVERLAY_H
-
-#include <QtWidgets/QLabel>
+#pragma once
 
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QLabel>
+#include <injeqt/injeqt.h>
+
+class IconsManager;
 
 class QLabel;
 
@@ -48,12 +51,6 @@ class KADUAPI WaitOverlay : public QLabel
 {
 	Q_OBJECT
 
-private slots:
-	void timeoutPassed();
-
-protected:
-	virtual bool eventFilter(QObject *object, QEvent *event);
-
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -66,10 +63,20 @@ public:
 	explicit WaitOverlay(QWidget *parent = nullptr);
 	virtual ~WaitOverlay();
 
+protected:
+	virtual bool eventFilter(QObject *object, QEvent *event);
+
+private:
+	QPointer<IconsManager> m_iconsManager;
+
+private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
+	void timeoutPassed();
+
 };
 
 /**
  * @}
  */
-
-#endif // WAIT_OVERLAY_H

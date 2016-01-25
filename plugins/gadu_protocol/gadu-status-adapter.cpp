@@ -25,7 +25,7 @@ Status GaduStatusAdapter::adapt(const Status &status)
 	Status adapted = status;
 
 	if (adapted.type() == StatusTypeNotAvailable)
-		adapted.setType(StatusTypeAway);
+		adapted.setType(status.statusTypeManager(), StatusTypeAway);
 
 	return adapted;
 }

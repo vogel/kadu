@@ -19,21 +19,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATUS_ICON_H
-#define STATUS_ICON_H
-
-#include <QtWidgets/QPushButton>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"
 #include "status/status.h"
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QPushButton>
+#include <injeqt/injeqt.h>
+
 class StatusContainer;
+class StatusTypeManager;
 
 class KADUAPI StatusIcon : public QObject, private ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	StatusContainer *MyStatusContainer;
 	QTimer *BlinkTimer;
@@ -49,6 +53,9 @@ class KADUAPI StatusIcon : public QObject, private ConfigurationAwareObject
 	void setIcon(const KaduIcon &icon);
 
 private slots:
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_INIT void init();
+
 	void blink();
 	void statusUpdated(StatusContainer *container = 0);
 
@@ -65,5 +72,3 @@ signals:
 	void iconUpdated(const KaduIcon &icon);
 
 };
-
-#endif // STATUS_ICON_H

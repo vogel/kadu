@@ -27,6 +27,7 @@
 
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "contacts/contact-set.h"
+#include "core/injected-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "formatted-string/formatted-string.h"
 #include "gui/scoped-updates-disabler.h"
@@ -56,6 +57,11 @@ TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
 
 TimelineChatMessagesView::~TimelineChatMessagesView()
 {
+}
+
+void TimelineChatMessagesView::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void TimelineChatMessagesView::setMessageManager(MessageManager *messageManager)
@@ -284,7 +290,7 @@ void TimelineChatMessagesView::hideTimelineWaitOverlay()
 void TimelineChatMessagesView::showMessagesViewWaitOverlay()
 {
 	if (!MessagesViewWaitOverlay)
-		MessagesViewWaitOverlay = new WaitOverlay(MessagesView.get());
+		MessagesViewWaitOverlay = m_injectedFactory->makeInjected<WaitOverlay>(MessagesView.get());
 	else
 		MessagesViewWaitOverlay->show();
 }

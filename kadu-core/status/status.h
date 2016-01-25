@@ -31,6 +31,8 @@
 
 #include "exports.h"
 
+class StatusTypeManager;
+
 /**
  * @addtogroup Status
  * @{
@@ -48,6 +50,7 @@
  */
 class KADUAPI Status
 {
+	StatusTypeManager *m_statusTypeManager;
 	StatusType Type;
 	StatusTypeGroup Group;
 	QString Description;
@@ -62,9 +65,11 @@ public:
 	 *
 	 * Creates new status with given type and description.
 	 */
-	Status(StatusType statusType = StatusTypeOffline, const QString &description = QString());
+	explicit Status(StatusTypeManager *statusTypeManager = nullptr, StatusType statusType = StatusTypeOffline, const QString &description = QString());
 	Status(const Status &copyme);
 	~Status();
+
+	StatusTypeManager * statusTypeManager() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -82,7 +87,7 @@ public:
 	 *
 	 * Updates this status type. Values of displayName and group are also updated.
 	 */
-	void setType(StatusType type);
+	void setType(StatusTypeManager *statusTypeManager, StatusType type);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

@@ -27,7 +27,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
@@ -41,12 +40,13 @@
 #include "roster/roster-service.h"
 #include "roster/roster-task-collection-storage.h"
 #include "status/status-setter.h"
+#include "status/status-type-manager.h"
 
 #include "account-shared.h"
 
 AccountShared::AccountShared(const QString &protocolName, QObject *parent) :
 		Shared(QUuid(), parent), ProtocolName(protocolName),
-		ProtocolHandler(0), MyStatusContainer(Core::instance()->injectedFactory()->makeInjected<AccountStatusContainer>(this)), Details(0),
+		ProtocolHandler(0), Details(0),
 		RememberPassword(false), HasPassword(false), UseDefaultProxy(true), PrivateStatus(true)
 {
 	AccountIdentity = new Identity();
@@ -94,6 +94,11 @@ void AccountShared::setIdentityManager(IdentityManager *identityManager)
 	m_identityManager = identityManager;
 }
 
+void AccountShared::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void AccountShared::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
 {
 	m_networkProxyManager = networkProxyManager;
@@ -109,8 +114,15 @@ void AccountShared::setStatusSetter(StatusSetter *statusSetter)
 	m_statusSetter = statusSetter;
 }
 
+void AccountShared::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
 void AccountShared::init()
 {
+	MyStatusContainer = m_injectedFactory->makeInjected<AccountStatusContainer>(this);
+
 	connect(m_protocolsManager, SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
 	        this, SLOT(protocolRegistered(ProtocolFactory*)));
 	connect(m_protocolsManager, SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
@@ -299,11 +311,11 @@ void AccountShared::setDisconnectStatus()
 	if (!ProtocolHandler->isConnected() && !ProtocolHandler->isDisconnecting())
 		return;
 
-	bool disconnectWithCurrentDescription = m_configuration->deprecatedApi()->readBoolEntry("General", "DisconnectWithCurrentDescription");
-	QString disconnectDescription = m_configuration->deprecatedApi()->readEntry("General", "DisconnectDescription");
+	auto disconnectWithCurrentDescription = m_configuration->deprecatedApi()->readBoolEntry("General", "DisconnectWithCurrentDescription");
+	auto disconnectDescription = m_configuration->deprecatedApi()->readEntry("General", "DisconnectDescription");
 
 	Status disconnectStatus;
-	disconnectStatus.setType(StatusTypeOffline);
+	disconnectStatus.setType(m_statusTypeManager, StatusTypeOffline);
 
 	if (disconnectWithCurrentDescription)
 		disconnectStatus.setDescription(MyStatusContainer->status().description());

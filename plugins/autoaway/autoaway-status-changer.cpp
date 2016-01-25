@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "status/status-type-manager.h"
 #include "status/status.h"
 
 #include "autoaway.h"
@@ -36,6 +37,11 @@ AutoawayStatusChanger::~AutoawayStatusChanger()
 void AutoawayStatusChanger::setAutoaway(Autoaway *autoaway)
 {
 	m_autoaway = autoaway;
+}
+
+void AutoawayStatusChanger::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
 }
 
 void AutoawayStatusChanger::changeStatus(StatusContainer *container, Status &status)
@@ -73,7 +79,7 @@ void AutoawayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 
 	if (changeStatusTo == ChangeStatusToOffline)
 	{
-		status.setType(StatusTypeOffline);
+		status.setType(m_statusTypeManager, StatusTypeOffline);
 		status.setDescription(description);
 		return;
 	}
@@ -83,7 +89,7 @@ void AutoawayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 
 	if (changeStatusTo == ChangeStatusToInvisible)
 	{
-		status.setType(StatusTypeInvisible);
+		status.setType(m_statusTypeManager, StatusTypeInvisible);
 		status.setDescription(description);
 		return;
 	}
@@ -93,14 +99,14 @@ void AutoawayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 
 	if (changeStatusTo == ChangeStatusToAway)
 	{
-		status.setType(StatusTypeAway);
+		status.setType(m_statusTypeManager, StatusTypeAway);
 		status.setDescription(description);
 		return;
 	}
 
 	if (changeStatusTo == ChangeStatusToExtendedAway)
 	{
-		status.setType(StatusTypeNotAvailable);
+		status.setType(m_statusTypeManager, StatusTypeNotAvailable);
 		status.setDescription(description);
 		return;
 	}

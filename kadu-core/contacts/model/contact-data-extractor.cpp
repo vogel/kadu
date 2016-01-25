@@ -20,19 +20,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
+#include "contact-data-extractor.h"
 
 #include "accounts/account.h"
 #include "avatars/avatar.h"
 #include "contacts/contact.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "status/status-container.h"
 #include "talkable/talkable.h"
 
-#include "contact-data-extractor.h"
+#include <QtCore/QFileInfo>
+#include <QtCore/QVariant>
+#include <QtGui/QIcon>
+
+ContactDataExtractor::ContactDataExtractor(QObject *parent) :
+		QObject{parent}
+{
+}
+
+ContactDataExtractor::~ContactDataExtractor()
+{
+}
+
+void ContactDataExtractor::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
 
 QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBuddyData)
 {
@@ -59,14 +74,14 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 		case StatusIconPath:
 		{
 			if (contact.ownerBuddy().isBlocked())
-				return KaduIcon("kadu_icons/blocked").fullPath();
+				return m_iconsManager->iconPath(KaduIcon("kadu_icons/blocked"));
 
 			if (contact.isBlocking())
-				return KaduIcon("kadu_icons/blocking").fullPath();
+				return m_iconsManager->iconPath(KaduIcon("kadu_icons/blocking"));
 
 			// TODO generic icon
 			return contact.contactAccount().statusContainer()
-					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).fullPath()
+					? m_iconsManager->iconPath(contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()))
 					: QString();
 		}
 		case BuddyRole:
@@ -101,3 +116,5 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 			return QVariant();
 	}
 }
+
+#include "moc_contact-data-extractor.cpp"

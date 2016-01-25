@@ -19,26 +19,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ICON_THEME_MANAGER_H
-#define ICON_THEME_MANAGER_H
+#pragma once
 
 #include "themes/theme-manager.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class PathsProvider;
 
 class IconThemeManager : public ThemeManager
 {
 	Q_OBJECT
+
+public:
+	static QString defaultTheme();
+
+	Q_INVOKABLE explicit IconThemeManager(QObject *parent = nullptr);
+	virtual ~IconThemeManager();
 
 protected:
 	virtual QString defaultThemeName() const;
 	virtual QStringList defaultThemePaths() const;
 	virtual bool isValidThemePath(const QString &themePath) const;
 
-public:
-	static QString defaultTheme();
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<PathsProvider> m_pathsProvider;
 
-	explicit IconThemeManager(QObject *parent = nullptr);
-	virtual ~IconThemeManager();
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
 
 };
-
-#endif // ICON_THEME_MANAGER_H

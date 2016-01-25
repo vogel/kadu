@@ -48,8 +48,6 @@ public:
 	Q_INVOKABLE explicit IconsManager(QObject *parent = nullptr);
 	virtual ~IconsManager();
 
-	IconThemeManager * themeManager() const;
-
 	QString iconPath(const KaduIcon &icon, AllowEmpty allowEmpty = EmptyNotAllowed) const;
 	QIcon iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty = EmptyNotAllowed);
 
@@ -64,8 +62,7 @@ protected:
 private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<Configuration> m_configuration;
-
-	IconThemeManager *ThemeManager;
+	QPointer<IconThemeManager> m_iconThemeManager;
 
 	QHash<QString, QIcon> IconCache;
 
@@ -79,6 +76,7 @@ private:
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconThemeManager(IconThemeManager *iconThemeManager);
 	INJEQT_INIT void init();
 
 };

@@ -70,6 +70,11 @@ void BuddyListModel::setBuddyPreferredManager(BuddyPreferredManager *buddyPrefer
 	m_buddyPreferredManager = buddyPreferredManager;
 }
 
+void BuddyListModel::setContactDataExtractor(ContactDataExtractor *contactDataExtractor)
+{
+	m_contactDataExtractor = contactDataExtractor;
+}
+
 void BuddyListModel::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
@@ -451,14 +456,14 @@ QVariant BuddyListModel::data(const QModelIndex &index, int role) const
 		const Contact &contact = m_buddyPreferredManager->preferredContact(buddy);
 
 		return TalkableRole != role && !contact.isNull()
-				? ContactDataExtractor::data(contact, role, true)
+				? m_contactDataExtractor->data(contact, role, true)
 				: m_buddyDataExtractor->data(buddy, role);
 	}
 
-	ContactShared *contactShared = qobject_cast<ContactShared *>(sharedData);
+	auto contactShared = qobject_cast<ContactShared *>(sharedData);
 	Q_ASSERT(contactShared);
 
-	return ContactDataExtractor::data(Contact(contactShared), role, false);
+	return m_contactDataExtractor->data(Contact(contactShared), role, false);
 }
 
 bool BuddyListModel::setData(const QModelIndex &index, const QVariant &value, int role)

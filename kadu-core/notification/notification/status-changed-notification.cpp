@@ -32,9 +32,9 @@
 
 #include "status-changed-notification.h"
 
-StatusChangedNotification::StatusChangedNotification(ChatManager *chatManager, const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description) :
+StatusChangedNotification::StatusChangedNotification(StatusTypeManager *statusTypeManager, ChatManager *chatManager, const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description) :
 		Notification(Account::null, ChatTypeContact::findChat(chatManager, contact, ActionCreateAndAdd),
-		QString("StatusChanged") + toStatus, contact.contactAccount().protocolHandler()->statusIcon(contact.currentStatus().type()))
+		QString("StatusChanged") + toStatus, contact.contactAccount().protocolHandler()->statusIcon(Status{statusTypeManager, contact.currentStatus().type()}))
 {
 	addChatCallbacks();
 

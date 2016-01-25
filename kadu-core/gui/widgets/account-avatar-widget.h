@@ -34,6 +34,7 @@ class QPushButton;
 
 class AvatarManager;
 class AvatarService;
+class IconsManager;
 class ProtocolsManager;
 
 class KADUAPI AccountAvatarWidget : public QWidget
@@ -52,6 +53,7 @@ public:
 
 private:
 	QPointer<AvatarManager> m_avatarManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<ProtocolsManager> m_protocolsManager;
 
 	Account MyAccount;
@@ -70,6 +72,7 @@ private:
 
 private slots:
 	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
 	INJEQT_INIT void init();
 

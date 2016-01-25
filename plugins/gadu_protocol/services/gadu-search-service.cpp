@@ -20,6 +20,7 @@
 
 #include "buddies/buddy-storage.h"
 #include "misc/misc.h"
+#include "status/status-type-manager.h"
 #include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
@@ -46,6 +47,11 @@ void GaduSearchService::setBuddyStorage(BuddyStorage *buddyStorage)
 void GaduSearchService::setConnection(GaduConnection *connection)
 {
 	Connection = connection;
+}
+
+void GaduSearchService::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
 }
 
 void GaduSearchService::searchFirst(BuddySearchCriteria *criteria)
@@ -117,7 +123,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "found %d results\n", count);
 
 	for (int i = 0; i < count; i++)
-		results.append(GaduProtocolHelper::searchResultToBuddy(m_buddyStorage, account(), res, i));
+		results.append(GaduProtocolHelper::searchResultToBuddy(m_statusTypeManager, m_buddyStorage, account(), res, i));
 
 	From = gg_pubdir50_next(res);
 

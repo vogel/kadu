@@ -35,6 +35,7 @@ class QDBusInterface;
 
 class Configuration;
 class DomProcessorService;
+class IconsManager;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class Notification;
@@ -57,6 +58,7 @@ protected:
 private:
 	QPointer<Configuration> m_configuration;
 	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<PathsProvider> m_pathsProvider;
@@ -90,6 +92,7 @@ private:
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);

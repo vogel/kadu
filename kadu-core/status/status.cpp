@@ -20,7 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "status/status-type-data.h"
 #include "status/status-type-group.h"
 #include "status/status-type-manager.h"
@@ -30,10 +29,11 @@
 
 #include <stdio.h>
 
-Status::Status(StatusType statusType, const QString &description) :
+Status::Status(StatusTypeManager *statusTypeManager, StatusType statusType, const QString &description) :
+		m_statusTypeManager{statusTypeManager},
 		Description(description)
 {
-	setType(statusType);
+	setType(statusTypeManager, statusType);
 }
 
 Status::Status(const Status& copyme) :
@@ -46,13 +46,21 @@ Status::~Status()
 {
 }
 
-void Status::setType(StatusType type)
+StatusTypeManager * Status::statusTypeManager() const
+{
+	return m_statusTypeManager;
+}
+
+void Status::setType(StatusTypeManager *statusTypeManager, StatusType type)
 {
 	Type = type;
 
-	const StatusTypeData & typeData = Core::instance()->statusTypeManager()->statusTypeData(Type);
-	DisplayName = typeData.displayName();
-	Group = typeData.typeGroup();
+	if (statusTypeManager)
+	{
+		const StatusTypeData & typeData = statusTypeManager->statusTypeData(Type);
+		DisplayName = typeData.displayName();
+		Group = typeData.typeGroup();
+	}
 }
 
 bool Status::isDisconnected() const

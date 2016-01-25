@@ -58,6 +58,11 @@ void StatusMenu::setStatusSetter(StatusSetter *statusSetter)
 	m_statusSetter = statusSetter;
 }
 
+void StatusMenu::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
 void StatusMenu::setStatusWindowService(StatusWindowService *statusWindowService)
 {
 	m_statusWindowService = statusWindowService;
@@ -100,7 +105,7 @@ void StatusMenu::changeStatus(QAction *action)
 	for (auto &&container : Container->subStatusContainers())
 	{
 		Status status(m_statusSetter->manuallySetStatus(container));
-		status.setType(statusType);
+		status.setType(m_statusTypeManager, statusType);
 
 		m_statusSetter->setStatusManually(container, status);
 		container->storeStatus(status);

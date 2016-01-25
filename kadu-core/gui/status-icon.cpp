@@ -22,18 +22,28 @@
 #include <QtCore/QTimer>
 
 #include "status/status-container.h"
+#include "status/status-type-manager.h"
 
 #include "status-icon.h"
 
 StatusIcon::StatusIcon(StatusContainer *statusContainer, QObject *parent) :
 		QObject(parent), MyStatusContainer(statusContainer), BlinkTimer(0), BlinkOffline(true)
 {
-	statusUpdated();
-	connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 }
 
 StatusIcon::~StatusIcon()
 {
+}
+
+void StatusIcon::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
+void StatusIcon::init()
+{
+	statusUpdated();
+	connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 }
 
 void StatusIcon::enableBlink()
@@ -68,7 +78,7 @@ void StatusIcon::blink()
 	BlinkOffline = !BlinkOffline;
 
 	if (BlinkOffline)
-		setIcon(MyStatusContainer->statusIcon(StatusTypeOffline));
+		setIcon(MyStatusContainer->statusIcon(Status{m_statusTypeManager, StatusTypeOffline}));
 	else
 		setIcon(MyStatusContainer->statusIcon());
 }

@@ -40,6 +40,7 @@ class Contact;
 class FileTransferService;
 class IdentityManager;
 class Identity;
+class InjectedFactory;
 class NetworkProxyManager;
 class ProtocolFactory;
 class ProtocolsManager;
@@ -47,11 +48,11 @@ class Protocol;
 class RosterTask;
 class StatusContainer;
 class StatusSetter;
+class StatusTypeManager;
 
 class KADUAPI AccountShared : public Shared
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(AccountShared)
 
 	friend class AccountStatusContainer;
 
@@ -59,9 +60,11 @@ class KADUAPI AccountShared : public Shared
 	QPointer<Configuration> m_configuration;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<IdentityManager> m_identityManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NetworkProxyManager> m_networkProxyManager;
 	QPointer<ProtocolsManager> m_protocolsManager;
 	QPointer<StatusSetter> m_statusSetter;
+	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	QString ProtocolName;
 	Protocol *ProtocolHandler;
@@ -99,9 +102,11 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
 	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
 	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
 
 	void protocolRegistered(ProtocolFactory *protocolHandler);

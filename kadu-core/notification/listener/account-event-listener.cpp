@@ -168,7 +168,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 	const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(status.type());
 	QString changedTo = "/To" + typeData.name();
 
-	auto statusChangedNotification = m_injectedFactory->makeInjected<StatusChangedNotification>(m_chatManager, changedTo, contact, statusDisplayName, description);
+	auto statusChangedNotification = m_injectedFactory->makeInjected<StatusChangedNotification>(m_statusTypeManager, m_chatManager, changedTo, contact, statusDisplayName, description);
 	m_notificationService->notify(statusChangedNotification);
 }
 

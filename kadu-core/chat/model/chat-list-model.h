@@ -30,6 +30,7 @@
 
 class ChatDataExtractor;
 class ChatListMimeDataService;
+class ContactDataExtractor;
 class TalkableConverter;
 
 class KADUAPI ChatListModel : public QAbstractItemModel, public KaduAbstractModel
@@ -64,6 +65,7 @@ public:
 private:
 	QPointer<ChatDataExtractor> m_chatDataExtractor;
 	QPointer<ChatListMimeDataService> m_chatListMimeDataService;
+	QPointer<ContactDataExtractor> m_contactDataExtractor;
 	QPointer<TalkableConverter> m_talkableConverter;
 
 	QVector<Chat> List;
@@ -76,6 +78,7 @@ private:
 private slots:
 	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
 	INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
+	INJEQT_SET void setContactDataExtractor(ContactDataExtractor *contactDataExtractor);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 
 	void contactAboutToBeAdded(const Contact &contact);

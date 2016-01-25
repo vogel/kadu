@@ -236,7 +236,7 @@ void StatusWindow::setupStatusSelect()
 		if (StatusTypeNone == statusType)
 			continue;
 		const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(statusType);
-		StatusSelect->addItem(Container->statusIcon(typeData.type()).icon(), typeData.displayName(), QVariant(typeData.type()));
+		StatusSelect->addItem(Container->statusIcon(Status{m_statusTypeManager, typeData.type()}).icon(), typeData.displayName(), QVariant(typeData.type()));
 	}
 
 	StatusSelect->setCurrentIndex(StatusSelect->findData(QVariant(commonStatusType)));
@@ -310,7 +310,7 @@ void StatusWindow::applyStatus()
 
 		StatusType statusType = static_cast<StatusType>(StatusSelect->itemData(StatusSelect->currentIndex()).toInt());
 		if (statusType != StatusTypeNone)
-			status.setType(statusType);
+			status.setType(m_statusTypeManager, statusType);
 
 		m_statusSetter->setStatusManually(container, status);
 		container->storeStatus(status);

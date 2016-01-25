@@ -64,12 +64,12 @@ void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
 		status.setDescription(StartupDescription);
 
 	if (StartupStatus != "LastStatus")
-		status.setType(m_statusTypeManager->fromName(StartupStatus));
+		status.setType(m_statusTypeManager, m_statusTypeManager->fromName(StartupStatus));
 
 	if (StatusTypeNone == status.type())
-		status.setType(StatusTypeOnline);
+		status.setType(m_statusTypeManager, StatusTypeOnline);
 	else if (StatusTypeOffline == status.type() && OfflineToInvisible)
-		status.setType(StatusTypeInvisible);
+		status.setType(m_statusTypeManager, StatusTypeInvisible);
 
 	setStatusManually(statusContainer, status);
 }

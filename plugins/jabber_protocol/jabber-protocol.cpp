@@ -90,7 +90,7 @@ void JabberProtocol::init()
 	if (account().id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
-	m_presenceService = new JabberPresenceService{this};
+	m_presenceService = injectedFactory()->makeInjected<JabberPresenceService>(this);
 	m_errorService = new JabberErrorService{this};
 
 	m_client = new QXmppClient{this};
@@ -273,7 +273,7 @@ void JabberProtocol::connectedToServer()
 void JabberProtocol::logout()
 {
 	auto logoutStatus = status();
-	logoutStatus.setType(StatusTypeOffline);
+	logoutStatus.setType(statusTypeManager(), StatusTypeOffline);
 	m_client->setClientPresence(m_presenceService->statusToPresence(logoutStatus));
 	m_client->disconnectFromServer();
 
@@ -297,7 +297,7 @@ void JabberProtocol::error(QXmppClient::Error error)
 				return;
 			case QXmppStanza::Error::Conflict:
 				errorMessage = tr("Another client connected on the same resource.");
-				setStatus({}, SourceUser);
+				setStatus(Status{}, SourceUser);
 				break;
 			default:
 				break;

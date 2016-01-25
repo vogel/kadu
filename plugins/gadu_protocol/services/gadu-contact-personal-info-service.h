@@ -27,6 +27,7 @@
 
 class BuddyStorage;
 class GaduConnection;
+class StatusTypeManager;
 
 class GaduContactPersonalInfoService : public ContactPersonalInfoService
 {
@@ -34,6 +35,8 @@ class GaduContactPersonalInfoService : public ContactPersonalInfoService
 
 	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<GaduConnection> Connection;
+	QPointer<StatusTypeManager> m_statusTypeManager;
+
 	unsigned int FetchSeq;
 	QString Id;
 
@@ -42,6 +45,7 @@ class GaduContactPersonalInfoService : public ContactPersonalInfoService
 
 private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 public:
 	GaduContactPersonalInfoService(Account account, QObject *parent);

@@ -38,6 +38,7 @@ class BuddyDataExtractor;
 class BuddyListMimeDataService;
 class BuddyPreferredManager;
 class Buddy;
+class ContactDataExtractor;
 class ContactManager;
 class TalkableConverter;
 
@@ -269,6 +270,7 @@ private:
 	QPointer<BuddyDataExtractor> m_buddyDataExtractor;
 	QPointer<BuddyListMimeDataService> m_buddyListMimeDataService;
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<ContactDataExtractor> m_contactDataExtractor;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<TalkableConverter> m_talkableConverter;
 
@@ -341,6 +343,7 @@ private slots:
 	INJEQT_SET void setBuddyDataExtractor(BuddyDataExtractor *buddyDataExtractor);
 	INJEQT_SET void setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService);
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setContactDataExtractor(ContactDataExtractor *contactDataExtractor);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();

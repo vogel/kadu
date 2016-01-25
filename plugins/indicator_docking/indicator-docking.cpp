@@ -26,6 +26,7 @@
 #include "message/message.h"
 #include "message/unread-message-repository.h"
 #include "status/status-container-manager.h"
+#include "status/status-type-manager.h"
 
 #include <libqmessagingmenu/qmessaging-menu-app.h>
 #include <libqmessagingmenu/qmessaging-menu-source.h>
@@ -68,6 +69,11 @@ void IndicatorDocking::setStatusContainerManager(StatusContainerManager *statusC
 
 	statusContainerUpdated(m_statusContainerManager);
 	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(statusContainerUpdated(StatusContainer*)));
+}
+
+void IndicatorDocking::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
 }
 
 void IndicatorDocking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
@@ -121,19 +127,19 @@ void IndicatorDocking::statusChanged(QMessagingMenuStatus status)
 	switch (status)
 	{
 		case QMessagingMenuStatus::Available:
-			currentStatus.setType(StatusTypeOnline);
+			currentStatus.setType(m_statusTypeManager, StatusTypeOnline);
 			break;
 		case QMessagingMenuStatus::Away:
-			currentStatus.setType(StatusTypeAway);
+			currentStatus.setType(m_statusTypeManager, StatusTypeAway);
 			break;
 		case QMessagingMenuStatus::Busy:
-			currentStatus.setType(StatusTypeDoNotDisturb);
+			currentStatus.setType(m_statusTypeManager, StatusTypeDoNotDisturb);
 			break;
 		case QMessagingMenuStatus::Invisible:
-			currentStatus.setType(StatusTypeInvisible);
+			currentStatus.setType(m_statusTypeManager, StatusTypeInvisible);
 			break;
 		case QMessagingMenuStatus::Offline:
-			currentStatus.setType(StatusTypeOffline);
+			currentStatus.setType(m_statusTypeManager, StatusTypeOffline);
 			break;
 	}
 

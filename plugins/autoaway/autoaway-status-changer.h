@@ -26,6 +26,7 @@
 #include <injeqt/injeqt.h>
 
 class Autoaway;
+class StatusTypeManager;
 
 class AutoawayStatusChanger : public StatusChanger
 {
@@ -58,8 +59,10 @@ public:
 
 private:
 	QPointer<Autoaway> m_autoaway;
+	QPointer<StatusTypeManager> m_statusTypeManager;
 
 private slots:
 	INJEQT_SET void setAutoaway(Autoaway *autoaway);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 };

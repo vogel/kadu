@@ -483,7 +483,7 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 
 	Status oldStatus = contact.currentStatus();
 	Status newStatus;
-	newStatus.setType(GaduProtocolHelper::statusTypeFromGaduStatus(status));
+	newStatus.setType(statusTypeManager(), GaduProtocolHelper::statusTypeFromGaduStatus(status));
 	newStatus.setDescription(description);
 	contact.setCurrentStatus(newStatus);
 	contact.setBlocking(GaduProtocolHelper::isBlockingStatus(status));

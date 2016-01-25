@@ -44,11 +44,6 @@ IconsManager::~IconsManager()
 {
 }
 
-IconThemeManager * IconsManager::themeManager() const
-{
-	return ThemeManager;
-}
-
 void IconsManager::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
@@ -59,14 +54,14 @@ void IconsManager::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void IconsManager::setIconThemeManager(IconThemeManager *iconThemeManager)
+{
+	m_iconThemeManager = iconThemeManager;
+}
+
 void IconsManager::init()
 {
-	ThemeManager = new IconThemeManager(this);
-	ThemeManager->loadThemes();
-	ThemeManager->setCurrentTheme(m_configuration->deprecatedApi()->readEntry("Look", "IconTheme"));
 	configurationUpdated();
-
-	m_configuration->deprecatedApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
 
 	// TODO: localized protocol
 	localProtocolPath = "gadu-gadu";
@@ -78,7 +73,7 @@ QString IconsManager::iconPath(const KaduIcon &icon, IconsManager::AllowEmpty al
 	QString size = icon.size();
 
 	QFileInfo fileInfo(path);
-	QString themePath = icon.themePath().isEmpty() ? ThemeManager->currentTheme().path() : icon.themePath();
+	QString themePath = icon.themePath().isEmpty() ? m_iconThemeManager->currentTheme().path() : icon.themePath();
 	QString name = fileInfo.fileName();
 	QString realPath = fileInfo.path();
 
@@ -235,12 +230,12 @@ void IconsManager::clearCache()
 
 void IconsManager::configurationUpdated()
 {
-	bool themeWasChanged = m_configuration->deprecatedApi()->readEntry("Look", "IconTheme") != ThemeManager->currentTheme().name();
+	bool themeWasChanged = m_configuration->deprecatedApi()->readEntry("Look", "IconTheme") != m_iconThemeManager->currentTheme().name();
 	if (themeWasChanged)
 	{
 		clearCache();
-		ThemeManager->setCurrentTheme(m_configuration->deprecatedApi()->readEntry("Look", "IconTheme"));
-		m_configuration->deprecatedApi()->writeEntry("Look", "IconTheme", ThemeManager->currentTheme().name());
+		m_iconThemeManager->setCurrentTheme(m_configuration->deprecatedApi()->readEntry("Look", "IconTheme"));
+		m_configuration->deprecatedApi()->writeEntry("Look", "IconTheme", m_iconThemeManager->currentTheme().name());
 
 		emit themeChanged();
 	}

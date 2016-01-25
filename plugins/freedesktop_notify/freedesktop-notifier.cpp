@@ -31,6 +31,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "dom/dom-processor-service.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
 #include "notification/notification/aggregate-notification.h"
@@ -65,6 +66,11 @@ void FreedesktopNotifier::setConfiguration(Configuration *configuration)
 void FreedesktopNotifier::setDomProcessorService(DomProcessorService *domProcessorService)
 {
 	m_domProcessorService = domProcessorService;
+}
+
+void FreedesktopNotifier::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void FreedesktopNotifier::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
@@ -174,7 +180,8 @@ void FreedesktopNotifier::notify(Notification *notification)
 	}
 	else
 		icon.setSize("64x64");
-	args.append(icon.fullPath());
+
+	args.append(m_iconsManager->iconPath(icon));
 
 	QString summary;
 	if (useKdeStyle)

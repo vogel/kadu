@@ -60,7 +60,7 @@ void StatusButton::setStatusConfigurationHolder(StatusConfigurationHolder *statu
 
 void StatusButton::init()
 {
-	Icon = new StatusIcon(MyStatusContainer, this);
+	Icon = m_injectedFactory->makeInjected<StatusIcon>(MyStatusContainer, this);
 
 	createGui();
 	setPopupMode(InstantPopup);

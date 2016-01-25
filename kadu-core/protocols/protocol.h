@@ -144,6 +144,7 @@ signals:
 protected:
 	ContactManager * contactManager() const;
 	InjectedFactory * injectedFactory() const;
+	StatusTypeManager * statusTypeManager() const;
 
 	Status loginStatus() const;
 

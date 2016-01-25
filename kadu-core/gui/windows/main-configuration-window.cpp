@@ -69,7 +69,6 @@
 #include "status/status.h"
 #include "themes/icon-theme-manager.h"
 
-#include "icons/icons-manager.h"
 #include "debug.h"
 #include "languages-manager.h"
 
@@ -128,9 +127,9 @@ void MainConfigurationWindow::setConfigurationUiHandlerRepository(ConfigurationU
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void MainConfigurationWindow::setIconsManager(IconsManager *iconsManager)
+void MainConfigurationWindow::setIconThemeManager(IconThemeManager *iconThemeManager)
 {
-	m_iconsManager = iconsManager;
+	m_iconThemeManager = iconThemeManager;
 }
 
 void MainConfigurationWindow::setKaduWindowService(KaduWindowService *kaduWindowService)
@@ -313,20 +312,20 @@ void MainConfigurationWindow::setIconThemes()
 	ConfigListWidget *iconThemes = static_cast<ConfigListWidget *>(widget()->widgetById("iconThemes"));
 	iconThemes->clear();
 
-	m_iconsManager->themeManager()->loadThemes();
+	m_iconThemeManager->loadThemes();
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
 
 	QStringList values;
 	QStringList captions;
-	foreach (const Theme &theme, m_iconsManager->themeManager()->themes())
+	foreach (const Theme &theme, m_iconThemeManager->themes())
 	{
 		values.append(theme.name());
 		captions.append(QCoreApplication::translate("@default", theme.name().toUtf8().constData()));
 	}
 
 	iconThemes->setItems(values, captions);
-	iconThemes->setCurrentItem(m_iconsManager->themeManager()->currentTheme().name());
+	iconThemes->setCurrentItem(m_iconThemeManager->currentTheme().name());
 
 	QStringList iconPaths;
 	iconPaths
@@ -336,7 +335,7 @@ void MainConfigurationWindow::setIconThemes()
 			<< "preferences-other";
 
 	QList<QIcon> icons;
-	foreach (const Theme &theme, m_iconsManager->themeManager()->themes())
+	foreach (const Theme &theme, m_iconThemeManager->themes())
 	{
 		QPixmap combinedIcon(iconPaths.count() * 36, 36);
 		combinedIcon.fill(Qt::transparent);

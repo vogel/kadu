@@ -25,11 +25,11 @@
 #include <libgadu.h>
 
 #include "buddies/buddy.h"
-
 #include "protocols/services/search-service.h"
 
 class BuddyStorage;
 class GaduConnection;
+class StatusTypeManager;
 
 class GaduSearchService : public SearchService
 {
@@ -37,7 +37,10 @@ class GaduSearchService : public SearchService
 
 	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<GaduConnection> Connection;
+	QPointer<StatusTypeManager> m_statusTypeManager;
+
 	QPointer<BuddySearchCriteria> Query;
+
 	unsigned int SearchSeq;
 	unsigned int From;
 	bool Stopped;
@@ -47,6 +50,7 @@ class GaduSearchService : public SearchService
 
 private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 public:
 	explicit GaduSearchService(Account account, QObject *parent = nullptr);

@@ -18,30 +18,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "wait-overlay.h"
+
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
+
 #include <QtCore/QTimer>
 #include <QtGui/QMovie>
 #include <QtGui/QResizeEvent>
 #include <QtWidgets/QLabel>
 
-#include "icons/kadu-icon.h"
-
-#include "wait-overlay.h"
-
 WaitOverlay::WaitOverlay(QWidget *parent) :
 		QLabel(parent)
 {
-	setAlignment(Qt::AlignCenter);
-	setMovie(new QMovie(KaduIcon("kadu_icons/please-wait", "64x64").fullPath(), QByteArray(), this));
-	setStyleSheet("background-color: rgba(127, 127, 127, 127)");
-
-	hide();
-
-	if (parent)
-		QTimer::singleShot(500, this, SLOT(timeoutPassed()));
 }
 
 WaitOverlay::~WaitOverlay()
 {
+}
+
+void WaitOverlay::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void WaitOverlay::init()
+{
+	setAlignment(Qt::AlignCenter);
+	setMovie(new QMovie(m_iconsManager->iconPath(KaduIcon("kadu_icons/please-wait", "64x64")), QByteArray(), this));
+	setStyleSheet("background-color: rgba(127, 127, 127, 127)");
+
+	hide();
+
+	if (parent())
+		QTimer::singleShot(500, this, SLOT(timeoutPassed()));
 }
 
 void WaitOverlay::timeoutPassed()

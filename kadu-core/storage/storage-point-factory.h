@@ -22,10 +22,13 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 #include <memory>
 
 class StoragePoint;
 class ConfigurationApi;
+class Configuration;
 
 class KADUAPI StoragePointFactory : public QObject
 {
@@ -35,11 +38,12 @@ public:
 	Q_INVOKABLE explicit StoragePointFactory(QObject *parent = nullptr);
 	virtual ~StoragePointFactory();
 
-	void setConfigurationFile(ConfigurationApi *configurationFile);
-
 	std::unique_ptr<StoragePoint> createStoragePoint(const QString &nodeName, StoragePoint *parent = 0);
 
 private:
 	ConfigurationApi *m_configurationFile;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 
 };

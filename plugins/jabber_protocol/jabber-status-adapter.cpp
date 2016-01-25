@@ -25,7 +25,7 @@ Status JabberStatusAdapter::adapt(const Status &status)
 	Status adapted = status;
 
 	if (adapted.type() == StatusTypeInvisible)
-		adapted.setType(StatusTypeDoNotDisturb);
+		adapted.setType(status.statusTypeManager(), StatusTypeDoNotDisturb);
 
 	return adapted;
 }

@@ -26,8 +26,10 @@
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
+#include "status/status-type-manager.h"
 
 #include <QtWidgets/QApplication>
 
@@ -55,9 +57,19 @@ void BuddyDummyFactory::setBuddyStorage(BuddyStorage *buddyStorage)
 	m_buddyStorage = buddyStorage;
 }
 
+void BuddyDummyFactory::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void BuddyDummyFactory::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void BuddyDummyFactory::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
 }
 
 Buddy BuddyDummyFactory::dummy()
@@ -82,13 +94,13 @@ Buddy BuddyDummyFactory::dummy()
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(example);
 	contact.setId("999999");
-	contact.setCurrentStatus(Status(StatusTypeAway, QApplication::translate("Buddy", "Example description")));
+	contact.setCurrentStatus(Status(m_statusTypeManager, StatusTypeAway, QApplication::translate("Buddy", "Example description")));
 
 	// this is just an example contact, do not add avatar to list
 	auto avatar = m_avatarManager->byContact(contact, ActionCreate);
 
 	avatar.setLastUpdated(QDateTime::currentDateTime());
-	avatar.setFilePath(KaduIcon("kadu_icons/buddy0", "96x96").fullPath());
+	avatar.setFilePath(m_iconsManager->iconPath(KaduIcon("kadu_icons/buddy0", "96x96")));
 
 	example.addContact(contact);
 	example.setAnonymous(false);

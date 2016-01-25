@@ -33,6 +33,7 @@
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "misc/paths-provider.h"
 #include "parser/parser-token.h"
 #include "status/status-container-manager.h"
 #include "status/status-container.h"
@@ -91,6 +92,11 @@ void Parser::setChatDataExtractor(ChatDataExtractor *chatDataExtractor)
 void Parser::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void Parser::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void Parser::setStatusContainerManager(StatusContainerManager *statusContainerManager)
@@ -294,9 +300,9 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			{
 				StatusContainer *container = contact.contactAccount().statusContainer();
 				if (container)
-					pe.setContent(container->statusIcon(contact.currentStatus().type()).path());
+					pe.setContent(container->statusIcon(Status{m_statusTypeManager, contact.currentStatus().type()}).path());
 				else
-					pe.setContent(m_statusContainerManager->statusIcon(contact.currentStatus().type()).path());
+					pe.setContent(m_statusContainerManager->statusIcon(Status{m_statusTypeManager, contact.currentStatus().type()}).path());
 			}
 			else if (chat)
 			{
@@ -739,10 +745,10 @@ QString Parser::parse(const QString &s, Talkable talkable, const ParserData * co
 						if (content.contains(':'))
 						{
 							QStringList parts = content.split(':');
-							pe.setContent(KaduIcon(parts.at(0), parts.at(1)).webKitPath());
+							pe.setContent(PathsProvider::webKitPath(m_iconsManager->iconPath(KaduIcon(parts.at(0), parts.at(1)))));
 						}
 						else
-							pe.setContent(KaduIcon(content).webKitPath());
+							pe.setContent(PathsProvider::webKitPath(m_iconsManager->iconPath(KaduIcon(content))));
 
 						parseStack.push(pe);
 

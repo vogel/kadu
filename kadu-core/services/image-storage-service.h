@@ -26,6 +26,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class IconsManager;
 class PathsProvider;
 
 class QUrl;
@@ -108,10 +109,12 @@ public:
 	QUrl toFileUrl(const QUrl &url);
 
 private:
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<PathsProvider> m_pathsProvider;
 	QString m_storagePath;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 

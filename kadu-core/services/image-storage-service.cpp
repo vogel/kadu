@@ -20,6 +20,7 @@
 
 #include "image-storage-service.h"
 
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
 
@@ -35,6 +36,11 @@ ImageStorageService::ImageStorageService(QObject *parent) :
 
 ImageStorageService::~ImageStorageService()
 {
+}
+
+void ImageStorageService::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void ImageStorageService::setPathsProvider(PathsProvider *pathsProvider)
@@ -111,7 +117,7 @@ QUrl ImageStorageService::toFileUrl(const QUrl &url)
 	QFileInfo fileInfo(filePath);
 
 	if (!fileInfo.exists())
-		filePath = KaduIcon("kadu_icons/please-wait", "16x16").fullPath();
+		filePath = m_iconsManager->iconPath(KaduIcon{"kadu_icons/please-wait", "16x16"});
 
 	QUrl result(url);
 	result.setScheme("file");

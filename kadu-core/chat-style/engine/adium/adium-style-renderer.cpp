@@ -27,6 +27,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/configuration/chat-configuration-holder.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "message/message-html-renderer-service.h"
@@ -57,6 +58,11 @@ AdiumStyleRenderer::~AdiumStyleRenderer()
 void AdiumStyleRenderer::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
 	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
+void AdiumStyleRenderer::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void AdiumStyleRenderer::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
@@ -239,7 +245,7 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
 	{
 		result.replace(QString("%service%"), Qt::escape(message.messageChat().chatAccount().protocolHandler()->protocolFactory()->displayName()));
 		// Replace protocolIcon (sender statusIcon). TODO:
-		result.replace(QString("%senderStatusIcon%"), Qt::escape(message.messageChat().chatAccount().protocolHandler()->protocolFactory()->icon().fullPath()));
+		result.replace(QString("%senderStatusIcon%"), Qt::escape(m_iconsManager->iconPath(message.messageChat().chatAccount().protocolHandler()->protocolFactory()->icon())));
 	}
 	else
 	{

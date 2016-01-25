@@ -20,18 +20,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTACT_DATA_EXTRACTOR_H
-#define CONTACT_DATA_EXTRACTOR_H
+#pragma once
 
 #include "exports.h"
 
-class QVariant;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Contact;
+class IconsManager;
 
-namespace ContactDataExtractor
+class QVariant;
+
+class KADUAPI ContactDataExtractor : public QObject
 {
-	KADUAPI QVariant data(const Contact &contact, int role, bool useBuddyData);
-}
+	Q_OBJECT
 
-#endif // CONTACT_DATA_EXTRACTOR_H
+public:
+	Q_INVOKABLE explicit ContactDataExtractor(QObject *parent = nullptr);
+	virtual ~ContactDataExtractor();
+
+	QVariant data(const Contact &contact, int role, bool useBuddyData);
+
+private:
+	QPointer<IconsManager> m_iconsManager;
+
+private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
+};

@@ -286,8 +286,8 @@ void ChatWidget::createContactsList()
 	TalkableTreeView *view = m_injectedFactory->makeInjected<TalkableTreeView>(BuddiesWidget);
 	view->setItemsExpandable(false);
 
-	ModelChain *chain = new ModelChain(this);
-	ContactListModel *contactListModel = new ContactListModel(chain);
+	auto chain = new ModelChain(this);
+	auto contactListModel = m_injectedFactory->makeInjected<ContactListModel>(chain);
 	new ChatAdapter(contactListModel, CurrentChat);
 	chain->setBaseModel(contactListModel);
 	ProxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(chain);

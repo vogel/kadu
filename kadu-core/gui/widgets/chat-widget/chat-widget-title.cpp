@@ -54,6 +54,11 @@ void ChatWidgetTitle::setChatTypeManager(ChatTypeManager *chatTypeManager)
 	m_chatTypeManager = chatTypeManager;
 }
 
+void ChatWidgetTitle::setContactDataExtractor(ContactDataExtractor *contactDataExtractor)
+{
+	m_contactDataExtractor = contactDataExtractor;
+}
+
 void ChatWidgetTitle::setIconsManager(IconsManager *iconsManager)
 {
 	connect(iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
@@ -281,7 +286,7 @@ QIcon ChatWidgetTitle::chatIcon(const Chat& chat) const
 	{
 		auto contact = chat.contacts().toContact();
 		if (contact)
-			return ContactDataExtractor::data(contact, Qt::DecorationRole, false).value<QIcon>();
+			return m_contactDataExtractor->data(contact, Qt::DecorationRole, false).value<QIcon>();
 	}
 	else if (contactsCount > 1)
 		return m_chatTypeManager->chatType("ContactSet")->icon().icon();

@@ -116,6 +116,11 @@ InjectedFactory *Protocol::injectedFactory() const
 	return m_injectedFactory;
 }
 
+StatusTypeManager * Protocol::statusTypeManager() const
+{
+	return m_statusTypeManager;
+}
+
 ChatService * Protocol::chatService()
 {
 	return m_chatService.data();

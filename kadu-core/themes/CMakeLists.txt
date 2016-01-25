@@ -1,7 +1,8 @@
 set (themes_SRCS
 	icon-theme-manager.cpp
-	theme.cpp
+	themes-module.cpp
 	theme-manager.cpp
+	theme.cpp
 )
 
 set (themes_MOC_SRCS

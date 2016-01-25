@@ -259,7 +259,7 @@ KaduIcon StatusContainerManager::statusIcon()
 KaduIcon StatusContainerManager::statusIcon(const Status &status)
 {
 	if (!DefaultStatusContainer)
-		return m_statusTypeManager->statusIcon("common", StatusTypeOffline);
+		return m_statusTypeManager->statusIcon("common", Status{m_statusTypeManager, StatusTypeOffline});
 
 	return m_statusTypeManager->statusIcon("common", status);
 }

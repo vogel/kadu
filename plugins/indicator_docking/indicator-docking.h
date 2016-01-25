@@ -29,6 +29,7 @@ class Message;
 class QMessagingMenuApp;
 class StatusContainerManager;
 class StatusContainer;
+class StatusTypeManager;
 class UnreadMessageRepository;
 enum class QMessagingMenuStatus;
 
@@ -44,6 +45,7 @@ private:
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<StatusContainerManager> m_statusContainerManager;
+	QPointer<StatusTypeManager> m_statusTypeManager;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	QMessagingMenuApp *m_messagingMenuApp;
@@ -52,6 +54,7 @@ private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 	void unreadMessageAdded(const Message &message);

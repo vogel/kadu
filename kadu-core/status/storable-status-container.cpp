@@ -66,7 +66,7 @@ Status StorableStatusContainer::loadStatus()
 		name = "Online";
 
 	Status status;
-	status.setType(m_statusTypeManager->fromName(name));
+	status.setType(m_statusTypeManager, m_statusTypeManager->fromName(name));
 	status.setDescription(description);
 
 	return status;

@@ -34,6 +34,7 @@ class QTreeView;
 class HistoryQueryResult;
 class HistoryQueryResultsModel;
 class HistoryQueryResultsProxyModel;
+class InjectedFactory;
 class MessageManager;
 class Message;
 class SearchBar;
@@ -60,6 +61,7 @@ class TimelineChatMessagesView : public QWidget
 {
 	Q_OBJECT
 
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
 
 	WaitOverlay *TimelineWaitOverlay;
@@ -79,6 +81,7 @@ class TimelineChatMessagesView : public QWidget
 	void createGui();
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
 	INJEQT_INIT void init();

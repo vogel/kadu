@@ -211,7 +211,7 @@ ModelChain * HistoryMessagesTab::modelChain() const
 void HistoryMessagesTab::showTabWaitOverlay()
 {
 	if (!TabWaitOverlay)
-		TabWaitOverlay = new WaitOverlay(this);
+		TabWaitOverlay = m_injectedFactory->makeInjected<WaitOverlay>(this);
 	else
 		TabWaitOverlay->show();
 }

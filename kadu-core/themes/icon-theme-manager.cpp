@@ -20,26 +20,44 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "icon-theme-manager.h"
+
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "misc/paths-provider.h"
+
 #include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 
-#include "core/core.h"
-#include "misc/paths-provider.h"
-
-#include "icon-theme-manager.h"
-
 QString IconThemeManager::defaultTheme()
 {
-	return QLatin1String("default");
+	return QLatin1String{"default"};
 }
 
 IconThemeManager::IconThemeManager(QObject *parent) :
-		ThemeManager(parent)
+		ThemeManager{parent}
 {
 }
 
 IconThemeManager::~IconThemeManager()
 {
+}
+
+void IconThemeManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void IconThemeManager::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void IconThemeManager::init()
+{
+	loadThemes();
+	setCurrentTheme(m_configuration->deprecatedApi()->readEntry("Look", "IconTheme"));
+	m_configuration->deprecatedApi()->writeEntry("Look", "IconTheme", currentTheme().name());
 }
 
 QString IconThemeManager::defaultThemeName() const
@@ -50,15 +68,15 @@ QString IconThemeManager::defaultThemeName() const
 QStringList IconThemeManager::defaultThemePaths() const
 {
 	// Allow local themes to override global ones.
-	QStringList result = getSubDirs(Core::instance()->pathsProvider()->profilePath() + QLatin1String("icons"));
-	result += getSubDirs(Core::instance()->pathsProvider()->dataPath() + QLatin1String("themes/icons"));
+	auto result = getSubDirs(m_pathsProvider->profilePath() + QLatin1String("icons"));
+	result += getSubDirs(m_pathsProvider->dataPath() + QLatin1String("themes/icons"));
 
 	return result;
 }
 
 bool IconThemeManager::isValidThemePath(const QString &themePath) const
 {
-	QString kaduIconFileName = themePath + "/kadu_icons/64x64/kadu.png";
+	auto kaduIconFileName = themePath + "/kadu_icons/64x64/kadu.png";
 	QFileInfo kaduIconFile(kaduIconFileName);
 
 	return kaduIconFile.exists();

@@ -29,7 +29,6 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "contacts/contact-parser-tags.h"
 #include "core/core.h"
 #include "core/myself.h"
 #include "message/unread-message-repository.h"
@@ -78,8 +77,6 @@ void ContactManager::init()
 	// needed for QueuedConnection
 	qRegisterMetaType<Contact>("Contact");
 
-	ContactParserTags::registerParserTags(m_parser);
-
 	foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
 		unreadMessageAdded(message);
 
@@ -97,8 +94,6 @@ void ContactManager::done()
 
 	foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
 		unreadMessageRemoved(message);
-
-	ContactParserTags::unregisterParserTags(m_parser);
 
 	m_configurationManager->unregisterStorableObject(this);
 }

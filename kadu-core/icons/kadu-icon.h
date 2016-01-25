@@ -140,25 +140,6 @@ public:
 	void setSize(const QString &size) { IconSize = size; }
 
 	/**
-	* @author Bartosz 'beevvy' Brachaczek
-	* @short Returns full path to the icon file.
-	* @return full path to file
-	*
-	* Returns full path to the icon file.
-	*/
-	QString fullPath() const;
-
-	/**
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @short Returns WebKit-friendly representation of full path to the icon file.
-	 * @return WebKit-friendly representation of path
-	 *
-	 * Return WebKit-friendly representation of full path to the icon file. Makes use
-	 * of PathsProvider::webKitPath() method.
-	 */
-	QString webKitPath() const;
-
-	/**
 	 * @author Bartosz 'beevvy' Brachaczek
 	 * @short Returns QIcon object representing this icon.
 	 * @return QIcon object of this icon

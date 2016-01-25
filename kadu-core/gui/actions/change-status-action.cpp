@@ -64,7 +64,7 @@ void ChangeStatusAction::actionInstanceCreated(Action *action)
 	StatusContainer *statusContainer = action->context()->statusContainer();
 	if (statusContainer)
 	{
-		StatusIcon *icon = new StatusIcon(statusContainer, action);
+		auto icon = Core::instance()->injectedFactory()->makeInjected<StatusIcon>(statusContainer, action);
 		connect(icon, SIGNAL(iconUpdated(KaduIcon)), action, SLOT(setIcon(KaduIcon)));
 		action->setIcon(icon->icon());
 	}

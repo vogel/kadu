@@ -34,6 +34,7 @@ template<typename T> class QStack;
 
 class ChatDataExtractor;
 class Configuration;
+class IconsManager;
 class ParserData;
 class ParserToken;
 class StatusContainerManager;
@@ -80,6 +81,7 @@ public:
 private:
 	QPointer<ChatDataExtractor> m_chatDataExtractor;
 	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<StatusContainerManager> m_statusContainerManager;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 	QPointer<TalkableConverter> m_talkableConverter;
@@ -98,6 +100,7 @@ private:
 private slots:
 	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);

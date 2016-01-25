@@ -23,6 +23,7 @@
 
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -50,6 +51,11 @@ void AccountAvatarWidget::setAvatarManager(AvatarManager *avatarManager)
 	m_avatarManager = avatarManager;
 }
 
+void AccountAvatarWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void AccountAvatarWidget::setProtocolsManager(ProtocolsManager *protocolsManager)
 {
 	m_protocolsManager = protocolsManager;
@@ -57,7 +63,7 @@ void AccountAvatarWidget::setProtocolsManager(ProtocolsManager *protocolsManager
 
 void AccountAvatarWidget::init()
 {
-	WaitMovie = new QMovie(KaduIcon("kadu_icons/please-wait", "16x16").fullPath(), QByteArray(), this);
+	WaitMovie = new QMovie(m_iconsManager->iconPath(KaduIcon("kadu_icons/please-wait", "16x16")), QByteArray(), this);
 
 	createGui();
 

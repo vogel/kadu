@@ -32,6 +32,11 @@ ContactListModel::~ContactListModel()
 {
 }
 
+void ContactListModel::setContactDataExtractor(ContactDataExtractor *contactDataExtractor)
+{
+	m_contactDataExtractor = contactDataExtractor;
+}
+
 void ContactListModel::connectContact(const Contact &contact)
 {
 	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
@@ -46,10 +51,10 @@ void ContactListModel::setContactList(const QVector<Contact> &contacts)
 {
 	beginResetModel();
 
-	foreach (const Contact &contact, List)
+	foreach (const Contact &contact, m_list)
 		disconnectContact(contact);
-	List = contacts;
-	foreach (const Contact &contact, List)
+	m_list = contacts;
+	foreach (const Contact &contact, m_list)
 		connectContact(contact);
 
 	endResetModel();
@@ -57,26 +62,26 @@ void ContactListModel::setContactList(const QVector<Contact> &contacts)
 
 void ContactListModel::addContact(const Contact &contact)
 {
-	if (List.contains(contact))
+	if (m_list.contains(contact))
 		return;
 
 	connectContact(contact);
 
-	beginInsertRows(QModelIndex(), List.count(), List.count());
-	List.append(contact);
+	beginInsertRows(QModelIndex(), m_list.count(), m_list.count());
+	m_list.append(contact);
 	endInsertRows();
 }
 
 void ContactListModel::removeContact(const Contact &contact)
 {
-	int index = List.indexOf(contact);
+	int index = m_list.indexOf(contact);
 	if (-1 == index)
 		return;
 
 	disconnectContact(contact);
 
 	beginRemoveRows(QModelIndex(), index, index);
-	List.remove(index);
+	m_list.remove(index);
 	endRemoveRows();
 }
 
@@ -86,7 +91,7 @@ void ContactListModel::contactUpdated()
 	if (!contactShared)
 		return;
 
-	int row = List.indexOf(Contact(contactShared));
+	int row = m_list.indexOf(Contact(contactShared));
 	if (row < 0)
 		return;
 
@@ -99,7 +104,7 @@ QModelIndex ContactListModel::index(int row, int column, const QModelIndex &pare
 	if (parent.isValid() || !hasIndex(row, column, parent))
 		return QModelIndex();
 
-	return createIndex(row, column, List.at(row).data());
+	return createIndex(row, column, m_list.at(row).data());
 }
 
 QModelIndex ContactListModel::parent(const QModelIndex &child) const
@@ -116,7 +121,7 @@ int ContactListModel::columnCount(const QModelIndex &parent) const
 
 int ContactListModel::rowCount(const QModelIndex &parentIndex) const
 {
-	return parentIndex.isValid() ? 0 : List.size();
+	return parentIndex.isValid() ? 0 : m_list.size();
 }
 
 QVariant ContactListModel::data(const QModelIndex &index, int role) const
@@ -128,7 +133,7 @@ QVariant ContactListModel::data(const QModelIndex &index, int role) const
 	if (!contact)
 		return QVariant();
 
-	return ContactDataExtractor::data(Contact(contact), role, true);
+	return m_contactDataExtractor->data(Contact(contact), role, true);
 }
 
 QModelIndexList ContactListModel::indexListForValue(const QVariant &value) const
@@ -137,10 +142,10 @@ QModelIndexList ContactListModel::indexListForValue(const QVariant &value) const
 
 	const Buddy &buddy = value.value<Buddy>();
 
-	const int size = List.size();
+	const int size = m_list.size();
 	for (int i = 0; i < size; i++)
 	{
-		const Contact &contact = List.at(i);
+		const Contact &contact = m_list.at(i);
 		if (contact.ownerBuddy() == buddy)
 			result.append(index(i, 0));
 	}

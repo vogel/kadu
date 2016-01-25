@@ -33,6 +33,8 @@
 class AttentionService;
 class ChatWidgetManager;
 class DockingConfigurationProvider;
+class IconsManager;
+class InjectedFactory;
 class KaduWindowService;
 class StatusContainerManager;
 class StatusNotifierItem;
@@ -54,6 +56,8 @@ signals:
 private:
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<DockingConfigurationProvider> m_dockingConfigurationProvider;
+	QPointer<IconsManager> m_iconsManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<StatusContainerManager> m_statusContainerManager;
 	QPointer<StatusNotifierItem> m_statusNotifierItem;
@@ -65,6 +69,8 @@ private slots:
 	INJEQT_SET void setAttentionService(AttentionService *attentionService);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_SET void setStatusNotifierItem(StatusNotifierItem *statusNotifierItem);

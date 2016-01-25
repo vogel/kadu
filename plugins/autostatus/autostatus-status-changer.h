@@ -17,22 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AUTOSTATUS_STATUS_CHANGER_H
-#define AUTOSTATUS_STATUS_CHANGER_H
+#pragma once
 
 #include "status/status-changer.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class StatusTypeManager;
 
 class AutostatusStatusChanger : public StatusChanger
 {
 	Q_OBJECT
 
+	QPointer<StatusTypeManager> m_statusTypeManager;
+
 	bool Enabled;
 
+	// TODO: we have enums in C++
 	// 0 - online
 	// 1 - budy
 	// 2 - invisible
 	int StatusIndex;
 	QString Description;
+
+private slots:
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 public:
 	Q_INVOKABLE explicit AutostatusStatusChanger(QObject *parent = nullptr);
@@ -44,5 +54,3 @@ public:
 	virtual void changeStatus(StatusContainer *container, Status &status);
 
 };
-
-#endif // AUTOSTATUS_STATUS_CHANGER_H

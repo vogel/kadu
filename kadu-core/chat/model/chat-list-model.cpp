@@ -51,6 +51,11 @@ void ChatListModel::setChatListMimeDataService(ChatListMimeDataService *chatList
 	m_chatListMimeDataService = chatListMimeDataService;
 }
 
+void ChatListModel::setContactDataExtractor(ContactDataExtractor *contactDataExtractor)
+{
+	m_contactDataExtractor = contactDataExtractor;
+}
+
 void ChatListModel::setTalkableConverter(TalkableConverter *talkableConverter)
 {
 	m_talkableConverter = talkableConverter;
@@ -181,7 +186,7 @@ QVariant ChatListModel::data(const QModelIndex &index, int role) const
 		if (index.row() >= contacts.size())
 			return QVariant();
 
-		return ContactDataExtractor::data(contacts.at(index.row()), role, true);
+		return m_contactDataExtractor->data(contacts.at(index.row()), role, true);
 	}
 
 	return QVariant();

@@ -35,6 +35,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "contacts/contact-parser-tags.h"
 #include "core/application.h"
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
@@ -47,6 +48,7 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-state-persistence-service.h"
 #include "gui/windows/chat-window/chat-window-manager.h"
 #include "gui/windows/chat-window/chat-window-storage-configurator.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
@@ -134,7 +136,6 @@ Core::Core(injeqt::injector &&injector) :
 	// must be created first
 	// TODO: should be maybe created by factory factory?
 	m_injector.get<InjectorProvider>()->setInjector(&m_injector);
-	m_injector.get<StoragePointFactory>()->setConfigurationFile(configuration()->api());
 	m_instance = this; // TODO: fix this hack
 
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
@@ -476,6 +477,9 @@ void Core::createGui()
 
 void Core::runServices()
 {
+	m_injector.get<ContactParserTags>();
+	m_injector.get<ChatWidgetStatePersistenceService>();
+
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
 		m_injector.get<NotificationEventRepository>()->addNotificationEvent(notifyEvent);

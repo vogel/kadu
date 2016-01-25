@@ -18,13 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_TREE_VIEW_H
-#define KADU_TREE_VIEW_H
-
-#include <QtWidgets/QTreeView>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QTreeView>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class IconsManager;
 
 class QTemporaryFile;
 
@@ -42,12 +46,12 @@ public:
 		BackgroundStretched
 	};
 
-private:
-	QString BackgroundColor;
-	QString AlternateBackgroundColor;
-	BackgroundMode BackgroundImageMode;
-	QString BackgroundImageFile;
-	QTemporaryFile *BackgroundTemporaryFile;
+	explicit KaduTreeView(QWidget *parent = nullptr);
+	virtual ~KaduTreeView();
+
+	void setBackground(const QString& backgroundColor, const QString& alternateColor,
+	                   const QString& file = QString(), KaduTreeView::BackgroundMode mode = BackgroundNone);
+	void updateBackground();
 
 protected:
 	virtual void configurationUpdated();
@@ -56,14 +60,19 @@ protected:
 	virtual void resizeEvent(QResizeEvent *event);
 	virtual void startDrag(Qt::DropActions supportedActions);
 
-public:
-	explicit KaduTreeView(QWidget *parent = nullptr);
-	virtual ~KaduTreeView();
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
 
-	void setBackground(const QString& backgroundColor, const QString& alternateColor,
-	                   const QString& file = QString(), KaduTreeView::BackgroundMode mode = BackgroundNone);
-	void updateBackground();
+	QString BackgroundColor;
+	QString AlternateBackgroundColor;
+	BackgroundMode BackgroundImageMode;
+	QString BackgroundImageFile;
+	QTemporaryFile *BackgroundTemporaryFile;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
 
 };
-
-#endif // KADU_TREE_VIEW_H

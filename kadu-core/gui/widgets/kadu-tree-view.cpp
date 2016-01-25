@@ -26,8 +26,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "gui/widgets/filtered-tree-view.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include "kadu-tree-view.h"
@@ -46,17 +46,30 @@ KaduTreeView::KaduTreeView(QWidget *parent) :
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 	setUniformRowHeights(false);
 	setWordWrap(true);
-
-	configurationUpdated();
 }
 
 KaduTreeView::~KaduTreeView()
 {
 }
 
+void KaduTreeView::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void KaduTreeView::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void KaduTreeView::init()
+{
+	configurationUpdated();
+}
+
 void KaduTreeView::configurationUpdated()
 {
-	bool showExpandingControl = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowExpandingControl", false);
+	bool showExpandingControl = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowExpandingControl", false);
 
 	if (rootIsDecorated() && !showExpandingControl)
 		collapseAll();
@@ -80,19 +93,19 @@ void KaduTreeView::updateBackground()
 	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
 	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AlignUserboxIconsTop"))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Look", "AlignUserboxIconsTop"))
 	{
 		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + KaduIcon("kadu_icons/stylesheet-branch-closed", "16x16").fullPath() + "); margin-top: 4px; image-position: top }");
+		     "{ border-image: none; image: url(" + m_iconsManager->iconPath(KaduIcon{"kadu_icons/stylesheet-branch-closed", "16x16"}) + "); margin-top: 4px; image-position: top }");
 		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
-			"{ border-image: none; image: url(" + KaduIcon("kadu_icons/stylesheet-branch-open", "16x16").fullPath() + "); image-position: top; margin-top: 8px }");
+			"{ border-image: none; image: url(" + m_iconsManager->iconPath(KaduIcon{"kadu_icons/stylesheet-branch-open", "16x16"}) + "); image-position: top; margin-top: 8px }");
 	}
 	else
 	{
  		style.append("QTreeView::branch:has-children:!has-siblings:closed, QTreeView::branch:closed:has-children:has-siblings "
-		     "{ border-image: none; image: url(" + KaduIcon("kadu_icons/stylesheet-branch-closed", "16x16").fullPath() + ") }");
+		     "{ border-image: none; image: url(" + m_iconsManager->iconPath(KaduIcon{"kadu_icons/stylesheet-branch-closed", "16x16"}) + ") }");
 		style.append("QTreeView::branch:open:has-children:!has-siblings, QTreeView::branch:open:has-children:has-siblings "
-			"{ border-image: none; image: url(" + KaduIcon("kadu_icons/stylesheet-branch-open", "16x16").fullPath() + ") }");
+			"{ border-image: none; image: url(" + m_iconsManager->iconPath(KaduIcon{"kadu_icons/stylesheet-branch-open", "16x16"}) + ") }");
 	}
 
 	style.append("QTreeView { background-color: transparent;");

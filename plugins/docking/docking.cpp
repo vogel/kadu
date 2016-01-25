@@ -33,10 +33,12 @@
 #include "status-notifier-item-configuration.h"
 
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message.h"
 #include "message/unread-message-repository.h"
@@ -72,6 +74,16 @@ void Docking::setDockingConfigurationProvider(DockingConfigurationProvider *dock
 	m_dockingConfigurationProvider = dockingConfigurationProvider;
 }
 
+void Docking::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void Docking::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void Docking::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
 	m_kaduWindowService = kaduWindowService;
@@ -94,7 +106,7 @@ void Docking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageR
 
 void Docking::init()
 {
-	auto statusIcon = make_owned<StatusIcon>(m_statusContainerManager, this);
+	auto statusIcon = m_injectedFactory->makeOwned<StatusIcon>(m_statusContainerManager, this);
 	connect(statusIcon.get(), SIGNAL(iconUpdated(KaduIcon)), this, SLOT(configurationUpdated()));
 
 	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
@@ -158,7 +170,7 @@ void Docking::configurationUpdated()
 	auto configuration = StatusNotifierItemConfiguration{};
 	configuration.AttentionMode = m_dockingConfigurationProvider->configuration().NewMessageIcon;
 	configuration.AttentionIcon = KaduIcon{"protocols/common/message"};
-	configuration.AttentionMovie = KaduIcon{"protocols/common/message_anim", "16x16"}.fullPath();
+	configuration.AttentionMovie = m_iconsManager->iconPath(KaduIcon{"protocols/common/message_anim", "16x16"});
 	configuration.Icon = m_statusContainerManager->statusIcon();
 	m_statusNotifierItem->setConfiguration(configuration);
 }

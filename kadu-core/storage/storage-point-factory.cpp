@@ -34,9 +34,9 @@ StoragePointFactory::~StoragePointFactory()
 {
 }
 
-void StoragePointFactory::setConfigurationFile(ConfigurationApi *configurationFile)
+void StoragePointFactory::setConfiguration(Configuration *configuration)
 {
-	m_configurationFile = configurationFile;
+	m_configurationFile = configuration->api();
 }
 
 std::unique_ptr<StoragePoint> StoragePointFactory::createStoragePoint(const QString &nodeName, StoragePoint *parent)

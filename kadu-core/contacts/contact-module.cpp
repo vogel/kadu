@@ -20,10 +20,14 @@
 #include "contact-module.h"
 
 #include "contacts/contact-manager.h"
+#include "contacts/contact-parser-tags.h"
+#include "contacts/model/contact-data-extractor.h"
 
 ContactModule::ContactModule()
 {
+	add_type<ContactDataExtractor>();
 	add_type<ContactManager>();
+	add_type<ContactParserTags>();
 }
 
 ContactModule::~ContactModule()

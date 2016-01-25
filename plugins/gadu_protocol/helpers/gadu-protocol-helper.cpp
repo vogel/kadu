@@ -139,7 +139,7 @@ bool GaduProtocolHelper::isConnectionErrorFatal(GaduProtocol::GaduError error)
 	}
 }
 
-Buddy GaduProtocolHelper::searchResultToBuddy(BuddyStorage *buddyStorage, Account account, gg_pubdir50_t res, int number)
+Buddy GaduProtocolHelper::searchResultToBuddy(StatusTypeManager *statusTypeManager, BuddyStorage *buddyStorage, Account account, gg_pubdir50_t res, int number)
 {
 	Buddy result = buddyStorage->create();
 
@@ -152,7 +152,7 @@ Buddy GaduProtocolHelper::searchResultToBuddy(BuddyStorage *buddyStorage, Accoun
 	if (pubdirStatus)
 	{
 		Status status;
-		status.setType(GaduProtocolHelper::statusTypeFromGaduStatus(atoi(pubdirStatus) & 127));
+		status.setType(statusTypeManager, GaduProtocolHelper::statusTypeFromGaduStatus(atoi(pubdirStatus) & 127));
 		contact.setCurrentStatus(status);
 	}
 

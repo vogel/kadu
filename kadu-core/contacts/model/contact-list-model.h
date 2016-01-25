@@ -19,14 +19,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTACT_LIST_MODEL_H
-#define CONTACT_LIST_MODEL_H
-
-#include <QtCore/QAbstractListModel>
-#include <QtCore/QModelIndex>
+#pragma once
 
 #include "contacts/contact.h"
 #include "model/kadu-abstract-model.h"
+
+#include <QtCore/QAbstractListModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class ContactDataExtractor;
 
 /**
  * @addtogroup Contact
@@ -43,35 +46,6 @@
 class ContactListModel : public QAbstractItemModel, public KaduAbstractModel
 {
 	Q_OBJECT
-
-	QVector<Contact> List;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Connect given contact to this object's slots.
-	 * @param contact contact to connect
-	 *
-	 * Calling this method on each new contact ensures that model is automatically updated.
-	 */
-	void connectContact(const Contact &contact);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Disonnect given contact from this object's slots.
-	 * @param contact contact to disconnect
-	 *
-	 * Calling this method on each removed contact ensures that this model does not unneccessary updates.
-	 */
-	void disconnectContact(const Contact &contact);
-
-private slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called every time a contact's data changes.
-	 *
-	 * This slot is connected to every contact in list. Updated contact is read from QObject::sender() method.
-	 */
-	void contactUpdated();
 
 public:
 	/**
@@ -177,10 +151,42 @@ public:
 	 */
 	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
+private:
+	QPointer<ContactDataExtractor> m_contactDataExtractor;
+
+	QVector<Contact> m_list;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Connect given contact to this object's slots.
+	 * @param contact contact to connect
+	 *
+	 * Calling this method on each new contact ensures that model is automatically updated.
+	 */
+	void connectContact(const Contact &contact);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Disonnect given contact from this object's slots.
+	 * @param contact contact to disconnect
+	 *
+	 * Calling this method on each removed contact ensures that this model does not unneccessary updates.
+	 */
+	void disconnectContact(const Contact &contact);
+
+private slots:
+	INJEQT_SET void setContactDataExtractor(ContactDataExtractor *contactDataExtractor);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Slot called every time a contact's data changes.
+	 *
+	 * This slot is connected to every contact in list. Updated contact is read from QObject::sender() method.
+	 */
+	void contactUpdated();
+
 };
 
 /**
  * @}
  */
-
-#endif // CONTACT_LIST_MODEL_H
