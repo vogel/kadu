@@ -51,7 +51,7 @@
 #include "spellchecker.h"
 
 #if defined(HAVE_ENCHANT)
-typedef std::pair<SpellChecker::Checkers *, QStringList *> DescWrapper;
+typedef std::pair<const SpellChecker::Checkers *, QStringList *> DescWrapper;
 
 static void enchantDictDescribe(const char * const langTag, const char * const providerName,
 		const char * const providerDesc, const char * const providerFile, void *userData)
