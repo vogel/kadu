@@ -21,20 +21,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_SECTION_H
-#define CONFIG_SECTION_H
-
-#include <QtCore/QMap>
-#include <QtCore/QObject>
+#pragma once
 
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/kadu-tab-widget.h"
 #include "icons/kadu-icon.h"
 
+#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class ConfigGroupBox;
 class ConfigTab;
 class ConfigurationWidget;
+class Configuration;
 class ConfigWidget;
+class IconsManager;
 
 class QGridLayout;
 class QGroupBox;
@@ -43,23 +46,6 @@ class QListWidgetItem;
 class ConfigSection : public QObject
 {
 	Q_OBJECT
-
-	QString Name;
-	ConfigurationWidget *MyConfigurationWidget;
-	KaduIcon Icon;
-
-	QListWidgetItem *ListWidgetItem;
-	bool Activated;
-	QMap<QString, ConfigTab *> ConfigTabs;
-
-	QWidget *ParentConfigGroupBoxWidget;
-	KaduTabWidget *TabWidget;
-
-	ConfigTab * configTab(const QString &name, bool create);
-
-private slots:
-	void configTabDestroyed(QObject *obj);
-	void iconThemeChanged();
 
 public:
 	ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
@@ -77,7 +63,29 @@ public:
 
 	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox, bool create);
 
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
+
+	QString Name;
+	ConfigurationWidget *MyConfigurationWidget;
+	KaduIcon Icon;
+
+	QListWidgetItem *ListWidgetItem;
+	bool Activated;
+	QMap<QString, ConfigTab *> ConfigTabs;
+
+	QWidget *ParentConfigGroupBoxWidget;
+	KaduTabWidget *TabWidget;
+
+	ConfigTab * configTab(const QString &name, bool create);
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
+	void configTabDestroyed(QObject *obj);
+	void iconThemeChanged();
+
 };
-
-
-#endif

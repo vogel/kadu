@@ -21,19 +21,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config-section.h"
+
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-tab.h"
+#include "gui/widgets/configuration/config-widget.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QListWidget>
-
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/core.h"
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/configuration/config-section.h"
-#include "gui/widgets/configuration/config-tab.h"
-#include "gui/widgets/configuration/config-widget.h"
 
 ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget,
 		QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget, const KaduIcon &icon) :
@@ -44,8 +43,6 @@ ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configura
 	ParentConfigGroupBoxWidget->layout()->addWidget(TabWidget);
 	TabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	TabWidget->hide();
-
-	connect(Core::instance()->iconsManager(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 ConfigSection::~ConfigSection()
@@ -57,7 +54,7 @@ ConfigSection::~ConfigSection()
 	blockSignals(false);
 	emit destroyed(this);
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
+	m_configuration->deprecatedApi()->writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
 			TabWidget->tabText(TabWidget->currentIndex()));
 
 	// delete them here, since they manually delete child widgets of our TabWidget
@@ -73,6 +70,21 @@ ConfigSection::~ConfigSection()
 
 	delete TabWidget;
 	TabWidget = 0;
+}
+
+void ConfigSection::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ConfigSection::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void ConfigSection::init()
+{
+	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 ConfigGroupBox * ConfigSection::configGroupBox(const QString &tab, const QString &groupBox, bool create)
@@ -91,7 +103,7 @@ void ConfigSection::activate()
 	if (Activated)
 		return;
 
-	QString tab = Core::instance()->configuration()->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
+	QString tab = m_configuration->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
 	if (ConfigTabs.contains(tab))
 	{
 		auto configTab = ConfigTabs.value(tab);
