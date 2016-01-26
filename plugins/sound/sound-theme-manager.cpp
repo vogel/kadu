@@ -20,7 +20,6 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "misc/memory.h"
 #include "themes.h"
@@ -30,23 +29,37 @@
 SoundThemeManager::SoundThemeManager(QObject *parent) :
 		QObject{parent}
 {
-	m_themes = Core::instance()->injectedFactory()->makeUnique<Themes>("sounds", "sound.conf");
-	m_themes->setPaths(Core::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
-
-	auto soundThemes = themes()->themes();
-	auto soundTheme = Core::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundTheme");
-	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
-	{
-		soundTheme = "default";
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "SoundTheme", "default");
-	}
-
-	if (soundTheme != "custom")
-		applyTheme(soundTheme);
 }
 
 SoundThemeManager::~SoundThemeManager()
 {
+}
+
+void SoundThemeManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void SoundThemeManager::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SoundThemeManager::init()
+{
+	m_themes = m_injectedFactory->makeUnique<Themes>("sounds", "sound.conf");
+	m_themes->setPaths(m_configuration->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
+
+	auto soundThemes = themes()->themes();
+	auto soundTheme = m_configuration->deprecatedApi()->readEntry("Sounds", "SoundTheme");
+	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
+	{
+		soundTheme = "default";
+		m_configuration->deprecatedApi()->writeEntry("Sounds", "SoundTheme", "default");
+	}
+
+	if (soundTheme != "custom")
+		applyTheme(soundTheme);
 }
 
 void SoundThemeManager::applyTheme(const QString &themeName)
@@ -57,7 +70,7 @@ void SoundThemeManager::applyTheme(const QString &themeName)
 
 	while (i != entries.constEnd())
 	{
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", i.key() + "_sound", m_themes->themePath() + i.value());
+		m_configuration->deprecatedApi()->writeEntry("Sounds", i.key() + "_sound", m_themes->themePath() + i.value());
 		++i;
 	}
 }

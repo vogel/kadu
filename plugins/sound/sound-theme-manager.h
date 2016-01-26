@@ -20,8 +20,12 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 #include <memory>
 
+class Configuration;
+class InjectedFactory;
 class Themes;
 
 class SoundThemeManager : public QObject
@@ -37,6 +41,14 @@ public:
 	Themes * themes() const;
 
 private:
+	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	std::unique_ptr<Themes> m_themes;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
 
 };
