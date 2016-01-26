@@ -68,7 +68,6 @@
 #include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
 #include "notification/notify-configuration-importer.h"
-#include "os/generic/system-info.h"
 #include "parser/parser.h"
 #include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state-manager.h"
@@ -576,11 +575,6 @@ Configuration * Core::configuration() const
 PathsProvider * Core::pathsProvider() const
 {
 	return m_injector.get<PathsProvider>();
-}
-
-SystemInfo * Core::systemInfo() const
-{
-	return m_injector.get<SystemInfo>();
 }
 
 TalkableConverter * Core::talkableConverter() const

@@ -43,7 +43,6 @@ class Roster;
 class StatusContainerManager;
 class StatusTypeManager;
 class StoragePointFactory;
-class SystemInfo;
 class TalkableConverter;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
@@ -75,7 +74,6 @@ public:
 	StatusContainerManager * statusContainerManager() const;
 	StatusTypeManager * statusTypeManager() const;
 	StoragePointFactory * storagePointFactory() const;
-	SystemInfo * systemInfo() const;
 	TalkableConverter * talkableConverter() const;
 
 	void setIcon(const KaduIcon &icon);
