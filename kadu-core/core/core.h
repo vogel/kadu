@@ -73,7 +73,6 @@ public:
 	Configuration * configuration() const;
 	InjectedFactory * injectedFactory() const;
 	PathsProvider * pathsProvider() const;
-	Roster * roster() const;
 	UnreadMessageRepository * unreadMessageRepository() const;
 	StatusContainerManager * statusContainerManager() const;
 	StatusTypeManager * statusTypeManager() const;

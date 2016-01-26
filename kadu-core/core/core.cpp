@@ -77,7 +77,6 @@
 #include "plugin/metadata/plugin-metadata-finder.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "roster/roster-notifier.h"
-#include "roster/roster.h"
 #include "services/chat-image-request-service-configurator.h"
 #include "services/chat-image-request-service.h"
 #include "ssl/ssl-certificate-manager.h"
@@ -587,11 +586,6 @@ Configuration * Core::configuration() const
 PathsProvider * Core::pathsProvider() const
 {
 	return m_injector.get<PathsProvider>();
-}
-
-Roster * Core::roster() const
-{
-	return m_injector.get<Roster>();
 }
 
 SystemInfo * Core::systemInfo() const
