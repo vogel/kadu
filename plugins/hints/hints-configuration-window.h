@@ -18,19 +18,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HINTS_CONFIGURATION_WINDOW_H
-#define HINTS_CONFIGURATION_WINDOW_H
+#pragma once
 
 #include "gui/windows/configuration-window.h"
 
-class ConfigLabel;
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class ConfigLabel;
+class InjectedFactory;
 class NotifierConfigurationDataManager;
+class PathsProvider;
 
 class HintsConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
 
+	QPointer<PathsProvider> m_pathsProvider;
+
+	NotifierConfigurationDataManager *m_dataManager;
 	ConfigLabel *preview;
 
 	QString EventName;
@@ -39,16 +45,17 @@ class HintsConfigurationWindow : public ConfigurationWindow
 	static void windowDestroyed(const QString &eventName);
 
 private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+
 	void fontChanged(QFont font);
 	void foregroundColorChanged(const QColor &color);
 	void backgroundColorChanged(const QColor &color);
 
 public:
-	static HintsConfigurationWindow * configWindowForEvent(const QString &eventName);
+	static HintsConfigurationWindow * configWindowForEvent(InjectedFactory *injectedFactory, const QString &eventName);
 
 	explicit HintsConfigurationWindow(const QString &eventName, NotifierConfigurationDataManager *dataManager);
 	~HintsConfigurationWindow();
 
 };
-
-#endif // HINT_SCONFIGURATION_WINDOW_H

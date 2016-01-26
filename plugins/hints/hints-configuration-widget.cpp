@@ -26,7 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "activate.h"
@@ -58,6 +58,16 @@ void HintsConfigurationWidget::saveNotifyConfigurations()
 {
 }
 
+void HintsConfigurationWidget::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void HintsConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void HintsConfigurationWidget::switchToEvent(const QString &event)
 {
 	kdebugf();
@@ -68,7 +78,7 @@ void HintsConfigurationWidget::switchToEvent(const QString &event)
 
 void HintsConfigurationWidget::showConfigurationWindow()
 {
-	HintsConfigurationWindow *configWindow = HintsConfigurationWindow::configWindowForEvent(currentNotificationEvent);
+	HintsConfigurationWindow *configWindow = HintsConfigurationWindow::configWindowForEvent(m_injectedFactory, currentNotificationEvent);
 	connect(configWindow, SIGNAL(configurationSaved()), this, SLOT(updatePreview()));
 
 	configWindow->show();
@@ -79,10 +89,10 @@ void HintsConfigurationWidget::updatePreview()
 	QFont font(qApp->font());
 	QPalette palette(qApp->palette());
 
-	preview->setFont(Core::instance()->configuration()->deprecatedApi()->readFontEntry("Hints", "Event_" + currentNotificationEvent + "_font", &font));
+	preview->setFont(m_configuration->deprecatedApi()->readFontEntry("Hints", "Event_" + currentNotificationEvent + "_font", &font));
 
-	QColor bcolor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + currentNotificationEvent + "_bgcolor", &palette.window().color());
-	QColor fcolor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Hints", "Event_" + currentNotificationEvent + "_fgcolor", &palette.windowText().color());
+	QColor bcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + currentNotificationEvent + "_bgcolor", &palette.window().color());
+	QColor fcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + currentNotificationEvent + "_fgcolor", &palette.windowText().color());
 	QString style = QString("* {color:%1; background-color:%2}").arg(fcolor.name(), bcolor.name());
 	preview->setStyleSheet(style);
 }

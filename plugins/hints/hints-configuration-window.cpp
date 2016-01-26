@@ -22,7 +22,6 @@
 #include <QtGui/QPalette>
 #include <QtWidgets/QSpinBox>
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-color-button.h"
 #include "gui/widgets/configuration/config-label.h"
@@ -37,9 +36,25 @@
 QMap<QString, HintsConfigurationWindow *> HintsConfigurationWindow::ConfigurationWindows;
 
 HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, NotifierConfigurationDataManager *dataManager) :
-	ConfigurationWindow("HintEventConfiguration", tr("Hints configuration"), "Hints", dataManager), EventName(eventName)
+		ConfigurationWindow("HintEventConfiguration", tr("Hints configuration"), "Hints", dataManager),
+		m_dataManager{dataManager},
+		EventName(eventName)
 {
-	widget()->appendUiFile(Core::instance()->pathsProvider()->dataPath() + QLatin1String("plugins/configuration/hints-notifier.ui"));
+}
+
+HintsConfigurationWindow::~HintsConfigurationWindow()
+{
+	HintsConfigurationWindow::windowDestroyed(EventName);
+}
+
+void HintsConfigurationWindow::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void HintsConfigurationWindow::init()
+{
+	widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints-notifier.ui"));
 
 	widget()->widgetById("syntax")->setToolTip(tr(MainConfigurationWindow::SyntaxTextNotify));
 	static_cast<QSpinBox *>(widget()->widgetById("timeout"))->setSpecialValueText(tr("Don't hide"));
@@ -53,21 +68,16 @@ HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, Not
 	connect(static_cast<ConfigColorButton *>(widget()->widgetById("fgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(foregroundColorChanged(const QColor &)));
 	connect(static_cast<ConfigColorButton *>(widget()->widgetById("bgcolor")), SIGNAL(changed(const QColor &)), this, SLOT(backgroundColorChanged(const QColor &)));
 
-	dataManager->configurationWindowCreated(this);
+	m_dataManager->configurationWindowCreated(this);
 
 	QFont font;
-	font.fromString(dataManager->readEntry("Hints", "_font").toString());
+	font.fromString(m_dataManager->readEntry("Hints", "_font").toString());
 	preview->setFont(font);
 
-	QColor bcolor = dataManager->readEntry("Hints", "_bgcolor").value<QColor>();
-	QColor fcolor = dataManager->readEntry("Hints", "_fgcolor").value<QColor>();
+	QColor bcolor = m_dataManager->readEntry("Hints", "_bgcolor").value<QColor>();
+	QColor fcolor = m_dataManager->readEntry("Hints", "_fgcolor").value<QColor>();
 	QString style = QString("QWidget {color:%1; background-color:%2}").arg(fcolor.name(), bcolor.name());
 	preview->setStyleSheet(style);
-}
-
-HintsConfigurationWindow::~HintsConfigurationWindow()
-{
-	HintsConfigurationWindow::windowDestroyed(EventName);
 }
 
 void HintsConfigurationWindow::windowDestroyed(const QString &eventName)
@@ -75,14 +85,14 @@ void HintsConfigurationWindow::windowDestroyed(const QString &eventName)
 	ConfigurationWindows.remove(eventName);
 }
 
-HintsConfigurationWindow * HintsConfigurationWindow::configWindowForEvent(const QString &eventName)
+HintsConfigurationWindow * HintsConfigurationWindow::configWindowForEvent(InjectedFactory *injectedFactory, const QString &eventName)
 {
-    	if (ConfigurationWindows[eventName])
+	if (ConfigurationWindows[eventName])
 		return ConfigurationWindows[eventName];
 	else
 	{
 		NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(eventName);
-		return ConfigurationWindows[eventName] = Core::instance()->injectedFactory()->makeInjected<HintsConfigurationWindow>(eventName, dataManager);
+		return ConfigurationWindows[eventName] = injectedFactory->makeInjected<HintsConfigurationWindow>(eventName, dataManager);
 	}
 }
 

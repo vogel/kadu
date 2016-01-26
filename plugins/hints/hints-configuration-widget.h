@@ -17,10 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HINTS_CONFIGURATION_WIDGET_H
-#define HINTS_CONFIGURATION_WIDGET_H
+#pragma once
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class InjectedFactory;
 
 class QLabel;
 
@@ -28,11 +33,17 @@ class HintsConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	QString currentNotificationEvent;
 
 	QLabel *preview;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 	void showConfigurationWindow();
 	void updatePreview();
 
@@ -45,5 +56,3 @@ public:
 	virtual void switchToEvent(const QString &event);
 
 };
-
-#endif // HINTS_CONFIGURATION_WIDGET_H

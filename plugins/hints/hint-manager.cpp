@@ -353,7 +353,7 @@ void HintManager::oneSecond(void)
 
 NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent)
 {
-	configurationWidget = new HintsConfigurationWidget(parent);
+	configurationWidget = m_injectedFactory->makeInjected<HintsConfigurationWidget>(parent);
 	return configurationWidget;
 }
 
