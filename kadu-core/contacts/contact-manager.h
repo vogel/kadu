@@ -38,6 +38,8 @@
 class Account;
 class BuddyStorage;
 class ConfigurationManager;
+class Configuration;
+class Myself;
 class Parser;
 class UnreadMessageRepository;
 
@@ -81,12 +83,16 @@ protected:
 private:
 	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Configuration> m_configuration;
+	QPointer<Myself> m_myself;
 	QPointer<Parser> m_parser;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();

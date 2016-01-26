@@ -29,7 +29,6 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/myself.h"
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier-lock.h"
@@ -60,6 +59,16 @@ void ContactManager::setBuddyStorage(BuddyStorage *buddyStorage)
 void ContactManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
 	m_configurationManager = configurationManager;
+}
+
+void ContactManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ContactManager::setMyself(Myself *myself)
+{
+	m_myself = myself;
 }
 
 void ContactManager::setParser(Parser *parser)
@@ -129,7 +138,7 @@ void ContactManager::itemAdded(Contact item)
 
 	emit contactAdded(item);
 
-	if (Core::instance()->myself()->buddy() == item.ownerBuddy())
+	if (m_myself->buddy() == item.ownerBuddy())
 		item.rosterEntry()->setSynchronized();
 }
 
@@ -231,14 +240,14 @@ void ContactManager::removeDuplicateContacts()
 			uniqueContacts.insert(qMakePair(contact.contactAccount(), contact.id()), contact);
 	}
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
+	m_configuration->deprecatedApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
 }
 
 void ContactManager::loaded()
 {
 	SimpleManager<Contact>::loaded();
 
-	if (!Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
+	if (!m_configuration->deprecatedApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
 		// delay it so that everything needed will be loaded when we call this method
 		QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
 }
