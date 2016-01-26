@@ -20,6 +20,9 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <injeqt/injeqt.h>
+
+class PathsProvider;
 
 class OtrPathService : public QObject
 {
@@ -35,5 +38,8 @@ public:
 
 private:
 	QString m_dir;
+
+private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };

@@ -19,7 +19,6 @@
 
 #include "otr-path-service.h"
 
-#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include <QtCore/QDir>
@@ -27,15 +26,19 @@
 OtrPathService::OtrPathService(QObject *parent) :
 		QObject{parent}
 {
-	m_dir = Core::instance()->pathsProvider()->profilePath() + QString("/keys/");
-
-	QDir dir{m_dir};
-	if (!dir.exists())
-		dir.mkpath(".");
 }
 
 OtrPathService::~OtrPathService()
 {
+}
+
+void OtrPathService::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_dir = pathsProvider->profilePath() + QString("/keys/");
+
+	QDir dir{m_dir};
+	if (!dir.exists())
+		dir.mkpath(".");
 }
 
 QString OtrPathService::fingerprintsStoreFilePath() const
