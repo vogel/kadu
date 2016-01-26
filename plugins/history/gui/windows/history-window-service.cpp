@@ -40,6 +40,11 @@ void HistoryWindowService::setBuddyChatManager(BuddyChatManager *buddyChatManage
 	m_buddyChatManager = buddyChatManager;
 }
 
+void HistoryWindowService::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void HistoryWindowService::setHistory(History *history)
 {
 	m_history = history;
@@ -63,5 +68,5 @@ void HistoryWindowService::show(const Chat &chat)
 	m_historyWindow->selectChat(buddyChat);
 
 	m_historyWindow->setVisible(true);
-	_activateWindow(m_historyWindow);
+	_activateWindow(m_configuration, m_historyWindow);
 }

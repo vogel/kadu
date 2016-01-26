@@ -37,6 +37,7 @@ class QMenu;
 class ActionDescription;
 class ChatWidget;
 class ConfigurationUiHandler;
+class Configuration;
 class CropImageWidget;
 class IconsManager;
 class NotificationManager;
@@ -49,6 +50,7 @@ class ScreenShot : public QObject
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<NotificationManager> m_notificationManager;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
@@ -65,6 +67,7 @@ class ScreenShot : public QObject
 	bool checkImageSize(long int size);
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
 	void screenshotTaken(QPixmap screenshot, bool needsCrop);

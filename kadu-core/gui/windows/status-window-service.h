@@ -24,6 +24,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Configuration;
 class InjectedFactory;
 class StatusContainer;
 class StatusWindow;
@@ -47,12 +48,14 @@ public:
 	StatusWindow * showDialog(StatusContainer *statusContainer, QWidget *parent = nullptr);
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QMap<StatusContainer *, StatusWindow *> m_dialogs;
 
 	StatusWindow * getDialog(StatusContainer *statusContainer, QWidget *parent = nullptr);
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 	void statusWindowClosed(StatusContainer *statusContainer);

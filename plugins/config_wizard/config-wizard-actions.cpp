@@ -51,6 +51,11 @@ void ConfigWizardActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void ConfigWizardActions::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void ConfigWizardActions::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -89,7 +94,7 @@ void ConfigWizardActions::showConfigWizard()
 	kdebugf();
 
 	if (m_wizard)
-		_activateWindow(m_wizard.data());
+		_activateWindow(m_configuration, m_wizard.data());
 	else
 	{
 		m_wizard = m_injectedFactory->makeInjected<ConfigWizardWindow>();

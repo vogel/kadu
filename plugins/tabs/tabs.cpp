@@ -287,7 +287,7 @@ ChatWidget * TabsManager::addChat(Chat chat, OpenChatActivation activation)
 	}
 
 	if (activation == OpenChatActivation::Activate)
-		_activateWindow(TabDialog);
+		_activateWindow(m_configuration, TabDialog);
 
 	return chatWidget;
 }

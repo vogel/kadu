@@ -368,7 +368,7 @@ void HintsConfigurationUiHandler::toolTipClassesHighlighted(const QString &value
 void HintsConfigurationUiHandler::showOverUserConfigurationWindow()
 {
 	if (overUserConfigurationWindow)
-		_activateWindow(overUserConfigurationWindow.data());
+		_activateWindow(m_configuration, overUserConfigurationWindow.data());
 	else
 	{
 		overUserConfigurationWindow = m_injectedFactory->makeInjected<HintOverUserConfigurationWindow>(m_hintManager, m_buddyDummyFactory->dummy(), m_mainConfigurationWindow->dataManager());

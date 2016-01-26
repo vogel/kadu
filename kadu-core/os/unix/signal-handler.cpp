@@ -51,6 +51,7 @@
 #endif // HAVE_EXECINFO
 
 Application *g_application{nullptr};
+Configuration *g_configuration{nullptr};
 KaduWindowService *g_kaduWindowService{nullptr};
 PathsProvider *g_pathsProvider{nullptr};
 PluginActivationService *g_pluginActivationService{nullptr};
@@ -133,7 +134,7 @@ static void kadu_signal_handler(int signal)
 	else if (signal == SIGUSR1)
 	{
 		kdebugm(KDEBUG_INFO, "ok, got a signal to show up\n");
-		_activateWindow(g_kaduWindowService->kaduWindow());
+		_activateWindow(g_configuration, g_kaduWindowService->kaduWindow());
 	}
 	else if (signal == SIGINT || signal == SIGTERM)
 		QCoreApplication::quit();

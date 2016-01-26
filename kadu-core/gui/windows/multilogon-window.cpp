@@ -85,7 +85,7 @@ void MultilogonWindow::show()
 {
 	QWidget::show();
 
-	_activateWindow(this);
+	_activateWindow(m_configuration, this);
 }
 
 void MultilogonWindow::createGui()

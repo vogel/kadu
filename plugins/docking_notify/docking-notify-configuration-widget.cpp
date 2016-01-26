@@ -22,6 +22,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 
+#include "configuration/configuration.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -45,6 +46,11 @@ DockingNotifyConfigurationWidget::DockingNotifyConfigurationWidget(QWidget *pare
 	layout->addWidget(configureButton);
 
 	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
+}
+
+void DockingNotifyConfigurationWidget::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void DockingNotifyConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -84,7 +90,7 @@ void DockingNotifyConfigurationWidget::showConfigurationWindow()
 	configWindow->widget()->widgetById("Syntax")->setToolTip(tooltip);
 
 	configWindow->show();
-	_activateWindow(configWindow);
+	_activateWindow(m_configuration, configWindow);
 }
 
 #include "moc_docking-notify-configuration-widget.cpp"

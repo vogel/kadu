@@ -42,6 +42,11 @@ void WindowChatWidgetContainerHandler::setChatWindowRepository(ChatWindowReposit
 	m_chatWindowRepository = chatWindowRepository;
 }
 
+void WindowChatWidgetContainerHandler::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void WindowChatWidgetContainerHandler::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -109,7 +114,7 @@ void WindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWid
 
 	auto chatWindow = m_chatWindowRepository.data()->windowForChat(chatWidget->chat());
 	if (chatWindow)
-		_activateWindow(chatWindow);
+		_activateWindow(m_configuration, chatWindow);
 }
 
 void WindowChatWidgetContainerHandler::tryMinimizeChatWidget(ChatWidget* chatWidget)

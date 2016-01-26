@@ -64,10 +64,15 @@ ScreenShot::ScreenShot(NotificationManager *notificationManager, ScreenShotConfi
 ScreenShot::~ScreenShot()
 {
 	if (MyChatWidget)
-		_activateWindow(MyChatWidget->window());
+		_activateWindow(m_configuration, MyChatWidget->window());
 
 	delete MyScreenshotTaker;
 	MyScreenshotTaker = 0;
+}
+
+void ScreenShot::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void ScreenShot::setIconsManager(IconsManager *iconsManager)
@@ -107,7 +112,7 @@ void ScreenShot::screenshotTaken(QPixmap screenshot, bool needsCrop)
 	screenshotWidget->showFullScreen();
 	screenshotWidget->show();
 	QCoreApplication::processEvents(); // ensure window was shown, otherwise it won't be activated
-	_activateWindow(screenshotWidget);
+	_activateWindow(m_configuration, screenshotWidget);
 }
 
 void ScreenShot::screenshotNotTaken()

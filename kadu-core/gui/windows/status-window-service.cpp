@@ -19,6 +19,7 @@
 
 #include "status-window-service.h"
 
+#include "configuration/configuration.h"
 #include "core/injected-factory.h"
 #include "gui/windows/status-window.h"
 #include "activate.h"
@@ -30,6 +31,11 @@ StatusWindowService::StatusWindowService(QObject *parent) :
 
 StatusWindowService::~StatusWindowService()
 {
+}
+
+void StatusWindowService::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void StatusWindowService::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -44,7 +50,7 @@ StatusWindow * StatusWindowService::showDialog(StatusContainer *statusContainer,
 
 	auto dialog = getDialog(statusContainer, parent);
 	dialog->show();
-	_activateWindow(dialog);
+	_activateWindow(m_configuration, dialog);
 
 	return dialog;
 }

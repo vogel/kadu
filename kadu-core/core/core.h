@@ -35,7 +35,6 @@
 template<class T>
 class DefaultProvider;
 
-class Configuration;
 class InjectedFactory;
 class KaduIcon;
 class PathsProvider;
@@ -67,7 +66,6 @@ public:
 
 	void activatePlugins();
 
-	Configuration * configuration() const;
 	InjectedFactory * injectedFactory() const;
 	PathsProvider * pathsProvider() const;
 	StatusContainerManager * statusContainerManager() const;

@@ -20,11 +20,13 @@
 #pragma once
 
 class Application;
+class Configuration;
 class KaduWindowService;
 class PathsProvider;
 class PluginActivationService;
 
 extern Application *g_application;
+extern Configuration *g_configuration;
 extern KaduWindowService *g_kaduWindowService;
 extern PathsProvider *g_pathsProvider;
 extern PluginActivationService *g_pluginActivationService;

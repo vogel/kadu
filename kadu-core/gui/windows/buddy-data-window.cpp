@@ -182,7 +182,7 @@ void BuddyDataWindow::show()
 {
 	QWidget::show();
 
-	_activateWindow(this);
+	_activateWindow(m_configuration, this);
 }
 
 void BuddyDataWindow::createGui()

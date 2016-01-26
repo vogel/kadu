@@ -136,7 +136,7 @@ void ConfigurationWindow::show()
 	}
 	else
 	{
-		_activateWindow(this);
+		_activateWindow(m_configuration, this);
 	}
 }
 

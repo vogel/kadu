@@ -28,6 +28,7 @@ class ConfigWizardWindow;
 
 class ActionDescription;
 class Actions;
+class Configuration;
 class InjectedFactory;
 class MenuInventory;
 
@@ -51,6 +52,7 @@ public slots:
 
 private:
 	QPointer<Actions> m_actions;
+	QPointer<Configuration> m_configuration;
 	QPointer<ConfigWizardWindow> m_wizard;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
@@ -59,6 +61,7 @@ private:
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_INIT void init();

@@ -32,7 +32,7 @@
 		return window->isActiveWindow();
 	}
 
-	void _activateWindow( QWidget *window )
+	void _activateWindow( Configuration *configuration, QWidget *window )
 	{
 		// we need to ensure we operate on widget's window, if not passed
 		window = window->window();
@@ -44,7 +44,7 @@
 		if( X11_isWindowShaded( QX11Info::display(), window->winId() ) )
 			X11_shadeWindow( QX11Info::display(), window->winId(), false );
 		// read user settings
-		int action = Core::instance()->configuration()->deprecatedApi()->readNumEntry( "General", "WindowActivationMethod" );
+		int action = configuration->deprecatedApi()->readNumEntry( "General", "WindowActivationMethod" );
 		// window & desktop
 		if( X11_getDesktopsCount( QX11Info::display() ) > 1 )
 		{
@@ -82,8 +82,10 @@
 		return window->isActiveWindow() && !window->isMinimized();
 	}
 
-	void _activateWindow( QWidget *window )
+	void _activateWindow( Configuration *configuration, QWidget *window )
 	{
+		Q_UNUSED(configuration);
+
 		window = window->window();
 		window->setWindowState(window->windowState() & ~Qt::WindowMinimized);
 		window->show();
@@ -99,8 +101,10 @@
 		return window->isActiveWindow();
 	}
 
-	void _activateWindow( QWidget *window )
+	void _activateWindow( Configuration *configuration, QWidget *window )
 	{
+		Q_UNUSED(configuration);
+
 		window = window->window();
 		window->setWindowState(window->windowState() & ~Qt::WindowMinimized);
 		window->show();

@@ -69,6 +69,11 @@ void Docking::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 	m_chatWidgetManager = chatWidgetManager;
 }
 
+void Docking::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void Docking::setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider)
 {
 	m_dockingConfigurationProvider = dockingConfigurationProvider;
@@ -155,7 +160,7 @@ void Docking::activateRequested()
 			|| !_isActiveWindow(kaduWindow)
 #endif
 			)
-		_activateWindow(kaduWindow);
+		_activateWindow(m_configuration, kaduWindow);
 	else
 		kaduWindow->hide();
 }

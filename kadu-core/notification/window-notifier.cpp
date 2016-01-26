@@ -70,7 +70,7 @@ void WindowNotifier::notify(Notification *notification)
 
 	connect(window, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 	window->show();
-	_activateWindow(window);
+	_activateWindow(m_configuration, window);
 }
 
 void WindowNotifier::notificationClosed(Notification *notification)

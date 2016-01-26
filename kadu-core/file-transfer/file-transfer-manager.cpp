@@ -353,7 +353,7 @@ void FileTransferManager::showFileTransferWindow()
 
 	if (!m_window)
 		m_window = m_injectedFactory->makeInjected<FileTransferWindow>();
-	_activateWindow(m_window.data());
+	_activateWindow(m_configuration, m_window.data());
 }
 
 void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)

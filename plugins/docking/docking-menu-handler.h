@@ -26,6 +26,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Configuration;
 class DockingMenuActionRepository;
 class IconsManager;
 class InjectedFactory;
@@ -48,6 +49,7 @@ public:
 	virtual ~DockingMenuHandler();
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<DockingMenuActionRepository> m_dockingMenuActionRepository;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -72,6 +74,7 @@ private:
 	void addActionRepositoryMenus();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);

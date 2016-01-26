@@ -32,6 +32,7 @@
 
 class AttentionService;
 class ChatWidgetManager;
+class Configuration;
 class DockingConfigurationProvider;
 class IconsManager;
 class InjectedFactory;
@@ -55,6 +56,7 @@ signals:
 
 private:
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<DockingConfigurationProvider> m_dockingConfigurationProvider;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -68,6 +70,7 @@ private:
 private slots:
 	INJEQT_SET void setAttentionService(AttentionService *attentionService);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);

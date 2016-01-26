@@ -25,6 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Configuration;
 class InjectedFactory;
 class ProxyEditWindow;
 
@@ -39,10 +40,12 @@ public:
 	void show();
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<ProxyEditWindow> m_proxyEditWindow;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

@@ -51,6 +51,11 @@ DockingMenuHandler::~DockingMenuHandler()
 {
 }
 
+void DockingMenuHandler::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void DockingMenuHandler::setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository)
 {
 	m_dockingMenuActionRepository = dockingMenuActionRepository;
@@ -202,7 +207,7 @@ void DockingMenuHandler::addActionRepositoryMenus()
 
 void DockingMenuHandler::showKaduWindow()
 {
-	_activateWindow(m_kaduWindowService->kaduWindow());
+	_activateWindow(m_configuration, m_kaduWindowService->kaduWindow());
 }
 
 void DockingMenuHandler::hideKaduWindow()

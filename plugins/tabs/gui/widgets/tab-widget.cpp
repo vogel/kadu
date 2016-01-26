@@ -228,7 +228,7 @@ void TabWidget::tryActivateChatWidget(ChatWidget *chatWidget)
 	if (index < 0)
 		return;
 
-	_activateWindow(this);
+	_activateWindow(m_configuration, this);
 
 	setCurrentIndex(index);
 	chatWidget->edit()->setFocus();

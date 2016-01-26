@@ -88,6 +88,11 @@ void OpenChatWith::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 	m_chatWidgetManager = chatWidgetManager;
 }
 
+void OpenChatWith::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void OpenChatWith::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -256,7 +261,7 @@ void OpenChatWith::show()
   	if (!isVisible())
 		QWidget::show();
 	else
-		_activateWindow(this);
+		_activateWindow(m_configuration, this);
 }
 
 #include "moc_open-chat-with.cpp"
