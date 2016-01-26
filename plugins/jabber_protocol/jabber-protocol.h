@@ -43,6 +43,7 @@ class JabberResourceService;
 class JabberRoomChatService;
 class JabberRosterExtension;
 class JabberStreamDebugService;
+class SystemInfo;
 
 class QXmppClient;
 class QXmppMucManager;
@@ -82,6 +83,8 @@ protected:
 	virtual void changePrivateMode() override;
 
 private:
+	QPointer<SystemInfo> m_systemInfo;
+
 	JabberAvatarService *m_avatarService;
 	JabberChangePasswordService *m_changePasswordService;
 	JabberContactPersonalInfoService *m_contactPersonalInfoService;
@@ -104,6 +107,7 @@ private:
 	bool m_contactsListReadOnly;
 
 private slots:
+	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
 	INJEQT_INIT void init();
 
 	void connectedToServer();

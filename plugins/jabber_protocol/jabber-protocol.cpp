@@ -81,6 +81,11 @@ JabberProtocol::~JabberProtocol()
 	logout();
 }
 
+void JabberProtocol::setSystemInfo(SystemInfo *systemInfo)
+{
+	m_systemInfo = systemInfo;
+}
+
 void JabberProtocol::init()
 {
 	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
@@ -189,7 +194,7 @@ void JabberProtocol::login()
 	{
 		m_client->versionManager().setClientName("Kadu");
 		m_client->versionManager().setClientVersion(Core::instance()->version());
-		m_client->versionManager().setClientOs(Core::instance()->systemInfo()->osFullName());
+		m_client->versionManager().setClientOs(m_systemInfo->osFullName());
 	}
 	else
 	{
