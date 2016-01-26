@@ -17,10 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_THEME_MANAGER_H
-#define EMOTICON_THEME_MANAGER_H
+#pragma once
 
 #include "themes/theme-manager.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class PathsProvider;
 
 /**
  * @addtogroup Emoticons
@@ -34,6 +38,12 @@
 class EmoticonThemeManager : public ThemeManager
 {
 	Q_OBJECT
+
+private:
+	QPointer<PathsProvider> m_pathsProvider;
+
+private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 protected:
 	virtual QString defaultThemeName() const;
@@ -62,5 +72,3 @@ public:
 /**
  * @}
  */
-
-#endif // EMOTICON_THEME_MANAGER_H

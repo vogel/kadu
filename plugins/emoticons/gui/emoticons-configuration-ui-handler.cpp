@@ -24,6 +24,7 @@
 #include <QtWidgets/QFileDialog>
 
 #include "compression/archive-extractor.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-list-widget.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
@@ -39,7 +40,7 @@
 #include "emoticons-configuration-ui-handler.h"
 
 EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(QObject *parent) :
-		QObject(parent), ThemeManager(new EmoticonThemeManager())
+		QObject(parent)
 {
 }
 
@@ -52,9 +53,19 @@ void EmoticonsConfigurationUiHandler::setIconsManager(IconsManager *iconsManager
 	m_iconsManager = iconsManager;
 }
 
+void EmoticonsConfigurationUiHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void EmoticonsConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
+}
+
+void EmoticonsConfigurationUiHandler::init()
+{
+	ThemeManager.reset(m_injectedFactory->makeInjected<EmoticonThemeManager>());
 }
 
 void EmoticonsConfigurationUiHandler::updateEmoticonThemes()

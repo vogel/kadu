@@ -54,6 +54,11 @@ EmoticonThemeManager::~EmoticonThemeManager()
 {
 }
 
+void EmoticonThemeManager::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
 QString EmoticonThemeManager::defaultThemeName() const
 {
 	return defaultTheme();
@@ -62,8 +67,8 @@ QString EmoticonThemeManager::defaultThemeName() const
 QStringList EmoticonThemeManager::defaultThemePaths() const
 {
 	// Allow local themes to override global ones.
-	QStringList result = getSubDirs(Core::instance()->pathsProvider()->profilePath() + QLatin1String("emoticons"));
-	result += getSubDirs(Core::instance()->pathsProvider()->dataPath() + QLatin1String("themes/emoticons"));
+	QStringList result = getSubDirs(m_pathsProvider->profilePath() + QLatin1String("emoticons"));
+	result += getSubDirs(m_pathsProvider->dataPath() + QLatin1String("themes/emoticons"));
 
 	return result;
 }

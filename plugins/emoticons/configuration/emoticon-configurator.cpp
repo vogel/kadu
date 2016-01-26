@@ -23,6 +23,7 @@
 #include "configuration/deprecated-configuration-api.h"
 
 #include "configuration/emoticon-configuration.h"
+#include "core/injected-factory.h"
 #include "expander/emoticon-expander-dom-visitor-provider.h"
 #include "gui/insert-emoticon-action.h"
 #include "theme/emoticon-theme-manager.h"
@@ -31,8 +32,7 @@
 #include "emoticon-configurator.h"
 
 EmoticonConfigurator::EmoticonConfigurator(QObject *parent) :
-		ConfigurationHolder{parent},
-		ThemeManager(new EmoticonThemeManager())
+		ConfigurationHolder{parent}
 {
 }
 
@@ -43,6 +43,11 @@ EmoticonConfigurator::~EmoticonConfigurator()
 void EmoticonConfigurator::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void EmoticonConfigurator::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void EmoticonConfigurator::setInsertAction(InsertEmoticonAction *insertAction)
@@ -62,6 +67,8 @@ void EmoticonConfigurator::configure()
 
 void EmoticonConfigurator::init()
 {
+	ThemeManager.reset(m_injectedFactory->makeInjected<EmoticonThemeManager>());
+
 	createDefaultConfiguration();
 }
 
