@@ -45,7 +45,6 @@ class StatusTypeManager;
 class StoragePointFactory;
 class SystemInfo;
 class TalkableConverter;
-class UnreadMessageRepository;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -73,7 +72,6 @@ public:
 	Configuration * configuration() const;
 	InjectedFactory * injectedFactory() const;
 	PathsProvider * pathsProvider() const;
-	UnreadMessageRepository * unreadMessageRepository() const;
 	StatusContainerManager * statusContainerManager() const;
 	StatusTypeManager * statusTypeManager() const;
 	StoragePointFactory * storagePointFactory() const;

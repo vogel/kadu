@@ -55,6 +55,8 @@ void UnreadMessageRepository::setConfiguration(Configuration *configuration)
 void UnreadMessageRepository::init()
 {
 	m_configurationManager->registerStorableObject(this);
+
+	ensureLoaded();
 }
 
 void UnreadMessageRepository::done()

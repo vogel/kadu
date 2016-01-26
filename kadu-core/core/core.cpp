@@ -59,7 +59,6 @@
 #include "icons/icons-manager.h"
 #include "message/message-html-renderer-service.h"
 #include "message/message-render-info.h"
-#include "message/unread-message-repository.h"
 #include "misc/change-notifier-lock.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/paths-provider.h"
@@ -387,10 +386,6 @@ void Core::init()
 	m_injector.get<NotificationManager>();
 	m_injector.get<SearchWindowActions>(); // temporary, during full-injection-port
 
-	// Without that UnreadMessageRepository is loaded while filtering buddies list for the first time.
-	// It has to happen earlier because UnreadMessageRepository::loaded() might add buddies to the BuddyManager
-	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
-	unreadMessageRepository()->ensureLoaded();
 	m_injector.get<AvatarManager>();
 }
 
@@ -551,11 +546,6 @@ void Core::activatePlugins()
 	g_pluginActivationService = m_injector.get<PluginActivationService>();
 #endif
 
-}
-
-UnreadMessageRepository * Core::unreadMessageRepository() const
-{
-	return m_injector.get<UnreadMessageRepository>();
 }
 
 StoragePointFactory * Core::storagePointFactory() const
