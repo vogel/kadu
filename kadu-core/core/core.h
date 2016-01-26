@@ -39,7 +39,6 @@ class Configuration;
 class InjectedFactory;
 class KaduIcon;
 class PathsProvider;
-class PluginActivationService;
 class PluginStateService;
 class Roster;
 class StatusContainerManager;
@@ -75,7 +74,6 @@ public:
 	Configuration * configuration() const;
 	InjectedFactory * injectedFactory() const;
 	PathsProvider * pathsProvider() const;
-	PluginActivationService * pluginActivationService() const;
 	PluginStateService * pluginStateService() const;
 	Roster * roster() const;
 	UnreadMessageRepository * unreadMessageRepository() const;
