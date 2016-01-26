@@ -142,9 +142,9 @@ Core::Core(injeqt::injector &&injector) :
 	createDefaultConfiguration();
 	configurationUpdated();
 
-	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("DATA_PATH"), pathsProvider()->dataPath());
+	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("DATA_PATH"), m_injector.get<PathsProvider>()->dataPath());
 	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("HOME"), PathsProvider::homePath());
-	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("KADU_CONFIG"), pathsProvider()->profilePath());
+	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("KADU_CONFIG"), m_injector.get<PathsProvider>()->profilePath());
 	DateTimeParserTags::registerParserTags(m_injector.get<Parser>());
 
 	m_injector.get<NotifyConfigurationImporter>()->import();
@@ -398,25 +398,25 @@ void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
-	QDir oldConfigs(pathsProvider()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs(m_injector.get<PathsProvider>()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
 	if (oldConfigs.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs.count() - 20; i < max; ++i)
-			QFile::remove(pathsProvider()->profilePath() + oldConfigs[static_cast<int>(i)]);
+			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs[static_cast<int>(i)]);
 
-	QDir oldConfigs2(pathsProvider()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs2(m_injector.get<PathsProvider>()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
-			QFile::remove(pathsProvider()->profilePath() + oldConfigs2[static_cast<int>(i)]);
+			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs2[static_cast<int>(i)]);
 
-	QDir oldBacktraces(pathsProvider()->profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
+	QDir oldBacktraces(m_injector.get<PathsProvider>()->profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
 	if (oldBacktraces.count() > 20)
 		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
-			QFile::remove(pathsProvider()->profilePath() + oldBacktraces[static_cast<int>(i)]);
+			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldBacktraces[static_cast<int>(i)]);
 
-	QDir oldDebugs(pathsProvider()->profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
+	QDir oldDebugs(m_injector.get<PathsProvider>()->profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
 	if (oldDebugs.count() > 20)
 		for (unsigned int i = 0, max = oldDebugs.count() - 20; i < max; ++i)
-			QFile::remove(pathsProvider()->profilePath() + oldDebugs[static_cast<int>(i)]);
+			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldDebugs[static_cast<int>(i)]);
 
 	kdebugf2();
 }
@@ -510,7 +510,7 @@ void Core::runServices()
 	auto configurator = new ChatImageRequestServiceConfigurator();
 	configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 
-	m_injector.get<PluginMetadataFinder>()->setDirectory(pathsProvider()->dataPath() + QLatin1String{"plugins"});
+	m_injector.get<PluginMetadataFinder>()->setDirectory(m_injector.get<PathsProvider>()->dataPath() + QLatin1String{"plugins"});
 	m_injector.get<PluginStateManager>()->loadPluginStates();
 
 	m_injector.get<ConfigurationUiHandlerRepository>()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
