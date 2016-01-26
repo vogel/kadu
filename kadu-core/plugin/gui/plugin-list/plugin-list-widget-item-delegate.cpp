@@ -28,6 +28,7 @@
 #include "gui/widgets/categorized-list-view-painter.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugin/gui/plugin-list/plugin-list-view-delegate.h"
@@ -53,11 +54,20 @@ PluginListWidgetItemDelegate::PluginListWidgetItemDelegate(PluginListWidget *plu
 		PluginListWidgetDelegate{pluginSelector->m_listView, parent}, m_checkBox{make_unique<QCheckBox>()},
 		m_pushButton{make_unique<QPushButton>()}, m_pluginSelector{pluginSelector}
 {
-	m_pushButton->setIcon(KaduIcon("preferences-other").icon()); // only for getting size matters
 }
 
 PluginListWidgetItemDelegate::~PluginListWidgetItemDelegate()
 {
+}
+
+void PluginListWidgetItemDelegate::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void PluginListWidgetItemDelegate::init()
+{
+	m_pushButton->setIcon(m_iconsManager->iconByPath(KaduIcon("preferences-other"))); // only for getting size matters
 }
 
 void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -126,7 +136,7 @@ QList<QWidget *> PluginListWidgetItemDelegate::createItemWidgets() const
 	connect(enabledCheckBox, SIGNAL(clicked(bool)), this, SLOT(slotStateChanged(bool)));
 
 	auto aboutPushButton = new QPushButton;
-	aboutPushButton->setIcon(KaduIcon("help-contents").icon());
+	aboutPushButton->setIcon(m_iconsManager->iconByPath(KaduIcon("help-contents")));
 	connect(aboutPushButton, SIGNAL(clicked(bool)), this, SLOT(slotAboutClicked()));
 
 	setBlockedEventTypes(enabledCheckBox, QList<QEvent::Type>() << QEvent::MouseButtonPress
@@ -184,7 +194,7 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 	info += tr("Dependencies: %1").arg(pluginMetadata.dependencies().join(", ")) + "\n";
 	info += tr("Provides: %1").arg(pluginMetadata.provides());
 
-	MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());
+	MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), tr("Plugin information"), info, QMessageBox::Ok, itemView());
 }
 
 QFont PluginListWidgetItemDelegate::titleFont(const QFont &baseFont) const

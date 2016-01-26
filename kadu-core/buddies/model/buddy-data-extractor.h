@@ -27,6 +27,7 @@
 
 class BuddyPreferredManager;
 class Buddy;
+class IconsManager;
 
 class QVariant;
 
@@ -43,9 +44,11 @@ public:
 
 private:
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<IconsManager> m_iconsManager;
 
 private slots:
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
 };
 

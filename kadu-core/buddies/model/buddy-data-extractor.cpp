@@ -24,6 +24,7 @@
 #include "avatars/avatar.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "talkable/talkable.h"
@@ -45,14 +46,19 @@ void BuddyDataExtractor::setBuddyPreferredManager(BuddyPreferredManager *buddyPr
 	m_buddyPreferredManager = buddyPreferredManager;
 }
 
+void BuddyDataExtractor::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 QVariant BuddyDataExtractor::decoration(const Buddy &buddy)
 {
 	if (!buddy.homePhone().isEmpty() || !buddy.mobile().isEmpty())
-		return KaduIcon("phone").icon();
+		return m_iconsManager->iconByPath(KaduIcon("phone"));
 	else if (!buddy.email().isEmpty())
-		return KaduIcon("mail-message-new").icon();
+		return m_iconsManager->iconByPath(KaduIcon("mail-message-new"));
 	else
-		return KaduIcon("system-users").icon();
+		return m_iconsManager->iconByPath(KaduIcon("system-users"));
 }
 
 QVariant BuddyDataExtractor::data(const Buddy &buddy, int role)

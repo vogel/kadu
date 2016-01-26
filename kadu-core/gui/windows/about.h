@@ -30,7 +30,9 @@
 #include <injeqt/injeqt.h>
 
 class DomProcessorService;
+class IconsManager;
 class PathsProvider;
+class UrlOpener;
 
 class QUrl;
 class QKeyEvent;
@@ -47,7 +49,9 @@ class About : public QWidget, DesktopAwareObject
 	Q_OBJECT
 
 	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<PathsProvider> m_pathsProvider;
+	QPointer<UrlOpener> m_urlOpener;
 
 	QTextEdit *tb_authors;
 
@@ -55,7 +59,9 @@ class About : public QWidget, DesktopAwareObject
 
 private slots:
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_INIT void init();
 
 	void openUrl(const QUrl &url);
@@ -85,13 +91,14 @@ class KaduLink : public QLabel
 {
 	Q_OBJECT
 
+	QPointer<UrlOpener> m_urlOpener;
 	QByteArray Link;
 
 protected:
 	virtual void mousePressEvent(QMouseEvent *);
 
 public:
-	explicit KaduLink(const QByteArray &link, QWidget *parent = nullptr);
+	explicit KaduLink(UrlOpener *urlOpener, const QByteArray &link, QWidget *parent = nullptr);
 	virtual ~KaduLink();
 
 };

@@ -19,27 +19,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELECT_FILE_H
-#define SELECT_FILE_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
+class IconsManager;
 
 class QLineEdit;
 
 class KADUAPI SelectFile : public QWidget
 {
 	Q_OBJECT
-
-	QString Type;
-	QLineEdit *LineEdit;
-
-	void createGui();
-
-private slots:
-	void selectFileClicked();
-	void fileEdited();
 
 public:
 	explicit SelectFile(const QString &type, QWidget *parent = nullptr);
@@ -53,6 +47,20 @@ public:
 
 signals:
 	void fileChanged();
-};
 
-#endif // SELECT_FILE_H
+private:
+	QPointer<IconsManager> m_iconsManager;
+
+	QString Type;
+	QLineEdit *LineEdit;
+
+	void createGui();
+
+private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
+	void selectFileClicked();
+	void fileEdited();
+
+};

@@ -31,6 +31,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "pixmap-grabber.h"
 
@@ -39,26 +40,29 @@
 ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget) :
 		QWidget(chatWidget->window(), Qt::Window), CurrentChatWidget(chatWidget), Dragging(false)
 {
-	setWindowRole("kadu-screenshot-taker");
-
-	setWindowModality(Qt::WindowModal);
-
-	setAttribute(Qt::WA_DeleteOnClose);
-
-	setMouseTracking(true);
-
-	setWindowTitle(tr("Window Shot"));
-	setWindowIcon(qApp->windowIcon()); // don't use status icon from the chat window!
-
-	createLayout();
-
-	connect(CancelButton, SIGNAL(clicked()), this, SLOT(close()));
-
-	setFixedSize(sizeHint());
 }
 
 ScreenshotTaker::~ScreenshotTaker()
 {
+}
+
+void ScreenshotTaker::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void ScreenshotTaker::init()
+{
+	setWindowRole("kadu-screenshot-taker");
+	setWindowModality(Qt::WindowModal);
+	setAttribute(Qt::WA_DeleteOnClose);
+	setMouseTracking(true);
+	setWindowTitle(tr("Window Shot"));
+	setWindowIcon(qApp->windowIcon()); // don't use status icon from the chat window!
+
+	createLayout();
+	connect(CancelButton, SIGNAL(clicked()), this, SLOT(close()));
+	setFixedSize(sizeHint());
 }
 
 void ScreenshotTaker::createLayout()
@@ -75,7 +79,7 @@ void ScreenshotTaker::createLayout()
 	iconLayout->addStretch();
 	IconLabel = new QLabel(this);
 	IconLabel->setAlignment(Qt::AlignCenter);
-	IconLabel->setPixmap(KaduIcon("external_modules/screenshot-camera-photo").icon().pixmap(32, 32));
+	IconLabel->setPixmap(m_iconsManager->iconByPath(KaduIcon("external_modules/screenshot-camera-photo")).pixmap(32, 32));
 	iconLayout->addWidget(IconLabel);
 	iconLayout->addStretch();
 
@@ -131,7 +135,7 @@ void ScreenshotTaker::mousePressEvent(QMouseEvent *e)
 
 	Dragging = true;
 
-	setCursor(KaduIcon("external_modules/screenshot-camera-photo").icon().pixmap(32, 32));
+	setCursor(m_iconsManager->iconByPath(KaduIcon("external_modules/screenshot-camera-photo")).pixmap(32, 32));
 }
 
 void ScreenshotTaker::mouseReleaseEvent(QMouseEvent *e)

@@ -23,6 +23,7 @@
 
 #include "plugin-list-widget.h"
 
+#include "core/injected-factory.h"
 #include "gui/widgets/categorized-list-view-painter.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/configuration/config-section.h"
@@ -47,55 +48,15 @@
 PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 		QWidget{window}, m_listView{0}, m_processingChange{false}
 {
-	auto layout = new QVBoxLayout;
-	layout->setMargin(0);
-	setLayout(layout);
-
-	auto filterEdit = new FilterWidget{this};
-	filterEdit->setAutoVisibility(false);
-
-	m_listView = new CategorizedListView{this};
-	m_listView->setVerticalScrollMode(QListView::ScrollPerPixel);
-	m_listView->setAlternatingRowColors(true);
-
-#if defined(Q_OS_WIN) // see #2823
-	m_listView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-#endif
-
-	auto painter = new CategorizedListViewPainter{m_listView};
-	m_listView->setCategoryDrawer(painter);
-
-	m_model = new PluginModel{this};
-	connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged(QModelIndex,QModelIndex)));
-
-	m_proxyModel = new PluginProxyModel{this};
-	m_proxyModel->setCategorizedModel(true);
-	m_proxyModel->setSourceModel(m_model);
-	m_listView->setModel(m_proxyModel);
-	m_listView->setAlternatingRowColors(true);
-
-	auto delegate = new PluginListWidgetItemDelegate{this, this};
-	m_listView->setItemDelegate(delegate);
-
-	m_listView->setMouseTracking(true);
-	m_listView->viewport()->setAttribute(Qt::WA_Hover);
-
-	filterEdit->setView(m_listView);
-
-	connect(filterEdit, SIGNAL(textChanged(QString)), m_proxyModel, SLOT(setFilterText(QString)));
-
-	layout->addWidget(filterEdit);
-	layout->addWidget(m_listView);
-
-	auto pluginsSection = window->widget()->configSection("Plugins");
-	if (pluginsSection)
-		pluginsSection->addFullPageWidget("Plugins", this);
-
-	connect(window, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
 PluginListWidget::~PluginListWidget()
 {
+}
+
+void PluginListWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void PluginListWidget::setPluginActivationService(PluginActivationService *pluginActivationService)
@@ -134,6 +95,55 @@ void PluginListWidget::setPluginStateManager(PluginStateManager *pluginStateMana
 void PluginListWidget::setPluginStateService(PluginStateService *pluginStateService)
 {
 	m_pluginStateService = pluginStateService;
+}
+
+void PluginListWidget::init()
+{
+	auto layout = new QVBoxLayout;
+	layout->setMargin(0);
+	setLayout(layout);
+
+	auto filterEdit = new FilterWidget{this};
+	filterEdit->setAutoVisibility(false);
+
+	m_listView = new CategorizedListView{this};
+	m_listView->setVerticalScrollMode(QListView::ScrollPerPixel);
+	m_listView->setAlternatingRowColors(true);
+
+#if defined(Q_OS_WIN) // see #2823
+	m_listView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+#endif
+
+	auto painter = new CategorizedListViewPainter{m_listView};
+	m_listView->setCategoryDrawer(painter);
+
+	m_model = new PluginModel{this};
+	connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged(QModelIndex,QModelIndex)));
+
+	m_proxyModel = new PluginProxyModel{this};
+	m_proxyModel->setCategorizedModel(true);
+	m_proxyModel->setSourceModel(m_model);
+	m_listView->setModel(m_proxyModel);
+	m_listView->setAlternatingRowColors(true);
+
+	auto delegate = m_injectedFactory->makeInjected<PluginListWidgetItemDelegate>(this, this);
+	m_listView->setItemDelegate(delegate);
+
+	m_listView->setMouseTracking(true);
+	m_listView->viewport()->setAttribute(Qt::WA_Hover);
+
+	filterEdit->setView(m_listView);
+
+	connect(filterEdit, SIGNAL(textChanged(QString)), m_proxyModel, SLOT(setFilterText(QString)));
+
+	layout->addWidget(filterEdit);
+	layout->addWidget(m_listView);
+
+	auto pluginsSection = static_cast<MainConfigurationWindow *>(parent())->widget()->configSection("Plugins");
+	if (pluginsSection)
+		pluginsSection->addFullPageWidget("Plugins", this);
+
+	connect(static_cast<MainConfigurationWindow *>(parent()), SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
 int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth) const

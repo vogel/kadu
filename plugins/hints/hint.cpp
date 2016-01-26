@@ -58,6 +58,11 @@ void Hint::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void Hint::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void Hint::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
 {
 	m_notificationCallbackRepository = notificationCallbackRepository;
@@ -82,7 +87,7 @@ void Hint::init()
 
 	startSecs = secs = m_configuration->deprecatedApi()->readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 
-	createLabels(notification->icon().icon().pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
+	createLabels(m_iconsManager->iconByPath(notification->icon()).pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
 
 	auto callbacks = notification->getCallbacks();
 	bool showButtons = !callbacks.isEmpty();

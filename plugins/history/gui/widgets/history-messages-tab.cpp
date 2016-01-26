@@ -42,6 +42,7 @@
 #include "gui/widgets/wait-overlay.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/sorted-messages.h"
 #include "model/merged-proxy-model-factory.h"
@@ -73,6 +74,11 @@ void HistoryMessagesTab::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 	m_buddyChatManager = buddyChatManager;
 }
 
+void HistoryMessagesTab::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void HistoryMessagesTab::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -97,7 +103,7 @@ void HistoryMessagesTab::init()
 void HistoryMessagesTab::createGui()
 {
 	TimelinePopupMenu = new QMenu(this);
-	TimelinePopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
+	TimelinePopupMenu->addAction(m_iconsManager->iconByPath(KaduIcon("kadu_icons/clear-history")), tr("&Remove entries"),
 	                             this, SLOT(removeEntries()));
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
@@ -114,7 +120,7 @@ void HistoryMessagesTab::createGui()
 	TalkableTree->setContextMenuEnabled(true);
 	TalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
 	TalkableTree->setUseConfigurationColors(true);
-	TalkableTree->delegateConfiguration().setShowMessagePixmap(false);
+	TalkableTree->delegateConfiguration()->setShowMessagePixmap(false);
 
 	QString style;
 	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
@@ -323,7 +329,7 @@ void HistoryMessagesTab::showTalkablePopupMenu()
 	m_menuInventory->menu("buddy-list")->applyTo(menu.data(), TalkableTree->actionContext());
 
 	menu->addSeparator();
-	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
+	menu->addAction(m_iconsManager->iconByPath(KaduIcon("kadu_icons/clear-history")),
 	                ClearHistoryMenuItemTitle, this, SLOT(clearTalkableHistory()));
 
 	menu->exec(QCursor::pos());
@@ -339,7 +345,7 @@ void HistoryMessagesTab::clearTalkableHistory()
 	const QModelIndexList &selectedIndexes = TalkableTree->selectionModel()->selectedIndexes();
 	QList<Talkable> talkables;
 
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("Do you really want to delete history?"));
+	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), tr("Do you really want to delete history?"));
 	dialog->addButton(QMessageBox::Yes, tr("Delete history"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 

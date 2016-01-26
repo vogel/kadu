@@ -22,6 +22,8 @@
 
 #include "talkable/filter/group-filter.h"
 
+class IconsManager;
+
 class GroupFilterTabData
 {
 	GroupFilter Filter;
@@ -32,7 +34,7 @@ public:
 	GroupFilter filter() const;
 
 	QString tabName() const;
-	QIcon tabIcon() const;
+	QIcon tabIcon(IconsManager *iconsManager) const;
 
 };
 

@@ -58,6 +58,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
 #include "url-handlers/url-handler-manager.h"
@@ -105,6 +106,11 @@ void KaduWebView::setClipboardHtmlTransformerService(ClipboardHtmlTransformerSer
 void KaduWebView::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void KaduWebView::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void KaduWebView::setImageStorageService(ImageStorageService *imageStorageService)
@@ -281,7 +287,7 @@ void KaduWebView::saveImage()
 
 		if (!image.load(imageFullPath))
 		{
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save this image"));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Cannot save this image"));
 			return;
 		}
 	}
@@ -304,7 +310,7 @@ void KaduWebView::saveImage()
 		QString file = fd->selectedFiles().at(0);
 		if (QFile::exists(file))
 		{
-			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("File already exists. Overwrite?"));
+			MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), tr("File already exists. Overwrite?"));
 			dialog->addButton(QMessageBox::Yes, tr("Overwrite"));
 			dialog->addButton(QMessageBox::No, tr("Cancel"));
 
@@ -313,7 +319,7 @@ void KaduWebView::saveImage()
 				QFile removeMe(file);
 				if (!removeMe.remove())
 				{
-					MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save image: %1").arg(removeMe.errorString()));
+					MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Cannot save image: %1").arg(removeMe.errorString()));
 					break;
 				}
 			}
@@ -329,7 +335,7 @@ void KaduWebView::saveImage()
 		{
 			if (!image.save(dst, "PNG"))
 			{
-				MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save image"));
+				MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Cannot save image"));
 				break;
 			}
 		}
@@ -338,7 +344,7 @@ void KaduWebView::saveImage()
 			QFile src(imageFullPath);
 			if (!src.copy(dst))
 			{
-				MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Cannot save image: %1").arg(src.errorString()));
+				MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Cannot save image: %1").arg(src.errorString()));
 				break;
 			}
 		}

@@ -48,6 +48,7 @@
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
@@ -103,6 +104,11 @@ void FileTransferManager::setFileTransferActions(FileTransferActions *fileTransf
 void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
 {
 	m_fileTransferHandlerManager = fileTransferHandlerManager;
+}
+
+void FileTransferManager::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void FileTransferManager::setKaduWindowService(KaduWindowService *kaduWindowService)
@@ -226,7 +232,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, QString loca
 		auto file = new QFile{saveFileName};
 		if (!file->open(QFile::WriteOnly | QIODevice::Truncate))
 		{
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Could not open file. Select another one."));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Could not open file. Select another one."));
 			saveFileName.clear();
 			file->deleteLater();
 			continue;
@@ -326,7 +332,7 @@ QString FileTransferManager::getSaveFileName(QString fileName, QString remoteFil
 
 		if (info.exists() && !info.isWritable())
 		{
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Could not open file. Select another one."));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Could not open file. Select another one."));
 			fileName.clear();
 			continue;
 		}

@@ -16,6 +16,7 @@ class BuddyListBackgroundColorsWidget;
 class ConfigComboBox;
 class ConfigLineEdit;
 class ConfigurationUiHandlerRepository;
+class IconsManager;
 class IconThemeManager;
 class KaduWindowService;
 class LanguagesManager;
@@ -40,6 +41,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 
 	QPointer<AccountManager> m_accountManager;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<IconThemeManager> m_iconThemeManager;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<LanguagesManager> m_languagesManager;
@@ -67,6 +69,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setIconThemeManager(IconThemeManager *iconThemeManager);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setLanguagesManager(LanguagesManager *languagesManager);

@@ -18,12 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PASSWORD_DIALOG_WIDGET_H
-#define PASSWORD_DIALOG_WIDGET_H
-
-#include <QtCore/QVariant>
+#pragma once
 
 #include "gui/widgets/dialog/dialog-widget.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QVariant>
+#include <injeqt/injeqt.h>
+
+class IconsManager;
 
 class QCheckBox;
 class QLineEdit;
@@ -33,6 +37,15 @@ class PasswordDialogWidget : public DialogWidget
 {
 	Q_OBJECT
 
+public:
+	explicit PasswordDialogWidget(const QString &title, QVariant data, QWidget* parent);
+	virtual ~PasswordDialogWidget();
+
+signals:
+	void passwordEntered(const QVariant &data, const QString &password, bool permanent);
+
+private:
+	QPointer<IconsManager> m_iconsManager;
 	QVariant Data;
 
 	QFormLayout *formLayout;
@@ -42,17 +55,11 @@ class PasswordDialogWidget : public DialogWidget
 	virtual void createGui();
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
 	virtual void dialogAccepted();
 	virtual void dialogRejected();
 	void passwordTextChanged(const QString &text);
 
-public:
-	explicit PasswordDialogWidget(const QString &title, QVariant data, QWidget* parent);
-	virtual ~PasswordDialogWidget();
-
-signals:
-	void passwordEntered(const QVariant &data, const QString &password, bool permanent);
-
 };
-
-#endif // PASSWORD_DIALOG_WIDGET_H

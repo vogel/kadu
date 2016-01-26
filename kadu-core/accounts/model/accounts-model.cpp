@@ -24,6 +24,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"
@@ -52,6 +53,11 @@ AccountsModel::~AccountsModel()
 {
 }
 
+void AccountsModel::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 int AccountsModel::columnCount(const QModelIndex &parent) const
 {
 	return parent.isValid() ? 0 : 1;
@@ -77,7 +83,7 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 				return acc.accountIdentity().name();
 		case Qt::DecorationRole:
 			return acc.protocolHandler()
-					? acc.protocolHandler()->icon().icon()
+					? m_iconsManager->iconByPath(acc.protocolHandler()->icon())
 					: QVariant();
 
 		case AccountRole:

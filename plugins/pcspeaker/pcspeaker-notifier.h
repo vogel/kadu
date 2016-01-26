@@ -23,12 +23,17 @@
 #include "notification/notifier.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QString>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 #include <QtX11Extras/QX11Info>
 #endif
+
+class Configuration;
+class InjectedFactory;
 
 class PCSpeakerNotifier : public QObject, public Notifier
 {
@@ -44,6 +49,9 @@ public:
 	void parseAndPlay(QString linia);
 
 private:
+	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
+
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 	Display *xdisplay;
 #endif
@@ -53,5 +61,9 @@ private:
 	void parseStringToSound(QString linia, int tablica[21], int tablica2[20]);
 	void beep(int pitch, int duration);
 	void play(int sound[21], int soundlength[20]);
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

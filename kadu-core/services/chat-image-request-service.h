@@ -29,6 +29,7 @@
 
 class AccountManager;
 class ContactManager;
+class IconsManager;
 class ImageStorageService;
 
 /**
@@ -57,9 +58,10 @@ class ChatImageRequestService : public QObject
 	static const quint32 ReceivedImageKeysPerMinuteLimit = 10;
 	quint32 ReceivedImageKeysCount;
 
-	QPointer<ImageStorageService> CurrentImageStorageService;
 	QPointer<AccountManager> CurrentAccountManager;
 	QPointer<ContactManager> CurrentContactManager;
+	QPointer<IconsManager> m_iconsManager;
+	QPointer<ImageStorageService> CurrentImageStorageService;
 
 	bool acceptImage(const Account &account, const QString &id, const ChatImage &chatImage) const;
 
@@ -85,6 +87,7 @@ private slots:
 	 */
 	void setContactManager(ContactManager *contactManager);
 
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 
 	void accountRegistered(Account account);

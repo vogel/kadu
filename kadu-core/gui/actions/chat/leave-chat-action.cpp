@@ -27,6 +27,7 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 
@@ -50,6 +51,11 @@ void LeaveChatAction::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRe
 	m_chatWidgetRepository = chatWidgetRepository;
 }
 
+void LeaveChatAction::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
 	Q_UNUSED(toggled)
@@ -71,7 +77,7 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chatWidget)
 		return;
 
-	auto dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"),
+	auto dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
 		tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"),
 		widget);
 	dialog->addButton(QMessageBox::Yes, tr("Leave conference"));

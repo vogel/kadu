@@ -45,18 +45,26 @@ JabberChangePasswordWindow::JabberChangePasswordWindow(JabberChangePasswordServi
 		m_changePasswordService(changePasswordService),
 		m_account(account)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("Change Password"));
-
-	createGui();
-
-	dataChanged();
-
-	new WindowGeometryManager{new ConfigFileVariantWrapper{"General", "JabberChangePasswordGeometry"}, QRect{50, 50, 550, 200}, this};
 }
 
 JabberChangePasswordWindow::~JabberChangePasswordWindow()
 {
+}
+
+void JabberChangePasswordWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void JabberChangePasswordWindow::init()
+{
+	setAttribute(Qt::WA_DeleteOnClose);
+	setWindowTitle(tr("Change Password"));
+
+	createGui();
+	dataChanged();
+
+	new WindowGeometryManager{new ConfigFileVariantWrapper{"General", "JabberChangePasswordGeometry"}, QRect{50, 50, 550, 200}, this};
 }
 
 void JabberChangePasswordWindow::createGui()
@@ -110,13 +118,13 @@ void JabberChangePasswordWindow::changePassword()
 {
 	if (!m_account.protocolHandler()->isConnected())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Log in before changing password."), QMessageBox::Ok, this);
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Log in before changing password."), QMessageBox::Ok, this);
 		return;
 	}
 
 	if (m_newPassword->text() != m_reNewPassword->text())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
 			"Password entered in both fields (\"Password\" and \"Retype password\") "
 			"must be the same!"), QMessageBox::Ok, this);
 		return;
@@ -131,7 +139,7 @@ void JabberChangePasswordWindow::changePassword()
 void JabberChangePasswordWindow::passwordChanged()
 {
 	// using 'this' as parent is invalid, as close below will delete 'this' object
-	MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Changing password was successful."), QMessageBox::Ok);
+	MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), tr("Kadu"), tr("Changing password was successful."), QMessageBox::Ok);
 
 	m_account.setPassword(m_newPassword->text());
 	emit passwordChanged(m_newPassword->text());
@@ -141,7 +149,7 @@ void JabberChangePasswordWindow::passwordChanged()
 
 void JabberChangePasswordWindow::error(const QString& errorMessage)
 {
-	MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Password change failed.\n\nError: %1").arg(errorMessage), QMessageBox::Ok, this);
+	MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), tr("Kadu"), tr("Password change failed.\n\nError: %1").arg(errorMessage), QMessageBox::Ok, this);
 
 	close();
 }

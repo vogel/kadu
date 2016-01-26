@@ -142,7 +142,7 @@ QString GTalkProtocolFactory::defaultServer()
 
 QWidget * GTalkProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
 {
-	return new JabberContactPersonalInfoWidget(contact, parent);
+	return Core::instance()->injectedFactory()->makeInjected<JabberContactPersonalInfoWidget>(contact, parent);
 }
 
 ProtocolMenuManager * GTalkProtocolFactory::protocolMenuManager()

@@ -20,6 +20,7 @@
 #include "contact-avatar-display.h"
 
 #include "avatars/avatar.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include <QtGui/QIcon>
@@ -34,12 +35,20 @@ ContactAvatarDisplay::ContactAvatarDisplay(Contact contact, QSize size, QWidget 
 
 	connect(m_contact, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 	connect(m_avatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
-
-	displayAvatar();
 }
 
 ContactAvatarDisplay::~ContactAvatarDisplay()
 {
+}
+
+void ContactAvatarDisplay::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void ContactAvatarDisplay::init()
+{
+	displayAvatar();
 }
 
 void ContactAvatarDisplay::avatarUpdated()
@@ -55,7 +64,7 @@ void ContactAvatarDisplay::displayAvatar()
 {
 	auto pixmap = m_avatar.pixmap();
 	if (pixmap.isNull())
-		pixmap = KaduIcon{"kadu_icons/buddy0"}.icon().pixmap(m_size);
+		pixmap = m_iconsManager->iconByPath(KaduIcon{"kadu_icons/buddy0"}).pixmap(m_size);
 	if (!pixmap.isNull())
 		pixmap = pixmap.scaled(m_size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 

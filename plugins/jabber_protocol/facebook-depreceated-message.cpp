@@ -21,9 +21,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 
 FacebookDepreceatedMessage::FacebookDepreceatedMessage(QObject *parent) :
 		QObject{parent}
@@ -34,13 +33,23 @@ FacebookDepreceatedMessage::~FacebookDepreceatedMessage()
 {
 }
 
+void FacebookDepreceatedMessage::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void FacebookDepreceatedMessage::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void FacebookDepreceatedMessage::showIfNotSeen()
 {
-	auto depreceatedMessageSeen = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", false);
+	auto depreceatedMessageSeen = m_configuration->deprecatedApi()->readBoolEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", false);
 	if (depreceatedMessageSeen)
 		return;
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", true);
+	m_configuration->deprecatedApi()->writeEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", true);
 
 	auto message = tr(
 		"Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to "
@@ -48,7 +57,7 @@ void FacebookDepreceatedMessage::showIfNotSeen()
 		"Kadu using Your Account dialog"
 	);
 
-	MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu - Facebook"), message);
+	MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), tr("Kadu - Facebook"), message);
 }
 
 #include "moc_facebook-depreceated-message.cpp"

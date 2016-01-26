@@ -153,7 +153,7 @@ void ConfigSection::configTabDestroyed(QObject *obj)
 
 void ConfigSection::iconThemeChanged()
 {
-	ListWidgetItem->setIcon(Icon.icon());
+	ListWidgetItem->setIcon(m_iconsManager->iconByPath(Icon));
 }
 
 void ConfigSection::addFullPageWidget(const QString &name, QWidget *widget)

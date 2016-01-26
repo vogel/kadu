@@ -23,17 +23,22 @@
 #ifndef SCREENSHOT_TAKER_H
 #define SCREENSHOT_TAKER_H
 
+#include <QtCore/QPointer>
 #include <QtGui/QPixmap>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QLabel;
 class QPushButton;
 
 class ChatWidget;
+class IconsManager;
 
 class ScreenshotTaker : public QWidget
 {
 	Q_OBJECT
+
+	QPointer<IconsManager> m_iconsManager;
 
 	ChatWidget *CurrentChatWidget;
 
@@ -45,6 +50,9 @@ class ScreenshotTaker : public QWidget
 	void createLayout();
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
 	void takeShot();
 
 protected:

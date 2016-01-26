@@ -71,6 +71,11 @@ void JabberEditAccountWidget::setConfigurationManager(ConfigurationManager *conf
 	m_configurationManager = configurationManager;
 }
 
+void JabberEditAccountWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void JabberEditAccountWidget::setIdentityManager(IdentityManager *identityManager)
 {
 	m_identityManager = identityManager;
@@ -358,7 +363,7 @@ void JabberEditAccountWidget::sslActivated(int i)
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(JabberAccountDetails::Encryption_No));
 	else if (EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Legacy && !CustomHostPort->isChecked())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Legacy SSL is only available in combination with manual host/port."));
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Legacy SSL is only available in combination with manual host/port."));
 		EncryptionMode->setCurrentIndex(EncryptionMode->findData(JabberAccountDetails::Encryption_Auto));
 	}
 }
@@ -508,7 +513,7 @@ void JabberEditAccountWidget::cancel()
 
 void JabberEditAccountWidget::removeAccount()
 {
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Confrim Account Removal"),
+	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Confrim Account Removal"),
 	                        tr("Are you sure do you want to remove account %1 (%2)?")
 				.arg(account().accountIdentity().name())
 				.arg(account().id()));
@@ -529,11 +534,11 @@ void JabberEditAccountWidget::changePasssword()
 	auto protocol = static_cast<JabberProtocol *>(account().protocolHandler());
 	if (!protocol->isConnected())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Log in before changing password."), QMessageBox::Ok, this);
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Log in before changing password."), QMessageBox::Ok, this);
 		return;
 	}
 
-	JabberChangePasswordWindow *changePasswordWindow = new JabberChangePasswordWindow(protocol->changePasswordService(), account());
+	auto changePasswordWindow = m_injectedFactory->makeInjected<JabberChangePasswordWindow>(protocol->changePasswordService(), account());
 	connect(changePasswordWindow, SIGNAL(passwordChanged(const QString &)), this, SLOT(passwordChanged(const QString &)));
 	changePasswordWindow->show();
 }

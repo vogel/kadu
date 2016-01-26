@@ -58,6 +58,11 @@ JabberContactPersonalInfoWidget::~JabberContactPersonalInfoWidget()
 {
 }
 
+void JabberContactPersonalInfoWidget::setUrlOpener(UrlOpener *urlOpener)
+{
+	m_urlOpener = urlOpener;
+}
+
 void JabberContactPersonalInfoWidget::createGui()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
@@ -121,7 +126,7 @@ void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 
 void JabberContactPersonalInfoWidget::urlClicked(const QString &link)
 {
-	UrlOpener::openUrl(link.toUtf8());
+	m_urlOpener->openUrl(link.toUtf8());
 }
 
 #include "moc_jabber-contact-personal-info-widget.cpp"

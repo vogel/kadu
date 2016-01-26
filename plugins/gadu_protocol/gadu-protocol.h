@@ -54,6 +54,7 @@ class GaduIMTokenService;
 class GaduNotifyService;
 class GaduProtocolSocketNotifiers;
 class GaduUserDataService;
+class IconsManager;
 class NetworkProxyManager;
 class ProtocolGaduConnection;
 
@@ -85,6 +86,7 @@ private:
 	QPointer<AvatarManager> m_avatarManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<GaduServersManager> m_gaduServersManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<NetworkProxyManager> m_networkProxyManager;
 
 	ProtocolGaduConnection *Connection;
@@ -136,6 +138,7 @@ private:
 private slots:
 	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
 	INJEQT_INIT void init();
 

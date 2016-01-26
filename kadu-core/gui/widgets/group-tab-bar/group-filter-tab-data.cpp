@@ -21,6 +21,7 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include "group-filter-tab-data.h"
@@ -51,14 +52,14 @@ QString GroupFilterTabData::tabName() const
 	}
 }
 
-QIcon GroupFilterTabData::tabIcon() const
+QIcon GroupFilterTabData::tabIcon(IconsManager *iconsManager) const
 {
 	switch (Filter.filterType())
 	{
 		case GroupFilterRegular:
 			return Filter.group().showIcon() ? QIcon(Filter.group().icon()) : QIcon();
 		case GroupFilterEverybody:
-			return KaduIcon("x-office-address-book").icon();
+			return iconsManager->iconByPath(KaduIcon("x-office-address-book"));
 		case GroupFilterUngroupped:
 		case GroupFilterInvalid:
 		default:

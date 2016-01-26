@@ -32,6 +32,7 @@
 #include <injeqt/injeqt.h>
 
 class AbstractProtocolFilter;
+class InjectedFactory;
 class ProtocolsManager;
 class ProtocolsModelProxy;
 
@@ -51,11 +52,13 @@ public:
 	void removeFilter(AbstractProtocolFilter *filter);
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<ProtocolsManager> m_protocolsManager;
 
 	owned_qptr<ProtocolsModelProxy> m_proxyModel;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
 	INJEQT_INIT void init();
 

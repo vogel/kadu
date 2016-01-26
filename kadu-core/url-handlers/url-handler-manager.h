@@ -40,6 +40,7 @@ class StandardUrlDomVisitorProvider;
 class StandardUrlHandler;
 class UrlClipboardHtmlTransformer;
 class UrlHandler;
+class UrlOpener;
 
 class KADUAPI UrlHandlerManager : public QObject
 {
@@ -64,6 +65,7 @@ public:
 private:
 	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
 	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<UrlOpener> m_urlOpener;
 
 	QList<UrlHandler *> RegisteredHandlers;
 
@@ -76,9 +78,10 @@ private:
 	QScopedPointer<UrlClipboardHtmlTransformer> ClipboardTransformer;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

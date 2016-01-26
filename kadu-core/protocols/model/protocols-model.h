@@ -26,7 +26,9 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class IconsManager;
 class ProtocolFactory;
 class ProtocolsManager;
 
@@ -47,9 +49,12 @@ public:
 	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 private:
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<ProtocolsManager> m_protocolsManager;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
 	void protocolFactoryAboutToBeRegistered(ProtocolFactory *protocolFactory);
 	void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
 	void protocolFactoryAboutToBeUnregistered(ProtocolFactory *protocolFactory);

@@ -31,6 +31,7 @@ class BuddyContactsTableItem;
 class BuddyManager;
 class ConfigurationValueStateNotifier;
 class ContactManager;
+class IconsManager;
 class Roster;
 class SimpleConfigurationValueStateNotifier;
 
@@ -65,6 +66,7 @@ public:
 private:
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ContactManager> m_contactManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<Roster> m_roster;
 
 	Buddy ModelBuddy;
@@ -91,6 +93,7 @@ private:
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setRoster(Roster *roster);
 	INJEQT_INIT void init();
 

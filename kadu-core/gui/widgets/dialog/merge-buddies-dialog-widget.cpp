@@ -27,6 +27,7 @@
 #include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/widgets/select-talkable-combo-box.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
 #include "talkable/talkable-converter.h"
@@ -39,8 +40,6 @@
 MergeBuddiesDialogWidget::MergeBuddiesDialogWidget(Buddy buddy, const QString &message, QWidget *parent) :
 		DialogWidget(tr("Merge Buddies"), message, QPixmap(), parent), MyBuddy(buddy)
 {
-	QIcon icon = KaduIcon("kadu_icons/kadu").icon();
-	Pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)));
 }
 
 MergeBuddiesDialogWidget::~MergeBuddiesDialogWidget()
@@ -50,6 +49,11 @@ MergeBuddiesDialogWidget::~MergeBuddiesDialogWidget()
 void MergeBuddiesDialogWidget::setBuddyManager(BuddyManager *buddyManager)
 {
 	m_buddyManager = buddyManager;
+}
+
+void MergeBuddiesDialogWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void MergeBuddiesDialogWidget::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -69,6 +73,9 @@ void MergeBuddiesDialogWidget::setTalkableConverter(TalkableConverter *talkableC
 
 void MergeBuddiesDialogWidget::init()
 {
+	QIcon icon = m_iconsManager->iconByPath(KaduIcon("kadu_icons/kadu"));
+	Pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)));
+
 	createGui();
 }
 

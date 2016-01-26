@@ -25,8 +25,3 @@
 #include "misc/paths-provider.h"
 
 #include "kadu-icon.h"
-
-QIcon KaduIcon::icon() const
-{
-	return Core::instance()->iconsManager()->iconByPath(themePath(), path());
-}

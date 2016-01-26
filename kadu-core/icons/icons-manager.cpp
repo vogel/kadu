@@ -223,6 +223,11 @@ QIcon IconsManager::iconByPath(const QString &themePath, const QString &path, Al
 	return IconCache.value(themePath + path);
 }
 
+QIcon IconsManager::iconByPath(const KaduIcon &icon)
+{
+	return iconByPath(icon.themePath(), icon.path());
+}
+
 void IconsManager::clearCache()
 {
 	IconCache.clear();

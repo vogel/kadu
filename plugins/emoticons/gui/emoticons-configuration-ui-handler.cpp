@@ -48,6 +48,11 @@ EmoticonsConfigurationUiHandler::~EmoticonsConfigurationUiHandler()
 {
 }
 
+void EmoticonsConfigurationUiHandler::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 {
 	if (!ThemesList)
@@ -125,7 +130,7 @@ void EmoticonsConfigurationUiHandler::installEmoticonTheme()
 	}
 	else
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Installation failed"), tr(extractor.message().toLocal8Bit().data()), QMessageBox::Ok, Widget.data());
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Installation failed"), tr(extractor.message().toLocal8Bit().data()), QMessageBox::Ok, Widget.data());
 	}
 }
 

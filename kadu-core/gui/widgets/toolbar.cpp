@@ -770,7 +770,7 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 
 			if (!windowHasAction(actionDescription->name(), false))
 			{
-				QAction *action = new QAction(actionDescription->icon().icon(), actionDescription->text(), actionsMenu);
+				QAction *action = new QAction(m_iconsManager->iconByPath(actionDescription->icon()), actionDescription->text(), actionsMenu);
 				action->setData(actionDescription->name());
 
 				actions.append(action);
@@ -838,7 +838,7 @@ void ToolBar::removeToolbar()
 {
 	kdebugf();
 
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"), tr("Do you really want to remove this toolbar?"), this);
+	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Do you really want to remove this toolbar?"), this);
 	dialog->addButton(QMessageBox::Yes, tr("Remove toolbar"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 

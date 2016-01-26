@@ -32,6 +32,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "contacts/model/buddy-contact-model.h"
+#include "core/injected-factory.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
@@ -43,13 +44,21 @@ BuddyPersonalInfoConfigurationWidget::BuddyPersonalInfoConfigurationWidget(const
 		QWidget(parent), MyBuddy(buddy), InfoWidget(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-
-	createGui();
-	accountSelectionChanged(0);
 }
 
 BuddyPersonalInfoConfigurationWidget::~BuddyPersonalInfoConfigurationWidget()
 {
+}
+
+void BuddyPersonalInfoConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void BuddyPersonalInfoConfigurationWidget::init()
+{
+	createGui();
+	accountSelectionChanged(0);
 }
 
 void BuddyPersonalInfoConfigurationWidget::createGui()
@@ -62,7 +71,7 @@ void BuddyPersonalInfoConfigurationWidget::createGui()
 	QFormLayout *contactLayout = new QFormLayout(contactWidget);
 
 	ContactIdCombo = new QComboBox(contactWidget);
-	BuddyContactModel *contactModel = new BuddyContactModel(MyBuddy);
+	auto contactModel = m_injectedFactory->makeInjected<BuddyContactModel>(MyBuddy);
 	contactModel->setIncludeIdentityInDisplay(true);
 	ContactIdCombo->setModel(contactModel);
 	connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));

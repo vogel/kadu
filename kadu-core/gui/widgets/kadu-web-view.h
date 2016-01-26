@@ -36,6 +36,7 @@ class QUrl;
 
 class ClipboardHtmlTransformerService;
 class Configuration;
+class IconsManager;
 class ImageStorageService;
 class UrlHandlerManager;
 
@@ -45,6 +46,7 @@ class KADUAPI KaduWebView : public QWebView
 
 	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
 	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<ImageStorageService> m_imageStorageService;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 
@@ -59,6 +61,7 @@ class KADUAPI KaduWebView : public QWebView
 private slots:
 	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 

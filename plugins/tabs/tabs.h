@@ -52,6 +52,7 @@ class ChatWidget;
 class ChatWidgetManager;
 class ChatWidgetRepository;
 class ChatWidgetSetTitle;
+class IconsManager;
 class InjectedFactory;
 class MenuInventory;
 
@@ -71,6 +72,7 @@ class TabsManager : public StorableObject, ConfigurationAwareObject
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 
@@ -110,6 +112,7 @@ private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_INIT void init();

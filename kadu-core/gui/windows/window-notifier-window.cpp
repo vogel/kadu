@@ -49,9 +49,18 @@ WindowNotifierWindow::~WindowNotifierWindow()
 	emit closed(m_notification);
 }
 
+void WindowNotifierWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void WindowNotifierWindow::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
 {
 	m_notificationCallbackRepository = notificationCallbackRepository;
+}
+
+void WindowNotifierWindow::init()
+{
 	createGui();
 }
 
@@ -65,10 +74,10 @@ void WindowNotifierWindow::createGui()
 	auto labelsLayout = new QHBoxLayout{labels};
 	labelsLayout->setSpacing(10);
 
-	if (!m_notification->icon().icon().isNull())
+	if (!m_iconsManager->iconByPath(m_notification->icon()).isNull())
 	{
 		auto iconLabel = new QLabel{};
-		iconLabel->setPixmap(m_notification->icon().icon().pixmap(64, 64));
+		iconLabel->setPixmap(m_iconsManager->iconByPath(m_notification->icon()).pixmap(64, 64));
 		labelsLayout->addWidget(iconLabel);
 	}
 

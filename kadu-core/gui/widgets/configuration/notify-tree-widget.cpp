@@ -49,6 +49,11 @@ NotifyTreeWidgetDelegate::~NotifyTreeWidgetDelegate()
 {
 }
 
+void NotifyTreeWidgetDelegate::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void NotifyTreeWidgetDelegate::setNotificationManager(NotificationManager *notificationManager)
 {
 	m_notificationManager = notificationManager;
@@ -73,7 +78,7 @@ void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 	for (auto notifier : m_notificationManager->notifiers())
 	{
 		if (notifiers.contains(notifier->name()))
-			notifier->icon().icon().paint(painter, rect.left() + position + 4, rect.top() + (rect.height() - iconHeight) / 2, iconWidth, iconHeight);
+			m_iconsManager->iconByPath(notifier->icon()).paint(painter, rect.left() + position + 4, rect.top() + (rect.height() - iconHeight) / 2, iconWidth, iconHeight);
 		position += iconWidth + 4;
 	}
 

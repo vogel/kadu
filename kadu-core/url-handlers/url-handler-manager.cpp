@@ -23,6 +23,7 @@
 
 #include "dom/dom-processor-service.h"
 #include "gui/services/clipboard-html-transformer-service.h"
+#include "os/generic/url-opener.h"
 #include "url-handlers/mail-url-dom-visitor-provider.h"
 #include "url-handlers/mail-url-handler.h"
 #include "url-handlers/standard-url-dom-visitor-provider.h"
@@ -54,6 +55,11 @@ void UrlHandlerManager::setClipboardHtmlTransformerService(ClipboardHtmlTransfor
 void UrlHandlerManager::setDomProcessorService(DomProcessorService *domProcessorService)
 {
 	m_domProcessorService = domProcessorService;
+}
+
+void UrlHandlerManager::setUrlOpener(UrlOpener *urlOpener)
+{
+	m_urlOpener = urlOpener;
 }
 
 void UrlHandlerManager::init()
@@ -93,7 +99,7 @@ void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
 	{
 		if (handler->isUrlValid(url))
 		{
-			handler->openUrl(url, disableMenu);
+			handler->openUrl(m_urlOpener, url, disableMenu);
 			return;
 		}
 	}

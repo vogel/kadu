@@ -27,8 +27,10 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class AccountManager;
+class IconsManager;
 
 class AccountsModel : public QAbstractListModel, public KaduAbstractModel
 {
@@ -51,9 +53,13 @@ public:
 
 private:
 	QPointer<AccountManager> m_accountManager;
+	QPointer<IconsManager> m_iconsManager;
+
 	bool m_includeIdInDisplay;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
 	void accountUpdated(Account account);
 	void accountAboutToBeRegistered(Account account);
 	void accountRegistered(Account account);

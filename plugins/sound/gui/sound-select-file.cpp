@@ -23,9 +23,10 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/select-file.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include <QtWidgets/QHBoxLayout>
@@ -35,13 +36,32 @@ SoundSelectFile::SoundSelectFile(SoundManager *manager, QWidget *parent) :
 		QWidget{parent},
 		m_manager{manager}
 {
+}
+
+SoundSelectFile::~SoundSelectFile()
+{
+	stopSound();
+}
+
+void SoundSelectFile::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void SoundSelectFile::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SoundSelectFile::init()
+{
 	auto testButton = new QToolButton{this};
 	testButton->setAutoRaise(true);
-	testButton->setIcon(KaduIcon{"external_modules/mediaplayer-media-playback-play"}.icon());
+	testButton->setIcon(m_iconsManager->iconByPath(KaduIcon{"external_modules/mediaplayer-media-playback-play"}));
 	testButton->setIconSize(QSize{14, 14});
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
-	m_selectFile = new SelectFile{"audio", this};
+	m_selectFile = m_injectedFactory->makeInjected<SelectFile>("audio", this);
 	connect(m_selectFile, SIGNAL(fileChanged()), this, SIGNAL(fileChanged()));
 
 	auto layout = new QHBoxLayout{this};
@@ -49,11 +69,6 @@ SoundSelectFile::SoundSelectFile(SoundManager *manager, QWidget *parent) :
 	layout->setMargin(0);
 	layout->addWidget(testButton);
 	layout->addWidget(m_selectFile);
-}
-
-SoundSelectFile::~SoundSelectFile()
-{
-	stopSound();
 }
 
 QString SoundSelectFile::file() const

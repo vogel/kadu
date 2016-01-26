@@ -22,6 +22,7 @@
 
 #include "protocols-combo-box.h"
 
+#include "core/injected-factory.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "protocols/model/protocols-model-proxy.h"
@@ -39,6 +40,11 @@ ProtocolsComboBox::~ProtocolsComboBox()
 {
 }
 
+void ProtocolsComboBox::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void ProtocolsComboBox::setProtocolsManager(ProtocolsManager *protocolsManager)
 {
 	m_protocolsManager = protocolsManager;
@@ -50,7 +56,7 @@ void ProtocolsComboBox::init()
 
 	m_proxyModel = make_owned<ProtocolsModelProxy>(this);
 	auto chain = make_owned<ModelChain>(this);
-	chain->setBaseModel(make_owned<ProtocolsModel>(m_protocolsManager, chain));
+	chain->setBaseModel(m_injectedFactory->makeOwned<ProtocolsModel>(m_protocolsManager, chain));
 	chain->addProxyModel(m_proxyModel);
 	setUpModel(ProtocolRole, chain);
 }

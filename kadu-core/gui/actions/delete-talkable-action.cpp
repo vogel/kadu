@@ -31,6 +31,7 @@
 #include "gui/windows/buddy-delete-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 
 #include "delete-talkable-action.h"
 
@@ -52,6 +53,11 @@ DeleteTalkableAction::~DeleteTalkableAction()
 void DeleteTalkableAction::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
 	m_chatTypeManager = chatTypeManager;
+}
+
+void DeleteTalkableAction::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void DeleteTalkableAction::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -162,7 +168,7 @@ void DeleteTalkableAction::chatActionTriggered(ActionContext *context)
 	if (!chat)
 		return;
 
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Delete Chat"),
+	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Delete Chat"),
 	                        tr("<b>%1</b> chat will be deleted.<br/>Are you sure?").arg(chat.display()));
 	dialog->addButton(QMessageBox::Yes, tr("Delete chat"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));

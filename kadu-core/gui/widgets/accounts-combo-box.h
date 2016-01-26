@@ -30,6 +30,7 @@ class AbstractAccountFilter;
 class AccountManager;
 class AccountsModel;
 class AccountsProxyModel;
+class InjectedFactory;
 
 class AccountsComboBox : public ActionsComboBox
 {
@@ -49,12 +50,14 @@ public:
 
 private:
 	QPointer<AccountManager> m_accountManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	AccountsModel *Model;
 	AccountsProxyModel *ProxyModel;
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 };

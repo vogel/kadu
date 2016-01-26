@@ -26,6 +26,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddy-contacts-table-item.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"
@@ -56,6 +57,11 @@ void BuddyContactsTableModel::setBuddyManager(BuddyManager *buddyManager)
 void BuddyContactsTableModel::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
+}
+
+void BuddyContactsTableModel::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void BuddyContactsTableModel::setRoster(Roster *roster)
@@ -391,7 +397,7 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 					return item->itemAccount().accountIdentity().name();
 				case Qt::DecorationRole:
 					return item->itemAccount().protocolHandler()
-							? item->itemAccount().protocolHandler()->icon().icon()
+							? m_iconsManager->iconByPath(item->itemAccount().protocolHandler()->icon())
 							: QIcon();
 				case AccountRole:
 					return QVariant::fromValue<Account>(item->itemAccount());

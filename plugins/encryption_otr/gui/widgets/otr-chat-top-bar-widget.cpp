@@ -21,6 +21,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QPushButton>
 
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include "otr-policy.h"
@@ -31,12 +32,20 @@ OtrChatTopBarWidget::OtrChatTopBarWidget(const Contact &contact, QWidget *parent
 		QWidget(parent), MyContact(contact)
 {
 	setFocusPolicy(Qt::NoFocus);
-
-	createGui();
 }
 
 OtrChatTopBarWidget::~OtrChatTopBarWidget()
 {
+}
+
+void OtrChatTopBarWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void OtrChatTopBarWidget::init()
+{
+	createGui();
 }
 
 void OtrChatTopBarWidget::createGui()
@@ -89,12 +98,12 @@ void OtrChatTopBarWidget::trustLevelUpdated()
 
 	if (isPrivate)
 	{
-		OtrStatusButton->setIcon(KaduIcon("security-high").icon());
+		OtrStatusButton->setIcon(m_iconsManager->iconByPath(KaduIcon("security-high")));
 		StartAction->setText(tr("Refresh Private Conversation"));
 	}
 	else
 	{
-		OtrStatusButton->setIcon(KaduIcon("security-low").icon());
+		OtrStatusButton->setIcon(m_iconsManager->iconByPath(KaduIcon("security-low")));
 		StartAction->setText(tr("Start Private Conversation"));
 	}
 

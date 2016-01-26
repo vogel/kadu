@@ -149,6 +149,11 @@ void ChatWidget::setFormattedStringFactory(FormattedStringFactory *formattedStri
 	m_formattedStringFactory = formattedStringFactory;
 }
 
+void ChatWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void ChatWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -471,7 +476,7 @@ void ChatWidget::clearChatWindow()
 {
 	kdebugf();
 
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("Chat window will be cleared. Continue?"));
+	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), tr("Chat window will be cleared. Continue?"));
 	dialog->addButton(QMessageBox::Yes, tr("Clear chat window"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
@@ -499,7 +504,7 @@ void ChatWidget::sendMessage()
 
 	if (!CurrentChat.isConnected())
 	{
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"),
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), tr("Kadu"),
 				QString("%1\n%2%3")
 						.arg(tr("Cannot send message while being offline."))
 						.arg(tr("Account:"))

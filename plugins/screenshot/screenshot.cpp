@@ -25,9 +25,12 @@
 #include <QtCore/QDir>
 #include <QtCore/QTimer>
 
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "notification/notification-manager.h"
 #include "activate.h"
 #include "debug.h"
@@ -50,7 +53,7 @@ ScreenShot::ScreenShot(NotificationManager *notificationManager, ScreenShotConfi
 {
 	kdebugf();
 
-	MyScreenshotTaker = new ScreenshotTaker(MyChatWidget);
+	MyScreenshotTaker = Core::instance()->injectedFactory()->makeInjected<ScreenshotTaker>(MyChatWidget);
 	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap, bool)), this, SLOT(screenshotTaken(QPixmap, bool)));
 	connect(MyScreenshotTaker, SIGNAL(screenshotNotTaken()), this, SLOT(screenshotNotTaken()));
 
@@ -65,6 +68,11 @@ ScreenShot::~ScreenShot()
 
 	delete MyScreenshotTaker;
 	MyScreenshotTaker = 0;
+}
+
+void ScreenShot::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void ScreenShot::takeStandardShot()
@@ -109,14 +117,14 @@ void ScreenShot::screenshotNotTaken()
 
 void ScreenShot::screenshotReady(QPixmap p)
 {
-	auto saver = new ScreenShotSaver(m_screenShotConfiguration, this);
+	auto saver = new ScreenShotSaver(m_iconsManager, m_screenShotConfiguration, this);
 	auto screenShotPath = saver->saveScreenShot(p);
 
 	if (m_screenShotConfiguration->pasteImageClauseIntoChatWidget())
 	{
 		pasteImageClause(screenShotPath);
 		if (!checkImageSize(saver->size()))
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Image size is bigger than maximal image size for this chat."));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Image size is bigger than maximal image size for this chat."));
 	}
 
 	deleteLater();

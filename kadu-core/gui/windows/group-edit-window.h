@@ -21,10 +21,13 @@
 
 #include "buddies/group.h"
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
 
 class DeprecatedConfigurationApi;
 class GroupManager;
+class IconsManager;
 
 class QCheckBox;
 class QLabel;
@@ -43,6 +46,8 @@ protected:
 	virtual void accept() override;
 
 private:
+	QPointer<IconsManager> m_iconsManager;
+
 	GroupManager *m_groupManager;
 	DeprecatedConfigurationApi *m_configuration;
 
@@ -66,6 +71,9 @@ private:
 	void storeValues();
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
 	void selectIcon();
 	void dataChanged();
 

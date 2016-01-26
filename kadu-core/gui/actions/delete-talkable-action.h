@@ -30,6 +30,7 @@
 class Buddy;
 class ChatTypeManager;
 class Chat;
+class IconsManager;
 class InjectedFactory;
 class Myself;
 
@@ -50,6 +51,7 @@ protected:
 
 private:
 	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<Myself> m_myself;
 
@@ -68,6 +70,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_INIT void init();

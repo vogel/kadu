@@ -34,6 +34,7 @@
 #include "gui/widgets/buddy-contacts-table-model-proxy.h"
 #include "gui/widgets/buddy-contacts-table-model.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "identities/identity.h"
 #include "model/roles.h"
 
@@ -52,6 +53,11 @@ BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) :
 
 BuddyContactsTable::~BuddyContactsTable()
 {
+}
+
+void BuddyContactsTable::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void BuddyContactsTable::createGui()
@@ -210,7 +216,7 @@ void BuddyContactsTable::removeClicked()
 		return;
 	}
 
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"),
+	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
 			tr("Are you sure do you want to delete this contact from buddy <b>%1</b>?").arg(MyBuddy.display()));
 	dialog->addButton(QMessageBox::Yes, tr("Delete contact"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));

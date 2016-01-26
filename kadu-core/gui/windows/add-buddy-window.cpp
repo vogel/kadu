@@ -48,6 +48,7 @@
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-talkable-combo-box.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"
@@ -103,6 +104,11 @@ void AddBuddyWindow::setBuddyStorage(BuddyStorage *buddyStorage)
 void AddBuddyWindow::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
+}
+
+void AddBuddyWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void AddBuddyWindow::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -291,10 +297,10 @@ void AddBuddyWindow::createGui()
 
 void AddBuddyWindow::addFakeAccountsToComboBox()
 {
-	MobileAccountAction = new QAction(KaduIcon("phone").icon(), tr("Mobile"), AccountCombo);
+	MobileAccountAction = new QAction(m_iconsManager->iconByPath(KaduIcon("phone")), tr("Mobile"), AccountCombo);
 	AccountCombo->addAfterAction(MobileAccountAction);
 
-	EmailAccountAction = new QAction(KaduIcon("mail-message-new").icon(), tr("E-mail"), AccountCombo);
+	EmailAccountAction = new QAction(m_iconsManager->iconByPath(KaduIcon("mail-message-new")), tr("E-mail"), AccountCombo);
 	AccountCombo->addAfterAction(EmailAccountAction);
 }
 

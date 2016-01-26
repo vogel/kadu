@@ -25,6 +25,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include "password-dialog-widget.h"
@@ -32,14 +33,23 @@
 PasswordDialogWidget::PasswordDialogWidget(const QString &message, QVariant data, QWidget *parent) :
 		DialogWidget(tr("Incorrect password"), message, QPixmap(), parent), Data(data)
 {
-	QIcon icon = KaduIcon("dialog-password").icon();
-	Pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)));
-
-	createGui();
 }
 
 PasswordDialogWidget::~PasswordDialogWidget()
 {
+}
+
+void PasswordDialogWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void PasswordDialogWidget::init()
+{
+	QIcon icon = m_iconsManager->iconByPath(KaduIcon("dialog-password"));
+	Pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)));
+
+	createGui();
 }
 
 void PasswordDialogWidget::createGui()

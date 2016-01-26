@@ -41,6 +41,7 @@
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
 #include "talkable/filter/mobile-talkable-filter.h"
@@ -83,6 +84,11 @@ void SmsDialog::setBuddyManager(BuddyManager *buddyManager)
 void SmsDialog::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void SmsDialog::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void SmsDialog::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -179,7 +185,7 @@ void SmsDialog::createGui()
 	mainLayout->addWidget(buttons);
 
 	SendButton = new QPushButton(this);
-	SendButton->setIcon(KaduIcon("go-next").icon());
+	SendButton->setIcon(m_iconsManager->iconByPath(KaduIcon("go-next")));
 	SendButton->setText(tr("&Send"));
 	SendButton->setDefault(true);
 	SendButton->setMaximumWidth(200);
@@ -306,7 +312,7 @@ void SmsDialog::sendSms()
 	{
 		if (m_configuration->deprecatedApi()->readEntry("SMS", "SmsApp").isEmpty())
 		{
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
 					tr("SMS application was not specified. Visit the configuration section"), QMessageBox::Ok, this);
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
@@ -317,7 +323,7 @@ void SmsDialog::sendSms()
 	connect(sender, SIGNAL(gatewayAssigned(QString, QString)), this, SLOT(gatewayAssigned(QString, QString)));
 	sender->setSignature(SignatureEdit->text());
 
-	ProgressWindow *window = new ProgressWindow(tr("Sending SMS..."));
+	auto window = m_injectedFactory->makeInjected<ProgressWindow>(tr("Sending SMS..."));
 	window->setCancellable(true);
 	window->show();
 

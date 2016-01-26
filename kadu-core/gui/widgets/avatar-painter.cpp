@@ -32,7 +32,7 @@
 
 #include "avatar-painter.h"
 
-AvatarPainter::AvatarPainter(const TalkableDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index) :
+AvatarPainter::AvatarPainter(TalkableDelegateConfiguration *configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index) :
 		Configuration(configuration), Option(option), AvatarRect(avatarRect), Index(index)
 {
 	Avatar = Index.data(AvatarRole).value<QPixmap>();
@@ -40,7 +40,7 @@ AvatarPainter::AvatarPainter(const TalkableDelegateConfiguration &configuration,
 
 bool AvatarPainter::greyOut()
 {
-	if (!Configuration.avatarGreyOut())
+	if (!Configuration->avatarGreyOut())
 		return false;
 
 	Contact contact = Index.data(ContactRole).value<Contact>();
@@ -52,7 +52,7 @@ QString AvatarPainter::cacheKey()
 	return QString("msi-%1-%2,%3,%4")
 			.arg(Avatar.cacheKey())
 			.arg(greyOut())
-			.arg(Configuration.avatarBorder())
+			.arg(Configuration->avatarBorder())
 			.arg(Option.state & QStyle::State_Selected ? 1 : 0);
 }
 
@@ -127,13 +127,13 @@ void AvatarPainter::doPaint(QPainter *painter, const QSize &size)
 	painter->setClipping(false);
 
 	// draw avatar border
-	if (Configuration.avatarBorder())
+	if (Configuration->avatarBorder())
 		painter->drawRoundedRect(displayRect, radius, radius);
 }
 
 void AvatarPainter::paint(QPainter *painter)
 {
-	if (!Configuration.showAvatars() || AvatarRect.isEmpty() || Avatar.isNull())
+	if (!Configuration->showAvatars() || AvatarRect.isEmpty() || Avatar.isNull())
 		return;
 
 	paintFromCache(painter);

@@ -38,9 +38,9 @@ bool MailUrlHandler::isUrlValid(const QByteArray &url)
 	return MailRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void MailUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
+void MailUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu)
 {
 	Q_UNUSED(disableMenu)
 
-	UrlOpener::openEmail(url);
+	urlOpener->openEmail(url);
 }

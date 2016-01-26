@@ -25,10 +25,10 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/injected-factory.h"
 #include "gui/windows/window-notifier-window.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-manager.h"
-#include "notification/notification-callback-repository.h"
 #include "notification/notification/notification.h"
 #include "activate.h"
 
@@ -52,9 +52,9 @@ void WindowNotifier::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void WindowNotifier::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
+void WindowNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_notificationCallbackRepository = notificationCallbackRepository;
+	m_injectedFactory = injectedFactory;
 }
 
 void WindowNotifier::init()
@@ -66,8 +66,7 @@ void WindowNotifier::notify(Notification *notification)
 {
 	notification->acquire(this);
 
-	auto window = new WindowNotifierWindow{notification};
-	window->setNotificationCallbackRepository(m_notificationCallbackRepository);
+	auto window = m_injectedFactory->makeInjected<WindowNotifierWindow>(notification);
 
 	connect(window, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 	window->show();

@@ -30,6 +30,7 @@ class QVariant;
 
 class ChatTypeManager;
 class Chat;
+class IconsManager;
 
 class KADUAPI ChatDataExtractor : public QObject
 {
@@ -43,8 +44,10 @@ public:
 
 private:
 	QPointer<ChatTypeManager> m_chatTypeManager;
+	QPointer<IconsManager> m_iconsManager;
 
 private slots:
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
 };

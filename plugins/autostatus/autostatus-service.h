@@ -28,6 +28,7 @@
 
 class AutostatusConfiguration;
 class AutostatusStatusChanger;
+class IconsManager;
 
 class QTimer;
 
@@ -49,6 +50,7 @@ public:
 private:
 	QPointer<AutostatusConfiguration> m_autostatusConfiguration;
 	QPointer<AutostatusStatusChanger> m_autostatusStatusChanger;
+	QPointer<IconsManager> m_iconsManager;
 
 	QTimer *Timer;
 
@@ -63,6 +65,7 @@ private:
 private slots:
 	INJEQT_SET void setAutostatusConfiguration(AutostatusConfiguration *autostatusConfiguration);
 	INJEQT_SET void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
 	//! This slot is called on timeout
 	void changeStatus();

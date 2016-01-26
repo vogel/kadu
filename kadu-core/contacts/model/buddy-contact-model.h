@@ -19,29 +19,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_CONTACT_MODEL_H
-#define BUDDY_CONTACT_MODEL_H
-
-#include <QtCore/QAbstractListModel>
-#include <QtCore/QModelIndex>
+#pragma once
 
 #include "buddies/buddy.h"
 
+#include <QtCore/QAbstractListModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class Account;
 class Contact;
+class IconsManager;
 
 class BuddyContactModel : public QAbstractListModel
 {
 	Q_OBJECT
-
-	Buddy SourceBuddy;
-	bool IncludeIdentityInDisplay;
-
-private slots:
-	void contactAboutToBeAdded(Contact data);
-	void contactAdded(Contact data);
-	void contactAboutToBeRemoved(Contact data);
-	void contactRemoved(Contact data);
 
 public:
 	explicit BuddyContactModel(Buddy contact, QObject *parent = nullptr);
@@ -58,6 +51,18 @@ public:
 
 	void setIncludeIdentityInDisplay(bool includeIdentityInDisplay);
 
-};
+private:
+	QPointer<IconsManager> m_iconsManager;
 
-#endif // BUDDY_CONTACT_MODEL_H
+	Buddy SourceBuddy;
+	bool IncludeIdentityInDisplay;
+
+private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
+	void contactAboutToBeAdded(Contact data);
+	void contactAdded(Contact data);
+	void contactAboutToBeRemoved(Contact data);
+	void contactRemoved(Contact data);
+
+};

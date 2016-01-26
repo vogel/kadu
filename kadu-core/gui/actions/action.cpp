@@ -109,7 +109,7 @@ void Action::updateIcon()
 
 void Action::setIcon(const KaduIcon &icon)
 {
-	QAction::setIcon(icon.icon());
+	QAction::setIcon(m_iconsManager->iconByPath(icon));
 }
 
 void disableEmptyContacts(Action *action)

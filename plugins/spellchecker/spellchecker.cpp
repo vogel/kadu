@@ -110,6 +110,11 @@ void SpellChecker::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepos
 	m_chatWidgetRepository = chatWidgetRepository;
 }
 
+void SpellChecker::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void SpellChecker::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -267,7 +272,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 
 	if (!ok)
 	{
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Could not find dictionary for %1 language.").arg(name)
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), tr("Kadu"), tr("Could not find dictionary for %1 language.").arg(name)
 				+ (qstrlen(errorMsg) > 0 ? QString(" %1: %2").arg(tr("Details"), errorMsg) : QString()));
 		return false;
 	}

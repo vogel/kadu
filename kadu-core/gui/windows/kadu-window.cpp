@@ -129,6 +129,11 @@ void KaduWindow::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
 	m_urlHandlerManager = urlHandlerManager;
 }
 
+void KaduWindow::setUrlOpener(UrlOpener *urlOpener)
+{
+	m_urlOpener = urlOpener;
+}
+
 void KaduWindow::init()
 {
 	new TaskbarProgress{m_fileTransferManager, this};
@@ -330,7 +335,7 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 
 	if (buddy.contacts().isEmpty() && buddy.mobile().isEmpty() && !buddy.email().isEmpty())
 		if (buddy.email().indexOf(m_urlHandlerManager->mailRegExp()) == 0)
-			UrlOpener::openEmail(buddy.email().toUtf8());
+			m_urlOpener->openEmail(buddy.email().toUtf8());
 
 	emit talkableActivated(talkable);
 }

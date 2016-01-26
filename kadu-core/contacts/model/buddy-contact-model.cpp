@@ -25,6 +25,7 @@
 #include "accounts/account.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"
@@ -48,6 +49,11 @@ BuddyContactModel::BuddyContactModel(Buddy buddy, QObject *parent) :
 BuddyContactModel::~BuddyContactModel()
 {
 	disconnect(SourceBuddy, 0, this, 0);
+}
+
+void BuddyContactModel::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 int BuddyContactModel::columnCount(const QModelIndex &parent) const
@@ -76,7 +82,7 @@ QVariant BuddyContactModel::data(const QModelIndex &index, int role) const
 
 		case Qt::DecorationRole:
 			return data.contactAccount().protocolHandler()
-					? data.contactAccount().protocolHandler()->icon().icon()
+					? m_iconsManager->iconByPath(data.contactAccount().protocolHandler()->icon())
 					: QIcon();
 
 		case ContactRole:

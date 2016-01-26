@@ -36,6 +36,7 @@ class QTextEdit;
 
 class Configuration;
 class DescriptionManager;
+class IconsManager;
 class Myself;
 class Parser;
 class StatusContainer;
@@ -48,6 +49,7 @@ class KADUAPI StatusWindow : public QDialog, DesktopAwareObject
 
 	QPointer<Configuration> m_configuration;
 	QPointer<DescriptionManager> m_descriptionManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<Myself> m_myself;
 	QPointer<Parser> m_parser;
 	QPointer<StatusSetter> m_statusSetter;
@@ -80,6 +82,7 @@ class KADUAPI StatusWindow : public QDialog, DesktopAwareObject
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDescriptionManager(DescriptionManager *descriptionManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);

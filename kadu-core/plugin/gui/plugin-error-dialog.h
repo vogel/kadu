@@ -17,21 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGIN_ERROR_DIALOG_H
-#define PLUGIN_ERROR_DIALOG_H
-
-#include <QtWidgets/QDialog>
+#pragma once
 
 #include "os/generic/desktop-aware-object.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
+
+class IconsManager;
 
 class QCheckBox;
 
 class PluginErrorDialog : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
-
-	QString m_pluginName;
-	QCheckBox *LoadInFutureCheck;
 
 public:
 	PluginErrorDialog(QString pluginName, const QString &text, bool offerLoadInFutureChoice, QWidget *parent = nullptr);
@@ -43,6 +43,16 @@ public slots:
 signals:
 	void accepted(const QString &pluginName, bool loadInFuture);
 
-};
+private:
+	QPointer<IconsManager> m_iconsManager;
 
-#endif // PLUGIN_ERROR_DIALOG_H
+	QString m_pluginName;
+	QString m_text;
+	bool m_offerLoadInFutureChoice;
+	QCheckBox *LoadInFutureCheck;
+
+private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
+};

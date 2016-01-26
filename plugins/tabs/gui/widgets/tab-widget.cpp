@@ -40,6 +40,7 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with-service.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/unread-message-repository.h"
 #include "misc/misc.h"
@@ -71,6 +72,11 @@ void TabWidget::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 void TabWidget::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void TabWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void TabWidget::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -120,7 +126,7 @@ void TabWidget::init()
 
 	//button for new chat from last conversations
 	OpenRecentChatButton = new QToolButton(OpenChatButtonsWidget);
-	OpenRecentChatButton->setIcon(KaduIcon("internet-group-chat").icon());
+	OpenRecentChatButton->setIcon(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")));
 	OpenRecentChatButton->setToolTip(tr("Recent Chats"));
 	OpenRecentChatButton->setAutoRaise(true);
 	connect(OpenRecentChatButton, SIGNAL(clicked()), SLOT(openRecentChatsMenu()));
@@ -132,7 +138,7 @@ void TabWidget::init()
 
 	//button for opening chat
 	QToolButton *openChatButton = new QToolButton(OpenChatButtonsWidget);
-	openChatButton->setIcon(KaduIcon("mail-message-new").icon());
+	openChatButton->setIcon(m_iconsManager->iconByPath(KaduIcon("mail-message-new")));
 	openChatButton->setToolTip(tr("Open Chat with..."));
 	openChatButton->setAutoRaise(true);
 	connect(openChatButton, SIGNAL(clicked()), SLOT(newChat()));
@@ -152,7 +158,7 @@ void TabWidget::init()
 	TabsMenu = new QMenu(this);
 	connect(TabsMenu, SIGNAL(triggered(QAction *)), this, SLOT(tabsMenuSelected(QAction *)));
 	TabsListButton = new QToolButton(RightCornerWidget);
-	TabsListButton->setIcon(KaduIcon("internet-group-chat").icon());
+	TabsListButton->setIcon(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")));
 	TabsListButton->setToolTip(tr("Tabs"));
 	TabsListButton->setAutoRaise(true);
 	TabsListButton->setVisible(false);
@@ -163,7 +169,7 @@ void TabWidget::init()
 
 	//przycisk zamkniecia aktywnej karty znajdujacy sie w prawym gornym rogu
 	CloseChatButton = new QToolButton(this);
-	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
+	CloseChatButton->setIcon(m_iconsManager->iconByPath(KaduIcon("kadu_icons/tab-remove")));
 	CloseChatButton->setToolTip(tr("Close Tab"));
 	CloseChatButton->setAutoRaise(true);
 	CloseChatButton->setVisible(false);
@@ -250,7 +256,7 @@ void TabWidget::closeTab(ChatWidget *chatWidget)
 
 		if (QDateTime::currentDateTime() < chatWidget->lastReceivedMessageTime().addSecs(period))
 		{
-			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("New message received, close window anyway?"));
+			MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), tr("New message received, close window anyway?"));
 			dialog->addButton(QMessageBox::Yes, tr("Close window"));
 			dialog->addButton(QMessageBox::No, tr("Cancel"));
 
@@ -530,7 +536,7 @@ void TabWidget::configurationUpdated()
 {
 	triggerCompositingStateChanged();
 
-	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
+	CloseChatButton->setIcon(m_iconsManager->iconByPath(KaduIcon("kadu_icons/tab-remove")));
 
 	setTabsClosable(m_configuration->deprecatedApi()->readBoolEntry("Tabs", "CloseButtonOnTab"));
 	config_oldStyleClosing = m_configuration->deprecatedApi()->readBoolEntry("Tabs", "OldStyleClosing");

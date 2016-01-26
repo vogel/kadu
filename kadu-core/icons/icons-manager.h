@@ -50,6 +50,7 @@ public:
 
 	QString iconPath(const KaduIcon &icon, AllowEmpty allowEmpty = EmptyNotAllowed) const;
 	QIcon iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty = EmptyNotAllowed);
+	QIcon iconByPath(const KaduIcon &icon);
 
 	QSize getIconsSize();
 

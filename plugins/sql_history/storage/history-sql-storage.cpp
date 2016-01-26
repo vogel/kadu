@@ -50,6 +50,7 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
+#include "icons/icons-manager.h"
 #include "message/message.h"
 #include "message/sorted-messages.h"
 #include "misc/misc.h"
@@ -126,6 +127,11 @@ void HistorySqlStorage::setFormattedStringFactory(FormattedStringFactory *format
 	m_formattedStringFactory = formattedStringFactory;
 }
 
+void HistorySqlStorage::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void HistorySqlStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -147,7 +153,7 @@ void HistorySqlStorage::init()
 
 	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"),
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
 				tr("It seems your Qt library does not provide support for selected database. "
 				   "Please install Qt with %1 plugin.").arg("QSQLITE"));
 		return;
@@ -180,7 +186,7 @@ void HistorySqlStorage::ensureProgressWindowReady()
 	if (ImportProgressWindow)
 		return;
 
-	ImportProgressWindow = new ProgressWindow(tr("Preparing history database..."));
+	ImportProgressWindow = m_injectedFactory->makeInjected<ProgressWindow>(tr("Preparing history database..."));
 	ImportProgressWindow->setWindowTitle(tr("History"));
 	ImportProgressWindow->show();
 }

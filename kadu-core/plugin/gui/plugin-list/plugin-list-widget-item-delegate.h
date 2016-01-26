@@ -25,12 +25,15 @@
 
 #include "plugin/gui/plugin-list/plugin-list-view-delegate.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 #include <memory>
+
+class IconsManager;
+class PluginListWidget;
 
 class QCheckBox;
 class QPushButton;
-
-class PluginListWidget;
 
 class PluginListWidgetItemDelegate : public PluginListWidgetDelegate
 {
@@ -48,6 +51,8 @@ protected:
 	virtual void updateItemWidgets(const QList<QWidget *> widgets, const QStyleOptionViewItem &option, const QPersistentModelIndex &index) const override;
 
 private:
+	QPointer<IconsManager> m_iconsManager;
+
 	std::unique_ptr<QCheckBox> m_checkBox;
 	std::unique_ptr<QPushButton> m_pushButton;
 	PluginListWidget *m_pluginSelector;
@@ -56,6 +61,9 @@ private:
 	QFont subtitleFont(const QFont &baseFont) const;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
 	void slotStateChanged(bool state);
 	void slotAboutClicked();
 

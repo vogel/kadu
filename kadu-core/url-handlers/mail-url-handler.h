@@ -34,7 +34,7 @@ public:
 	MailUrlHandler();
 
 	virtual bool isUrlValid(const QByteArray &url);
-	virtual void openUrl(const QByteArray &url, bool disableMenu = false);
+	virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false);
 
 	const QRegExp & mailRegExp() { return MailRegExp; }
 

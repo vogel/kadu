@@ -49,9 +49,11 @@ public:
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<NotificationManager> m_notificationManager;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };

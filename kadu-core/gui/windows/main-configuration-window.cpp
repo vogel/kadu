@@ -127,6 +127,11 @@ void MainConfigurationWindow::setConfigurationUiHandlerRepository(ConfigurationU
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
+void MainConfigurationWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void MainConfigurationWindow::setIconThemeManager(IconThemeManager *iconThemeManager)
 {
 	m_iconThemeManager = iconThemeManager;
@@ -303,7 +308,7 @@ void MainConfigurationWindow::installIconTheme()
 	}
 	else
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Installation failed"), tr(extractor.message().toLocal8Bit().data()), QMessageBox::Ok, widget());
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Installation failed"), tr(extractor.message().toLocal8Bit().data()), QMessageBox::Ok, widget());
 	}
 }
 
@@ -346,7 +351,7 @@ void MainConfigurationWindow::setIconThemes()
 		{
 			KaduIcon kaduIcon(iconPaths.at(i));
 			kaduIcon.setThemePath(theme.path());
-			QIcon icon = kaduIcon.icon();
+			QIcon icon = m_iconsManager->iconByPath(kaduIcon);
 			icon.paint(&iconPainter, 2 + 36 * i, 2, 32, 32);
 		}
 

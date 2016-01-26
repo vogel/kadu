@@ -18,14 +18,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_CONTACT_PERSONAL_INFO_WIDGET_H
-#define JABBER_CONTACT_PERSONAL_INFO_WIDGET_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "contacts/contact.h"
-
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
+class UrlOpener;
 
 class QComboBox;
 class QLabel;
@@ -33,6 +35,8 @@ class QLabel;
 class JabberContactPersonalInfoWidget : public QWidget
 {
 	Q_OBJECT
+
+	QPointer<UrlOpener> m_urlOpener;
 
 	QLabel *FullNameText;
 	QLabel *FamilyNameText;
@@ -47,6 +51,8 @@ class JabberContactPersonalInfoWidget : public QWidget
 	void reset();
 
 private slots:
+	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
+
 	void personalInfoAvailable(Buddy buddy);
 	void urlClicked(const QString &link);
 
@@ -55,5 +61,3 @@ public:
 	virtual ~JabberContactPersonalInfoWidget();
 
 };
-
-#endif // JABBER_CONTACT_PERSONAL_INFO_WIDGET_H

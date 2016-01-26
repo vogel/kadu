@@ -20,6 +20,8 @@
 #include "file-transfer-window.h"
 
 #include "configuration/config-file-variant-wrapper.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/gui/file-transfer-widget.h"
@@ -116,7 +118,7 @@ void FileTransferWindow::keyPressEvent(QKeyEvent *e)
 
 void FileTransferWindow::fileTransferAdded(FileTransfer fileTransfer)
 {
-	auto ftm = new FileTransferWidget{m_manager, fileTransfer, m_innerFrame.get()};
+	auto ftm = Core::instance()->injectedFactory()->makeInjected<FileTransferWidget>(m_manager, fileTransfer, m_innerFrame.get());
 	m_transfersLayout->addWidget(ftm);
 	m_widgets.append(ftm);
 

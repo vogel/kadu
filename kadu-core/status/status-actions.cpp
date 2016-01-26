@@ -136,7 +136,7 @@ QAction * StatusActions::createSeparator()
 QAction * StatusActions::createStatusAction(const StatusTypeData &typeData)
 {
 	KaduIcon icon = MyStatusContainer->statusIcon(Status{m_statusTypeManager, typeData.type()});
-	QAction *statusAction = ChangeStatusActionGroup->addAction(icon.icon(), IncludePrefix
+	QAction *statusAction = ChangeStatusActionGroup->addAction(m_iconsManager->iconByPath(icon), IncludePrefix
 			? MyStatusContainer->statusNamePrefix() + typeData.displayName()
 			: typeData.displayName());
 	statusAction->setCheckable(true);
@@ -182,7 +182,7 @@ void StatusActions::statusUpdated(StatusContainer *container)
 		StatusType statusType = action->data().value<StatusType>();
 		if (StatusTypeNone == statusType)
 			continue;
-		action->setIcon(MyStatusContainer->statusIcon(Status{m_statusTypeManager, statusType}).icon());
+		action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{m_statusTypeManager, statusType})));
 
 		if (!MyStatusContainer->isStatusSettingInProgress())
 		{
@@ -205,7 +205,7 @@ void StatusActions::iconThemeChanged()
 		if (StatusTypeNone == statusType)
 			continue;
 
-		action->setIcon(MyStatusContainer->statusIcon(Status{m_statusTypeManager, statusType}).icon());
+		action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{m_statusTypeManager, statusType})));
 	}
 }
 

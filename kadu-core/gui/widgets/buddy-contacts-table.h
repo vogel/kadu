@@ -19,25 +19,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_CONTACTS_TABLE_H
-#define BUDDY_CONTACTS_TABLE_H
-
-#include <QtCore/QModelIndex>
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "buddies/buddy.h"
 
-class QPushButton;
-class QTableView;
+#include <QtCore/QModelIndex>
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class BuddyContactsTableDelegate;
 class BuddyContactsTableModel;
 class BuddyContactsTableModelProxy;
 class ConfigurationValueStateNotifier;
+class IconsManager;
+
+class QPushButton;
+class QTableView;
 
 class BuddyContactsTable : public QWidget
 {
 	Q_OBJECT
+
+	QPointer<IconsManager> m_iconsManager;
 
 	Buddy MyBuddy;
 
@@ -55,6 +59,8 @@ class BuddyContactsTable : public QWidget
 	void createGui();
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
 	void viewSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
 
 	void moveUpClicked();
@@ -72,5 +78,3 @@ public:
 	void save();
 
 };
-
-#endif // BUDDY_CONTACTS_TABLE_H

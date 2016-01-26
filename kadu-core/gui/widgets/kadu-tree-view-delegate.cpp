@@ -21,6 +21,7 @@
 #include <QtWidgets/QAbstractItemView>
 
 #include "accounts/account-manager.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/talkable-painter.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "identities/identity-manager.h"
@@ -29,7 +30,7 @@
 #include "kadu-tree-view-delegate.h"
 
 KaduTreeViewDelegate::KaduTreeViewDelegate(TalkableTreeView *parent) :
-		QItemDelegate(parent), Configuration(parent)
+		QItemDelegate(parent)
 {
 }
 
@@ -47,8 +48,14 @@ void KaduTreeViewDelegate::setIdentityManager(IdentityManager *identityManager)
 	m_identityManager = identityManager;
 }
 
+void KaduTreeViewDelegate::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void KaduTreeViewDelegate::init()
 {
+	Configuration = m_injectedFactory->makeOwned<TalkableDelegateConfiguration>(static_cast<TalkableTreeView*>(parent()), this);
 	// force initial signal/slot connection to happen
 	ShowIdentityNameIfMany = false;
 	setShowIdentityNameIfMany(true);
@@ -65,7 +72,7 @@ void KaduTreeViewDelegate::updateShowIdentityName()
 			if (++activeIdentitiesCount > 1)
 				break;
 
-	Configuration.setShowIdentityName(activeIdentitiesCount > 1);
+	Configuration->setShowIdentityName(activeIdentitiesCount > 1);
 }
 
 void KaduTreeViewDelegate::setShowIdentityNameIfMany(bool showIdentityNameIfMany)
@@ -84,13 +91,13 @@ void KaduTreeViewDelegate::setShowIdentityNameIfMany(bool showIdentityNameIfMany
 	else
 	{
 		disconnect(m_accountManager, 0, this, 0);
-		Configuration.setShowIdentityName(false);
+		Configuration->setShowIdentityName(false);
 	}
 }
 
 void KaduTreeViewDelegate::setUseConfigurationColors(bool use)
 {
-	Configuration.setUseConfigurationColors(use);
+	Configuration->setUseConfigurationColors(use);
 }
 
 QStyleOptionViewItemV4 KaduTreeViewDelegate::getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const

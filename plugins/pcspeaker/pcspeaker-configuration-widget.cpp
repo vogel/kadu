@@ -37,9 +37,22 @@ PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(PCSpeakerNotifier *no
 		NotifierConfigurationWidget{parent},
 		m_notifier{notifier}
 {
+}
+
+PCSpeakerConfigurationWidget::~PCSpeakerConfigurationWidget()
+{
+}
+
+void PCSpeakerConfigurationWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void PCSpeakerConfigurationWidget::init()
+{
 	soundEdit = new QLineEdit(this);
 	soundEdit->setToolTip(tr("Put the played sounds separate by space, _ for pause, eg. D2 C1# G0"));
-	testButton = new QPushButton(KaduIcon("external_modules/mediaplayer-media-playback-play").icon(), QString(), this);
+	testButton = new QPushButton(m_iconsManager->iconByPath(KaduIcon("external_modules/mediaplayer-media-playback-play")), QString(), this);
 	testButton->setIconSize(QSize{14, 14});
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
@@ -48,11 +61,8 @@ PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(PCSpeakerNotifier *no
 	layout->addWidget(testButton);
 	layout->addWidget(soundEdit);
 
-	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
-}
+	static_cast<NotifyGroupBox *>(parent())->addWidget(this);
 
-PCSpeakerConfigurationWidget::~PCSpeakerConfigurationWidget()
-{
 }
 
 void PCSpeakerConfigurationWidget::saveNotifyConfigurations()

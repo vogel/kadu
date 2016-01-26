@@ -32,7 +32,7 @@
  */
 
 class Configuration;
-class NotificationCallbackRepository;
+class InjectedFactory;
 
 class WindowNotifier : public QObject, public Notifier
 {
@@ -47,13 +47,13 @@ public:
 
 private:
 	QPointer<Configuration> m_configuration;
-	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	void createDefaultConfiguration();
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void notificationClosed(Notification *notification);

@@ -33,6 +33,7 @@
 #include "dom/dom-processor.h"
 #include "dom/ignore-links-dom-visitor.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-container.h"
@@ -83,6 +84,11 @@ void JabberUrlHandler::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
+void JabberUrlHandler::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 bool JabberUrlHandler::isUrlValid(const QByteArray &url)
 {
 	if (url == "xmpp:")
@@ -91,8 +97,10 @@ bool JabberUrlHandler::isUrlValid(const QByteArray &url)
 	return m_jabberRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
+void JabberUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu)
 {
+	Q_UNUSED(urlOpener);
+
 	QVector<Account> jabberAccounts = m_accountManager->byProtocolName("jabber");
 	if (jabberAccounts.isEmpty())
 		return;
@@ -125,7 +133,7 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 			ids.append(account.id());
 			ids.append(jabberId);
 
-			menu.addAction(account.statusContainer()->statusIcon().icon(), account.id())->setData(ids);
+			menu.addAction(m_iconsManager->iconByPath(account.statusContainer()->statusIcon()), account.id())->setData(ids);
 		}
 
 		connect(&menu, SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));

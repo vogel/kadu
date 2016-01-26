@@ -111,6 +111,11 @@ void ConfigurationWidget::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void ConfigurationWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void ConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -351,9 +356,9 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	ConfigWidget *widget = 0;
 
 	if (tagName == "line-edit")
-		widget = new ConfigLineEdit(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigLineEdit>(configGroupBox, DataManager);
 	else if (tagName == "gg-password-edit")
-		widget = new ConfigGGPasswordEdit(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigGGPasswordEdit>(configGroupBox, DataManager);
 	else if (tagName == "check-box")
 		widget = new ConfigCheckBox(configGroupBox, DataManager);
 	else if (tagName == "radio-button")
@@ -365,7 +370,7 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	else if (tagName == "hot-key-edit")
 		widget = new ConfigHotKeyEdit(configGroupBox, DataManager);
 	else if (tagName == "path-list-edit")
-		widget = new ConfigPathListEdit(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigPathListEdit>(configGroupBox, DataManager);
 	else if (tagName == "color-button")
 		widget = new ConfigColorButton(configGroupBox, DataManager);
 	else if (tagName == "select-font")
@@ -375,7 +380,7 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	else if (tagName == "action-button")
 		widget = new ConfigActionButton(configGroupBox, DataManager);
 	else if (tagName == "select-file")
-		widget = new ConfigSelectFile(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigSelectFile>(configGroupBox, DataManager);
 	else if (tagName == "preview")
 		widget = m_injectedFactory->makeInjected<ConfigPreview>(configGroupBox, DataManager);
 	else if (tagName == "proxy-combo-box")
@@ -468,7 +473,7 @@ ConfigSection * ConfigurationWidget::configSection(const KaduIcon &icon, const Q
 	if (!create)
 		return 0;
 
-	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(icon.icon(), name, SectionsListWidget);
+	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(m_iconsManager->iconByPath(icon), name, SectionsListWidget);
 
 	QFontMetrics fontMetrics = SectionsListWidget->fontMetrics();
 	// TODO: 48 = margins + scrollbar - get real scrollbar width

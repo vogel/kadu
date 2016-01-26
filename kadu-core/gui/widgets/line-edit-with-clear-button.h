@@ -20,37 +20,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LINE_EDIT_WITH_CLEAR_BUTTON_H
-#define LINE_EDIT_WITH_CLEAR_BUTTON_H
-
-#include <QtWidgets/QLineEdit>
+#pragma once
 
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QLineEdit>
+#include <injeqt/injeqt.h>
+
+class IconsManager;
 class LineEditClearButton;
 
 class KADUAPI LineEditWithClearButton : public QLineEdit
 {
 	Q_OBJECT
-
-	bool ClearButtonVisible;
-
-	LineEditClearButton *ClearButton;
-
-	bool WideEnoughForClear;
-	bool ClickInClear;
-
-	void createClearButton();
-	void updateClearButton();
-	bool canShowClearButton();
-
-private slots:
-	void updateClearButtonIcon();
-
-protected:
-	virtual void mousePressEvent(QMouseEvent *e);
-	virtual void mouseReleaseEvent(QMouseEvent *e);
-	virtual void resizeEvent(QResizeEvent *e);
 
 public:
 	explicit LineEditWithClearButton(QWidget *parent = nullptr);
@@ -65,6 +48,28 @@ public:
 signals:
 	void cleared();
 
-};
+protected:
+	virtual void mousePressEvent(QMouseEvent *e);
+	virtual void mouseReleaseEvent(QMouseEvent *e);
+	virtual void resizeEvent(QResizeEvent *e);
 
-#endif // LINE_EDIT_WITH_CLEAR_BUTTON_H
+private:
+	QPointer<IconsManager> m_iconsManager;
+
+	bool ClearButtonVisible;
+
+	LineEditClearButton *ClearButton;
+
+	bool WideEnoughForClear;
+	bool ClickInClear;
+
+	void createClearButton();
+	void updateClearButton();
+	bool canShowClearButton();
+
+private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
+	void updateClearButtonIcon();
+
+};

@@ -26,6 +26,7 @@
 #include <QtCore/QPointer>
 #include <QtCore/QRect>
 #include <QtGui/QPixmap>
+#include <injeqt/injeqt.h>
 
 #include "screenshot-mode.h"
 
@@ -37,6 +38,7 @@ class ActionDescription;
 class ChatWidget;
 class ConfigurationUiHandler;
 class CropImageWidget;
+class IconsManager;
 class NotificationManager;
 class ScreenShotConfiguration;
 class ScreenshotTaker;
@@ -47,6 +49,7 @@ class ScreenShot : public QObject
 {
 	Q_OBJECT
 
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<NotificationManager> m_notificationManager;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
@@ -62,6 +65,8 @@ class ScreenShot : public QObject
 	bool checkImageSize(long int size);
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
 	void screenshotTaken(QPixmap screenshot, bool needsCrop);
 	void screenshotNotTaken();
 

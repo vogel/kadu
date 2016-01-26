@@ -22,6 +22,8 @@
 #ifndef URL_HANDLER_H
 #define URL_HANDLER_H
 
+class UrlOpener;
+
 class QByteArray;
 class QDomDocument;
 
@@ -31,7 +33,7 @@ public:
 	virtual ~UrlHandler() {}
 
 	virtual bool isUrlValid(const QByteArray &url) = 0;
-	virtual void openUrl(const QByteArray &url, bool disableMenu = false) = 0;
+	virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false) = 0;
 
 };
 

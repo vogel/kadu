@@ -42,12 +42,12 @@ bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 	return UrlRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void StandardUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
+void StandardUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu)
 {
 	Q_UNUSED(disableMenu)
 
 	if (!url.contains("://"))
-		UrlOpener::openUrl("http://" + url);
+		urlOpener->openUrl("http://" + url);
 	else
-		UrlOpener::openUrl(url);
+		urlOpener->openUrl(url);
 }

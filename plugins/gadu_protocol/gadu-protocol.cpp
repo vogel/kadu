@@ -99,6 +99,11 @@ void GaduProtocol::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void GaduProtocol::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void GaduProtocol::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
 {
 	m_networkProxyManager = networkProxyManager;
@@ -504,7 +509,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 	switch (error)
 	{
 		case ConnectionNeedEmail:
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), msg);
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), msg);
 			break;
 		case ConnectionIncorrectPassword:
 			passwordRequired();

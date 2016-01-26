@@ -24,10 +24,12 @@
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QLineEdit;
 class QPushButton;
 
+class IconsManager;
 class JabberChangePasswordService;
 
 class JabberChangePasswordWindow : public QWidget
@@ -45,6 +47,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 private:
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<JabberChangePasswordService> m_changePasswordService;
 	Account m_account;
 
@@ -55,6 +58,9 @@ private:
 	void createGui();
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
 	void dataChanged();
 	void changePassword();
 	void passwordChanged();

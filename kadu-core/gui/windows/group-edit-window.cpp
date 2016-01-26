@@ -21,6 +21,7 @@
 
 #include "buddies/group-manager.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include <QtCore/QFileInfo>
@@ -51,7 +52,19 @@ GroupEditWindow::GroupEditWindow(GroupManager *groupManager, DeprecatedConfigura
 	setWindowTitle(m_add
 			? tr("Add group")
 			: tr("Edit group %1").arg(group.name()));
+}
 
+GroupEditWindow::~GroupEditWindow()
+{
+}
+
+void GroupEditWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void GroupEditWindow::init()
+{
 	createGui();
 	if (m_add)
 		m_group = Group::create();
@@ -60,10 +73,6 @@ GroupEditWindow::GroupEditWindow(GroupManager *groupManager, DeprecatedConfigura
 
 	connect(m_groupManager, SIGNAL(groupAdded(Group)), this, SLOT(dataChanged()));
 	connect(m_groupManager, SIGNAL(groupRemoved(Group)), this, SLOT(dataChanged()));
-}
-
-GroupEditWindow::~GroupEditWindow()
-{
 }
 
 void GroupEditWindow::createGui()
@@ -154,7 +163,7 @@ void GroupEditWindow::loadValues()
 	if (iconFile.exists())
 		m_selectIconButton->setIcon(QIcon{iconFile.absoluteFilePath()});
 	else
-		m_selectIconButton->setIcon(KaduIcon{"document-open", "16"}.icon());
+		m_selectIconButton->setIcon(m_iconsManager->iconByPath(KaduIcon{"document-open", "16"}));
 }
 
 void GroupEditWindow::storeValues()

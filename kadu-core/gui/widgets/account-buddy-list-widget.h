@@ -31,6 +31,7 @@
 
 class BuddyManager;
 class FilteredTreeView;
+class IconsManager;
 class InjectedFactory;
 class RosterReplacer;
 class Roster;
@@ -45,6 +46,7 @@ public:
 
 private:
 	QPointer<BuddyManager> m_buddyManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<RosterReplacer> m_rosterReplacer;
 	QPointer<Roster> m_roster;
@@ -55,6 +57,7 @@ private:
 
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setRosterReplacer(RosterReplacer *rosterReplacer);
 	INJEQT_SET void setRoster(Roster *roster);

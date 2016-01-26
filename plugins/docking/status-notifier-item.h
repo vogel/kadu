@@ -26,9 +26,11 @@
 #include "misc/memory.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QPoint>
+#include <QtCore/QPointer>
 #include <QtWidgets/QSystemTrayIcon>
+#include <injeqt/injeqt.h>
 
+class IconsManager;
 class StatusNotifierItemAttention;
 
 class QMenu;
@@ -55,6 +57,8 @@ signals:
 	void messageClicked();
 
 private:
+	QPointer<IconsManager> m_iconsManager;
+
 	StatusNotifierItemConfiguration m_configuration;
 	bool m_needAttention;
 	QPoint m_systemTrayLastPosition;
@@ -64,6 +68,8 @@ private:
 	void updateAttention();
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
 	void activated(QSystemTrayIcon::ActivationReason reason);
 
 };

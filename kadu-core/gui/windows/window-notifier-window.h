@@ -23,11 +23,13 @@
 
 #pragma once
 
-#include <QtCore/QPointer>
-#include <QtWidgets/QDialog>
-
 #include "os/generic/desktop-aware-object.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
+
+class IconsManager;
 class Notification;
 class NotificationCallbackRepository;
 
@@ -39,12 +41,11 @@ public:
 	explicit WindowNotifierWindow(Notification *notification, QWidget *parent = nullptr);
 	virtual ~WindowNotifierWindow();
 
-	void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-
 signals:
 	void closed(Notification *notification);
 
 private:
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 
 	Notification *m_notification;
@@ -53,6 +54,10 @@ private:
 	void addButton(QWidget *parent, const QString &title, const QString &name);
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_INIT void init();
+
 	void buttonClicked();
 
 };

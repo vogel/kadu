@@ -29,6 +29,7 @@
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "os/generic/window-geometry-manager.h"
 #include "activate.h"
 
@@ -54,6 +55,11 @@ void HistoryWindow::setHistory(History *history)
 	m_history = history;
 }
 
+void HistoryWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void HistoryWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -65,7 +71,7 @@ void HistoryWindow::init()
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	setWindowTitle(tr("History"));
-	setWindowIcon(KaduIcon("kadu_icons/history").icon());
+	setWindowIcon(m_iconsManager->iconByPath(KaduIcon("kadu_icons/history")));
 
 	createGui();
 

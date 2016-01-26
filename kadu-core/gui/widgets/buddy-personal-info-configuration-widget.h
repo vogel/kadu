@@ -20,16 +20,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
-#define BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H
-
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
-
+#pragma once
 
 #include "buddies/buddy.h"
-
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
 
 class QComboBox;
 class QLabel;
@@ -38,20 +39,25 @@ class KADUAPI BuddyPersonalInfoConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
-	Buddy MyBuddy;
-	QComboBox *ContactIdCombo;
-	QVBoxLayout *Layout;
-	QWidget *InfoWidget;
-	
-	void createGui();
-	
-private slots:
-	void accountSelectionChanged(int index);
-
 public:
 	explicit BuddyPersonalInfoConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
 	virtual ~BuddyPersonalInfoConfigurationWidget();
 
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+	Buddy MyBuddy;
+	QComboBox *ContactIdCombo;
+	QVBoxLayout *Layout;
+	QWidget *InfoWidget;
+
+	void createGui();
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
+	void accountSelectionChanged(int index);
+
 };
 
-#endif // BUDDY_PERSONAL_INFO_CONFIGURATION_WIDGET_H

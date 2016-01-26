@@ -20,6 +20,11 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class IconsManager;
 
 class FacebookDepreceatedMessage : public QObject
 {
@@ -30,5 +35,13 @@ public:
 	virtual ~FacebookDepreceatedMessage();
 
 	void showIfNotSeen();
+
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
 };

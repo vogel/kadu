@@ -19,17 +19,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "url-opener.h"
+
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
+
 #include <QtCore/QProcess>
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
 #include <QtWidgets/QApplication>
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "gui/windows/message-dialog.h"
+UrlOpener::UrlOpener(QObject *parent) :
+		QObject{parent}
+{
+}
 
-#include "url-opener.h"
+UrlOpener::~UrlOpener()
+{
+}
+
+void UrlOpener::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void UrlOpener::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
 
 bool UrlOpener::openUrl(const QByteArray &urlForDesktopServices, const QByteArray &urlForApplication, const QString &application)
 {
@@ -54,12 +73,12 @@ bool UrlOpener::openUrl(const QByteArray &urlForDesktopServices, const QByteArra
 void UrlOpener::openUrl(const QByteArray &url)
 {
 	QString browser;
-	bool useDefaultWebBrowser = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseDefaultWebBrowser", true);
+	bool useDefaultWebBrowser = m_configuration->deprecatedApi()->readBoolEntry("Chat", "UseDefaultWebBrowser", true);
 	if (!useDefaultWebBrowser)
-		browser = Core::instance()->configuration()->deprecatedApi()->readEntry("Chat", "WebBrowser");
+		browser = m_configuration->deprecatedApi()->readEntry("Chat", "WebBrowser");
 
 	if (!openUrl(url, url, browser))
-		MessageDialog::show(KaduIcon("dialog-error"), QCoreApplication::translate("@default", QT_TR_NOOP("Kadu")),
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), QCoreApplication::translate("@default", QT_TR_NOOP("Kadu")),
 				QCoreApplication::translate("@default", QT_TR_NOOP("Could not spawn Web browser process. Check if the Web browser is functional")));
 }
 
@@ -67,9 +86,9 @@ void UrlOpener::openEmail(const QByteArray &email)
 {
 	QString client;
 
-	bool useDefaultEMailClient = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseDefaultEMailClient", true);
+	bool useDefaultEMailClient = m_configuration->deprecatedApi()->readBoolEntry("Chat", "UseDefaultEMailClient", true);
 	if (!useDefaultEMailClient)
-		client = Core::instance()->configuration()->deprecatedApi()->readEntry("Chat", "MailClient");
+		client = m_configuration->deprecatedApi()->readEntry("Chat", "MailClient");
 
 	QByteArray urlForDesktopServices;
 	QByteArray urlForApplication;
@@ -86,6 +105,8 @@ void UrlOpener::openEmail(const QByteArray &email)
 	}
 
 	if (!openUrl(urlForDesktopServices, urlForApplication, client))
-		MessageDialog::show(KaduIcon("dialog-error"), QCoreApplication::translate("@default", QT_TR_NOOP("Kadu")),
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), QCoreApplication::translate("@default", QT_TR_NOOP("Kadu")),
 				QCoreApplication::translate("@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")));
 }
+
+#include "moc_url-opener.cpp"

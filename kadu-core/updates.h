@@ -33,6 +33,7 @@ class AccountManager;
 class ConfigurationManager;
 class Configuration;
 class KaduWindowService;
+class InjectedFactory;
 
 class QNetworkReply;
 
@@ -52,6 +53,7 @@ private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
 
 	bool UpdateChecked;
@@ -66,6 +68,7 @@ private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMainWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_INIT void init();
 

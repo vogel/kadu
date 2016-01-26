@@ -30,6 +30,7 @@
 #include <QtWidgets/QToolButton>
 #include <injeqt/injeqt.h>
 
+class IconsManager;
 class InjectedFactory;
 class StatusConfigurationHolder;
 class StatusContainer;
@@ -51,6 +52,7 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
 
@@ -65,6 +67,7 @@ private:
 	QString prepareDescription(const QString &description) const;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
 	INJEQT_INIT void init();

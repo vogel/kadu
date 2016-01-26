@@ -36,6 +36,7 @@ class ChatManager;
 class ChatWidgetManager;
 class Chat;
 class CheckableBuddiesProxyModel;
+class IconsManager;
 class InjectedFactory;
 class ModelChain;
 
@@ -54,6 +55,7 @@ public slots:
 private:
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 
 	AccountsComboBox *AccountCombo;
@@ -73,6 +75,7 @@ private:
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 

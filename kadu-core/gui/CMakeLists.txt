@@ -93,7 +93,6 @@ set (gui_SRCS
 	widgets/custom-input.cpp
 	widgets/custom-input-menu-item.cpp
 	widgets/custom-input-menu-manager.cpp
-	widgets/delayed-line-edit.cpp
 	widgets/filter-widget.cpp
 	widgets/filtered-tree-view.cpp
 	widgets/group-list.cpp
@@ -106,7 +105,6 @@ set (gui_SRCS
 	widgets/line-edit-clear-button.cpp
 	widgets/line-edit-with-clear-button.cpp
 	widgets/modal-configuration-widget.cpp
-	widgets/path-edit.cpp
 	widgets/path-list-edit.cpp
 	widgets/protocols-combo-box.cpp
 	widgets/proxy-combo-box.cpp
@@ -291,7 +289,6 @@ set (gui_MOC_SRCS
 	widgets/configuration-value-state-notifier.h
 	widgets/custom-input.h
 	widgets/custom-input-menu-manager.h
-	widgets/delayed-line-edit.h
 	widgets/filter-widget.h
 	widgets/filtered-tree-view.h
 	widgets/group-list.h
@@ -304,7 +301,6 @@ set (gui_MOC_SRCS
 	widgets/line-edit-clear-button.h
 	widgets/line-edit-with-clear-button.h
 	widgets/modal-configuration-widget.h
-	widgets/path-edit.h
 	widgets/path-list-edit.h
 	widgets/preview.h
 	widgets/proxy-combo-box.h

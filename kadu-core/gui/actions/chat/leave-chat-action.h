@@ -25,6 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class ChatWidgetRepository;
+class IconsManager;
 
 class LeaveChatAction : public ActionDescription
 {
@@ -39,8 +40,10 @@ protected:
 
 private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QPointer<IconsManager> m_iconsManager;
 
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
 };

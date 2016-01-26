@@ -24,11 +24,13 @@
 
 #include "configuration/screen-shot-configuration.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 
 #include "screen-shot-saver.h"
 
-ScreenShotSaver::ScreenShotSaver(ScreenShotConfiguration *screenShotConfiguration, QObject *parent) :
+ScreenShotSaver::ScreenShotSaver(IconsManager *iconsManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent) :
 		QObject{parent},
+		m_iconsManager{iconsManager},
 		m_screenShotConfiguration{screenShotConfiguration},
 		Size{}
 {
@@ -45,7 +47,7 @@ QString ScreenShotSaver::createScreenshotPath()
 	QDir dir(dirPath);
 	if (!dir.exists() && !dir.mkpath(dirPath))
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
 		return QString();
 	}
 
@@ -67,7 +69,7 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 	// do not extract qPrintable... to variable
 	if (!pixmap.save(path, qPrintable(m_screenShotConfiguration->fileFormat()), quality))
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
 		return QString();
 	}
 
@@ -76,7 +78,7 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 
 	if (Size == 0)
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
 		return QString();
 	}
 

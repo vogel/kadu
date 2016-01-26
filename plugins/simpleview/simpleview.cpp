@@ -69,6 +69,11 @@ void SimpleView::setDockingMenuActionRepository(DockingMenuActionRepository *doc
 	m_dockingMenuActionRepository = dockingMenuActionRepository;
 }
 
+void SimpleView::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void SimpleView::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
 	m_kaduWindowService = kaduWindowService;
@@ -78,7 +83,7 @@ void SimpleView::init()
 {
 	SimpleViewConfigUi::createDefaultConfiguration();
 
-	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
+	DockAction = new QAction(m_iconsManager->iconByPath(KaduIcon("view-refresh")), tr("Simple view"), this);
 	DockAction->setCheckable(true);
 	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
 

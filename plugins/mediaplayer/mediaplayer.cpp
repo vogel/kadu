@@ -110,6 +110,11 @@ void MediaPlayer::setDockingMenuActionRepository(DockingMenuActionRepository *do
 	m_dockingMenuActionRepository = dockingMenuActionRepository;
 }
 
+void MediaPlayer::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void MediaPlayer::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -368,9 +373,9 @@ void MediaPlayer::putSongTitle(int ident)
 	{
 		// TODO: make it a notification
 		if (!getPlayerName().isEmpty())
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		else
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Player isn't running!"));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Player isn't running!"));
 
 		return;
 	}
@@ -449,9 +454,9 @@ void MediaPlayer::putPlayList(int ident)
 	if (!isActive())
 	{
 		if (!getPlayerName().isEmpty())
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		else
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Player isn't running!"));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Player isn't running!"));
 
 		return;
 	}
@@ -512,7 +517,7 @@ void MediaPlayer::putPlayList(int ident)
 	{
 		QString question = tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 hasn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName());
 
-		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), question);
+		MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), question);
 		dialog->addButton(QMessageBox::Yes, tr("Send anyway"));
 		dialog->addButton(QMessageBox::No, tr("Cancel"));
 
@@ -524,7 +529,7 @@ void MediaPlayer::putPlayList(int ident)
 	{
 		QString question = tr("You're trying to send %1 entries of %2 playlist.<br>It will be split and sent in few messages<br>Are you sure to do that?")
 			.arg(QString::number(lgt)).arg(getPlayerName());
-		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), question);
+		MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), question);
 		dialog->addButton(QMessageBox::Yes, tr("Send"));
 		dialog->addButton(QMessageBox::No, tr("Cancel"));
 
@@ -700,9 +705,9 @@ void MediaPlayer::toggleStatuses(bool toggled)
 			action->setChecked(false);
 
 		if (!getPlayerName().isEmpty())
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
 		else
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Player isn't running!"));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Player isn't running!"));
 
 		return;
 	}

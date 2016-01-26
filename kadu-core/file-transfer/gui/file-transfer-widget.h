@@ -25,8 +25,11 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class FileTransferManager;
+class IconsManager;
+class InjectedFactory;
 
 class QLabel;
 class QProgressBar;
@@ -45,6 +48,9 @@ public:
 
 private:
 	QPointer<FileTransferManager> m_manager;
+	QPointer<IconsManager> m_iconsManager;
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	FileTransfer m_transfer;
 
 	QDateTime m_lastUpdateTime;
@@ -67,6 +73,10 @@ private:
 	void createGui();
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void update();
 	void updateButtons();
 	void updateFileNameLabel();

@@ -6,9 +6,11 @@
 #include <QtCore/QPointer>
 #include <QtCore/QString>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 
+class IconsManager;
 class PCSpeakerNotifier;
 
 class QLineEdit;
@@ -18,6 +20,7 @@ class PCSpeakerConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
 
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<PCSpeakerNotifier> m_notifier;
 
 	QLineEdit *soundEdit;
@@ -26,6 +29,9 @@ class PCSpeakerConfigurationWidget : public NotifierConfigurationWidget
 	QString CurrentNotificationEvent;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
 	void test();
 
 public:

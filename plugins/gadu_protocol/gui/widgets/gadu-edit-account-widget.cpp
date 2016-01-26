@@ -89,6 +89,11 @@ void GaduEditAccountWidget::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
+void GaduEditAccountWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void GaduEditAccountWidget::setIdentityManager(IdentityManager *identityManager)
 {
 	m_identityManager = identityManager;
@@ -97,6 +102,11 @@ void GaduEditAccountWidget::setIdentityManager(IdentityManager *identityManager)
 void GaduEditAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void GaduEditAccountWidget::setUrlOpener(UrlOpener *urlOpener)
+{
+	m_urlOpener = urlOpener;
 }
 
 void GaduEditAccountWidget::init()
@@ -459,7 +469,7 @@ void GaduEditAccountWidget::loadAccountData()
 
 void GaduEditAccountWidget::removeAccount()
 {
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Confrim Account Removal"),
+	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Confrim Account Removal"),
 	                        tr("Are you sure do you want to remove account %1 (%2)?")
 				.arg(account().accountIdentity().name())
 				.arg(account().id()));
@@ -477,12 +487,12 @@ void GaduEditAccountWidget::removeAccount()
 
 void GaduEditAccountWidget::remindUin()
 {
-	UrlOpener::openUrl("https://login.gg.pl/account/remindGG_email/?id=frame_1");
+	m_urlOpener->openUrl("https://login.gg.pl/account/remindGG_email/?id=frame_1");
 }
 
 void GaduEditAccountWidget::remindPassword()
 {
-	UrlOpener::openUrl("https://login.gg.pl/account/remindPassword/?id=frame_1");
+	m_urlOpener->openUrl("https://login.gg.pl/account/remindPassword/?id=frame_1");
 }
 
 void GaduEditAccountWidget::showStatusToEveryoneToggled(bool toggled)
@@ -500,7 +510,7 @@ void GaduEditAccountWidget::showStatusToEveryoneToggled(bool toggled)
 	if (!count)
 		return;
 
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Status Visibility"),
+	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Status Visibility"),
 	                        tr("You are going to reveal your status to several buddies which are currently not allowed to see it.\n"
 				  "Are you sure to allow them to know you are available?"));
 	dialog->addButton(QMessageBox::Yes, tr("Make my status visible anyway"));

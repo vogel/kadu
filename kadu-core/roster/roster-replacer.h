@@ -32,6 +32,7 @@ class BuddyManager;
 class Buddy;
 class ContactManager;
 class Contact;
+class IconsManager;
 class Myself;
 class Roster;
 
@@ -61,6 +62,7 @@ public:
 private:
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ContactManager> m_contactManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<Myself> m_myself;
 	QPointer<Roster> m_roster;
 
@@ -73,6 +75,7 @@ private:
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setRoster(Roster *roster);
 

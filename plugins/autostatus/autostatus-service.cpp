@@ -23,6 +23,7 @@
 #include <QtCore/QTimer>
 
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "status/status-changer-manager.h"
 
@@ -53,6 +54,11 @@ void AutostatusService::setAutostatusStatusChanger(AutostatusStatusChanger *auto
 	m_autostatusStatusChanger = autostatusStatusChanger;
 }
 
+void AutostatusService::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void AutostatusService::on()
 {
 	m_autostatusStatusChanger->setEnabled(true);
@@ -79,7 +85,7 @@ bool AutostatusService::readDescriptionList()
 {
 	if (!QFile::exists(m_autostatusConfiguration->statusFilePath()))
 	{
-		MessageDialog::show(KaduIcon("dialog-information"), "Autostatus", "File does not exist !");
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), "Autostatus", "File does not exist !");
 		return false;
 	}
 

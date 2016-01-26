@@ -28,6 +28,7 @@
 #include "core/injected-factory.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol.h"
@@ -60,6 +61,11 @@ void AddRoomChatWindow::setChatManager(ChatManager *chatManager)
 void AddRoomChatWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
 	m_chatWidgetManager = chatWidgetManager;
+}
+
+void AddRoomChatWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void AddRoomChatWindow::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -135,7 +141,7 @@ void AddRoomChatWindow::createGui()
 	AddButton->setDefault(true);
 	connect(AddButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
-	StartButton = new QPushButton(KaduIcon("internet-group-chat").icon(), tr("Start Room Chat"), this);
+	StartButton = new QPushButton(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")), tr("Start Room Chat"), this);
 	connect(StartButton, SIGNAL(clicked(bool)), this, SLOT(start()));
 
 	QPushButton *cancel = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);

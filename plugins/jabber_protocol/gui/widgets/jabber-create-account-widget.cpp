@@ -69,6 +69,11 @@ void JabberCreateAccountWidget::setAccountStorage(AccountStorage *accountStorage
 	m_accountStorage = accountStorage;
 }
 
+void JabberCreateAccountWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void JabberCreateAccountWidget::setIdentityManager(IdentityManager *identityManager)
 {
 	m_identityManager = identityManager;
@@ -204,7 +209,7 @@ void JabberCreateAccountWidget::apply()
 {
 	if (NewPassword->text() != ReNewPassword->text())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
 			"Password entered in both fields (\"New password\" and \"Retype password\") "
 			"must be the same!"), QMessageBox::Ok, this);
 		return;
@@ -217,7 +222,7 @@ void JabberCreateAccountWidget::apply()
 	auto jid = Jid{Username->text(), Domain->currentText(), QString{}};
 	auto registerAccount = registerAccountService->registerAccount(jid, NewPassword->text(), EMail->text());
 
-	auto window = new JabberWaitForAccountRegisterWindow(registerAccount);
+	auto window = m_injectedFactory->makeInjected<JabberWaitForAccountRegisterWindow>(registerAccount);
 	connect(window, SIGNAL(jidRegistered(Jid)), this, SLOT(jidRegistered(Jid)));
 	window->exec();
 }

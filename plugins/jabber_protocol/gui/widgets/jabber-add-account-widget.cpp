@@ -67,6 +67,11 @@ void JabberAddAccountWidget::setAccountStorage(AccountStorage *accountStorage)
 	m_accountStorage = accountStorage;
 }
 
+void JabberAddAccountWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void JabberAddAccountWidget::setIdentityManager(IdentityManager *identityManager)
 {
 	m_identityManager = identityManager;
@@ -254,7 +259,7 @@ void JabberAddAccountWidget::resetGui()
 
 void JabberAddAccountWidget::showWhatIsMyUsername()
 {
-	MessageDialog::show(KaduIcon("dialog-information"), Factory->displayName(), Factory->whatIsMyUsername());
+	MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), Factory->displayName(), Factory->whatIsMyUsername());
 }
 
 #include "moc_jabber-add-account-widget.cpp"

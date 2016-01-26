@@ -72,7 +72,7 @@ void NotifyGroupBox::toggledSlot(bool toggle)
 
 void NotifyGroupBox::iconThemeChanged()
 {
-	m_notifierCheckBox->setIcon(m_notificator->icon().icon());
+	m_notifierCheckBox->setIcon(m_iconsManager->iconByPath(m_notificator->icon()));
 }
 
 #include "moc_notify-group-box.cpp"

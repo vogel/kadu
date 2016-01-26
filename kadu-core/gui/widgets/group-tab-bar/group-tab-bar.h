@@ -35,6 +35,7 @@ class Chat;
 class Configuration;
 class GroupManager;
 class GroupFilter;
+class IconsManager;
 class InjectedFactory;
 class KaduWindowService;
 
@@ -46,6 +47,7 @@ class KADUAPI GroupTabBar : public QTabBar
 	QPointer<ChatListMimeDataService> m_chatListMimeDataService;
 	QPointer<Configuration> m_configuration;
 	QPointer<GroupManager> m_groupManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
 
@@ -69,6 +71,7 @@ private slots:
 	INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_INIT void init();

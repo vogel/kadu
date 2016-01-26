@@ -50,6 +50,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "identities/identity.h"
 #include "misc/change-notifier-lock.h"
 #include "misc/error.h"
@@ -84,6 +85,11 @@ void ChatEditBox::setChatConfigurationHolder(ChatConfigurationHolder *chatConfig
 void ChatEditBox::setChatWidgetActions(ChatWidgetActions *chatWidgetActions)
 {
 	m_chatWidgetActions = chatWidgetActions;
+}
+
+void ChatEditBox::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void ChatEditBox::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
@@ -262,14 +268,14 @@ void ChatEditBox::openInsertImageDialog()
 
 		if (!f.isReadable())
 		{
-			MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("This file is not readable"), QMessageBox::Ok, this);
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("This file is not readable"), QMessageBox::Ok, this);
 			return;
 		}
 
 		Error imageSizeError = chatImageService->checkImageSize(f.size());
 		if (!imageSizeError.message().isEmpty())
 		{
-			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"), imageSizeError.message(), this);
+			MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), imageSizeError.message(), this);
 			dialog->addButton(QMessageBox::Yes, tr("Send anyway"));
 			dialog->addButton(QMessageBox::No, tr("Cancel"));
 
@@ -282,7 +288,7 @@ void ChatEditBox::openInsertImageDialog()
 						return;
 					break;
 				case ErrorHigh:
-					MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), imageSizeError.message(), QMessageBox::Ok, this);
+					MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), tr("Kadu"), imageSizeError.message(), QMessageBox::Ok, this);
 					return;
 				default:
 					break;
@@ -321,7 +327,7 @@ void ChatEditBox::openInsertImageDialog()
 		if (tooBigCounter > 0 || disconnectedCounter > 0)
 			message += tr("Do you really want to send this image?");
 
-		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), message, this);
+		MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), message, this);
 		dialog->addButton(QMessageBox::Yes, tr("Send anyway"));
 		dialog->addButton(QMessageBox::No, tr("Cancel"));
 

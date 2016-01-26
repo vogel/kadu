@@ -61,14 +61,14 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 		case Qt::DecorationRole:
 		{
 			if (contact.ownerBuddy().isBlocked())
-				return KaduIcon("kadu_icons/blocked").icon();
+				return m_iconsManager->iconByPath(KaduIcon("kadu_icons/blocked"));
 
 			if (contact.isBlocking())
-				return KaduIcon("kadu_icons/blocking").icon();
+				return m_iconsManager->iconByPath(KaduIcon("kadu_icons/blocking"));
 
 			// TODO generic icon
 			return contact.contactAccount().statusContainer()
-					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).icon()
+					? m_iconsManager->iconByPath(contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()))
 					: QIcon();
 		}
 		case StatusIconPath:

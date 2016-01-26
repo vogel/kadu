@@ -32,6 +32,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
 #include "gui/widgets/talkable-tree-view.h"
 
@@ -91,7 +93,7 @@ FilterWidget::FilterWidget(QWidget *parent) :
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(3);
 
-	NameFilterEdit = new LineEditWithClearButton(this);
+	NameFilterEdit = Core::instance()->injectedFactory()->makeInjected<LineEditWithClearButton>(this);
 	Label = new QLabel(tr("Search") + ":", this);
 
 	setFocusProxy(NameFilterEdit);

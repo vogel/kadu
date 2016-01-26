@@ -49,6 +49,7 @@ public:
 
 private:
 	QPointer<DockingMenuActionRepository> m_dockingMenuActionRepository;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<NotificationService> m_notificationService;

@@ -37,6 +37,7 @@
 #include "gui/widgets/modal-configuration-widget.h"
 #include "gui/widgets/protocols-combo-box.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/action-filter-proxy-model.h"
 #include "model/action-list-model.h"
@@ -85,6 +86,11 @@ void YourAccounts::setConfigurationManager(ConfigurationManager *configurationMa
 	m_configurationManager = configurationManager;
 }
 
+void YourAccounts::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void YourAccounts::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -118,13 +124,13 @@ void YourAccounts::createGui()
 	AccountsView = new QListView(this);
 	AccountsView->setMinimumWidth(150);
 	contentLayout->addWidget(AccountsView);
-	MyAccountsModel = new AccountsModel(m_accountManager, AccountsView);
+	MyAccountsModel = m_injectedFactory->makeInjected<AccountsModel>(m_accountManager, AccountsView);
 
 	QAction *separator = new QAction(this);
 	separator->setSeparator(true);
 
-	AddExistingAccountAction = new QAction(KaduIcon("contact-new").icon(), tr("Add existing account"), this);
-	CreateNewAccountAction = new QAction(KaduIcon("system-users").icon(), tr("Create new account"), this);
+	AddExistingAccountAction = new QAction(m_iconsManager->iconByPath(KaduIcon("contact-new")), tr("Add existing account"), this);
+	CreateNewAccountAction = new QAction(m_iconsManager->iconByPath(KaduIcon("system-users")), tr("Create new account"), this);
 
 	ActionListModel *actionsModel = new ActionListModel(this);
 	actionsModel->appendAction(separator);
@@ -356,7 +362,7 @@ bool YourAccounts::canChangeWidget()
 
 	if (!IsCurrentWidgetEditAccount)
 	{
-		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Unsaved changes"),
+		MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Unsaved changes"),
 					tr("You have unsaved changes in current account.<br />Do you want to return to edit or discard changes?"));
 		dialog->addButton(QMessageBox::Yes, tr("Return to edit"));
 		dialog->addButton(QMessageBox::Ignore, tr("Discard changes"));
@@ -380,7 +386,7 @@ bool YourAccounts::canChangeWidget()
 
 	if (StateChangedDataValid == CurrentWidget->stateNotifier()->state())
 	{
-		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Unsaved changes"),
+		MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Unsaved changes"),
 					tr("You have unsaved changes in current account.<br />Do you want to save them?"));
 		dialog->addButton(QMessageBox::Save, tr("Save changes"));
 		dialog->addButton(QMessageBox::Ignore, tr("Discard"));
@@ -405,7 +411,7 @@ bool YourAccounts::canChangeWidget()
 
 	if (StateChangedDataInvalid == CurrentWidget->stateNotifier()->state())
 	{
-		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Invalid changes"),
+		MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Invalid changes"),
 					tr("You have invalid changes in current account, which cannot be saved.<br />Do you want to stay in edit or discard changes?"));
 		dialog->addButton(QMessageBox::Yes, tr("Stay in edit"));
 		dialog->addButton(QMessageBox::Ignore, tr("Discard changes"));

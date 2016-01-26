@@ -25,6 +25,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QToolButton>
 
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 
@@ -33,17 +34,25 @@
 SelectFile::SelectFile(const QString &type, QWidget *parent)
 	: QWidget(parent), Type(type)
 {
-	createGui();
 }
 
 SelectFile::SelectFile(QWidget *parent)
 	: QWidget(parent)
 {
-	createGui();
 }
 
 SelectFile::~SelectFile()
 {
+}
+
+void SelectFile::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void SelectFile::init()
+{
+	createGui();
 }
 
 void SelectFile::createGui()
@@ -55,7 +64,7 @@ void SelectFile::createGui()
 
 	QToolButton *selectFile = new QToolButton(this);
 	selectFile->setAutoRaise(true);
-	selectFile->setIcon(KaduIcon("document-open").icon());
+	selectFile->setIcon(m_iconsManager->iconByPath(KaduIcon("document-open")));
 	selectFile->setIconSize(QSize{14, 14});
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 

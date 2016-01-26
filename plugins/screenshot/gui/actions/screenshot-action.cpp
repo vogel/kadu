@@ -23,6 +23,8 @@
 #include <QtWidgets/QMenu>
 
 #include "accounts/account.h"
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -115,21 +117,21 @@ void ScreenshotAction::takeStandardShotSlot(ChatWidget *chatWidget)
 	if (!chatWidget)
 		chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(new ScreenShot(m_notificationManager, m_screenShotConfiguration, chatWidget))->takeStandardShot();
+		(Core::instance()->injectedFactory()->makeInjected<ScreenShot>(m_notificationManager, m_screenShotConfiguration, chatWidget))->takeStandardShot();
 }
 
 void ScreenshotAction::takeShotWithChatWindowHiddenSlot()
 {
 	ChatWidget *chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(new ScreenShot(m_notificationManager, m_screenShotConfiguration, chatWidget))->takeShotWithChatWindowHidden();
+		(Core::instance()->injectedFactory()->makeInjected<ScreenShot>(m_notificationManager, m_screenShotConfiguration, chatWidget))->takeShotWithChatWindowHidden();
 }
 
 void ScreenshotAction::takeWindowShotSlot()
 {
 	ChatWidget *chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(new ScreenShot(m_notificationManager, m_screenShotConfiguration, chatWidget))->takeWindowShot();
+		(Core::instance()->injectedFactory()->makeInjected<ScreenShot>(m_notificationManager, m_screenShotConfiguration, chatWidget))->takeWindowShot();
 }
 
 #include "moc_screenshot-action.cpp"

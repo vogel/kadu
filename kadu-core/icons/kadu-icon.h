@@ -139,15 +139,6 @@ public:
 	 */
 	void setSize(const QString &size) { IconSize = size; }
 
-	/**
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @short Returns QIcon object representing this icon.
-	 * @return QIcon object of this icon
-	 *
-	 * Returns QIcon object representing this icon.
-	 */
-	QIcon icon() const;
-
 };
 
 /**

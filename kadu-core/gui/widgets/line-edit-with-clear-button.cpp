@@ -25,6 +25,7 @@
 #include <QtWidgets/QStyle>
 
 #include "gui/widgets/line-edit-clear-button.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include "line-edit-with-clear-button.h"
@@ -40,6 +41,11 @@ LineEditWithClearButton::LineEditWithClearButton(QWidget *parent) :
 
 LineEditWithClearButton::~LineEditWithClearButton()
 {
+}
+
+void LineEditWithClearButton::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void LineEditWithClearButton::createClearButton()
@@ -68,9 +74,9 @@ void LineEditWithClearButton::updateClearButton()
 		return;
 
 	if (layoutDirection() == Qt::LeftToRight)
-		ClearButton->setPixmap(KaduIcon("edit-clear-locationbar-rtl").icon().pixmap(16, 16));
+		ClearButton->setPixmap(m_iconsManager->iconByPath(KaduIcon("edit-clear-locationbar-rtl")).pixmap(16, 16));
 	else
-		ClearButton->setPixmap(KaduIcon("edit-clear-locationbar-ltr").icon().pixmap(16, 16));
+		ClearButton->setPixmap(m_iconsManager->iconByPath(KaduIcon("edit-clear-locationbar-ltr")).pixmap(16, 16));
 
 	const QSize geom = size();
 	const int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this);

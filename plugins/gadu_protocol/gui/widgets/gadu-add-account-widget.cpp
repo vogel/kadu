@@ -76,6 +76,11 @@ void GaduAddAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void GaduAddAccountWidget::setUrlOpener(UrlOpener *urlOpener)
+{
+	m_urlOpener = urlOpener;
+}
+
 void GaduAddAccountWidget::init()
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -209,17 +214,17 @@ void GaduAddAccountWidget::dataChanged()
 
 void GaduAddAccountWidget::registerAccount()
 {
-	UrlOpener::openUrl("https://login.gg.pl/rejestracja-gg/");
+	m_urlOpener->openUrl("https://login.gg.pl/rejestracja-gg/");
 }
 
 void GaduAddAccountWidget::remindUin()
 {
-	UrlOpener::openUrl("https://login.gg.pl/account/remindGG_email/");
+	m_urlOpener->openUrl("https://login.gg.pl/account/remindGG_email/");
 }
 
 void GaduAddAccountWidget::remindPassword()
 {
-	UrlOpener::openUrl("https://login.gg.pl/account/remindPassword/");
+	m_urlOpener->openUrl("https://login.gg.pl/account/remindPassword/");
 }
 
 #include "moc_gadu-add-account-widget.cpp"

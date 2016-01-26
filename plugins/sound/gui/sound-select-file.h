@@ -21,9 +21,12 @@
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QLabel;
 
+class IconsManager;
+class InjectedFactory;
 class SelectFile;
 class SoundManager;
 
@@ -44,11 +47,17 @@ signals:
 	void fileChanged();
 
 private:
+	QPointer<IconsManager> m_iconsManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<SoundManager> m_manager;
 	QPointer<QObject> m_sound;
 	SelectFile *m_selectFile;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void test();
 
 };

@@ -21,12 +21,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROGRESS_WINDOW_H
-#define PROGRESS_WINDOW_H
-
-#include <QtWidgets/QDialog>
+#pragma once
 
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QDialog>
+#include <injeqt/injeqt.h>
+
+class IconsManager;
 
 class QLabel;
 class QListWidget;
@@ -59,6 +62,8 @@ class KADUAPI ProgressWindow : public QDialog
 {
 	Q_OBJECT
 
+	QPointer<IconsManager> m_iconsManager;
+
 	QProgressBar *ProgressBar;
 	QListWidget *TextListWidget;
 	QPushButton *ShowDetailsButton;
@@ -71,6 +76,8 @@ class KADUAPI ProgressWindow : public QDialog
 	void createGui();
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
 	void showDetailsClicked();
 
 protected:
@@ -141,5 +148,3 @@ signals:
 /**
  * @}
  */
-
-#endif // PROGRESS_WINDOW_H

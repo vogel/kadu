@@ -28,6 +28,7 @@
 #include <QtWidgets/QListWidget>
 
 #include "configuration/config-file-variant-wrapper.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
 #include "debug.h"
@@ -64,14 +65,29 @@ void PathListEdit::setPathList(const QStringList &pathList)
 		Dialog->setPathList(PathList);
 }
 
-PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent)
-	: QWidget(parent)
+PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent) :
+		QWidget(parent), PathList{pathList}
 {
-	kdebugf();
-
 	setWindowTitle(tr("Select paths"));
 	setAttribute(Qt::WA_DeleteOnClose);
+}
 
+PathListEditWindow::~PathListEditWindow()
+{
+}
+
+void PathListEditWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void PathListEditWindow::init()
+{
+	createGui();
+}
+
+void PathListEditWindow::createGui()
+{
 	QGridLayout *Layout = new QGridLayout(this);
 	Layout->setMargin(5);
 	Layout->setSpacing(5);
@@ -79,10 +95,9 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 	PathListWidget = new QListWidget(this);
 	Layout->addWidget(PathListWidget, 0, 0, 4, 1);
 
-
-	QPushButton *add = new QPushButton(KaduIcon("list-add").icon(), tr("Add"), this);
-	QPushButton *change = new QPushButton(KaduIcon("view-refresh").icon(), tr("Change"), this);
-	QPushButton *remove = new QPushButton(KaduIcon("list-remove").icon(), tr("Remove"), this);
+	QPushButton *add = new QPushButton(m_iconsManager->iconByPath(KaduIcon("list-add")), tr("Add"), this);
+	QPushButton *change = new QPushButton(m_iconsManager->iconByPath(KaduIcon("view-refresh")), tr("Change"), this);
+	QPushButton *remove = new QPushButton(m_iconsManager->iconByPath(KaduIcon("list-remove")), tr("Remove"), this);
 
 	Layout->addWidget(add, 0, 1);
 	Layout->addWidget(change, 1, 1);
@@ -110,13 +125,9 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 	connect(ok, SIGNAL(clicked()), this, SLOT(okClicked()));
 	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 
-	setPathList(pathList);
+	setPathList(PathList);
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "SelectPathDialogGeometry"), QRect(0, 50, 330, 330), this);
-}
-
-PathListEditWindow::~PathListEditWindow()
-{
 }
 
 void PathListEditWindow::setPathList(const QStringList &list)

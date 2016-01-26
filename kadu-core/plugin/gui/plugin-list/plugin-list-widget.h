@@ -31,6 +31,7 @@ class QLineEdit;
 class QModelIndex;
 
 class CategorizedListView;
+class InjectedFactory;
 class MainConfigurationWindow;
 class PluginActivationService;
 class PluginConflictResolver;
@@ -65,6 +66,7 @@ private:
 	friend class PluginModel;
 	friend class PluginProxyModel;
 
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<PluginActivationService> m_pluginActivationService;
 	QPointer<PluginConflictResolver> m_pluginConflictResolver;
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
@@ -86,11 +88,13 @@ private:
 	QString vectorToString(const QVector<QString> &plugins);
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
 	INJEQT_SET void setPluginConflictResolver(PluginConflictResolver *pluginConflictResolver);
 	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 	INJEQT_SET void setPluginStateManager(PluginStateManager *pluginStateManager);
 	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
+	INJEQT_INIT void init();
 
 	void configurationApplied();
 	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);

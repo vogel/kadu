@@ -120,7 +120,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 
 	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"), this);
 	QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
-	ContactsTable = new BuddyContactsTable(MyBuddy, contactsBox);
+	ContactsTable = m_injectedFactory->makeInjected<BuddyContactsTable>(MyBuddy, contactsBox);
 	ValueStateNotifier->addConfigurationValueStateNotifier(ContactsTable->valueStateNotifier());
 	contactsLayout->addWidget(ContactsTable);
 

@@ -32,6 +32,7 @@
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "misc/paths-provider.h"
+#include "os/generic/url-opener.h"
 #include "protocols/protocols-manager.h"
 #include "services/chat-image-request-service.h"
 #include "services/image-storage-service.h"
@@ -69,6 +70,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<StatusContainerManager>();
 	add_type<StoragePointFactory>();
 	add_type<UrlHandlerManager>();
+	add_type<UrlOpener>();
 }
 
 CoreModule::~CoreModule()

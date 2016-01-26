@@ -32,6 +32,7 @@
 #include "core/injected-factory.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/status-menu.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
 #include "status/status-configuration-holder.h"
@@ -46,6 +47,11 @@ StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 
 StatusButton::~StatusButton()
 {
+}
+
+void StatusButton::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void StatusButton::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -78,7 +84,7 @@ void StatusButton::createGui()
 	m_injectedFactory->makeInjected<StatusMenu>(MyStatusContainer, false, menu);
 
 	setMenu(menu);
-	setIcon(Icon->icon().icon());
+	setIcon(m_iconsManager->iconByPath(Icon->icon()));
 }
 
 void StatusButton::addTitleToMenu(const QString &title, QMenu *menu)
@@ -89,7 +95,7 @@ void StatusButton::addTitleToMenu(const QString &title, QMenu *menu)
 
 	MenuTitleAction->setFont(font);
 	MenuTitleAction->setText(title);
-	MenuTitleAction->setIcon(MyStatusContainer->statusIcon().icon());
+	MenuTitleAction->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon()));
 
 	QWidgetAction *action = new QWidgetAction(this);
 	action->setObjectName("status_menu_title");
@@ -179,9 +185,9 @@ void StatusButton::setDisplayStatusName(bool displayStatusName)
 
 void StatusButton::iconUpdated(const KaduIcon &icon)
 {
-	setIcon(icon.icon());
+	setIcon(m_iconsManager->iconByPath(icon));
 	if (MenuTitleAction)
-		MenuTitleAction->setIcon(icon.icon());
+		MenuTitleAction->setIcon(m_iconsManager->iconByPath(icon));
 }
 
 QString StatusButton::prepareDescription(const QString &description) const

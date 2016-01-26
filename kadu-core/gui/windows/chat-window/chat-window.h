@@ -33,6 +33,7 @@
 class ChatConfigurationHolder;
 class ChatWidget;
 class Chat;
+class IconsManager;
 class InjectedFactory;
 
 class KADUAPI ChatWindow : public QWidget, ConfigurationAwareObject, CompositingAwareObject, DesktopAwareObject
@@ -65,6 +66,7 @@ protected:
 
 private:
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 
 	Chat m_chat;
@@ -74,6 +76,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 

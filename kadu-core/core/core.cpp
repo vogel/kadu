@@ -380,7 +380,7 @@ void Core::init()
 
 	injectedFactory()->makeInjected<Updates>(this);
 
-	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
+	QApplication::setWindowIcon(m_injector.get<IconsManager>()->iconByPath(KaduIcon("kadu_icons/kadu")));
 	connect(iconsManager(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
@@ -427,7 +427,7 @@ void Core::updateIcon()
 	if (isClosing())
 		return;
 
-	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
+	QApplication::setWindowIcon(m_injector.get<IconsManager>()->iconByPath(KaduIcon("kadu_icons/kadu")));
 }
 
 void Core::accountRegistered(Account account)

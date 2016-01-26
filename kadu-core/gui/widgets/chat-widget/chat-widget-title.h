@@ -64,6 +64,7 @@ signals:
 private:
 	QPointer<ChatTypeManager> m_chatTypeManager;
 	QPointer<ContactDataExtractor> m_contactDataExtractor;
+	QPointer<IconsManager> m_iconsManager;
 
 	QString m_title;
 	QString m_fullTitle;

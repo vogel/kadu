@@ -26,7 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "notification/notification/notification.h"
 
 #ifdef Q_OS_WIN
@@ -109,9 +109,19 @@ PCSpeakerNotifier::~PCSpeakerNotifier()
 {
 }
 
+void PCSpeakerNotifier::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void PCSpeakerNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 NotifierConfigurationWidget * PCSpeakerNotifier::createConfigurationWidget(QWidget *parent)
 {
-	return new PCSpeakerConfigurationWidget{this, parent};
+	return m_injectedFactory->makeInjected<PCSpeakerConfigurationWidget>(this, parent);
 }
 
 void PCSpeakerNotifier::notify(Notification *notification)
@@ -120,7 +130,7 @@ void PCSpeakerNotifier::notify(Notification *notification)
 #ifdef Q_OS_MACX
 	SysBeep(1);
 #else
-	parseAndPlay(Core::instance()->configuration()->deprecatedApi()->readEntry("PC Speaker", notification->type() + "_Sound"));
+	parseAndPlay(m_configuration->deprecatedApi()->readEntry("PC Speaker", notification->type() + "_Sound"));
 #endif
 	notification->release(this);
 }
@@ -224,7 +234,7 @@ void PCSpeakerNotifier::play(int sound[21], int soundlength[20])
 
 void PCSpeakerNotifier::parseAndPlay(QString line)
 {
-	volume = Core::instance()->configuration()->deprecatedApi()->readNumEntry("PC Speaker", "SpeakerVolume");
+	volume = m_configuration->deprecatedApi()->readNumEntry("PC Speaker", "SpeakerVolume");
 	int sound[21], soundLength[20];
 	parseStringToSound(line, sound, soundLength);
 	play(sound, soundLength);
@@ -232,12 +242,12 @@ void PCSpeakerNotifier::parseAndPlay(QString line)
 
 void PCSpeakerNotifier::createDefaultConfiguration()
 {
-	Core::instance()->configuration()->deprecatedApi()->addVariable("PC Speaker", "SpeakerVolume", 100);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("PC Speaker", "NewChat_Sound", "C4/2");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("PC Speaker", "NewMessage_Sound", "F2/2");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("PC Speaker", "ConnectionError_Sound", "D3/4");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("PC Speaker", "StatusChanged_Sound", "A3/2");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("PC Speaker", "FileTransfer_Sound", "E4/4");
+	m_configuration->deprecatedApi()->addVariable("PC Speaker", "SpeakerVolume", 100);
+	m_configuration->deprecatedApi()->addVariable("PC Speaker", "NewChat_Sound", "C4/2");
+	m_configuration->deprecatedApi()->addVariable("PC Speaker", "NewMessage_Sound", "F2/2");
+	m_configuration->deprecatedApi()->addVariable("PC Speaker", "ConnectionError_Sound", "D3/4");
+	m_configuration->deprecatedApi()->addVariable("PC Speaker", "StatusChanged_Sound", "A3/2");
+	m_configuration->deprecatedApi()->addVariable("PC Speaker", "FileTransfer_Sound", "E4/4");
 }
 
 #include "moc_pcspeaker-notifier.cpp"

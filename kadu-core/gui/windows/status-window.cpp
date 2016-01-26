@@ -29,6 +29,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/status-window-description-proxy-model.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "parser/parser.h"
 #include "status/description-manager.h"
@@ -70,6 +71,11 @@ void StatusWindow::setConfiguration(Configuration *configuration)
 void StatusWindow::setDescriptionManager(DescriptionManager *descriptionManager)
 {
 	m_descriptionManager = descriptionManager;
+}
+
+void StatusWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void StatusWindow::setMyself(Myself *myself)
@@ -163,7 +169,7 @@ void StatusWindow::createLayout()
 	DescriptionSelect->setToolTip(tr("Select Previously Used Description"));
 	descriptionSelectLayout->addWidget(DescriptionSelect);
 
-	ClearDescriptionsHistoryButton = new QPushButton(KaduIcon("edit-clear").icon(), "", this);
+	ClearDescriptionsHistoryButton = new QPushButton(m_iconsManager->iconByPath(KaduIcon("edit-clear")), "", this);
 	ClearDescriptionsHistoryButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	ClearDescriptionsHistoryButton->setToolTip(tr("Clear Descriptions History"));
 	descriptionSelectLayout->addWidget(ClearDescriptionsHistoryButton);
@@ -200,7 +206,7 @@ void StatusWindow::createLayout()
 	descriptionEraseLayout->setMargin(0);
 	descriptionEraseLayout->setSpacing(0);
 	descriptionEraseLayout->addStretch();
-	EraseButton = new QPushButton(KaduIcon("edit-clear-locationbar-rtl").icon(), "", this);
+	EraseButton = new QPushButton(m_iconsManager->iconByPath(KaduIcon("edit-clear-locationbar-rtl")), "", this);
 	EraseButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	EraseButton->setToolTip(tr("Erase Description"));
 	descriptionEraseLayout->addWidget(EraseButton);
@@ -236,7 +242,7 @@ void StatusWindow::setupStatusSelect()
 		if (StatusTypeNone == statusType)
 			continue;
 		const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(statusType);
-		StatusSelect->addItem(Container->statusIcon(Status{m_statusTypeManager, typeData.type()}).icon(), typeData.displayName(), QVariant(typeData.type()));
+		StatusSelect->addItem(m_iconsManager->iconByPath(Container->statusIcon(Status{m_statusTypeManager, typeData.type()})), typeData.displayName(), QVariant(typeData.type()));
 	}
 
 	StatusSelect->setCurrentIndex(StatusSelect->findData(QVariant(commonStatusType)));
@@ -398,7 +404,7 @@ void StatusWindow::eraseDescription()
 void StatusWindow::clearDescriptionsHistory()
 {
 	MessageDialog *dialog = MessageDialog::create(
-		KaduIcon("dialog-warning"),
+		m_iconsManager->iconByPath(KaduIcon("dialog-warning")),
 		tr("Clear Descriptions History"),
 		tr("Do you really want to clear the descriptions history?"),
 		this);

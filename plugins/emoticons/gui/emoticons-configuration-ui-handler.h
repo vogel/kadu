@@ -19,16 +19,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICONS_CONFIGURATION_UI_HANDLER_H
-#define EMOTICONS_CONFIGURATION_UI_HANDLER_H
+#pragma once
 
 #include "theme/emoticon-theme-manager.h"
 
 #include "configuration/gui/configuration-ui-handler.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class ConfigListWidget;
 class ConfigPathListEdit;
 class ConfigurationWidget;
+class IconsManager;
 
 /**
  * @addtogroup Emoticons
@@ -43,11 +46,15 @@ class EmoticonsConfigurationUiHandler : public QObject, public ConfigurationUiHa
 {
 	Q_OBJECT
 
+	QPointer<IconsManager> m_iconsManager;
+
 	QScopedPointer<EmoticonThemeManager> ThemeManager;
 	QPointer<ConfigurationWidget> Widget;
 	QPointer<ConfigListWidget> ThemesList;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
 	void updateEmoticonThemes();
 	void installEmoticonTheme();
 
@@ -64,5 +71,3 @@ public:
 /**
  * @}
  */
-
-#endif // EMOTICONS_CONFIGURATION_UI_HANDLER_H

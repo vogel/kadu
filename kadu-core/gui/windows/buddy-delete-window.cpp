@@ -25,6 +25,7 @@
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-additional-data-delete-handler.h"
 #include "buddies/buddy-manager.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "roster/roster.h"
 
@@ -61,6 +62,11 @@ void BuddyDeleteWindow::setBuddyManager(BuddyManager *buddyManager)
 	m_buddyManager = buddyManager;
 }
 
+void BuddyDeleteWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void BuddyDeleteWindow::setRoster(Roster *roster)
 {
 	m_roster = roster;
@@ -81,7 +87,7 @@ void BuddyDeleteWindow::createGui()
 	QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
 
 	QLabel *iconLabel = new QLabel(topWidget);
-	iconLabel->setPixmap(KaduIcon("dialog-warning").icon().pixmap(32, 32));
+	iconLabel->setPixmap(m_iconsManager->iconByPath(KaduIcon("dialog-warning")).pixmap(32, 32));
 	topLayout->addWidget(iconLabel, 0, Qt::AlignTop);
 
 	QWidget *contentWidget = new QWidget(topWidget);

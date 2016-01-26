@@ -254,6 +254,11 @@ void KaduWindowActions::setUrlHandlerManager(UrlHandlerManager *urlHandlerManage
 	m_urlHandlerManager = urlHandlerManager;
 }
 
+void KaduWindowActions::setUrlOpener(UrlOpener *urlOpener)
+{
+	m_urlOpener = urlOpener;
+}
+
 void KaduWindowActions::setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService)
 {
 	m_yourAccountsWindowService = yourAccountsWindowService;
@@ -714,9 +719,9 @@ void KaduWindowActions::forumActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.im/forum/");
+		m_urlOpener->openUrl("http://www.kadu.im/forum/");
 	else
-		UrlOpener::openUrl("http://www.kadu.im/forum/viewforum.php?f=12");
+		m_urlOpener->openUrl("http://www.kadu.im/forum/viewforum.php?f=12");
 }
 
 void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
@@ -725,9 +730,9 @@ void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.im/w/B%C5%82%C4%99dy");
+		m_urlOpener->openUrl("http://www.kadu.im/w/B%C5%82%C4%99dy");
 	else
-		UrlOpener::openUrl("http://www.kadu.im/w/English:Bugs");
+		m_urlOpener->openUrl("http://www.kadu.im/w/English:Bugs");
 }
 
 void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled)
@@ -736,9 +741,9 @@ void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled
 	Q_UNUSED(toggled)
 
 	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.im/w/Do%C5%82%C4%85cz");
+		m_urlOpener->openUrl("http://www.kadu.im/w/Do%C5%82%C4%85cz");
 	else
-		UrlOpener::openUrl("http://www.kadu.im/w/English:GetInvolved");
+		m_urlOpener->openUrl("http://www.kadu.im/w/English:GetInvolved");
 }
 
 void KaduWindowActions::aboutActionActivated(QAction *sender, bool toggled)
@@ -754,7 +759,7 @@ void KaduWindowActions::translateActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	UrlOpener::openUrl("http://www.transifex.net/projects/p/kadu/");
+	m_urlOpener->openUrl("http://www.transifex.net/projects/p/kadu/");
 }
 
 void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggled)
@@ -809,7 +814,7 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 		return;
 
 	if (!buddy.email().isEmpty())
-		UrlOpener::openEmail(buddy.email().toUtf8());
+		m_urlOpener->openEmail(buddy.email().toUtf8());
 
 	kdebugf2();
 }
@@ -859,7 +864,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	QRegExp url = m_urlHandlerManager->urlRegExp();
 	int idx_start = url.indexIn(description);
 	if (idx_start >= 0)
-		UrlOpener::openUrl(description.mid(idx_start, url.matchedLength()).toUtf8());
+		m_urlOpener->openUrl(description.mid(idx_start, url.matchedLength()).toUtf8());
 
 	kdebugf2();
 }

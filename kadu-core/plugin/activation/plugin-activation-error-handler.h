@@ -26,6 +26,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class InjectedFactory;
 class PluginStateService;
 class PluginActivationService;
 
@@ -73,10 +74,12 @@ public:
 	void handleActivationError(const QString &pluginName, const QString &errorMessage);
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<PluginActivationService> m_pluginActivationService;
 	QPointer<PluginStateService> m_pluginStateService;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
 	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 

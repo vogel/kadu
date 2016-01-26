@@ -32,20 +32,37 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "os/generic/url-opener.h"
 
 #include "updates-dialog.h"
 
 UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
-		QDialog(parent), DesktopAwareObject(this)
+		QDialog(parent), DesktopAwareObject(this),
+		m_newestVersion{newestVersion}
 {
 	setWindowRole("kadu-updates");
 	setWindowTitle(tr("New version is available. Please update"));
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	setMinimumSize(QSize(450, 150));
+}
 
+UpdatesDialog::~UpdatesDialog()
+{
+}
+
+void UpdatesDialog::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void UpdatesDialog::setUrlOpener(UrlOpener *urlOpener)
+{
+	m_urlOpener = urlOpener;
+}
+
+void UpdatesDialog::init()
+{
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	QLabel *messageLabel = new QLabel(this);
@@ -54,16 +71,16 @@ UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
 #if defined(Q_OS_UNIX)
 	messageLabel->setText(QString(tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
 							 "Please <a href='download'>download</a> an installer and upgrade or use "
-							 "your package management system to update Kadu.")).arg(newestVersion));
+							 "your package management system to update Kadu.")).arg(m_newestVersion));
 #else
 	messageLabel->setText(QString(tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
-							 "Please <a href='download'>download</a> an installer and upgrade.")).arg(newestVersion));
+							 "Please <a href='download'>download</a> an installer and upgrade.")).arg(m_newestVersion));
 #endif
 
 	connect(messageLabel, SIGNAL(linkActivated(QString)), this, SLOT(downloadClicked()));
 
 	m_checkForUpdates = new QCheckBox(tr("Check for updates when Kadu is opened"));
-	m_checkForUpdates->setChecked(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("General", "CheckUpdates", true));
+	m_checkForUpdates->setChecked(m_configuration->deprecatedApi()->readBoolEntry("General", "CheckUpdates", true));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -81,21 +98,17 @@ UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
 	layout->addWidget(buttons);
 }
 
-UpdatesDialog::~UpdatesDialog()
-{
-}
-
 void UpdatesDialog::downloadClicked()
 {
-	if (Core::instance()->configuration()->deprecatedApi()->readEntry("General", "Language") == "pl")
-		UrlOpener::openUrl("http://www.kadu.im/w/Pobierz");
+	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
+		m_urlOpener->openUrl("http://www.kadu.im/w/Pobierz");
 	else
-		UrlOpener::openUrl("http://www.kadu.im/w/English:Download");
+		m_urlOpener->openUrl("http://www.kadu.im/w/English:Download");
 }
 
 void UpdatesDialog::accepted()
 {
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("General", "CheckUpdates", m_checkForUpdates->isChecked());
+	m_configuration->deprecatedApi()->writeEntry("General", "CheckUpdates", m_checkForUpdates->isChecked());
 
 	close();
 }

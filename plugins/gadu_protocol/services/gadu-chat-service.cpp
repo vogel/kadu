@@ -36,6 +36,7 @@
 #include "formatted-string/formatted-string-is-plain-text-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "message/raw-message.h"
 #include "misc/misc.h"
 #include "services/image-storage-service.h"
@@ -85,6 +86,11 @@ void GaduChatService::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
+void GaduChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
+}
+
 void GaduChatService::setGaduChatImageService(GaduChatImageService *gaduChatImageService)
 {
 	CurrentGaduChatImageService = gaduChatImageService;
@@ -95,14 +101,14 @@ void GaduChatService::setGaduFileTransferService(GaduFileTransferService *gaduFi
 	CurrentFileTransferService = gaduFileTransferService;
 }
 
+void GaduChatService::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void GaduChatService::setImageStorageService(ImageStorageService *imageStorageService)
 {
 	CurrentImageStorageService = imageStorageService;
-}
-
-void GaduChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
 void GaduChatService::setConnection(GaduConnection *connection)
@@ -178,7 +184,7 @@ bool GaduChatService::sendMessage(const Message &message)
 
 	if (rawMessage.rawContent().length() > maxMessageLength())
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Message too long (%1 >= %2)").arg(rawMessage.rawContent().length()).arg(10000));
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Message too long (%1 >= %2)").arg(rawMessage.rawContent().length()).arg(10000));
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return false;
 	}

@@ -61,6 +61,7 @@ void ChatWidgetTitle::setContactDataExtractor(ContactDataExtractor *contactDataE
 
 void ChatWidgetTitle::setIconsManager(IconsManager *iconsManager)
 {
+	m_iconsManager = iconsManager;
 	connect(iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
 }
 
@@ -103,7 +104,7 @@ QString ChatWidgetTitle::tooltip() const
 QIcon ChatWidgetTitle::icon() const
 {
 	return chatWidget()->chat().unreadMessagesCount() > 0
-			? KaduIcon("protocols/common/message").icon()
+			? m_iconsManager->iconByPath(KaduIcon("protocols/common/message"))
 			: m_icon;
 }
 
@@ -113,7 +114,7 @@ QIcon ChatWidgetTitle::blinkingIcon() const
 			? m_blink
 			: chatWidget()->chat().unreadMessagesCount() > 0;
 	return showMessageIcon
-			? KaduIcon("protocols/common/message").icon()
+			? m_iconsManager->iconByPath(KaduIcon("protocols/common/message"))
 			: m_icon;
 }
 
@@ -289,7 +290,7 @@ QIcon ChatWidgetTitle::chatIcon(const Chat& chat) const
 			return m_contactDataExtractor->data(contact, Qt::DecorationRole, false).value<QIcon>();
 	}
 	else if (contactsCount > 1)
-		return m_chatTypeManager->chatType("ContactSet")->icon().icon();
+		return m_iconsManager->iconByPath(m_chatTypeManager->chatType("ContactSet")->icon());
 
-	return KaduIcon("internet-group-chat").icon();
+	return m_iconsManager->iconByPath(KaduIcon("internet-group-chat"));
 }

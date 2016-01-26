@@ -24,6 +24,7 @@
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
 
@@ -41,6 +42,11 @@ ChatImageRequestService::ChatImageRequestService(QObject *parent) :
 
 ChatImageRequestService::~ChatImageRequestService()
 {
+}
+
+void ChatImageRequestService::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void ChatImageRequestService::setImageStorageService(ImageStorageService *imageStorageService)
@@ -116,7 +122,7 @@ bool ChatImageRequestService::acceptImage(const Account &account, const QString 
 			.arg(contact.display(true)).arg((chatImage.size() + 1023) / 1024);
 
 	MessageDialog *dialog = MessageDialog::create(
-			KaduIcon("dialog-question"),
+			m_iconsManager->iconByPath(KaduIcon("dialog-question")),
 			tr("Kadu") + " - " + tr("Incoming Image"),
 			question);
 	dialog->addButton(QMessageBox::Yes, tr("Accept image"));

@@ -28,6 +28,7 @@
 #include "contacts/contact.h"
 #include "core/myself.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
@@ -52,6 +53,11 @@ void RosterReplacer::setBuddyManager(BuddyManager *buddyManager)
 void RosterReplacer::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
+}
+
+void RosterReplacer::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void RosterReplacer::setMyself(Myself *myself)
@@ -100,7 +106,7 @@ bool RosterReplacer::askForAddingContacts(const QMap<Buddy, Contact> &contactsTo
 	questionString += tr("Do you want to apply the above changes to your local contact list? "
 			"Regardless of your choice, it will be sent to the server after making possible changes.");
 
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), questionString);
+	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), questionString);
 	dialog->addButton(QMessageBox::Yes, tr("Apply changes"));
 	dialog->addButton(QMessageBox::No, tr("Leave contact list unchanged"));
 

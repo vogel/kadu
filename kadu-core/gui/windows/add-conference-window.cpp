@@ -32,6 +32,7 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/model-chain.h"
 #include "os/generic/window-geometry-manager.h"
@@ -65,6 +66,11 @@ AddConferenceWindow::~AddConferenceWindow()
 void AddConferenceWindow::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void AddConferenceWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void AddConferenceWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
@@ -174,7 +180,7 @@ void AddConferenceWindow::createGui()
 	AddButton->setDefault(true);
 	connect(AddButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
-	StartButton = new QPushButton(KaduIcon("internet-group-chat").icon(), tr("Start Conference"), this);
+	StartButton = new QPushButton(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")), tr("Start Conference"), this);
 	connect(StartButton, SIGNAL(clicked(bool)), this, SLOT(start()));
 
 	QPushButton *cancel = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);

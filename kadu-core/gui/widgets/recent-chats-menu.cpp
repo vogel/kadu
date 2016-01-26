@@ -67,7 +67,7 @@ void RecentChatsMenu::setRecentChatManager(RecentChatManager *recentChatManager)
 
 void RecentChatsMenu::init()
 {
-	setIcon(KaduIcon("internet-group-chat").icon());
+	setIcon(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")));
 	setTitle(tr("Recent chats"));
 
 	m_recentChatsMenuNeedsUpdate = true;
@@ -111,7 +111,7 @@ void RecentChatsMenu::update()
 		if (!m_chatWidgetRepository->widgetForChat(chat))
 		{
 			ChatType *type = m_chatTypeManager->chatType(chat.type());
-			QAction *action = new QAction(type ? type->icon().icon() : QIcon(),
+			QAction *action = new QAction(type ? m_iconsManager->iconByPath(type->icon()) : QIcon(),
 			                              m_chatDataExtractor->data(chat, Qt::DisplayRole).toString(),
 			                              this);
 			action->setData(QVariant::fromValue<Chat>(chat));
@@ -125,7 +125,7 @@ void RecentChatsMenu::update()
 
 void RecentChatsMenu::iconThemeChanged()
 {
-	setIcon(KaduIcon("internet-group-chat").icon());
+	setIcon(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")));
 }
 
 #include "moc_recent-chats-menu.cpp"

@@ -33,6 +33,7 @@
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "talkable/filter/group-filter.h"
 #include "debug.h"
@@ -80,6 +81,11 @@ void GroupTabBar::setConfiguration(Configuration *configuration)
 void GroupTabBar::setGroupManager(GroupManager *groupManager)
 {
 	m_groupManager = groupManager;
+}
+
+void GroupTabBar::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void GroupTabBar::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -349,7 +355,7 @@ void GroupTabBar::deleteGroup()
 	if (!group)
 		return;
 
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"),
+	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")),
 						      tr("Delete group"),
 						      tr("Group <i>%0</i> will be deleted, but without buddies. Are you sure?").arg(group.name()),
 						      m_kaduWindowService->kaduWindow());
@@ -464,7 +470,7 @@ void GroupTabBar::updateTabData(int tabIndex, GroupFilter groupFilter)
 {
 	auto tabData = GroupFilterTabData(groupFilter);
 	setTabText(tabIndex, tabData.tabName());
-	setTabIcon(tabIndex, tabData.tabIcon());
+	setTabIcon(tabIndex, tabData.tabIcon(m_iconsManager));
 }
 
 #include "moc_group-tab-bar.cpp"

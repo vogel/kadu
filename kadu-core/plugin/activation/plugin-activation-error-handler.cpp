@@ -21,6 +21,7 @@
 
 #include "plugin-activation-error-handler.h"
 
+#include "core/injected-factory.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/gui/plugin-error-dialog.h"
 #include "plugin/state/plugin-state-service.h"
@@ -35,6 +36,11 @@ PluginActivationErrorHandler::PluginActivationErrorHandler(QObject *parent) :
 
 PluginActivationErrorHandler::~PluginActivationErrorHandler()
 {
+}
+
+void PluginActivationErrorHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void PluginActivationErrorHandler::setPluginActivationService(PluginActivationService *pluginActivationService)
@@ -56,7 +62,7 @@ void PluginActivationErrorHandler::handleActivationError(const QString &pluginNa
 	auto offerLoadInFutureChoice = PluginState::Enabled == state;
 
 	// TODO: set parent to MainConfigurationWindow is it exists
-	auto errorDialog = new PluginErrorDialog{pluginName, errorMessage, offerLoadInFutureChoice, 0};
+	auto errorDialog = m_injectedFactory->makeInjected<PluginErrorDialog>(pluginName, errorMessage, offerLoadInFutureChoice, nullptr);
 	if (offerLoadInFutureChoice)
 		connect(errorDialog, SIGNAL(accepted(QString,bool)), this, SLOT(setStateEnabledIfInactive(QString,bool)));
 

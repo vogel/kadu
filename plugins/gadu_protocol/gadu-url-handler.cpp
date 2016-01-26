@@ -30,6 +30,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-container.h"
@@ -66,13 +67,20 @@ void GaduUrlHandler::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
+void GaduUrlHandler::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 bool GaduUrlHandler::isUrlValid(const QByteArray &url)
 {
 	return m_gaduRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
+void GaduUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu)
 {
+	Q_UNUSED(urlOpener);
+
 	QVector<Account> gaduAccounts = m_accountManager->byProtocolName("gadu");
 	if (gaduAccounts.isEmpty())
 		return;
@@ -105,7 +113,7 @@ void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 			ids.append(account.id());
 			ids.append(gaduId);
 
-			menu.addAction(account.statusContainer()->statusIcon().icon(), account.id())->setData(ids);
+			menu.addAction(m_iconsManager->iconByPath(account.statusContainer()->statusIcon()), account.id())->setData(ids);
 		}
 
 		connect(&menu, SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));

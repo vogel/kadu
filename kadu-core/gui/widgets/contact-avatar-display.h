@@ -19,10 +19,14 @@
 
 #pragma once
 
-#include <QtWidgets/QLabel>
-
 #include "avatars/avatar.h"
 #include "contacts/contact.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QLabel>
+#include <injeqt/injeqt.h>
+
+class IconsManager;
 
 class ContactAvatarDisplay : public QLabel
 {
@@ -33,6 +37,8 @@ public:
 	virtual ~ContactAvatarDisplay();
 
 private:
+	QPointer<IconsManager> m_iconsManager;
+
 	Contact m_contact;
 	Avatar m_avatar;
 	QSize m_size;
@@ -40,6 +46,9 @@ private:
 	void displayAvatar();
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
 	void avatarUpdated();
 
 };

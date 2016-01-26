@@ -36,6 +36,7 @@ class QWidget;
 class Configuration;
 class DockingMenuActionRepository;
 class GroupTabBar;
+class IconsManager;
 class KaduWindowService;
 class KaduWindow;
 class MainWindow;
@@ -56,6 +57,7 @@ public slots:
 private:
 	QPointer<Configuration> m_configuration;
 	QPointer<DockingMenuActionRepository> m_dockingMenuActionRepository;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<KaduWindowService> m_kaduWindowService;
 
 	bool KeepSize;
@@ -80,6 +82,7 @@ private:
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

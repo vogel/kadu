@@ -47,10 +47,15 @@ void AccountsComboBox::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
+void AccountsComboBox::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void AccountsComboBox::init()
 {
 	ModelChain *chain = new ModelChain(this);
-	Model = new AccountsModel(m_accountManager, chain);
+	Model = m_injectedFactory->makeInjected<AccountsModel>(m_accountManager, chain);
 	ProxyModel = new AccountsProxyModel(chain);
 	chain->setBaseModel(Model);
 	chain->addProxyModel(ProxyModel);

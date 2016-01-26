@@ -29,6 +29,7 @@
 #include <QtWidgets/QDialog>
 
 class BuddyManager;
+class IconsManager;
 class InjectedFactory;
 class Myself;
 class SelectTalkableComboBox;
@@ -44,6 +45,7 @@ public:
 
 private:
 	QPointer<BuddyManager> m_buddyManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<Myself> m_myself;
 	QPointer<TalkableConverter> m_talkableConverter;
@@ -56,6 +58,7 @@ private:
 
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);

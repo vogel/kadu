@@ -29,25 +29,25 @@
 #include "message-dialog.h"
 
 
-MessageDialog * MessageDialog::create(const KaduIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
+MessageDialog * MessageDialog::create(const QIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
 {
 	return new MessageDialog(icon, title, text, QMessageBox::NoButton, parent, f);
 }
 
-void MessageDialog::show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
+void MessageDialog::show(const QIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
 {
 	auto dialog = new MessageDialog(icon, title, text, buttons, parent, f);
 	dialog->exec();
 }
 
-MessageDialog::MessageDialog(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
+MessageDialog::MessageDialog(const QIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
 {
 	Box = new QMessageBox(QMessageBox::NoIcon, title, text, buttons, parent, f);
 	connect(Box, SIGNAL(finished(int)), this, SLOT(messageBoxFinished(int)));
 	Box->setAttribute(Qt::WA_DeleteOnClose, true);
 
 	int iconSize = Box->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, Box);
-	QPixmap pixmap(icon.icon().pixmap(iconSize, iconSize));
+	QPixmap pixmap(icon.pixmap(iconSize, iconSize));
 	if (!pixmap.isNull())
 		Box->setIconPixmap(pixmap);
 }

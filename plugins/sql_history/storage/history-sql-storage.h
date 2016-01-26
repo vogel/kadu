@@ -38,6 +38,7 @@ class BuddyStorage;
 class ChatManager;
 class FormattedStringFactory;
 class HistoryQuery;
+class IconsManager;
 class InjectedFactory;
 class ProgressWindow;
 class StatusTypeManager;
@@ -61,6 +62,7 @@ class HistorySqlStorage : public HistoryStorage
 	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 	QPointer<TalkableConverter> m_talkableConverter;
@@ -124,6 +126,7 @@ private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);

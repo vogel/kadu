@@ -29,6 +29,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
+#include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/widgets/dialog/password-dialog-widget.h"
 #include "gui/windows/kadu-dialog.h"
@@ -75,6 +76,11 @@ void AccountManager::setConfigurationManager(ConfigurationManager *configuration
 void AccountManager::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
+}
+
+void AccountManager::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void AccountManager::setMyself(Myself *myself)
@@ -285,7 +291,7 @@ void AccountManager::providePassword(Account account)
 			.arg(account.accountIdentity().name())
 			.arg(account.id());
 
-	PasswordDialogWidget *passwordWidget = new PasswordDialogWidget(message, account, 0);
+	auto passwordWidget = m_injectedFactory->makeInjected<PasswordDialogWidget>(message, account, nullptr);
 	connect(passwordWidget, SIGNAL(passwordEntered(const QVariant &, const QString &, bool)), this, SLOT(passwordProvided(const QVariant &, const QString &, bool)));
 	KaduDialog *window = new KaduDialog(passwordWidget, 0);
 	window->exec();

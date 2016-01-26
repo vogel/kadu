@@ -20,18 +20,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef URL_OPENER_H
-#define URL_OPENER_H
-
-#include <QtCore/QByteArray>
+#pragma once
 
 #include "exports.h"
 
-namespace UrlOpener
-{
-	bool KADUAPI openUrl(const QByteArray &urlForDesktopServices, const QByteArray &urlForApplication, const QString &application);
-	void KADUAPI openUrl(const QByteArray &url);
-	void KADUAPI openEmail(const QByteArray &email);
-}
+#include <QtCore/QByteArray>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-#endif // URL_OPENER_H
+class Configuration;
+class IconsManager;
+
+class KADUAPI UrlOpener : public QObject
+{
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit UrlOpener(QObject *parent = nullptr);
+	virtual ~UrlOpener();
+
+	bool openUrl(const QByteArray &urlForDesktopServices, const QByteArray &urlForApplication, const QString &application);
+	void openUrl(const QByteArray &url);
+	void openEmail(const QByteArray &email);
+
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+
+};

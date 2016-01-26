@@ -57,6 +57,7 @@ class Parser;
 class RecentChatsAction;
 class StatusContainer;
 class UrlHandlerManager;
+class UrlOpener;
 class YourAccountsWindowService;
 
 class KaduWindowActions : public QObject, ConfigurationAwareObject
@@ -76,6 +77,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<Myself> m_myself;
 	QPointer<Parser> m_parser;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
+	QPointer<UrlOpener> m_urlOpener;
 	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
 	friend class KaduWindow;
@@ -129,6 +131,7 @@ private slots:
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
+	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 	INJEQT_INIT void init();
 

@@ -46,6 +46,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/search-window-actions.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol-factory.h"
@@ -127,6 +128,11 @@ void SearchWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 void SearchWindow::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
+}
+
+void SearchWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void SearchWindow::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -433,21 +439,21 @@ void SearchWindow::firstSearch()
 
 	if (!CurrentAccount)
 	{
-		MessageDialog::show(KaduIcon("dialog-error"), windowTitle(),
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), windowTitle(),
 				tr("To be able to search you have to set up an account first."), QMessageBox::Ok, this);
 		return;
 	}
 
 	if (!CurrentSearchService)
 	{
-		MessageDialog::show(KaduIcon("dialog-error"), windowTitle(),
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), windowTitle(),
 				tr("We don't offer contacts search feature for your network yet."), QMessageBox::Ok, this);
 		return;
 	}
 
 	if (!CurrentAccount.protocolHandler() || !CurrentAccount.protocolHandler()->isConnected())
 	{
-		MessageDialog::show(KaduIcon("dialog-error"), windowTitle(),
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), windowTitle(),
 				tr("Cannot search contacts in offline mode."), QMessageBox::Ok, this);
 		return;
 	}
@@ -541,7 +547,7 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 			strings << QString() << contact.id() << buddy.firstName()
 					<< buddy.city() << buddy.nickName() << QString::number(buddy.birthYear());
 			treeItem = new QTreeWidgetItem(ResultsListWidget, strings);
-			treeItem->setIcon(0, contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).icon());
+			treeItem->setIcon(0, m_iconsManager->iconByPath(contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus())));
 		}
 	}
 
@@ -554,7 +560,7 @@ void SearchWindow::newSearchResults(const BuddyList &buddies)
 	setActionEnabled(m_searchWindowActions->StopSearch, false);
 
 	if (buddies.isEmpty())
-		MessageDialog::show(KaduIcon("dialog-information"), windowTitle(),
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), windowTitle(),
 				tr("There were no results of your search."), QMessageBox::Ok, this);
 	else
 	{

@@ -40,6 +40,7 @@ class ConfigGroupBox;
 class ConfigSection;
 class Configuration;
 class ConfigWidget;
+class IconsManager;
 class InjectedFactory;
 class KaduIcon;
 class PathsProvider;
@@ -158,6 +159,7 @@ protected:
 
 private:
 	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<PathsProvider> m_pathsProvider;
 
@@ -186,6 +188,7 @@ private:
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 

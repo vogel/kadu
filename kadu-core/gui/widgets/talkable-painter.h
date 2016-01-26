@@ -30,7 +30,7 @@ class TalkableDelegateConfiguration;
 
 class TalkablePainter
 {
-	const TalkableDelegateConfiguration &Configuration;
+	TalkableDelegateConfiguration *Configuration;
 	QStyleOptionViewItemV4 Option;
 	const QModelIndex &Index;
 	const QTreeView *Widget;
@@ -98,7 +98,7 @@ class TalkablePainter
 #endif
 
 public:
-	TalkablePainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index);
+	TalkablePainter(TalkableDelegateConfiguration *configuration, QStyleOptionViewItemV4 option, const QModelIndex &index);
 	~TalkablePainter();
 
 	QPixmap avatar() const;

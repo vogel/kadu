@@ -34,6 +34,7 @@
 
 class AccountManager;
 class ConfigurationManager;
+class IconsManager;
 class IdentityManager;
 class InjectedFactory;
 class ProxyComboBox;
@@ -58,6 +59,7 @@ public slots:
 private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<IdentityManager> m_identityManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 
@@ -114,6 +116,7 @@ private:
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();

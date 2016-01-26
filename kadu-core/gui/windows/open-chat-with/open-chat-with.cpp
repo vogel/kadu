@@ -118,7 +118,7 @@ void OpenChatWith::init()
 	idLayout->setMargin(0);
 	idLayout->addWidget(new QLabel(tr("User name:"), idWidget));
 
-	ContactID = new LineEditWithClearButton(this);
+	ContactID = m_injectedFactory->makeInjected<LineEditWithClearButton>(this);
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	idLayout->addWidget(ContactID);
 

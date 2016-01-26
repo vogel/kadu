@@ -42,6 +42,7 @@
 #include "core/core.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
 #include "os/generic/url-opener.h"
@@ -65,9 +66,19 @@ void About::setDomProcessorService(DomProcessorService *domProcessorService)
 	m_domProcessorService = domProcessorService;
 }
 
+void About::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void About::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
+}
+
+void About::setUrlOpener(UrlOpener *urlOpener)
+{
+	m_urlOpener = urlOpener;
 }
 
 void About::init()
@@ -82,7 +93,7 @@ void About::init()
 	QWidget *texts = new QWidget(center);
 
 	QLabel *l_icon = new QLabel(texts);
-	l_icon->setPixmap(KaduIcon("kadu_icons/kadu").icon().pixmap(64, 64));
+	l_icon->setPixmap(m_iconsManager->iconByPath(KaduIcon("kadu_icons/kadu")).pixmap(64, 64));
 
 	QLabel *l_info = new QLabel(texts);
 	l_info->setBackgroundRole(texts->backgroundRole());
@@ -113,10 +124,10 @@ void About::init()
 	about_layout->addWidget(new QLabel("IRC:\nirc.freenode.net - #kadu", wb_about));
 	about_layout->addSpacing(10);
 	about_layout->addWidget(new QLabel(tr("Support:"), wb_about));
-	about_layout->addWidget(new KaduLink("http://www.kadu.im/forum/", wb_about));
+	about_layout->addWidget(new KaduLink(m_urlOpener, "http://www.kadu.im/forum/", wb_about));
 	about_layout->addSpacing(20);
 	about_layout->addWidget(new QLabel("(C) 2001-2015 Kadu Team", wb_about));
-	about_layout->addWidget(new KaduLink("http://www.kadu.im/", wb_about));
+	about_layout->addWidget(new KaduLink(m_urlOpener, "http://www.kadu.im/", wb_about));
 	about_layout->addStretch(100);
 
 	// create our info widgets
@@ -220,7 +231,7 @@ void About::init()
 void About::openUrl(const QUrl &url)
 {
 	if (url.scheme().startsWith(QLatin1String("http")))
-		UrlOpener::openUrl(url.toEncoded());
+		m_urlOpener->openUrl(url.toEncoded());
 }
 
 void About::keyPressEvent(QKeyEvent *event)
@@ -256,8 +267,8 @@ QString About::loadFile(const QString &name)
 	return data;
 }
 
-KaduLink::KaduLink(const QByteArray &link, QWidget *parent) :
-		QLabel(parent), Link(link)
+KaduLink::KaduLink(UrlOpener *urlOpener, const QByteArray &link, QWidget *parent) :
+		QLabel(parent), m_urlOpener{urlOpener}, Link(link)
 {
 	setText(QString("<a href=\"%1\">%1</a>").arg(QString::fromUtf8(Link)));
 	setCursor(QCursor(Qt::PointingHandCursor));
@@ -270,7 +281,7 @@ KaduLink::~KaduLink()
 
 void KaduLink::mousePressEvent(QMouseEvent *)
 {
-	UrlOpener::openUrl(Link);
+	m_urlOpener->openUrl(Link);
 }
 
 #include "moc_about.cpp"

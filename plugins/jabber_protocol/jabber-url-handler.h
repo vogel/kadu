@@ -31,6 +31,7 @@ class AccountManager;
 class ChatManager;
 class ChatWidgetManager;
 class ContactManager;
+class IconsManager;
 
 class QAction;
 
@@ -43,13 +44,15 @@ public:
 	virtual ~JabberUrlHandler();
 
 	virtual bool isUrlValid(const QByteArray &url);
-	virtual void openUrl(const QByteArray &url, bool disableMenu = false);
+	virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false);
 
 private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ContactManager> m_contactManager;
+	QPointer<IconsManager> m_iconsManager;
+
 	QRegExp m_jabberRegExp;
 
 private slots:
@@ -57,6 +60,7 @@ private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
 	void accountSelected(QAction *action);
 

@@ -18,20 +18,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TALKABLE_DELEGATE_CONFIGURATION_H
-#define TALKABLE_DELEGATE_CONFIGURATION_H
-
-#include <QtGui/QColor>
-#include <QtGui/QFont>
-#include <QtGui/QPixmap>
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtGui/QColor>
+#include <QtGui/QFont>
+#include <QtGui/QPixmap>
+#include <injeqt/injeqt.h>
+
+class Configuration;
+class IconsManager;
 class TalkableTreeView;
 
-class TalkableDelegateConfiguration : private ConfigurationAwareObject
+class TalkableDelegateConfiguration : public QObject, private ConfigurationAwareObject
 {
-	Q_DISABLE_COPY(TalkableDelegateConfiguration)
+	Q_OBJECT
+
+	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
 
 	TalkableTreeView *ListView;
 
@@ -56,8 +63,14 @@ class TalkableDelegateConfiguration : private ConfigurationAwareObject
 	QSize DefaultAvatarSize;
 	QPixmap MessagePixmap;
 
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
 public:
-	explicit TalkableDelegateConfiguration(TalkableTreeView *listView);
+	explicit TalkableDelegateConfiguration(TalkableTreeView *listView, QObject *parent = nullptr);
+	virtual ~TalkableDelegateConfiguration();
 
 	void setShowIdentityName(bool showIdentityName) { ShowIdentityName = showIdentityName; }
 	void setUseConfigurationColors(bool useConfigurationColors) { UseConfigurationColors = useConfigurationColors; }
@@ -87,5 +100,3 @@ public:
 	virtual void configurationUpdated();
 
 };
-
-#endif // TALKABLE_DELEGATE_CONFIGURATION_H

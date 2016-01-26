@@ -26,12 +26,15 @@
 
 #include "otr-trust-level-service.h"
 
+class IconsManager;
+
 class QPushButton;
 
 class OtrChatTopBarWidget : public QWidget
 {
 	Q_OBJECT
 
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<OtrTrustLevelService> TrustLevelService;
 
 	Contact MyContact;
@@ -45,6 +48,9 @@ class OtrChatTopBarWidget : public QWidget
 	QString trustStatusString(OtrTrustLevelService::TrustLevel level) const;
 
 private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
 	void startSession();
 	void endSession();
 	void verifyPeerIdentity();

@@ -32,6 +32,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include "progress-window.h"
@@ -48,6 +49,11 @@ ProgressWindow::ProgressWindow(const QString &label, QWidget *parent) :
 
 ProgressWindow::~ProgressWindow()
 {
+}
+
+void ProgressWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void ProgressWindow::createGui()
@@ -148,7 +154,7 @@ void ProgressWindow::showDetailsClicked()
 
 void ProgressWindow::addProgressEntry(const QString &entryIcon, const QString &entryMessage)
 {
-	QListWidgetItem *item = new QListWidgetItem(KaduIcon(entryIcon).icon(), entryMessage, TextListWidget);
+	QListWidgetItem *item = new QListWidgetItem(m_iconsManager->iconByPath(KaduIcon(entryIcon)), entryMessage, TextListWidget);
 	TextListWidget->addItem(item);
 }
 
@@ -178,7 +184,7 @@ void ProgressWindow::progressFinished(bool ok, const QString &entryIcon, const Q
 	qApp->alert(this);
 
 	if (!ok && !entryMessage.isEmpty())
-		MessageDialog::show(KaduIcon(entryIcon), Label, entryMessage);
+		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon(entryIcon)), Label, entryMessage);
 }
 
 #include "moc_progress-window.cpp"

@@ -40,6 +40,7 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "os/generic/window-geometry-manager.h"
 #include "storage/custom-properties-variant-wrapper.h"
 
@@ -60,6 +61,11 @@ ChatWindow::~ChatWindow()
 void ChatWindow::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
 	m_chatConfigurationHolder = chatConfigurationHolder;
+}
+
+void ChatWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void ChatWindow::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -171,7 +177,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 
 		if (QDateTime::currentDateTime() < m_chatWidget->lastReceivedMessageTime().addSecs(period))
 		{
-			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("New message received, close window anyway?"));
+			MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), tr("New message received, close window anyway?"));
 			dialog->addButton(QMessageBox::Yes, tr("Close window"));
 			dialog->addButton(QMessageBox::No, tr("Cancel"));
 

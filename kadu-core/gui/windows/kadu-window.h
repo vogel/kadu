@@ -61,6 +61,7 @@ class StatusButtons;
 class TalkableConverter;
 class TalkableTreeView;
 class UrlHandlerManager;
+class UrlOpener;
 
 class KADUAPI KaduWindow : public MainWindow, private ConfigurationAwareObject, CompositingAwareObject
 {
@@ -84,6 +85,7 @@ private:
 	QPointer<Myself> m_myself;
 	QPointer<TalkableConverter> m_talkableConverter;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
+	QPointer<UrlOpener> m_urlOpener;
 
 	bool Docked; // TODO: 0.11.0 it is a hack
 	QSplitter *Split;
@@ -138,6 +140,7 @@ private slots:
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
+	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_INIT void init();
 
 #ifdef Q_OS_WIN

@@ -21,6 +21,7 @@
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
+#include "core/injected-factory.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-status.h"
@@ -29,6 +30,7 @@
 #include "file-transfer/outgoing-file-transfer-handler.h"
 #include "gui/widgets/contact-avatar-display.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include <QtCore/QCoreApplication>
@@ -53,6 +55,25 @@ FileTransferWidget::FileTransferWidget(FileTransferManager *manager, FileTransfe
 		m_transfer{std::move(transfer)},
 		m_speed{0}
 {
+}
+
+FileTransferWidget::~FileTransferWidget()
+{
+	disconnect(m_transfer, 0, this, 0);
+}
+
+void FileTransferWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void FileTransferWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void FileTransferWidget::init()
+{
 	createGui();
 
 	m_lastTransferredSize = m_transfer.transferredSize();
@@ -60,11 +81,6 @@ FileTransferWidget::FileTransferWidget(FileTransferManager *manager, FileTransfe
 	update();
 
 	show();
-}
-
-FileTransferWidget::~FileTransferWidget()
-{
-	disconnect(m_transfer, 0, this, 0);
 }
 
 FileTransfer FileTransferWidget::fileTransfer() const
@@ -91,7 +107,7 @@ void FileTransferWidget::createGui()
 	buttonsLayout->setMargin(0);
 	buttonsLayout->setSpacing(2);
 
-	auto avatar = new ContactAvatarDisplay{m_transfer.peer(), QSize{48, 48}, this};
+	auto avatar = m_injectedFactory->makeInjected<ContactAvatarDisplay>(m_transfer.peer(), QSize{48, 48}, this);
 
 	m_fileNameLabel = new QLabel{this};
 	m_statusLabel = new QLabel{this};
@@ -124,7 +140,7 @@ void FileTransferWidget::createGui()
 	m_removeButton = new QToolButton{this};
 	m_removeButton->setAutoRaise(true);
 	m_removeButton->setFixedSize({22, 22});
-	m_removeButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
+	m_removeButton->setIcon(m_iconsManager->iconByPath(KaduIcon("kadu_icons/tab-remove")));
 	m_removeButton->setToolTip(tr("Remove"));
 	connect(m_removeButton.get(), SIGNAL(clicked()), this, SLOT(remove()));
 
@@ -132,7 +148,7 @@ void FileTransferWidget::createGui()
 	auto iconName = FileTransferDirection::Outgoing == m_transfer.transferDirection()
 		? "kadu_icons/transfer-send"
 		: "kadu_icons/transfer-receive";
-	icon->setPixmap(KaduIcon{iconName}.icon().pixmap(22, 22));
+	icon->setPixmap(m_iconsManager->iconByPath(KaduIcon{iconName}).pixmap(22, 22));
 
 	m_progressBar = new QProgressBar{this};
 	m_progressBar->setMinimum(0);
@@ -338,7 +354,7 @@ void FileTransferWidget::remove()
 
 	if (FileTransferStatus::Finished != m_transfer.transferStatus())
 	{
-		auto dialog = MessageDialog::create(KaduIcon(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this);
+		auto dialog = MessageDialog::create(QIcon{}, tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this);
 		dialog->addButton(QMessageBox::Yes, tr("Remove"));
 		dialog->addButton(QMessageBox::No, tr("Cancel"));
 

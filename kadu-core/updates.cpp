@@ -35,7 +35,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/updates-dialog.h"
@@ -65,6 +65,11 @@ void Updates::setConfigurationManager(ConfigurationManager *configurationManager
 void Updates::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void Updates::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void Updates::setMainWindowService(KaduWindowService *kaduWindowService)
@@ -246,7 +251,7 @@ void Updates::gotUpdatesInfo(QNetworkReply *reply)
 
 		if (isNewerVersionThan(newestVersion))
 		{
-			UpdatesDialog *dialog = new UpdatesDialog(newestVersion, m_kaduWindowService->kaduWindow());
+			auto dialog = m_injectedFactory->makeInjected<UpdatesDialog>(newestVersion, m_kaduWindowService->kaduWindow());
 			dialog->show();
 		}
 	}

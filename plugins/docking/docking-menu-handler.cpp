@@ -58,7 +58,7 @@ void DockingMenuHandler::setDockingMenuActionRepository(DockingMenuActionReposit
 
 void DockingMenuHandler::setIconsManager(IconsManager *iconsManager)
 {
-	connect(iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
+	m_iconsManager = iconsManager;
 }
 
 void DockingMenuHandler::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -88,6 +88,7 @@ void DockingMenuHandler::setStatusNotifierItem(StatusNotifierItem *statusNotifie
 
 void DockingMenuHandler::init()
 {
+	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
 	connect(m_dockingMenuActionRepository, SIGNAL(actionAdded(QAction*)), this, SLOT(update()));
 	connect(m_dockingMenuActionRepository, SIGNAL(actionRemoved(QAction*)), this, SLOT(update()));
 
@@ -112,11 +113,11 @@ void DockingMenuHandler::init()
 	connect(m_hideKaduAction, SIGNAL(triggered()), this, SLOT(hideKaduWindow()));
 #endif
 
-	m_silentModeAction = new QAction{KaduIcon{"kadu_icons/enable-notifications"}.icon(), tr("Silent mode"), this};
+	m_silentModeAction = new QAction{m_iconsManager->iconByPath(KaduIcon{"kadu_icons/enable-notifications"}), tr("Silent mode"), this};
 	m_silentModeAction->setCheckable(true);
 	connect(m_silentModeAction, SIGNAL(triggered(bool)), this, SLOT(silentModeToggled(bool)));
 
-	m_closeKaduAction = new QAction{KaduIcon{"application-exit"}.icon(), tr("&Exit Kadu"), this};
+	m_closeKaduAction = new QAction{m_iconsManager->iconByPath(KaduIcon{"application-exit"}), tr("&Exit Kadu"), this};
 	connect(m_closeKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
 
@@ -184,7 +185,7 @@ void DockingMenuHandler::addStatusContainerMenus()
 void DockingMenuHandler::addStatusContainerMenu(StatusContainer *statusContainer)
 {
 	auto menu = new QMenu{statusContainer->statusContainerName(), m_menu};
-	menu->setIcon(statusContainer->statusIcon().icon());
+	menu->setIcon(m_iconsManager->iconByPath(statusContainer->statusIcon()));
 	new StatusMenu{statusContainer, false, menu};
 	m_menu->addMenu(menu);
 }

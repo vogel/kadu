@@ -22,6 +22,8 @@
 #include "gui/sound-select-file.h"
 #include "sound-manager.h"
 
+#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 
 #include <QtWidgets/QCheckBox>
@@ -50,7 +52,7 @@ void SoundChatConfigurationWidget::createGui()
 	auto layout = new QVBoxLayout(this);
 
 	m_useCustomSoundCheckBox = new QCheckBox(tr("Use custom sound"));
-	m_customSoundSelectFile = new SoundSelectFile{m_soundManager, this};
+	m_customSoundSelectFile = Core::instance()->injectedFactory()->makeInjected<SoundSelectFile>(m_soundManager, this);
 
 	connect(m_useCustomSoundCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
 	connect(m_customSoundSelectFile, SIGNAL(fileChanged()), this, SLOT(updateState()));

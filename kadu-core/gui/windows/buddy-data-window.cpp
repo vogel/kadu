@@ -217,7 +217,7 @@ void BuddyDataWindow::createGroupsTab(QTabWidget *tabWidget)
 
 void BuddyDataWindow::createPersonalInfoTab(QTabWidget *tabWidget)
 {
-	PersonalInfoTab = new BuddyPersonalInfoConfigurationWidget(MyBuddy, this);
+	PersonalInfoTab = m_injectedFactory->makeInjected<BuddyPersonalInfoConfigurationWidget>(MyBuddy, this);
 	tabWidget->addTab(PersonalInfoTab, tr("Personal Information"));
 }
 

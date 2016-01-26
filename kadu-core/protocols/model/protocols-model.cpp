@@ -49,6 +49,11 @@ ProtocolsModel::~ProtocolsModel()
 {
 }
 
+void ProtocolsModel::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 int ProtocolsModel::rowCount(const QModelIndex &parent) const
 {
 	return parent.isValid() ? 0 : m_protocolsManager->protocolFactories().count();
@@ -65,7 +70,7 @@ QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 		case Qt::DisplayRole:
 			return pf->displayName();
 		case Qt::DecorationRole:
-			return pf->icon().icon();
+			return m_iconsManager->iconByPath(pf->icon());
 		case ProtocolRole:
 			return QVariant::fromValue<ProtocolFactory *>(pf);
 		default:

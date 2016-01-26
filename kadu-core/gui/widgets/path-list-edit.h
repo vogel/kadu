@@ -19,27 +19,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PATH_LIST_EDIT_H
-#define PATH_LIST_EDIT_H
+#pragma once
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QPushButton>
+#include <injeqt/injeqt.h>
+
+class IconsManager;
+class PathListEditWindow;
 
 class QLineEdit;
 class QListWidget;
 
-class PathListEditWindow;
-
 class PathListEdit : public QPushButton
 {
 	Q_OBJECT
-
-	QPointer<PathListEditWindow> Dialog;
-	QStringList PathList;
-
-private slots:
-	void showDialog();
-	void pathListChanged(const QStringList &pathList);
 
 public:
 	PathListEdit(QWidget *parent = nullptr);
@@ -51,24 +45,19 @@ public:
 signals:
 	void changed();
 
+private:
+	QPointer<PathListEditWindow> Dialog;
+	QStringList PathList;
+
+private slots:
+	void showDialog();
+	void pathListChanged(const QStringList &pathList);
+
 };
 
 class PathListEditWindow : public QWidget
 {
 	Q_OBJECT
-
-	QListWidget *PathListWidget;
-
-	bool validatePath(QString &path);
-
-private slots:
-	void addPathClicked();
-	void changePathClicked();
-	void deletePathClicked();
-
-	void okClicked();
-
-	void keyPressEvent(QKeyEvent *e);
 
 public:
 	explicit PathListEditWindow(const QStringList &pathList, QWidget *parent = nullptr);
@@ -80,6 +69,25 @@ public slots:
 signals:
 	void changed(const QStringList &paths);
 
-};
+private:
+	QStringList PathList;
+	QPointer<IconsManager> m_iconsManager;
 
-#endif // PATH_LIST_EDIT_H
+	QListWidget *PathListWidget;
+
+	void createGui();
+	bool validatePath(QString &path);
+
+private slots:
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_INIT void init();
+
+	void addPathClicked();
+	void changePathClicked();
+	void deletePathClicked();
+
+	void okClicked();
+
+	void keyPressEvent(QKeyEvent *e);
+
+};

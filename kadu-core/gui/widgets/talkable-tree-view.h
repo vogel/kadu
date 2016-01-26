@@ -67,7 +67,7 @@ public:
 	void setShowIdentityNameIfMany(bool show);
 	void setUseConfigurationColors(bool use);
 
-	TalkableDelegateConfiguration & delegateConfiguration();
+	TalkableDelegateConfiguration * delegateConfiguration();
 
 	void updateLayout() { updateGeometries(); }
 

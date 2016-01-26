@@ -121,6 +121,11 @@ void TabsManager::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void TabsManager::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 void TabsManager::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -485,10 +490,10 @@ void TabsManager::makePopupMenu()
 	kdebugf();
 
 	Menu = new QMenu();
-	DetachTabMenuAction = Menu->addAction(KaduIcon("kadu_icons/tab-detach").icon(), tr("Detach"), this, SLOT(onMenuActionDetach()));
+	DetachTabMenuAction = Menu->addAction(m_iconsManager->iconByPath(KaduIcon("kadu_icons/tab-detach")), tr("Detach"), this, SLOT(onMenuActionDetach()));
 	Menu->addAction(tr("Detach all"), this, SLOT(onMenuActionDetachAll()));
 	Menu->addSeparator();
-	CloseTabMenuAction = Menu->addAction(KaduIcon("kadu_icons/tab-close").icon(), tr("Close"), this, SLOT(onMenuActionClose()));
+	CloseTabMenuAction = Menu->addAction(m_iconsManager->iconByPath(KaduIcon("kadu_icons/tab-close")), tr("Close"), this, SLOT(onMenuActionClose()));
 	CloseOtherTabsMenuAction = Menu->addAction(tr("Close other tabs"), this, SLOT(onMenuActionCloseAllButActive()));
 	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
 	ReopenClosedTabMenuAction = Menu->addAction(tr("Reopen closed tab"), this, SLOT(reopenClosedChat()));
@@ -644,8 +649,8 @@ void TabsManager::configurationUpdated()
 
 	TabDialog->configurationUpdated();
 
-	DetachTabMenuAction->setIcon(KaduIcon("kadu_icons/tab-detach").icon());
-	CloseTabMenuAction->setIcon(KaduIcon("kadu_icons/tab-close").icon());
+	DetachTabMenuAction->setIcon(m_iconsManager->iconByPath(KaduIcon("kadu_icons/tab-detach")));
+	CloseTabMenuAction->setIcon(m_iconsManager->iconByPath(KaduIcon("kadu_icons/tab-close")));
 
 	auto count = TabDialog->count();
 	for (auto i = 0; i < count; i++)

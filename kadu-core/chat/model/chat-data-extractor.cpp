@@ -21,6 +21,7 @@
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
+#include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "talkable/talkable.h"
@@ -44,6 +45,11 @@ void ChatDataExtractor::setChatTypeManager(ChatTypeManager *chatTypeManager)
 	m_chatTypeManager = chatTypeManager;
 }
 
+void ChatDataExtractor::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
 QVariant ChatDataExtractor::data(const Chat &chat, int role)
 {
 	if (chat.isNull())
@@ -65,9 +71,9 @@ QVariant ChatDataExtractor::data(const Chat &chat, int role)
 			QString chatTypeName = chat.type();
 			ChatType *chatType = m_chatTypeManager->chatType(chatTypeName);
 			if (chatType)
-				return chatType->icon().icon();
+				return m_iconsManager->iconByPath(chatType->icon());
 			else
-				return KaduIcon("internet-group-chat").icon();
+				return m_iconsManager->iconByPath(KaduIcon("internet-group-chat"));
 		}
 		case AccountRole:
 			return QVariant::fromValue(chat.chatAccount());

@@ -28,6 +28,9 @@
 #include <QtWidgets/QDialog>
 #include <injeqt/injeqt.h>
 
+class Configuration;
+class UrlOpener;
+
 class QCheckBox;
 
 class UpdatesDialog : public QDialog, DesktopAwareObject
@@ -42,9 +45,17 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 private:
+	QPointer<Configuration> m_configuration;
+	QPointer<UrlOpener> m_urlOpener;
+
+	QString m_newestVersion;
 	QCheckBox *m_checkForUpdates;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
+	INJEQT_INIT void init();
+
 	void accepted();
 	void downloadClicked();
 

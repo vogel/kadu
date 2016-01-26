@@ -159,7 +159,7 @@ void TalkableTreeView::setUseConfigurationColors(bool use)
 	Delegate->setUseConfigurationColors(use);
 }
 
-TalkableDelegateConfiguration & TalkableTreeView::delegateConfiguration()
+TalkableDelegateConfiguration * TalkableTreeView::delegateConfiguration()
 {
 	return Delegate->configuration();
 }

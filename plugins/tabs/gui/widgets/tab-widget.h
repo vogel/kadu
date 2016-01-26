@@ -40,6 +40,7 @@ class Application;
 class ChatWidgetManager;
 class ChatWidget;
 class Configuration;
+class IconsManager;
 class InjectedFactory;
 class OpenChatWithService;
 class RecentChatsMenu;
@@ -52,6 +53,7 @@ class TabWidget : public QTabWidget, CompositingAwareObject
 	QPointer<Application> m_application;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<OpenChatWithService> m_openChatWithService;
 
@@ -75,6 +77,7 @@ private slots:
 	INJEQT_SET void setApplication(Application *application);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setOpenChatWithService(OpenChatWithService *openChatWithService);
 	INJEQT_INIT void init();

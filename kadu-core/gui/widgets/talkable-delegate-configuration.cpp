@@ -18,44 +18,68 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "gui/widgets/talkable-tree-view.h"
-#include "icons/kadu-icon.h"
-
 #include "talkable-delegate-configuration.h"
 
-TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *listView) :
-		ListView(listView), AlwaysShowIdentityName(false), ShowIdentityName(true), ShowMessagePixmap(true), UseConfigurationColors(false)
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "gui/widgets/talkable-tree-view.h"
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
+
+TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *listView, QObject *parent) :
+		QObject{parent},
+		ListView{listView},
+		AlwaysShowIdentityName{false},
+		ShowIdentityName{true},
+		ShowMessagePixmap{true},
+		UseConfigurationColors{false}
 {
 	Q_ASSERT(ListView);
+}
 
+TalkableDelegateConfiguration::~TalkableDelegateConfiguration()
+{
+}
+
+void TalkableDelegateConfiguration::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void TalkableDelegateConfiguration::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
+}
+
+void TalkableDelegateConfiguration::init()
+{
 	DefaultAvatarSize = QSize(32, 32);
-	MessagePixmap = KaduIcon("protocols/common/message").icon().pixmap(16, 16);
+	MessagePixmap = m_iconsManager->iconByPath(KaduIcon("protocols/common/message")).pixmap(16, 16);
 
 	configurationUpdated();
 }
 
 void TalkableDelegateConfiguration::configurationUpdated()
 {
-	Font = QFont(Core::instance()->configuration()->deprecatedApi()->readFontEntry("Look", "UserboxFont"), ListView);
+	Font = QFont(m_configuration->deprecatedApi()->readFontEntry("Look", "UserboxFont"), ListView);
 	BoldFont = Font;
 	BoldFont.setBold(true);
 
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);
 
-	AlwaysShowIdentityName = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "TalkableListAlwaysShowIdentityName");
-	ShowAvatars = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowAvatars");
-	AvatarBorder = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AvatarBorder");
-	AvatarGreyOut = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AvatarGreyOut");
-	AlignTop = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "AlignUserboxIconsTop");
-	ShowBold = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowBold");
-	ShowDescription = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
-	ShowMultiLineDescription = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc");
-	DescriptionColor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "DescriptionColor");
-	FontColor = Core::instance()->configuration()->deprecatedApi()->readColorEntry("Look", "UserboxFgColor");
+	AlwaysShowIdentityName = m_configuration->deprecatedApi()->readBoolEntry("Look", "TalkableListAlwaysShowIdentityName");
+	ShowAvatars = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowAvatars");
+	AvatarBorder = m_configuration->deprecatedApi()->readBoolEntry("Look", "AvatarBorder");
+	AvatarGreyOut = m_configuration->deprecatedApi()->readBoolEntry("Look", "AvatarGreyOut");
+	AlignTop = m_configuration->deprecatedApi()->readBoolEntry("Look", "AlignUserboxIconsTop");
+	ShowBold = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowBold");
+	ShowDescription = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
+	ShowMultiLineDescription = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc");
+	DescriptionColor = m_configuration->deprecatedApi()->readColorEntry("Look", "DescriptionColor");
+	FontColor = m_configuration->deprecatedApi()->readColorEntry("Look", "UserboxFgColor");
 
 	ListView->scheduleDelayedItemsLayout();
 }
+
+#include "moc_talkable-delegate-configuration.cpp"

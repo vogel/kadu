@@ -36,6 +36,7 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
 #include "model/model-chain.h"
 #include "talkable/filter/account-talkable-filter.h"
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
@@ -58,6 +59,11 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 void AccountBuddyListWidget::setBuddyManager(BuddyManager *buddyManager)
 {
 	m_buddyManager = buddyManager;
+}
+
+void AccountBuddyListWidget::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void AccountBuddyListWidget::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -145,7 +151,7 @@ void AccountBuddyListWidget::restoreFromFile()
 
 		if (list.isEmpty())
 		{
-			MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"),
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), tr("Kadu"),
 							tr("Contacts list couldn't be imported. File %0 doesn't contain correct contacts list.").arg(fileName));
 			return;
 		}
@@ -158,7 +164,7 @@ void AccountBuddyListWidget::restoreFromFile()
 
 		if (!unImportedContacts.isEmpty())
 		{
-			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"),
+			MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")),
 				tr("Kadu"),
 				tr("The following contacts from your list were not found in file:<br/><b>%1</b>.<br/>"
 				"Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>")));
