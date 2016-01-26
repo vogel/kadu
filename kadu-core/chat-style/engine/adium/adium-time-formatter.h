@@ -20,6 +20,8 @@
 
 #include <QtCore/QDate>
 
+class SystemInfo;
+
 class QDateTime;
 class QString;
 
@@ -44,6 +46,6 @@ namespace AdiumTimeFormatter
 	/**
 	 * It should be equal to NSDateFormatter of MacOS X
 	 */
-	QString convertTimeDate(const QString &mac_format, const QDateTime &datetime);
+	QString convertTimeDate(SystemInfo *systemInfo, const QString &mac_format, const QDateTime &datetime);
 
 }

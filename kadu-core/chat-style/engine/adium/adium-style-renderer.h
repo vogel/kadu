@@ -28,6 +28,7 @@ class AdiumStyle;
 class ChatConfigurationHolder;
 class IconsManager;
 class MessageHtmlRendererService;
+class SystemInfo;
 
 class AdiumStyleRenderer : public ChatStyleRenderer
 {
@@ -48,6 +49,7 @@ private:
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
+	QPointer<SystemInfo> m_systemInfo;
 
 	std::shared_ptr<AdiumStyle> m_style;
 
@@ -59,6 +61,7 @@ private slots:
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
+	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
 	INJEQT_INIT void init();
 
 	void pageLoaded();

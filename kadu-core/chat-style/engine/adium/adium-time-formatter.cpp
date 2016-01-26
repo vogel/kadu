@@ -58,12 +58,12 @@ namespace AdiumTimeFormatter
 #define TRIM_LENGTH(NUM) \
 while (length > NUM) \
 { \
-	finishStr(str, week_date, date, time, c, NUM); \
+	finishStr(systemInfo, str, week_date, date, time, c, NUM); \
 	length -= NUM; \
 }
 
 	// http://unicode.org/reports/tr35/tr35-6.html#Date_Format_Patterns
-	static void finishStr(QString &str, const WeekDate &week_date, const QDate &date, const QTime &time, QChar c, int length)
+	static void finishStr(SystemInfo *systemInfo, QString &str, const WeekDate &week_date, const QDate &date, const QTime &time, QChar c, int length)
 	{
 		if (length <= 0)
 			return;
@@ -217,13 +217,13 @@ while (length > NUM) \
 				// I don't understand the difference
 			case L'z':
 				// There should be localized name, but I don't know how get it
-				str += Core::instance()->systemInfo()->timezone();
+				str += systemInfo->timezone();
 				break;
 			case L'Z':
 			{
 				if (length == 4)
 					str += "GMT";
-				int offset = Core::instance()->systemInfo()->timezoneOffset();
+				int offset = systemInfo->timezoneOffset();
 				if (offset < 0)
 					str += '+';
 				else
@@ -240,7 +240,7 @@ while (length > NUM) \
 
 #undef TRIM_LENGTH
 
-	QString convertTimeDate(const QString &mac_format, const QDateTime &datetime)
+	QString convertTimeDate(SystemInfo *systemInfo, const QString &mac_format, const QDateTime &datetime)
 	{
 		QDate date = datetime.date();
 		QTime time = datetime.time();
@@ -323,11 +323,11 @@ while (length > NUM) \
 							break;
 						case L'Z':
 							// It should be localized, isn't it?..
-							appendStr(str, Core::instance()->systemInfo()->timezone(), length);
+							appendStr(str, systemInfo->timezone(), length);
 							break;
 						case L'z':
 						{
-							int offset = Core::instance()->systemInfo()->timezoneOffset();
+							int offset = systemInfo->timezoneOffset();
 							appendInt(str, (offset/60)*100 + offset%60, length > 0 ? length : 4);
 							break;
 						}
@@ -376,7 +376,7 @@ while (length > NUM) \
 				else
 				{
 					if (!quote)
-						finishStr(str, week_date, date, time, last, length);
+						finishStr(systemInfo, str, week_date, date, time, last, length);
 					quote = !quote;
 				}
 				length = 0;
@@ -389,7 +389,7 @@ while (length > NUM) \
 					length++;
 				else
 				{
-					finishStr(str, week_date, date, time, last, length);
+					finishStr(systemInfo, str, week_date, date, time, last, length);
 					length = 1;
 				}
 			}

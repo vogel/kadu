@@ -36,6 +36,7 @@
 #include "misc/date-time.h"
 #include "misc/misc.h"
 #include "misc/paths-provider.h"
+#include "os/generic/system-info.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image.h"
@@ -68,6 +69,11 @@ void AdiumStyleRenderer::setIconsManager(IconsManager *iconsManager)
 void AdiumStyleRenderer::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
 {
 	m_messageHtmlRendererService = messageHtmlRendererService;
+}
+
+void AdiumStyleRenderer::setSystemInfo(SystemInfo *systemInfo)
+{
+	m_systemInfo = systemInfo;
 }
 
 void AdiumStyleRenderer::init()
@@ -203,7 +209,7 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
 	QRegExp timeRegExp("%timeOpened\\{([^}]*)\\}%");
 	int pos = 0;
 	while ((pos=timeRegExp.indexIn(result, pos)) != -1)
-		result.replace(pos, timeRegExp.cap(0).length(), Qt::escape(AdiumTimeFormatter::convertTimeDate(timeRegExp.cap(1), QDateTime::currentDateTime())));
+		result.replace(pos, timeRegExp.cap(0).length(), Qt::escape(AdiumTimeFormatter::convertTimeDate(m_systemInfo, timeRegExp.cap(1), QDateTime::currentDateTime())));
 
 	QString photoIncoming;
 	QString photoOutgoing;
@@ -260,7 +266,7 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
 	QRegExp timeRegExp("%time\\{([^}]*)\\}%");
 	int pos = 0;
 	while ((pos = timeRegExp.indexIn(result , pos)) != -1)
-		result.replace(pos, timeRegExp.cap(0).length(), Qt::escape(AdiumTimeFormatter::convertTimeDate(timeRegExp.cap(1), time)));
+		result.replace(pos, timeRegExp.cap(0).length(), Qt::escape(AdiumTimeFormatter::convertTimeDate(m_systemInfo, timeRegExp.cap(1), time)));
 
 	result.replace("%shortTime%", Qt::escape(printDateTime(m_chatConfigurationHolder->niceDateFormat(), time)));
 
