@@ -38,7 +38,6 @@ class DefaultProvider;
 class Configuration;
 class InjectedFactory;
 class KaduIcon;
-class Myself;
 class PathsProvider;
 class PluginActivationService;
 class PluginStateService;
@@ -75,7 +74,6 @@ public:
 
 	Configuration * configuration() const;
 	InjectedFactory * injectedFactory() const;
-	Myself * myself() const;
 	PathsProvider * pathsProvider() const;
 	PluginActivationService * pluginActivationService() const;
 	PluginStateService * pluginStateService() const;

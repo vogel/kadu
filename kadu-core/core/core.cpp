@@ -39,7 +39,6 @@
 #include "core/application.h"
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
-#include "core/myself.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/configuration/chat-configuration-holder.h"
@@ -605,11 +604,6 @@ Roster * Core::roster() const
 SystemInfo * Core::systemInfo() const
 {
 	return m_injector.get<SystemInfo>();
-}
-
-Myself * Core::myself() const
-{
-	return m_injector.get<Myself>();
 }
 
 TalkableConverter * Core::talkableConverter() const
