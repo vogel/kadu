@@ -83,7 +83,7 @@ Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 
 AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return new JabberAccountDetails(accountShared);
+	return Core::instance()->injectedFactory()->makeInjected<JabberAccountDetails>(accountShared);
 }
 
 AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)

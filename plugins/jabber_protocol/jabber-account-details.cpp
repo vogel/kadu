@@ -21,7 +21,6 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "misc/misc.h"
@@ -36,8 +35,6 @@ JabberAccountDetails::JabberAccountDetails(AccountShared *data, QObject *parent)
 		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS), RequireDataTransferProxy{false},
 		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true)
 {
-	OpenChatRunner = Core::instance()->injectedFactory()->makeInjected<JabberOpenChatWithRunner>(data);
-	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
 JabberAccountDetails::~JabberAccountDetails()
@@ -45,6 +42,22 @@ JabberAccountDetails::~JabberAccountDetails()
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 	delete OpenChatRunner;
 	OpenChatRunner = 0;
+}
+
+void JabberAccountDetails::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void JabberAccountDetails::setSystemInfo(SystemInfo *systemInfo)
+{
+	m_systemInfo = systemInfo;
+}
+
+void JabberAccountDetails::init()
+{
+	OpenChatRunner = m_injectedFactory->makeInjected<JabberOpenChatWithRunner>(mainData());
+	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
 void JabberAccountDetails::load()
@@ -64,7 +77,7 @@ void JabberAccountDetails::load()
 		resourceString = "Kadu-" + guid.mid(1, guid.length() - 2);
 	}
 
-	Resource = AutoResource ? Core::instance()->systemInfo()->localHostName() : resourceString;
+	Resource = AutoResource ? m_systemInfo->localHostName() : resourceString;
 	bool ok = false;
 	int priority = priorityString.toInt(&ok);
 	if (!ok)

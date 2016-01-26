@@ -82,7 +82,7 @@ Protocol * GTalkProtocolFactory::createProtocolHandler(Account account)
 
 AccountDetails * GTalkProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return new JabberAccountDetails(accountShared);
+	return Core::instance()->injectedFactory()->makeInjected<JabberAccountDetails>(accountShared);
 }
 
 AccountAddWidget * GTalkProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)

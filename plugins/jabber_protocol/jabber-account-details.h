@@ -21,11 +21,16 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-
 #include "accounts/account-details.h"
 #include "open-chat-with/jabber-open-chat-with-runner.h"
 #include "protocols/protocol.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
+class SystemInfo;
 
 class JabberAccountDetails : public AccountDetails
 {
@@ -50,6 +55,9 @@ public:
 	};
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<SystemInfo> m_systemInfo;
+
 	PROPERTY_DEC(QString, Resource)
 	PROPERTY_DEC(bool, AutoResource)
 	PROPERTY_DEC(int, Priority)
@@ -65,6 +73,11 @@ private:
 	PROPERTY_DEC(bool, SendTypingNotification)
 	PROPERTY_DEC(bool, SendGoneNotification)
 	PROPERTY_DEC(bool, PublishSystemInfo)
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
+	INJEQT_INIT void init();
 
 protected:
 	virtual void load();
