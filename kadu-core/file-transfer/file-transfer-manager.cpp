@@ -148,7 +148,8 @@ void FileTransferManager::done()
 {
 	triggerAllAccountsUnregistered(m_accountManager);
 	m_configurationManager->unregisterStorableObject(this);
-	m_window.data()->deleteLater();
+	if (m_window)
+		m_window.data()->deleteLater();
 	NewFileTransferNotification::unregisterEvents(m_notificationEventRepository);
 }
 

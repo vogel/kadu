@@ -24,8 +24,6 @@
 #include "plugins/history/history-plugin-object.h"
 #include "plugins/history/history.h"
 
-#include <QtSql/QSqlDatabase>
-
 SqlHistoryPluginObject::SqlHistoryPluginObject(QObject *parent) :
 		QObject{parent}
 {
@@ -53,7 +51,6 @@ void SqlHistoryPluginObject::init()
 void SqlHistoryPluginObject::done()
 {
 	m_history->unregisterStorage(m_historySqlStorage);
-	QSqlDatabase::removeDatabase("kadu-history");
 }
 
 #include "moc_sql-history-plugin-object.cpp"

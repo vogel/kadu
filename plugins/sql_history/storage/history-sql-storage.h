@@ -131,6 +131,7 @@ private slots:
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);

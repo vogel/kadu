@@ -181,6 +181,14 @@ void HistorySqlStorage::init()
 	SmsStorage = new SqlMessagesSmsStorage(this);
 }
 
+void HistorySqlStorage::done()
+{
+	if (Database.isOpen())
+		Database.close();
+
+	QSqlDatabase::removeDatabase("kadu-history");
+}
+
 void HistorySqlStorage::ensureProgressWindowReady()
 {
 	if (ImportProgressWindow)

@@ -37,8 +37,6 @@ BuddyChatManager::BuddyChatManager(QObject *parent) :
 
 BuddyChatManager::~BuddyChatManager()
 {
-	disconnect(m_buddyManager, 0, this, 0);
-	disconnect(m_chatManager, 0, this, 0);
 }
 
 void BuddyChatManager::setBuddyManager(BuddyManager *buddyManager)
