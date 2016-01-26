@@ -476,7 +476,7 @@ void Core::execute(const QStringList &openIds)
 		executeRemoteCommand(id);
 
 	// it has to be called after loading modules (docking might want to block showing the window)
-	kaduWindowService()->showMainWindow();
+	m_injector.get<KaduWindowService>()->showMainWindow();
 }
 
 void Core::createGui()
@@ -610,11 +610,6 @@ SystemInfo * Core::systemInfo() const
 Myself * Core::myself() const
 {
 	return m_injector.get<Myself>();
-}
-
-KaduWindowService * Core::kaduWindowService() const
-{
-	return m_injector.get<KaduWindowService>();
 }
 
 TalkableConverter * Core::talkableConverter() const
