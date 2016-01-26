@@ -36,7 +36,6 @@ template<class T>
 class DefaultProvider;
 
 class Configuration;
-class IconsManager;
 class InjectedFactory;
 class KaduIcon;
 class KaduWindowService;
@@ -74,7 +73,6 @@ public:
 	void activatePlugins();
 
 	Configuration * configuration() const;
-	IconsManager * iconsManager() const;
 	InjectedFactory * injectedFactory() const;
 	KaduWindowService * kaduWindowService() const;
 	Myself * myself() const;
