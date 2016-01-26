@@ -72,9 +72,6 @@ MainWindow::MainWindow(ActionContext *context, const QString &windowName, QWidge
 
 MainWindow::~MainWindow()
 {
-	disconnect(m_actions, 0, this, 0);
-	disconnect(m_configurationManager->toolbarConfigurationManager(), 0, this, 0);
-
 	delete Context;
 	Context = 0;
 }

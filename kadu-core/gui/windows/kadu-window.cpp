@@ -87,7 +87,6 @@ KaduWindow::KaduWindow() :
 
 KaduWindow::~KaduWindow()
 {
-	storeConfiguration();
 }
 
 void KaduWindow::setApplication(Application *application)

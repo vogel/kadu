@@ -33,16 +33,23 @@ KaduWindowService::KaduWindowService(QObject *parent) :
 
 KaduWindowService::~KaduWindowService()
 {
-	// TODO: check if needed and why
-	m_kaduWindowProvider->provideValue(nullptr);
-	auto hiddenParent = m_kaduWindow->parentWidget();
-	delete m_kaduWindow;
-	delete hiddenParent;
 }
 
 void KaduWindowService::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void KaduWindowService::done()
+{
+	if (m_kaduWindow)
+	{
+		// TODO: check if needed and why
+		m_kaduWindowProvider->provideValue(nullptr);
+		auto hiddenParent = m_kaduWindow->parentWidget();
+		delete m_kaduWindow;
+		delete hiddenParent;
+	}
 }
 
 void KaduWindowService::createWindow()

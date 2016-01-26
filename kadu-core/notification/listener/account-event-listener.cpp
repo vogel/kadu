@@ -42,7 +42,6 @@ AccountEventListener::AccountEventListener(QObject *parent) :
 
 AccountEventListener::~AccountEventListener()
 {
-	triggerAllAccountsUnregistered(m_accountManager);
 }
 
 void AccountEventListener::setAccountManager(AccountManager *accountManager)
@@ -73,6 +72,11 @@ void AccountEventListener::setStatusTypeManager(StatusTypeManager *statusTypeMan
 void AccountEventListener::init()
 {
 	triggerAllAccountsRegistered(m_accountManager);
+}
+
+void AccountEventListener::done()
+{
+	triggerAllAccountsUnregistered(m_accountManager);
 }
 
 void AccountEventListener::accountRegistered(Account account)

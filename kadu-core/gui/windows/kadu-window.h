@@ -128,8 +128,6 @@ private:
 	void hideWindowFromTaskbar();
 #endif
 
-	void storeConfiguration();
-
 	virtual void compositingEnabled();
 	virtual void compositingDisabled();
 
@@ -164,6 +162,8 @@ public:
 
 	KaduWindow();
 	virtual ~KaduWindow();
+
+	void storeConfiguration();
 
 	virtual TalkableTreeView * talkableTreeView();
 	virtual TalkableProxyModel * talkableProxyModel();

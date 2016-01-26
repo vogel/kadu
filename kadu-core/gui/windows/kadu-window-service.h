@@ -56,6 +56,7 @@ private:
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_DONE void done();
 
 	void kaduWindowDestroyed();
 
