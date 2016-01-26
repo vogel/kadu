@@ -79,7 +79,6 @@
 #include "services/chat-image-request-service.h"
 #include "ssl/ssl-certificate-manager.h"
 #include "status/status-container-manager.h"
-#include "status/status-type-manager.h"
 #include "storage/storage-point-factory.h"
 #include "talkable/talkable-converter.h"
 #include "themes/icon-theme-manager.h"
@@ -555,11 +554,6 @@ StoragePointFactory * Core::storagePointFactory() const
 StatusContainerManager * Core::statusContainerManager() const
 {
 	return m_injector.get<StatusContainerManager>();
-}
-
-StatusTypeManager * Core::statusTypeManager() const
-{
-	return m_injector.get<StatusTypeManager>();
 }
 
 InjectedFactory * Core::injectedFactory() const

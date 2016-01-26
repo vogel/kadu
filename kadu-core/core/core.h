@@ -41,7 +41,6 @@ class KaduIcon;
 class PathsProvider;
 class Roster;
 class StatusContainerManager;
-class StatusTypeManager;
 class StoragePointFactory;
 class TalkableConverter;
 
@@ -72,7 +71,6 @@ public:
 	InjectedFactory * injectedFactory() const;
 	PathsProvider * pathsProvider() const;
 	StatusContainerManager * statusContainerManager() const;
-	StatusTypeManager * statusTypeManager() const;
 	StoragePointFactory * storagePointFactory() const;
 	TalkableConverter * talkableConverter() const;
 
