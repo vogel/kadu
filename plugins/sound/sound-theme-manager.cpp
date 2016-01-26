@@ -21,15 +21,16 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
+#include "core/injected-factory.h"
 #include "misc/memory.h"
 #include "themes.h"
 
 #include "sound-theme-manager.h"
 
 SoundThemeManager::SoundThemeManager(QObject *parent) :
-		QObject{parent},
-		m_themes{make_unique<Themes>("sounds", "sound.conf")}
+		QObject{parent}
 {
+	m_themes = Core::instance()->injectedFactory()->makeUnique<Themes>("sounds", "sound.conf");
 	m_themes->setPaths(Core::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
 	auto soundThemes = themes()->themes();

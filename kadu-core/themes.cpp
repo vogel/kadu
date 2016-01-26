@@ -41,6 +41,15 @@ Themes::Themes(const QString &themename, const QString &configname)
 	: QObject(), ThemesList(), ThemesPaths(), additional(),
 	ConfigName(configname), Name(themename), ActualTheme("Custom"), entries()
 {
+}
+
+void Themes::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void Themes::init()
+{
 	setPaths(QStringList());
 }
 
@@ -155,11 +164,11 @@ QStringList Themes::defaultPathsProviderWithThemes() const
 {
 	QStringList result;
 
-	foreach(const QString &it, getSubDirs(Core::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name))
-		result << (Core::instance()->pathsProvider()->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(m_pathsProvider->dataPath() + QLatin1String("themes/") + Name))
+		result << (m_pathsProvider->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
 
-	foreach(const QString &it, getSubDirs(Core::instance()->pathsProvider()->profilePath() + Name))
-		result << (Core::instance()->pathsProvider()->profilePath() + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(m_pathsProvider->profilePath() + Name))
+		result << (m_pathsProvider->profilePath() + Name + '/' + it + '/');
 
 	return result;
 }

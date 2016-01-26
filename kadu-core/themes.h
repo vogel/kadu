@@ -21,11 +21,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_THEMES_H
-#define KADU_THEMES_H
+#pragma once
 
 #include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <QtCore/QStringList>
+#include <injeqt/injeqt.h>
+
+class PathsProvider;
 
 #include "exports.h"
 
@@ -38,6 +42,8 @@
 class KADUAPI Themes : public QObject
 {
 	Q_OBJECT
+
+	QPointer<PathsProvider> m_pathsProvider;
 
 	QStringList ThemesList; //!< lista z nazwami dost�pnych zestaw�w
 	QStringList ThemesPaths; //!< lista �cie�ek w kt�rych szukamy zestaw�w
@@ -65,6 +71,10 @@ class KADUAPI Themes : public QObject
 		\param path �cie�ka do katalogu
 	**/
 	bool validateDir(const QString &path) const;
+
+private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
 
 public:
 	/**
@@ -143,5 +153,3 @@ signals:
 	void pathsChanged(const QStringList &list);
 
 };
-
-#endif
