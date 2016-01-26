@@ -19,7 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "status/status-changer.h"
 #include "status/status-container-manager.h"
 #include "debug.h"
@@ -33,6 +32,11 @@ StatusChangerManager::StatusChangerManager(QObject *parent) :
 
 StatusChangerManager::~StatusChangerManager()
 {
+}
+
+void StatusChangerManager::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
 }
 
 void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)
@@ -90,7 +94,7 @@ void StatusChangerManager::statusChanged(StatusContainer *container, StatusChang
 {
 	if (!container)
 	{
-		foreach (StatusContainer *statusContainer, Core::instance()->statusContainerManager()->statusContainers())
+		foreach (StatusContainer *statusContainer, m_statusContainerManager->statusContainers())
 			if (statusContainer)
 				statusChanged(statusContainer, source);
 

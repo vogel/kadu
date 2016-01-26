@@ -39,7 +39,6 @@ class ExecutionArguments;
 class InjectedFactory;
 class KaduIcon;
 class Roster;
-class StatusContainerManager;
 class StoragePointFactory;
 class TalkableConverter;
 
@@ -68,7 +67,6 @@ public:
 	void activatePlugins();
 
 	InjectedFactory * injectedFactory() const;
-	StatusContainerManager * statusContainerManager() const;
 	StoragePointFactory * storagePointFactory() const;
 	TalkableConverter * talkableConverter() const;
 

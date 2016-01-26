@@ -21,12 +21,12 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "status/status-container-manager.h"
 
 #include "proxy-action-context.h"
 
-ProxyActionContext::ProxyActionContext() :
+ProxyActionContext::ProxyActionContext(StatusContainer *statusContainer) :
+		m_statusContainer{statusContainer},
 		ForwardActionContext(0)
 {
 }
@@ -78,7 +78,7 @@ Chat ProxyActionContext::chat()
 
 StatusContainer * ProxyActionContext::statusContainer()
 {
-	return Core::instance()->statusContainerManager();
+	return m_statusContainer;
 }
 
 RoleSet ProxyActionContext::roles()

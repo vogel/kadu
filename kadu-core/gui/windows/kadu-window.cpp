@@ -68,6 +68,7 @@
 #include "gui/windows/proxy-action-context.h"
 #include "os/generic/url-opener.h"
 #include "os/generic/window-geometry-manager.h"
+#include "status/status-container-manager.h"
 #include "talkable/talkable-converter.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
@@ -79,7 +80,7 @@
 #include "kadu-window.h"
 
 KaduWindow::KaduWindow() :
-		MainWindow(new ProxyActionContext(), QString(), 0), Docked(false),
+		MainWindow(nullptr, QString(), 0), Docked(false),
 		WindowParent(0), CompositingEnabled(false)
 {
 }
@@ -119,6 +120,11 @@ void KaduWindow::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
+void KaduWindow::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
+}
+
 void KaduWindow::setTalkableConverter(TalkableConverter *talkableConverter)
 {
 	m_talkableConverter = talkableConverter;
@@ -138,6 +144,8 @@ void KaduWindow::init()
 {
 	new TaskbarProgress{m_fileTransferManager, this};
 	setWindowRole("kadu-main");
+
+	setActionContext(new ProxyActionContext(m_statusContainerManager));
 
 #ifdef Q_OS_WIN
 	HiddenParent = new QWidget();

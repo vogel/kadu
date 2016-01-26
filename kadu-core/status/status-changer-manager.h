@@ -25,9 +25,12 @@
 #include "status/status.h"
 
 #include <QtCore/QMap>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Account;
 class StatusChanger;
+class StatusContainerManager;
 class StatusContainer;
 
 /**
@@ -60,12 +63,14 @@ class StatusContainer;
 class KADUAPI StatusChangerManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(StatusChangerManager)
 
+	QPointer<StatusContainerManager> m_statusContainerManager;
 	QMap<StatusContainer *, Status> Statuses;
 	QList<StatusChanger *> StatusChangers;
 
 private slots:
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Slot called when any of registered StatusChanger changes way it modifies status.

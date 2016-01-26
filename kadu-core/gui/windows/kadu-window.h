@@ -58,6 +58,7 @@ class Myself;
 class ProxyActionContext;
 class RosterWidget;
 class StatusButtons;
+class StatusContainerManager;
 class TalkableConverter;
 class TalkableTreeView;
 class UrlHandlerManager;
@@ -83,6 +84,7 @@ private:
 	QPointer<FileTransferManager> m_fileTransferManager;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<Myself> m_myself;
+	QPointer<StatusContainerManager> m_statusContainerManager;
 	QPointer<TalkableConverter> m_talkableConverter;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 	QPointer<UrlOpener> m_urlOpener;
@@ -138,6 +140,7 @@ private slots:
 	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);

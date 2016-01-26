@@ -39,6 +39,7 @@ class GroupTalkableFilter;
 class InjectedFactory;
 class ProxyActionContext;
 class ModelChain;
+class StatusContainerManager;
 class TalkableProxyModel;
 class TalkableTreeView;
 
@@ -48,6 +49,7 @@ class KADUAPI RosterWidget : public QWidget, public ActionContextProvider, Confi
 
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<StatusContainerManager> m_statusContainerManager;
 
 	GroupTabBar *GroupBar;
 	QScopedPointer<GroupTabBarConfigurator> TabBarConfigurator;
@@ -70,6 +72,7 @@ class KADUAPI RosterWidget : public QWidget, public ActionContextProvider, Confi
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_INIT void init();
 
 protected:

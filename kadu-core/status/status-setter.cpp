@@ -45,6 +45,11 @@ void StatusSetter::setStatusChangerManager(StatusChangerManager *statusChangerMa
 	m_statusChangerManager = statusChangerManager;
 }
 
+void StatusSetter::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
+}
+
 void StatusSetter::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
 	m_statusTypeManager = statusTypeManager;
@@ -53,7 +58,7 @@ void StatusSetter::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 void StatusSetter::init()
 {
 	configurationUpdated();
-	triggerAllStatusContainerRegistered();
+	triggerAllStatusContainerRegistered(m_statusContainerManager);
 }
 
 void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)

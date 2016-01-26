@@ -39,6 +39,7 @@
 #include "talkable/filter/unread-messages-talkable-filter.h"
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
+#include "status/status-container-manager.h"
 
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHBoxLayout>
@@ -69,9 +70,14 @@ void RosterWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void RosterWidget::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
+}
+
 void RosterWidget::init()
 {
-	Context = new ProxyActionContext();
+	Context = new ProxyActionContext(m_statusContainerManager);
 	createGui();
 
 	Context->setForwardActionContext(TalkableTree->actionContext());

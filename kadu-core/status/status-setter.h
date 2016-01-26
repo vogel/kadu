@@ -28,6 +28,7 @@
 
 class Configuration;
 class StatusChangerManager;
+class StatusContainerManager;
 class StatusTypeManager;
 class Status;
 
@@ -97,6 +98,7 @@ private:
 
 	QPointer<Configuration> m_configuration;
 	QPointer<StatusChangerManager> m_statusChangerManager;
+	QPointer<StatusContainerManager> m_statusContainerManager;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	QString StartupStatus;
@@ -128,6 +130,7 @@ private:
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
 

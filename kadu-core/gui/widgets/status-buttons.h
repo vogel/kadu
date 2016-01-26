@@ -31,6 +31,7 @@
 class InjectedFactory;
 class StatusButton;
 class StatusConfigurationHolder;
+class StatusContainerManager;
 class StatusContainer;
 
 class KADUAPI StatusButtons : public QToolBar, private StatusContainerAwareObject
@@ -48,6 +49,7 @@ protected:
 private:
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+	QPointer<StatusContainerManager> m_statusContainerManager;
 
 	QMap<StatusContainer *, StatusButton *> Buttons;
 
@@ -57,6 +59,7 @@ private:
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
+	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_INIT void init();
 
 };

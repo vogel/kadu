@@ -26,10 +26,11 @@ class ProxyActionContext : public ActionContext
 {
 	Q_OBJECT
 
+	StatusContainer *m_statusContainer;
 	ActionContext *ForwardActionContext;
 
 public:
-	ProxyActionContext();
+	explicit ProxyActionContext(StatusContainer *statusContainer);
 	virtual ~ProxyActionContext();
 
 	void setForwardActionContext(ActionContext *forwardActionContext);

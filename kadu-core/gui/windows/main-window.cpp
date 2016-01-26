@@ -68,7 +68,6 @@ MainWindow::MainWindow(ActionContext *context, const QString &windowName, QWidge
 		QMainWindow(parent), DesktopAwareObject(this),  WindowName(windowName), TransparencyEnabled(false), BlurEnabled(false),
 		Context(context)
 {
-	Q_ASSERT(0 != Context);
 }
 
 MainWindow::~MainWindow()
@@ -118,6 +117,11 @@ void MainWindow::init()
 InjectedFactory * MainWindow::injectedFactory() const
 {
 	return m_injectedFactory;
+}
+
+void MainWindow::setActionContext(ActionContext *actionContext)
+{
+	Context = actionContext;
 }
 
 void MainWindow::loadToolBarsFromConfig()

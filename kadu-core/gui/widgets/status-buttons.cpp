@@ -48,11 +48,16 @@ void StatusButtons::setStatusConfigurationHolder(StatusConfigurationHolder *stat
 	m_statusConfigurationHolder = statusConfigurationHolder;
 }
 
+void StatusButtons::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
+}
+
 void StatusButtons::init()
 {
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-	triggerAllStatusContainerRegistered();
+	triggerAllStatusContainerRegistered(m_statusContainerManager);
 }
 
 void StatusButtons::enableStatusName()

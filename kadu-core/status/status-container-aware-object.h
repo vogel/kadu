@@ -27,6 +27,7 @@
 
 #include "aware-object.h"
 
+class StatusContainerManager;
 class StatusContainer;
 
 /**
@@ -99,7 +100,7 @@ public:
 	 * Call this method on instance of StatusContainerAwareObject to call statusContainerRegistered for every
 	 * registered status contaner.
 	 */
-	void triggerAllStatusContainerRegistered();
+	void triggerAllStatusContainerRegistered(StatusContainerManager *statusContainerManager);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -110,7 +111,7 @@ public:
 	 * Call this method on instance of StatusContainerAwareObject to call statusContainerUnregistered for every
 	 * registered status contaner.
 	 */
-	void triggerAllStatusContainerUnregistered();
+	void triggerAllStatusContainerUnregistered(StatusContainerManager *statusContainerManager);
 
 };
 

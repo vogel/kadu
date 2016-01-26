@@ -81,6 +81,8 @@ public slots:
 	void addRightToolbar();
 
 protected:
+	void setActionContext(ActionContext *actionContext);
+
 	InjectedFactory * injectedFactory() const;
 
 	void loadToolBarsFromConfig();

@@ -80,7 +80,6 @@
 #include "services/chat-image-request-service-configurator.h"
 #include "services/chat-image-request-service.h"
 #include "ssl/ssl-certificate-manager.h"
-#include "status/status-container-manager.h"
 #include "storage/storage-point-factory.h"
 #include "talkable/talkable-converter.h"
 #include "themes/icon-theme-manager.h"
@@ -583,11 +582,6 @@ void Core::activatePlugins()
 StoragePointFactory * Core::storagePointFactory() const
 {
 	return m_injector.get<StoragePointFactory>();
-}
-
-StatusContainerManager * Core::statusContainerManager() const
-{
-	return m_injector.get<StatusContainerManager>();
 }
 
 InjectedFactory * Core::injectedFactory() const
