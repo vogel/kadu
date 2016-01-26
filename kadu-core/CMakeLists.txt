@@ -53,6 +53,7 @@ set (kadu_SRCS
 	debug.cpp
 	languages-manager.cpp
 	themes.cpp
+	translation-loader.cpp
 	updates.cpp
 
 	os/single-application/long-lived-lock-file.cpp

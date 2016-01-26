@@ -43,6 +43,7 @@
 #include "url-handlers/url-handler-manager.h"
 #include "attention-service.h"
 #include "languages-manager.h"
+#include "translation-loader.h"
 
 CoreModule::CoreModule(QString profileDirectory)
 {
@@ -69,6 +70,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<StatusChangerManager>();
 	add_type<StatusContainerManager>();
 	add_type<StoragePointFactory>();
+	add_type<TranslationLoader>();
 	add_type<UrlHandlerManager>();
 	add_type<UrlOpener>();
 }

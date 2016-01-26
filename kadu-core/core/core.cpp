@@ -90,6 +90,7 @@
 #include "activate.h"
 #include "debug.h"
 #include "kadu-config.h"
+#include "translation-loader.h"
 #include "updates.h"
 
 #ifdef Q_OS_LINUX
@@ -467,6 +468,8 @@ void Core::configurationUpdated()
 
 void Core::execute(const QStringList &openIds)
 {
+	m_injector.get<TranslationLoader>();
+
 	createGui();
 	runGuiServices();
 	activatePlugins();
