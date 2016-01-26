@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -62,6 +61,11 @@ void GTalkProtocolFactory::setFacebookDepreceatedMessage(FacebookDepreceatedMess
 	m_facebookDepreceatedMessage = facebookDepreceatedMessage;
 }
 
+void GTalkProtocolFactory::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void GTalkProtocolFactory::setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager)
 {
 	m_jabberProtocolMenuManager = jabberProtocolMenuManager;
@@ -77,12 +81,12 @@ Protocol * GTalkProtocolFactory::createProtocolHandler(Account account)
 	if (account.id().toLower().endsWith("@chat.facebook.com"))
 		m_facebookDepreceatedMessage->showIfNotSeen();
 
-	return Core::instance()->injectedFactory()->makeInjected<JabberProtocol>(account, this);
+	return m_injectedFactory->makeInjected<JabberProtocol>(account, this);
 }
 
 AccountDetails * GTalkProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return Core::instance()->injectedFactory()->makeInjected<JabberAccountDetails>(accountShared);
+	return m_injectedFactory->makeInjected<JabberAccountDetails>(accountShared);
 }
 
 AccountAddWidget * GTalkProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
@@ -95,7 +99,7 @@ AccountAddWidget * GTalkProtocolFactory::newAddAccountWidget(bool showButtons, Q
 
 AccountCreateWidget * GTalkProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
 {
-	auto result = Core::instance()->injectedFactory()->makeInjected<JabberCreateAccountWidget>(showButtons, parent);
+	auto result = m_injectedFactory->makeInjected<JabberCreateAccountWidget>(showButtons, parent);
 	result->setJabberServersService(new JabberServersService{result});
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
@@ -103,7 +107,7 @@ AccountCreateWidget * GTalkProtocolFactory::newCreateAccountWidget(bool showButt
 
 AccountEditWidget * GTalkProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	JabberEditAccountWidget *result = Core::instance()->injectedFactory()->makeInjected<JabberEditAccountWidget>(account, parent);
+	JabberEditAccountWidget *result = m_injectedFactory->makeInjected<JabberEditAccountWidget>(account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
@@ -142,7 +146,7 @@ QString GTalkProtocolFactory::defaultServer()
 
 QWidget * GTalkProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
 {
-	return Core::instance()->injectedFactory()->makeInjected<JabberContactPersonalInfoWidget>(contact, parent);
+	return m_injectedFactory->makeInjected<JabberContactPersonalInfoWidget>(contact, parent);
 }
 
 ProtocolMenuManager * GTalkProtocolFactory::protocolMenuManager()

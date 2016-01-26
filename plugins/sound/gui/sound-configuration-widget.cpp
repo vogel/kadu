@@ -24,7 +24,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "icons/kadu-icon.h"
@@ -36,15 +35,6 @@ SoundConfigurationWidget::SoundConfigurationWidget(SoundManager *manager, QWidge
 		NotifierConfigurationWidget{parent},
 		m_manager{manager}
 {
-	m_soundSelectFile = Core::instance()->injectedFactory()->makeInjected<SoundSelectFile>(m_manager, this);
-	connect(m_soundSelectFile, SIGNAL(fileChanged()), this, SIGNAL(soundFileEdited()));
-
-	auto layout = new QHBoxLayout{this};
-	layout->setMargin(0);
-	layout->setSpacing(0);
-	layout->addWidget(m_soundSelectFile);
-
-	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 SoundConfigurationWidget::~SoundConfigurationWidget()
@@ -54,6 +44,24 @@ SoundConfigurationWidget::~SoundConfigurationWidget()
 void SoundConfigurationWidget::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void SoundConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SoundConfigurationWidget::init()
+{
+	m_soundSelectFile = m_injectedFactory->makeInjected<SoundSelectFile>(m_manager, this);
+	connect(m_soundSelectFile, SIGNAL(fileChanged()), this, SIGNAL(soundFileEdited()));
+
+	auto layout = new QHBoxLayout{this};
+	layout->setMargin(0);
+	layout->setSpacing(0);
+	layout->addWidget(m_soundSelectFile);
+
+	static_cast<NotifyGroupBox *>(parent())->addWidget(this);
 }
 
 void SoundConfigurationWidget::saveNotifyConfigurations()

@@ -26,14 +26,12 @@
 #include "gui/actions/action-description.h"
 
 class ChatWidget;
-class NotificationManager;
 class ScreenShotConfiguration;
 
 class ScreenshotAction : public ActionDescription
 {
 	Q_OBJECT
 
-	QPointer<NotificationManager> m_notificationManager;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
 	ChatWidget * findChatWidget(QObject *obejct);
@@ -49,7 +47,7 @@ protected:
 	virtual void updateActionState(Action *action);
 
 public:
-	explicit ScreenshotAction(NotificationManager *notificationManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent);
+	explicit ScreenshotAction(ScreenShotConfiguration *screenShotConfiguration, QObject *parent);
 	virtual ~ScreenshotAction();
 
 };

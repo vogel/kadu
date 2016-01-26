@@ -26,6 +26,7 @@
 #include <injeqt/injeqt.h>
 
 class ConfigurationManager;
+class InjectedFactory;
 class MobileNumber;
 
 class MobileNumberManager : public StorableObject
@@ -33,6 +34,7 @@ class MobileNumberManager : public StorableObject
 	Q_OBJECT
 
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QList<MobileNumber *> Numbers;
 
@@ -57,6 +59,7 @@ public:
 
 private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

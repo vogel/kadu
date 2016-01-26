@@ -22,6 +22,9 @@
 #include "gui/widgets/chat-configuration-widget.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
 
 class SoundManager;
 class SoundSelectFile;
@@ -43,7 +46,9 @@ public:
 	virtual void cancel() override;
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<SoundManager> m_soundManager;
+
 	SimpleConfigurationValueStateNotifier *m_stateNotifier;
 
 	QCheckBox *m_useCustomSoundCheckBox;
@@ -53,6 +58,9 @@ private:
 	void loadValues();
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void updateState();
 
 };

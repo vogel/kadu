@@ -44,21 +44,12 @@
 #include "screen-shot-saver.h"
 #include "screenshot.h"
 
-ScreenShot::ScreenShot(NotificationManager *notificationManager, ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget) :
-		m_notificationManager{notificationManager},
+ScreenShot::ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget) :
 		m_screenShotConfiguration{screenShotConfiguration},
 		Mode{},
 		MyScreenshotTaker{},
 		MyChatWidget{chatWidget}
 {
-	kdebugf();
-
-	MyScreenshotTaker = Core::instance()->injectedFactory()->makeInjected<ScreenshotTaker>(MyChatWidget);
-	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap, bool)), this, SLOT(screenshotTaken(QPixmap, bool)));
-	connect(MyScreenshotTaker, SIGNAL(screenshotNotTaken()), this, SLOT(screenshotNotTaken()));
-
-	// Rest stuff
-	warnedAboutSize = false;
 }
 
 ScreenShot::~ScreenShot()
@@ -78,6 +69,26 @@ void ScreenShot::setConfiguration(Configuration *configuration)
 void ScreenShot::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
+}
+
+void ScreenShot::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ScreenShot::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
+}
+
+void ScreenShot::init()
+{
+	MyScreenshotTaker = m_injectedFactory->makeInjected<ScreenshotTaker>(MyChatWidget);
+	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap, bool)), this, SLOT(screenshotTaken(QPixmap, bool)));
+	connect(MyScreenshotTaker, SIGNAL(screenshotNotTaken()), this, SLOT(screenshotNotTaken()));
+
+	// Rest stuff
+	warnedAboutSize = false;
 }
 
 void ScreenShot::takeStandardShot()

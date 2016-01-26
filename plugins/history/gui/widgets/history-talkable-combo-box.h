@@ -17,10 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_TALKABLE_COMBO_BOX_H
-#define HISTORY_TALKABLE_COMBO_BOX_H
+#pragma once
 
 #include <QtCore/QFuture>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "gui/widgets/select-talkable-combo-box.h"
 
@@ -28,6 +29,7 @@ class QAction;
 
 class BuddyListModel;
 class ChatListModel;
+class InjectedFactory;
 
 /**
  * @addtogroup History
@@ -48,6 +50,8 @@ class HistoryTalkableComboBox : public SelectTalkableComboBox
 {
 	Q_OBJECT
 
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	QFutureWatcher<QVector<Talkable> > *TalkablesFutureWatcher;
 
 	QAction *AllAction;
@@ -55,6 +59,9 @@ class HistoryTalkableComboBox : public SelectTalkableComboBox
 	BuddyListModel *BuddiesModel;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void futureTalkablesAvailable();
 	void futureTalkablesCanceled();
 
@@ -101,5 +108,3 @@ public:
 /**
  * @}
  */
-
-#endif // HISTORY_TALKABLE_COMBO_BOX_H

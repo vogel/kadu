@@ -28,6 +28,7 @@
 #include <injeqt/injeqt.h>
 
 class FacebookDepreceatedMessage;
+class InjectedFactory;
 class JabberProtocolMenuManager;
 
 class JabberProtocolFactory : public ProtocolFactory
@@ -61,6 +62,7 @@ public:
 
 private:
 	QPointer<FacebookDepreceatedMessage> m_facebookDepreceatedMessage;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
 
 	QList<StatusType> m_supportedStatusTypes;
@@ -69,6 +71,7 @@ private:
 
 private slots:
 	INJEQT_SET void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
 
 };

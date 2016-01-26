@@ -33,6 +33,7 @@ class QVBoxLayout;
 class Configuration;
 class FileTransferManager;
 class FileTransferWidget;
+class InjectedFactory;
 
 class FileTransferWindow : public QFrame, DesktopAwareObject
 {
@@ -50,6 +51,7 @@ public:
 private:
 	QPointer<Configuration> m_configuration;
 	QPointer<FileTransferManager> m_fileTransferManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QList<FileTransferWidget *> m_widgets;
 
@@ -61,8 +63,9 @@ private:
 	void createGui();
 
 private slots:
-	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void fileTransferAdded(FileTransfer fileTransfer);

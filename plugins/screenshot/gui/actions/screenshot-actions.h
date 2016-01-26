@@ -27,7 +27,6 @@
 
 class Actions;
 class InjectedFactory;
-class NotificationManager;
 class ScreenshotAction;
 class ScreenShotConfiguration;
 
@@ -42,7 +41,6 @@ public:
 private:
 	QPointer<Actions> m_actions;
 	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<NotificationManager> m_notificationManager;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 	
 	owned_qptr<ScreenshotAction> m_screenShotActionDescription;
@@ -50,7 +48,6 @@ private:
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
 	INJEQT_INIT void init();
 

@@ -40,6 +40,7 @@ class ConfigurationUiHandler;
 class Configuration;
 class CropImageWidget;
 class IconsManager;
+class InjectedFactory;
 class NotificationManager;
 class ScreenShotConfiguration;
 class ScreenshotTaker;
@@ -52,6 +53,7 @@ class ScreenShot : public QObject
 
 	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationManager> m_notificationManager;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
@@ -69,6 +71,9 @@ class ScreenShot : public QObject
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_INIT void init();
 
 	void screenshotTaken(QPixmap screenshot, bool needsCrop);
 	void screenshotNotTaken();
@@ -76,7 +81,7 @@ private slots:
 	void screenshotReady(QPixmap pixmap);
 
 public:
-	explicit ScreenShot(NotificationManager *notificationManager, ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget);
+	explicit ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget);
 	virtual ~ScreenShot();
 
 	void takeStandardShot();
