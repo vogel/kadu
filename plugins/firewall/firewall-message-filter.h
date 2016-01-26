@@ -51,6 +51,7 @@ class MessageManager;
 class Message;
 class NotificationManager;
 class OutgoingMessageFirewallFilter;
+class PathsProvider;
 
 class FirewallMessageFilter : public QObject, public MessageFilter, ConfigurationAwareObject, AccountsAwareObject
 {
@@ -77,6 +78,7 @@ private:
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<NotificationManager> m_notificationManager;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	BuddySet SecuredTemporaryAllowed;
 	ContactSet Passed;
@@ -126,6 +128,7 @@ private slots:
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

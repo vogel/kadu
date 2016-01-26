@@ -49,7 +49,6 @@ Nowa funkcjonalnosc - Dorregaray
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -137,6 +136,11 @@ void FirewallMessageFilter::setMessageManager(MessageManager *messageManager)
 void FirewallMessageFilter::setNotificationManager(NotificationManager *notificationManager)
 {
 	m_notificationManager = notificationManager;
+}
+
+void FirewallMessageFilter::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
 }
 
 void FirewallMessageFilter::init()
@@ -535,7 +539,7 @@ void FirewallMessageFilter::configurationUpdated()
 	CheckFloodingEmoticons = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "dos_emoticons", true);
 	EmoticonsAllowKnown = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "emoticons_allow_known", false);
 	WriteLog = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "write_log", true);
-	LogFilePath = m_configuration->deprecatedApi()->readEntry("Firewall", "logFile", Core::instance()->pathsProvider()->profilePath() + QLatin1String("firewall.log"));
+	LogFilePath = m_configuration->deprecatedApi()->readEntry("Firewall", "logFile", m_pathsProvider->profilePath() + QLatin1String("firewall.log"));
 	CheckDos = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "dos", true);
 	CheckChats = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "chats", true);
 	IgnoreConferences = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "ignore_conferences", true);
@@ -576,7 +580,7 @@ void FirewallMessageFilter::createDefaultConfiguration()
 	m_configuration->deprecatedApi()->addVariable("Firewall", "emoticons_allow_known", false);
 	m_configuration->deprecatedApi()->addVariable("Firewall", "safe_sending", false);
 	m_configuration->deprecatedApi()->addVariable("Firewall", "write_log", true);
-	m_configuration->deprecatedApi()->addVariable("Firewall", "logFile", Core::instance()->pathsProvider()->profilePath() + QLatin1String("firewall.log"));
+	m_configuration->deprecatedApi()->addVariable("Firewall", "logFile", m_pathsProvider->profilePath() + QLatin1String("firewall.log"));
 }
 
 #include "moc_firewall-message-filter.cpp"
