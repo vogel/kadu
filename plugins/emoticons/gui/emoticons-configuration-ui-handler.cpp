@@ -24,7 +24,6 @@
 #include <QtWidgets/QFileDialog>
 
 #include "compression/archive-extractor.h"
-#include "core/core.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-list-widget.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
@@ -51,6 +50,11 @@ EmoticonsConfigurationUiHandler::~EmoticonsConfigurationUiHandler()
 void EmoticonsConfigurationUiHandler::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
+}
+
+void EmoticonsConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
 }
 
 void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
@@ -120,7 +124,7 @@ void EmoticonsConfigurationUiHandler::installEmoticonTheme()
 	if (fileName.isEmpty())
 		return;
 
-	const QString &profilePath = Core::instance()->pathsProvider()->profilePath();
+	const QString &profilePath = m_pathsProvider->profilePath();
 	ArchiveExtractor extractor;
 	bool success = extractor.extract(fileName, profilePath + "emoticons");
 

@@ -32,6 +32,7 @@ class ConfigListWidget;
 class ConfigPathListEdit;
 class ConfigurationWidget;
 class IconsManager;
+class PathsProvider;
 
 /**
  * @addtogroup Emoticons
@@ -47,6 +48,7 @@ class EmoticonsConfigurationUiHandler : public QObject, public ConfigurationUiHa
 	Q_OBJECT
 
 	QPointer<IconsManager> m_iconsManager;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	QScopedPointer<EmoticonThemeManager> ThemeManager;
 	QPointer<ConfigurationWidget> Widget;
@@ -54,6 +56,7 @@ class EmoticonsConfigurationUiHandler : public QObject, public ConfigurationUiHa
 
 private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 	void updateEmoticonThemes();
 	void installEmoticonTheme();
