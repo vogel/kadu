@@ -81,7 +81,6 @@
 #include "services/chat-image-request-service.h"
 #include "ssl/ssl-certificate-manager.h"
 #include "storage/storage-point-factory.h"
-#include "talkable/talkable-converter.h"
 #include "themes/icon-theme-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
@@ -587,11 +586,6 @@ StoragePointFactory * Core::storagePointFactory() const
 InjectedFactory * Core::injectedFactory() const
 {
 	return m_injector.get<InjectedFactory>();
-}
-
-TalkableConverter * Core::talkableConverter() const
-{
-	return m_injector.get<TalkableConverter>();
 }
 
 void Core::executeRemoteCommand(const QString &remoteCommand)

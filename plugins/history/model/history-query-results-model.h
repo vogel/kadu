@@ -29,6 +29,7 @@
 #include "chat/chat.h"
 
 class HistoryQueryResult;
+class TalkableConverter;
 class Talkable;
 
 /**
@@ -52,9 +53,14 @@ class HistoryQueryResultsModel : public QAbstractListModel
 {
 	Q_OBJECT
 
+	QPointer<TalkableConverter> m_talkableConverter;
+
 	QString TalkableHeader;
 	QString LengthHeader;
 	QVector<HistoryQueryResult> Results;
+
+private slots:
+	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 
 public:
 	/**

@@ -40,7 +40,6 @@ class InjectedFactory;
 class KaduIcon;
 class Roster;
 class StoragePointFactory;
-class TalkableConverter;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -68,7 +67,6 @@ public:
 
 	InjectedFactory * injectedFactory() const;
 	StoragePointFactory * storagePointFactory() const;
-	TalkableConverter * talkableConverter() const;
 
 	void setIcon(const KaduIcon &icon);
 

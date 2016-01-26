@@ -19,7 +19,6 @@
  */
 
 #include "chat/chat.h"
-#include "core/core.h"
 #include "model/roles.h"
 #include "talkable/talkable-converter.h"
 
@@ -37,6 +36,11 @@ HistoryQueryResultsModel::HistoryQueryResultsModel(QObject *parent) :
 
 HistoryQueryResultsModel::~HistoryQueryResultsModel()
 {
+}
+
+void HistoryQueryResultsModel::setTalkableConverter(TalkableConverter *talkableConverter)
+{
+	m_talkableConverter = talkableConverter;
 }
 
 int HistoryQueryResultsModel::columnCount(const QModelIndex &parent) const
@@ -82,7 +86,7 @@ QVariant HistoryQueryResultsModel::data(const QModelIndex &index, int role) cons
 		{
 			switch (col)
 			{
-				case 0: return Core::instance()->talkableConverter()->toDisplay(Results.at(row).talkable());
+				case 0: return m_talkableConverter->toDisplay(Results.at(row).talkable());
 				case 1: return Results.at(row).date().toString("dd.MM.yyyy");
 				case 2: return Results.at(row).count();
 				case 3: return Results.at(row).title();

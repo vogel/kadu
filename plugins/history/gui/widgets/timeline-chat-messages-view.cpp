@@ -77,7 +77,7 @@ void TimelineChatMessagesView::setWebkitMessagesViewFactory(WebkitMessagesViewFa
 
 void TimelineChatMessagesView::init()
 {
-	ResultsModel = new HistoryQueryResultsModel(this);
+	ResultsModel = m_injectedFactory->makeInjected<HistoryQueryResultsModel>(this);
 	ResultsProxyModel = new HistoryQueryResultsProxyModel(ResultsModel);
 	ResultsProxyModel->setSourceModel(ResultsModel);
 
