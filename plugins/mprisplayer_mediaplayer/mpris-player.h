@@ -33,6 +33,7 @@
 #include "mpris_mediaplayer.h"
 
 class MediaPlayer;
+class PathsProvider;
 
 class QString;
 
@@ -43,13 +44,19 @@ class MPRISPlayer : public MPRISMediaPlayer
 	static const QString UserPlayersListFile;
 	static const QString GlobalPlayersListFile;
 
+	QPointer<PathsProvider> m_pathsProvider;
+
 	void prepareUserPlayersFile();
 	void replacePlugin();
 	void choosePlayer(const QString &key, const QString &value);
 
+private slots:
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_INIT void init();
+
 public:
-	static QString userPlayersListFileName() { return Core::instance()->pathsProvider()->profilePath() + UserPlayersListFile; }
-	static QString globalPlayersListFileName() { return Core::instance()->pathsProvider()->dataPath() + GlobalPlayersListFile; }
+	static QString userPlayersListFileName(PathsProvider *pathsProvider) { return pathsProvider->profilePath() + UserPlayersListFile; }
+	static QString globalPlayersListFileName(PathsProvider *pathsProvider) { return pathsProvider->dataPath() + GlobalPlayersListFile; }
 
 	Q_INVOKABLE explicit MPRISPlayer(QObject *parent = nullptr);
 	virtual ~MPRISPlayer();

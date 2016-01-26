@@ -43,20 +43,29 @@ const QString MPRISPlayer::GlobalPlayersListFile = "plugins/data/mprisplayer_med
 MPRISPlayer::MPRISPlayer(QObject *parent) :
 		MPRISMediaPlayer(parent)
 {
-	prepareUserPlayersFile();
-	replacePlugin();
 }
 
 MPRISPlayer::~MPRISPlayer()
 {
 }
 
+void MPRISPlayer::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
+void MPRISPlayer::init()
+{
+	prepareUserPlayersFile();
+	replacePlugin();
+}
+
 void MPRISPlayer::prepareUserPlayersFile()
 {
-	if (QFile::exists(MPRISPlayer::userPlayersListFileName()))
+	if (QFile::exists(MPRISPlayer::userPlayersListFileName(m_pathsProvider)))
 		return;
 
-	QFile userFile(MPRISPlayer::userPlayersListFileName());
+	QFile userFile(MPRISPlayer::userPlayersListFileName(m_pathsProvider));
 	if (!userFile.open(QIODevice::ReadWrite))
 		return;
 
@@ -92,7 +101,7 @@ void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 	if (key == "mpris_mediaplayer")
 	{
 		QString oldMPRISService = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPRISService");
-		QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
+		QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
 		userPlayersSettings.setIniCodec("ISO8859-2");
 
 		userPlayersSettings.setValue(value + "/player", value);
@@ -104,7 +113,7 @@ void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 	}
 	else // Choose player based on old module loaded.
 	{
-		QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(), QSettings::IniFormat);
+		QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
 		globalPlayersSettings.setIniCodec("ISO8859-2");
 
 		Core::instance()->configuration()->deprecatedApi()->writeEntry("MPRISPlayer", "Player", value);

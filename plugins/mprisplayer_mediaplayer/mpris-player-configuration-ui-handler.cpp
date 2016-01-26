@@ -58,6 +58,11 @@ void MPRISPlayerConfigurationUiHandler::setMPRISPlayer(MPRISPlayer *mprisPlayer)
 	m_mprisPlayer = mprisPlayer;
 }
 
+void MPRISPlayerConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvider)
+{
+	m_pathsProvider = pathsProvider;
+}
+
 void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	ConfigGroupBox *optionsGroupBox = mainConfigurationWindow->widget()->configGroupBox("MediaPlayer", "General", "MPRIS Player");
@@ -105,10 +110,10 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowApplied()
 
 void MPRISPlayerConfigurationUiHandler::loadPlayersListFromFile()
 {
-	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
+	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
 	userPlayersSettings.setIniCodec("ISO8859-2");
 
-	QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(), QSettings::IniFormat);
+	QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
 	globalPlayersSettings.setIniCodec("ISO8859-2");
 
 	QStringList globalSections = globalPlayersSettings.childGroups();
@@ -164,7 +169,7 @@ void MPRISPlayerConfigurationUiHandler::addPlayer()
 		return;
 
 	QString oldPlayerName = Core::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player");
-	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
+	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
 	userPlayersSettings.setIniCodec("ISO8859-2");
 
 	userPlayersSettings.setValue(newPlayer + "/player", newPlayer);
@@ -199,9 +204,9 @@ void MPRISPlayerConfigurationUiHandler::editPlayer()
 	if ((newPlayer.isEmpty() || newService.isEmpty()) || (newPlayer == oldPlayer && oldService == newService))
 		return;
 
-	QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(), QSettings::IniFormat);
+	QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
 	globalPlayersSettings.setIniCodec("ISO8859-2");
-	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
+	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
 	userPlayersSettings.setIniCodec("ISO8859-2");
 	QStringList sections = globalPlayersSettings.childGroups();
 
@@ -233,9 +238,9 @@ void MPRISPlayerConfigurationUiHandler::delPlayer()
 {
 	QString playerToRemove = PlayersBox->currentText();
 
-	QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(), QSettings::IniFormat);
+	QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
 	globalPlayersSettings.setIniCodec("ISO8859-2");
-	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(), QSettings::IniFormat);
+	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
 	userPlayersSettings.setIniCodec("ISO8859-2");
 
 	QStringList sections = globalPlayersSettings.childGroups();

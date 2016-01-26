@@ -30,6 +30,7 @@
 #include "configuration/gui/configuration-ui-handler.h"
 
 class MPRISPlayer;
+class PathsProvider;
 
 class QComboBox;
 
@@ -38,6 +39,7 @@ class MPRISPlayerConfigurationUiHandler : public QObject, public ConfigurationUi
 	Q_OBJECT
 	
 	QPointer<MPRISPlayer> m_mprisPlayer;
+	QPointer<PathsProvider> m_pathsProvider;
 
 	QMap<QString, QString> PlayersMap;
 	QComboBox *PlayersBox;
@@ -47,6 +49,7 @@ class MPRISPlayerConfigurationUiHandler : public QObject, public ConfigurationUi
 
 private slots:
 	INJEQT_SET void setMPRISPlayer(MPRISPlayer *mprisPlayer);
+	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 	void configurationApplied();
 
