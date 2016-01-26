@@ -17,9 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "core/myself.h"
-#include <core/injected-factory.h>
 #include "gui/windows/buddy-data-window.h"
 
 #include "buddy-data-window-repository.h"
@@ -38,12 +37,17 @@ void BuddyDataWindowRepository::setInjectedFactory(InjectedFactory *injectedFact
 	m_injectedFactory = injectedFactory;
 }
 
+void BuddyDataWindowRepository::setMyself(Myself *myself)
+{
+	m_myself = myself;
+}
+
 BuddyDataWindow * BuddyDataWindowRepository::windowForBuddy(const Buddy &buddy)
 {
 	if (Windows.contains(buddy))
 		return Windows.value(buddy);
 
-	if (buddy == Core::instance()->myself()->buddy())
+	if (buddy == m_myself->buddy())
 		return 0;
 
 	auto result = m_injectedFactory->makeInjected<BuddyDataWindow>(buddy);

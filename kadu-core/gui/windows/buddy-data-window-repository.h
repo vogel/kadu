@@ -26,6 +26,7 @@
 
 class BuddyDataWindow;
 class InjectedFactory;
+class Myself;
 
 class BuddyDataWindowRepository : public QObject
 {
@@ -43,11 +44,13 @@ public slots:
 
 private:
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<Myself> m_myself;
 
 	QMap<Buddy, BuddyDataWindow *> Windows;
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMyself(Myself *myself);
 
 	void windowDestroyed(const Buddy &buddy);
 
