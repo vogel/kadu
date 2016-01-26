@@ -54,13 +54,13 @@ QString AdiumStyleEngine::isStyleValid(QString stylePath)
 
 bool AdiumStyleEngine::styleUsesTransparencyByDefault(QString styleName)
 {
-	auto style = AdiumStyle{styleName};
+	auto style = AdiumStyle{m_pathsProvider, styleName};
 	return style.defaultBackgroundIsTransparent();
 }
 
 QString AdiumStyleEngine::defaultVariant(const QString &styleName)
 {
-	auto style = AdiumStyle{styleName};
+	auto style = AdiumStyle{m_pathsProvider, styleName};
 	return style.defaultVariant();
 }
 
@@ -77,7 +77,7 @@ QStringList AdiumStyleEngine::styleVariants(QString styleName)
 
 std::unique_ptr<ChatStyleRendererFactory> AdiumStyleEngine::createRendererFactory(const ChatStyle &chatStyle)
 {
-	auto style = std::make_shared<AdiumStyle>(chatStyle.name());
+	auto style = std::make_shared<AdiumStyle>(m_pathsProvider, chatStyle.name());
 	style->setCurrentVariant(chatStyle.variant());
 
 	return m_injectedFactory->makeUnique<AdiumStyleRendererFactory>(style);

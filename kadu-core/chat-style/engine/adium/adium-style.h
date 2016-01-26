@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <QtCore/QPointer>
 #include <QtCore/QSettings>
 #include <QtGui/QColor>
 
@@ -27,9 +28,13 @@
 	const type & name() const { return capitalized_name; } \
 	void set##capitalized_name(const type &name) { capitalized_name = name; }
 
+class PathsProvider;
+
 class AdiumStyle
 {
 	static QSettings::Format plistFormat;
+
+	QPointer<PathsProvider> m_pathsProvider;
 
 	QString Name;
 
@@ -64,7 +69,7 @@ class AdiumStyle
 
 public:
 	AdiumStyle();
-	explicit AdiumStyle(const QString &styleName);
+	explicit AdiumStyle(PathsProvider *pathsProvider, const QString &styleName);
 
 	static bool isStyleValid(const QString &stylePath);
 
