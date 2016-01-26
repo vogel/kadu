@@ -24,15 +24,13 @@
 
 #include <QtWidgets/QTreeView>
 
-ExpandAction::ExpandAction(Actions *actions, QObject *parent) :
+ExpandAction::ExpandAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(actions, parent)
+		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeUserList);
 	setName("expandAction");
 	setText(tr("Expand"));
-
-	registerAction(actions);
 }
 
 ExpandAction::~ExpandAction()

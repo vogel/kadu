@@ -22,6 +22,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Actions;
 class ClipboardHtmlTransformerService;
 class ConfigurationUiHandlerRepository;
 class DomProcessorService;
@@ -43,6 +44,7 @@ public:
 	virtual ~EmoticonsPluginObject();
 
 private:
+	QPointer<Actions> m_actions;
 	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<DomProcessorService> m_domProcessorService;
@@ -55,6 +57,7 @@ private:
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);

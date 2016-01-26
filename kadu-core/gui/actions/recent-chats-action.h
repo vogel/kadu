@@ -27,7 +27,6 @@
 #include <injeqt/injeqt.h>
 
 class ChatWidgetManager;
-class InjectedFactory;
 class RecentChatsMenu;
 
 class RecentChatsAction : public ActionDescription
@@ -38,18 +37,16 @@ protected:
 	virtual void actionInstanceCreated(Action *action);
 
 public:
-	explicit RecentChatsAction(Actions *actions, QObject *parent);
+	explicit RecentChatsAction(QObject *parent);
 	virtual ~RecentChatsAction();
 
 private:
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<InjectedFactory> m_injectedFactory;
 
 	not_owned_qptr<RecentChatsMenu> m_recentChatsMenu;
 
 private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void openRecentChats(QAction *action);

@@ -23,9 +23,11 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QLabel;
 
+class Configuration;
 class SoundManager;
 class SoundSelectFile;
 
@@ -48,11 +50,15 @@ signals:
 	void soundFileEdited();
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<SoundManager> m_manager;
 
 	QMap<QString, QString> m_soundFiles;
 	QString m_currentNotificationEvent;
 
 	SoundSelectFile *m_soundSelectFile;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 
 };

@@ -17,19 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_CHAT_CONFIGURATION_WIDGET_H
-#define HISTORY_CHAT_CONFIGURATION_WIDGET_H
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/widgets/chat-configuration-widget.h"
 
-class QCheckBox;
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class Configuration;
 class SimpleConfigurationValueStateNotifier;
+
+class QCheckBox;
 
 class HistoryChatConfigurationWidget : public ChatConfigurationWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<Configuration> m_configuration;
 
 	bool GlobalStoreHistory;
 	QCheckBox *StoreHistoryCheckBox;
@@ -40,6 +45,9 @@ class HistoryChatConfigurationWidget : public ChatConfigurationWidget, Configura
 	void loadValues();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
 	void updateState();
 
 protected:
@@ -55,5 +63,3 @@ public:
 	virtual void cancel();
 
 };
-
-#endif // HISTORY_CHAT_CONFIGURATION_WIDGET_H

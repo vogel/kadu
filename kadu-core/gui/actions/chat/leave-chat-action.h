@@ -32,7 +32,7 @@ class LeaveChatAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit LeaveChatAction(Actions *actions, QObject *parent);
+	explicit LeaveChatAction(QObject *parent);
 	virtual ~LeaveChatAction();
 
 protected:

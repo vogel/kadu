@@ -21,10 +21,13 @@
 #ifndef CONFIG_FILE_VARIANT_WRAPPER_H
 #define CONFIG_FILE_VARIANT_WRAPPER_H
 
+#include <QtCore/QPointer>
 #include <QtCore/QString>
 
 #include "misc/variant-wrapper.h"
 #include "exports.h"
+
+class Configuration;
 
 /**
  * @addtogroup Configuration
@@ -41,6 +44,8 @@
  */
 class KADUAPI ConfigFileVariantWrapper : public VariantWrapper
 {
+	QPointer<Configuration> m_configuration;
+
 	QString Group;
 	QString Name;
 
@@ -51,7 +56,7 @@ public:
 	 * @param group name of ConfigFile group
 	 * @param name name of ConfigFile field in @p group
 	 */
-	ConfigFileVariantWrapper(const QString &group, const QString &name);
+	ConfigFileVariantWrapper(Configuration *configuration, const QString &group, const QString &name);
 	virtual ~ConfigFileVariantWrapper();
 
 	virtual QVariant get(const QVariant &defaultValue = QVariant()) const;

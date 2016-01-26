@@ -28,15 +28,13 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
-class Actions;
-class InjectedFactory;
 
 class AddRoomChatAction : public ActionDescription
 {
 	Q_OBJECT
 
 public:
-	explicit AddRoomChatAction(Actions *actions, QObject *parent);
+	explicit AddRoomChatAction(QObject *parent);
 	virtual ~AddRoomChatAction();
 
 protected:
@@ -44,13 +42,9 @@ protected:
 
 private:
 	QPointer<AccountManager> m_accountManager;
-	QPointer<Actions> m_actions;
-	QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void updateAddChatMenuItem();

@@ -95,6 +95,11 @@ void BuddyDataWindow::setBuddyManager(BuddyManager *buddyManager)
 	m_buddyManager = buddyManager;
 }
 
+void BuddyDataWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void BuddyDataWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -117,7 +122,7 @@ void BuddyDataWindow::init()
 
 	createGui();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ManageUsersDialogGeometry"), QRect(0, 50, 425, 500), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "ManageUsersDialogGeometry"), QRect(0, 50, 425, 500), this);
 
 	connect(m_buddyManager, SIGNAL(buddyRemoved(Buddy)),
 			this, SLOT(buddyRemoved(Buddy)));

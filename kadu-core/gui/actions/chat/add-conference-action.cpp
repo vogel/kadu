@@ -28,8 +28,8 @@
 
 #include "add-conference-action.h"
 
-AddConferenceAction::AddConferenceAction(Actions *actions, QObject *parent) :
-		ActionDescription(actions, parent)
+AddConferenceAction::AddConferenceAction(QObject *parent) :
+		ActionDescription(parent)
 {
 }
 
@@ -42,23 +42,11 @@ void AddConferenceAction::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
-void AddConferenceAction::setActions(Actions *actions)
-{
-	m_actions = actions;
-}
-
-void AddConferenceAction::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void AddConferenceAction::init()
 {
 	setType(ActionDescription::TypeGlobal);
 	setName("addConferenceAction");
 	setText(tr("Add Conference..."));
-
-	registerAction(m_actions);
 
 	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
 	        this, SLOT(updateAddChatMenuItem()));
@@ -73,7 +61,7 @@ void AddConferenceAction::triggered(QWidget *widget, ActionContext *context, boo
 	Q_UNUSED(context)
 	Q_UNUSED(toggled)
 
-	(m_injectedFactory->makeInjected<AddConferenceWindow>(widget))->show();
+	(injectedFactory()->makeInjected<AddConferenceWindow>(widget))->show();
 }
 
 void AddConferenceAction::updateAddChatMenuItem()

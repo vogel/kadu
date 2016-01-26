@@ -65,6 +65,11 @@ void CustomInput::setChatConfigurationHolder(ChatConfigurationHolder *chatConfig
 	m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
+void CustomInput::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void CustomInput::setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager)
 {
 	m_customInputMenuManager = customInputMenuManager;
@@ -117,7 +122,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 	if ((autosend_enabled
 			&& ((e->key() == Qt::Key_Return && e->modifiers() == Qt::NoModifier)
 				|| (e->key() == Qt::Key_Enter && e->modifiers() == Qt::KeypadModifier)))
-		|| (!autosend_enabled && isCtrlEnter) || HotKey::shortCut(e, "ShortCuts", "chat_sendmessage"))
+		|| (!autosend_enabled && isCtrlEnter) || HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_sendmessage"))
 	{
 		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
 		emit sendMessage();
@@ -135,7 +140,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		kdebugf2();
 		return;
 	}
-	else if (HotKey::shortCut(e, "ShortCuts", "chat_bold"))
+	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_bold"))
 	{
 		if (QFont::Normal == fontWeight())
 			setFontWeight(QFont::Bold);
@@ -148,7 +153,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		kdebugf2();
 		return;
 	}
-	else if (HotKey::shortCut(e, "ShortCuts", "chat_italic"))
+	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_italic"))
 	{
 		setFontItalic(!fontItalic());
 
@@ -158,7 +163,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		kdebugf2();
 		return;
 	}
-	else if (HotKey::shortCut(e, "ShortCuts", "chat_underline"))
+	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_underline"))
 	{
 		setFontUnderline(!fontUnderline());
 

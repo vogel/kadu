@@ -25,6 +25,7 @@
 #include <QtWidgets/QPushButton>
 #include <injeqt/injeqt.h>
 
+class Configuration;
 class IconsManager;
 class PathListEditWindow;
 
@@ -70,8 +71,9 @@ signals:
 	void changed(const QStringList &paths);
 
 private:
-	QStringList PathList;
+	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
+	QStringList PathList;
 
 	QListWidget *PathListWidget;
 
@@ -79,6 +81,7 @@ private:
 	bool validatePath(QString &path);
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_INIT void init();
 

@@ -32,8 +32,8 @@
 
 #include "show-xml-console-action-description.h"
 
-ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(Actions *actions, QObject *parent) :
-		ActionDescription(actions, parent)
+ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent) :
+		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeMainMenu);
 	setName("showXmlConsole");
@@ -49,11 +49,6 @@ ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
 		->update();
 }
 
-void ShowXmlConsoleActionDescription::setActions(Actions *actions)
-{
-	m_actions = actions;
-}
-
 void ShowXmlConsoleActionDescription::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
@@ -66,8 +61,6 @@ void ShowXmlConsoleActionDescription::setMenuInventory(MenuInventory *menuInvent
 
 void ShowXmlConsoleActionDescription::init()
 {
-	registerAction(m_actions);
-
 	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
 			this, SLOT(updateShowXmlConsoleMenu()));
 	connect(m_accountManager, SIGNAL(accountUnregistered(Account)),

@@ -78,6 +78,11 @@ void AddConferenceWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetMana
 	m_chatWidgetManager = chatWidgetManager;
 }
 
+void AddConferenceWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void AddConferenceWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -90,7 +95,7 @@ void AddConferenceWindow::init()
 	accountChanged();
 	validateData();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AddConferenceWindowGeometry"), QRect(0, 50, 430, 400), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "AddConferenceWindowGeometry"), QRect(0, 50, 430, 400), this);
 }
 
 void AddConferenceWindow::createGui()

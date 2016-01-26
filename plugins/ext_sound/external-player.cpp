@@ -23,14 +23,12 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 
 #include <QtCore/QProcess>
 
 ExternalPlayer::ExternalPlayer(QObject *parent) :
 		SoundPlayer{parent}
 {
-	createDefaultConfiguration();
 }
 
 ExternalPlayer::~ExternalPlayer()
@@ -39,12 +37,22 @@ ExternalPlayer::~ExternalPlayer()
 		m_playerProcess->deleteLater();
 }
 
+void ExternalPlayer::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ExternalPlayer::init()
+{
+	createDefaultConfiguration();
+}
+
 QObject * ExternalPlayer::playSound(const QString &path)
 {
 	if (m_playerProcess)
 		return nullptr;
 
-	auto playerCommand = Core::instance()->configuration()->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
+	auto playerCommand = m_configuration->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
 	if (playerCommand.isEmpty())
 		return nullptr;
 
@@ -60,9 +68,9 @@ QObject * ExternalPlayer::playSound(const QString &path)
 void ExternalPlayer::createDefaultConfiguration()
 {
 #ifdef Q_OS_MAC
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
+	m_configuration->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
 #else
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
+	m_configuration->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
 #endif
 }
 

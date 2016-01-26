@@ -27,6 +27,7 @@
 typedef QMap<QPair<QString, QString>, QString> LastSeen;
 
 class ChatManager;
+class Configuration;
 class ContactManager;
 class MenuInventory;
 class StatusTypeManager;
@@ -42,6 +43,7 @@ class InfosDialog : public QDialog
 	Q_OBJECT
 
 	QPointer<ChatManager> m_chatManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<StatusTypeManager> m_statusTypeManager;
@@ -52,6 +54,7 @@ class InfosDialog : public QDialog
 
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);

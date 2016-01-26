@@ -30,8 +30,8 @@
 
 #include <QtWidgets/QMenu>
 
-RecentChatsAction::RecentChatsAction(Actions *actions, QObject *parent) :
-		ActionDescription(actions, parent)
+RecentChatsAction::RecentChatsAction(QObject *parent) :
+		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeMainMenu);
 	setName("openRecentChatsAction");
@@ -48,14 +48,9 @@ void RecentChatsAction::setChatWidgetManager(ChatWidgetManager *chatWidgetManage
 	m_chatWidgetManager = chatWidgetManager;
 }
 
-void RecentChatsAction::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void RecentChatsAction::init()
 {
-	m_recentChatsMenu = m_injectedFactory->makeNotOwned<RecentChatsMenu>();
+	m_recentChatsMenu = injectedFactory()->makeNotOwned<RecentChatsMenu>();
 	connect(m_recentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 }
 

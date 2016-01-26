@@ -36,13 +36,18 @@ SmsExternalSender::~SmsExternalSender()
 {
 }
 
+void SmsExternalSender::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 QStringList SmsExternalSender::buildProgramArguments(const QString &message)
 {
 	QStringList programArguments;
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("SMS", "UseCustomString"))
+	if (m_configuration->deprecatedApi()->readBoolEntry("SMS", "UseCustomString"))
 	{
-		programArguments = Core::instance()->configuration()->deprecatedApi()->readEntry("SMS", "SmsString").split(' ');
+		programArguments = m_configuration->deprecatedApi()->readEntry("SMS", "SmsString").split(' ');
 		programArguments.replaceInStrings("%k", number());
 		programArguments.replaceInStrings("%m", message);
 	}
@@ -59,7 +64,7 @@ void SmsExternalSender::sendMessage(const QString &message)
 {
 	Message = message;
 
-	QString smsAppPath = Core::instance()->configuration()->deprecatedApi()->readEntry("SMS", "SmsApp");
+	QString smsAppPath = m_configuration->deprecatedApi()->readEntry("SMS", "SmsApp");
 
 	Process = new QProcess(this);
 	Process->start(smsAppPath, buildProgramArguments(message));

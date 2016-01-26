@@ -29,6 +29,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler.h"
 
+class Configuration;
 class MPRISPlayer;
 class PathsProvider;
 
@@ -38,6 +39,7 @@ class MPRISPlayerConfigurationUiHandler : public QObject, public ConfigurationUi
 {
 	Q_OBJECT
 	
+	QPointer<Configuration> m_configuration;
 	QPointer<MPRISPlayer> m_mprisPlayer;
 	QPointer<PathsProvider> m_pathsProvider;
 
@@ -48,6 +50,7 @@ class MPRISPlayerConfigurationUiHandler : public QObject, public ConfigurationUi
 	void fillPlayersBox();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setMPRISPlayer(MPRISPlayer *mprisPlayer);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 

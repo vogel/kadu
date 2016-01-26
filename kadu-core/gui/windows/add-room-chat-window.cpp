@@ -63,6 +63,11 @@ void AddRoomChatWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManage
 	m_chatWidgetManager = chatWidgetManager;
 }
 
+void AddRoomChatWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void AddRoomChatWindow::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
@@ -77,7 +82,7 @@ void AddRoomChatWindow::init()
 {
 	createGui();
 	validateData();
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AddRoomChatWindowGeometry"), QRect(0, 50, 430, 250), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "AddRoomChatWindowGeometry"), QRect(0, 50, 430, 250), this);
 }
 
 void AddRoomChatWindow::createGui()

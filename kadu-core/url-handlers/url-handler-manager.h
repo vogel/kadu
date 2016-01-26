@@ -33,6 +33,7 @@
 class QDomDocument;
 
 class ClipboardHtmlTransformerService;
+class Configuration;
 class DomProcessorService;
 class MailUrlDomVisitorProvider;
 class MailUrlHandler;
@@ -64,6 +65,7 @@ public:
 
 private:
 	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
+	QPointer<Configuration> m_configuration;
 	QPointer<DomProcessorService> m_domProcessorService;
 	QPointer<UrlOpener> m_urlOpener;
 
@@ -79,6 +81,7 @@ private:
 
 private slots:
 	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_INIT void init();

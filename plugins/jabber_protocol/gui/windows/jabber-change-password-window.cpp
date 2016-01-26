@@ -51,6 +51,11 @@ JabberChangePasswordWindow::~JabberChangePasswordWindow()
 {
 }
 
+void JabberChangePasswordWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void JabberChangePasswordWindow::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
@@ -64,7 +69,7 @@ void JabberChangePasswordWindow::init()
 	createGui();
 	dataChanged();
 
-	new WindowGeometryManager{new ConfigFileVariantWrapper{"General", "JabberChangePasswordGeometry"}, QRect{50, 50, 550, 200}, this};
+	new WindowGeometryManager{new ConfigFileVariantWrapper{m_configuration, "General", "JabberChangePasswordGeometry"}, QRect{50, 50, 550, 200}, this};
 }
 
 void JabberChangePasswordWindow::createGui()

@@ -24,18 +24,16 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-
 #include "hot-key.h"
 
-QKeySequence HotKey::shortCutFromFile(const QString &groupname, const QString &name)
+QKeySequence HotKey::shortCutFromFile(Configuration *configuration, const QString &groupname, const QString &name)
 {
-	return QKeySequence::fromString(Core::instance()->configuration()->deprecatedApi()->readEntry(groupname, name), QKeySequence::PortableText);
+	return QKeySequence::fromString(configuration->deprecatedApi()->readEntry(groupname, name), QKeySequence::PortableText);
 }
 
-bool HotKey::shortCut(QKeyEvent *e, const QString &groupname, const QString &name)
+bool HotKey::shortCut(Configuration *configuration, QKeyEvent *e, const QString &groupname, const QString &name)
 {
-	QString config = Core::instance()->configuration()->deprecatedApi()->readEntry(groupname, name);
+	QString config = configuration->deprecatedApi()->readEntry(groupname, name);
 	return !config.isEmpty() && config == keyEventToString(e, QKeySequence::PortableText);
 }
 

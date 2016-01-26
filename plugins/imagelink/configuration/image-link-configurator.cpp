@@ -31,12 +31,15 @@
 ImageLinkConfigurator::ImageLinkConfigurator(QObject *parent)
 {
 	Q_UNUSED(parent);
-
-	createDefaultConfiguration();
 }
 
 ImageLinkConfigurator::~ImageLinkConfigurator()
 {
+}
+
+void ImageLinkConfigurator::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void ImageLinkConfigurator::setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander)
@@ -49,6 +52,11 @@ void ImageLinkConfigurator::setVideoExpanderProvider(VideoExpanderDomVisitorProv
 	m_videoExpander = videoExpander;
 }
 
+void ImageLinkConfigurator::init()
+{
+	createDefaultConfiguration();
+}
+
 void ImageLinkConfigurator::configure()
 {
 	configurationUpdated();
@@ -56,15 +64,15 @@ void ImageLinkConfigurator::configure()
 
 void ImageLinkConfigurator::createDefaultConfiguration()
 {
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Imagelink", "show_image", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Imagelink", "show_yt", true);
+	m_configuration->deprecatedApi()->addVariable("Imagelink", "show_image", true);
+	m_configuration->deprecatedApi()->addVariable("Imagelink", "show_yt", true);
 }
 
 void ImageLinkConfigurator::configurationUpdated()
 {
 	ImageLinkConfiguration configuration;
-	configuration.setShowImages(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_image", true));
-	configuration.setShowVideos(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Imagelink", "show_yt", true));
+	configuration.setShowImages(m_configuration->deprecatedApi()->readBoolEntry("Imagelink", "show_image", true));
+	configuration.setShowVideos(m_configuration->deprecatedApi()->readBoolEntry("Imagelink", "show_yt", true));
 
 	if (m_imageExpander)
 		m_imageExpander->setConfiguration(configuration);

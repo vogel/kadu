@@ -25,6 +25,10 @@
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 
 #include <QtCore/QMap>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 
 class QLineEdit;
 
@@ -41,9 +45,14 @@ public:
 	virtual void switchToEvent(const QString &event);
 
 private:
+	QPointer<Configuration> m_configuration;
+
 	QString m_currentNotificationEvent;
 	QMap<QString, QString> m_commands;
 
 	QLineEdit *m_commandLineEdit;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 
 };

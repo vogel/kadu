@@ -26,6 +26,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
@@ -36,6 +37,7 @@
 
 class ConfigComboBox;
 class ConfigLineEdit;
+class Configuration;
 
 class QCheckBox;
 class QComboBox;
@@ -46,6 +48,8 @@ class QTextEdit;
 class SMSAPI SmsConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
 	Q_OBJECT
+
+	QPointer<Configuration> m_configuration;
 
 	QCheckBox *useBuiltIn;
 	QLineEdit *customApp;
@@ -60,6 +64,9 @@ class SMSAPI SmsConfigurationUiHandler : public QObject, public ConfigurationUiH
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
 	void onSmsBuildInCheckToggle(bool);
 	void onEraGatewayChanged(int);
 

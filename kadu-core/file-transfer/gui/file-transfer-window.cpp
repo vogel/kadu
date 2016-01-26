@@ -36,31 +36,45 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-FileTransferWindow::FileTransferWindow(FileTransferManager *manager, QWidget *parent) :
+FileTransferWindow::FileTransferWindow(QWidget *parent) :
 		QFrame{parent},
-		DesktopAwareObject{this},
-		m_manager{manager}
+		DesktopAwareObject{this}
 {
-	new TaskbarProgress{manager, this};
-
-	setWindowRole("kadu-file-transfer");
-
-	createGui();
-	new WindowGeometryManager{new ConfigFileVariantWrapper{"General", "TransferWindowGeometry"}, QRect(200, 200, 500, 300), this};
-
-	for (auto &&fileTransfer : m_manager->items())
-		fileTransferAdded(fileTransfer);
-
-	connect(m_manager, SIGNAL(fileTransferAdded(FileTransfer)),
-			this, SLOT(fileTransferAdded(FileTransfer)));
-	connect(m_manager, SIGNAL(fileTransferRemoved(FileTransfer)),
-			this, SLOT(fileTransferRemoved(FileTransfer)));
-
-	contentsChanged();
 }
 
 FileTransferWindow::~FileTransferWindow()
 {
+}
+
+void FileTransferWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void FileTransferWindow::setFileTransferManager(FileTransferManager *fileTransferManager)
+{
+	m_fileTransferManager = fileTransferManager;
+}
+
+void FileTransferWindow::init()
+{
+	new TaskbarProgress{m_fileTransferManager, this};
+
+	setWindowRole("kadu-file-transfer");
+
+	createGui();
+	new WindowGeometryManager{new ConfigFileVariantWrapper{m_configuration, "General", "TransferWindowGeometry"}, QRect(200, 200, 500, 300), this};
+
+	for (auto &&fileTransfer : m_fileTransferManager->items())
+		fileTransferAdded(fileTransfer);
+
+	connect(m_fileTransferManager, SIGNAL(fileTransferAdded(FileTransfer)),
+			this, SLOT(fileTransferAdded(FileTransfer)));
+	connect(m_fileTransferManager, SIGNAL(fileTransferRemoved(FileTransfer)),
+			this, SLOT(fileTransferRemoved(FileTransfer)));
+
+	contentsChanged();
+
 }
 
 void FileTransferWindow::createGui()
@@ -118,7 +132,7 @@ void FileTransferWindow::keyPressEvent(QKeyEvent *e)
 
 void FileTransferWindow::fileTransferAdded(FileTransfer fileTransfer)
 {
-	auto ftm = Core::instance()->injectedFactory()->makeInjected<FileTransferWidget>(m_manager, fileTransfer, m_innerFrame.get());
+	auto ftm = Core::instance()->injectedFactory()->makeInjected<FileTransferWidget>(fileTransfer, m_innerFrame.get());
 	m_transfersLayout->addWidget(ftm);
 	m_widgets.append(ftm);
 
@@ -139,8 +153,7 @@ void FileTransferWindow::fileTransferRemoved(FileTransfer fileTransfer)
 
 void FileTransferWindow::clearClicked()
 {
-	if (m_manager)
-		m_manager->cleanUp();
+	m_fileTransferManager->cleanUp();
 }
 
 void FileTransferWindow::contentsChanged()

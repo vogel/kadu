@@ -33,7 +33,7 @@ class GaduSendGiftAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit GaduSendGiftAction(Actions *actions, QObject *parent = nullptr);
+	explicit GaduSendGiftAction(QObject *parent = nullptr);
 	virtual ~GaduSendGiftAction();
 
 protected:

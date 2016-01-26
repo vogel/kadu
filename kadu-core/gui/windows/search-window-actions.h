@@ -28,6 +28,7 @@
 class ActionDescription;
 class Actions;
 class Action;
+class InjectedFactory;
 
 class QAction;
 
@@ -43,6 +44,7 @@ private:
 	friend class SearchWindow;
 
 	QPointer<Actions> m_actions;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	ActionDescription *FirstSearch;
 	ActionDescription *NextResults;
@@ -53,6 +55,7 @@ private:
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

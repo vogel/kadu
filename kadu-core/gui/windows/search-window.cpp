@@ -204,7 +204,7 @@ void SearchWindow::init()
 	if (UinEdit->text().isEmpty())
 		personalDataTyped();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "SearchWindowGeometry"), QRect(0, 50, 800, 350), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(configuration(), "General", "SearchWindowGeometry"), QRect(0, 50, 800, 350), this);
 }
 
 void SearchWindow::createGui()

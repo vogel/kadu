@@ -4,6 +4,8 @@
 #include "gui/widgets/line-edit-with-clear-button.h"
 #include "exports.h"
 
+class Configuration;
+
 class KADUAPI HotKey
 {
 public:
@@ -11,13 +13,13 @@ public:
 	  Pobiera skr�t klawiszowy, z pliku konfiguracyjnego
 	  z grupy "groupname", o polu "name"
 	 **/
-	static QKeySequence shortCutFromFile(const QString &groupname, const QString &name);
+	static QKeySequence shortCutFromFile(Configuration *configuration, const QString &groupname, const QString &name);
 
 	/**
 	  Sprawdza czy skr�t naci�ni�ty przy zdarzeniu QKeyEvent zgadza si�
 	  ze skr�tem klawiszowym, z pliku konfiguracyjnego, o polu "name"
 	 **/
-	static bool shortCut(QKeyEvent *e, const QString &groupname, const QString &name);
+	static bool shortCut(Configuration *configuration, QKeyEvent *e, const QString &groupname, const QString &name);
 
 	static QString keyEventToString(QKeyEvent *e, QKeySequence::SequenceFormat format);
 

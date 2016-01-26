@@ -22,6 +22,7 @@
 #include "gui/sound-mute-action.h"
 #include "sound-manager.h"
 
+#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 
@@ -39,6 +40,11 @@ void SoundActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void SoundActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void SoundActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -51,7 +57,8 @@ void SoundActions::setSoundManager(SoundManager *soundManager)
 
 void SoundActions::init()
 {
-	m_soundMuteAction = new SoundMuteAction{m_actions, this};
+	m_soundMuteAction = m_injectedFactory->makeInjected<SoundMuteAction>(this);
+	m_actions->insert(m_soundMuteAction);
 
 	m_menuInventory
 		->menu("main")

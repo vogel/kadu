@@ -25,7 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
@@ -41,6 +41,11 @@ SoundConfigurationUiHandler::SoundConfigurationUiHandler(QObject *parent) :
 
 SoundConfigurationUiHandler::~SoundConfigurationUiHandler()
 {
+}
+
+void SoundConfigurationUiHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void SoundConfigurationUiHandler::setSoundManager(SoundManager *soundManager)
@@ -109,7 +114,7 @@ void SoundConfigurationUiHandler::mainConfigurationWindowApplied()
 
 NotifierConfigurationWidget * SoundConfigurationUiHandler::createConfigurationWidget(QWidget *parent)
 {
-	m_configurationWidget = new SoundConfigurationWidget{m_soundManager, parent};
+	m_configurationWidget = m_injectedFactory->makeInjected<SoundConfigurationWidget>(m_soundManager, parent);
 	connect(m_configurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
 
 	connectWidgets();

@@ -22,7 +22,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "icons/icons-manager.h"
 #include "notification/notification-event-repository.h"
@@ -30,11 +29,11 @@
 
 #include "firewall-notification.h"
 
-void FirewallNotification::notify(NotificationManager *notificationManager, const Chat &chat, const Contact &sender, const QString &message)
+void FirewallNotification::notify(Configuration *configuration, InjectedFactory *injectedFactory, NotificationManager *notificationManager, const Chat &chat, const Contact &sender, const QString &message)
 {
-	auto notification = Core::instance()->injectedFactory()->makeInjected<FirewallNotification>(chat);
+	auto notification = injectedFactory->makeInjected<FirewallNotification>(chat);
 	notification->setTitle(tr("Message was blocked"));
-	notification->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Firewall", "notification_syntax",
+	notification->setText(configuration->deprecatedApi()->readEntry("Firewall", "notification_syntax",
 		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m"));
 	notification->setDetails(Qt::escape(message));
 	notificationManager->notify(notification);

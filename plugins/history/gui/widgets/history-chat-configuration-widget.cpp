@@ -33,14 +33,22 @@ HistoryChatConfigurationWidget::HistoryChatConfigurationWidget(const Chat &chat,
 		ChatConfigurationWidget(chat, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
 	setWindowTitle(tr("History"));
-
-	createGui();
-	configurationUpdated();
-	loadValues();
 }
 
 HistoryChatConfigurationWidget::~HistoryChatConfigurationWidget()
 {
+}
+
+void HistoryChatConfigurationWidget::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void HistoryChatConfigurationWidget::init()
+{
+	createGui();
+	configurationUpdated();
+	loadValues();
 }
 
 void HistoryChatConfigurationWidget::createGui()
@@ -57,7 +65,7 @@ void HistoryChatConfigurationWidget::createGui()
 
 void HistoryChatConfigurationWidget::configurationUpdated()
 {
-	GlobalStoreHistory = Core::instance()->configuration()->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
+	GlobalStoreHistory = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
 	StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
 }
 

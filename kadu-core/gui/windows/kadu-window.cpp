@@ -159,7 +159,7 @@ void KaduWindow::init()
 
 	configurationUpdated();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "Geometry"), QRect(0, 50, 350, 650), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(configuration(), "General", "Geometry"), QRect(0, 50, 350, 650), this);
 }
 
 void KaduWindow::createGui()

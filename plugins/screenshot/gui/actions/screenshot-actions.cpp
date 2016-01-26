@@ -21,6 +21,7 @@
 #include "screenshot-actions.h"
 
 #include "configuration/screen-shot-configuration.h"
+#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/screenshot-action.h"
 
@@ -40,6 +41,11 @@ void ScreenshotActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void ScreenshotActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void ScreenshotActions::setNotificationManager(NotificationManager *notificationManager)
 {
 	m_notificationManager = notificationManager;
@@ -52,7 +58,8 @@ void ScreenshotActions::setScreenShotConfiguration(ScreenShotConfiguration *scre
 
 void ScreenshotActions::init()
 {
-	m_screenShotActionDescription = make_owned<ScreenshotAction>(m_actions, m_notificationManager, m_screenShotConfiguration, this);
+	m_screenShotActionDescription = m_injectedFactory->makeOwned<ScreenshotAction>(m_notificationManager, m_screenShotConfiguration, this);
+	m_actions->insert(m_screenShotActionDescription);
 }
 
 #include "moc_screenshot-actions.cpp"

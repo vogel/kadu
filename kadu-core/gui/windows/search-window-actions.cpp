@@ -21,6 +21,7 @@
 
 #include "search-window-actions.h"
 
+#include "core/injected-factory.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -46,39 +47,44 @@ void SearchWindowActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void SearchWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void SearchWindowActions::init()
 {
 	m_actions->blockSignals();
 
-	FirstSearch = new ActionDescription(m_actions, this,
+	FirstSearch = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeSearch, "firstSearchAction",
 		this, SLOT(firstSearchActionActivated(QAction*)),
 		KaduIcon("edit-find"), tr("&Search")
 	);
 	connect(FirstSearch, SIGNAL(actionCreated(Action*)), this, SLOT(firstSearchActionCreated(Action*)));
 
-	NextResults = new ActionDescription(m_actions, this,
+	NextResults = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeSearch, "nextResultsAction",
 		this, SLOT(nextResultsActionActivated(QAction*)),
 		KaduIcon("go-next"), tr("&Next results")
 	);
 	connect(NextResults, SIGNAL(actionCreated(Action*)), this, SLOT(nextResultsActionCreated(Action*)));
 
-	StopSearch = new ActionDescription(m_actions, this,
+	StopSearch = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeSearch, "stopSearchAction",
 		this, SLOT(stopSearchActionActivated(QAction*)),
 		KaduIcon("dialog-cancel"), tr("Stop")
 	);
 	connect(StopSearch, SIGNAL(actionCreated(Action*)), this, SLOT(stopSearchActionCreated(Action*)));
 
-	ClearResults = new ActionDescription(m_actions, this,
+	ClearResults = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeSearch, "clearSearchAction",
 		this, SLOT(clearResultsActionActivated(QAction*)),
 		KaduIcon("edit-clear"), tr("Clear results")
 	);
 	connect(ClearResults, SIGNAL(actionCreated(Action*)), this, SLOT(clearResultsActionCreated(Action*)));
 
-	AddFound = new ActionDescription(m_actions, this,
+	AddFound = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeSearch, "addSearchedAction",
 		this, SLOT(addFoundActionActivated(QAction*)),
 		KaduIcon("contact-new"), tr("Add selected user")
@@ -88,7 +94,7 @@ void SearchWindowActions::init()
 	// The last ActionDescription will send actionLoaded() signal.
 	m_actions->unblockSignals();
 
-	ChatFound = new ActionDescription(m_actions, this,
+	ChatFound = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeSearch, "chatSearchedAction",
 		this, SLOT(chatFoundActionActivated(QAction*)),
 		KaduIcon("internet-group-chat"), tr("&Chat")

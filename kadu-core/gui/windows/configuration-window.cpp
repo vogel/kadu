@@ -84,6 +84,11 @@ void ConfigurationWindow::setConfigurationManager(ConfigurationManager *configur
 	m_configurationManager = configurationManager;
 }
 
+void ConfigurationWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void ConfigurationWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -113,7 +118,7 @@ void ConfigurationWindow::init()
 	main_layout->addSpacing(16);
 	main_layout->addWidget(buttons_layout);
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper(section(), name() + "_Geometry"), QRect(0, 50, 790, 580), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, section(), name() + "_Geometry"), QRect(0, 50, 790, 580), this);
 }
 
 InjectedFactory * ConfigurationWindow::injectedFactory() const

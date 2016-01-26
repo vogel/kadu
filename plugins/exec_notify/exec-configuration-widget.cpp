@@ -24,7 +24,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/windows/main-configuration-window.h"
 
@@ -49,13 +48,18 @@ ExecConfigurationWidget::~ExecConfigurationWidget()
 {
 }
 
+void ExecConfigurationWidget::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void ExecConfigurationWidget::saveNotifyConfigurations()
 {
 	if (!m_currentNotificationEvent.isEmpty())
 		m_commands[m_currentNotificationEvent] = m_commandLineEdit->text();
 
 	for (QMap<QString, QString>::const_iterator it = m_commands.constBegin(), end = m_commands.constEnd(); it != end; ++it)
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("Exec Notify", it.key() + "Cmd", it.value());
+		m_configuration->deprecatedApi()->writeEntry("Exec Notify", it.key() + "Cmd", it.value());
 }
 
 void ExecConfigurationWidget::switchToEvent(const QString &event)
@@ -67,7 +71,7 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 	if (m_commands.contains(event))
 		m_commandLineEdit->setText(m_commands[event]);
 	else
-		m_commandLineEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("Exec Notify", event + "Cmd"));
+		m_commandLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Exec Notify", event + "Cmd"));
 }
 
 #include "moc_exec-configuration-widget.cpp"

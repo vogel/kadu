@@ -50,6 +50,7 @@ class BuddyManager;
 class BuddyPersonalInfoConfigurationWidget;
 class Buddy;
 class CompositeConfigurationValueStateNotifier;
+class Configuration;
 class InjectedFactory;
 class Myself;
 
@@ -59,6 +60,7 @@ class KADUAPI BuddyDataWindow : public QWidget
 
 	QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
 	QPointer<BuddyManager> m_buddyManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<Myself> m_myself;
 
@@ -90,6 +92,7 @@ class KADUAPI BuddyDataWindow : public QWidget
 private slots:
 	INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_INIT void init();

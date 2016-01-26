@@ -25,10 +25,12 @@
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QFrame>
+#include <injeqt/injeqt.h>
 
 class QScrollArea;
 class QVBoxLayout;
 
+class Configuration;
 class FileTransferManager;
 class FileTransferWidget;
 
@@ -42,11 +44,13 @@ protected:
 	void contentsChanged();
 
 public:
-	explicit FileTransferWindow(FileTransferManager *manager, QWidget *parent = nullptr);
+	explicit FileTransferWindow(QWidget *parent = nullptr);
 	virtual ~FileTransferWindow();
 
 private:
-	QPointer<FileTransferManager> m_manager;
+	QPointer<Configuration> m_configuration;
+	QPointer<FileTransferManager> m_fileTransferManager;
+
 	QList<FileTransferWidget *> m_widgets;
 
 	owned_qptr<QScrollArea> m_scrollView;
@@ -57,6 +61,10 @@ private:
 	void createGui();
 
 private slots:
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
 	void fileTransferAdded(FileTransfer fileTransfer);
 	void fileTransferRemoved(FileTransfer fileTransfer);
 

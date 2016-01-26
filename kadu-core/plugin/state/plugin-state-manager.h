@@ -26,6 +26,7 @@
 #include <set>
 
 class ConfigurationManager;
+class Configuration;
 class PluginDependencyHandler;
 class PluginStateService;
 class StoragePoint;
@@ -74,6 +75,7 @@ public:
 
 private:
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 	QPointer<PluginStateService> m_pluginStateService;
 	QPointer<StoragePointFactory> m_storagePointFactory;
@@ -82,6 +84,7 @@ private:
 
 private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 	INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);

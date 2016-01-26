@@ -20,7 +20,10 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class Configuration;
 class PluginMetadata;
 
 /**
@@ -49,6 +52,12 @@ public:
 	 * If file \p filePath can not be read, a PluginMetadataReaderException exception is thrown.
 	 */
 	PluginMetadata readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false);
+
+private:
+	QPointer<Configuration> m_configuration;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 
 };
 

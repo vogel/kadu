@@ -39,7 +39,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "configuration/config-file-variant-wrapper.h"
-#include "core/core.h"
+#include "configuration/configuration.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "icons/icons-manager.h"
@@ -59,6 +59,11 @@ About::About(QWidget *parent) :
 
 About::~About()
 {
+}
+
+void About::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void About::setDomProcessorService(DomProcessorService *domProcessorService)
@@ -217,7 +222,7 @@ void About::init()
 	//slayout->addWidget(left);
 	layout->addWidget(center);
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AboutGeometry"), QRect(0, 50, 480, 380), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "AboutGeometry"), QRect(0, 50, 480, 380), this);
 
 	QString authors = loadFile("AUTHORS.html");
 	authors.remove(QRegExp("[\\[\\]]"));

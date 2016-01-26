@@ -18,13 +18,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MPD_CONFIG
-#define MPD_CONFIG
+#pragma once
 
 #include "gui/windows/main-configuration-window.h"
 
+#include <QtCore/QPointer>
+
+class Configuration;
+
 class MPDConfig : public ConfigurationAwareObject
 {
+	QPointer<Configuration> m_configuration;
+
 	QString Host;
 	QString Port;
 	QString Timeout;
@@ -36,6 +41,7 @@ protected:
 
 public:
 	MPDConfig();
+	MPDConfig(Configuration *configuration);
 	virtual ~MPDConfig();
 	
 	const QString & host() const { return Host; }
@@ -43,5 +49,3 @@ public:
 	const QString & timeout() const { return Timeout; }
 
 };
-
-#endif // MPD_CONFIG

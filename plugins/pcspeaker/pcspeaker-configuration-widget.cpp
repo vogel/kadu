@@ -43,6 +43,11 @@ PCSpeakerConfigurationWidget::~PCSpeakerConfigurationWidget()
 {
 }
 
+void PCSpeakerConfigurationWidget::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void PCSpeakerConfigurationWidget::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
@@ -71,7 +76,7 @@ void PCSpeakerConfigurationWidget::saveNotifyConfigurations()
 		Sounds[CurrentNotificationEvent] = soundEdit->text();
 
 	for (QMap<QString, QString>::const_iterator it = Sounds.constBegin(), end = Sounds.constEnd(); it != end; ++it)
-		Core::instance()->configuration()->deprecatedApi()->writeEntry("PC Speaker", it.key() + "_Sound", it.value());
+		m_configuration->deprecatedApi()->writeEntry("PC Speaker", it.key() + "_Sound", it.value());
 }
 
 void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
@@ -84,7 +89,7 @@ void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
 	if (Sounds.contains(event))
 		soundEdit->setText(Sounds[event]);
 	else
-		soundEdit->setText(Core::instance()->configuration()->deprecatedApi()->readEntry("PC Speaker", event + "_Sound"));
+		soundEdit->setText(m_configuration->deprecatedApi()->readEntry("PC Speaker", event + "_Sound"));
 }
 
 void PCSpeakerConfigurationWidget::test()

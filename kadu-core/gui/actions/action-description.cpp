@@ -19,35 +19,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QLatin1String>
-#include <QtCore/QMetaMethod>
+#include "action-description.h"
 
-#include "core/core.h"
 #include "core/injected-factory.h"
+#include "configuration/configuration.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/hot-key.h"
 #include "gui/windows/main-window.h"
 
-#include "action-description.h"
+#include <QtCore/QLatin1String>
+#include <QtCore/QMetaMethod>
 
-ActionDescription::ActionDescription(Actions *actions, QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
+ActionDescription::ActionDescription(QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
 		const KaduIcon &icon, const QString &text, bool checkable, ActionBoolCallback enableCallback) :
-		QObject(parent), m_actions{actions},
+		QObject(parent),
 		Type(type), Name(name), Object(object), Slot(slot), Icon(icon), Text(text),
 		Checkable(checkable), EnableCallback(enableCallback), ShortcutContext(Qt::WidgetShortcut)
 {
 	Deleting = false;
-
-	registerAction(actions);
+	m_selfRegister = true;
 }
 
-ActionDescription::ActionDescription(Actions *actions, QObject *parent) :
-		QObject(parent), m_actions{actions},
+ActionDescription::ActionDescription( QObject *parent) :
+		QObject(parent),
 		Type(TypeAll), Object(0), Slot(0),
 		Checkable(false), EnableCallback(0), ShortcutContext(Qt::WidgetShortcut)
 {
 	Deleting = false;
+	m_selfRegister = false;
 }
 
 ActionDescription::~ActionDescription()
@@ -63,6 +63,32 @@ ActionDescription::~ActionDescription()
 void ActionDescription::setActions(Actions *actions)
 {
 	m_actions = actions;
+}
+
+void ActionDescription::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ActionDescription::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ActionDescription::init()
+{
+	if (m_selfRegister)
+		registerAction(m_actions);
+}
+
+Configuration * ActionDescription::configuration() const
+{
+	return m_configuration;
+}
+
+InjectedFactory * ActionDescription::injectedFactory() const
+{
+	return m_injectedFactory;
 }
 
 Actions * ActionDescription::actionsRegistry() const
@@ -179,7 +205,7 @@ Action * ActionDescription::createAction(ActionContext *context, QObject *parent
 		return result;
 	}
 
-	result = Core::instance()->injectedFactory()->makeInjected<Action>(this, context, parent);
+	result = m_injectedFactory->makeInjected<Action>(this, context, parent);
 	MappedActions.insert(context, result);
 
 	actionInstanceCreated(result);
@@ -187,12 +213,12 @@ Action * ActionDescription::createAction(ActionContext *context, QObject *parent
 
 	if (ShortcutContext != Qt::ApplicationShortcut)
 	{
-		result->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
+		result->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
 		result->setShortcutContext(ShortcutContext);
 	}
 	else if (MappedActions.count() == 1)
 	{
-		result->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
+		result->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
 		result->setShortcutContext(ShortcutContext);
 	}
 
@@ -226,13 +252,13 @@ void ActionDescription::configurationUpdated()
 	{
 		foreach (Action *action, MappedActions)
 		{
-			action->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
+			action->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
 			action->setShortcutContext(ShortcutContext);
 		}
 	}
 	else if (!MappedActions.isEmpty())
 	{
-		MappedActions.values().at(0)->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
+		MappedActions.values().at(0)->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
 		MappedActions.values().at(0)->setShortcutContext(ShortcutContext);
 	}
 }

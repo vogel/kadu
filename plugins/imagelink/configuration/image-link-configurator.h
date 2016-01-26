@@ -25,6 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Configuration;
 class ImageExpanderDomVisitorProvider;
 class VideoExpanderDomVisitorProvider;
 
@@ -42,14 +43,17 @@ protected:
 	virtual void configurationUpdated();
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<ImageExpanderDomVisitorProvider> m_imageExpander;
 	QPointer<VideoExpanderDomVisitorProvider> m_videoExpander;
 
 	void createDefaultConfiguration();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander);
 	INJEQT_SET void setVideoExpanderProvider(VideoExpanderDomVisitorProvider *videoExpander);
+	INJEQT_INIT void init();
 
 };
 

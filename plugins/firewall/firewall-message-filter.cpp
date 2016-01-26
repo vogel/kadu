@@ -204,7 +204,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 			ignore = true;
 			if (LastNotify.elapsed() > min_interval_notify)
 			{
-				FirewallNotification::notify(m_notificationManager, message.messageChat(), message.messageSender(), tr("flooding DoS attack with emoticons!"));
+				FirewallNotification::notify(m_configuration, m_injectedFactory, m_notificationManager, message.messageChat(), message.messageSender(), tr("flooding DoS attack with emoticons!"));
 
 				writeLog(message.messageSender(), message.plainTextContent());
 
@@ -221,7 +221,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 		ignore = true;
 		if (LastNotify.elapsed() > min_interval_notify)
 		{
-			FirewallNotification::notify(m_notificationManager, message.messageChat(), message.messageSender(), tr("flooding DoS attack!"));
+			FirewallNotification::notify(m_configuration, m_injectedFactory, m_notificationManager, message.messageChat(), message.messageSender(), tr("flooding DoS attack!"));
 
 			writeLog(message.messageSender(), message.plainTextContent());
 
@@ -243,9 +243,9 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 	if (ignore)
 	{
 		if (message.plainTextContent().length() > 50)
-			FirewallNotification::notify(m_notificationManager, message.messageChat(), message.messageSender(), message.plainTextContent().left(50).append("..."));
+			FirewallNotification::notify(m_configuration, m_injectedFactory, m_notificationManager, message.messageChat(), message.messageSender(), message.plainTextContent().left(50).append("..."));
 		else
-			FirewallNotification::notify(m_notificationManager, message.messageChat(), message.messageSender(), message.plainTextContent());
+			FirewallNotification::notify(m_configuration, m_injectedFactory, m_notificationManager, message.messageChat(), message.messageSender(), message.plainTextContent());
 
 		writeLog(message.messageSender(), message.plainTextContent());
 

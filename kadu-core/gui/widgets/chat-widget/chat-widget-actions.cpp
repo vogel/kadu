@@ -192,20 +192,20 @@ void ChatWidgetActions::init()
 {
 	m_actions->blockSignals();
 
-	MoreActions = new ActionDescription(m_actions, 0,
+	MoreActions = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "moreActionsAction",
 		this, SLOT(moreActionsActionActivated(QAction *, bool)),
 		KaduIcon(), tr("More..."), false
 	);
 
-	AutoSend = new ActionDescription(m_actions, 0,
+	AutoSend = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "autoSendAction",
 		this, SLOT(autoSendActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/enter"), tr("Return Sends Message"), true
 	);
 	connect(AutoSend, SIGNAL(actionCreated(Action *)), this, SLOT(autoSendActionCreated(Action *)));
 
-	ClearChat = new ActionDescription(m_actions, 0,
+	ClearChat = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "clearChatAction",
 		this, SLOT(clearActionActivated(QAction *, bool)),
 		KaduIcon("edit-clear"), tr("Clear Messages in Chat Window"), false,
@@ -213,35 +213,35 @@ void ChatWidgetActions::init()
 	);
 	connect(ClearChat, SIGNAL(actionCreated(Action *)), this, SLOT(clearChatActionCreated(Action *)));
 
-	InsertImage = new ActionDescription(m_actions, 0,
+	InsertImage = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "insertImageAction",
 		this, SLOT(insertImageActionActivated(QAction *, bool)),
 		KaduIcon("insert-image"), tr("Insert Image"), false,
 		disableNoChatImageService
 	);
 
-	Bold = new ActionDescription(m_actions, 0,
+	Bold = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "boldAction",
 		this, SLOT(boldActionActivated(QAction *, bool)),
 		KaduIcon("format-text-bold"), tr("Bold"), true,
 		disableNoGadu
 	);
 
-	Italic = new ActionDescription(m_actions, 0,
+	Italic = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "italicAction",
 		this, SLOT(italicActionActivated(QAction *, bool)),
 		KaduIcon("format-text-italic"), tr("Italic"), true,
 		disableNoGadu
 	);
 
-	Underline = new ActionDescription(m_actions, 0,
+	Underline = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "underlineAction",
 		this, SLOT(underlineActionActivated(QAction *, bool)),
 		KaduIcon("format-text-underline"), tr("Underline"), true,
 		disableNoGadu
 	);
 
-	Send = new ActionDescription(m_actions, 0,
+	Send = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "sendAction",
 		this, SLOT(sendActionActivated(QAction *, bool)),
 		KaduIcon("go-next"), tr("&Send"), false,
@@ -249,7 +249,7 @@ void ChatWidgetActions::init()
 	);
 	connect(Send, SIGNAL(actionCreated(Action *)), this, SLOT(sendActionCreated(Action *)));
 
-	BlockUser = new ActionDescription(m_actions, 0,
+	BlockUser = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/block-buddy"), tr("Block Buddy"), true,
@@ -259,7 +259,7 @@ void ChatWidgetActions::init()
 	// The last ActionDescription of each type will send actionLoaded() signal.
 	m_actions->unblockSignals();
 
-	OpenChat = new ActionDescription(m_actions, 0,
+	OpenChat = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(openChatActionActivated(QAction *, bool)),
 		KaduIcon("internet-group-chat"), tr("&Chat"), false,
@@ -270,21 +270,24 @@ void ChatWidgetActions::init()
 		->menu("buddy-list")
 		->addAction(OpenChat, KaduMenu::SectionChat, 1000);
 
-	OpenWith = new ActionDescription(m_actions, 0,
+	OpenWith = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeGlobal, "openChatWithAction",
 		this, SLOT(openChatWithActionActivated(QAction *, bool)),
 		KaduIcon("internet-group-chat"), tr("Open Chat with...")
 	);
 	OpenWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 /*
-	ColorSelector = new ActionDescription(0,
+	ColorSelector = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "colorAction",
 		this, SLOT(colorSelectorActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/change-color"), tr("Change Color")
 	);*/
 
-	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(m_actions, this);
-	LeaveChat = m_injectedFactory->makeInjected<LeaveChatAction>(m_actions, this);
+	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(this);
+	m_actions->insert(EditTalkable);
+
+	LeaveChat = m_injectedFactory->makeInjected<LeaveChatAction>(this);
+	m_actions->insert(LeaveChat);
 }
 
 void ChatWidgetActions::done()

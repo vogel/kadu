@@ -268,22 +268,23 @@ void KaduWindowActions::init()
 {
 	m_actions->blockSignals();
 
-	ShowConfigurationWindow = new ActionDescription(m_actions, this,
+	ShowConfigurationWindow = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeGlobal, "configurationAction",
 		this, SLOT(configurationActionActivated(QAction *, bool)),
 		KaduIcon("preferences-other"), tr("Preferences")
 	);
 	ShowConfigurationWindow->setShortcut("kadu_configure", Qt::ApplicationShortcut);
 
-	ShowYourAccounts = new ActionDescription(m_actions, this,
+	ShowYourAccounts = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "yourAccountsAction",
 		this, SLOT(yourAccountsActionActivated(QAction *, bool)),
 		KaduIcon("x-office-address-book"), tr("Your Accounts")
 	);
 
-	RecentChats = m_injectedFactory->makeInjected<RecentChatsAction>(m_actions, this);
+	RecentChats = m_injectedFactory->makeInjected<RecentChatsAction>(this);
+	m_actions->insert(RecentChats);
 
-	ShowMultilogons = new ActionDescription(m_actions, this,
+	ShowMultilogons = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "showMultilogonsAction",
 		this, SLOT(showMultilogonsActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/multilogon"), tr("Multilogons"), false,
@@ -291,30 +292,33 @@ void KaduWindowActions::init()
 	);
 	connect(ShowMultilogons, SIGNAL(actionCreated(Action *)), this, SLOT(showMultilogonsActionCreated(Action *)));
 
-	ExitKadu = new ActionDescription(m_actions, this,
+	ExitKadu = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "exitKaduAction",
 		this, SLOT(exitKaduActionActivated(QAction *, bool)),
 		KaduIcon("application-exit"), tr("&Quit")
 	);
 	ExitKadu->setShortcut("kadu_exit", Qt::ApplicationShortcut);
 
-	AddUser = new ActionDescription(m_actions, this,
+	AddUser = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeGlobal, "addUserAction",
 		this, SLOT(addUserActionActivated(QAction *, bool)),
 		KaduIcon("contact-new"), tr("Add Buddy...")
 	);
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
-	AddConference = m_injectedFactory->makeInjected<AddConferenceAction>(m_actions, this);
-	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(m_actions, this);
+	AddConference = m_injectedFactory->makeInjected<AddConferenceAction>(this);
+	m_actions->insert(AddConference);
 
-	AddGroup= new ActionDescription(m_actions, this,
+	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
+	m_actions->insert(AddRoomChat);
+
+	AddGroup = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeGlobal, "addGroupAction",
 		this, SLOT(addGroupActionActivated(QAction *, bool)),
 		KaduIcon("group-new"), tr("Add Group...")
 	);
 
-	OpenSearch = new ActionDescription(m_actions, this,
+	OpenSearch = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeGlobal, "openSearchAction",
 		this, SLOT(openSearchActionActivated(QAction *, bool)),
 		KaduIcon("edit-find"), tr("Search for Buddy..."), false,
@@ -322,59 +326,62 @@ void KaduWindowActions::init()
 	);
 	connect(OpenSearch, SIGNAL(actionCreated(Action*)), this, SLOT(openSearchActionCreated(Action*)));
 
-	Forum = new ActionDescription(m_actions, this,
+	Forum = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "forumAction",
 		this, SLOT(forumActionActivated(QAction *, bool)),
-		{}, tr("Forum")
+		KaduIcon{}, tr("Forum")
 	);
 
-	Bugs = new ActionDescription(m_actions, this,
+	Bugs = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "bugsAction",
 		this, SLOT(bugsActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/report-a-bug"), tr("Report a Bug")
 	);
 
-	GetInvolved = new ActionDescription(m_actions, this,
+	GetInvolved = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "getInvolvedAction",
 		this, SLOT(getInvolvedActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/get-involved"), tr("Get Involved")
 	);
 
-	Translate = new ActionDescription(m_actions, this,
+	Translate = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "translateAction",
 		this, SLOT(translateActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/translate-kadu"), tr("Translate Kadu")
 	);
 
-	About = new ActionDescription(m_actions, this,
+	About = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "aboutAction",
 		this, SLOT(aboutActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/about-kadu"), tr("A&bout Kadu")
 	);
 
-	ShowInfoPanel = new ActionDescription(m_actions, this,
+	ShowInfoPanel = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "showInfoPanelAction",
 		this, SLOT(showInfoPanelActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/show-information-panel"), tr("Show Information Panel"), true
 	);
 	connect(ShowInfoPanel, SIGNAL(actionCreated(Action *)), this, SLOT(showInfoPanelActionCreated(Action *)));
 
-	ShowBlockedBuddies = new ActionDescription(m_actions, this,
+	ShowBlockedBuddies = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "showIgnoredAction",
 		this, SLOT(showBlockedActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/show-blocked-buddies"), tr("Show Blocked Buddies"), true
 	);
 	connect(ShowBlockedBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showBlockedActionCreated(Action *)));
 
-	ShowMyself = new ActionDescription(m_actions, this,
+	ShowMyself = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "showMyselfAction",
 		this, SLOT(showMyselfActionActivated(QAction *, bool)),
 		KaduIcon(), tr("Show Myself Buddy"), true
 	);
 	connect(ShowMyself, SIGNAL(actionCreated(Action *)), this, SLOT(showMyselfActionCreated(Action *)));
 
-	auto expandAction = new ExpandAction{m_actions, this};
-	auto collapseAction = new CollapseAction{m_actions, this};
+	auto expandAction = m_injectedFactory->makeInjected<ExpandAction>(this);
+	m_actions->insert(expandAction);
+
+	auto collapseAction = m_injectedFactory->makeInjected<CollapseAction>(this);
+	m_actions->insert(collapseAction);
 
 	m_menuInventory
 		->menu("buddy-list")
@@ -383,7 +390,7 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(collapseAction, KaduMenu::SectionActionsGui, 1);
 
-	CopyDescription = new ActionDescription(m_actions, this,
+	CopyDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "copyDescriptionAction",
 		this, SLOT(copyDescriptionActionActivated(QAction *, bool)),
 		KaduIcon("edit-copy"), tr("Copy Description"), false,
@@ -393,7 +400,7 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(CopyDescription, KaduMenu::SectionActions, 10);
 
-	CopyPersonalInfo = new ActionDescription(m_actions, this,
+	CopyPersonalInfo = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "copyPersonalInfoAction",
 		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/copy-personal-info"), tr("Copy Personal Info")
@@ -402,7 +409,7 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(CopyPersonalInfo, KaduMenu::SectionActions, 20);
 
-	OpenDescriptionLink = new ActionDescription(m_actions, this,
+	OpenDescriptionLink = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
 		this, SLOT(openDescriptionLinkActionActivated(QAction *, bool)),
 		KaduIcon("go-jump"), tr("Open Description Link in Browser"), false,
@@ -412,7 +419,7 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(OpenDescriptionLink, KaduMenu::SectionActions, 30);
 
-	WriteEmail = new ActionDescription(m_actions, this,
+	WriteEmail = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "writeEmailAction",
 		this, SLOT(writeEmailActionActivated(QAction *, bool)),
 		KaduIcon("mail-message-new"), tr("Send E-Mail"), false,
@@ -424,14 +431,14 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(WriteEmail, KaduMenu::SectionSend, 200);
 
-	LookupUserInfo = new ActionDescription(m_actions, this,
+	LookupUserInfo = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "lookupUserInfoAction",
 		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
 		KaduIcon("edit-find"), tr("Search in Directory"), false,
 		disableNoSearchService
 	);
 
-	InactiveUsers = new ActionDescription(m_actions, this,
+	InactiveUsers = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
 		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/show-offline-buddies"), tr("Show Offline Buddies"),
@@ -440,7 +447,7 @@ void KaduWindowActions::init()
 	connect(InactiveUsers, SIGNAL(actionCreated(Action *)), this, SLOT(inactiveUsersActionCreated(Action *)));
 	InactiveUsers->setShortcut("kadu_showoffline");
 
-	DescriptionUsers = new ActionDescription(m_actions, this,
+	DescriptionUsers = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUserList, "descriptionUsersAction",
 		this, SLOT(descriptionUsersActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/only-show-with-description"), tr("Only Show Buddies with Description"),
@@ -449,7 +456,7 @@ void KaduWindowActions::init()
 	connect(DescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(descriptionUsersActionCreated(Action *)));
 	DescriptionUsers->setShortcut("kadu_showonlydesc");
 
-	ShowDescriptions = new ActionDescription(m_actions, this,
+	ShowDescriptions = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUserList, "descriptionsAction",
 		this, SLOT(showDescriptionsActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/show-descriptions"), tr("Show Descriptions"),
@@ -457,7 +464,7 @@ void KaduWindowActions::init()
 	);
 	connect(ShowDescriptions, SIGNAL(actionCreated(Action *)), this, SLOT(showDescriptionsActionCreated(Action *)));
 
-	OnlineAndDescriptionUsers = new ActionDescription(m_actions, this,
+	OnlineAndDescriptionUsers = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
 		this, SLOT(onlineAndDescUsersActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/only-show-online-and-with-description"), tr("Only Show Online Buddies and Buddies with Description"),
@@ -465,13 +472,14 @@ void KaduWindowActions::init()
 	);
 	connect(OnlineAndDescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(onlineAndDescUsersActionCreated(Action *)));
 
-	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(m_actions, this);
+	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(this);
+	m_actions->insert(EditTalkable);
 
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(EditTalkable, KaduMenu::SectionView);
 
-	MergeContact = new ActionDescription(m_actions, this,
+	MergeContact = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "mergeContactAction",
 		this, SLOT(mergeContactActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/merge-buddies"), tr("Merge Buddies..."), false,
@@ -486,7 +494,8 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(m_chatWidgetActions->blockUser(), KaduMenu::SectionManagement, 500);
 
-	DeleteTalkable = m_injectedFactory->makeInjected<DeleteTalkableAction>(m_actions, this);
+	DeleteTalkable = m_injectedFactory->makeInjected<DeleteTalkableAction>(this);
+	m_actions->insert(DeleteTalkable);
 
 	m_menuInventory
 		->menu("buddy-list")
@@ -497,8 +506,11 @@ void KaduWindowActions::init()
 	// but will work good since KaduActions is created very early. Of course we still need a better mechanism for that.
 	m_actions->unblockSignals();
 
-	ChangeStatus = new ChangeStatusAction(m_actions, this);
-	DefaultProxy = m_injectedFactory->makeInjected<DefaultProxyAction>(m_actions, this);
+	ChangeStatus = m_injectedFactory->makeInjected<ChangeStatusAction>(this);
+	m_actions->insert(ChangeStatus);
+
+	DefaultProxy = m_injectedFactory->makeInjected<DefaultProxyAction>(this);
+	m_actions->insert(DefaultProxy);
 }
 
 void KaduWindowActions::showMultilogonsActionCreated(Action *action)

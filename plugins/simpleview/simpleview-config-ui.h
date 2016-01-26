@@ -21,10 +21,12 @@
 #ifndef SIMPLEVIEW_CONFIG_UI_H
 #define SIMPLEVIEW_CONFIG_UI_H
 
+class Configuration;
+
 class SimpleViewConfigUi
 {
 public:
-	static void createDefaultConfiguration();
+	static void createDefaultConfiguration(Configuration *configuration);
 
 };
 

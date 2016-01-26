@@ -26,6 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/injected-factory.h"
 #include "notification/notification/notification.h"
 #include "parser/parser.h"
 
@@ -44,6 +45,11 @@ ExecNotifier::~ExecNotifier()
 void ExecNotifier::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void ExecNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void ExecNotifier::setParser(Parser *parser)
@@ -194,7 +200,7 @@ void ExecNotifier::run(const QStringList &args)
 
 NotifierConfigurationWidget * ExecNotifier::createConfigurationWidget(QWidget *parent)
 {
-	return new ExecConfigurationWidget{parent};
+	return m_injectedFactory->makeInjected<ExecConfigurationWidget>(parent);
 }
 
 #include "moc_exec-notifier.cpp"

@@ -29,6 +29,7 @@
 #include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 
+class Configuration;
 class DomProcessorService;
 class IconsManager;
 class PathsProvider;
@@ -48,6 +49,7 @@ class About : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
 	QPointer<DomProcessorService> m_domProcessorService;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<PathsProvider> m_pathsProvider;
@@ -58,6 +60,7 @@ class About : public QWidget, DesktopAwareObject
 	QString loadFile(const QString &name);
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);

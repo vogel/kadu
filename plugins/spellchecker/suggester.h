@@ -31,6 +31,7 @@
 class ActionDescription;
 class Actions;
 class CustomInputMenuManager;
+class InjectedFactory;
 class SpellcheckerConfiguration;
 class SpellChecker;
 
@@ -40,6 +41,7 @@ class Suggester : public QObject
 
 	QPointer<Actions> m_actions;
 	QPointer<CustomInputMenuManager> m_customInputMenuManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
 	QPointer<SpellChecker> m_spellChecker;
 
@@ -53,6 +55,7 @@ class Suggester : public QObject
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
 	INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
 

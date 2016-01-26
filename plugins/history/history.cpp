@@ -166,6 +166,7 @@ void History::done()
 void History::createActionDescriptions()
 {
 	m_actions->blockSignals();
+	m_actions->insert(m_showHistoryActionDescription);
 
 	m_menuInventory
 		->menu("buddy-list")
@@ -179,7 +180,7 @@ void History::createActionDescriptions()
 	// The last ActionDescription will send actionLoaded() signal.
 	m_actions->unblockSignals();
 
-	ClearHistoryActionDescription = new ActionDescription(m_actions, this,
+	ClearHistoryActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "clearHistoryAction",
 		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/clear-history"), tr("Clear History"), false,

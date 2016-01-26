@@ -30,15 +30,13 @@
 
 #include "change-status-action.h"
 
-ChangeStatusAction::ChangeStatusAction(Actions *actions, QObject *parent) :
-		ActionDescription(actions, parent)
+ChangeStatusAction::ChangeStatusAction(QObject *parent) :
+		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeGlobal);
 	setName("openStatusAction");
 	setIcon(KaduIcon("kadu_icons/change-status"));
 	setText(tr("Change Status"));
-
-	registerAction(actions);
 }
 
 ChangeStatusAction::~ChangeStatusAction()

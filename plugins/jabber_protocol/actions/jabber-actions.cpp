@@ -84,15 +84,16 @@ void JabberActions::setMyself(Myself *myself)
 
 void JabberActions::init()
 {
-	m_injectedFactory->makeInjected<ShowXmlConsoleActionDescription>(m_actions, this);
+	auto showXmlConsoleAction = m_injectedFactory->makeInjected<ShowXmlConsoleActionDescription>(this);
+	m_actions->insert(showXmlConsoleAction);
 
 	m_actions->blockSignals();
 
-	ResendSubscription = new ActionDescription(m_actions, this, ActionDescription::TypeUser, "rosterResendSubscription",
+	ResendSubscription = m_injectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeUser, "rosterResendSubscription",
 			this, SLOT(resendSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Resend Subscription"),
 			false,
 			[this](Action *action){ return disableNoRosterContact(m_myself, action); });
-	RemoveSubscription = new ActionDescription(m_actions, this, ActionDescription::TypeUser, "rosterRemoveSubscription",
+	RemoveSubscription = m_injectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeUser, "rosterRemoveSubscription",
 			this, SLOT(removeSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Remove Subscription"),
 			false,
 			[this](Action *action){ return disableNoRosterContact(m_myself, action); });
@@ -100,7 +101,7 @@ void JabberActions::init()
 	// The last ActionDescription will send actionLoaded() signal.
 	m_actions->unblockSignals();
 
-	AskForSubscription = new ActionDescription(m_actions, this, ActionDescription::TypeUser, "rosterAskForSubscription",
+	AskForSubscription = m_injectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeUser, "rosterAskForSubscription",
 			this, SLOT(askForSubscriptionActionActivated(QAction*)), KaduIcon(), tr("Ask for Subscription"),
 			false,
 			[this](Action *action){ return disableNoRosterContact(m_myself, action); });

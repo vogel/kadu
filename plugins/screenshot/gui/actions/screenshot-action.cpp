@@ -36,8 +36,8 @@
 
 #include "screenshot-action.h"
 
-ScreenshotAction::ScreenshotAction(Actions *actions, NotificationManager *notificationManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent) :
-		ActionDescription(actions, parent),
+ScreenshotAction::ScreenshotAction(NotificationManager *notificationManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent) :
+		ActionDescription(parent),
 		m_notificationManager{notificationManager},
 		m_screenShotConfiguration{screenShotConfiguration}
 {
@@ -45,8 +45,6 @@ ScreenshotAction::ScreenshotAction(Actions *actions, NotificationManager *notifi
 	setName("ScreenShotAction");
 	setIcon(KaduIcon("external_modules/screenshot-camera-photo"));
 	setText(tr("ScreenShot"));
-
-	registerAction(actions);
 }
 
 ScreenshotAction::~ScreenshotAction()

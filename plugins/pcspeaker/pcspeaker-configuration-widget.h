@@ -10,6 +10,7 @@
 
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 
+class Configuration;
 class IconsManager;
 class PCSpeakerNotifier;
 
@@ -20,6 +21,7 @@ class PCSpeakerConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<PCSpeakerNotifier> m_notifier;
 
@@ -29,6 +31,7 @@ class PCSpeakerConfigurationWidget : public NotifierConfigurationWidget
 	QString CurrentNotificationEvent;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_INIT void init();
 

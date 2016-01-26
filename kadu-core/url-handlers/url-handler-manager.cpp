@@ -21,6 +21,7 @@
 
 #include <QtXml/QDomDocument>
 
+#include "configuration/configuration.h"
 #include "dom/dom-processor-service.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "os/generic/url-opener.h"
@@ -52,6 +53,11 @@ void UrlHandlerManager::setClipboardHtmlTransformerService(ClipboardHtmlTransfor
 	m_clipboardHtmlTransformerService = clipboardHtmlTransformerService;
 }
 
+void UrlHandlerManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void UrlHandlerManager::setDomProcessorService(DomProcessorService *domProcessorService)
 {
 	m_domProcessorService = domProcessorService;
@@ -67,7 +73,7 @@ void UrlHandlerManager::init()
 	ClipboardTransformer.reset(new UrlClipboardHtmlTransformer());
 	m_clipboardHtmlTransformerService->registerTransformer(ClipboardTransformer.data());
 
-	StandardUrlVisitorProvider = new StandardUrlDomVisitorProvider();
+	StandardUrlVisitorProvider = new StandardUrlDomVisitorProvider(m_configuration);
 	m_domProcessorService->registerVisitorProvider(StandardUrlVisitorProvider, 0);
 
 	MailUrlVisitorProvider = new MailUrlDomVisitorProvider();

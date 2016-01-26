@@ -49,7 +49,7 @@ protected:
 	virtual void updateActionState(Action *action);
 
 public:
-	explicit ScreenshotAction(Actions *actions, NotificationManager *notificationManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent);
+	explicit ScreenshotAction(NotificationManager *notificationManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent);
 	virtual ~ScreenshotAction();
 
 };

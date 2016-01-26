@@ -28,6 +28,7 @@
 #include <QtWidgets/QListWidget>
 
 #include "configuration/config-file-variant-wrapper.h"
+#include "configuration/configuration.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
@@ -74,6 +75,11 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 
 PathListEditWindow::~PathListEditWindow()
 {
+}
+
+void PathListEditWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void PathListEditWindow::setIconsManager(IconsManager *iconsManager)
@@ -127,7 +133,7 @@ void PathListEditWindow::createGui()
 
 	setPathList(PathList);
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "SelectPathDialogGeometry"), QRect(0, 50, 330, 330), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "SelectPathDialogGeometry"), QRect(0, 50, 330, 330), this);
 }
 
 void PathListEditWindow::setPathList(const QStringList &list)

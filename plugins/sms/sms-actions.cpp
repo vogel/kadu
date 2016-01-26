@@ -110,7 +110,7 @@ void SmsActions::init()
 	connect(m_kaduWindowService->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
 			this, SLOT(talkableActivated(Talkable)));
 
-	sendSmsActionDescription = new ActionDescription(m_actions, this,
+	sendSmsActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeGlobal, "sendSmsAction",
 		this, SLOT(sendSmsActionActivated(QAction *)),
 		KaduIcon("phone"), tr("Send SMS...")

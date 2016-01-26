@@ -33,6 +33,7 @@ class QLineEdit;
 class QListView;
 class QPushButton;
 
+class Configuration;
 class InjectedFactory;
 class NetworkProxyManager;
 class NetworkProxyModel;
@@ -50,6 +51,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NetworkProxyManager> m_networkProxyManager;
 
@@ -88,6 +90,7 @@ private:
 	void selectProxy(NetworkProxy proxy);
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
 	INJEQT_INIT void init();

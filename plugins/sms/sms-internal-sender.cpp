@@ -25,7 +25,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "debug.h"
 
@@ -47,6 +46,11 @@ SmsInternalSender::SmsInternalSender(SmsGatewayManager *smsGatewayManager, SmsSc
 
 SmsInternalSender::~SmsInternalSender()
 {
+}
+
+void SmsInternalSender::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void SmsInternalSender::sendMessage(const QString &message)
@@ -120,7 +124,7 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 
 QScriptValue SmsInternalSender::readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue)
 {
-	return Core::instance()->configuration()->deprecatedApi()->readEntry(group, name, defaultValue);
+	return m_configuration->deprecatedApi()->readEntry(group, name, defaultValue);
 }
 
 void SmsInternalSender::sendSms()

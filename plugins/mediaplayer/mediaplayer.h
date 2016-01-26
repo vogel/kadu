@@ -23,6 +23,7 @@ class Configuration;
 class CustomInput;
 class DockingMenuActionRepository;
 class IconsManager;
+class InjectedFactory;
 class MenuInventory;
 class NotificationEventRepository;
 class NotificationManager;
@@ -44,6 +45,7 @@ class MEDIAPLAYERAPI MediaPlayer : public QObject, ConfigurationAwareObject
 	QPointer<Configuration> m_configuration;
 	QPointer<DockingMenuActionRepository> m_dockingMenuActionRepository;
 	QPointer<IconsManager> m_iconsManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationManager> m_notificationManager;
@@ -98,6 +100,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);

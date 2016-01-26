@@ -32,6 +32,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
+#include "core/injected-factory.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-notifications.h"
@@ -109,6 +110,11 @@ void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManag
 void FileTransferManager::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
+}
+
+void FileTransferManager::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void FileTransferManager::setKaduWindowService(KaduWindowService *kaduWindowService)
@@ -346,7 +352,7 @@ void FileTransferManager::showFileTransferWindow()
 	QMutexLocker locker(&mutex());
 
 	if (!m_window)
-		m_window = new FileTransferWindow{this};
+		m_window = m_injectedFactory->makeInjected<FileTransferWindow>();
 	_activateWindow(m_window.data());
 }
 

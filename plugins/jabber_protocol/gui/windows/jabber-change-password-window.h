@@ -29,6 +29,7 @@
 class QLineEdit;
 class QPushButton;
 
+class Configuration;
 class IconsManager;
 class JabberChangePasswordService;
 
@@ -47,6 +48,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<JabberChangePasswordService> m_changePasswordService;
 	Account m_account;
@@ -58,6 +60,7 @@ private:
 	void createGui();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_INIT void init();
 

@@ -33,6 +33,7 @@
 class ChatConfigurationHolder;
 class ChatWidget;
 class Chat;
+class Configuration;
 class IconsManager;
 class InjectedFactory;
 
@@ -66,6 +67,7 @@ protected:
 
 private:
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 
@@ -76,6 +78,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();

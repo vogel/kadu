@@ -25,6 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class ConfigComboBox;
+class InjectedFactory;
 class NotifierConfigurationWidget;
 class PathListEdit;
 class SoundConfigurationWidget;
@@ -47,6 +48,7 @@ protected:
 	virtual void mainConfigurationWindowApplied() override;
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<SoundManager> m_soundManager;
 	QPointer<SoundThemeManager> m_soundThemeManager;
 
@@ -58,6 +60,7 @@ private:
 	void setSoundThemes();
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setSoundManager(SoundManager *soundManager);
 	INJEQT_SET void setSoundThemeManager(SoundThemeManager *soundThemeManager);
 

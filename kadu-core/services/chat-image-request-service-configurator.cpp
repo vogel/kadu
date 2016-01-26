@@ -25,6 +25,11 @@
 
 #include "chat-image-request-service-configurator.h"
 
+ChatImageRequestServiceConfigurator::ChatImageRequestServiceConfigurator(Configuration *configuration) :
+		m_configuration{configuration}
+{
+}
+
 void ChatImageRequestServiceConfigurator::setChatImageRequestService(ChatImageRequestService *service)
 {
 	Service = service;
@@ -39,9 +44,9 @@ void ChatImageRequestServiceConfigurator::configurationUpdated()
 
 	ChatImageRequestServiceConfiguration configuration;
 
-	configuration.setLimitImageSize(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "LimitImageSize", true));
-	configuration.setMaximumImageSizeInKiloBytes(Core::instance()->configuration()->deprecatedApi()->readUnsignedNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255));
-	configuration.setAllowBiggerImagesAfterAsking(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "AllowBiggerImagesAfterAsking", true));
+	configuration.setLimitImageSize(m_configuration->deprecatedApi()->readBoolEntry("Chat", "LimitImageSize", true));
+	configuration.setMaximumImageSizeInKiloBytes(m_configuration->deprecatedApi()->readUnsignedNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255));
+	configuration.setAllowBiggerImagesAfterAsking(m_configuration->deprecatedApi()->readBoolEntry("Chat", "AllowBiggerImagesAfterAsking", true));
 
 	Service.data()->setConfiguration(configuration);
 }

@@ -26,6 +26,7 @@
 #include "configuration/configuration-aware-object.h"
 
 class ChatImageRequestService;
+class Configuration;
 
 /**
  * @addtogroup Services
@@ -43,11 +44,14 @@ class ChatImageRequestService;
 class ChatImageRequestServiceConfigurator : private ConfigurationAwareObject
 {
 	QPointer<ChatImageRequestService> Service;
+	QPointer<Configuration> m_configuration;
 
 protected:
 	virtual void configurationUpdated();
 
 public:
+	ChatImageRequestServiceConfigurator(Configuration *configuration);
+
 	/**
 	 * @short Sets ChatImageRequestService to configure.
 	 * @author Rafał 'Vogel' Malinowski

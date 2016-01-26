@@ -28,6 +28,7 @@
 #include <memory>
 
 class Actions;
+class InjectedFactory;
 
 class GaduProtocolMenuManager : public QObject, public ProtocolMenuManager
 {
@@ -42,12 +43,14 @@ public:
 
 private:
 	QPointer<Actions> m_actions;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QList<ActionDescription *> m_actionDescriptions;
 	std::unique_ptr<ActionDescription> m_sendGiftAction;
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 };

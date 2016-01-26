@@ -19,19 +19,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MULTILOGON_WINDOW_H
-#define MULTILOGON_WINDOW_H
-
-#include <QtWidgets/QWidget>
+#pragma once
 
 #include "accounts/account.h"
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
 class QPushButton;
 class QTableView;
 
 class AccountsComboBox;
+class Configuration;
 class MultilogonService;
 class MultilogonSession;
 
@@ -41,12 +43,11 @@ class KADUAPI MultilogonWindow : public QWidget, DesktopAwareObject
 
 	static MultilogonWindow *Instance;
 
+	QPointer<Configuration> m_configuration;
+
 	AccountsComboBox *Accounts;
 	QTableView *SessionsTable;
 	QPushButton *KillSessionButton;
-
-	explicit MultilogonWindow(QWidget *parent = nullptr);
-    virtual ~MultilogonWindow();
 
 	void createGui();
 
@@ -54,6 +55,9 @@ class KADUAPI MultilogonWindow : public QWidget, DesktopAwareObject
 	MultilogonSession * multilogonSession();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
 	void accountChanged();
 	void selectionChanged();
 	void killSession();
@@ -64,8 +68,9 @@ protected:
 public:
 	static MultilogonWindow * instance();
 
+	explicit MultilogonWindow(QWidget *parent = nullptr);
+	virtual ~MultilogonWindow();
+
 	void show();
 
 };
-
-#endif // MULTILOGON_WINDOW_H

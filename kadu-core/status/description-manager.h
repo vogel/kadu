@@ -28,6 +28,7 @@
 #include <injeqt/injeqt.h>
 
 class ConfigurationManager;
+class Configuration;
 class DescriptionModel;
 
 class KADUAPI DescriptionManager : public StorableStringList, private ConfigurationAwareObject
@@ -59,6 +60,7 @@ protected:
 
 private:
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Configuration> m_configuration;
 
 	int MaxNumberOfDescriptions;
 
@@ -67,6 +69,7 @@ private:
 
 private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

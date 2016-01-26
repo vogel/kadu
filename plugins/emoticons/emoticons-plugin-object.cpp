@@ -26,6 +26,7 @@
 #include "gui/insert-emoticon-action.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "gui/actions/actions.h"
 #include "dom/dom-processor-service.h"
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
@@ -39,6 +40,11 @@ EmoticonsPluginObject::EmoticonsPluginObject(QObject *parent) :
 
 EmoticonsPluginObject::~EmoticonsPluginObject()
 {
+}
+
+void EmoticonsPluginObject::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void EmoticonsPluginObject::setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService)
@@ -93,6 +99,7 @@ void EmoticonsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void EmoticonsPluginObject::init()
 {
+	m_actions->insert(m_insertEmoticonAction);
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
 	m_clipboardHtmlTransformerService->registerTransformer(m_emoticonClipboardHtmlTransformer);
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_emoticonsConfigurationUiHandler);

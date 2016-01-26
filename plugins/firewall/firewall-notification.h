@@ -31,7 +31,7 @@ class FirewallNotification : public Notification
 	Q_OBJECT
 
 public:
-	static void notify(NotificationManager *notificationManager, const Chat &chat, const Contact &sender, const QString &message);
+	static void notify(Configuration *configuration, InjectedFactory *injectedFactory, NotificationManager *notificationManager, const Chat &chat, const Contact &sender, const QString &message);
 
 	explicit FirewallNotification(const Chat &chat);
 	virtual ~FirewallNotification();

@@ -28,6 +28,7 @@
 #include <QtCore/QPointer>
 #include <QtWidgets/QToolButton>
 #include <functional>
+#include <injeqt/injeqt.h>
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"
@@ -38,6 +39,8 @@ class QMenu;
 class ActionContext;
 class Actions;
 class Action;
+class Configuration;
+class InjectedFactory;
 
 using ActionBoolCallback = std::function<void(Action *)>;
 
@@ -99,6 +102,9 @@ private:
 	friend class Action;
 
 	QPointer<Actions> m_actions;
+	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
+	bool m_selfRegister;
 
 	QMap<ActionContext *, Action *> MappedActions;
 	bool Deleting;
@@ -115,10 +121,18 @@ private:
 	Qt::ShortcutContext ShortcutContext;
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 	void actionAboutToBeDestroyed(Action *action);
 	void actionTriggeredSlot(QAction *sender, bool toggled);
 
 protected:
+	Configuration * configuration() const;
+	InjectedFactory * injectedFactory() const;
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Creates new instance of ActionDescription with given parent.
@@ -127,9 +141,8 @@ protected:
 	 * Created new empty instance of ActionDescription. Call setters and registerActions to
 	 * make this action description useable.
 	 */
-	ActionDescription(Actions *actions, QObject *parent);
+	ActionDescription(QObject *parent);
 
-	void setActions(Actions *actions);
 	Actions * actionsRegistry() const;
 
 	/**
@@ -243,7 +256,7 @@ public:
 	 *
 	 * Depreceated contructor.
 	 */
-	ActionDescription(Actions *actions, QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
+	ActionDescription(QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
 			const KaduIcon &icon, const QString &text, bool checkable = false, ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 

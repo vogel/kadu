@@ -45,6 +45,7 @@
 #include "configuration/gui/configuration-ui-handler.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
@@ -107,7 +108,7 @@ void MainConfigurationWindow::configurationUiHandlerRemoved(ConfigurationUiHandl
 }
 
 MainConfigurationWindow::MainConfigurationWindow(QWidget *parent) :
-		ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", new ConfigFileDataManager(), parent)
+		ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", Core::instance()->injectedFactory()->makeInjected<ConfigFileDataManager>(), parent)
 {
 }
 

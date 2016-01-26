@@ -81,7 +81,7 @@ void SimpleView::setKaduWindowService(KaduWindowService *kaduWindowService)
 
 void SimpleView::init()
 {
-	SimpleViewConfigUi::createDefaultConfiguration();
+	SimpleViewConfigUi::createDefaultConfiguration(m_configuration);
 
 	DockAction = new QAction(m_iconsManager->iconByPath(KaduIcon("view-refresh")), tr("Simple view"), this);
 	DockAction->setCheckable(true);

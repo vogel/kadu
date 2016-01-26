@@ -22,11 +22,13 @@
 
 #include <QtCore/QPointer>
 #include <QtScript/QScriptValue>
+#include <injeqt/injeqt.h>
 
 #include "sms-gateway.h"
 
 #include "sms-sender.h"
 
+class Configuration;
 class SmsGatewayManager;
 class SmsScriptsManager;
 class SmsTokenReadJob;
@@ -35,6 +37,7 @@ class SmsInternalSender : public SmsSender
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
 	QPointer<SmsGatewayManager> m_smsGatewayManager;
 	QPointer<SmsScriptsManager> m_smsScriptsManager;
 
@@ -47,6 +50,8 @@ class SmsInternalSender : public SmsSender
 	void sendSms();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+
 	void jobFinished(bool ok, const QString &entryIcon, const QString &entryMessage);
 
 public:

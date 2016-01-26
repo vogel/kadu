@@ -23,11 +23,11 @@
 
 #include "standard-url-dom-visitor-provider.h"
 
-StandardUrlDomVisitorProvider::StandardUrlDomVisitorProvider()
+StandardUrlDomVisitorProvider::StandardUrlDomVisitorProvider(Configuration *configuration)
 {
 	StandardUrlExpander *expander = new StandardUrlExpander(QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)"));
 	IgnoreLinks.reset(new IgnoreLinksDomVisitor(expander));
-	Configurator.reset(new StandardUrlExpanderConfigurator());
+	Configurator.reset(new StandardUrlExpanderConfigurator(configuration));
 	Configurator->setStandardUrlExpander(expander);
 }
 

@@ -32,8 +32,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "core/core.h"
-#include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
@@ -51,6 +49,11 @@ MPRISPlayerConfigurationUiHandler::MPRISPlayerConfigurationUiHandler(QObject *pa
 
 MPRISPlayerConfigurationUiHandler::~MPRISPlayerConfigurationUiHandler()
 {
+}
+
+void MPRISPlayerConfigurationUiHandler::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void MPRISPlayerConfigurationUiHandler::setMPRISPlayer(MPRISPlayer *mprisPlayer)
@@ -92,7 +95,7 @@ void MPRISPlayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfi
 
 	loadPlayersListFromFile();
 	fillPlayersBox();
-	PlayersBox->setCurrentIndex(PlayersBox->findText(Core::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player")));
+	PlayersBox->setCurrentIndex(PlayersBox->findText(m_configuration->deprecatedApi()->readEntry("MPRISPlayer", "Player")));
 
 	connect(add, SIGNAL(clicked()), this, SLOT(addPlayer()));
 	connect(edit, SIGNAL(clicked()), this, SLOT(editPlayer()));
@@ -168,7 +171,7 @@ void MPRISPlayerConfigurationUiHandler::addPlayer()
 	if (newPlayer.isEmpty() || newService.isEmpty())
 		return;
 
-	QString oldPlayerName = Core::instance()->configuration()->deprecatedApi()->readEntry("MPRISPlayer", "Player");
+	QString oldPlayerName = m_configuration->deprecatedApi()->readEntry("MPRISPlayer", "Player");
 	QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
 	userPlayersSettings.setIniCodec("ISO8859-2");
 
@@ -268,8 +271,8 @@ void MPRISPlayerConfigurationUiHandler::delPlayer()
 
 void MPRISPlayerConfigurationUiHandler::configurationApplied()
 {
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("MPRISPlayer", "Player", PlayersBox->currentText());
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("MPRISPlayer", "Service", PlayersMap.value(PlayersBox->currentText()));
+	m_configuration->deprecatedApi()->writeEntry("MPRISPlayer", "Player", PlayersBox->currentText());
+	m_configuration->deprecatedApi()->writeEntry("MPRISPlayer", "Service", PlayersMap.value(PlayersBox->currentText()));
 
 	m_mprisPlayer->configurationApplied();
 }

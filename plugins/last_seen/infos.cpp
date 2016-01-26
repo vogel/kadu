@@ -129,7 +129,7 @@ void Infos::init()
 	}
 
 	// Main menu entry
-	lastSeenActionDescription = new ActionDescription(m_actions,
+	lastSeenActionDescription = m_injectedFactory->makeInjected<ActionDescription>(
 		this, ActionDescription::TypeMainMenu, "lastSeenAction",
 		this, SLOT(onShowInfos()),
 		KaduIcon(), qApp->translate("Infos", "&Show infos about buddies")

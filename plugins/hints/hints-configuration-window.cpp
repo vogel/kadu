@@ -47,6 +47,11 @@ HintsConfigurationWindow::~HintsConfigurationWindow()
 	HintsConfigurationWindow::windowDestroyed(EventName);
 }
 
+void HintsConfigurationWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void HintsConfigurationWindow::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -91,7 +96,7 @@ HintsConfigurationWindow * HintsConfigurationWindow::configWindowForEvent(Inject
 		return ConfigurationWindows[eventName];
 	else
 	{
-		NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(eventName);
+		NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(injectedFactory, eventName);
 		return ConfigurationWindows[eventName] = injectedFactory->makeInjected<HintsConfigurationWindow>(eventName, dataManager);
 	}
 }

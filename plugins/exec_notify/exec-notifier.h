@@ -26,6 +26,7 @@
 #include <injeqt/injeqt.h>
 
 class Configuration;
+class InjectedFactory;
 class Parser;
 
 class ExecNotifier : public QObject, public Notifier
@@ -41,6 +42,7 @@ public:
 
 private:
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<Parser> m_parser;
 
 	void createDefaultConfiguration();
@@ -48,6 +50,7 @@ private:
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 

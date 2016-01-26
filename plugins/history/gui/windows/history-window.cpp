@@ -50,6 +50,11 @@ HistoryWindow::~HistoryWindow()
 {
 }
 
+void HistoryWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void HistoryWindow::setHistory(History *history)
 {
 	m_history = history;
@@ -75,7 +80,7 @@ void HistoryWindow::init()
 
 	createGui();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("History", "HistoryWindowGeometry"), QRect(200, 200, 750, 500), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "History", "HistoryWindowGeometry"), QRect(200, 200, 750, 500), this);
 
 	connect(m_history, SIGNAL(storageChanged(HistoryStorage*)), this, SLOT(storageChanged(HistoryStorage*)));
 }

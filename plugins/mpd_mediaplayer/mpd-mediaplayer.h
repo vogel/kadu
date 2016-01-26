@@ -21,16 +21,26 @@
 #pragma once
 
 #include <mpd/client.h>
+#include <injeqt/injeqt.h>
 
 #include "plugins/mediaplayer/player-commands.h"
 #include "plugins/mediaplayer/player-info.h"
 
 #include "mpd-config.h"
 
+class Configuration;
+
 class MPDMediaPlayer : public QObject, public PlayerCommands, public PlayerInfo
 {
 	Q_OBJECT
+	
+	QPointer<Configuration> m_configuration;
+
 	MPDConfig Config;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
 
 public:
 	Q_INVOKABLE explicit MPDMediaPlayer(QObject *parent = nullptr);

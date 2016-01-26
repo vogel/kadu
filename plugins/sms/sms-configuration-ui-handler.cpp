@@ -65,11 +65,20 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler(QObject *parent) :
 	EraOmnixUser{},
 	EraOmnixPassword{}
 {
-	createDefaultConfiguration();
 }
 
 SmsConfigurationUiHandler::~SmsConfigurationUiHandler()
 {
+}
+
+void SmsConfigurationUiHandler::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void SmsConfigurationUiHandler::init()
+{
+	createDefaultConfiguration();
 }
 
 void SmsConfigurationUiHandler::onSmsBuildInCheckToggle(bool value)
@@ -141,12 +150,12 @@ void SmsConfigurationUiHandler::mainConfigurationWindowApplied()
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
-	Core::instance()->configuration()->deprecatedApi()->addVariable("SMS", "Priority", QString());
-	Core::instance()->configuration()->deprecatedApi()->addVariable("SMS", "BuiltInApp", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("SMS", "SmsNick", QString());
-	Core::instance()->configuration()->deprecatedApi()->addVariable("SMS", "UseCustomString", false);
+	m_configuration->deprecatedApi()->addVariable("SMS", "Priority", QString());
+	m_configuration->deprecatedApi()->addVariable("SMS", "BuiltInApp", true);
+	m_configuration->deprecatedApi()->addVariable("SMS", "SmsNick", QString());
+	m_configuration->deprecatedApi()->addVariable("SMS", "UseCustomString", false);
 
-	Core::instance()->configuration()->deprecatedApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
+	m_configuration->deprecatedApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
 
 #include "moc_sms-configuration-ui-handler.cpp"

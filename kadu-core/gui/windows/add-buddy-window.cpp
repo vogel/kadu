@@ -101,6 +101,11 @@ void AddBuddyWindow::setBuddyStorage(BuddyStorage *buddyStorage)
 	m_buddyStorage = buddyStorage;
 }
 
+void AddBuddyWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void AddBuddyWindow::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
@@ -153,7 +158,7 @@ void AddBuddyWindow::init()
 	if (!MyBuddy)
 		addFakeAccountsToComboBox();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AddBuddyWindowGeometry"), QRect(0, 50, 425, 430), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "AddBuddyWindowGeometry"), QRect(0, 50, 425, 430), this);
 }
 
 void AddBuddyWindow::createGui()

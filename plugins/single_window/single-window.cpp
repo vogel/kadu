@@ -188,7 +188,7 @@ void SingleWindow::init()
 	kadu->setMinimumWidth(170);
 	m_tabs->setMinimumWidth(200);
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("SingleWindow", "WindowGeometry"), QRect(0, 0, 800, 440), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "SingleWindow", "WindowGeometry"), QRect(0, 0, 800, 440), this);
 
 	int kaduwidth = m_configuration->deprecatedApi()->readNumEntry("SingleWindow", "KaduWindowWidth", 205);
 
@@ -404,7 +404,7 @@ void SingleWindow::onTabChange(int index)
 void SingleWindow::onkaduKeyPressed(QKeyEvent *e)
 {
 	/* unfortunatelly does not work correctly */
-	if (HotKey::shortCut(e, "ShortCuts", "FocusOnRosterTab"))
+	if (HotKey::shortCut(m_configuration, e, "ShortCuts", "FocusOnRosterTab"))
 	{
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->currentWidget());
 		if (chatWidget)
@@ -427,7 +427,7 @@ void SingleWindow::onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled)
 
 	handled = false;
 
-	if (HotKey::shortCut(e, "ShortCuts", "SwitchTabLeft"))
+	if (HotKey::shortCut(m_configuration, e, "ShortCuts", "SwitchTabLeft"))
 	{
 		int index = m_tabs->currentIndex();
 		if (index > 0)
@@ -436,7 +436,7 @@ void SingleWindow::onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled)
 		}
 		handled = true;
 	}
-	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
+	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "SwitchTabRight"))
 	{
 		int index = m_tabs->currentIndex();
 		if (index < m_tabs->count())
@@ -445,7 +445,7 @@ void SingleWindow::onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled)
 		}
 		handled = true;
 	}
-	else if (HotKey::shortCut(e, "ShortCuts", "HideShowRoster"))
+	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "HideShowRoster"))
 	{
 		QList<int> sizes = m_split->sizes();
 		if (sizes[m_rosterPos] != 0)
@@ -455,7 +455,7 @@ void SingleWindow::onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled)
 		m_split->setSizes(sizes);
 		handled = true;
 	}
-	else if (HotKey::shortCut(e, "ShortCuts", "FocusOnRosterTab"))
+	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "FocusOnRosterTab"))
 	{
 		//kadu->userBox()->setFocus();//TODO: fixme
 		handled = true;

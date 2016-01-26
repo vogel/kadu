@@ -155,14 +155,14 @@ void TabsManager::init()
 	Title = new ChatWidgetSetTitle{this};
 	connect(Title, SIGNAL(titleChanged()), this, SLOT(onTitleChanged()));
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("Chat", "TabWindowsGeometry"), QRect(30, 30, 550, 400), TabDialog);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "Chat", "TabWindowsGeometry"), QRect(30, 30, 550, 400), TabDialog);
 
 	makePopupMenu();
 
 	// pozycja tabów
 	configurationUpdated();
 
-	OpenInNewTabActionDescription = new ActionDescription(m_actions, this,
+	OpenInNewTabActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
 		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false,
@@ -174,7 +174,7 @@ void TabsManager::init()
 		->addAction(OpenInNewTabActionDescription, KaduMenu::SectionChat, 20)
 		->update();
 
-	AttachToTabsActionDescription = new ActionDescription(m_actions, this,
+	AttachToTabsActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
 		KaduIcon("kadu_icons/tab-detach"), tr("Attach Chat to Tabs"), true

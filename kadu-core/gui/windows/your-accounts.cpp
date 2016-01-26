@@ -86,6 +86,11 @@ void YourAccounts::setConfigurationManager(ConfigurationManager *configurationMa
 	m_configurationManager = configurationManager;
 }
 
+void YourAccounts::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void YourAccounts::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
@@ -111,7 +116,7 @@ void YourAccounts::init()
 	createGui();
 	AccountsView->selectionModel()->select(AccountsView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "YourAccountsWindowGeometry"), QRect(0, 50, 700, 500), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "YourAccountsWindowGeometry"), QRect(0, 50, 700, 500), this);
 }
 
 void YourAccounts::createGui()

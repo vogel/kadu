@@ -67,6 +67,11 @@ void KaduTreeView::init()
 	configurationUpdated();
 }
 
+Configuration * KaduTreeView::configuration() const
+{
+	return m_configuration;
+}
+
 void KaduTreeView::configurationUpdated()
 {
 	bool showExpandingControl = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowExpandingControl", false);

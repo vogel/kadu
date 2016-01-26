@@ -21,19 +21,26 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configuration.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 
 ChatWidgetMessageHandlerConfigurator::ChatWidgetMessageHandlerConfigurator()
 {
-	createDefaultConfiguration();
 }
 
 void ChatWidgetMessageHandlerConfigurator::setChatWidgetMessageHandler(ChatWidgetMessageHandler *chatWidgetMessageHandler)
 {
 	m_chatWidgetMessageHandler = chatWidgetMessageHandler;
-	configurationUpdated();
+}
+
+void ChatWidgetMessageHandlerConfigurator::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void ChatWidgetMessageHandlerConfigurator::init()
+{
+	createDefaultConfiguration();
 }
 
 void ChatWidgetMessageHandlerConfigurator::configurationUpdated()
@@ -44,16 +51,16 @@ void ChatWidgetMessageHandlerConfigurator::configurationUpdated()
 
 void ChatWidgetMessageHandlerConfigurator::createDefaultConfiguration() const
 {
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessage", false);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageMinimized", false);
+	m_configuration->deprecatedApi()->addVariable("Chat", "OpenChatOnMessage", false);
+	m_configuration->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
+	m_configuration->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageMinimized", false);
 }
 
 ChatWidgetMessageHandlerConfiguration ChatWidgetMessageHandlerConfigurator::loadConfiguration() const
 {
 	auto configuration = ChatWidgetMessageHandlerConfiguration();
-	configuration.setOpenChatOnMessage(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessage", false));
-	configuration.setOpenChatOnMessageOnlyWhenOnline(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageWhenOnline", true));
-	configuration.setOpenChatOnMessageMinimized(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageMinimized", false));
+	configuration.setOpenChatOnMessage(m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessage", false));
+	configuration.setOpenChatOnMessageOnlyWhenOnline(m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageWhenOnline", true));
+	configuration.setOpenChatOnMessageMinimized(m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageMinimized", false));
 	return configuration;
 }

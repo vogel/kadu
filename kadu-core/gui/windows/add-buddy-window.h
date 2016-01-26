@@ -36,6 +36,7 @@ class AccountsComboBox;
 class BuddyManager;
 class BuddyPreferredManager;
 class BuddyStorage;
+class Configuration;
 class ContactManager;
 class GroupsComboBox;
 class IconsManager;
@@ -69,6 +70,7 @@ private:
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -127,6 +129,7 @@ private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);

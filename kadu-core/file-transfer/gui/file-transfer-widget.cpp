@@ -49,9 +49,8 @@
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 
-FileTransferWidget::FileTransferWidget(FileTransferManager *manager, FileTransfer transfer, QWidget *parent) :
+FileTransferWidget::FileTransferWidget(FileTransfer transfer, QWidget *parent) :
 		QWidget{parent},
-		m_manager{manager},
 		m_transfer{std::move(transfer)},
 		m_speed{0}
 {
@@ -60,6 +59,11 @@ FileTransferWidget::FileTransferWidget(FileTransferManager *manager, FileTransfe
 FileTransferWidget::~FileTransferWidget()
 {
 	disconnect(m_transfer, 0, this, 0);
+}
+
+void FileTransferWidget::setFileTransferManager(FileTransferManager *fileTransferManager)
+{
+	m_fileTransferManager = fileTransferManager;
 }
 
 void FileTransferWidget::setIconsManager(IconsManager *iconsManager)
@@ -197,9 +201,7 @@ bool FileTransferWidget::canAccept() const
 
 void FileTransferWidget::accept()
 {
-	if (m_manager)
-		m_manager->acceptFileTransfer(m_transfer, m_transfer.localFileName());
-
+	m_fileTransferManager->acceptFileTransfer(m_transfer, m_transfer.localFileName());
 	updateButtons();
 }
 
@@ -218,9 +220,7 @@ bool FileTransferWidget::canReject() const
 
 void FileTransferWidget::reject()
 {
-	if (m_manager)
-		m_manager->rejectFileTransfer(m_transfer);
-
+	m_fileTransferManager->rejectFileTransfer(m_transfer);
 	updateButtons();
 }
 
@@ -246,9 +246,7 @@ void FileTransferWidget::save()
 	m_transfer.setTransferredSize(0);
 	m_lastTransferredSize = 0;
 
-	if (m_manager)
-		m_manager->acceptFileTransfer(m_transfer, {});
-
+	m_fileTransferManager->acceptFileTransfer(m_transfer, {});
 	updateButtons();
 }
 
@@ -272,7 +270,7 @@ void FileTransferWidget::send()
 	if (!canSend())
 		return;
 
-	m_manager->sendFile(m_transfer, m_transfer.localFileName());
+	m_fileTransferManager->sendFile(m_transfer, m_transfer.localFileName());
 	updateButtons();
 }
 
@@ -362,9 +360,7 @@ void FileTransferWidget::remove()
 			return;
 	}
 
-	if (m_manager)
-		m_manager->removeItem(m_transfer);
-
+	m_fileTransferManager->removeItem(m_transfer);
 	deleteLater();
 }
 

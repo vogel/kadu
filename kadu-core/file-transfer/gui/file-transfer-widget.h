@@ -41,13 +41,13 @@ class FileTransferWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit FileTransferWidget(FileTransferManager *manager, FileTransfer transfer = FileTransfer::null, QWidget *parent = nullptr);
+	explicit FileTransferWidget(FileTransfer transfer = FileTransfer::null, QWidget *parent = nullptr);
 	virtual ~FileTransferWidget();
 
 	FileTransfer fileTransfer() const;
 
 private:
-	QPointer<FileTransferManager> m_manager;
+	QPointer<FileTransferManager> m_fileTransferManager;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 
@@ -73,6 +73,7 @@ private:
 	void createGui();
 
 private slots:
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();

@@ -108,7 +108,7 @@ void SmsDialog::init()
 
 	configurationUpdated();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("Sms", "SmsDialogGeometry"), QRect(200, 200, 400, 250), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "Sms", "SmsDialogGeometry"), QRect(200, 200, 400, 250), this);
 
 	RecipientEdit->setFocus();
 }
@@ -306,7 +306,7 @@ void SmsDialog::sendSms()
 	{
 		int gatewayIndex = ProviderComboBox->currentIndex();
 		QString gatewayId = ProviderComboBox->itemData(gatewayIndex, Qt::UserRole).toString();
-		sender = new SmsInternalSender(m_smsGatewayManager, m_smsScriptsManager, RecipientEdit->text(), m_smsGatewayManager->byId(gatewayId), this);
+		sender = m_injectedFactory->makeInjected<SmsInternalSender>(m_smsGatewayManager, m_smsScriptsManager, RecipientEdit->text(), m_smsGatewayManager->byId(gatewayId), this);
 	}
 	else
 	{
@@ -317,7 +317,7 @@ void SmsDialog::sendSms()
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}
-		sender = new SmsExternalSender(RecipientEdit->text(), this);
+		sender = m_injectedFactory->makeInjected<SmsExternalSender>(RecipientEdit->text(), this);
 	}
 
 	connect(sender, SIGNAL(gatewayAssigned(QString, QString)), this, SLOT(gatewayAssigned(QString, QString)));

@@ -22,6 +22,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
@@ -83,6 +84,11 @@ void NotificationService::setConfigurationUiHandlerRepository(ConfigurationUiHan
 void NotificationService::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void NotificationService::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void NotificationService::setMenuInventory(MenuInventory *menuInventory)
@@ -201,7 +207,7 @@ void NotificationService::done()
 
 void NotificationService::createActionDescriptions()
 {
-	notifyAboutUserActionDescription = new ActionDescription(m_actions, this,
+	notifyAboutUserActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "notifyAboutUserAction",
 		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/notify-about-buddy"), tr("Notify About Buddy"), true,
@@ -212,7 +218,7 @@ void NotificationService::createActionDescriptions()
 		->menu("buddy-list")
 		->addAction(notifyAboutUserActionDescription, KaduMenu::SectionActions);
 
-	SilentModeActionDescription = new ActionDescription(m_actions, this,
+	SilentModeActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/enable-notifications"), tr("Silent Mode"), true

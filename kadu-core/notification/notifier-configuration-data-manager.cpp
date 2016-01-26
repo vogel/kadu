@@ -19,7 +19,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
+#include "core/injected-factory.h"
 #include "gui/windows/configuration-window.h"
 
 #include "notifier-configuration-data-manager.h"
@@ -31,12 +31,22 @@ NotifierConfigurationDataManager::NotifierConfigurationDataManager(const QString
 {
 }
 
+void NotifierConfigurationDataManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void NotifierConfigurationDataManager::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void NotifierConfigurationDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
 {
 	if (section.isEmpty() || name.isEmpty())
 		return;
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry(section, QString("Event_") + EventName + name, value.toString());
+	m_configuration->deprecatedApi()->writeEntry(section, QString("Event_") + EventName + name, value.toString());
 }
 
 QVariant NotifierConfigurationDataManager::readEntry(const QString &section, const QString &name)
@@ -44,15 +54,15 @@ QVariant NotifierConfigurationDataManager::readEntry(const QString &section, con
 	if (section.isEmpty() || name.isEmpty())
 		return QVariant(QString());
 
-	return Core::instance()->configuration()->deprecatedApi()->readEntry(section, QString("Event_") + EventName + name);
+	return m_configuration->deprecatedApi()->readEntry(section, QString("Event_") + EventName + name);
 }
 
-NotifierConfigurationDataManager * NotifierConfigurationDataManager::dataManagerForEvent(const QString &eventName)
+NotifierConfigurationDataManager * NotifierConfigurationDataManager::dataManagerForEvent(InjectedFactory *injectedFactory, const QString &eventName)
 {
 	if (DataManagers.contains(eventName))
 		return DataManagers.value(eventName);
 	else
-		return DataManagers[eventName] = new NotifierConfigurationDataManager(eventName);
+		return DataManagers[eventName] = injectedFactory->makeInjected<NotifierConfigurationDataManager>(eventName);
 }
 
 void NotifierConfigurationDataManager::dataManagerDestroyed(const QString &eventName)

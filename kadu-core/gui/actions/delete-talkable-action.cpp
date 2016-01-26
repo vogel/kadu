@@ -35,8 +35,8 @@
 
 #include "delete-talkable-action.h"
 
-DeleteTalkableAction::DeleteTalkableAction(Actions *actions, QObject *parent) :
-		ActionDescription(actions, parent)
+DeleteTalkableAction::DeleteTalkableAction(QObject *parent) :
+		ActionDescription(parent)
 {
 	// TODO: TypeChat | TypeUser or TypeTalkables
 	setType(TypeUser);
@@ -58,11 +58,6 @@ void DeleteTalkableAction::setChatTypeManager(ChatTypeManager *chatTypeManager)
 void DeleteTalkableAction::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
-}
-
-void DeleteTalkableAction::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
 }
 
 void DeleteTalkableAction::setMyself(Myself *myself)
@@ -183,7 +178,7 @@ void DeleteTalkableAction::buddyActionTriggered(ActionContext *context)
 	if (buddySet.empty())
 		return;
 
-	auto deleteWindow = m_injectedFactory->makeInjected<BuddyDeleteWindow>(buddySet);
+	auto deleteWindow = injectedFactory()->makeInjected<BuddyDeleteWindow>(buddySet);
 	deleteWindow->show();
 }
 

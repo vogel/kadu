@@ -43,7 +43,7 @@
 #include "show-history-action-description.h"
 
 ShowHistoryActionDescription::ShowHistoryActionDescription(QObject *parent) :
-		ActionDescription(nullptr, parent)
+		ActionDescription(parent)
 {
 }
 
@@ -51,20 +51,9 @@ ShowHistoryActionDescription::~ShowHistoryActionDescription()
 {
 }
 
-void ShowHistoryActionDescription::setActions(Actions *actions)
-{
-	ActionDescription::setActions(actions);
-	m_actions = actions;
-}
-
 void ShowHistoryActionDescription::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 {
 	m_buddyChatManager = buddyChatManager;
-}
-
-void ShowHistoryActionDescription::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
 }
 
 void ShowHistoryActionDescription::setHistoryWindowService(HistoryWindowService *historyWindowService)
@@ -85,8 +74,6 @@ void ShowHistoryActionDescription::init()
 	setText(tr("View Chat History"));
 	setShortcut("kadu_viewhistory");
 
-	registerAction(m_actions);
-
 	configurationUpdated();
 }
 
@@ -94,7 +81,7 @@ void ShowHistoryActionDescription::configurationUpdated()
 {
 	ActionDescription::configurationUpdated();
 
-	ChatHistoryQuotationTime = m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
+	ChatHistoryQuotationTime = configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
 }
 
 void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
@@ -113,9 +100,9 @@ void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 	// no parents for menu as it is destroyed manually by Action class
 	QMenu *menu = new QMenu();
 
-	if (m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10) > 0)
+	if (configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10) > 0)
 	{
-		int prune = m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10);
+		int prune = configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation", 10);
 		menu->addAction(tr("Show last %1 messages").arg(prune), this, SLOT(showPruneMessages()))->setData(chatWidgetData);
 		menu->addSeparator();
 	}
@@ -198,7 +185,7 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	query.setTalkable(messagesChat);
 
 	if (0 == days)
-		query.setLimit(m_configuration->deprecatedApi()->readUnsignedNumEntry("History", "ChatHistoryCitation", 10));
+		query.setLimit(configuration()->deprecatedApi()->readUnsignedNumEntry("History", "ChatHistoryCitation", 10));
 	else
 		query.setFromDate(QDate::currentDate().addDays(-days));
 

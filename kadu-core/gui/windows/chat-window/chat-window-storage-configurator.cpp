@@ -21,11 +21,11 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "gui/windows/chat-window/chat-window-storage-configuration.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
 
-ChatWindowStorageConfigurator::ChatWindowStorageConfigurator()
+ChatWindowStorageConfigurator::ChatWindowStorageConfigurator(Configuration *configuration) :
+		m_configuration{configuration}
 {
 	createDefaultConfiguration();
 }
@@ -44,12 +44,12 @@ void ChatWindowStorageConfigurator::configurationUpdated()
 
 void ChatWindowStorageConfigurator::createDefaultConfiguration() const
 {
-	Core::instance()->configuration()->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
+	m_configuration->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
 }
 
 ChatWindowStorageConfiguration ChatWindowStorageConfigurator::loadConfiguration() const
 {
 	auto configuration = ChatWindowStorageConfiguration();
-	configuration.setStoreOpenedChatWindows(Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true));
+	configuration.setStoreOpenedChatWindows(m_configuration->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true));
 	return configuration;
 }

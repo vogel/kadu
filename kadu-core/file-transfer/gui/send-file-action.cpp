@@ -36,9 +36,9 @@
 
 #include <QtWidgets/QFileDialog>
 
-SendFileAction::SendFileAction(Actions *actions, QObject *parent) :
+SendFileAction::SendFileAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(actions, parent)
+		ActionDescription(parent)
 {
 	setIcon(KaduIcon("document-send"));
 	setName("sendFileAction");
@@ -48,11 +48,6 @@ SendFileAction::SendFileAction(Actions *actions, QObject *parent) :
 
 SendFileAction::~SendFileAction()
 {
-}
-
-void SendFileAction::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
 }
 
 void SendFileAction::setFileTransferManager(FileTransferManager *fileTransferManager)
@@ -159,7 +154,7 @@ QStringList SendFileAction::selectFilesToSend() const
 {
 	return QFileDialog::getOpenFileNames(
 			nullptr, tr("Select file location"),
-			m_configuration->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
+			configuration()->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
 }
 
 #include "moc_send-file-action.cpp"

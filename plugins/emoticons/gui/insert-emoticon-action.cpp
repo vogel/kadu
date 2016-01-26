@@ -31,7 +31,7 @@
 #include "insert-emoticon-action.h"
 
 InsertEmoticonAction::InsertEmoticonAction(QObject *parent) :
-		ActionDescription(nullptr, parent)
+		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeChat);
 	setName("insertEmoticonAction");
@@ -41,12 +41,6 @@ InsertEmoticonAction::InsertEmoticonAction(QObject *parent) :
 
 InsertEmoticonAction::~InsertEmoticonAction()
 {
-}
-
-void InsertEmoticonAction::setActions(Actions *actions)
-{
-	registerAction(actions);
-	ActionDescription::setActions(actions);
 }
 
 void InsertEmoticonAction::actionInstanceCreated(Action *action)

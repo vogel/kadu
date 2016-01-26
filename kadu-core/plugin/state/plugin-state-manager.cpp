@@ -42,6 +42,11 @@ void PluginStateManager::setConfigurationManager(ConfigurationManager *configura
 	m_configurationManager = configurationManager;
 }
 
+void PluginStateManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void PluginStateManager::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
 	m_pluginDependencyHandler = pluginDependencyHandler;
@@ -81,7 +86,7 @@ QMap<QString, PluginState> PluginStateManager::loadPluginStates(StoragePoint *st
 {
 	return importedFrom09
 			? PluginStateStorage{}.load(*storagePoint)
-			: PluginStateStorage09{}.load(m_pluginDependencyHandler->pluginNames());
+			: PluginStateStorage09{}.load(m_configuration, m_pluginDependencyHandler->pluginNames());
 }
 
 void PluginStateManager::storePluginStatesAndFlush()

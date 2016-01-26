@@ -29,6 +29,7 @@ class QTabWidget;
 
 class Chat;
 class ChatHistoryTab;
+class Configuration;
 class HistoryMessagesTab;
 class HistoryStorage;
 class History;
@@ -46,6 +47,7 @@ class HistoryWindow : public QWidget
 
 	friend class History;
 
+	QPointer<Configuration> m_configuration;
 	QPointer<History> m_history;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -61,6 +63,7 @@ class HistoryWindow : public QWidget
 	void createGui();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setHistory(History *history);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);

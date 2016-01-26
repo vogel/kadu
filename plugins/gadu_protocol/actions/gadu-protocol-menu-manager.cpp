@@ -21,6 +21,7 @@
 
 #include "actions/gadu-send-gift-action.h"
 
+#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "misc/memory.h"
 
@@ -38,9 +39,15 @@ void GaduProtocolMenuManager::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void GaduProtocolMenuManager::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void GaduProtocolMenuManager::init()
 {
-	m_sendGiftAction = make_unique<GaduSendGiftAction>(m_actions);
+	m_sendGiftAction = m_injectedFactory->makeUnique<GaduSendGiftAction>();
+	m_actions->insert(m_sendGiftAction.get());
 	m_actionDescriptions << m_sendGiftAction.get();
 }
 

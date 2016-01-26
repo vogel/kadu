@@ -63,6 +63,11 @@ void ChatWindow::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigu
 	m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
+void ChatWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void ChatWindow::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
@@ -112,17 +117,17 @@ void ChatWindow::configurationUpdated()
 	triggerCompositingStateChanged();
 
 	m_chatWidget->title()->setBlinkIconWhenUnreadMessages(false);
-		// Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true));
+		// m_configuration->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", true));
 	m_chatWidget->title()->setBlinkTitleWhenUnreadMessages(
-		Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false));
+		m_configuration->deprecatedApi()->readBoolEntry("Chat", "BlinkChatTitle", false));
 	m_chatWidget->title()->setComposingStatePosition(m_chatConfigurationHolder->composingStatePosition());
 	m_chatWidget->title()->setShowUnreadMessagesCount(
-		Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
+		m_configuration->deprecatedApi()->readBoolEntry("Chat", "NewMessagesInChatTitle", false));
 }
 
 void ChatWindow::compositingEnabled()
 {
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "UseTransparency", false))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "UseTransparency", false))
 	{
 		setAutoFillBackground(false);
 		setAttribute(Qt::WA_TranslucentBackground, true);
@@ -171,9 +176,9 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 {
 	kdebugf();
 
-	if (Core::instance()->configuration()->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
+	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
 	{
-		int period = Core::instance()->configuration()->deprecatedApi()->readNumEntry("Chat", "ChatCloseTimerPeriod", 2);
+		int period = m_configuration->deprecatedApi()->readNumEntry("Chat", "ChatCloseTimerPeriod", 2);
 
 		if (QDateTime::currentDateTime() < m_chatWidget->lastReceivedMessageTime().addSecs(period))
 		{

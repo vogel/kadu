@@ -210,9 +210,9 @@ void TalkableTreeView::contextMenuEvent(QContextMenuEvent *event)
 void TalkableTreeView::keyPressEvent(QKeyEvent *event)
 {
 	// TODO 0.10.0: add proper shortcuts handling
-	if (HotKey::shortCut(event, "ShortCuts", "kadu_deleteuser"))
+	if (HotKey::shortCut(configuration(), event, "ShortCuts", "kadu_deleteuser"))
 		m_kaduWindowService->kaduWindow()->kaduWindowActions()->deleteTalkable()->trigger(Context);
-	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))
+	else if (HotKey::shortCut(configuration(), event, "ShortCuts", "kadu_persinfo"))
 		m_kaduWindowService->kaduWindow()->kaduWindowActions()->editTalkable()->trigger(Context);
 	else
 	{

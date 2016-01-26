@@ -24,6 +24,7 @@
 
 #include "dom/dom-visitor-provider.h"
 
+class Configuration;
 class IgnoreLinksDomVisitor;
 class StandardUrlExpanderConfigurator;
 
@@ -33,7 +34,7 @@ class StandardUrlDomVisitorProvider : public DomVisitorProvider
 	QScopedPointer<StandardUrlExpanderConfigurator> Configurator;
 
 public:
-	StandardUrlDomVisitorProvider();
+	explicit StandardUrlDomVisitorProvider(Configuration *configuration);
 	virtual ~StandardUrlDomVisitorProvider();
 
 	virtual DomVisitor * provide() const;

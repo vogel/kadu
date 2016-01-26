@@ -30,7 +30,7 @@ protected:
     virtual void updateActionState(Action *action);
 
 public:
-	explicit CollapseAction(Actions *actions, QObject *parent);
+	explicit CollapseAction(QObject *parent);
 	virtual ~CollapseAction();
 
 };

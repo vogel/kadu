@@ -26,17 +26,15 @@
 #include "core/core.h"
 #include "gui/actions/action.h"
 
-SoundMuteAction::SoundMuteAction(Actions *actions, QObject *parent) :
+SoundMuteAction::SoundMuteAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(actions, parent)
+		ActionDescription(parent)
 {
 	setCheckable(true);
 	setIcon(KaduIcon("audio-volume-high"));
 	setName("muteSoundsAction");
 	setText(tr("Play Sounds"));
 	setType(ActionDescription::TypeGlobal);
-
-	registerAction(actions);
 }
 
 SoundMuteAction::~SoundMuteAction()
@@ -55,7 +53,7 @@ void SoundMuteAction::actionTriggered(QAction *sender, bool toggled)
 	m_soundManager->setMute(!toggled);
 	updateActionStates();
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
+	configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
 }
 
 void SoundMuteAction::updateActionState(Action *action)

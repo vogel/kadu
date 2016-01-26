@@ -77,6 +77,11 @@ void ChatDataWindow::setChatTypeManager(ChatTypeManager *chatTypeManager)
 	m_chatTypeManager = chatTypeManager;
 }
 
+void ChatDataWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void ChatDataWindow::init()
 {
 	setWindowRole("kadu-chat-data");
@@ -85,7 +90,7 @@ void ChatDataWindow::init()
 
 	createGui();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ChatDataWindowGeometry"), QRect(0, 50, 425, 500), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "ChatDataWindowGeometry"), QRect(0, 50, 425, 500), this);
 
 	connect(m_chatManager, SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
 

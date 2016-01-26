@@ -22,6 +22,8 @@
 
 #include "mpd-mediaplayer.h"
 
+#include "configuration/configuration.h"
+
 MPDMediaPlayer::MPDMediaPlayer(QObject *parent) :
 		QObject(parent)
 {
@@ -29,6 +31,16 @@ MPDMediaPlayer::MPDMediaPlayer(QObject *parent) :
 
 MPDMediaPlayer::~MPDMediaPlayer()
 {
+}
+
+void MPDMediaPlayer::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void MPDMediaPlayer::init()
+{
+	Config = MPDConfig(m_configuration);
 }
 
 mpd_connection * MPDMediaPlayer::mpdConnect()

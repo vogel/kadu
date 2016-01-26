@@ -24,9 +24,10 @@
 #include <QtCore/QMap>
 #include <set>
 
-class QStringList;
-
+class Configuration;
 enum class PluginState;
+
+class QStringList;
 
 /**
  * @addtogroup Plugin
@@ -50,7 +51,7 @@ public:
 	 *
 	 * If configuration in 0.9 format is not available, empty map is returned.
 	 */
-	QMap<QString, PluginState> load(const ::std::set<QString> &installedPluginNames) const;
+	QMap<QString, PluginState> load(Configuration *configuration, const ::std::set<QString> &installedPluginNames) const;
 
 };
 

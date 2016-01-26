@@ -28,10 +28,15 @@
 
 MPDConfig::MPDConfig()
 {
+}
+
+MPDConfig::MPDConfig(Configuration *configuration) :
+		m_configuration{configuration}
+{
 	createDefaultConfiguration();
-	Host = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDHost");
-	Port = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDPort");
-	Timeout = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDTimeout");
+	Host = m_configuration->deprecatedApi()->readEntry("MediaPlayer", "MPDHost");
+	Port = m_configuration->deprecatedApi()->readEntry("MediaPlayer", "MPDPort");
+	Timeout = m_configuration->deprecatedApi()->readEntry("MediaPlayer", "MPDTimeout");
 }
 
 MPDConfig::~MPDConfig()
@@ -40,14 +45,14 @@ MPDConfig::~MPDConfig()
 
 void MPDConfig::createDefaultConfiguration()
 {
-	Core::instance()->configuration()->deprecatedApi()->addVariable("MediaPlayer", "MPDHost", "localhost");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("MediaPlayer", "MPDPort", "6600");
-	Core::instance()->configuration()->deprecatedApi()->addVariable("MediaPlayer", "MPDTimeout", "10");
+	m_configuration->deprecatedApi()->addVariable("MediaPlayer", "MPDHost", "localhost");
+	m_configuration->deprecatedApi()->addVariable("MediaPlayer", "MPDPort", "6600");
+	m_configuration->deprecatedApi()->addVariable("MediaPlayer", "MPDTimeout", "10");
 }
 
 void MPDConfig::configurationUpdated()
 {
-	Host = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDHost");
-	Port = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDPort");
-	Timeout = Core::instance()->configuration()->deprecatedApi()->readEntry("MediaPlayer", "MPDTimeout");
+	Host = m_configuration->deprecatedApi()->readEntry("MediaPlayer", "MPDHost");
+	Port = m_configuration->deprecatedApi()->readEntry("MediaPlayer", "MPDPort");
+	Timeout = m_configuration->deprecatedApi()->readEntry("MediaPlayer", "MPDTimeout");
 }

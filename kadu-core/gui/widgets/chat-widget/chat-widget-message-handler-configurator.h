@@ -23,9 +23,12 @@
 #include "configuration/configuration-aware-object.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class ChatWidgetMessageHandler;
 class ChatWidgetMessageHandlerConfiguration;
+class Configuration;
+
 
 /**
  * @addtogroup Gui
@@ -53,8 +56,13 @@ protected:
 
 private:
 	QPointer<ChatWidgetMessageHandler> m_chatWidgetMessageHandler;
+	QPointer<Configuration> m_configuration;
 
 	void createDefaultConfiguration() const;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
 
 };
 

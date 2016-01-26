@@ -112,10 +112,10 @@ signals:
 	 */
 	void actionUnloaded(ActionDescription *action);
 
-private:
+public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Registers new ActionDescription class.
+	 * @short Registers m_injectedFactory->makeInjected<ActionDescription> class.
 	 * @param action registered action
 	 *
 	 * This method can only by called from ActionDescription instances when they are ready to be registered.
@@ -132,9 +132,8 @@ private:
 	 * Signal actionUnloaded is emited if signals are non blocked.
 	 */
 	void remove(ActionDescription *action);
-	friend class ActionDescription;
 
-
+private:
 	bool BlockSignals;
 
 };

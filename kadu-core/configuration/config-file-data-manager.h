@@ -19,10 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_FILE_DATA_MANAGER_H
-#define CONFIG_FILE_DATA_MANAGER_H
+#pragma once
 
 #include "configuration-window-data-manager.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 
 class KADUAPI ConfigFileDataManager : public ConfigurationWindowDataManager
 {
@@ -34,6 +38,10 @@ public:
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);
 
-};
+private:
+	QPointer<Configuration> m_configuration;
 
-#endif
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+
+};

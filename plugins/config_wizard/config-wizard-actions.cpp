@@ -63,7 +63,7 @@ void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
 
 void ConfigWizardActions::init()
 {
-	m_showConfigWizardActionDescription = new ActionDescription(m_actions, this, ActionDescription::TypeMainMenu,
+	m_showConfigWizardActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeMainMenu,
 			"showConfigWizard", this, SLOT(showConfigWizardSlot()), KaduIcon(),
 			tr("Start Configuration Wizard"));
 }

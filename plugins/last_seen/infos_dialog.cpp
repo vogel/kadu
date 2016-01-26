@@ -60,6 +60,11 @@ void InfosDialog::setChatManager(ChatManager *chatManager)
 	m_chatManager = chatManager;
 }
 
+void InfosDialog::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void InfosDialog::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
@@ -136,7 +141,7 @@ void InfosDialog::init()
 
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("LastSeen", "LastSeenWidgetGeometry"), QRect(0, 0, 800, 300), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "LastSeen", "LastSeenWidgetGeometry"), QRect(0, 0, 800, 300), this);
 }
 
 void InfosDialog::customContextMenuRequested(const QPoint &point)

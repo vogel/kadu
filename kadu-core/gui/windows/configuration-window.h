@@ -38,6 +38,7 @@ class ConfigSection;
 class ConfigWidget;
 class ConfigurationManager;
 class ConfigurationWidget;
+class Configuration;
 class ConfigGroupBox;
 class InjectedFactory;
 class QHBoxLayout;
@@ -99,6 +100,7 @@ class KADUAPI ConfigurationWindow : public QDialog, DesktopAwareObject
 	Q_OBJECT
 
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 
 	ConfigurationWindowDataManager *m_dataManager;
@@ -109,6 +111,7 @@ class KADUAPI ConfigurationWindow : public QDialog, DesktopAwareObject
 
 private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 

@@ -34,7 +34,7 @@ protected:
 	virtual void actionInstanceCreated(Action *action);
 
 public:
-	explicit ChangeStatusAction(Actions *actions, QObject *parent);
+	explicit ChangeStatusAction(QObject *parent);
 	virtual ~ChangeStatusAction();
 
 	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const

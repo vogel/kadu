@@ -304,15 +304,15 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 
 	handled = true;
 	// obsluga skrotow klawiszowych
-	if (HotKey::shortCut(e, "ShortCuts", "MoveTabLeft"))
+	if (HotKey::shortCut(m_configuration, e, "ShortCuts", "MoveTabLeft"))
 		moveTabLeft();
-	else if (HotKey::shortCut(e, "ShortCuts", "MoveTabRight"))
+	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "MoveTabRight"))
 		moveTabRight();
-	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabLeft"))
+	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "SwitchTabLeft"))
 		switchTabLeft();
-	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
+	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "SwitchTabRight"))
 		switchTabRight();
-	else if (HotKey::shortCut(e, "ShortCuts", "ReopenClosedTab"))
+	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "ReopenClosedTab"))
 		Manager->reopenClosedChat();
 	#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
 		#define TAB_SWITCH_MODIFIER "Ctrl"

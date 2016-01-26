@@ -30,7 +30,7 @@ class SoundMuteAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit SoundMuteAction(Actions *actions, QObject *parent = nullptr);
+	explicit SoundMuteAction(QObject *parent = nullptr);
 	virtual ~SoundMuteAction();
 
 	void setSoundManager(SoundManager *soundManager);

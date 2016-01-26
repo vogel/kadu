@@ -25,6 +25,7 @@
 
 #include "configuration/configuration-aware-object.h"
 
+class Configuration;
 class StandardUrlExpander;
 
 /**
@@ -42,6 +43,7 @@ class StandardUrlExpander;
  */
 class StandardUrlExpanderConfigurator : private ConfigurationAwareObject
 {
+	QPointer<Configuration> m_configuration;
 	QPointer<StandardUrlExpander> ConfigurableStandardUrlExpander;
 
 	void createDefaultConfiguration();
@@ -50,6 +52,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
+	StandardUrlExpanderConfigurator(Configuration *configuration);
+
 	/**
 	 * @short Sets StandardUrlExpander to configure.
 	 * @author Rafał 'Vogel' Malinowski

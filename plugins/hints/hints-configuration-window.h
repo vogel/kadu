@@ -34,6 +34,7 @@ class HintsConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
 
+	QPointer<InjectedFactory> m_injectedFactory;	
 	QPointer<PathsProvider> m_pathsProvider;
 
 	NotifierConfigurationDataManager *m_dataManager;
@@ -45,6 +46,7 @@ class HintsConfigurationWindow : public ConfigurationWindow
 	static void windowDestroyed(const QString &eventName);
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 

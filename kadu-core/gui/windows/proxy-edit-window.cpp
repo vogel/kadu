@@ -61,6 +61,11 @@ ProxyEditWindow::~ProxyEditWindow()
 {
 }
 
+void ProxyEditWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void ProxyEditWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -76,7 +81,7 @@ void ProxyEditWindow::init()
 	createGui();
 	ProxyView->selectionModel()->select(ProxyView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ProxyEditWindowGeometry"), QRect(200, 200, 750, 500), this);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "ProxyEditWindowGeometry"), QRect(200, 200, 750, 500), this);
 }
 
 void ProxyEditWindow::createGui()

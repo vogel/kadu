@@ -17,18 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NOTIFIER_CONFIGURATION_DATA_MANAGER_H
-#define NOTIFIER_CONFIGURATION_DATA_MANAGER_H
-
+#pragma once
 #include "configuration/configuration-window-data-manager.h"
-
 #include "exports.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class ConfigurationWindow;
+class Configuration;
+class InjectedFactory;
 
 class KADUAPI NotifierConfigurationDataManager : public ConfigurationWindowDataManager
 {
 	Q_OBJECT
+
+	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QString EventName;
 	int UsageCount;
@@ -36,19 +41,19 @@ class KADUAPI NotifierConfigurationDataManager : public ConfigurationWindowDataM
 	static QMap<QString, NotifierConfigurationDataManager*> DataManagers;
 	static void dataManagerDestroyed(const QString &eventName);
 
-	explicit NotifierConfigurationDataManager(const QString &eventName, QObject *parent = nullptr);
-
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 	void configurationWindowDestroyed();
 
 public:
+	explicit NotifierConfigurationDataManager(const QString &eventName, QObject *parent = nullptr);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);
 
-	static NotifierConfigurationDataManager * dataManagerForEvent(const QString &eventName);
+	static NotifierConfigurationDataManager * dataManagerForEvent(InjectedFactory *injectedFactory, const QString &eventName);
 
 	void configurationWindowCreated(ConfigurationWindow *window);
 };
-
-#endif //NOTIFIER_CONFIGURATION_DATA_MANAGER_H

@@ -21,6 +21,7 @@
 
 #include <QtWidgets/QAction>
 
+#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/windows/kadu-window.h"
@@ -49,6 +50,11 @@ void AutostatusActions::setAutostatusService(AutostatusService *autostatusServic
 	m_autostatusService = autostatusService;
 }
 
+void AutostatusActions::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void AutostatusActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -66,7 +72,7 @@ void AutostatusActions::done()
 
 void AutostatusActions::registerActions()
 {
-	AutostatusActionDescription = new ActionDescription(m_actions, this,
+	AutostatusActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "autostatusAction",
 		this, SLOT(autostatusActionActivated(QAction *, bool)),
 		KaduIcon(), tr("&Autostatus"), true

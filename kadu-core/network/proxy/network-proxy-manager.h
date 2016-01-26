@@ -32,6 +32,7 @@
 #include <injeqt/injeqt.h>
 
 class ConfigurationManager;
+class Configuration;
 class NetworkProxy;
 
 class KADUAPI NetworkProxyManager : public SimpleManager<NetworkProxy>, ConfigurationAwareObject
@@ -73,11 +74,13 @@ protected:
 
 private:
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<Configuration> m_configuration;
 
 	NetworkProxy DefaultProxy;
 
 private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

@@ -30,6 +30,9 @@
 #include "plugins/sound/sound-player.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 
 class QProcess;
 
@@ -44,8 +47,13 @@ public:
 	virtual QObject * playSound(const QString &path);
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<QProcess> m_playerProcess;
 
 	void createDefaultConfiguration();
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
 
 };

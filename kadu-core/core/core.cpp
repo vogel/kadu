@@ -498,12 +498,12 @@ void Core::runServices()
 	auto chatWidgetMessageHandlerConfigurator = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWidgetMessageHandlerConfigurator->setChatWidgetMessageHandler(m_injector.get<ChatWidgetMessageHandler>());
 
-	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
+	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(m_injector.get<Configuration>()); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(m_injector.get<ChatWindowStorage>());
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
-	auto configurator = new ChatImageRequestServiceConfigurator();
+	auto configurator = new ChatImageRequestServiceConfigurator(m_injector.get<Configuration>());
 	configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 
 	m_injector.get<PluginMetadataFinder>()->setDirectory(m_injector.get<PathsProvider>()->dataPath() + QLatin1String{"plugins"});

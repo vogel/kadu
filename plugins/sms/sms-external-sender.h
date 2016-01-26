@@ -17,10 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SMS_EXTERNAL_SENDER_H
-#define SMS_EXTERNAL_SENDER_H
+#pragma once
 
 #include "sms-sender.h"
+
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Configuration;
 
 class QProcess;
 
@@ -28,11 +32,14 @@ class SmsExternalSender : public SmsSender
 {
 	Q_OBJECT
 
+	QPointer<Configuration> m_configuration;
 	QProcess *Process;
 
 	QStringList buildProgramArguments(const QString &message);
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+
 	void processFinished();
 
 public:
@@ -45,5 +52,3 @@ public slots:
 	virtual void cancel();
 
 };
-
-#endif // SMS_EXTERNAL_SENDER_H

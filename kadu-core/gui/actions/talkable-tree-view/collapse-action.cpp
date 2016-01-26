@@ -24,15 +24,13 @@
 
 #include <QtWidgets/QTreeView>
 
-CollapseAction::CollapseAction(Actions *actions, QObject *parent) :
+CollapseAction::CollapseAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(actions, parent)
+		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeUserList);
 	setName("collapseAction");
 	setText(tr("Collapse"));
-
-	registerAction(actions);
 }
 
 CollapseAction::~CollapseAction()

@@ -356,25 +356,25 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 		return true;
 	}
 
-	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
+	if (HotKey::shortCut(m_configuration, e,"ShortCuts", "chat_clear"))
 	{
 		clearChatWindow();
 		return true;
 	}
 
-	if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
+	if (HotKey::shortCut(m_configuration, e,"ShortCuts", "chat_close"))
 	{
 		emit closeRequested(this);
 		return true;
 	}
 
-	if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
+	if (HotKey::shortCut(m_configuration, e,"ShortCuts", "kadu_searchuser"))
 	{
 		m_actions->createAction("lookupUserInfoAction", InputBox->actionContext(), InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 
-	if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
+	if (HotKey::shortCut(m_configuration, e,"ShortCuts", "kadu_openchatwith"))
 	{
 		m_actions->createAction("openChatWithAction", InputBox->actionContext(), InputBox)->activate(QAction::Trigger);
 		return true;

@@ -70,7 +70,7 @@ void DockingNotifyConfigurationWidget::switchToEvent(const QString &event)
 
 void DockingNotifyConfigurationWidget::showConfigurationWindow()
 {
-	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(currentNotificationEvent);
+	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(m_injectedFactory, currentNotificationEvent);
 	ConfigurationWindow *configWindow = m_injectedFactory->makeInjected<ConfigurationWindow>("Qt4DockingNotificationEventConfiguration", tr("Tray icon balloon's look configuration"), "Qt4DockingNotify", dataManager);
 
 	dataManager->configurationWindowCreated(configWindow);

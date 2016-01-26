@@ -37,16 +37,14 @@
 
 #include "edit-talkable-action.h"
 
-EditTalkableAction::EditTalkableAction(Actions *actions, QObject *parent) :
-		ActionDescription(actions, parent)
+EditTalkableAction::EditTalkableAction(QObject *parent) :
+		ActionDescription(parent)
 {
 	// TODO: TypeChat | TypeUser or TypeTalkables
 	setType(TypeGlobal);
 	setName("editUserAction");
 	setIcon(KaduIcon("x-office-address-book"));
 	setText(tr("View Buddy Properties"));
-
-	registerAction(actions);
 }
 
 EditTalkableAction::~EditTalkableAction()
@@ -66,11 +64,6 @@ void EditTalkableAction::setChatDataWindowRepository(ChatDataWindowRepository *c
 void EditTalkableAction::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
 	m_chatTypeManager = chatTypeManager;
-}
-
-void EditTalkableAction::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
 }
 
 void EditTalkableAction::setKaduWindowService(KaduWindowService *kaduWindowService)
@@ -197,7 +190,7 @@ void EditTalkableAction::buddyActionTriggered(ActionContext *context)
 	if (!buddy)
 		return;
 	if (buddy.isAnonymous())
-		(m_injectedFactory->makeInjected<AddBuddyWindow>(m_kaduWindowService->kaduWindow(), buddy, true))->show();
+		(injectedFactory()->makeInjected<AddBuddyWindow>(m_kaduWindowService->kaduWindow(), buddy, true))->show();
 	else
 		m_buddyDataWindowRepository->showBuddyWindow(buddy);
 }

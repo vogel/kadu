@@ -25,12 +25,17 @@
 
 #include "config-file-data-manager.h"
 
+void ConfigFileDataManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
 void ConfigFileDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
 {
 	if (section.isEmpty() || name.isEmpty())
 		return;
 
-	Core::instance()->configuration()->deprecatedApi()->writeEntry(section, name, value.toString());
+	m_configuration->deprecatedApi()->writeEntry(section, name, value.toString());
 }
 
 QVariant ConfigFileDataManager::readEntry(const QString &section, const QString &name)
@@ -38,7 +43,7 @@ QVariant ConfigFileDataManager::readEntry(const QString &section, const QString 
 	if (section.isEmpty() || name.isEmpty())
 		return QVariant(QString());
 
-	return QVariant(Core::instance()->configuration()->deprecatedApi()->readEntry(section, name));
+	return QVariant(m_configuration->deprecatedApi()->readEntry(section, name));
 }
 
 

@@ -22,6 +22,7 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QTextEdit>
 
+#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -54,6 +55,11 @@ void Suggester::setCustomInputMenuManager(CustomInputMenuManager *customInputMen
 	m_customInputMenuManager = customInputMenuManager;
 }
 
+void Suggester::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void Suggester::setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration)
 {
 	m_spellcheckerConfiguration = spellcheckerConfiguration;
@@ -75,7 +81,7 @@ void Suggester::addWordListToMenu(const QTextCursor &textCursor)
 
 	// Add new actions
 	foreach (const QString &listWord, SuggestionWordList)
-		SuggestActions.append(new ActionDescription(m_actions, this, ActionDescription::TypeGlobal,
+		SuggestActions.append(m_injectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeGlobal,
 					"spellcheckerSuggest#" + listWord, this, SLOT(replaceWithSuggest(QAction *)), KaduIcon(), listWord));
 
 	unsigned int actionPriority = 0;

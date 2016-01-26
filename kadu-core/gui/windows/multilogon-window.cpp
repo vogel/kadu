@@ -54,10 +54,6 @@ MultilogonWindow::MultilogonWindow(QWidget *parent) :
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Multilogon window"));
-
-	createGui();
-
-	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "MultilogonWindowGeometry"), QRect(0, 50, 450, 300), this);
 }
 
 MultilogonWindow::~MultilogonWindow()
@@ -65,10 +61,22 @@ MultilogonWindow::~MultilogonWindow()
 	Instance = 0;
 }
 
+void MultilogonWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void MultilogonWindow::init()
+{
+	createGui();
+
+	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "MultilogonWindowGeometry"), QRect(0, 50, 450, 300), this);
+}
+
 MultilogonWindow * MultilogonWindow::instance()
 {
 	if (!Instance)
-		Instance = new MultilogonWindow();
+		Instance = Core::instance()->injectedFactory()->makeInjected<MultilogonWindow>();
 
 	return Instance;
 }

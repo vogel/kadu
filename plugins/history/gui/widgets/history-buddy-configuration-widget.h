@@ -17,19 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_BUDDY_CONFIGURATION_WIDGET_H
-#define HISTORY_BUDDY_CONFIGURATION_WIDGET_H
+#pragma once
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/widgets/buddy-configuration-widget.h"
 
-class QCheckBox;
-
+class Configuration;
 class SimpleConfigurationValueStateNotifier;
+
+class QCheckBox;
 
 class HistoryBuddyConfigurationWidget : public BuddyConfigurationWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QPointer<Configuration> m_configuration;
 
 	bool GlobalStoreHistory;
 	QCheckBox *StoreHistoryCheckBox;
@@ -40,6 +42,9 @@ class HistoryBuddyConfigurationWidget : public BuddyConfigurationWidget, Configu
 	void loadValues();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
+
 	void updateState();
 
 protected:
@@ -55,5 +60,3 @@ public:
 	virtual void cancel();
 
 };
-
-#endif // HISTORY_BUDDY_CONFIGURATION_WIDGET_H

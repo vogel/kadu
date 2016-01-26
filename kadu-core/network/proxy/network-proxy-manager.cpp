@@ -24,7 +24,6 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "storage/storage-point.h"
 
 #include "network-proxy-manager.h"
@@ -41,6 +40,11 @@ NetworkProxyManager::~NetworkProxyManager()
 void NetworkProxyManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
 	m_configurationManager = configurationManager;
+}
+
+void NetworkProxyManager::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
 }
 
 void NetworkProxyManager::init()
@@ -75,13 +79,13 @@ NetworkProxy NetworkProxyManager::loadStubFromStorage(const std::shared_ptr<Stor
 
 void NetworkProxyManager::configurationUpdated()
 {
-	DefaultProxy = byUuid(Core::instance()->configuration()->deprecatedApi()->readEntry("Network", "DefaultProxy"));
+	DefaultProxy = byUuid(m_configuration->deprecatedApi()->readEntry("Network", "DefaultProxy"));
 }
 
 void NetworkProxyManager::setDefaultProxy(const NetworkProxy &proxy)
 {
 	DefaultProxy = proxy;
-	Core::instance()->configuration()->deprecatedApi()->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
+	m_configuration->deprecatedApi()->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
 }
 
 const NetworkProxy & NetworkProxyManager::defaultProxy()

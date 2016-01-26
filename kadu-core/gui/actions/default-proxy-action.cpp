@@ -32,8 +32,8 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
-DefaultProxyAction::DefaultProxyAction(Actions *actions, QObject *parent) :
-		ActionDescription(actions, parent)
+DefaultProxyAction::DefaultProxyAction(QObject *parent) :
+		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeGlobal);
 	setName("defaultProxyAction");
@@ -44,16 +44,6 @@ DefaultProxyAction::~DefaultProxyAction()
 {
 }
 
-void DefaultProxyAction::setActions(Actions *actions)
-{
-	m_actions = actions;
-}
-
-void DefaultProxyAction::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void DefaultProxyAction::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
 {
 	m_networkProxyManager = networkProxyManager;
@@ -62,11 +52,6 @@ void DefaultProxyAction::setNetworkProxyManager(NetworkProxyManager *networkProx
 void DefaultProxyAction::setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService)
 {
 	m_proxyEditWindowService = proxyEditWindowService;
-}
-
-void DefaultProxyAction::init()
-{
-	registerAction(m_actions);
 }
 
 QMenu * DefaultProxyAction::menuForAction(Action *action)
@@ -82,7 +67,7 @@ QMenu * DefaultProxyAction::menuForAction(Action *action)
 
 void DefaultProxyAction::populateMenu(QMenu *menu, QActionGroup *actionGroup, NetworkProxy defaultProxy)
 {
-	auto proxyModel = m_injectedFactory->makeInjected<NetworkProxyModel>();
+	auto proxyModel = injectedFactory()->makeInjected<NetworkProxyModel>();
 	auto proxyProxyModel = new NetworkProxyProxyModel();
 	proxyProxyModel->setSourceModel(proxyModel);
 

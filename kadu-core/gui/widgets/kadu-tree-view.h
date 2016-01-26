@@ -54,6 +54,8 @@ public:
 	void updateBackground();
 
 protected:
+	Configuration * configuration() const;
+
 	virtual void configurationUpdated();
 
 	virtual void keyPressEvent(QKeyEvent *event);
