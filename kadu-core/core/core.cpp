@@ -564,11 +564,6 @@ StoragePointFactory * Core::storagePointFactory() const
 	return m_injector.get<StoragePointFactory>();
 }
 
-PluginStateService * Core::pluginStateService() const
-{
-	return m_injector.get<PluginStateService>();
-}
-
 StatusContainerManager * Core::statusContainerManager() const
 {
 	return m_injector.get<StatusContainerManager>();
