@@ -316,17 +316,7 @@ int main(int argc, char *argv[]) try
 	auto applicationId = QString{"kadu-%1"}.arg(Core::instance()->pathsProvider()->profilePath());
 
 	auto executeAsFirst = [&](){
-		Core::instance()->createGui();
-		Core::instance()->runGuiServices();
-
-		Core::instance()->activatePlugins();
-
-		for (auto const &id : executionArguments.openIds())
-			Core::instance()->executeRemoteCommand(id);
-
-		// it has to be called after loading modules (docking might want to block showing the window)
-		Core::instance()->kaduWindowService()->showMainWindow();
-
+		Core::instance()->execute(executionArguments.openIds());
 		ret = QApplication::exec();
 		kdebugm(KDEBUG_INFO, "after exec\n");
 		kdebugm(KDEBUG_INFO, "exiting main\n");

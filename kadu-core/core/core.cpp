@@ -466,6 +466,19 @@ void Core::configurationUpdated()
 	debug_mask = ok ? newMask : configuration()->deprecatedApi()->readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 }
 
+void Core::execute(const QStringList &openIds)
+{
+	createGui();
+	runGuiServices();
+	activatePlugins();
+
+	for (auto const &id : openIds)
+		executeRemoteCommand(id);
+
+	// it has to be called after loading modules (docking might want to block showing the window)
+	kaduWindowService()->showMainWindow();
+}
+
 void Core::createGui()
 {
 	m_injector.get<KaduWindowService>()->createWindow();

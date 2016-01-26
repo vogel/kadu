@@ -65,6 +65,8 @@ public:
 
 	bool isClosing() { return m_isClosing; }
 
+	void execute(const QStringList &openIds);
+
 	void createGui();
 	void runServices();
 	void runGuiServices();
