@@ -35,9 +35,9 @@
 template<class T>
 class DefaultProvider;
 
+class ExecutionArguments;
 class InjectedFactory;
 class KaduIcon;
-class PathsProvider;
 class Roster;
 class StatusContainerManager;
 class StoragePointFactory;
@@ -57,6 +57,7 @@ public:
 
 	bool isClosing() { return m_isClosing; }
 
+	int executeSingle(const ExecutionArguments &executionArguments);
 	void execute(const QStringList &openIds);
 
 	void createGui();
@@ -67,7 +68,6 @@ public:
 	void activatePlugins();
 
 	InjectedFactory * injectedFactory() const;
-	PathsProvider * pathsProvider() const;
 	StatusContainerManager * statusContainerManager() const;
 	StoragePointFactory * storagePointFactory() const;
 	TalkableConverter * talkableConverter() const;

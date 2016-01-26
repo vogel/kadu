@@ -39,6 +39,7 @@
 #include "core/application.h"
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
+#include "execution-arguments/execution-arguments.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/configuration/chat-configuration-holder.h"
@@ -68,6 +69,7 @@
 #include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
 #include "notification/notify-configuration-importer.h"
+#include "os/single-application/single-application.h"
 #include "parser/parser.h"
 #include "plugin/plugin-manager.h"
 #include "plugin/state/plugin-state-manager.h"
@@ -458,6 +460,37 @@ void Core::configurationUpdated()
 	debug_mask = ok ? newMask : m_injector.get<Configuration>()->deprecatedApi()->readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 }
 
+int Core::executeSingle(const ExecutionArguments &executionArguments)
+{
+	auto ret = 0;
+	auto applicationId = QString{"kadu-%1"}.arg(m_injector.get<PathsProvider>()->profilePath());
+
+	auto executeAsFirst = [&](){
+		execute(executionArguments.openIds());
+		ret = QApplication::exec();
+		kdebugm(KDEBUG_INFO, "after exec\n");
+		kdebugm(KDEBUG_INFO, "exiting main\n");
+	};
+
+	auto executeAsNext = [&](SingleApplication &singleApplication){
+		if (!executionArguments.openIds().isEmpty())
+			for (auto const &id : executionArguments.openIds())
+				singleApplication.sendMessage(id, 1000);
+		else
+			singleApplication.sendMessage("activate", 1000);
+
+		ret = 1;
+	};
+
+	auto receivedMessage = [&](const QString &message){
+		executeRemoteCommand(message);
+	};
+
+	SingleApplication singleApplication{applicationId, executeAsFirst, executeAsNext, receivedMessage};
+
+	return ret;
+}
+
 void Core::execute(const QStringList &openIds)
 {
 	m_injector.get<TranslationLoader>();
@@ -560,11 +593,6 @@ StatusContainerManager * Core::statusContainerManager() const
 InjectedFactory * Core::injectedFactory() const
 {
 	return m_injector.get<InjectedFactory>();
-}
-
-PathsProvider * Core::pathsProvider() const
-{
-	return m_injector.get<PathsProvider>();
 }
 
 TalkableConverter * Core::talkableConverter() const

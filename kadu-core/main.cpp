@@ -283,34 +283,7 @@ int main(int argc, char *argv[]) try
 	enableSignalHandling();
 
 	Core::createInstance(std::move(injector));
-
-	auto ret = 0;
-	auto applicationId = QString{"kadu-%1"}.arg(Core::instance()->pathsProvider()->profilePath());
-
-	auto executeAsFirst = [&](){
-		Core::instance()->execute(executionArguments.openIds());
-		ret = QApplication::exec();
-		kdebugm(KDEBUG_INFO, "after exec\n");
-		kdebugm(KDEBUG_INFO, "exiting main\n");
-	};
-
-	auto executeAsNext = [&](SingleApplication &singleApplication){
-		if (!executionArguments.openIds().isEmpty())
-			for (auto const &id : executionArguments.openIds())
-				singleApplication.sendMessage(id, 1000);
-		else
-			singleApplication.sendMessage("activate", 1000);
-
-		ret = 1;
-	};
-
-	auto receivedMessage = [&](const QString &message){
-		Core::instance()->executeRemoteCommand(message);
-	};
-
-	SingleApplication singleApplication{applicationId, executeAsFirst, executeAsNext, receivedMessage};
-
-	return ret;
+	return Core::instance()->executeSingle(executionArguments);
 }
 #if defined(Q_OS_WIN)
 catch (WSAException &)
