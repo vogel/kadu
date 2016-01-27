@@ -45,7 +45,6 @@ Action::Action(ActionDescription *description, ActionContext *context, QObject *
 	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
 
 	connect(context, SIGNAL(changed()), this, SLOT(checkState()));
-	checkState();
 }
 
 Action::~Action()
@@ -72,6 +71,8 @@ void Action::init()
 		connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(updateIcon()));
 		setIcon(Description->icon());
 	}
+
+	checkState();
 }
 
 ActionContext * Action::context()
