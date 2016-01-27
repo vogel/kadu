@@ -26,6 +26,7 @@
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy-manager.h"
+#include "buddies/group-storage.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
@@ -58,6 +59,11 @@ void GroupManager::setConfiguration(Configuration *configuration)
 void GroupManager::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
+}
+
+void GroupManager::setGroupStorage(GroupStorage *groupStorage)
+{
+	m_groupStorage = groupStorage;
 }
 
 void GroupManager::init()
@@ -120,7 +126,7 @@ void GroupManager::store()
 
 Group GroupManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return Group::loadStubFromStorage(storagePoint);
+	return m_groupStorage->loadStubFromStorage(storagePoint);
 }
 
 Group GroupManager::byName(const QString &name, bool create)
@@ -139,7 +145,7 @@ Group GroupManager::byName(const QString &name, bool create)
 	if (!create)
 		return Group::null;
 
-	Group group = Group::create();
+	auto group = m_groupStorage->create();
 	group.data()->importConfiguration(name);
 	addItem(group);
 

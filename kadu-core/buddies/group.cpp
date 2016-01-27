@@ -22,8 +22,6 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/injected-factory.h"
 #include "storage/storage-point.h"
 
 #include "group-manager.h"
@@ -33,21 +31,6 @@
 KaduSharedBaseClassImpl(Group)
 
 Group Group::null;
-
-Group Group::create()
-{
-	return Core::instance()->injectedFactory()->makeInjected<GroupShared>();
-}
-
-Group Group::loadStubFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint)
-{
-	return GroupShared::loadStubFromStorage(contactStoragePoint);
-}
-
-Group Group::loadFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint)
-{
-	return GroupShared::loadFromStorage(contactStoragePoint);
-}
 
 Group::Group()
 {

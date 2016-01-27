@@ -15,6 +15,7 @@ set (buddies_SRCS
 	group.cpp
 	group-manager.cpp
 	group-shared.cpp
+	group-storage.cpp
 
 	model/buddy-data-extractor.cpp
 	model/buddy-list-model.cpp

@@ -73,11 +73,6 @@ void GroupTabBar::setChatListMimeDataService(ChatListMimeDataService *chatListMi
 	m_chatListMimeDataService = chatListMimeDataService;
 }
 
-void GroupTabBar::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
-}
-
 void GroupTabBar::setGroupManager(GroupManager *groupManager)
 {
 	m_groupManager = groupManager;
@@ -368,7 +363,7 @@ void GroupTabBar::deleteGroup()
 
 void GroupTabBar::createNewGroup()
 {
-	auto editWindow = new GroupEditWindow{m_groupManager, m_configuration->deprecatedApi(), Group::null, m_kaduWindowService->kaduWindow()};
+	auto editWindow = m_injectedFactory->makeInjected<GroupEditWindow>(Group::null, m_kaduWindowService->kaduWindow());
 	editWindow->show();
 }
 
@@ -382,7 +377,7 @@ void GroupTabBar::groupProperties()
 	if (!group)
 		return;
 
-	auto editWindow = new GroupEditWindow{m_groupManager, m_configuration->deprecatedApi(), group, m_kaduWindowService->kaduWindow()};
+	auto editWindow = m_injectedFactory->makeInjected<GroupEditWindow>(group, m_kaduWindowService->kaduWindow());
 	editWindow->show();
 }
 

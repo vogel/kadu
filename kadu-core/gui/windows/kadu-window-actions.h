@@ -46,7 +46,6 @@ class Configuration;
 class DeleteTalkableAction;
 class DefaultProxyAction;
 class EditTalkableAction;
-class GroupManager;
 class InjectedFactory;
 class KaduWindowService;
 class MainConfigurationWindowService;
@@ -69,7 +68,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<Application> m_application;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<Configuration> m_configuration;
-	QPointer<GroupManager> m_groupManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
@@ -123,7 +121,6 @@ private slots:
 	INJEQT_SET void setApplication(Application *application);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setGroupManager(GroupManager *groupManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);

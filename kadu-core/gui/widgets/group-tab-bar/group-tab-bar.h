@@ -32,7 +32,6 @@
 class BuddyListMimeDataService;
 class ChatListMimeDataService;
 class Chat;
-class Configuration;
 class GroupManager;
 class GroupFilter;
 class IconsManager;
@@ -45,7 +44,6 @@ class KADUAPI GroupTabBar : public QTabBar
 
 	QPointer<BuddyListMimeDataService> m_buddyListMimeDataService;
 	QPointer<ChatListMimeDataService> m_chatListMimeDataService;
-	QPointer<Configuration> m_configuration;
 	QPointer<GroupManager> m_groupManager;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -69,7 +67,6 @@ class KADUAPI GroupTabBar : public QTabBar
 private slots:
 	INJEQT_SET void setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService);
 	INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setGroupManager(GroupManager *groupManager);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);

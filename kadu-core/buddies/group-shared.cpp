@@ -22,27 +22,9 @@
 #include "buddies/group-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/injected-factory.h"
 #include "misc/change-notifier.h"
 
 #include "group-shared.h"
-
-GroupShared * GroupShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	GroupShared *result = loadFromStorage(storagePoint);
-	result->loadStub();
-
-	return result;
-}
-
-GroupShared * GroupShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	GroupShared *result = Core::instance()->injectedFactory()->makeInjected<GroupShared>();
-	result->setStorage(storagePoint);
-
-	return result;
-}
 
 GroupShared::GroupShared(const QUuid &uuid) :
 		Shared(uuid),

@@ -34,6 +34,7 @@
 class ConfigurationManager;
 class Configuration;
 class IconsManager;
+class GroupStorage;
 
 class KADUAPI GroupManager : public SimpleManager<Group>
 {
@@ -75,6 +76,7 @@ private:
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
+	QPointer<GroupStorage> m_groupStorage;
 
 	void importConfiguration();
 
@@ -82,6 +84,7 @@ private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setGroupStorage(GroupStorage *groupStorage);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

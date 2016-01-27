@@ -34,7 +34,6 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
-#include "buddies/group-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
@@ -212,11 +211,6 @@ void KaduWindowActions::setChatWidgetActions(ChatWidgetActions *chatWidgetAction
 void KaduWindowActions::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
-}
-
-void KaduWindowActions::setGroupManager(GroupManager *groupManager)
-{
-	m_groupManager = groupManager;
 }
 
 void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -714,7 +708,7 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	auto window = new GroupEditWindow(m_groupManager, m_configuration->deprecatedApi(), Group::null, sender->parentWidget());
+	auto window = m_injectedFactory->makeInjected<GroupEditWindow>(Group::null, sender->parentWidget());
 	window->show();
 }
 

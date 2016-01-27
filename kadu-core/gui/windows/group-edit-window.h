@@ -27,6 +27,7 @@
 
 class DeprecatedConfigurationApi;
 class GroupManager;
+class GroupStorage;
 class IconsManager;
 
 class QCheckBox;
@@ -39,17 +40,17 @@ class GroupEditWindow : public QDialog
 	Q_OBJECT
 
 public:
-	explicit GroupEditWindow(GroupManager *groupManager, DeprecatedConfigurationApi *configuration, Group group, QWidget *parent = nullptr);
+	explicit GroupEditWindow(Group group, QWidget *parent = nullptr);
 	virtual ~GroupEditWindow();
 
 protected:
 	virtual void accept() override;
 
 private:
+	QPointer<Configuration> m_configuration;
+	QPointer<GroupManager> m_groupManager;
+	QPointer<GroupStorage> m_groupStorage;
 	QPointer<IconsManager> m_iconsManager;
-
-	GroupManager *m_groupManager;
-	DeprecatedConfigurationApi *m_configuration;
 
 	Group m_group;
 	bool m_add;
@@ -71,6 +72,9 @@ private:
 	void storeValues();
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setGroupManager(GroupManager *groupManager);
+	INJEQT_SET void setGroupStorage(GroupStorage *groupStorage);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_INIT void init();
 

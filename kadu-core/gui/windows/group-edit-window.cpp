@@ -20,6 +20,7 @@
 #include "group-edit-window.h"
 
 #include "buddies/group-manager.h"
+#include "buddies/group-storage.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
@@ -38,11 +39,9 @@
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 
-GroupEditWindow::GroupEditWindow(GroupManager *groupManager, DeprecatedConfigurationApi *configuration, Group group, QWidget *parent) :
+GroupEditWindow::GroupEditWindow(Group group, QWidget *parent) :
 		// using C++ initializers breaks Qt's lupdate
 		QDialog(parent),
-		m_groupManager(groupManager),
-		m_configuration(configuration),
 		m_group(group),
 		m_add(group.isNull())
 {
@@ -58,6 +57,21 @@ GroupEditWindow::~GroupEditWindow()
 {
 }
 
+void GroupEditWindow::setConfiguration(Configuration *configuration)
+{
+	m_configuration = configuration;
+}
+
+void GroupEditWindow::setGroupManager(GroupManager *groupManager)
+{
+	m_groupManager = groupManager;
+}
+
+void GroupEditWindow::setGroupStorage(GroupStorage *groupStorage)
+{
+	m_groupStorage = groupStorage;
+}
+
 void GroupEditWindow::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
@@ -67,7 +81,7 @@ void GroupEditWindow::init()
 {
 	createGui();
 	if (m_add)
-		m_group = Group::create();
+		m_group = m_groupStorage->create();
 	loadValues();
 	dataChanged();
 
@@ -179,12 +193,12 @@ void GroupEditWindow::storeValues()
 
 void GroupEditWindow::selectIcon()
 {
-	auto recentPath = m_configuration->readEntry("GroupIcon", "recentPath", "~/");
+	auto recentPath = m_configuration->deprecatedApi()->readEntry("GroupIcon", "recentPath", "~/");
 	auto file = QFileDialog::getOpenFileName(this, tr("Choose an icon"), recentPath, tr("Images (*.png *.xpm *.jpg);;All Files (*)"));
 	auto iconFile = QFileInfo{file};
 	if (iconFile.exists() && iconFile.isReadable())
 	{
-		m_configuration->writeEntry("GroupIcon", "recentPath", iconFile.absolutePath());
+		m_configuration->deprecatedApi()->writeEntry("GroupIcon", "recentPath", iconFile.absolutePath());
 		m_selectIconButton->setIcon(QIcon{iconFile.absoluteFilePath()});
 		m_selectedIcon = file;
 	}

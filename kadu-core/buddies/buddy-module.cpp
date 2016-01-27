@@ -26,6 +26,7 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-storage.h"
 #include "buddies/group-manager.h"
+#include "buddies/group-storage.h"
 #include "buddies/model/buddy-data-extractor.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 
@@ -40,6 +41,7 @@ BuddyModule::BuddyModule()
 	add_type<BuddyPreferredManager>();
 	add_type<BuddyStorage>();
 	add_type<GroupManager>();
+	add_type<GroupStorage>();
 }
 
 BuddyModule::~BuddyModule()

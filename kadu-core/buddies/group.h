@@ -32,9 +32,6 @@ class KADUAPI Group : public SharedBase<GroupShared>
 	KaduSharedBaseClass(Group)
 
 public:
-	static Group create();
-	static Group loadStubFromStorage(const std::shared_ptr<StoragePoint> &storage);
-	static Group loadFromStorage(const std::shared_ptr<StoragePoint> &storage);
 	static Group null;
 
 	Group();

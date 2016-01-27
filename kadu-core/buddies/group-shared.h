@@ -36,9 +36,6 @@ class KADUAPI GroupShared : public Shared
 	Q_OBJECT
 
 public:
-	static GroupShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &groupStoragePoint);
-	static GroupShared * loadFromStorage(const std::shared_ptr<StoragePoint> &groupStoragePoint);
-
 	explicit GroupShared(const QUuid &uuid = QUuid());
 	virtual ~GroupShared();
 
