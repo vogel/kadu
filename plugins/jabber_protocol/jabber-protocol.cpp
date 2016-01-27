@@ -139,7 +139,7 @@ void JabberProtocol::init()
 	m_personalInfoService = injectedFactory()->makeInjected<JabberPersonalInfoService>(account(), this);
 	m_streamDebugService = new JabberStreamDebugService{m_client, this};
 
-	m_fileTransferService = new JabberFileTransferService{m_transferManager.get(), account(), this};
+	m_fileTransferService = injectedFactory()->makeInjected<JabberFileTransferService>(m_transferManager.get(), account(), this);
 	m_fileTransferService->setResourceService(m_resourceService);
 
 	m_vcardService = new JabberVCardService{&m_client->vCardManager(), this};
