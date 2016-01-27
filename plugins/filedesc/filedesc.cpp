@@ -34,8 +34,6 @@
 FileDescription::FileDescription(QObject *parent) :
 		QObject(parent)
 {
-	createDefaultConfiguration();
-
 	m_timer = new QTimer{this};
 	m_timer->setSingleShot(false);
 	m_timer->setInterval(500);
@@ -65,6 +63,7 @@ void FileDescription::setPathsProvider(PathsProvider *pathsProvider)
 
 void FileDescription::init()
 {
+	createDefaultConfiguration();
 	configurationUpdated();
 }
 
