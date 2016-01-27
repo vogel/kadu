@@ -90,7 +90,7 @@ void PluginListWidget::init()
 	layout->setMargin(0);
 	setLayout(layout);
 
-	auto filterEdit = new FilterWidget{this};
+	auto filterEdit = m_injectedFactory->makeInjected<FilterWidget>(this);
 	filterEdit->setAutoVisibility(false);
 
 	m_listView = new CategorizedListView{this};

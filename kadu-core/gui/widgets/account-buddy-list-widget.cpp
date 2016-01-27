@@ -101,7 +101,7 @@ void AccountBuddyListWidget::init()
 	proxyModel->addFilter(new HideAnonymousTalkableFilter(proxyModel));
 	chain->addProxyModel(proxyModel);
 
-	BuddiesWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, this);
+	BuddiesWidget = m_injectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtTop, this);
 
 	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, proxyModel);
 	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));

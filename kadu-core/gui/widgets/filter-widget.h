@@ -53,7 +53,7 @@ class KADUAPI FilterWidget : public QWidget
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void init();
+	INJEQT_INIT void init();
 
 	void filterTextChanged(const QString &);
 

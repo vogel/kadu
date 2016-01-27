@@ -21,7 +21,9 @@
 #ifndef FILTERED_TREE_VIEW_H
 #define FILTERED_TREE_VIEW_H
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 #include "exports.h"
 
@@ -29,6 +31,7 @@ class QAbstractItemView;
 class QVBoxLayout;
 
 class FilterWidget;
+class InjectedFactory;
 
 class KADUAPI FilteredTreeView : public QWidget
 {
@@ -42,6 +45,8 @@ public:
 	};
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	FilterPosition CurrentFilterPosition;
 
 	QVBoxLayout *Layout;
@@ -51,7 +56,13 @@ private:
 	void removeView();
 	void insertView();
 
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_INIT void init();
+
 protected:
+	InjectedFactory * injectedFactory() const;
+
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:

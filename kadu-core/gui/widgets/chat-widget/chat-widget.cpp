@@ -285,7 +285,7 @@ void ChatWidget::createContactsList()
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
-	BuddiesWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, this);
+	BuddiesWidget = m_injectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtTop, this);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 
 	TalkableTreeView *view = m_injectedFactory->makeInjected<TalkableTreeView>(BuddiesWidget);

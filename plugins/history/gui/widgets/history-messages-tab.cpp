@@ -111,7 +111,7 @@ void HistoryMessagesTab::createGui()
 
 	Splitter = new QSplitter(Qt::Horizontal, this);
 
-	FilteredView = new FilteredTreeView(FilteredTreeView::FilterAtTop, Splitter);
+	FilteredView = m_injectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtTop, Splitter);
 	FilteredView->filterWidget()->setAutoVisibility(false);
 	FilteredView->filterWidget()->setLabel(tr("Filter") + ":");
 

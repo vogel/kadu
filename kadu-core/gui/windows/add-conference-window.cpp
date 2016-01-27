@@ -157,7 +157,7 @@ void AddConferenceWindow::createGui()
 
 	// chain->addProxyModel(CheckableProxy);
 
-	FilteredTreeView *buddiesWidget = new FilteredTreeView(FilteredTreeView::FilterAtBottom, this);
+	FilteredTreeView *buddiesWidget = m_injectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtBottom, this);
 
 	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, proxyModel);
 	connect(buddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));

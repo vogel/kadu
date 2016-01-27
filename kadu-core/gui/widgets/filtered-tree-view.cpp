@@ -22,6 +22,7 @@
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QVBoxLayout>
 
+#include "core/injected-factory.h"
 #include "gui/widgets/filter-widget.h"
 
 #include "filtered-tree-view.h"
@@ -34,19 +35,33 @@ bool FilteredTreeView::shouldEventGoToFilter(QKeyEvent *event)
 FilteredTreeView::FilteredTreeView(FilteredTreeView::FilterPosition filterPosition, QWidget *parent, Qt::WindowFlags f) :
 		QWidget(parent, f), CurrentFilterPosition(filterPosition), View(0)
 {
+}
+
+FilteredTreeView::~FilteredTreeView()
+{
+}
+
+void FilteredTreeView::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void FilteredTreeView::init()
+{
 	Layout = new QVBoxLayout(this);
 	Layout->setMargin(0);
 	Layout->setSpacing(0);
 
-	NameFilterWidget = new FilterWidget(this);
+	NameFilterWidget = m_injectedFactory->makeInjected<FilterWidget>(this);
 	connect(NameFilterWidget, SIGNAL(textChanged(const QString &)),
 		this, SIGNAL(filterChanged(const QString &)));
 
 	Layout->addWidget(NameFilterWidget);
 }
 
-FilteredTreeView::~FilteredTreeView()
+InjectedFactory * FilteredTreeView::injectedFactory() const
 {
+	return m_injectedFactory;
 }
 
 void FilteredTreeView::removeView()

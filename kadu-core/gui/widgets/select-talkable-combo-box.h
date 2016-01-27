@@ -47,7 +47,7 @@ class KADUAPI SelectTalkableComboBox : public ActionsComboBox
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void init();
+	INJEQT_INIT void init();
 
 protected:
 	InjectedFactory * injectedFactory() const;

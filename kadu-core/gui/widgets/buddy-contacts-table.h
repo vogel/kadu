@@ -63,7 +63,7 @@ class BuddyContactsTable : public QWidget
 private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void init();
+	INJEQT_INIT void init();
 
 	void viewSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
 

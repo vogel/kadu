@@ -28,7 +28,6 @@
 #include <injeqt/injeqt.h>
 
 class HideAnonymousTalkableFilter;
-class InjectedFactory;
 class ModelChain;
 class TalkableFilter;
 class TalkableProxyModel;
@@ -41,16 +40,13 @@ class SelectTalkablePopup : public FilteredTreeView
 {
 	Q_OBJECT
 
-	QPointer<InjectedFactory> m_injectedFactory;
-
 	HideAnonymousTalkableFilter *HideAnonymousFilter;
 	ModelChain *Chain;
 	TalkableTreeView *View;
 	TalkableProxyModel *ProxyModel;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void init();
+	INJEQT_INIT void init();
 
 	void itemClicked(const QModelIndex &index);
 	void talkableActivated(const Talkable &talkable);

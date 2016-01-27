@@ -51,6 +51,6 @@ private:
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void init();
+	INJEQT_INIT void init();
 
 };

@@ -224,7 +224,7 @@ ModelChain * RosterWidget::createModelChain()
 
 void RosterWidget::createTalkableWidget(QWidget *parent)
 {
-	TalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
+	TalkableWidget = m_injectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtTop, parent);
 
 	TalkableTree = m_injectedFactory->makeInjected<TalkableTreeView>(TalkableWidget);
 	TalkableTree->setUseConfigurationColors(true);

@@ -43,19 +43,14 @@ SelectTalkablePopup::~SelectTalkablePopup()
 {
 }
 
-void SelectTalkablePopup::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void SelectTalkablePopup::init()
 {
-	View = m_injectedFactory->makeInjected<TalkableTreeView>(this);
+	View = injectedFactory()->makeInjected<TalkableTreeView>(this);
 	setView(View);
 
 	Chain = new ModelChain(this);
 
-	ProxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(Chain);
+	ProxyModel = injectedFactory()->makeInjected<TalkableProxyModel>(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 
 	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
