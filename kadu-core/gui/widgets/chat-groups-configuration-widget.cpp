@@ -38,12 +38,20 @@ ChatGroupsConfigurationWidget::ChatGroupsConfigurationWidget(const Chat &chat, Q
 		m_chat{chat}
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-
-	createGui();
 }
 
 ChatGroupsConfigurationWidget::~ChatGroupsConfigurationWidget()
 {
+}
+
+void ChatGroupsConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void ChatGroupsConfigurationWidget::init()
+{
+	createGui();
 }
 
 void ChatGroupsConfigurationWidget::createGui()

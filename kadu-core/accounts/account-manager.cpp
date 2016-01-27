@@ -244,7 +244,7 @@ void AccountManager::connectionError(Account account, const QString &server, con
 {
 	QMutexLocker locker(&mutex());
 
-	ConnectionErrorNotification::notifyConnectionError(m_notificationManager, account, server, message);
+	ConnectionErrorNotification::notifyConnectionError(m_injectedFactory, m_notificationManager, account, server, message);
 }
 
 void AccountManager::removeAccountAndBuddies(Account account)

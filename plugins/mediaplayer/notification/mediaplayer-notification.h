@@ -26,6 +26,7 @@
 
 #include "mediaplayer-exports.h"
 
+class InjectedFactory;
 class NotificationEventRepository;
 class NotificationManager;
 
@@ -37,7 +38,7 @@ public:
 	static void registerNotifications(NotificationEventRepository *notificationEventRepository);
 	static void unregisterNotifications(NotificationEventRepository *notificationEventRepository);
 
-	static void notifyTitleHint(NotificationManager *notificationManager, const QString &title);
+	static void notifyTitleHint(InjectedFactory *injectedFactory, NotificationManager *notificationManager, const QString &title);
 
 	MediaPlayerNotification();
 	virtual ~MediaPlayerNotification();

@@ -22,7 +22,9 @@
 #include "gui/widgets/buddy-configuration-widget.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
+class InjectedFactory;
 class SoundManager;
 class SoundSelectFile;
 class SimpleConfigurationValueStateNotifier;
@@ -43,6 +45,7 @@ public:
 	virtual void cancel() override;
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<SoundManager> m_soundManager;
 	SimpleConfigurationValueStateNotifier *m_stateNotifier;
 
@@ -53,6 +56,9 @@ private:
 	void loadValues();
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void init();
+
 	void updateState();
 
 };

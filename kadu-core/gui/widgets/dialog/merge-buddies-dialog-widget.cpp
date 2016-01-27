@@ -86,7 +86,7 @@ void MergeBuddiesDialogWidget::createGui()
 
 	QLabel *selectLabel = new QLabel(tr("Buddy to merge") + ":", this);
 
-	SelectCombo = new SelectTalkableComboBox(this);
+	SelectCombo = m_injectedFactory->makeInjected<SelectTalkableComboBox>(this);
 	SelectCombo->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectCombo));
 
 	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(SelectCombo);

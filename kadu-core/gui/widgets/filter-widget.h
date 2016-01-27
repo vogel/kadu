@@ -22,11 +22,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILTERWIDGET_H
-#define FILTERWIDGET_H
+#pragma once
 
-#include <QtWidgets/QWidget>
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
 
 class QAbstractItemView;
 class QLabel;
@@ -35,6 +39,8 @@ class QLineEdit;
 class KADUAPI FilterWidget : public QWidget
 {
 	Q_OBJECT
+
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QLabel *Label;
 	QLineEdit *NameFilterEdit;
@@ -46,6 +52,9 @@ class KADUAPI FilterWidget : public QWidget
 	bool sendKeyEventToView(QKeyEvent *);
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void init();
+
 	void filterTextChanged(const QString &);
 
 protected:
@@ -66,5 +75,3 @@ signals:
 	void textChanged(const QString &text);
 
 };
-
-#endif // FILTERWIDGET_H

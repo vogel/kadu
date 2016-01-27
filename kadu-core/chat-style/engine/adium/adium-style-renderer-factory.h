@@ -23,8 +23,10 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class AdiumStyle;
+class InjectedFactory;
 
 class AdiumStyleRendererFactory : public QObject, public ChatStyleRendererFactory
 {
@@ -36,6 +38,11 @@ public:
 	virtual not_owned_qptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	std::shared_ptr<AdiumStyle> m_style;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

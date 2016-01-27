@@ -20,7 +20,6 @@
 
 #include <QtWidgets/QAction>
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/select-talkable-popup.h"
 #include "misc/misc.h"
@@ -34,13 +33,26 @@
 SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
+}
+
+SelectTalkableComboBox::~SelectTalkableComboBox()
+{
+}
+
+void SelectTalkableComboBox::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SelectTalkableComboBox::init()
+{
 	Chain = new ModelChain(this);
-	ProxyModel = Core::instance()->injectedFactory()->makeInjected<TalkableProxyModel>(Chain);
+	ProxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 	Chain->addProxyModel(ProxyModel);
 	setUpModel(TalkableRole, Chain);
 
-	Popup = new SelectTalkablePopup(this);
+	Popup = m_injectedFactory->makeInjected<SelectTalkablePopup>(this);
 
 	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
 	addFilter(HideAnonymousFilter);
@@ -48,8 +60,9 @@ SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) :
 	connect(Popup, SIGNAL(talkableSelected(Talkable)), this, SLOT(setCurrentTalkable(Talkable)));
 }
 
-SelectTalkableComboBox::~SelectTalkableComboBox()
+InjectedFactory * SelectTalkableComboBox::injectedFactory() const
 {
+	return m_injectedFactory;
 }
 
 void SelectTalkableComboBox::setBaseModel(QAbstractItemModel *model)

@@ -18,25 +18,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELECT_TALKABLE_POPUP_H
-#define SELECT_TALKABLE_POPUP_H
+#pragma once
 
 #include "talkable/talkable.h"
 
 #include "gui/widgets/filtered-tree-view.h"
 
-class QAbstractItemModel;
-class QModelIndex;
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class HideAnonymousTalkableFilter;
+class InjectedFactory;
 class ModelChain;
 class TalkableFilter;
 class TalkableProxyModel;
 class TalkableTreeView;
 
+class QAbstractItemModel;
+class QModelIndex;
+
 class SelectTalkablePopup : public FilteredTreeView
 {
 	Q_OBJECT
+
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	HideAnonymousTalkableFilter *HideAnonymousFilter;
 	ModelChain *Chain;
@@ -44,6 +49,9 @@ class SelectTalkablePopup : public FilteredTreeView
 	TalkableProxyModel *ProxyModel;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void init();
+
 	void itemClicked(const QModelIndex &index);
 	void talkableActivated(const Talkable &talkable);
 
@@ -65,5 +73,3 @@ signals:
 	void talkableSelected(const Talkable &talkable);
 
 };
-
-#endif // SELECT_TALKABLE_POPUP_H

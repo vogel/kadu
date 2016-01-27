@@ -34,9 +34,14 @@ AdiumStyleRendererFactory::~AdiumStyleRendererFactory()
 {
 }
 
+void AdiumStyleRendererFactory::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 not_owned_qptr<ChatStyleRenderer> AdiumStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
 {
-	auto result = Core::instance()->injectedFactory()->makeNotOwned<AdiumStyleRenderer>(std::move(configuration), m_style);
+	auto result = m_injectedFactory->makeNotOwned<AdiumStyleRenderer>(std::move(configuration), m_style);
 	return not_owned_qptr<ChatStyleRenderer>(result.release());
 }
 

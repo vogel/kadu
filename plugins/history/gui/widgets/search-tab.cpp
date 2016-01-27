@@ -104,20 +104,20 @@ void SearchTab::createGui()
 
 	SearchInChats = new QRadioButton(tr("Chats"), queryFormWidget);
 	SearchInChats->setChecked(true);
-	SelectChat = new HistoryTalkableComboBox(queryFormWidget);
+	SelectChat = m_injectedFactory->makeInjected<HistoryTalkableComboBox>(queryFormWidget);
 	SelectChat->setAllLabel(tr(" - All chats - "));
 	SelectChat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	queryFormLayout->addRow(SearchInChats, SelectChat);
 
 	SearchInStatuses = new QRadioButton(tr("Statuses"), queryFormWidget);
-	SelectStatusBuddy = new HistoryTalkableComboBox(queryFormWidget);
+	SelectStatusBuddy = m_injectedFactory->makeInjected<HistoryTalkableComboBox>(queryFormWidget);
 	SelectStatusBuddy->setAllLabel(tr(" - All buddies - "));
 	SelectStatusBuddy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	SelectStatusBuddy->setEnabled(false);
 	queryFormLayout->addRow(SearchInStatuses, SelectStatusBuddy);
 
 	SearchInSmses = new QRadioButton(tr("Smses"), queryFormWidget);
-	SelectSmsRecipient = new HistoryTalkableComboBox(queryFormWidget);
+	SelectSmsRecipient = m_injectedFactory->makeInjected<HistoryTalkableComboBox>(queryFormWidget);
 	SelectSmsRecipient->setAllLabel(tr(" - All recipients - "));
 	SelectSmsRecipient->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	SelectSmsRecipient->setEnabled(false);

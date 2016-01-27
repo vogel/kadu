@@ -20,12 +20,13 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
-
 #include "gui/widgets/chat-configuration-widget-factory.h"
 
-class OtrPolicyService;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
 
 class HistoryChatConfigurationWidgetFactory : public QObject, public ChatConfigurationWidgetFactory
 {
@@ -36,5 +37,11 @@ public:
 	virtual ~HistoryChatConfigurationWidgetFactory();
 
 	virtual ChatConfigurationWidget * createWidget(const Chat &chat, QWidget *parent);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

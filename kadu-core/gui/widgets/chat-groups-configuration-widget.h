@@ -24,9 +24,12 @@
 #include "chat/chat.h"
 #include "exports.h"
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class GroupList;
+class InjectedFactory;
 
 class KADUAPI ChatGroupsConfigurationWidget : public QWidget
 {
@@ -39,9 +42,15 @@ public:
 	void save();
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	Chat m_chat;
 	GroupList *m_groupList;
 
 	void createGui();
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void init();
 
 };

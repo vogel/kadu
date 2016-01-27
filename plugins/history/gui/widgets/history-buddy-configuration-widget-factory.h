@@ -20,12 +20,13 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
-
 #include "gui/widgets/buddy-configuration-widget-factory.h"
 
-class OtrPolicyService;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
 
 class HistoryBuddyConfigurationWidgetFactory : public QObject, public BuddyConfigurationWidgetFactory
 {
@@ -36,5 +37,11 @@ public:
 	virtual ~HistoryBuddyConfigurationWidgetFactory();
 
 	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

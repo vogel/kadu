@@ -361,7 +361,7 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
 	QMutexLocker locker(&mutex());
 	addItem(fileTransfer);
-	NewFileTransferNotification::notifyIncomingFileTransfer(m_chatManager, m_notificationManager, fileTransfer);
+	NewFileTransferNotification::notifyIncomingFileTransfer(m_injectedFactory, m_chatManager, m_notificationManager, fileTransfer);
 }
 
 void FileTransferManager::itemAboutToBeAdded(FileTransfer fileTransfer)

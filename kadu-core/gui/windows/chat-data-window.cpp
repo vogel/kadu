@@ -32,6 +32,7 @@
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
+#include "core/injected-factory.h"
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-configuration-widget-factory.h"
 #include "gui/widgets/chat-configuration-widget-group-boxes-adapter.h"
@@ -80,6 +81,11 @@ void ChatDataWindow::setChatTypeManager(ChatTypeManager *chatTypeManager)
 void ChatDataWindow::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void ChatDataWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
 }
 
 void ChatDataWindow::init()
@@ -203,7 +209,7 @@ void ChatDataWindow::createGui()
 
 	generalLayout->addStretch(100);
 
-	GroupsTab = new ChatGroupsConfigurationWidget(MyChat, this);
+	GroupsTab = m_injectedFactory->makeInjected<ChatGroupsConfigurationWidget>(MyChat, this);
 	TabWidget->addTab(GroupsTab, tr("Groups"));
 
 	auto optionsTab = new QWidget{this};

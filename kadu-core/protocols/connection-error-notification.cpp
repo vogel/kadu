@@ -22,7 +22,6 @@
 
 #include <QtGui/QTextDocument>
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "icons/icons-manager.h"
 #include "identities/identity.h"
@@ -80,9 +79,9 @@ void ConnectionErrorNotification::unregisterEvent(Parser *parser, NotificationEv
 	notificationEventRepository->removeNotificationEvent(NotificationEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error")));
 }
 
-void ConnectionErrorNotification::notifyConnectionError(NotificationManager *notificationManager, const Account &account, const QString &errorServer, const QString &errorMessage)
+void ConnectionErrorNotification::notifyConnectionError(InjectedFactory *injectedFactory, NotificationManager *notificationManager, const Account &account, const QString &errorServer, const QString &errorMessage)
 {
-	ConnectionErrorNotification *connectionErrorNotification = Core::instance()->injectedFactory()->makeInjected<ConnectionErrorNotification>(account, errorServer, errorMessage);
+	ConnectionErrorNotification *connectionErrorNotification = injectedFactory->makeInjected<ConnectionErrorNotification>(account, errorServer, errorMessage);
 	connectionErrorNotification->setNotificationManager(notificationManager);
 	notificationManager->notify(connectionErrorNotification);
 }

@@ -21,7 +21,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
@@ -51,7 +50,7 @@ QMenu * ChangeStatusAction::menuForAction(Action *action)
 
 	// no parents for menu as it is destroyed manually by Action class
 	auto menu = new QMenu();
-	Core::instance()->injectedFactory()->makeInjected<StatusMenu>(container, false, menu);
+	injectedFactory()->makeInjected<StatusMenu>(container, false, menu);
 	return menu;
 }
 
@@ -62,7 +61,7 @@ void ChangeStatusAction::actionInstanceCreated(Action *action)
 	StatusContainer *statusContainer = action->context()->statusContainer();
 	if (statusContainer)
 	{
-		auto icon = Core::instance()->injectedFactory()->makeInjected<StatusIcon>(statusContainer, action);
+		auto icon = injectedFactory()->makeInjected<StatusIcon>(statusContainer, action);
 		connect(icon, SIGNAL(iconUpdated(KaduIcon)), action, SLOT(setIcon(KaduIcon)));
 		action->setIcon(icon->icon());
 	}

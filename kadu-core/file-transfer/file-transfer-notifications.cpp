@@ -21,7 +21,6 @@
 
 #include "file-transfer-notifications.h"
 
-#include "core/core.h"
 #include "chat/type/chat-type-contact.h"
 #include "core/injected-factory.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -89,10 +88,10 @@ void NewFileTransferNotification::unregisterEvents(NotificationEventRepository *
 	notificationEventRepository->removeNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
 }
 
-void NewFileTransferNotification::notifyIncomingFileTransfer(ChatManager *chatManager, NotificationManager *notificationManager, const FileTransfer &fileTransfer)
+void NewFileTransferNotification::notifyIncomingFileTransfer(InjectedFactory *injectedFactory, ChatManager *chatManager, NotificationManager *notificationManager, const FileTransfer &fileTransfer)
 {
 	auto chat = ChatTypeContact::findChat(chatManager, fileTransfer.peer(), ActionCreateAndAdd);
-	auto notification = Core::instance()->injectedFactory()->makeInjected<NewFileTransferNotification>(chat, "FileTransfer/IncomingFile", fileTransfer);
+	auto notification = injectedFactory->makeInjected<NewFileTransferNotification>(chat, "FileTransfer/IncomingFile", fileTransfer);
 	notification->setTitle(tr("Incoming transfer"));
 
 	auto textFileSize = QString("%1 kB");

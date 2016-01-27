@@ -19,7 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "notification/notification-event.h"
 #include "notification/notification-event-repository.h"
@@ -27,9 +26,9 @@
 
 #include "screenshot-notification.h"
 
-void ScreenshotNotification::notifySizeLimit(NotificationManager *notificationManager, long size)
+void ScreenshotNotification::notifySizeLimit(InjectedFactory *injectedFactory, NotificationManager *notificationManager, long size)
 {
-	ScreenshotNotification *notification = Core::instance()->injectedFactory()->makeInjected<ScreenshotNotification>();
+	ScreenshotNotification *notification = injectedFactory->makeInjected<ScreenshotNotification>();
 	notification->setTitle(tr("ScreenShot size limit"));
 	notification->setText(tr("Images size limit exceed: %1 KB").arg(size/1024));
 	notificationManager->notify(notification);

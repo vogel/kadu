@@ -19,7 +19,6 @@
 
 #include "history-chat-configuration-widget-factory.h"
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/history-chat-configuration-widget.h"
 
@@ -32,9 +31,14 @@ HistoryChatConfigurationWidgetFactory::~HistoryChatConfigurationWidgetFactory()
 {
 }
 
+void HistoryChatConfigurationWidgetFactory::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 ChatConfigurationWidget * HistoryChatConfigurationWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
 {
-	return Core::instance()->injectedFactory()->makeInjected<HistoryChatConfigurationWidget>(chat, parent);
+	return m_injectedFactory->makeInjected<HistoryChatConfigurationWidget>(chat, parent);
 }
 
 #include "moc_history-chat-configuration-widget-factory.cpp"

@@ -17,15 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELECT_TALKABLE_COMBO_BOX_H
-#define SELECT_TALKABLE_COMBO_BOX_H
+#pragma once
 
 #include "talkable/talkable.h"
 #include "exports.h"
 
 #include "gui/widgets/actions-combo-box.h"
 
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
 class HideAnonymousTalkableFilter;
+class InjectedFactory;
 class ModelChain;
 class SelectTalkablePopup;
 class TalkableFilter;
@@ -35,12 +38,20 @@ class KADUAPI SelectTalkableComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	HideAnonymousTalkableFilter *HideAnonymousFilter;
 	ModelChain *Chain;
 	SelectTalkablePopup *Popup;
 	TalkableProxyModel *ProxyModel;
 
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void init();
+
 protected:
+	InjectedFactory * injectedFactory() const;
+
 	virtual void showPopup();
 	virtual void hidePopup();
 
@@ -60,5 +71,3 @@ public slots:
 	void setCurrentTalkable(const Talkable &talkable);
 
 };
-
-#endif // SELECT_TALKABLE_COMBO_BOX_H

@@ -33,6 +33,7 @@ class BuddyContactsTableModel;
 class BuddyContactsTableModelProxy;
 class ConfigurationValueStateNotifier;
 class IconsManager;
+class InjectedFactory;
 
 class QPushButton;
 class QTableView;
@@ -42,6 +43,7 @@ class BuddyContactsTable : public QWidget
 	Q_OBJECT
 
 	QPointer<IconsManager> m_iconsManager;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	Buddy MyBuddy;
 
@@ -60,6 +62,8 @@ class BuddyContactsTable : public QWidget
 
 private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void init();
 
 	void viewSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
 

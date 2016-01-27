@@ -39,11 +39,6 @@ HistoryTalkableComboBox::~HistoryTalkableComboBox()
 {
 }
 
-void HistoryTalkableComboBox::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void HistoryTalkableComboBox::init()
 {
 	setShowAnonymous(true);
@@ -52,8 +47,8 @@ void HistoryTalkableComboBox::init()
 	AllAction = new QAction(this);
 	actionModel->appendAction(AllAction);
 
-	ChatsModel = m_injectedFactory->makeInjected<ChatListModel>(this);
-	BuddiesModel = m_injectedFactory->makeInjected<BuddyListModel>(this);
+	ChatsModel = injectedFactory()->makeInjected<ChatListModel>(this);
+	BuddiesModel = injectedFactory()->makeInjected<BuddyListModel>(this);
 
 	QList<KaduAbstractModel *> models;
 	models.append(actionModel);
@@ -72,7 +67,7 @@ void HistoryTalkableComboBox::setTalkables(const QVector<Talkable> &talkables)
 {
 	futureTalkablesCanceled();
 
-	auto chatsBuddies = m_injectedFactory->makeUnique<ChatsBuddiesSplitter>(talkables);
+	auto chatsBuddies = injectedFactory()->makeUnique<ChatsBuddiesSplitter>(talkables);
 
 	ChatsModel->setChats(chatsBuddies->chats().toList().toVector());
 	BuddiesModel->setBuddyList(chatsBuddies->buddies().toList());

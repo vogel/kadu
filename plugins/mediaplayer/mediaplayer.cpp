@@ -755,7 +755,7 @@ void MediaPlayer::checkTitle()
 
 	// If OSD is enabled and current track position is betwean 0 and 1000 ms, then shows OSD
 	if (m_configuration->deprecatedApi()->readBoolEntry("MediaPlayer", "osd", true) && pos < 1000 && pos > 0)
-		MediaPlayerNotification::notifyTitleHint(m_notificationManager, getTitle());
+		MediaPlayerNotification::notifyTitleHint(m_injectedFactory, m_notificationManager, getTitle());
 
 	Changer->setTitle(parse(m_configuration->deprecatedApi()->readEntry("MediaPlayer", "statusTagString")));
 }

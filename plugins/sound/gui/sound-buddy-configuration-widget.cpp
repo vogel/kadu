@@ -22,7 +22,6 @@
 #include "gui/sound-select-file.h"
 #include "sound-manager.h"
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 
@@ -37,14 +36,22 @@ SoundBuddyConfigurationWidget::SoundBuddyConfigurationWidget(const Buddy &buddy,
 		m_stateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
 	setWindowTitle(tr("Sound"));
-
-	createGui();
-	loadValues();
-	updateState();
 }
 
 SoundBuddyConfigurationWidget::~SoundBuddyConfigurationWidget()
 {
+}
+
+void SoundBuddyConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SoundBuddyConfigurationWidget::init()
+{
+	createGui();
+	loadValues();
+	updateState();
 }
 
 void SoundBuddyConfigurationWidget::createGui()
@@ -52,7 +59,7 @@ void SoundBuddyConfigurationWidget::createGui()
 	auto layout = new QVBoxLayout(this);
 
 	m_useCustomSoundCheckBox = new QCheckBox(tr("Use custom sound"));
-	m_customSoundSelectFile = Core::instance()->injectedFactory()->makeInjected<SoundSelectFile>(m_soundManager, this);
+	m_customSoundSelectFile = m_injectedFactory->makeInjected<SoundSelectFile>(m_soundManager, this);
 
 	connect(m_useCustomSoundCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
 	connect(m_customSoundSelectFile, SIGNAL(fileChanged()), this, SLOT(updateState()));

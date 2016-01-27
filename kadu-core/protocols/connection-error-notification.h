@@ -27,6 +27,7 @@
 
 #include "notification/notification/notification.h"
 
+class InjectedFactory;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationManager;
@@ -49,7 +50,7 @@ public:
 	static void registerEvent(Parser *parser, NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository);
 	static void unregisterEvent(Parser *parser, NotificationEventRepository *notificationEventRepository);
 
-	static void notifyConnectionError(NotificationManager *notificationManager, const Account &account, const QString &errorServer, const QString &errorMessage);
+	static void notifyConnectionError(InjectedFactory *injectedFactory, NotificationManager *notificationManager, const Account &account, const QString &errorServer, const QString &errorMessage);
 
 	explicit ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage);
 	virtual ~ConnectionErrorNotification();

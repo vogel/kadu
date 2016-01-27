@@ -27,7 +27,6 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTableView>
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/buddy-contacts-table-delegate.h"
 #include "gui/widgets/buddy-contacts-table-item.h"
@@ -43,12 +42,6 @@
 BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) :
 		QWidget(parent), MyBuddy(buddy)
 {
-	Delegate = new BuddyContactsTableDelegate(this);
-	Model = Core::instance()->injectedFactory()->makeInjected<BuddyContactsTableModel>(buddy, this);
-	Proxy = new BuddyContactsTableModelProxy(Model);
-	Proxy->setSourceModel(Model);
-
-	createGui();
 }
 
 BuddyContactsTable::~BuddyContactsTable()
@@ -58,6 +51,21 @@ BuddyContactsTable::~BuddyContactsTable()
 void BuddyContactsTable::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
+}
+
+void BuddyContactsTable::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void BuddyContactsTable::init()
+{
+	Delegate = new BuddyContactsTableDelegate(this);
+	Model = m_injectedFactory->makeInjected<BuddyContactsTableModel>(MyBuddy, this);
+	Proxy = new BuddyContactsTableModelProxy(Model);
+	Proxy->setSourceModel(Model);
+
+	createGui();
 }
 
 void BuddyContactsTable::createGui()

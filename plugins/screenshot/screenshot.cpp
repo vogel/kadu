@@ -183,7 +183,7 @@ void ScreenShot::checkShotsSize()
 		size += f.size();
 
 	if (size/1024 >= limit)
-		ScreenshotNotification::notifySizeLimit(m_notificationManager, size);
+		ScreenshotNotification::notifySizeLimit(m_injectedFactory, m_notificationManager, size);
 }
 
 #undef Bool

@@ -18,20 +18,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHANGE_STATUS_ACTION_H
-#define CHANGE_STATUS_ACTION_H
-
-#include <QtWidgets/QAction>
+#pragma once
 
 #include "gui/actions/action-description.h"
+
+#include <QtWidgets/QAction>
 
 class ChangeStatusAction : public ActionDescription
 {
 	Q_OBJECT
-
-protected:
-	virtual QMenu * menuForAction(Action *action);
-	virtual void actionInstanceCreated(Action *action);
 
 public:
 	explicit ChangeStatusAction(QObject *parent);
@@ -42,6 +37,8 @@ public:
 		return QToolButton::InstantPopup;
 	}
 
-};
+protected:
+	virtual QMenu * menuForAction(Action *action);
+	virtual void actionInstanceCreated(Action *action);
 
-#endif // CHANGE_STATUS_ACTION_H
+};

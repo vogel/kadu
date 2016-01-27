@@ -50,8 +50,6 @@ class HistoryTalkableComboBox : public SelectTalkableComboBox
 {
 	Q_OBJECT
 
-	QPointer<InjectedFactory> m_injectedFactory;
-
 	QFutureWatcher<QVector<Talkable> > *TalkablesFutureWatcher;
 
 	QAction *AllAction;
@@ -59,7 +57,6 @@ class HistoryTalkableComboBox : public SelectTalkableComboBox
 	BuddyListModel *BuddiesModel;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void futureTalkablesAvailable();

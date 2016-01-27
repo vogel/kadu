@@ -216,7 +216,7 @@ void BuddyDataWindow::createGeneralTab(QTabWidget *tabWidget)
 
 void BuddyDataWindow::createGroupsTab(QTabWidget *tabWidget)
 {
-	GroupsTab = new BuddyGroupsConfigurationWidget(MyBuddy, this);
+	GroupsTab = m_injectedFactory->makeInjected<BuddyGroupsConfigurationWidget>(MyBuddy, this);
 	tabWidget->addTab(GroupsTab, tr("Groups"));
 }
 

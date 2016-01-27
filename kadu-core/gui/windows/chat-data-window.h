@@ -25,7 +25,9 @@
 #include "exports.h"
 
 #include <QtCore/QMap>
+#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
+#include <injeqt/injeqt.h>
 
 class QLineEdit;
 class QPushButton;
@@ -42,6 +44,7 @@ class ChatTypeManager;
 class CompositeConfigurationValueStateNotifier;
 class Configuration;
 class GroupList;
+class InjectedFactory;
 class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI ChatDataWindow : public QWidget
@@ -75,6 +78,7 @@ private:
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatTypeManager> m_chatTypeManager;
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	QMap<ChatConfigurationWidgetFactory *, ChatConfigurationWidget *> ChatConfigurationWidgets;
 
@@ -104,6 +108,7 @@ private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void factoryRegistered(ChatConfigurationWidgetFactory *factory);

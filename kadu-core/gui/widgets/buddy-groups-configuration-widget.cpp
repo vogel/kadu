@@ -38,12 +38,20 @@ BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(const Buddy &budd
 		m_buddy{buddy}
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-
-	createGui();
 }
 
 BuddyGroupsConfigurationWidget::~BuddyGroupsConfigurationWidget()
 {
+}
+
+void BuddyGroupsConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void BuddyGroupsConfigurationWidget::init()
+{
+	createGui();
 }
 
 void BuddyGroupsConfigurationWidget::createGui()

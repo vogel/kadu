@@ -235,7 +235,7 @@ void AddBuddyWindow::createGui()
 
 	NonMergeWidgets.append(GroupCombo);
 
-	SelectBuddy = new SelectTalkableComboBox(this);
+	SelectBuddy = m_injectedFactory->makeInjected<SelectTalkableComboBox>(this);
 	SelectBuddy->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectBuddy));
 
 	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(SelectBuddy);

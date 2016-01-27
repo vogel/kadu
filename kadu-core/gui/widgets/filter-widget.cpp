@@ -32,7 +32,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
 #include "gui/widgets/talkable-tree-view.h"
@@ -90,10 +89,23 @@ void FilterWidget::filterTextChanged(const QString &s)
 FilterWidget::FilterWidget(QWidget *parent) :
 		QWidget(parent), View(0), AutoVisibility(true)
 {
+}
+
+FilterWidget::~FilterWidget()
+{
+}
+
+void FilterWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void FilterWidget::init()
+{
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(3);
 
-	NameFilterEdit = Core::instance()->injectedFactory()->makeInjected<LineEditWithClearButton>(this);
+	NameFilterEdit = m_injectedFactory->makeInjected<LineEditWithClearButton>(this);
 	Label = new QLabel(tr("Search") + ":", this);
 
 	setFocusProxy(NameFilterEdit);
@@ -105,10 +117,6 @@ FilterWidget::FilterWidget(QWidget *parent) :
 			this, SLOT(filterTextChanged(const QString &)));
 
 	updateVisibility();
-}
-
-FilterWidget::~FilterWidget()
-{
 }
 
 void FilterWidget::setLabel(const QString &label)

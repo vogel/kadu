@@ -19,9 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QLineEdit>
+#include "select-talkable-popup.h"
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/talkable-tree-view.h"
@@ -31,20 +30,32 @@
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
-#include "select-talkable-popup.h"
+#include <QtWidgets/QLineEdit>
 
 SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
 		FilteredTreeView(FilterAtBottom, parent, Qt::Popup)
 {
 	setAttribute(Qt::WA_WindowPropagation);
 	setAttribute(Qt::WA_X11NetWmWindowTypeCombo);
+}
 
-	View = Core::instance()->injectedFactory()->makeInjected<TalkableTreeView>(this);
+SelectTalkablePopup::~SelectTalkablePopup()
+{
+}
+
+void SelectTalkablePopup::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void SelectTalkablePopup::init()
+{
+	View = m_injectedFactory->makeInjected<TalkableTreeView>(this);
 	setView(View);
 
 	Chain = new ModelChain(this);
 
-	ProxyModel = Core::instance()->injectedFactory()->makeInjected<TalkableProxyModel>(Chain);
+	ProxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 
 	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
@@ -64,10 +75,6 @@ SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
 	View->setRootIsDecorated(false);
 	View->setShowIdentityNameIfMany(false);
 	View->setSelectionMode(QAbstractItemView::SingleSelection);
-}
-
-SelectTalkablePopup::~SelectTalkablePopup()
-{
 }
 
 QSize SelectTalkablePopup::sizeHint() const

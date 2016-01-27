@@ -135,7 +135,7 @@ void SmsDialog::createGui()
 
 	recipientLayout->addWidget(RecipientEdit);
 
-	RecipientComboBox = new SelectTalkableComboBox(this);
+	RecipientComboBox = m_injectedFactory->makeInjected<SelectTalkableComboBox>(this);
 	RecipientComboBox->addBeforeAction(new QAction(tr(" - Select recipient - "), RecipientComboBox));
 
 	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(RecipientComboBox);
