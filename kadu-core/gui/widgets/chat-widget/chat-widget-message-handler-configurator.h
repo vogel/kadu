@@ -42,13 +42,14 @@ class Configuration;
  * Sets configuration on ChatWidgetMessageHandler after each configuration
  * file update.
  */
-class ChatWidgetMessageHandlerConfigurator : private ConfigurationAwareObject
+class ChatWidgetMessageHandlerConfigurator : public QObject, private ConfigurationAwareObject
 {
+	Q_OBJECT
 
 public:
-	ChatWidgetMessageHandlerConfigurator();
+	Q_INVOKABLE explicit ChatWidgetMessageHandlerConfigurator(QObject *parent = nullptr);
+	virtual ~ChatWidgetMessageHandlerConfigurator();
 
-	void setChatWidgetMessageHandler(ChatWidgetMessageHandler *chatWidgetMessageHandler);
 	ChatWidgetMessageHandlerConfiguration loadConfiguration() const;
 
 protected:
@@ -61,6 +62,7 @@ private:
 	void createDefaultConfiguration() const;
 
 private slots:
+	INJEQT_SET void setChatWidgetMessageHandler(ChatWidgetMessageHandler *chatWidgetMessageHandler);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_INIT void init();
 

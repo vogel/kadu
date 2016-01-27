@@ -24,7 +24,12 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configuration.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 
-ChatWidgetMessageHandlerConfigurator::ChatWidgetMessageHandlerConfigurator()
+ChatWidgetMessageHandlerConfigurator::ChatWidgetMessageHandlerConfigurator(QObject *parent) :
+		QObject{parent}
+{
+}
+
+ChatWidgetMessageHandlerConfigurator::~ChatWidgetMessageHandlerConfigurator()
 {
 }
 
@@ -64,3 +69,5 @@ ChatWidgetMessageHandlerConfiguration ChatWidgetMessageHandlerConfigurator::load
 	configuration.setOpenChatOnMessageMinimized(m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageMinimized", false));
 	return configuration;
 }
+
+#include "moc_chat-widget-message-handler-configurator.cpp"

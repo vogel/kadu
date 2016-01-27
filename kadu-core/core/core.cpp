@@ -525,8 +525,7 @@ void Core::runServices()
 	auto chatWidgetContainerHandlerRepository = m_injector.get<ChatWidgetContainerHandlerRepository>();
 	chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_injector.get<WindowChatWidgetContainerHandler>());
 
-	auto chatWidgetMessageHandlerConfigurator = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
-	chatWidgetMessageHandlerConfigurator->setChatWidgetMessageHandler(m_injector.get<ChatWidgetMessageHandler>());
+	m_injector.get<ChatWidgetMessageHandlerConfigurator>();
 
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(m_injector.get<Configuration>()); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(m_injector.get<ChatWindowStorage>());

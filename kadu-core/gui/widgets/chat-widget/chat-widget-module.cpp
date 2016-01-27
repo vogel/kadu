@@ -23,6 +23,7 @@
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-state-persistence-service.h"
@@ -33,6 +34,7 @@ ChatWidgetModule::ChatWidgetModule()
 	add_type<ChatWidgetContainerHandlerMapper>();
 	add_type<ChatWidgetContainerHandlerRepository>();
 	add_type<ChatWidgetManager>();
+	add_type<ChatWidgetMessageHandlerConfigurator>();
 	add_type<ChatWidgetMessageHandler>();
 	add_type<ChatWidgetRepository>();
 	add_type<ChatWidgetStatePersistenceService>();
