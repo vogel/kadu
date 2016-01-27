@@ -149,6 +149,8 @@ void NotificationManager::notify(Notification *rawNotification)
 	connect(notification, SIGNAL(closed(Notification*)), this, SLOT(removeGrouped(Notification*)));
 	ActiveNotifications.insert(notification->identifier(), notification);
 
+	notification->acquire(nullptr);
+
 	auto notifyType = rawNotification->key();
 	auto foundNotifier = false;
 
@@ -163,6 +165,8 @@ void NotificationManager::notify(Notification *rawNotification)
 
 	if (!foundNotifier)
 		notification->callbackDiscard();
+
+	notification->release(nullptr);
 
 	kdebugf2();
 }
