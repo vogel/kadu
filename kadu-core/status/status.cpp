@@ -55,12 +55,16 @@ void Status::setType(StatusTypeManager *statusTypeManager, StatusType type)
 {
 	Type = type;
 
-	if (statusTypeManager)
+	if (!statusTypeManager)
 	{
-		const StatusTypeData & typeData = statusTypeManager->statusTypeData(Type);
-		DisplayName = typeData.displayName();
-		Group = typeData.typeGroup();
+		Group = StatusTypeGroupOffline;
+		return;
 	}
+
+	m_statusTypeManager = statusTypeManager;
+	const StatusTypeData & typeData = statusTypeManager->statusTypeData(Type);
+	DisplayName = typeData.displayName();
+	Group = typeData.typeGroup();
 }
 
 bool Status::isDisconnected() const
