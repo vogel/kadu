@@ -62,9 +62,6 @@ void PluginListWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 void PluginListWidget::setPluginActivationService(PluginActivationService *pluginActivationService)
 {
 	m_pluginActivationService = pluginActivationService;
-
-	if (m_pluginActivationService)
-		m_model->setActivePlugins(m_pluginActivationService->activePlugins());
 }
 
 void PluginListWidget::setPluginConflictResolver(PluginConflictResolver *pluginConflictResolver)
@@ -75,16 +72,6 @@ void PluginListWidget::setPluginConflictResolver(PluginConflictResolver *pluginC
 void PluginListWidget::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
 	m_pluginDependencyHandler = pluginDependencyHandler;
-
-	if (!m_pluginDependencyHandler)
-		return;
-
-	auto pluginEntries = QVector<PluginMetadata>{};
-	for (auto pluginMetadata : m_pluginDependencyHandler)
-		pluginEntries.append(pluginMetadata);
-	m_model->setPluginEntries(pluginEntries);
-
-	m_proxyModel->sort(0);
 }
 
 void PluginListWidget::setPluginStateManager(PluginStateManager *pluginStateManager)
@@ -120,9 +107,17 @@ void PluginListWidget::init()
 	m_model = new PluginModel{this};
 	connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(modelDataChanged(QModelIndex,QModelIndex)));
 
+	auto pluginEntries = QVector<PluginMetadata>{};
+	for (auto pluginMetadata : m_pluginDependencyHandler)
+		pluginEntries.append(pluginMetadata);
+
+	m_model->setActivePlugins(m_pluginActivationService->activePlugins());
+	m_model->setPluginEntries(pluginEntries);
+
 	m_proxyModel = new PluginProxyModel{this};
 	m_proxyModel->setCategorizedModel(true);
 	m_proxyModel->setSourceModel(m_model);
+	m_proxyModel->sort(0);
 	m_listView->setModel(m_proxyModel);
 	m_listView->setAlternatingRowColors(true);
 
