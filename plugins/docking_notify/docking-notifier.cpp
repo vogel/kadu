@@ -66,7 +66,7 @@ void DockingNotifier::setConfiguration(Configuration *configuration)
 
 void DockingNotifier::setDocking(Docking *docking)
 {
-	connect(docking, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
+	m_docking = docking;
 }
 
 void DockingNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -82,6 +82,7 @@ void DockingNotifier::setParser(Parser *parser)
 void DockingNotifier::init()
 {
 	createDefaultConfiguration();
+	connect(m_docking, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 }
 
 QString DockingNotifier::toPlainText(const QString &text)
