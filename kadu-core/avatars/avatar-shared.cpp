@@ -24,30 +24,12 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
-#include "core/core.h"
-#include "core/injected-factory.h"
 #include "misc/change-notifier.h"
 #include "misc/paths-provider.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtGui/QImageReader>
-
-AvatarShared * AvatarShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	AvatarShared *result = loadFromStorage(storagePoint);
-	result->loadStub();
-
-	return result;
-}
-
-AvatarShared * AvatarShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	auto result = Core::instance()->injectedFactory()->makeInjected<AvatarShared>();
-	result->setStorage(storagePoint);
-
-	return result;
-}
 
 AvatarShared::AvatarShared(const QUuid &uuid) :
 		Shared(uuid)

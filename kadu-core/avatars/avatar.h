@@ -37,9 +37,6 @@ class KADUAPI Avatar : public SharedBase<AvatarShared>
 	KaduSharedBaseClass(Avatar)
 
 public:
-	static Avatar create();
-	static Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storage);
-	static Avatar loadFromStorage(const std::shared_ptr<StoragePoint> &storage);
 	static Avatar null;
 
 	Avatar();

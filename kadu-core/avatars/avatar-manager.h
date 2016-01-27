@@ -33,6 +33,7 @@
 class AccountManager;
 class AvatarJobManager;
 class AvatarService;
+class AvatarStorage;
 class Buddy;
 class ContactManager;
 class Contact;
@@ -76,6 +77,7 @@ protected:
 private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<AvatarJobManager> m_avatarJobManager;
+	QPointer<AvatarStorage> m_avatarStorage;
 	QPointer<ContactManager> m_contactManager;
 	QTimer *UpdateTimer;
 
@@ -84,6 +86,7 @@ private:
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setAvatarJobManager(AvatarJobManager *avatarJobManager);
+	INJEQT_SET void setAvatarStorage(AvatarStorage *avatarStorage);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

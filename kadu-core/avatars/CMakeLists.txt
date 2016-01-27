@@ -5,6 +5,7 @@ set (avatars_SRCS
 	avatar-manager.cpp
 	avatar-module.cpp
 	avatar-shared.cpp
+	avatar-storage.cpp
 )
 
 set (avatars_MOC_SRCS

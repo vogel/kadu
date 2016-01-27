@@ -25,6 +25,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "avatars/avatar-job-manager.h"
+#include "avatars/avatar-storage.h"
 #include "avatars/avatar.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
@@ -54,6 +55,11 @@ void AvatarManager::setAccountManager(AccountManager *accountManager)
 void AvatarManager::setAvatarJobManager(AvatarJobManager *avatarJobManager)
 {
 	m_avatarJobManager = avatarJobManager;
+}
+
+void AvatarManager::setAvatarStorage(AvatarStorage *avatarStorage)
+{
+	m_avatarStorage = avatarStorage;
 }
 
 void AvatarManager::setContactManager(ContactManager *contactManager)
@@ -103,7 +109,7 @@ void AvatarManager::itemRemoved(Avatar item)
 
 Avatar AvatarManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return Avatar::loadStubFromStorage(storagePoint);
+	return m_avatarStorage->loadStubFromStorage(storagePoint);
 }
 
 void AvatarManager::accountRegistered(Account account)
@@ -239,7 +245,7 @@ Avatar AvatarManager::byBuddy(Buddy buddy, NotFoundAction action)
 	if (ActionReturnNull == action)
 		return Avatar::null;
 
-	Avatar avatar = Avatar::create();
+	auto avatar = m_avatarStorage->create();
 	buddy.setBuddyAvatar(avatar);
 
 	if (ActionCreateAndAdd == action)
@@ -256,7 +262,7 @@ Avatar AvatarManager::byContact(Contact contact, NotFoundAction action)
 	if (ActionReturnNull == action)
 		return Avatar::null;
 
-	Avatar avatar = Avatar::create();
+	auto avatar = m_avatarStorage->create();
 	contact.setContactAvatar(avatar);
 
 	if (ActionCreateAndAdd == action)

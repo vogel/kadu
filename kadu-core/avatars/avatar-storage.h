@@ -17,19 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "avatar-module.h"
+#pragma once
 
-#include "avatars/avatar-job-manager.h"
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar-storage.h"
+#include "exports.h"
 
-AvatarModule::AvatarModule()
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+#include <memory>
+
+class Avatar;
+class InjectedFactory;
+class StoragePoint;
+
+class KADUAPI AvatarStorage : public QObject
 {
-	add_type<AvatarJobManager>();
-	add_type<AvatarManager>();
-	add_type<AvatarStorage>();
-}
+	Q_OBJECT
 
-AvatarModule::~AvatarModule()
-{
-}
+public:
+	Q_INVOKABLE explicit AvatarStorage(QObject *parent = nullptr);
+	virtual ~AvatarStorage();
+
+	Avatar create();
+	Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+	Avatar loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
+};

@@ -37,9 +37,6 @@ class KADUAPI AvatarShared : public Shared
 	Q_OBJECT
 
 public:
-	static AvatarShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint);
-	static AvatarShared * loadFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint);
-
 	explicit AvatarShared(const QUuid &uuid = QUuid());
 	virtual ~AvatarShared();
 

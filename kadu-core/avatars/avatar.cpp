@@ -20,8 +20,6 @@
  */
 
 #include "contacts/contact.h"
-#include "core/core.h"
-#include "core/injected-factory.h"
 #include "misc/paths-provider.h"
 
 #include "avatar.h"
@@ -29,21 +27,6 @@
 KaduSharedBaseClassImpl(Avatar)
 
 Avatar Avatar::null;
-
-Avatar Avatar::create()
-{
-	return Core::instance()->injectedFactory()->makeInjected<AvatarShared>();
-}
-
-Avatar Avatar::loadStubFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint)
-{
-	return AvatarShared::loadStubFromStorage(avatarStoragePoint);
-}
-
-Avatar Avatar::loadFromStorage(const std::shared_ptr<StoragePoint> &avatarStoragePoint)
-{
-	return AvatarShared::loadFromStorage(avatarStoragePoint);
-}
 
 Avatar::Avatar()
 {
