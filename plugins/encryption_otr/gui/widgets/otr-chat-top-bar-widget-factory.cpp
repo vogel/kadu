@@ -20,6 +20,7 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
+#include "core/injected-factory.h"
 
 #include "gui/widgets/otr-chat-top-bar-widget.h"
 #include "gui/windows/otr-peer-identity-verification-window-repository.h"
@@ -41,6 +42,11 @@ void OtrChatTopBarWidgetFactory::setChatTypeManager(ChatTypeManager *chatTypeMan
 	m_chatTypeManager = chatTypeManager;
 }
 
+void OtrChatTopBarWidgetFactory::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void OtrChatTopBarWidgetFactory::setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository)
 {
 	PeerIdentityVerificationWindowRepository = peerIdentityVerificationWindowRepository;
@@ -58,11 +64,11 @@ void OtrChatTopBarWidgetFactory::setTrustLevelService(OtrTrustLevelService *trus
 
 QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
 {
-	auto *chatType = m_chatTypeManager->chatType(chat.type());
+	auto chatType = m_chatTypeManager->chatType(chat.type());
 	if (chatType->name() != "Contact")
 		return 0;
 
-	OtrChatTopBarWidget *result = new OtrChatTopBarWidget(chat.contacts().toContact(), parent);
+	auto result = m_injectedFactory->makeInjected<OtrChatTopBarWidget>(chat.contacts().toContact(), parent);
 	result->setTrustLevelService(TrustLevelService.data());
 
 	if (SessionService)
