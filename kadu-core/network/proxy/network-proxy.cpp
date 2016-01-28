@@ -19,7 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "network/proxy/network-proxy-shared.h"
@@ -30,21 +29,6 @@
 KaduSharedBaseClassImpl(NetworkProxy)
 
 NetworkProxy NetworkProxy::null;
-
-NetworkProxy NetworkProxy::create()
-{
-	return Core::instance()->injectedFactory()->makeInjected<NetworkProxyShared>();
-}
-
-NetworkProxy NetworkProxy::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	return NetworkProxyShared::loadStubFromStorage(storagePoint);
-}
-
-NetworkProxy NetworkProxy::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	return NetworkProxyShared::loadFromStorage(storagePoint);
-}
 
 NetworkProxy::NetworkProxy()
 {

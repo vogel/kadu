@@ -19,28 +19,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "misc/change-notifier.h"
 #include "network/proxy/network-proxy-manager.h"
 
 #include "network-proxy-shared.h"
-
-NetworkProxyShared * NetworkProxyShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	auto result = loadFromStorage(storagePoint);
-	result->loadStub();
-
-	return result;
-}
-
-NetworkProxyShared * NetworkProxyShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	auto result = Core::instance()->injectedFactory()->makeInjected<NetworkProxyShared>();
-	result->setStorage(storagePoint);
-
-	return result;
-}
 
 NetworkProxyShared::NetworkProxyShared(const QUuid &uuid) :
 		Shared(uuid), Port(0)

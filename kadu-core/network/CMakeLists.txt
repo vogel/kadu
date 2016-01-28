@@ -5,6 +5,7 @@ set (network_SRCS
 	proxy/network-proxy.cpp
 	proxy/network-proxy-manager.cpp
 	proxy/network-proxy-shared.cpp
+	proxy/network-proxy-storage.cpp
 
 	network-manager.cpp
 	network-module.cpp

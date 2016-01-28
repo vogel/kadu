@@ -31,9 +31,6 @@ class KADUAPI NetworkProxy : public SharedBase<NetworkProxyShared>
 	KaduSharedBaseClass(NetworkProxy)
 
 public:
-	static NetworkProxy create();
-	static NetworkProxy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storage);
-	static NetworkProxy loadFromStorage(const std::shared_ptr<StoragePoint> &storage);
 	static NetworkProxy null;
 
 	NetworkProxy();

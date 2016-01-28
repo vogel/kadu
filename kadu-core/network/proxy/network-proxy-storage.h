@@ -17,20 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "network-module.h"
+#pragma once
 
-#include "network/kadu-network-config.h"
-#include "network/proxy/network-proxy-manager.h"
-#include "network/proxy/network-proxy-storage.h"
-#include NETWORK_IMPLEMENTATION_INCLUDE
+#include "exports.h"
 
-NetworkModule::NetworkModule()
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+#include <memory>
+
+class InjectedFactory;
+class NetworkProxy;
+class StoragePoint;
+
+class KADUAPI NetworkProxyStorage : public QObject
 {
-	add_type<NetworkProxyManager>();
-	add_type<NetworkProxyStorage>();
-	add_type<NETWORK_IMPLEMENTATION_CLASS_NAME>();
-}
+	Q_OBJECT
 
-NetworkModule::~NetworkModule()
-{
-}
+public:
+	Q_INVOKABLE explicit NetworkProxyStorage(QObject *parent = nullptr);
+	virtual ~NetworkProxyStorage();
+
+	NetworkProxy create();
+	NetworkProxy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+	NetworkProxy loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
+};

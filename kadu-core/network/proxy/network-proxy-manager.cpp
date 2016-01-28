@@ -24,6 +24,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "network/proxy/network-proxy-storage.h"
 #include "storage/storage-point.h"
 
 #include "network-proxy-manager.h"
@@ -45,6 +46,11 @@ void NetworkProxyManager::setConfigurationManager(ConfigurationManager *configur
 void NetworkProxyManager::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void NetworkProxyManager::setNetworkProxyStorage(NetworkProxyStorage *networkProxyStorage)
+{
+	m_networkProxyStorage = networkProxyStorage;
 }
 
 void NetworkProxyManager::init()
@@ -74,7 +80,7 @@ void NetworkProxyManager::store()
 
 NetworkProxy NetworkProxyManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return NetworkProxy::loadStubFromStorage(storagePoint);
+	return m_networkProxyStorage->loadStubFromStorage(storagePoint);
 }
 
 void NetworkProxyManager::configurationUpdated()
@@ -108,7 +114,7 @@ NetworkProxy NetworkProxyManager::byConfiguration(const QString &address, int po
 	if (ActionReturnNull == action)
 		return NetworkProxy::null;
 
-	NetworkProxy networkProxy = NetworkProxy::create();
+	auto networkProxy = m_networkProxyStorage->create();
 	networkProxy.setAddress(address);
 	networkProxy.setPort(port);
 	networkProxy.setUser(user);
