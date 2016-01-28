@@ -17,17 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "identity-module.h"
+#pragma once
 
-#include "identities/identity-manager.h"
-#include "identities/identity-storage.h"
+#include "exports.h"
 
-IdentityModule::IdentityModule()
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+#include <memory>
+
+class Identity;
+class InjectedFactory;
+class StoragePoint;
+
+class KADUAPI IdentityStorage : public QObject
 {
-	add_type<IdentityManager>();
-	add_type<IdentityStorage>();
-}
+	Q_OBJECT
 
-IdentityModule::~IdentityModule()
-{
-}
+public:
+	Q_INVOKABLE explicit IdentityStorage(QObject *parent = nullptr);
+	virtual ~IdentityStorage();
+
+	Identity create();
+	Identity loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+	Identity loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
+};

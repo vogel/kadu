@@ -34,6 +34,7 @@
 
 class Account;
 class ConfigurationManager;
+class IdentityStorage;
 class Status;
 
 class KADUAPI IdentityManager : public SimpleManager<Identity>
@@ -69,11 +70,13 @@ protected:
 
 private:
 	QPointer<ConfigurationManager> m_configurationManager;
+	QPointer<IdentityStorage> m_identityStorage;
 
 	void addDefaultIdentities();
 
 private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+	INJEQT_SET void setIdentityStorage(IdentityStorage *identityStorage);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

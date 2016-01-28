@@ -5,6 +5,7 @@ set (identities_SRCS
 	identity-module.cpp
 	identity-shared.cpp
 	identity-status-container.cpp
+	identity-storage.cpp
 	identity.cpp
 )
 

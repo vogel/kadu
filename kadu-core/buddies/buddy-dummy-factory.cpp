@@ -29,6 +29,7 @@
 #include "core/injected-factory.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "identities/identity-storage.h"
 #include "identities/identity.h"
 #include "status/status-type-manager.h"
 
@@ -68,6 +69,11 @@ void BuddyDummyFactory::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
+void BuddyDummyFactory::setIdentityStorage(IdentityStorage *identityStorage)
+{
+	m_identityStorage = identityStorage;
+}
+
 void BuddyDummyFactory::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -81,7 +87,6 @@ void BuddyDummyFactory::setStatusTypeManager(StatusTypeManager *statusTypeManage
 Buddy BuddyDummyFactory::dummy()
 {
 	auto example = m_buddyStorage->create();
-
 	example.setFirstName("Mark");
 	example.setLastName("Smith");
 	example.setNickName("Jimbo");
@@ -90,10 +95,10 @@ Buddy BuddyDummyFactory::dummy()
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
 
-	Identity identity = Identity::create();
+	auto identity = m_identityStorage->create();
 	identity.setName(QApplication::translate("Buddy", "Example identity"));
 
-	Account account = m_accountStorage->create("");
+	auto account = m_accountStorage->create("");
 	account.setAccountIdentity(identity);
 
 	auto contact = m_contactStorage->create();

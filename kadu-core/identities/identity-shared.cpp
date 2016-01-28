@@ -23,7 +23,6 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
@@ -34,22 +33,6 @@
 #include "status/status-type.h"
 
 #include "identity-shared.h"
-
-IdentityShared * IdentityShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	IdentityShared *identityShared = loadFromStorage(storagePoint);
-	identityShared->loadStub();
-
-	return identityShared;
-}
-
-IdentityShared * IdentityShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	IdentityShared *identityShared = Core::instance()->injectedFactory()->makeInjected<IdentityShared>();
-	identityShared->setStorage(storagePoint);
-
-	return identityShared;
-}
 
 IdentityShared::IdentityShared(const QUuid &uuid, QObject *parent) :
 		Shared(uuid, parent), Permanent(false)

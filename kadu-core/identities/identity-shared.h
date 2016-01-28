@@ -39,9 +39,6 @@ class KADUAPI IdentityShared : public Shared
 	Q_OBJECT
 
 public:
-	static IdentityShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
-	static IdentityShared * loadFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint);
-
 	explicit IdentityShared(const QUuid &uuid = QUuid(), QObject *parent = nullptr);
 	virtual ~IdentityShared();
 

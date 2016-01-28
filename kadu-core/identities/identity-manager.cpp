@@ -24,6 +24,7 @@
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
 #include "identities/identities-aware-object.h"
+#include "identities/identity-storage.h"
 
 #include "identity-manager.h"
 
@@ -39,6 +40,11 @@ IdentityManager::~IdentityManager()
 void IdentityManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
 	m_configurationManager = configurationManager;
+}
+
+void IdentityManager::setIdentityStorage(IdentityStorage *identityStorage)
+{
+	m_identityStorage = identityStorage;
 }
 
 void IdentityManager::init()
@@ -67,7 +73,7 @@ Identity IdentityManager::byName(const QString &name, bool create)
 	if (!create)
 		return Identity::null;
 
-	Identity newIdentity = Identity::create();
+	auto newIdentity = m_identityStorage->create();
 	newIdentity.setName(name);
 	addItem(newIdentity);
 
@@ -125,19 +131,19 @@ void IdentityManager::addDefaultIdentities()
 {
 	QMutexLocker locker(&mutex());
 
-	Identity friendsIdentity = Identity::create();
+	auto friendsIdentity = m_identityStorage->create();
 	friendsIdentity.data()->setState(StateNew);
 	friendsIdentity.setPermanent(true);
 	friendsIdentity.setName(tr("Friends"));
 	addItem(friendsIdentity);
 
-	Identity workIdentity = Identity::create();
+	auto workIdentity = m_identityStorage->create();
 	workIdentity.data()->setState(StateNew);
 	workIdentity.setPermanent(true);
 	workIdentity.setName(tr("Work"));
 	addItem(workIdentity);
 
-	Identity schoolIdentity = Identity::create();
+	auto schoolIdentity = m_identityStorage->create();
 	schoolIdentity.data()->setState(StateNew);
 	schoolIdentity.setPermanent(true);
 	schoolIdentity.setName(tr("School"));
@@ -156,7 +162,7 @@ void IdentityManager::load()
 
 Identity IdentityManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return Identity::loadStubFromStorage(storagePoint);
+	return m_identityStorage->loadStubFromStorage(storagePoint);
 }
 
 #include "moc_identity-manager.cpp"

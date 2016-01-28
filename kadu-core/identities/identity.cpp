@@ -22,7 +22,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 
 #include "identity.h"
@@ -30,21 +29,6 @@
 KaduSharedBaseClassImpl(Identity)
 
 Identity Identity::null;
-
-Identity Identity::create()
-{
-	return Core::instance()->injectedFactory()->makeInjected<IdentityShared>();
-}
-
-Identity Identity::loadStubFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint)
-{
-	return IdentityShared::loadStubFromStorage(accountStoragePoint);
-}
-
-Identity Identity::loadFromStorage(const std::shared_ptr<StoragePoint> &accountStoragePoint)
-{
-	return IdentityShared::loadFromStorage(accountStoragePoint);
-}
 
 Identity::Identity()
 {
