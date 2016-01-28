@@ -20,16 +20,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QEvent>
-#include <QtWidgets/QComboBox>
+#include "buddy-contacts-table-delegate.h"
 
 #include "accounts/account.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "model/roles.h"
 
-#include "buddy-contacts-table-delegate.h"
+#include <QtCore/QEvent>
+#include <QtWidgets/QComboBox>
 
 BuddyContactsTableDelegate::BuddyContactsTableDelegate(QObject *parent) :
 		QStyledItemDelegate(parent)
@@ -40,12 +39,17 @@ BuddyContactsTableDelegate::~BuddyContactsTableDelegate()
 {
 }
 
+void BuddyContactsTableDelegate::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	if (1 != index.column()) // not account
 		return QStyledItemDelegate::createEditor(parent, option, index);
 
-	AccountsComboBox *accountsComboBox = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(
+	AccountsComboBox *accountsComboBox = m_injectedFactory->makeInjected<AccountsComboBox>(
 		index.data(AccountRole).value<Account>().isNull(), AccountsComboBox::NotVisibleWithOneRowSourceModel, parent);
 	// this connect does not work withour Account
 	connect(accountsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));

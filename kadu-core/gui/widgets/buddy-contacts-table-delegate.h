@@ -20,20 +20,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_CONTACTS_TABLE_DELEGATE_H
-#define BUDDY_CONTACTS_TABLE_DELEGATE_H
+#pragma once
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QStyledItemDelegate>
+#include <injeqt/injeqt.h>
+
+class InjectedFactory;
 
 class BuddyContactsTableDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
-
-private slots:
-	void dataChanged();
-
-protected:
-	virtual bool eventFilter(QObject *editor, QEvent *event);
 
 public:
 	explicit BuddyContactsTableDelegate(QObject *parent = nullptr);
@@ -45,6 +42,15 @@ public:
 	virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
 	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 
-};
+protected:
+	virtual bool eventFilter(QObject *editor, QEvent *event);
 
-#endif // BUDDY_CONTACTS_TABLE_DELEGATE_H
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
+	void dataChanged();
+
+};
