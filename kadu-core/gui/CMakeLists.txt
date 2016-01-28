@@ -199,6 +199,7 @@ set (gui_SRCS
 	windows/main-configuration-window.cpp
 	windows/main-window.cpp
 	windows/message-dialog.cpp
+	windows/multilogon-window-service.cpp
 	windows/multilogon-window.cpp
 	windows/progress-window.cpp
 	windows/proxy-action-context.cpp

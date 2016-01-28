@@ -34,6 +34,7 @@ class QTableView;
 
 class AccountsComboBox;
 class Configuration;
+class InjectedFactory;
 class MultilogonService;
 class MultilogonSession;
 
@@ -41,9 +42,8 @@ class KADUAPI MultilogonWindow : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 
-	static MultilogonWindow *Instance;
-
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
 	AccountsComboBox *Accounts;
 	QTableView *SessionsTable;
@@ -56,6 +56,7 @@ class KADUAPI MultilogonWindow : public QWidget, DesktopAwareObject
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
 	void accountChanged();
@@ -66,11 +67,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	static MultilogonWindow * instance();
-
 	explicit MultilogonWindow(QWidget *parent = nullptr);
 	virtual ~MultilogonWindow();
-
-	void show();
 
 };

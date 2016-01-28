@@ -67,12 +67,10 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/group-edit-window.h"
 #include "gui/windows/main-configuration-window-service.h"
-#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/windows/multilogon-window.h"
+#include "gui/windows/multilogon-window-service.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts-window-service.h"
-#include "gui/windows/your-accounts.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/roles.h"
@@ -231,6 +229,11 @@ void KaduWindowActions::setMainConfigurationWindowService(MainConfigurationWindo
 void KaduWindowActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
+}
+
+void KaduWindowActions::setMultilogonWindowService(MultilogonWindowService *multilogonWindowService)
+{
+	m_multilogonWindowService = multilogonWindowService;
 }
 
 void KaduWindowActions::setMyself(Myself *myself)
@@ -647,7 +650,7 @@ void KaduWindowActions::showMultilogonsActionActivated(QAction *sender, bool tog
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	MultilogonWindow::instance()->show();
+	m_multilogonWindowService->show();
 }
 
 void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)

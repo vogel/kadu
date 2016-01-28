@@ -31,7 +31,6 @@
 
 #include "accounts/filter/have-multilogon-filter.h"
 #include "configuration/config-file-variant-wrapper.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "icons/icons-manager.h"
@@ -41,11 +40,8 @@
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/multilogon-service.h"
-#include "activate.h"
 
 #include "multilogon-window.h"
-
-MultilogonWindow *MultilogonWindow::Instance = 0;
 
 MultilogonWindow::MultilogonWindow(QWidget *parent) :
 		QWidget(parent), DesktopAwareObject(this)
@@ -58,7 +54,6 @@ MultilogonWindow::MultilogonWindow(QWidget *parent) :
 
 MultilogonWindow::~MultilogonWindow()
 {
-	Instance = 0;
 }
 
 void MultilogonWindow::setConfiguration(Configuration *configuration)
@@ -66,26 +61,16 @@ void MultilogonWindow::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void MultilogonWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void MultilogonWindow::init()
 {
 	createGui();
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "MultilogonWindowGeometry"), QRect(0, 50, 450, 300), this);
-}
-
-MultilogonWindow * MultilogonWindow::instance()
-{
-	if (!Instance)
-		Instance = Core::instance()->injectedFactory()->makeInjected<MultilogonWindow>();
-
-	return Instance;
-}
-
-void MultilogonWindow::show()
-{
-	QWidget::show();
-
-	_activateWindow(m_configuration, this);
 }
 
 void MultilogonWindow::createGui()
@@ -98,7 +83,7 @@ void MultilogonWindow::createGui()
 	selectAccountLayout->addWidget(new QLabel(tr("Account:"), selectAccountWidget));
 	selectAccountLayout->setMargin(0);
 
-	Accounts = Core::instance()->injectedFactory()->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, selectAccountWidget);
+	Accounts = m_injectedFactory->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, selectAccountWidget);
 	Accounts->addFilter(new HaveMultilogonFilter(Accounts));
 	Accounts->setIncludeIdInDisplay(true);
 	selectAccountLayout->addWidget(Accounts);

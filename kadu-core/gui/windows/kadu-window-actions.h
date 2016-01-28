@@ -51,6 +51,7 @@ class KaduWindowService;
 class MainConfigurationWindowService;
 class MainWindow;
 class MenuInventory;
+class MultilogonWindowService;
 class Myself;
 class Parser;
 class RecentChatsAction;
@@ -72,6 +73,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MenuInventory> m_menuInventory;
+	QPointer<MultilogonWindowService> m_multilogonWindowService;
 	QPointer<Myself> m_myself;
 	QPointer<Parser> m_parser;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
@@ -125,6 +127,7 @@ private slots:
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setMultilogonWindowService(MultilogonWindowService *multilogonWindowService);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);

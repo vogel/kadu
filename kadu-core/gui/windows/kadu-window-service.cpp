@@ -88,3 +88,5 @@ std::shared_ptr<DefaultProvider<QWidget *>> KaduWindowService::mainWindowProvide
 {
 	return m_mainWindowProvider;
 }
+
+#include "moc_kadu-window-service.cpp"
