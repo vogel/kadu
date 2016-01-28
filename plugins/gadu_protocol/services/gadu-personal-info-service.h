@@ -27,6 +27,7 @@
 #include "protocols/services/personal-info-service.h"
 
 class BuddyStorage;
+class ContactStorage;
 class GaduConnection;
 class StatusTypeManager;
 
@@ -35,14 +36,12 @@ class GaduPersonalInfoService : public PersonalInfoService
 	Q_OBJECT
 
 	QPointer<BuddyStorage> m_buddyStorage;
+	QPointer<ContactStorage> m_contactStorage;
 	QPointer<GaduConnection> Connection;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	unsigned int FetchSeq;
 	unsigned int UpdateSeq;
-
-	void fetchReplyReceived(gg_pubdir50_t res);
-	void updateReplyReceived(gg_pubdir50_t res);
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventPubdir50Read(struct gg_event *e);
@@ -50,6 +49,7 @@ class GaduPersonalInfoService : public PersonalInfoService
 
 private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 public:

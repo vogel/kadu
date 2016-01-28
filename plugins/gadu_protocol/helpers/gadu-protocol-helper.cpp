@@ -21,6 +21,7 @@
 #include <QtWidgets/QApplication>
 
 #include "buddies/buddy-storage.h"
+#include "contacts/contact-storage.h"
 #include "debug.h"
 
 #include "gadu-protocol-helper.h"
@@ -139,11 +140,11 @@ bool GaduProtocolHelper::isConnectionErrorFatal(GaduProtocol::GaduError error)
 	}
 }
 
-Buddy GaduProtocolHelper::searchResultToBuddy(StatusTypeManager *statusTypeManager, BuddyStorage *buddyStorage, Account account, gg_pubdir50_t res, int number)
+Buddy GaduProtocolHelper::searchResultToBuddy(StatusTypeManager *statusTypeManager, BuddyStorage *buddyStorage, ContactStorage *contactStorage, Account account, gg_pubdir50_t res, int number)
 {
 	Buddy result = buddyStorage->create();
 
-	Contact contact = Contact::create();
+	Contact contact = contactStorage->create();
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(result);
 	contact.setId(gg_pubdir50_get(res, number, GG_PUBDIR50_UIN));

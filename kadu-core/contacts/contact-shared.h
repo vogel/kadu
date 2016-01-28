@@ -94,9 +94,6 @@ protected:
 	virtual bool shouldStore();
 
 public:
-	static ContactShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint);
-	static ContactShared * loadFromStorage(const std::shared_ptr<StoragePoint> &contactStoragePoint);
-
 	explicit ContactShared(const QUuid &uuid = QUuid());
 	virtual ~ContactShared();
 

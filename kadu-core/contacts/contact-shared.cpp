@@ -28,7 +28,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "misc/change-notifier.h"
 #include "protocols/protocol-factory.h"
@@ -38,22 +37,6 @@
 #include "roster/roster-entry.h"
 
 #include "contact-shared.h"
-
-ContactShared * ContactShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	ContactShared *result = loadFromStorage(storagePoint);
-	result->loadStub();
-
-	return result;
-}
-
-ContactShared * ContactShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	ContactShared *result = Core::instance()->injectedFactory()->makeInjected<ContactShared>();
-	result->setStorage(storagePoint);
-
-	return result;
-}
 
 ContactShared::ContactShared(const QUuid &uuid) :
 		Shared(uuid),

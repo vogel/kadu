@@ -24,6 +24,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-storage.h"
 #include "buddies/buddy.h"
+#include "contacts/contact-storage.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
 #include "icons/icons-manager.h"
@@ -55,6 +56,11 @@ void BuddyDummyFactory::setAvatarManager(AvatarManager *avatarManager)
 void BuddyDummyFactory::setBuddyStorage(BuddyStorage *buddyStorage)
 {
 	m_buddyStorage = buddyStorage;
+}
+
+void BuddyDummyFactory::setContactStorage(ContactStorage *contactStorage)
+{
+	m_contactStorage = contactStorage;
 }
 
 void BuddyDummyFactory::setIconsManager(IconsManager *iconsManager)
@@ -90,7 +96,7 @@ Buddy BuddyDummyFactory::dummy()
 	Account account = m_accountStorage->create("");
 	account.setAccountIdentity(identity);
 
-	Contact contact = Contact::create();
+	auto contact = m_contactStorage->create();
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(example);
 	contact.setId("999999");

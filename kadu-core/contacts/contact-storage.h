@@ -17,21 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "contact-module.h"
+#pragma once
 
-#include "contacts/contact-manager.h"
-#include "contacts/contact-parser-tags.h"
-#include "contacts/contact-storage.h"
-#include "contacts/model/contact-data-extractor.h"
+#include "exports.h"
 
-ContactModule::ContactModule()
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+#include <memory>
+
+class Contact;
+class InjectedFactory;
+class StoragePoint;
+
+class KADUAPI ContactStorage : public QObject
 {
-	add_type<ContactDataExtractor>();
-	add_type<ContactManager>();
-	add_type<ContactParserTags>();
-	add_type<ContactStorage>();
-}
+	Q_OBJECT
 
-ContactModule::~ContactModule()
-{
-}
+public:
+	Q_INVOKABLE explicit ContactStorage(QObject *parent = nullptr);
+	virtual ~ContactStorage();
+
+	Contact create();
+	Contact loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+	Contact loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
+};

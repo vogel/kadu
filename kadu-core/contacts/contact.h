@@ -46,9 +46,6 @@ class KADUAPI Contact : public SharedBase<ContactShared>
 	KaduSharedBaseClass(Contact)
 
 public:
-	static Contact create();
-	static Contact loadStubFromStorage(const std::shared_ptr<StoragePoint> &storage);
-	static Contact loadFromStorage(const std::shared_ptr<StoragePoint> &storage);
 	static Contact null;
 
 	static Contact contactWithHigherStatus(const Contact &c1, const Contact &c2);

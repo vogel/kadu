@@ -31,6 +31,7 @@ class BuddyPreferredManager;
 class BuddyStorage;
 class ChatConfigurationHolder;
 class ChatStorage;
+class ContactStorage;
 class FormattedStringFactory;
 class Myself;
 class WebkitMessagesViewFactory;
@@ -54,6 +55,7 @@ private:
 	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatStorage> m_chatStorage;
+	QPointer<ContactStorage> m_contactStorage;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<Myself> m_myself;
 	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
@@ -63,9 +65,10 @@ private:
 
 private slots:
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);

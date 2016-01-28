@@ -30,6 +30,7 @@ class AccountStorage;
 class AvatarManager;
 class BuddyStorage;
 class Buddy;
+class ContactStorage;
 class IconsManager;
 class InjectedFactory;
 class StatusTypeManager;
@@ -49,6 +50,7 @@ private:
 	QPointer<AccountStorage> m_accountStorage;
 	QPointer<AvatarManager> m_avatarManager;
 	QPointer<BuddyStorage> m_buddyStorage;
+	QPointer<ContactStorage> m_contactStorage;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<StatusTypeManager> m_statusTypeManager;
@@ -57,6 +59,7 @@ private slots:
 	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
 	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);

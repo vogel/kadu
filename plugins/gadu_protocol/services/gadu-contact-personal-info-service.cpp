@@ -19,6 +19,7 @@
  */
 
 #include "buddies/buddy-storage.h"
+#include "contacts/contact-storage.h"
 #include "misc/misc.h"
 #include "status/status-type-manager.h"
 
@@ -36,6 +37,11 @@ GaduContactPersonalInfoService::GaduContactPersonalInfoService(Account account, 
 void GaduContactPersonalInfoService::setBuddyStorage(BuddyStorage *buddyStorage)
 {
 	m_buddyStorage = buddyStorage;
+}
+
+void GaduContactPersonalInfoService::setContactStorage(ContactStorage *contactStorage)
+{
+	m_contactStorage = contactStorage;
 }
 
 void GaduContactPersonalInfoService::setConnection(GaduConnection *connection)
@@ -62,7 +68,7 @@ void GaduContactPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		return;
 	}
 
-	Buddy result = GaduProtocolHelper::searchResultToBuddy(m_statusTypeManager, m_buddyStorage, account(), res, 0);
+	Buddy result = GaduProtocolHelper::searchResultToBuddy(m_statusTypeManager, m_buddyStorage, m_contactStorage, account(), res, 0);
 	emit personalInfoAvailable(result);
 }
 

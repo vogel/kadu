@@ -24,6 +24,7 @@
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "chat/chat-details-contact.h"
 #include "chat/chat-storage.h"
+#include "contacts/contact-storage.h"
 #include "core/myself.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
@@ -57,6 +58,11 @@ void ChatStylePreview::setChatConfigurationHolder(ChatConfigurationHolder *chatC
 void ChatStylePreview::setChatStorage(ChatStorage *chatStorage)
 {
 	m_chatStorage = chatStorage;
+}
+
+void ChatStylePreview::setContactStorage(ContactStorage *contactStorage)
+{
+	m_contactStorage = contactStorage;
 }
 
 void ChatStylePreview::setBuddyStorage(BuddyStorage *buddyStorage)
@@ -107,7 +113,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 
 	auto buddy = m_buddyStorage->create();
 	buddy.setDisplay(m_myself->buddy().display());
-	auto contact = Contact::create();
+	auto contact = m_contactStorage->create();
 	contact.setId("id@network");
 	contact.setOwnerBuddy(buddy);
 

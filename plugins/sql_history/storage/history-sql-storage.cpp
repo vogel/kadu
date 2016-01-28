@@ -44,6 +44,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact-storage.h"
 #include "core/injected-factory.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -126,6 +127,11 @@ void HistorySqlStorage::setChatManager(ChatManager *chatManager)
 void HistorySqlStorage::setChatStorage(ChatStorage *chatStorage)
 {
 	m_chatStorage = chatStorage;
+}
+
+void HistorySqlStorage::setContactStorage(ContactStorage *contactStorage)
+{
+	m_contactStorage = contactStorage;
 }
 
 void HistorySqlStorage::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
@@ -806,7 +812,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 			const Buddy &buddy = m_buddyStorage->create();
 			buddy.setDisplay("?");
 
-			contact = Contact::create();
+			contact = m_contactStorage->create();
 			contact.setOwnerBuddy(buddy);
 
 			result.setTalkable(Talkable(contact));
@@ -1086,7 +1092,7 @@ SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		Contact sender = ContactsMapping->contactById(query.value(1).toInt());
 		if (!sender)
 		{
-			Contact sender = Contact::create();
+			Contact sender = m_contactStorage->create();
 			Buddy senderBuddy = m_buddyStorage->create();
 			senderBuddy.setDisplay("?");
 			sender.setOwnerBuddy(senderBuddy);

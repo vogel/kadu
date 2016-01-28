@@ -29,6 +29,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "contacts/contact-storage.h"
 #include "core/myself.h"
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier-lock.h"
@@ -64,6 +65,11 @@ void ContactManager::setConfigurationManager(ConfigurationManager *configuration
 void ContactManager::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void ContactManager::setContactStorage(ContactStorage *contactStorage)
+{
+	m_contactStorage = contactStorage;
 }
 
 void ContactManager::setMyself(Myself *myself)
@@ -171,7 +177,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	if (action == ActionReturnNull)
 		return Contact::null;
 
-	Contact contact = Contact::create();
+	Contact contact = m_contactStorage->create();
 
 	ChangeNotifierLock lock(contact.rosterEntry()->hasLocalChangesNotifier(), ChangeNotifierLock::ModeForget); // don't emit dirty signals
 	contact.setId(id);
@@ -254,7 +260,7 @@ void ContactManager::loaded()
 
 Contact ContactManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return Contact::loadStubFromStorage(storagePoint);
+	return m_contactStorage->loadStubFromStorage(storagePoint);
 }
 
 #include "moc_contact-manager.cpp"

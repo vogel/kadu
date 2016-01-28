@@ -27,6 +27,7 @@
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-storage.h"
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -53,6 +54,11 @@ void GaduListHelper::setBuddyManager(BuddyManager *buddyManager)
 void GaduListHelper::setBuddyStorage(BuddyStorage *buddyStorage)
 {
 	m_buddyStorage = buddyStorage;
+}
+
+void GaduListHelper::setContactStorage(ContactStorage *contactStorage)
+{
+	m_contactStorage = contactStorage;
 }
 
 void GaduListHelper::setGroupManager(GroupManager *groupManager)
@@ -261,7 +267,7 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 			QDomElement numberElement = contactElement.firstChildElement("GGNumber");
 			if (!numberElement.text().isEmpty() && numberElement.text() != account.id())
 			{
-				Contact contact = Contact::create();
+				Contact contact = m_contactStorage->create();
 				contact.setContactAccount(account);
 				contact.setId(numberElement.text());
 				contact.data()->setState(StorableObject::StateNew);
@@ -318,7 +324,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 			uin = 0;
 		if (uin && QString::number(uin) != account.id())
 		{
-			Contact contact = Contact::create();
+			Contact contact = m_contactStorage->create();
 			contact.setContactAccount(account);
 			contact.setId(QString::number(uin));
 			contact.data()->setState(StorableObject::StateNew);
@@ -386,7 +392,7 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 			uin = 0;
 		if (uin && QString::number(uin) != account.id())
 		{
-			Contact contact = Contact::create();
+			Contact contact = m_contactStorage->create();
 			contact.setContactAccount(account);
 			contact.setId(QString::number(uin));
 			contact.data()->setState(StorableObject::StateNew);

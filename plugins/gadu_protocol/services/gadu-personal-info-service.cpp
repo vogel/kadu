@@ -19,6 +19,7 @@
  */
 
 #include "buddies/buddy-storage.h"
+#include "contacts/contact-storage.h"
 #include "misc/misc.h"
 #include "status/status-type-manager.h"
 
@@ -40,6 +41,11 @@ GaduPersonalInfoService::~GaduPersonalInfoService()
 void GaduPersonalInfoService::setBuddyStorage(BuddyStorage *buddyStorage)
 {
 	m_buddyStorage = buddyStorage;
+}
+
+void GaduPersonalInfoService::setContactStorage(ContactStorage *contactStorage)
+{
+	m_contactStorage = contactStorage;
 }
 
 void GaduPersonalInfoService::setConnection(GaduConnection *connection)
@@ -66,7 +72,7 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		return;
 	}
 
-	Buddy result = GaduProtocolHelper::searchResultToBuddy(m_statusTypeManager, m_buddyStorage, account(), res, 0);
+	Buddy result = GaduProtocolHelper::searchResultToBuddy(m_statusTypeManager, m_buddyStorage, m_contactStorage, account(), res, 0);
 
 	// inverted values for "self" data
 	// this is why gadu protocol suxx

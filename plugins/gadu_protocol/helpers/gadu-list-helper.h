@@ -29,6 +29,7 @@ class BuddyList;
 class BuddyManager;
 class BuddyStorage;
 class Buddy;
+class ContactStorage;
 class Contact;
 class GroupManager;
 
@@ -59,11 +60,13 @@ public:
 private:
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<BuddyStorage> m_buddyStorage;
+	QPointer<ContactStorage> m_contactStorage;
 	QPointer<GroupManager> m_groupManager;
 
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 	INJEQT_SET void setGroupManager(GroupManager *groupManager);
 
 };

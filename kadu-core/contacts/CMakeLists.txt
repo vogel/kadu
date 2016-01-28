@@ -6,6 +6,7 @@ set (contacts_SRCS
 	contact-set.cpp
 	contact-set-configuration-helper.cpp
 	contact-shared.cpp
+	contact-storage.cpp
 
 	model/buddy-contact-model.cpp
 	model/chat-adapter.cpp

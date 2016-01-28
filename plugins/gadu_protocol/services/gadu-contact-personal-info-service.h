@@ -26,6 +26,7 @@
 #include "protocols/services/contact-personal-info-service.h"
 
 class BuddyStorage;
+class ContactStorage;
 class GaduConnection;
 class StatusTypeManager;
 
@@ -34,6 +35,7 @@ class GaduContactPersonalInfoService : public ContactPersonalInfoService
 	Q_OBJECT
 
 	QPointer<BuddyStorage> m_buddyStorage;
+	QPointer<ContactStorage> m_contactStorage;
 	QPointer<GaduConnection> Connection;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 
@@ -45,6 +47,7 @@ class GaduContactPersonalInfoService : public ContactPersonalInfoService
 
 private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 public:

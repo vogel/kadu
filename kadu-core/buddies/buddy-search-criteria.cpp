@@ -22,6 +22,7 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy-storage.h"
+#include "contacts/contact-storage.h"
 
 #include "buddy-search-criteria.h"
 
@@ -40,6 +41,11 @@ void BuddySearchCriteria::setBuddyStorage(BuddyStorage *buddyStorage)
 	m_buddyStorage = buddyStorage;
 }
 
+void BuddySearchCriteria::setContactStorage(ContactStorage *contactStorage)
+{
+	m_contactStorage = contactStorage;
+}
+
 void BuddySearchCriteria::init()
 {
 	SearchBuddy = m_buddyStorage->create();
@@ -52,7 +58,7 @@ void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 	Contact contact = contactslist.isEmpty() ? Contact::null : contactslist.at(0);
 	if (!contact)
 	{
-		contact = Contact::create();
+		contact = m_contactStorage->create();
 		contact.setContactAccount(account);
 		contact.setOwnerBuddy(SearchBuddy);
 	}

@@ -28,6 +28,7 @@
 #include <injeqt/injeqt.h>
 
 class BuddyStorage;
+class ContactStorage;
 
 class KADUAPI BuddySearchCriteria : public QObject
 {
@@ -56,9 +57,11 @@ public:
 
 private:
 	QPointer<BuddyStorage> m_buddyStorage;
+	QPointer<ContactStorage> m_contactStorage;
 
 private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 	INJEQT_INIT void init();
 
 };
