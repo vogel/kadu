@@ -29,6 +29,7 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
+#include "message/message-storage.h"
 
 #include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppMessage.h>
@@ -61,6 +62,11 @@ void JabberRoomChatService::setChatManager(ChatManager *chatManager)
 void JabberRoomChatService::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
+}
+
+void JabberRoomChatService::setMessageStorage(MessageStorage *messageStorage)
+{
+	m_messageStorage = messageStorage;
 }
 
 void JabberRoomChatService::setPresenceService(JabberPresenceService *presenceService)
@@ -185,7 +191,7 @@ Message JabberRoomChatService::handleReceivedMessage(const QXmppMessage &xmppMes
 	buddy.setDisplay(jid.resource());
 	buddy.setTemporary(true);
 
-	auto result = Message::create();
+	auto result = m_messageStorage->create();
 	result.setMessageChat(roomChat->chat());
 	result.setMessageSender(contact);
 

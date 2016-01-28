@@ -23,6 +23,7 @@
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "message/message-filter-service.h"
+#include "message/message-storage.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 #include "services/message-transformer-service.h"
@@ -46,6 +47,11 @@ void MessageManager::setAccountManager(AccountManager *accountManager)
 void MessageManager::setMessageFilterService(MessageFilterService *messageFilterService)
 {
 	m_messageFilterService = messageFilterService;
+}
+
+void MessageManager::setMessageStorage(MessageStorage *messageStorage)
+{
+	m_messageStorage = messageStorage;
 }
 
 void MessageManager::setMessageTransformerService(MessageTransformerService *messageTransformerService)
@@ -120,7 +126,7 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &content, bool 
 
 Message MessageManager::createOutgoingMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content)
 {
-	Message message = Message::create();
+	Message message = m_messageStorage->create();
 	message.setMessageChat(chat);
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());

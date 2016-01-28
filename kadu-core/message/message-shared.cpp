@@ -22,7 +22,6 @@
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
@@ -34,20 +33,6 @@
 #include "misc/change-notifier.h"
 
 #include "message-shared.h"
-
-MessageShared * MessageShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint)
-{
-	MessageShared *result = loadFromStorage(messageStoragePoint);
-	result->loadStub();
-	return result;
-}
-
-MessageShared * MessageShared::loadFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint)
-{
-	MessageShared *result = Core::instance()->injectedFactory()->makeInjected<MessageShared>();
-	result->setStorage(messageStoragePoint);
-	return result;
-}
 
 MessageShared::MessageShared(const QUuid &uuid) :
 		Shared(uuid), Status(MessageStatusUnknown), Type(MessageTypeUnknown)

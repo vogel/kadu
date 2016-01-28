@@ -33,6 +33,7 @@ class Chat;
 class ConfigurationManager;
 class Configuration;
 class Contact;
+class MessageStorage;
 class Message;
 class SortedMessages;
 
@@ -184,6 +185,7 @@ private:
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<Configuration> m_configuration;
+	QPointer<MessageStorage> m_messageStorage;
 
 	QList<Message> m_unreadMessages;
 
@@ -201,6 +203,7 @@ private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

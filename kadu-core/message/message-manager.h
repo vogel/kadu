@@ -30,6 +30,7 @@
 class AccountManager;
 class FormattedStringFactory;
 class MessageFilterService;
+class MessageStorage;
 class MessageTransformerService;
 
 /**
@@ -121,6 +122,7 @@ signals:
 private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<MessageFilterService> m_messageFilterService;
+	QPointer<MessageStorage> m_messageStorage;
 	QPointer<MessageTransformerService> m_messageTransformerService;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
@@ -141,6 +143,7 @@ private slots:
 	 * @param messageFilterService message filter service for this service
 	 */
 	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
+	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 
 	/**
 	 * @short Set message transformer service for this service.

@@ -32,6 +32,7 @@ class Chat;
 class ChatDetailsRoom;
 class ChatManager;
 class ContactManager;
+class MessageStorage;
 class Message;
 
 class QXmppClient;
@@ -61,6 +62,7 @@ private:
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<JabberPresenceService> m_presenceService;
+	QPointer<MessageStorage> m_messageStorage;
 
 	QMap<Chat, JabberRoomChat *> m_chats;
 
@@ -73,6 +75,7 @@ private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 	INJEQT_INIT void init();
 
 	void connected();

@@ -54,6 +54,7 @@ class IconsManager;
 class InjectedFactory;
 class KaduWindowService;
 class MessageManager;
+class MessageStorage;
 class Protocol;
 class SortedMessages;
 class TalkableProxyModel;
@@ -78,6 +79,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MessageManager> m_messageManager;
+	QPointer<MessageStorage> m_messageStorage;
 	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
 
 	Chat CurrentChat;
@@ -121,6 +123,7 @@ private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
 	INJEQT_INIT void init();
 

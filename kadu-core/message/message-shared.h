@@ -40,9 +40,6 @@ class MessageShared : public Shared
 	Q_OBJECT
 
 public:
-	static MessageShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint);
-	static MessageShared * loadFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint);
-
 	explicit MessageShared(const QUuid &uuid = QUuid());
 	virtual ~MessageShared();
 

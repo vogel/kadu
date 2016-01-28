@@ -70,6 +70,7 @@
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
+#include "message/message-storage.h"
 #include "message/sorted-messages.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
@@ -167,6 +168,11 @@ void ChatWidget::setKaduWindowService(KaduWindowService *kaduWindowService)
 void ChatWidget::setMessageManager(MessageManager *messageManager)
 {
 	m_messageManager = messageManager;
+}
+
+void ChatWidget::setMessageStorage(MessageStorage *messageStorage)
+{
+	m_messageStorage = messageStorage;
 }
 
 void ChatWidget::setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory)
@@ -444,7 +450,7 @@ void ChatWidget::appendSystemMessage(const QString &content)
 
 void ChatWidget::appendSystemMessage(std::unique_ptr<FormattedString> &&content)
 {
-	Message message = Message::create();
+	Message message = m_messageStorage->create();
 	message.setMessageChat(CurrentChat);
 	message.setType(MessageTypeSystem);
 	message.setContent(std::move(content));
@@ -763,7 +769,7 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatState state)
 	if (CurrentContactActivity == ChatState::Gone)
 	{
 		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
-		Message message = Message::create();
+		Message message = m_messageStorage->create();
 		message.setMessageChat(CurrentChat);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);

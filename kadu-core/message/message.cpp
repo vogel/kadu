@@ -20,7 +20,6 @@
 
 #include "chat/chat.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "formatted-string/formatted-string.h"
 
@@ -29,21 +28,6 @@
 KaduSharedBaseClassImpl(Message)
 
 Message Message::null;
-
-Message Message::create()
-{
-	return Core::instance()->injectedFactory()->makeInjected<MessageShared>();
-}
-
-Message Message::loadStubFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint)
-{
-	return MessageShared::loadStubFromStorage(messageStoragePoint);
-}
-
-Message Message::loadFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint)
-{
-	return MessageShared::loadFromStorage(messageStoragePoint);
-}
 
 Message::Message()
 {

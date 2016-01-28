@@ -38,6 +38,7 @@
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
+#include "message/message-storage.h"
 #include "message/raw-message.h"
 #include "misc/misc.h"
 #include "services/image-storage-service.h"
@@ -115,6 +116,11 @@ void GaduChatService::setIconsManager(IconsManager *iconsManager)
 void GaduChatService::setImageStorageService(ImageStorageService *imageStorageService)
 {
 	CurrentImageStorageService = imageStorageService;
+}
+
+void GaduChatService::setMessageStorage(MessageStorage *messageStorage)
+{
+	m_messageStorage = messageStorage;
 }
 
 void GaduChatService::setConnection(GaduConnection *connection)
@@ -289,7 +295,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		}
 	}
 
-	Message message = Message::create();
+	Message message = m_messageStorage->create();
 	message.setMessageChat(chat);
 	message.setType(type);
 	message.setMessageSender(sender);

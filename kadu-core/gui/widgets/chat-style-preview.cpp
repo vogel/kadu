@@ -30,6 +30,7 @@
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "message/message-storage.h"
 
 #include <QtWidgets/QHBoxLayout>
 
@@ -75,6 +76,11 @@ void ChatStylePreview::setFormattedStringFactory(FormattedStringFactory *formatt
 	m_formattedStringFactory = formattedStringFactory;
 }
 
+void ChatStylePreview::setMessageStorage(MessageStorage *messageStorage)
+{
+	m_messageStorage = messageStorage;
+}
+
 void ChatStylePreview::setMyself(Myself *myself)
 {
 	m_myself = myself;
@@ -117,7 +123,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	contact.setId("id@network");
 	contact.setOwnerBuddy(buddy);
 
-	auto sentMessage = Message::create();
+	auto sentMessage = m_messageStorage->create();
 	sentMessage.setMessageChat(chat);
 	sentMessage.setType(MessageTypeSent);
 	sentMessage.setMessageSender(contact);
@@ -125,7 +131,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	sentMessage.setReceiveDate(QDateTime::currentDateTime());
 	sentMessage.setSendDate(QDateTime::currentDateTime());
 
-	auto receivedMessage = Message::create();
+	auto receivedMessage = m_messageStorage->create();
 	receivedMessage.setMessageChat(chat);
 	receivedMessage.setType(MessageTypeReceived);
 	receivedMessage.setMessageSender(m_buddyPreferredManager->preferredContact(example));

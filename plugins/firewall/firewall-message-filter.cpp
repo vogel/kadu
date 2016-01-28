@@ -61,6 +61,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "icons/icons-manager.h"
 #include "message/message-filter-service.h"
 #include "message/message-manager.h"
+#include "message/message-storage.h"
 #include "misc/paths-provider.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
@@ -137,6 +138,11 @@ void FirewallMessageFilter::setKaduWindowService(KaduWindowService *kaduWindowSe
 void FirewallMessageFilter::setMessageManager(MessageManager *messageManager)
 {
 	m_messageManager = messageManager;
+}
+
+void FirewallMessageFilter::setMessageStorage(MessageStorage *messageStorage)
+{
+	m_messageStorage = messageStorage;
 }
 
 void FirewallMessageFilter::setNotificationManager(NotificationManager *notificationManager)
@@ -259,7 +265,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 		{
 			if (m_history->currentStorage())
 			{
-				Message msg = Message::create();
+				Message msg = m_messageStorage->create();
 				msg.setContent(m_formattedStringFactory->fromHtml(message.htmlContent()));
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());

@@ -24,6 +24,7 @@
 #include "chat/chat-details-buddy.h"
 #include "chat/chat.h"
 #include "configuration/configuration-manager.h"
+#include "message/message-storage.h"
 #include "message/message.h"
 #include "message/sorted-messages.h"
 
@@ -52,6 +53,11 @@ void UnreadMessageRepository::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void UnreadMessageRepository::setMessageStorage(MessageStorage *messageStorage)
+{
+	m_messageStorage = messageStorage;
+}
+
 void UnreadMessageRepository::init()
 {
 	m_configurationManager->registerStorableObject(this);
@@ -77,7 +83,7 @@ bool UnreadMessageRepository::importFromPendingMessages()
 		auto uuid = QUuid{storagePoint->point().attribute("uuid")};
 		if (!uuid.isNull())
 		{
-			auto message = Message::loadStubFromStorage(storagePoint);
+			auto message = m_messageStorage->loadStubFromStorage(storagePoint);
 			addUnreadMessage(message);
 
 			// reset storage for message as it will be stored in other place
@@ -115,7 +121,7 @@ void UnreadMessageRepository::load()
 		auto uuid = QUuid{storagePoint->point().attribute("uuid")};
 		if (!uuid.isNull())
 		{
-			auto item = Message::loadStubFromStorage(storagePoint);
+			auto item = m_messageStorage->loadStubFromStorage(storagePoint);
 			addUnreadMessage(item);
 		}
 	}

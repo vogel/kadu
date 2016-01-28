@@ -53,6 +53,7 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
 #include "icons/icons-manager.h"
+#include "message/message-storage.h"
 #include "message/message.h"
 #include "message/sorted-messages.h"
 #include "misc/misc.h"
@@ -147,6 +148,11 @@ void HistorySqlStorage::setIconsManager(IconsManager *iconsManager)
 void HistorySqlStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void HistorySqlStorage::setMessageStorage(MessageStorage *messageStorage)
+{
+	m_messageStorage = messageStorage;
 }
 
 void HistorySqlStorage::setStatusTypeManager(StatusTypeManager *statusTypeManager)
@@ -1098,7 +1104,7 @@ SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 			sender.setOwnerBuddy(senderBuddy);
 		}
 
-		auto message = Message::create();
+		auto message = m_messageStorage->create();
 		message.setMessageChat(ChatsMapping->chatById(query.value(0).toInt()));
 		message.setType(type);
 		message.setMessageSender(sender);
@@ -1128,7 +1134,7 @@ SortedMessages HistorySqlStorage::statusesFromQuery(const Contact &contact, QSql
 		StatusType type = m_statusTypeManager->fromName(query.value(1).toString());
 		const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(type);
 
-		auto message = Message::create();
+		auto message = m_messageStorage->create();
 
 		const QString description = query.value(2).toString();
 		const QString htmlContent = description.isEmpty()
@@ -1155,7 +1161,7 @@ SortedMessages HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 	auto messages = std::vector<Message>{};
 	while (query.next())
 	{
-		auto message = Message::create();
+		auto message = m_messageStorage->create();
 		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());

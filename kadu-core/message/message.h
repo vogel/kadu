@@ -38,9 +38,6 @@ class KADUAPI Message : public SharedBase<MessageShared>
 	KaduSharedBaseClass(Message)
 
 public:
-	static Message create();
-	static Message loadStubFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint);
-	static Message loadFromStorage(const std::shared_ptr<StoragePoint> &messageStoragePoint);
 	static Message null;
 
 	Message();

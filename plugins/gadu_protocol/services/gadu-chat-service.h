@@ -42,6 +42,7 @@ class GaduConnection;
 class GaduFileTransferService;
 class IconsManager;
 class ImageStorageService;
+class MessageStorage;
 class RawMessage;
 
 /**
@@ -70,6 +71,7 @@ class GaduChatService : public ChatService
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<ImageStorageService> CurrentImageStorageService;
 	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<MessageStorage> m_messageStorage;
 
 	QPointer<GaduConnection> Connection;
 
@@ -96,6 +98,7 @@ private slots:
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 
 	void removeTimeoutUndeliveredMessages();
 

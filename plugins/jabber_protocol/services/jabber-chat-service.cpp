@@ -43,6 +43,7 @@
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
+#include "message/message-storage.h"
 #include "message/message.h"
 #include "message/raw-message.h"
 #include "misc/misc.h"
@@ -91,6 +92,11 @@ void JabberChatService::setChatStateService(JabberChatStateService *chatStateSer
 void JabberChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	m_formattedStringFactory = formattedStringFactory;
+}
+
+void JabberChatService::setMessageStorage(MessageStorage *messageStorage)
+{
+	m_messageStorage = messageStorage;
 }
 
 void JabberChatService::setResourceService(JabberResourceService *resourceService)
@@ -226,7 +232,7 @@ Message JabberChatService::handleNormalReceivedMessage(const QXmppMessage &xmppM
 
 	contact.addProperty("jabber:chat-resource", jid.resource(), CustomProperties::NonStorable);
 
-	auto message = Message::create();
+	auto message = m_messageStorage->create();
 	message.setMessageChat(chat);
 	message.setMessageSender(contact);
 

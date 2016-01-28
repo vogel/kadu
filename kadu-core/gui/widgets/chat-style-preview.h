@@ -33,6 +33,7 @@ class ChatConfigurationHolder;
 class ChatStorage;
 class ContactStorage;
 class FormattedStringFactory;
+class MessageStorage;
 class Myself;
 class WebkitMessagesViewFactory;
 class WebkitMessagesView;
@@ -57,6 +58,7 @@ private:
 	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ContactStorage> m_contactStorage;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
+	QPointer<MessageStorage> m_messageStorage;
 	QPointer<Myself> m_myself;
 	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
 	owned_qptr<WebkitMessagesView> m_view;
@@ -70,6 +72,7 @@ private slots:
 	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
 	INJEQT_INIT void init();

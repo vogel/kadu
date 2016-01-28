@@ -8,6 +8,7 @@ set (message_SRCS
 	message-render-info-builder.cpp
 	message-render-info-factory.cpp
 	message-shared.cpp
+	message-storage.cpp
 	raw-message.cpp
 	sorted-messages.cpp
 	unread-message-repository.cpp
