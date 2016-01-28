@@ -38,6 +38,7 @@
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-notifications.h"
 #include "file-transfer/file-transfer-status.h"
+#include "file-transfer/file-transfer-storage.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/gui/file-transfer-actions.h"
 #include "file-transfer/gui/file-transfer-window.h"
@@ -111,6 +112,11 @@ void FileTransferManager::setFileTransferActions(FileTransferActions *fileTransf
 void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
 {
 	m_fileTransferHandlerManager = fileTransferHandlerManager;
+}
+
+void FileTransferManager::setFileTransferStorage(FileTransferStorage *fileTransferStorage)
+{
+	m_fileTransferStorage = fileTransferStorage;
 }
 
 void FileTransferManager::setIconsManager(IconsManager *iconsManager)
@@ -188,7 +194,7 @@ void FileTransferManager::removeFileTransferService(Account account)
 
 FileTransfer FileTransferManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return FileTransfer::loadStubFromStorage(storagePoint);
+	return m_fileTransferStorage->loadStubFromStorage(storagePoint);
 }
 
 void FileTransferManager::accountRegistered(Account account)

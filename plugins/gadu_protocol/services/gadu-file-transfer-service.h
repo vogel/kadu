@@ -25,6 +25,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 
+class FileTransferStorage;
 class GaduFileTransferHandler;
 class GaduIMTokenService;
 class GaduProtocol;
@@ -46,12 +47,14 @@ public:
 	void fileTransferReceived(Contact peer, QString downloadId, QString fileName);
 
 private:
+	QPointer<FileTransferStorage> m_fileTransferStorage;
 	QPointer<GaduIMTokenService> m_imTokenService;
 	QPointer<Myself> m_myself;
 
 	GaduProtocol *Protocol;
 
 private slots:
+	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
 	INJEQT_SET void setMyself(Myself *myself);
 
 };

@@ -41,9 +41,6 @@ class KADUAPI FileTransferShared : public Shared
 	Q_DISABLE_COPY(FileTransferShared)
 
 public:
-	static FileTransferShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint);
-	static FileTransferShared * loadFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint);
-
 	explicit FileTransferShared(const QUuid &uuid = QUuid{});
 	virtual ~FileTransferShared();
 

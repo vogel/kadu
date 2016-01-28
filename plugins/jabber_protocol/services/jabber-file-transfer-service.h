@@ -28,6 +28,7 @@
 
 class ContactManager;
 class FileTransferHandlerManager;
+class FileTransferStorage;
 class JabberResourceService;
 class Myself;
 
@@ -50,6 +51,7 @@ public:
 private:
 	QPointer<ContactManager> m_contactManager;
 	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
+	QPointer<FileTransferStorage> m_fileTransferStorage;
 	QPointer<JabberResourceService> m_resourceService;
 	QPointer<Myself> m_myself;
 
@@ -59,6 +61,7 @@ private:
 private slots:
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
 	INJEQT_SET void setMyself(Myself *myself);
 
 	void dataTransferProxyChanged();

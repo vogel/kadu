@@ -25,7 +25,6 @@
 #include "accounts/account.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler.h"
@@ -35,20 +34,6 @@
 #include "misc/change-notifier.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
-
-FileTransferShared * FileTransferShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint)
-{
-	auto result = loadFromStorage(fileTransferStoragePoint);
-	result->loadStub();
-	return result;
-}
-
-FileTransferShared * FileTransferShared::loadFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint)
-{
-	auto result = Core::instance()->injectedFactory()->makeInjected<FileTransferShared>();
-	result->setStorage(fileTransferStoragePoint);
-	return result;
-}
 
 FileTransferShared::FileTransferShared(const QUuid &uuid) :
 		Shared{uuid},

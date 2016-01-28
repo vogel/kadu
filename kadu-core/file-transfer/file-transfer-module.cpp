@@ -21,6 +21,7 @@
 
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "file-transfer/file-transfer-storage.h"
 #include "file-transfer/gui/file-transfer-actions.h"
 
 FileTransferModule::FileTransferModule()
@@ -28,6 +29,7 @@ FileTransferModule::FileTransferModule()
 	add_type<FileTransferActions>();
 	add_type<FileTransferHandlerManager>();
 	add_type<FileTransferManager>();
+	add_type<FileTransferStorage>();
 }
 
 FileTransferModule::~FileTransferModule()

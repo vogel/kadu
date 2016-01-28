@@ -32,6 +32,7 @@
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-type.h"
 #include "file-transfer/file-transfer-status.h"
+#include "file-transfer/file-transfer-storage.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
 
 #include <qxmpp/QXmppTransferManager.h>
@@ -60,6 +61,11 @@ void JabberFileTransferService::setContactManager(ContactManager *contactManager
 void JabberFileTransferService::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
 {
 	m_fileTransferHandlerManager = fileTransferHandlerManager;
+}
+
+void JabberFileTransferService::setFileTransferStorage(FileTransferStorage *fileTransferStorage)
+{
+	m_fileTransferStorage = fileTransferStorage;
 }
 
 void JabberFileTransferService::setMyself(Myself *myself)
@@ -109,7 +115,7 @@ void JabberFileTransferService::fileReceived(QXmppTransferJob *transferJob)
 	auto jid = Jid::parse(transferJob->jid());
 	auto peer = m_contactManager->byId(m_account, jid.bare(), ActionCreateAndAdd);
 
-	auto transfer = FileTransfer::create();
+	auto transfer = m_fileTransferStorage->create();
 	transfer.setPeer(peer);
 	transfer.setTransferDirection(FileTransferDirection::Incoming);
 	transfer.setTransferType(FileTransferType::Stream);

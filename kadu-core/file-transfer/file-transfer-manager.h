@@ -40,6 +40,7 @@ class ConfigurationManager;
 class Configuration;
 class FileTransferActions;
 class FileTransferHandlerManager;
+class FileTransferStorage;
 class FileTransferWindow;
 class IconsManager;
 class InjectedFactory;
@@ -95,6 +96,7 @@ private:
 	QPointer<Configuration> m_configuration;
 	QPointer<FileTransferActions> m_fileTransferActions;
 	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
+	QPointer<FileTransferStorage> m_fileTransferStorage;
 	QPointer<FileTransferWindow> m_window;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -118,6 +120,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFileTransferActions(FileTransferActions *fileTransferActions);
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);

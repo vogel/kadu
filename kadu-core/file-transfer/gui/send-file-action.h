@@ -26,6 +26,7 @@
 
 class ContactSet;
 class FileTransferManager;
+class FileTransferStorage;
 class Myself;
 
 class SendFileAction : public ActionDescription
@@ -43,6 +44,7 @@ protected:
 
 private:
 	QPointer<FileTransferManager> m_fileTransferManager;
+	QPointer<FileTransferStorage> m_fileTransferStorage;
 	QPointer<Myself> m_myself;
 
 	void selectFilesAndSend(const ContactSet &contacts);
@@ -50,6 +52,7 @@ private:
 
 private slots:
 	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_INIT void init();
 

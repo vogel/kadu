@@ -32,6 +32,7 @@
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-status.h"
+#include "file-transfer/file-transfer-storage.h"
 #include "file-transfer/file-transfer-type.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
 #include "misc/misc.h"
@@ -53,6 +54,11 @@ GaduFileTransferService::~GaduFileTransferService()
 void GaduFileTransferService::setMyself(Myself *myself)
 {
 	m_myself = myself;
+}
+
+void GaduFileTransferService::setFileTransferStorage(FileTransferStorage *fileTransferStorage)
+{
+	m_fileTransferStorage = fileTransferStorage;
 }
 
 void GaduFileTransferService::setGaduIMTokenService(GaduIMTokenService *imTokenService)
@@ -89,7 +95,7 @@ FileTransferCanSendResult GaduFileTransferService::canSend(Contact contact)
 
 void GaduFileTransferService::fileTransferReceived(Contact peer, QString downloadId, QString fileName)
 {
-	auto transfer = FileTransfer::create();
+	auto transfer = m_fileTransferStorage->create();
 	transfer.setPeer(peer);
 	transfer.setTransferDirection(FileTransferDirection::Incoming);
 	transfer.setTransferType(FileTransferType::Url);

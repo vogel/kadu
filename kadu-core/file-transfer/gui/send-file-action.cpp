@@ -27,6 +27,7 @@
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "file-transfer/file-transfer-storage.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
 #include "gui/actions/action-context.h"
@@ -53,6 +54,11 @@ SendFileAction::~SendFileAction()
 void SendFileAction::setFileTransferManager(FileTransferManager *fileTransferManager)
 {
 	m_fileTransferManager = fileTransferManager;
+}
+
+void SendFileAction::setFileTransferStorage(FileTransferStorage *fileTransferStorage)
+{
+	m_fileTransferStorage = fileTransferStorage;
 }
 
 void SendFileAction::setMyself(Myself *myself)
@@ -139,7 +145,7 @@ void SendFileAction::selectFilesAndSend(const ContactSet &contacts)
 
 		for (auto &&fileName : filesNames)
 		{
-			auto fileTransfer = FileTransfer::create();
+			auto fileTransfer = m_fileTransferStorage->create();
 			fileTransfer.setPeer(contact);
 			fileTransfer.setTransferDirection(FileTransferDirection::Outgoing);
 

@@ -30,7 +30,6 @@
 #include "configuration/configuration.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -45,21 +44,6 @@
 KaduSharedBaseClassImpl(FileTransfer)
 
 FileTransfer FileTransfer::null;
-
-FileTransfer FileTransfer::create()
-{
-	return Core::instance()->injectedFactory()->makeInjected<FileTransferShared>();
-}
-
-FileTransfer FileTransfer::loadStubFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint)
-{
-	return FileTransferShared::loadStubFromStorage(fileTransferStoragePoint);
-}
-
-FileTransfer FileTransfer::loadFromStorage(const std::shared_ptr<StoragePoint> &fileTransferStoragePoint)
-{
-	return FileTransferShared::loadFromStorage(fileTransferStoragePoint);
-}
 
 FileTransfer::FileTransfer()
 {
