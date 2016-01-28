@@ -32,6 +32,7 @@
 
 class ChatTypeBuddy;
 class ChatTypeContactSet;
+class ChatTypeContact;
 class ChatTypeRoom;
 
 /**
@@ -54,6 +55,7 @@ class KADUAPI ChatTypeManager : public QObject
 private:
 	QPointer<ChatTypeBuddy> m_chatTypeBuddy;
 	QPointer<ChatTypeContactSet> m_chatTypeContactSet;
+	QPointer<ChatTypeContact> m_chatTypeContact;
 	QPointer<ChatTypeRoom> m_chatTypeRoom;
 
 	QList<ChatType *> ChatTypes;
@@ -109,6 +111,7 @@ signals:
 private slots:
 	INJEQT_SET void setChatTypeBuddy(ChatTypeBuddy *chatTypeBuddy);
 	INJEQT_SET void setChatTypeContactSet(ChatTypeContactSet *chatTypeContactSet);
+	INJEQT_SET void setChatTypeContact(ChatTypeContact *chatTypeContact);
 	INJEQT_SET void setChatTypeRoom(ChatTypeRoom *chatTypeRoom);
 	INJEQT_INIT void init();
 

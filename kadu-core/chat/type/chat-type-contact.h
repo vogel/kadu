@@ -17,23 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_TYPE_CONTACT_H
-#define CHAT_TYPE_CONTACT_H
-
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
+#pragma once
 
 #include "chat/type/chat-type.h"
 #include "storage/manager-common.h"
-
 #include "exports.h"
+
+#include <QtCore/QPointer>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QVariant>
+#include <injeqt/injeqt.h>
 
 class Buddy;
 class ChatManager;
 class ChatStorage;
 class Chat;
 class Contact;
+class InjectedFactory;
 
 /**
  * @addtogroup Chat
@@ -50,14 +51,11 @@ class Contact;
 class KADUAPI ChatTypeContact : public ChatType
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatTypeContact)
-
-	QStringList Aliases;
 
 public:
 	static Chat findChat(ChatManager *chatManager, ChatStorage *chatStorage, const Contact &contact, NotFoundAction notFoundAction);
 
-	explicit ChatTypeContact(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ChatTypeContact(QObject *parent = nullptr);
 	virtual ~ChatTypeContact();
 
 	virtual QString name() const;
@@ -68,6 +66,14 @@ public:
 	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;
 	virtual ChatEditWidget *createEditWidget(const Chat &chat, QWidget *parent) const;
 
+private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
+	QStringList Aliases;
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 };
 
 Q_DECLARE_METATYPE(ChatTypeContact *)
@@ -75,5 +81,3 @@ Q_DECLARE_METATYPE(ChatTypeContact *)
 /**
  * @}
  */
-
-#endif // CHAT_TYPE_CONTACT_H
