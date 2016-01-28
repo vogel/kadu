@@ -24,6 +24,7 @@ extern "C" {
 
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "message/message-manager.h"
@@ -84,6 +85,11 @@ void OtrSessionService::setChatManager(ChatManager *chatManager)
 	m_chatManager = chatManager;
 }
 
+void OtrSessionService::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
+}
+
 void OtrSessionService::setMessageManager(MessageManager *messageManager)
 {
 	CurrentMessageManager = messageManager;
@@ -125,7 +131,7 @@ void OtrSessionService::startSession(const Contact &contact)
 	else
 		emit tryingToRefreshSession(contact);
 
-	CurrentMessageManager->sendMessage(ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd), message, true);
+	CurrentMessageManager->sendMessage(ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd), message, true);
 }
 
 void OtrSessionService::endSession(const Contact &contact)

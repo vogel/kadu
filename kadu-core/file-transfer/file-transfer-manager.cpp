@@ -26,6 +26,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration-manager.h"
@@ -80,6 +81,11 @@ void FileTransferManager::setAccountManager(AccountManager *accountManager)
 void FileTransferManager::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void FileTransferManager::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void FileTransferManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -222,7 +228,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, QString loca
 	if (!m_fileTransferHandlerManager->ensureHandler(transfer))
 		return;
 
-	auto chat = ChatTypeContact::findChat(m_chatManager, transfer.peer(), ActionReturnNull);
+	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, transfer.peer(), ActionReturnNull);
 	QWidget *parent = m_chatWidgetRepository->widgetForChat(chat);
 	if (parent == nullptr)
 		parent = m_kaduWindowService->kaduWindow();
@@ -361,7 +367,7 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
 	QMutexLocker locker(&mutex());
 	addItem(fileTransfer);
-	NewFileTransferNotification::notifyIncomingFileTransfer(m_injectedFactory, m_chatManager, m_notificationManager, fileTransfer);
+	NewFileTransferNotification::notifyIncomingFileTransfer(m_injectedFactory, m_chatManager, m_chatStorage, m_notificationManager, fileTransfer);
 }
 
 void FileTransferManager::itemAboutToBeAdded(FileTransfer fileTransfer)

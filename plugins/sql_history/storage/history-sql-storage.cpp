@@ -38,6 +38,7 @@
 #include "chat/chat-details-buddy.h"
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -81,7 +82,7 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
 		HistoryStorage(parent), InitializerThread(), ImportProgressWindow(),
 		AccountsMapping(), ContactsMapping(), ChatsMapping(), DatabaseMutex(QMutex::NonRecursive),
-		ChatStorage(), StatusStorage(), SmsStorage()
+		m_historyChatStorage(), StatusStorage(), SmsStorage()
 {
 }
 
@@ -120,6 +121,11 @@ void HistorySqlStorage::setBuddyStorage(BuddyStorage *buddyStorage)
 void HistorySqlStorage::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void HistorySqlStorage::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void HistorySqlStorage::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
@@ -176,7 +182,7 @@ void HistorySqlStorage::init()
 
 	InitializerThread->start();
 
-	ChatStorage = new SqlMessagesChatStorage(this);
+	m_historyChatStorage = new SqlMessagesChatStorage(this);
 	StatusStorage = new SqlMessagesStatusStorage(this);
 	SmsStorage = new SqlMessagesSmsStorage(this);
 }
@@ -535,7 +541,7 @@ void HistorySqlStorage::deleteHistory(const Talkable &talkable)
 {
 	foreach (const Contact &contact, m_talkableConverter->toBuddy(talkable).contacts())
 	{
-		Chat chat = ChatTypeContact::findChat(m_chatManager, contact, ActionReturnNull);
+		Chat chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionReturnNull);
 		clearChatHistory(chat, QDate());
 	}
 
@@ -1157,7 +1163,7 @@ SortedMessages HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 
 HistoryMessagesStorage * HistorySqlStorage::chatStorage()
 {
-	return ChatStorage;
+	return m_historyChatStorage;
 }
 
 HistoryMessagesStorage * HistorySqlStorage::smsStorage()

@@ -32,6 +32,7 @@
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QVBoxLayout>
 
+#include "chat/chat-storage.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/web-view-highlighter.h"
@@ -52,12 +53,17 @@
 #include "search-tab.h"
 
 SearchTab::SearchTab(QWidget *parent) :
-		HistoryTab(parent), ChatStorage(0), StatusStorage(0), SmsStorage(0), SearchedStorage(&ChatStorage)
+		HistoryTab(parent), m_historyChatStorage(0), StatusStorage(0), SmsStorage(0), SearchedStorage(&m_historyChatStorage)
 {
 }
 
 SearchTab::~SearchTab()
 {
+}
+
+void SearchTab::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void SearchTab::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -178,19 +184,19 @@ void SearchTab::createGui()
 	setFocusProxy(Query);
 }
 
-void SearchTab::setChatStorage(HistoryMessagesStorage *storage)
+void SearchTab::setHistoryChatStorage(HistoryMessagesStorage *storage)
 {
-	if (ChatStorage == storage)
+	if (m_historyChatStorage == storage)
 		return;
 
-	ChatStorage = storage;
+	m_historyChatStorage = storage;
 
-	if (!ChatStorage)
+	if (!m_historyChatStorage)
 		SelectChat->setTalkables(QVector<Talkable>());
 	else
-		SelectChat->setFutureTalkables(ChatStorage->talkables());
+		SelectChat->setFutureTalkables(m_historyChatStorage->talkables());
 
-	if (*SearchedStorage == ChatStorage)
+	if (*SearchedStorage == m_historyChatStorage)
 	{
 		TimelineView->setResults(QVector<HistoryQueryResult>());
 		TimelineView->messagesView()->clearMessages();
@@ -271,7 +277,7 @@ void SearchTab::performSearch()
 	if (SearchInChats->isChecked())
 	{
 		query.setTalkable(SelectChat->currentTalkable());
-		SearchedStorage = &ChatStorage;
+		SearchedStorage = &m_historyChatStorage;
 		TimelineView->setTalkableHeader(tr("Chat"));
 	}
 	else if (SearchInStatuses->isChecked())
@@ -315,7 +321,7 @@ void SearchTab::currentDateChanged()
 	auto chat = m_talkableConverter->toChat(talkable);
 	if (!chat)
 	{
-		chat = Chat::create();
+		chat = m_chatStorage->create();
 		chat.setDisplay("?");
 	}
 	TimelineView->messagesView()->setChat(chat);

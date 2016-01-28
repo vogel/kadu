@@ -148,7 +148,7 @@ void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
 		ChatTab->setHistoryMessagesStorage(historyStorage->chatStorage());
 		StatusTab->setHistoryMessagesStorage(historyStorage->statusStorage());
 		SmsTab->setHistoryMessagesStorage(historyStorage->smsStorage());
-		MySearchTab->setChatStorage(historyStorage->chatStorage());
+		MySearchTab->setHistoryChatStorage(historyStorage->chatStorage());
 		MySearchTab->setStatusStorage(historyStorage->statusStorage());
 		MySearchTab->setSmsStorage(historyStorage->smsStorage());
 	}
@@ -157,7 +157,7 @@ void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
 		ChatTab->setHistoryMessagesStorage(0);
 		StatusTab->setHistoryMessagesStorage(0);
 		SmsTab->setHistoryMessagesStorage(0);
-		MySearchTab->setChatStorage(0);
+		MySearchTab->setHistoryChatStorage(0);
 		MySearchTab->setStatusStorage(0);
 		MySearchTab->setSmsStorage(0);
 	}

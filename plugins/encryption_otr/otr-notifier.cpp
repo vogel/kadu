@@ -18,6 +18,7 @@
  */
 
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "core/injected-factory.h"
@@ -47,6 +48,11 @@ OtrNotifier::~OtrNotifier()
 void OtrNotifier::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void OtrNotifier::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void OtrNotifier::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -86,7 +92,7 @@ void OtrNotifier::notify(const Contact &contact, const QString &message)
 	if (!MyChatWidgetRepository)
 		return;
 
-	auto chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
+	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 	auto widget = MyChatWidgetRepository->widgetForChat(chat);
 	if (!widget)
 		return;

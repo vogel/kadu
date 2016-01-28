@@ -29,6 +29,7 @@
 
 class AccountManager;
 class ChatManager;
+class ChatStorage;
 class ChatWidgetManager;
 class ContactManager;
 class IconsManager;
@@ -49,6 +50,7 @@ public:
 private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<IconsManager> m_iconsManager;
@@ -58,6 +60,7 @@ private:
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);

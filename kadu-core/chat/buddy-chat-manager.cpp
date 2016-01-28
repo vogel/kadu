@@ -26,6 +26,7 @@
 #include "chat/chat-details-buddy.h"
 #include "chat/chat-details-contact.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
 #include "protocols/protocol.h"
@@ -47,6 +48,11 @@ void BuddyChatManager::setBuddyManager(BuddyManager *buddyManager)
 void BuddyChatManager::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void BuddyChatManager::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void BuddyChatManager::init()
@@ -71,7 +77,7 @@ void BuddyChatManager::done()
 
 Chat BuddyChatManager::createAndInsertBuddyChat(const Buddy &buddy)
 {
-	Chat result = Chat::create();
+	auto result = m_chatStorage->create();
 	result.setType("Buddy");
 
 	ChatDetailsBuddy *buddyDetails = qobject_cast<ChatDetailsBuddy *>(result.details());
@@ -80,7 +86,7 @@ Chat BuddyChatManager::createAndInsertBuddyChat(const Buddy &buddy)
 	QVector<Chat> chats;
 	foreach (const Contact &contact, buddy.contacts())
 	{
-		const Chat &contactChat = ChatTypeContact::findChat(m_chatManager, contact, ActionReturnNull);
+		const Chat &contactChat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionReturnNull);
 		if (contactChat)
 			chats.append(contactChat);
 	}
@@ -99,7 +105,7 @@ void BuddyChatManager::buddyContactAdded(const Buddy &buddy, const Contact &cont
 	ChatDetailsBuddy *buddyDetails = qobject_cast<ChatDetailsBuddy *>(chat.details());
 	Q_ASSERT(buddyDetails);
 
-	buddyDetails->addChat(ChatTypeContact::findChat(m_chatManager, contact, ActionReturnNull));
+	buddyDetails->addChat(ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionReturnNull));
 }
 
 void BuddyChatManager::buddyContactRemoved(const Buddy &buddy, const Contact &contact)
@@ -111,7 +117,7 @@ void BuddyChatManager::buddyContactRemoved(const Buddy &buddy, const Contact &co
 	ChatDetailsBuddy *buddyDetails = qobject_cast<ChatDetailsBuddy *>(chat.details());
 	Q_ASSERT(buddyDetails);
 
-	buddyDetails->removeChat(ChatTypeContact::findChat(m_chatManager, contact, ActionReturnNull));
+	buddyDetails->removeChat(ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionReturnNull));
 }
 
 void BuddyChatManager::chatAdded(const Chat &addedChat)

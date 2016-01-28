@@ -24,6 +24,7 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
@@ -62,6 +63,11 @@ void TalkableConverter::setChatDataExtractor(ChatDataExtractor *chatDataExtracto
 void TalkableConverter::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void TalkableConverter::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 Account TalkableConverter::toAccount(const Talkable &talkable) const
@@ -120,11 +126,11 @@ Chat TalkableConverter::toChat(const Talkable &talkable) const
 	{
 		case Talkable::ItemBuddy:
 		{
-			auto const &chat = ChatTypeContact::findChat(m_chatManager, m_buddyPreferredManager->preferredContact2(talkable.buddy()), ActionCreateAndAdd);
+			auto const &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, m_buddyPreferredManager->preferredContact2(talkable.buddy()), ActionCreateAndAdd);
 			auto const &buddyChat = m_buddyChatManager->buddyChat(chat);
 			return buddyChat ? buddyChat : chat;
 		}
-		case Talkable::ItemContact: return ChatTypeContact::findChat(m_chatManager, talkable.contact(), ActionCreateAndAdd);
+		case Talkable::ItemContact: return ChatTypeContact::findChat(m_chatManager, m_chatStorage, talkable.contact(), ActionCreateAndAdd);
 		case Talkable::ItemChat: return talkable.chat();
 		default:
 			return Chat::null;

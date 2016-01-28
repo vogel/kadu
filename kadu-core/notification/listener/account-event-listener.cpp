@@ -23,6 +23,7 @@
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "core/injected-factory.h"
 #include "multilogon/multilogon-session.h"
 #include "notification/notification/multilogon-notification.h"
@@ -52,6 +53,11 @@ void AccountEventListener::setAccountManager(AccountManager *accountManager)
 void AccountEventListener::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void AccountEventListener::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void AccountEventListener::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -129,7 +135,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 	if (contact.isAnonymous() || !contact.contactAccount())
 		return;
 
-	Protocol *protocol = contact.contactAccount().protocolHandler();
+	auto protocol = contact.contactAccount().protocolHandler();
 	if (!protocol || !protocol->isConnected())
 		return;
 
@@ -149,7 +155,7 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 	if (contact == contact.contactAccount().accountContact()) // myself
 		return;
 
-	Status status = contact.currentStatus();
+	auto status = contact.currentStatus();
 	if (oldStatus == status)
 		return;
 
@@ -169,10 +175,10 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 			!oldStatus.isDisconnected())
 		return;
 
-	const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(status.type());
+	auto const &typeData = m_statusTypeManager->statusTypeData(status.type());
 	QString changedTo = "/To" + typeData.name();
 
-	auto statusChangedNotification = m_injectedFactory->makeInjected<StatusChangedNotification>(m_statusTypeManager, m_chatManager, changedTo, contact, statusDisplayName, description);
+	auto statusChangedNotification = m_injectedFactory->makeInjected<StatusChangedNotification>(m_statusTypeManager, m_chatManager, m_chatStorage, changedTo, contact, statusDisplayName, description);
 	m_notificationService->notify(statusChangedNotification);
 }
 

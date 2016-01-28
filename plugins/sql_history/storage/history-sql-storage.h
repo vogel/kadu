@@ -36,6 +36,7 @@ class BuddyChatManager;
 class BuddyManager;
 class BuddyStorage;
 class ChatManager;
+class ChatStorage;
 class FormattedStringFactory;
 class HistoryQuery;
 class IconsManager;
@@ -61,6 +62,7 @@ class HistorySqlStorage : public HistoryStorage
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -83,7 +85,7 @@ class HistorySqlStorage : public HistoryStorage
 
 	QMap<QString, int> DateMap;
 
-	HistoryMessagesStorage *ChatStorage;
+	HistoryMessagesStorage *m_historyChatStorage;
 	HistoryMessagesStorage *StatusStorage;
 	HistoryMessagesStorage *SmsStorage;
 
@@ -125,6 +127,7 @@ private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);

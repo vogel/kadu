@@ -54,9 +54,6 @@ class KADUAPI Chat : public SharedBase<ChatShared>
 	KaduSharedBaseClass(Chat)
 
 public:
-	static Chat create();
-	static Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &chatStoragePoint);
-	static Chat loadFromStorage(const std::shared_ptr<StoragePoint> &chatStoragePoint);
 	static Chat null;
 
 	Chat();

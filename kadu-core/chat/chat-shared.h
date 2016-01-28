@@ -98,9 +98,6 @@ protected:
 	virtual void chatTypeUnregistered(ChatType *chatType);
 
 public:
-	static ChatShared * loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
-	static ChatShared * loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
-
 	explicit ChatShared(const QUuid &uuid = QUuid::createUuid());
 	virtual ~ChatShared();
 

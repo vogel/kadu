@@ -34,37 +34,12 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "misc/change-notifier.h"
 #include "parser/parser.h"
 #include "debug.h"
 
 #include "chat-shared.h"
-
-ChatShared * ChatShared::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	ChatShared *result = loadFromStorage(storagePoint);
-	result->loadStub();
-
-	return result;
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Loads chat data from given storage point.
- * @param storagePoint storagePoint from which chat data will be loaded
- *
- * Creates new object of ChatShared type and assigns storagePoint to it.
- * Object is lazy-loaded (it will be loaded when used first time).
- */
-ChatShared * ChatShared::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	ChatShared *result = Core::instance()->injectedFactory()->makeInjected<ChatShared>();
-	result->setStorage(storagePoint);
-
-	return result;
-}
 
 /**
  * @author Rafal 'Vogel' Malinowski

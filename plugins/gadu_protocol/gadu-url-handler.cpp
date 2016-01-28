@@ -25,6 +25,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -55,6 +56,11 @@ void GaduUrlHandler::setAccountManager(AccountManager *accountManager)
 void GaduUrlHandler::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void GaduUrlHandler::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void GaduUrlHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
@@ -95,7 +101,7 @@ void GaduUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool d
 	if (gaduAccounts.count() == 1 || disableMenu)
 	{
 		const Contact &contact = m_contactManager->byId(gaduAccounts[0], gaduId, ActionCreateAndAdd);
-		const Chat &chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
+		const Chat &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 		if (chat)
 		{
 			m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
@@ -134,7 +140,7 @@ void GaduUrlHandler::accountSelected(QAction *action)
 		return;
 
 	const Contact &contact = m_contactManager->byId(account, ids[1], ActionCreateAndAdd);
-	const Chat &chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
+	const Chat &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
 

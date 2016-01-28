@@ -32,6 +32,7 @@
 class BuddyListModel;
 class BuddyManager;
 class ChatManager;
+class ChatStorage;
 class ChatWidgetManager;
 class Configuration;
 class InjectedFactory;
@@ -60,6 +61,7 @@ public:
 private:
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -78,6 +80,7 @@ private:
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);

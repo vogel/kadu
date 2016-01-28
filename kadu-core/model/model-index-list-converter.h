@@ -31,6 +31,7 @@
 
 class BuddyPreferredManager;
 class ChatManager;
+class ChatStorage;
 class UnreadMessageRepository;
 
 class ModelIndexListConverter : public QObject
@@ -49,6 +50,7 @@ public:
 private:
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	const QModelIndexList &ModelIndexList;
@@ -73,6 +75,7 @@ private:
 private slots:
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();
 

@@ -30,6 +30,7 @@
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddy-list-model.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
@@ -81,6 +82,11 @@ void OpenChatWith::setBuddyManager(BuddyManager *buddyManager)
 void OpenChatWith::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void OpenChatWith::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void OpenChatWith::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
@@ -242,7 +248,7 @@ void OpenChatWith::itemActivated(int index)
 	if (!contact)
 		return;
 
-	Chat chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 	if (!chat)
 		return;
 

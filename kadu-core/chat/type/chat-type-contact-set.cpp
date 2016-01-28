@@ -22,10 +22,11 @@
 
 #include "chat/chat-details-contact-set.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 
-Chat ChatTypeContactSet::findChat(ChatManager *chatManager, const ContactSet &contacts, NotFoundAction notFoundAction)
+Chat ChatTypeContactSet::findChat(ChatManager *chatManager, ChatStorage *chatStorage, const ContactSet &contacts, NotFoundAction notFoundAction)
 {
 	if (contacts.count() < 2)
 		return Chat::null;
@@ -57,7 +58,7 @@ Chat ChatTypeContactSet::findChat(ChatManager *chatManager, const ContactSet &co
 	if (ActionReturnNull == notFoundAction)
 		return Chat::null;
 
-	Chat chat = Chat::create();
+	auto chat = chatStorage->create();
 	chat.setChatAccount(account);
 
 	Contact contact = contacts.toContact();

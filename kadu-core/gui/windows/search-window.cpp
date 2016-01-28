@@ -29,6 +29,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/config-file-variant-wrapper.h"
@@ -118,6 +119,11 @@ void SearchWindow::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferre
 void SearchWindow::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void SearchWindow::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void SearchWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
@@ -394,8 +400,8 @@ void SearchWindow::chatFound()
 	if (!contacts.isEmpty())
 	{
 		const Chat &chat = 1 == contacts.size()
-				? ChatTypeContact::findChat(m_chatManager, *contacts.constBegin(), ActionCreateAndAdd)
-				: ChatTypeContactSet::findChat(m_chatManager, contacts, ActionCreateAndAdd);
+				? ChatTypeContact::findChat(m_chatManager, m_chatStorage, *contacts.constBegin(), ActionCreateAndAdd)
+				: ChatTypeContactSet::findChat(m_chatManager, m_chatStorage, contacts, ActionCreateAndAdd);
 		m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 	}
 }

@@ -20,6 +20,7 @@
 
 #include "chat/chat-details-contact.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
@@ -28,7 +29,7 @@
 
 #include "chat-type-contact.h"
 
-Chat ChatTypeContact::findChat(ChatManager *chatManager, const Contact &contact, NotFoundAction notFoundAction)
+Chat ChatTypeContact::findChat(ChatManager *chatManager, ChatStorage *chatStorage, const Contact &contact, NotFoundAction notFoundAction)
 {
 	Account account = contact.contactAccount();
 	if (!account)
@@ -49,7 +50,7 @@ Chat ChatTypeContact::findChat(ChatManager *chatManager, const Contact &contact,
 	if (ActionReturnNull == notFoundAction)
 		return Chat::null;
 
-	Chat chat = Chat::create();
+	auto chat = chatStorage->create();
 	chat.setChatAccount(account);
 	chat.setType("Contact");
 

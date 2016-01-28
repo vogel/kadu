@@ -23,6 +23,7 @@
 #include "accounts/account.h"
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "chat/type/chat-type-contact.h"
@@ -46,6 +47,11 @@ SqlChatsMapping::~SqlChatsMapping()
 void SqlChatsMapping::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void SqlChatsMapping::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void SqlChatsMapping::init()
@@ -189,18 +195,18 @@ QString SqlChatsMapping::chatToString(const Chat &chat)
 Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string)
 {
 	if (!account)
-		return Chat::create();
+		return m_chatStorage->create();
 
 	QStringList items = string.split(";", QString::SkipEmptyParts);
 	int len = items.length();
 
 	if (len < 2)
-		return Chat::create();
+		return m_chatStorage->create();
 
 	QString chatType = items.at(0);
 
 	if ("Room" == chatType)
-		return ChatTypeRoom::findChat(m_chatManager, account, items.at(1), ActionCreateAndAdd);
+		return ChatTypeRoom::findChat(m_chatManager, m_chatStorage, account, items.at(1), ActionCreateAndAdd);
 
 	if ("Contact" == chatType)
 	{
@@ -208,7 +214,7 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 		if (!contact)
 			return Chat::null;
 
-		return ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
+		return ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 	}
 
 	if ("ContactSet" == chatType)
@@ -223,10 +229,10 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 			contacts.insert(contact);
 		}
 
-		return ChatTypeContactSet::findChat(m_chatManager, contacts, ActionCreateAndAdd);
+		return ChatTypeContactSet::findChat(m_chatManager, m_chatStorage, contacts, ActionCreateAndAdd);
 	}
 
-	return Chat::create();
+	return m_chatStorage->create();
 }
 
 #include "moc_sql-chats-mapping.cpp"

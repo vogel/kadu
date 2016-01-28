@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,53 +19,33 @@
 
 #pragma once
 
-#include "gui/widgets/chat-edit-widget.h"
+#include "exports.h"
 
+#include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
+#include <memory>
 
-class AccountsComboBox;
-class ChatDetailsRoom;
-class ChatManager;
-class ChatStorage;
+class Chat;
 class InjectedFactory;
+class StoragePoint;
 
-class QCheckBox;
-class QLineEdit;
-
-class ChatRoomEditWidget : public ChatEditWidget
+class KADUAPI ChatStorage : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit ChatRoomEditWidget(const Chat &chat, QWidget *parent = nullptr);
-	virtual ~ChatRoomEditWidget();
+	Q_INVOKABLE explicit ChatStorage(QObject *parent = nullptr);
+	virtual ~ChatStorage();
 
-public slots:
-	virtual void apply();
-	virtual void cancel();
+	Chat create();
+	Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+	Chat loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
 	QPointer<InjectedFactory> m_injectedFactory;
 
-	AccountsComboBox *AccountCombo;
-	QLineEdit *RoomEdit;
-	QLineEdit *NickEdit;
-	QLineEdit *PasswordEdit;
-	QCheckBox *StayInRoomAfterClosingWindowCheckBox;
-	ChatDetailsRoom *RoomDetails;
-
-	void createGui();
-	void loadChatData();
-
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
-
-	void dataChanged();
 
 };

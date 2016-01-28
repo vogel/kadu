@@ -23,6 +23,7 @@
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
 
+class ChatStorage;
 class ContactSet;
 class NotificationEvent;
 
@@ -35,6 +36,6 @@ class StatusChangedNotification : public Notification
 public:
 	virtual QString groupKey() const { return CurrentContact.id(); }
 
-	explicit StatusChangedNotification(StatusTypeManager *statusTypeManager, ChatManager *chatManager, const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description);
+	explicit StatusChangedNotification(StatusTypeManager *statusTypeManager, ChatManager *chatManager, ChatStorage *chatStorage, const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description);
 	virtual ~StatusChangedNotification() {}
 };

@@ -31,6 +31,7 @@
 
 class BuddySet;
 class ChatManager;
+class ChatStorage;
 class Chat;
 class ContactSet;
 class InjectedFactory;
@@ -52,7 +53,7 @@ class KADUAPI ChatTypeContactSet : public ChatType
 	Q_OBJECT
 
 public:
-	static Chat findChat(ChatManager *chatManager, const ContactSet &contacts, NotFoundAction notFoundAction);
+	static Chat findChat(ChatManager *chatManager, ChatStorage *chatStorage, const ContactSet &contacts, NotFoundAction notFoundAction);
 
 	Q_INVOKABLE explicit ChatTypeContactSet(QObject *parent = nullptr);
 	virtual ~ChatTypeContactSet();

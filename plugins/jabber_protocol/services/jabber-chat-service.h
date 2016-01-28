@@ -29,6 +29,7 @@
 #include <qxmpp/QXmppMessage.h>
 
 class ChatManager;
+class ChatStorage;
 class ChatTypeManager;
 class Chat;
 class ContactManager;
@@ -72,6 +73,7 @@ signals:
 
 private:
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ChatTypeManager> m_chatTypeManager;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
@@ -87,6 +89,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);

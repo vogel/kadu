@@ -31,6 +31,7 @@
 
 class Account;
 class ChatManager;
+class ChatStorage;
 class Chat;
 class InjectedFactory;
 
@@ -51,7 +52,7 @@ class KADUAPI ChatTypeRoom : public ChatType
 	Q_OBJECT
 
 public:
-	static Chat findChat(ChatManager *chatManager, const Account &account, const QString &room, NotFoundAction notFoundAction);
+	static Chat findChat(ChatManager *chatManager, ChatStorage *chatStorage, const Account &account, const QString &room, NotFoundAction notFoundAction);
 
 	Q_INVOKABLE explicit ChatTypeRoom(QObject *parent = nullptr);
 	virtual ~ChatTypeRoom();

@@ -31,6 +31,7 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-manager.h"
@@ -65,6 +66,11 @@ JabberChatService::~JabberChatService()
 void JabberChatService::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void JabberChatService::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void JabberChatService::setChatTypeManager(ChatTypeManager *chatTypeManager)
@@ -216,7 +222,7 @@ Message JabberChatService::handleNormalReceivedMessage(const QXmppMessage &xmppM
 	auto jid = Jid::parse(xmppMessage.from());
 
 	auto contact = m_contactManager->byId(account(), jid.bare(), ActionCreateAndAdd);
-	auto chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
+	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 
 	contact.addProperty("jabber:chat-resource", jid.resource(), CustomProperties::NonStorable);
 

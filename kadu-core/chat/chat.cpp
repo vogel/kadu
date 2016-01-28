@@ -26,7 +26,6 @@
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 
 #include "chat.h"
@@ -40,37 +39,6 @@ KaduSharedBaseClassImpl(Chat)
  * Null Chat object (without @link ChatShared @endlink attached).
  */
 Chat Chat::null;
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Creates new empty Chat object.
- * @return new empty Chat object, with @link ChatShared @endlink attached.
- *
- * Creates new empty Chat object, with @link ChatShared @endlink attached.
- */
-Chat Chat::create()
-{
-	return Core::instance()->injectedFactory()->makeInjected<ChatShared>();
-}
-
-Chat Chat::loadStubFromStorage(const std::shared_ptr<StoragePoint> &chatStoragePoint)
-{
-	return ChatShared::loadStubFromStorage(chatStoragePoint);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Loads Chat object from storage.
- * @param chatStoragePoint storage point from which chat data will be loaded
- * @return Chat object loaded from given storage poin.
- *
- * Loads Chat object from storage point and returns it. Real data will be loaded
- * at first usage of Chat object.
- */
-Chat Chat::loadFromStorage(const std::shared_ptr<StoragePoint> &chatStoragePoint)
-{
-	return ChatShared::loadFromStorage(chatStoragePoint);
-}
 
 Chat::Chat()
 {

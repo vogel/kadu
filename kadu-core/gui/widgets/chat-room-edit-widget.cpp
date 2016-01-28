@@ -23,6 +23,7 @@
 #include "accounts/filter/protocol-filter.h"
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-room.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/accounts-combo-box.h"
@@ -44,6 +45,11 @@ ChatRoomEditWidget::~ChatRoomEditWidget()
 void ChatRoomEditWidget::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void ChatRoomEditWidget::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void ChatRoomEditWidget::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -118,7 +124,7 @@ void ChatRoomEditWidget::dataChanged()
 		return;
 	}
 
-	Chat sameChat = ChatTypeRoom::findChat(m_chatManager, AccountCombo->currentAccount(), RoomEdit->text(), ActionReturnNull);
+	Chat sameChat = ChatTypeRoom::findChat(m_chatManager, m_chatStorage, AccountCombo->currentAccount(), RoomEdit->text(), ActionReturnNull);
 	if (sameChat && (sameChat != chat()))
 	{
 		simpleStateNotifier()->setState(StateChangedDataInvalid);

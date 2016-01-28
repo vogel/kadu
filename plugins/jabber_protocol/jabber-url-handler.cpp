@@ -25,6 +25,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -74,6 +75,11 @@ void JabberUrlHandler::setChatManager(ChatManager *chatManager)
 	m_chatManager = chatManager;
 }
 
+void JabberUrlHandler::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
+}
+
 void JabberUrlHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
 	m_chatWidgetManager = chatWidgetManager;
@@ -115,7 +121,7 @@ void JabberUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool
 	if (jabberAccounts.count() == 1 || disableMenu)
 	{
 		const Contact &contact = m_contactManager->byId(jabberAccounts[0], jabberId, ActionCreateAndAdd);
-		const Chat &chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
+		const Chat &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 		if (chat)
 		{
 			m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
@@ -154,7 +160,7 @@ void JabberUrlHandler::accountSelected(QAction *action)
 		return;
 
 	const Contact &contact = m_contactManager->byId(account, ids[1], ActionCreateAndAdd);
-	const Chat &chat = ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd);
+	const Chat &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
 

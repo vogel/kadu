@@ -46,6 +46,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -93,6 +94,11 @@ void FirewallMessageFilter::setBuddyManager(BuddyManager *buddyManager)
 void FirewallMessageFilter::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void FirewallMessageFilter::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void FirewallMessageFilter::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -468,7 +474,7 @@ bool FirewallMessageFilter::acceptOutgoingMessage(const Message &message)
 {
 	foreach (const Contact &contact, message.messageChat().contacts())
 	{
-		Chat chat = ChatTypeContact::findChat(m_chatManager, contact, ActionReturnNull);
+		Chat chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionReturnNull);
 		if (!chat)
 			continue;
 

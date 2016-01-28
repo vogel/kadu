@@ -38,6 +38,7 @@ class AccountManager;
 class Account;
 class BuddyManager;
 class ChatManager;
+class ChatStorage;
 class ChatWidget;
 class ChatWidgetRepository;
 class Configuration;
@@ -70,6 +71,7 @@ private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
@@ -120,6 +122,7 @@ private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);

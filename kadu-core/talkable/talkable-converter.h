@@ -33,6 +33,7 @@ class BuddyPreferredManager;
 class Buddy;
 class ChatDataExtractor;
 class ChatManager;
+class ChatStorage;
 class Chat;
 class Contact;
 class Status;
@@ -123,6 +124,7 @@ private:
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 	QPointer<ChatDataExtractor> m_chatDataExtractor;
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 
 private slots:
 	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
@@ -130,5 +132,6 @@ private slots:
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
 	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 
 };

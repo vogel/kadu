@@ -38,6 +38,7 @@ class BaseActionContext;
 class BuddyManager;
 class BuddyPreferredManager;
 class ChatManager;
+class ChatStorage;
 class ChatWidgetManager;
 class ContactManager;
 class IconsManager;
@@ -87,6 +88,7 @@ private:
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<IconsManager> m_iconsManager;
@@ -130,6 +132,7 @@ private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);

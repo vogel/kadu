@@ -29,6 +29,7 @@ extern "C" {
 }
 
 class ChatManager;
+class ChatStorage;
 class ChatWidgetRepository;
 class Contact;
 
@@ -46,6 +47,7 @@ public:
 
 private:
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
@@ -53,6 +55,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 };

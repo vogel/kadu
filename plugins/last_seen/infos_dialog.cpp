@@ -24,6 +24,7 @@
 #include "infos.h"
 
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "contacts/contact-manager.h"
@@ -58,6 +59,11 @@ InfosDialog::~InfosDialog()
 void InfosDialog::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void InfosDialog::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void InfosDialog::setConfiguration(Configuration *configuration)
@@ -162,7 +168,7 @@ void InfosDialog::customContextMenuRequested(const QPoint &point)
 
 	BaseActionContext actionContext{this};
 	actionContext.setBuddies(BuddySet(contact.ownerBuddy()));
-	actionContext.setChat(ChatTypeContact::findChat(m_chatManager, contact, ActionCreateAndAdd));
+	actionContext.setChat(ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd));
 	actionContext.setContacts(ContactSet(contact));
 	actionContext.setRoles(RoleSet() << ContactRole);
 

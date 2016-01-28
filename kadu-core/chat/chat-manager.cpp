@@ -24,6 +24,7 @@
 
 #include "chat/chat-details-contact-set.h"
 #include "chat/chat-details-contact.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-manager.h"
 #include "message/unread-message-repository.h"
@@ -37,6 +38,11 @@ ChatManager::ChatManager(QObject *parent) :
 
 ChatManager::~ChatManager()
 {
+}
+
+void ChatManager::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void ChatManager::setConfigurationManager(ConfigurationManager *configurationManager)
@@ -74,7 +80,7 @@ void ChatManager::done()
 
 Chat ChatManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return Chat::loadStubFromStorage(storagePoint);
+	return m_chatStorage->loadStubFromStorage(storagePoint);
 }
 
 void ChatManager::itemAboutToBeRegistered(Chat item)

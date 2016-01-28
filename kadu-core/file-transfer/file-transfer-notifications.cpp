@@ -88,9 +88,9 @@ void NewFileTransferNotification::unregisterEvents(NotificationEventRepository *
 	notificationEventRepository->removeNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
 }
 
-void NewFileTransferNotification::notifyIncomingFileTransfer(InjectedFactory *injectedFactory, ChatManager *chatManager, NotificationManager *notificationManager, const FileTransfer &fileTransfer)
+void NewFileTransferNotification::notifyIncomingFileTransfer(InjectedFactory *injectedFactory, ChatManager *chatManager, ChatStorage *chatStorage, NotificationManager *notificationManager, const FileTransfer &fileTransfer)
 {
-	auto chat = ChatTypeContact::findChat(chatManager, fileTransfer.peer(), ActionCreateAndAdd);
+	auto chat = ChatTypeContact::findChat(chatManager, chatStorage, fileTransfer.peer(), ActionCreateAndAdd);
 	auto notification = injectedFactory->makeInjected<NewFileTransferNotification>(chat, "FileTransfer/IncomingFile", fileTransfer);
 	notification->setTitle(tr("Incoming transfer"));
 

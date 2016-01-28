@@ -27,6 +27,7 @@
 
 class Account;
 class ChatManager;
+class ChatStorage;
 class ChatWidgetRepository;
 class Contact;
 class InjectedFactory;
@@ -41,6 +42,7 @@ class OtrNotifier : public QObject
 	static QString CreatePrivateKeyFinishedNotifyTopic;
 
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ChatWidgetRepository> MyChatWidgetRepository;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationManager> m_notificationManager;
@@ -60,6 +62,7 @@ public:
 
 public slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);

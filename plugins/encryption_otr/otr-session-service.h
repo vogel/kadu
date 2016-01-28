@@ -28,6 +28,7 @@ extern "C" {
 }
 
 class ChatManager;
+class ChatStorage;
 class Contact;
 class MessageManager;
 
@@ -64,6 +65,7 @@ signals:
 private slots:
 	INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
 	INJEQT_SET void setPolicyService(OtrPolicyService *policyService);
@@ -72,6 +74,7 @@ private slots:
 
 private:
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<MessageManager> CurrentMessageManager;
 	QPointer<OtrAppOpsService> AppOpsService;
 	QPointer<OtrOpDataFactory> OpDataFactory;

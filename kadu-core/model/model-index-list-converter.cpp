@@ -21,6 +21,7 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "chat/type/chat-type-contact.h"
 #include "message/unread-message-repository.h"
@@ -44,6 +45,11 @@ void ModelIndexListConverter::setBuddyPreferredManager(BuddyPreferredManager *bu
 void ModelIndexListConverter::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void ModelIndexListConverter::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void ModelIndexListConverter::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
@@ -136,9 +142,9 @@ Chat ModelIndexListConverter::chatFromBuddies() const
 		return Chat::null;
 
 	if (1 == buddies.size())
-		return ChatTypeContact::findChat(m_chatManager, m_buddyPreferredManager->preferredContact2(*buddies.begin()), ActionCreateAndAdd);
+		return ChatTypeContact::findChat(m_chatManager, m_chatStorage, m_buddyPreferredManager->preferredContact2(*buddies.begin()), ActionCreateAndAdd);
 	else
-		return ChatTypeContactSet::findChat(m_chatManager, m_buddyPreferredManager->preferredContacts(buddies), ActionCreateAndAdd);
+		return ChatTypeContactSet::findChat(m_chatManager, m_chatStorage, m_buddyPreferredManager->preferredContacts(buddies), ActionCreateAndAdd);
 }
 
 Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
@@ -159,8 +165,8 @@ Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
 	if (contacts.isEmpty())
 		return Chat::null;
 	return 1 == contacts.size()
-			? ChatTypeContact::findChat(m_chatManager, *contacts.constBegin(), ActionCreateAndAdd)
-			: ChatTypeContactSet::findChat(m_chatManager, contacts, ActionCreateAndAdd);
+			? ChatTypeContact::findChat(m_chatManager, m_chatStorage, *contacts.constBegin(), ActionCreateAndAdd)
+			: ChatTypeContactSet::findChat(m_chatManager, m_chatStorage, contacts, ActionCreateAndAdd);
 }
 
 Account ModelIndexListConverter::commonAccount() const

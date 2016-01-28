@@ -20,13 +20,14 @@
 
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/chat-room-edit-widget.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-room.h"
 
-Chat ChatTypeRoom::findChat(ChatManager *chatManager, const Account &account, const QString &room, NotFoundAction notFoundAction)
+Chat ChatTypeRoom::findChat(ChatManager *chatManager, ChatStorage *chatStorage, const Account &account, const QString &room, NotFoundAction notFoundAction)
 {
 	if (!account)
 		return Chat::null;
@@ -49,7 +50,7 @@ Chat ChatTypeRoom::findChat(ChatManager *chatManager, const Account &account, co
 	if (ActionReturnNull == notFoundAction)
 		return Chat::null;
 
-	Chat chat = Chat::create();
+	auto chat = chatStorage->create();
 	chat.setChatAccount(account);
 	chat.setType("Room");
 

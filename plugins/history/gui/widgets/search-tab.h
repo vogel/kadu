@@ -32,6 +32,7 @@ class QLineEdit;
 class QRadioButton;
 class QSplitter;
 
+class ChatStorage;
 class HistoryMessagesStorage;
 class HistoryTalkableComboBox;
 class InjectedFactory;
@@ -42,10 +43,11 @@ class SearchTab : public HistoryTab
 {
 	Q_OBJECT
 
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<TalkableConverter> m_talkableConverter;
 
-	HistoryMessagesStorage *ChatStorage;
+	HistoryMessagesStorage *m_historyChatStorage;
 	HistoryMessagesStorage *StatusStorage;
 	HistoryMessagesStorage *SmsStorage;
 	HistoryMessagesStorage **SearchedStorage;
@@ -71,6 +73,7 @@ class SearchTab : public HistoryTab
 	void createGui();
 
 private slots:
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();
@@ -88,7 +91,7 @@ public:
 	explicit SearchTab(QWidget *parent = nullptr);
 	virtual ~SearchTab();
 
-	void setChatStorage(HistoryMessagesStorage *storage);
+	void setHistoryChatStorage(HistoryMessagesStorage *storage);
 	void setStatusStorage(HistoryMessagesStorage *storage);
 	void setSmsStorage(HistoryMessagesStorage *storage);
 

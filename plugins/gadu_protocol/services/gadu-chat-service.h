@@ -33,6 +33,7 @@
 class QTimer;
 
 class ChatManager;
+class ChatStorage;
 class Configuration;
 class ContactManager;
 class FormattedStringFactory;
@@ -61,6 +62,7 @@ class GaduChatService : public ChatService
 	Q_OBJECT
 
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QPointer<Configuration> m_configuration;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<GaduChatImageService> CurrentGaduChatImageService;
@@ -88,6 +90,7 @@ class GaduChatService : public ChatService
 
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);

@@ -24,6 +24,7 @@
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/injected-factory.h"
@@ -68,9 +69,9 @@ void AddConferenceWindow::setChatManager(ChatManager *chatManager)
 	m_chatManager = chatManager;
 }
 
-void AddConferenceWindow::setIconsManager(IconsManager *iconsManager)
+void AddConferenceWindow::setChatStorage(ChatStorage *chatStorage)
 {
-	m_iconsManager = iconsManager;
+	m_chatStorage = chatStorage;
 }
 
 void AddConferenceWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
@@ -81,6 +82,11 @@ void AddConferenceWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetMana
 void AddConferenceWindow::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void AddConferenceWindow::setIconsManager(IconsManager *iconsManager)
+{
+	m_iconsManager = iconsManager;
 }
 
 void AddConferenceWindow::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -269,7 +275,7 @@ Chat AddConferenceWindow::computeChat() const
 	foreach (const Buddy &buddy, conferenceBuddies)
 		conferenceContacts.insert(buddy.contacts(account).first());
 
-	return ChatTypeContactSet::findChat(m_chatManager, conferenceContacts, ActionCreateAndAdd);
+	return ChatTypeContactSet::findChat(m_chatManager, m_chatStorage, conferenceContacts, ActionCreateAndAdd);
 }
 
 // we need to filter by account here because CheckableBuddiesProxyModel does not do filtering at all

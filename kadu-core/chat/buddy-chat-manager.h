@@ -32,6 +32,7 @@
 class BuddyManager;
 class Buddy;
 class ChatManager;
+class ChatStorage;
 
 /**
  * @addtogroup Chat
@@ -80,6 +81,7 @@ public:
 private:
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 	QHash<Buddy, Chat> BuddyChats;
 
 	Chat createAndInsertBuddyChat(const Buddy &buddy);
@@ -87,6 +89,7 @@ private:
 private slots:
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

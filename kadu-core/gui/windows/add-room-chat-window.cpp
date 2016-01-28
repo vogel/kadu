@@ -23,6 +23,7 @@
 #include "accounts/filter/protocol-filter.h"
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-room.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/injected-factory.h"
@@ -56,6 +57,11 @@ AddRoomChatWindow::~AddRoomChatWindow()
 void AddRoomChatWindow::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void AddRoomChatWindow::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void AddRoomChatWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
@@ -222,7 +228,7 @@ void AddRoomChatWindow::validateData()
 
 Chat AddRoomChatWindow::computeChat() const
 {
-	Chat chat = ChatTypeRoom::findChat(m_chatManager, AccountCombo->currentAccount(), RoomEdit->text(), ActionCreateAndAdd);
+	Chat chat = ChatTypeRoom::findChat(m_chatManager, m_chatStorage, AccountCombo->currentAccount(), RoomEdit->text(), ActionCreateAndAdd);
 	if (!chat)
 		return Chat::null;
 

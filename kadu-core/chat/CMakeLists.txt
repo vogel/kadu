@@ -10,6 +10,7 @@ set (chat_SRCS
 	chat-manager.cpp
 	chat-module.cpp
 	chat-shared.cpp
+	chat-storage.cpp
 	recent-chat-manager.cpp
 
 	model/chat-data-extractor.cpp

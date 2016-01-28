@@ -29,6 +29,7 @@
 #include "chat/chat.h"
 
 class ChatManager;
+class ChatStorage;
 class SqlAccountsMapping;
 class SqlContactsMapping;
 
@@ -63,6 +64,7 @@ class SqlChatsMapping : public QObject
 	Q_OBJECT
 
 	QPointer<ChatManager> m_chatManager;
+	QPointer<ChatStorage> m_chatStorage;
 
 	const QSqlDatabase &Database;
 	mutable QMutex Mutex;
@@ -92,6 +94,7 @@ class SqlChatsMapping : public QObject
 
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_INIT void init();
 
 	/**

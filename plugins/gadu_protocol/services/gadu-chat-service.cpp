@@ -25,6 +25,7 @@
 #include <QtCore/QTimer>
 
 #include "chat/chat-manager.h"
+#include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration.h"
@@ -74,6 +75,11 @@ GaduChatService::~GaduChatService()
 void GaduChatService::setChatManager(ChatManager *chatManager)
 {
 	m_chatManager = chatManager;
+}
+
+void GaduChatService::setChatStorage(ChatStorage *chatStorage)
+{
+	m_chatStorage = chatStorage;
 }
 
 void GaduChatService::setConfiguration(Configuration *configuration)
@@ -263,8 +269,8 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		return;
 
 	Chat chat = 1 == chatContacts.size()
-			? ChatTypeContact::findChat(m_chatManager, *chatContacts.constBegin(), ActionCreateAndAdd)
-			: ChatTypeContactSet::findChat(m_chatManager, chatContacts, ActionCreateAndAdd);
+			? ChatTypeContact::findChat(m_chatManager, m_chatStorage, *chatContacts.constBegin(), ActionCreateAndAdd)
+			: ChatTypeContactSet::findChat(m_chatManager, m_chatStorage, chatContacts, ActionCreateAndAdd);
 
 	// create=true in our call for findChat(), but chat might be null for example if chatContacts was empty
 	if (!chat || chat.isIgnoreAllMessages())

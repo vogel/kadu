@@ -28,6 +28,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class ChatStorage;
 class FileTransferManager;
 class InjectedFactory;
 class NotificationCallbackRepository;
@@ -42,7 +43,7 @@ public:
 	static void registerEvents(NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository);
 	static void unregisterEvents(NotificationEventRepository *notificationEventRepository);
 
-	static void notifyIncomingFileTransfer(InjectedFactory *injectedFactory, ChatManager *chatManager, NotificationManager *notificationManager, const FileTransfer &fileTransfer);
+	static void notifyIncomingFileTransfer(InjectedFactory *injectedFactory, ChatManager *chatManager, ChatStorage *chatStorage, NotificationManager *notificationManager, const FileTransfer &fileTransfer);
 
 	NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer);
 
