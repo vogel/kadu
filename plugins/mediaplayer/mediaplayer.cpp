@@ -251,8 +251,6 @@ void MediaPlayer::done()
 
 	delete menu;
 
-	// Remove menu item (statuses)
-// 	Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
 	m_menuInventory
 		->menu("main")
 		->removeAction(enableMediaPlayerStatuses)

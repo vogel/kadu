@@ -134,7 +134,7 @@ public:
 	 *
 	 * The default path to the current user profile may overwritten by existence
 	 * of file named "portable" in directory returned by the dataPath() method. Then
-	 * current user profile is located in the same location as Core::instance()->pathsProvider()->dataPath() + QLatin1String("config")
+	 * current user profile is located in the same location as dataPath() + QLatin1String("config")
 	 * would give. It may be also overwritten by CONFIG_DIR environment variable
 	 * and --config-dir command-line option (the latter takes precedence). We will
 	 * call it CONFIG_DIR in this description, not matter which way it was set.
