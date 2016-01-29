@@ -19,6 +19,7 @@
 
 #include "main-configuration-window-service.h"
 
+#include "configuration/config-file-data-manager.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "configuration/gui/configuration-ui-handler.h"
 #include "core/injected-factory.h"
@@ -70,7 +71,8 @@ void MainConfigurationWindowService::show()
 {
 	if (!m_mainConfigurationWindow)
 	{
-		m_mainConfigurationWindow = m_injectedFactory->makeInjected<MainConfigurationWindow>(m_kaduWindowService->kaduWindow());
+		auto dataManager = m_injectedFactory->makeInjected<ConfigFileDataManager>();
+		m_mainConfigurationWindow = m_injectedFactory->makeInjected<MainConfigurationWindow>(dataManager, m_kaduWindowService->kaduWindow());
 		for (auto const &uiFile : m_uiFiles)
 			m_mainConfigurationWindow->widget()->appendUiFile(uiFile);
 		for (auto configurationUiHandler : m_configurationUiHandlerRepository)

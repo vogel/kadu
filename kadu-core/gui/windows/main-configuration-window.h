@@ -91,7 +91,7 @@ public:
 	static const char *SyntaxText;
 	static const char *SyntaxTextNotify;
 
-	explicit MainConfigurationWindow(QWidget *parent);
+	explicit MainConfigurationWindow(ConfigurationWindowDataManager *dataManager, QWidget *parent);
 	virtual ~MainConfigurationWindow();
 
 	virtual void show();
