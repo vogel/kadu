@@ -81,7 +81,6 @@ set (main_SRCS
 
 if (WIN32)
 	list (APPEND main_SRCS
-		main_win32.cpp
 		kadu.rc
 	)
 endif ()
