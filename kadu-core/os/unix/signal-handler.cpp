@@ -26,8 +26,8 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "core/application.h"
-#include "core/core.h"
 #include "core/crash-aware-object.h"
+#include "core/version-service.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/paths-provider.h"
@@ -55,6 +55,7 @@ Configuration *g_configuration{nullptr};
 KaduWindowService *g_kaduWindowService{nullptr};
 PathsProvider *g_pathsProvider{nullptr};
 PluginActivationService *g_pluginActivationService{nullptr};
+VersionService *g_versionService{nullptr};
 
 static void kadu_signal_handler(int signal)
 {
@@ -111,7 +112,7 @@ static void kadu_signal_handler(int signal)
 			auto pluginNames = g_pluginActivationService->activePlugins();
 			for (auto const &pluginName : pluginNames)
 				fprintf(backtraceFile, "> %s\n", qPrintable(pluginName));
-			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));
+			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(g_versionService->version()));
 			fprintf(backtraceFile, "Qt compile time version: %s\nQt runtime version: %s\n",
 					QT_VERSION_STR, qVersion());
 #ifdef __GNUC__

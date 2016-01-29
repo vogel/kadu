@@ -51,8 +51,8 @@
 #include "buddies/group-manager.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/version-service.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/memory.h"
 #include "os/generic/system-info.h"
@@ -84,6 +84,11 @@ JabberProtocol::~JabberProtocol()
 void JabberProtocol::setSystemInfo(SystemInfo *systemInfo)
 {
 	m_systemInfo = systemInfo;
+}
+
+void JabberProtocol::setVersionService(VersionService *versionService)
+{
+	m_versionService = versionService;
 }
 
 void JabberProtocol::init()
@@ -193,7 +198,7 @@ void JabberProtocol::login()
 	if (jabberAccountDetails->publishSystemInfo())
 	{
 		m_client->versionManager().setClientName("Kadu");
-		m_client->versionManager().setClientVersion(Core::instance()->version());
+		m_client->versionManager().setClientVersion(m_versionService->version());
 		m_client->versionManager().setClientOs(m_systemInfo->osFullName());
 	}
 	else

@@ -6,6 +6,7 @@ set (core_SRCS
 	injected-factory.cpp
 	injector-provider.cpp
 	myself.cpp
+	version-service.cpp
 )
 
 set (core_MOC_SRCS

@@ -19,16 +19,20 @@
 
 #pragma once
 
-class Application;
-class Configuration;
-class KaduWindowService;
-class PathsProvider;
-class PluginActivationService;
-class VersionService;
+#include "exports.h"
 
-extern Application *g_application;
-extern Configuration *g_configuration;
-extern KaduWindowService *g_kaduWindowService;
-extern PathsProvider *g_pathsProvider;
-extern PluginActivationService *g_pluginActivationService;
-extern VersionService *g_versionService;
+#include <QtCore/QObject>
+
+class KADUAPI VersionService : public QObject
+{
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit VersionService(QObject *parent = nullptr);
+	virtual ~VersionService();
+
+	QString name() const;
+	QString version() const;
+	QString nameWithVersion() const;
+
+};

@@ -57,6 +57,7 @@ class GaduUserDataService;
 class IconsManager;
 class NetworkProxyManager;
 class ProtocolGaduConnection;
+class VersionService;
 
 class GADUAPI GaduProtocol : public Protocol, public ConfigurationAwareObject
 {
@@ -88,6 +89,7 @@ private:
 	QPointer<GaduServersManager> m_gaduServersManager;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<NetworkProxyManager> m_networkProxyManager;
+	QPointer<VersionService> m_versionService;
 
 	ProtocolGaduConnection *Connection;
 
@@ -140,6 +142,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+	INJEQT_SET void setVersionService(VersionService *versionService);
 	INJEQT_INIT void init();
 
 	void accountUpdated();

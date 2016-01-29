@@ -44,6 +44,7 @@ class JabberRoomChatService;
 class JabberRosterExtension;
 class JabberStreamDebugService;
 class SystemInfo;
+class VersionService;
 
 class QXmppClient;
 class QXmppMucManager;
@@ -84,6 +85,7 @@ protected:
 
 private:
 	QPointer<SystemInfo> m_systemInfo;
+	QPointer<VersionService> m_versionService;
 
 	JabberAvatarService *m_avatarService;
 	JabberChangePasswordService *m_changePasswordService;
@@ -108,6 +110,7 @@ private:
 
 private slots:
 	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
+	INJEQT_SET void setVersionService(VersionService *versionService);
 	INJEQT_INIT void init();
 
 	void connectedToServer();

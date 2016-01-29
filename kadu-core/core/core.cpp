@@ -39,6 +39,7 @@
 #include "core/application.h"
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
+#include "core/version-service.h"
 #include "execution-arguments/execution-arguments.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -84,7 +85,6 @@
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "kadu-config.h"
 #include "translation-loader.h"
 #include "updates.h"
 
@@ -107,21 +107,6 @@ void Core::createInstance(injeqt::injector &&injector)
 Core * Core::instance()
 {
 	return m_instance;
-}
-
-QString Core::name()
-{
-	return QLatin1String("Kadu");
-}
-
-QString Core::version()
-{
-	return QLatin1String(KADU_VERSION);
-}
-
-QString Core::nameWithVersion()
-{
-	return name() + QLatin1String(" ")  + version();
 }
 
 Core::Core(injeqt::injector &&injector) :
@@ -572,6 +557,7 @@ void Core::activatePlugins()
 	g_kaduWindowService = m_injector.get<KaduWindowService>();
 	g_pathsProvider = m_injector.get<PathsProvider>();
 	g_pluginActivationService = m_injector.get<PluginActivationService>();
+	g_versionService = m_injector.get<VersionService>();
 #endif
 
 }

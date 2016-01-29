@@ -21,7 +21,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
+#include "core/version-service.h"
 #include "plugin/metadata/plugin-metadata-builder.h"
 #include "plugin/metadata/plugin-metadata-reader-exception.h"
 #include "plugin/metadata/plugin-metadata.h"
@@ -43,6 +43,11 @@ void PluginMetadataReader::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void PluginMetadataReader::setVersionService(VersionService *versionService)
+{
+	m_versionService = versionService;
+}
+
 PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false)
 {
 	auto fileInfo = QFileInfo{filePath};
@@ -62,7 +67,7 @@ PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginNam
 			.setDescription(file.value("Module/Description[" + lang + ']', file.value("Module/Description")).toString())
 			.setAuthor(file.value("Module/Author").toString())
 			.setVersion(file.value("Module/Version").toString() == "core"
-					? Core::version()
+					? m_versionService->version()
 					: file.value("Module/Version").toString())
 			.setProvides(file.value("Module/Provides").toString())
 			.setDependencies(file.value("Module/Dependencies").toString().split(' ', QString::SkipEmptyParts))

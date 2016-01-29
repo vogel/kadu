@@ -24,10 +24,10 @@
 #include "services/drive/gadu-drive-put-transfer.h"
 #include "services/drive/gadu-drive-send-status-update-request.h"
 #include "services/drive/gadu-drive-send-ticket-request.h"
-
 #include "services/gadu-imtoken-service.h"
 
 #include "core/core.h"
+#include "core/version-service.h"
 
 #include <QtNetwork/QNetworkAccessManager>
 
@@ -39,6 +39,11 @@ GaduDriveService::GaduDriveService(Account account, QObject *parent) :
 
 GaduDriveService::~GaduDriveService()
 {
+}
+
+void GaduDriveService::setVersionService(VersionService *versionService)
+{
+	m_versionService = versionService;
 }
 
 void GaduDriveService::setGaduIMTokenService(GaduIMTokenService *imTokenService)
@@ -55,7 +60,7 @@ GaduDriveSendTicketRequest * GaduDriveService::requestSendTicket(QString recipie
 	{
 		if (!m_authorization)
 		{
-			m_authorization = new GaduDriveAuthorization{account().id(), m_imTokenService->imToken(), Core::nameWithVersion(), m_networkAccessManager.get(), this};
+			m_authorization = new GaduDriveAuthorization{account().id(), m_imTokenService->imToken(), m_versionService->nameWithVersion(), m_networkAccessManager.get(), this};
 			connect(m_authorization.get(), SIGNAL(authorized(GaduDriveSessionToken)), this, SLOT(authorized(GaduDriveSessionToken)));
 			m_authorization->authorize();
 		}

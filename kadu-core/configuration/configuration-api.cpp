@@ -25,7 +25,6 @@
 #include <errno.h>
 
 #include "configuration/configuration-read-error-exception.h"
-#include "core/core.h"
 #include "debug.h"
 
 #include "configuration-api.h"
@@ -49,10 +48,10 @@ ConfigurationApi::ConfigurationApi(const QString &content)
 	}
 }
 
-void ConfigurationApi::touch()
+void ConfigurationApi::touch(const QString &version)
 {
 	rootElement().setAttribute("last_save_time", QDateTime::currentDateTime().toString());
-	rootElement().setAttribute("last_save_version", Core::version());
+	rootElement().setAttribute("last_save_version", version);
 }
 
 QString ConfigurationApi::configuration() const

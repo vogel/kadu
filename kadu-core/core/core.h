@@ -47,10 +47,6 @@ public:
 	static void createInstance(injeqt::v1::injector &&injector);
 	static Core * instance();
 
-	static QString name();
-	static QString version();
-	static QString nameWithVersion();
-
 	bool isClosing() { return m_isClosing; }
 
 	int executeSingle(const ExecutionArguments &executionArguments);

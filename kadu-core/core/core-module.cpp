@@ -25,6 +25,7 @@
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
 #include "core/myself.h"
+#include "core/version-service.h"
 #include "dom/dom-processor-service.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/services/clipboard-html-transformer-service.h"
@@ -73,6 +74,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<TranslationLoader>();
 	add_type<UrlHandlerManager>();
 	add_type<UrlOpener>();
+	add_type<VersionService>();
 }
 
 CoreModule::~CoreModule()

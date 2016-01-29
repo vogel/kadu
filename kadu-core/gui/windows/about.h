@@ -34,6 +34,7 @@ class DomProcessorService;
 class IconsManager;
 class PathsProvider;
 class UrlOpener;
+class VersionService;
 
 class QUrl;
 class QKeyEvent;
@@ -54,6 +55,7 @@ class About : public QWidget, DesktopAwareObject
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<UrlOpener> m_urlOpener;
+	QPointer<VersionService> m_versionService;
 
 	QTextEdit *tb_authors;
 
@@ -65,6 +67,7 @@ private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
+	INJEQT_SET void setVersionService(VersionService *versionService);
 	INJEQT_INIT void init();
 
 	void openUrl(const QUrl &url);

@@ -48,10 +48,10 @@ private:
 	QDomNode cdataOrText(const QString &text);
 
 public:
-	ConfigurationApi();
+	explicit ConfigurationApi();
 	explicit ConfigurationApi(const QString &content);
 
-	void touch();
+	void touch(const QString &version);
 
 	QString configuration() const;
 

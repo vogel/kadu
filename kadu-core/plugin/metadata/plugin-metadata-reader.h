@@ -25,6 +25,7 @@
 
 class Configuration;
 class PluginMetadata;
+class VersionService;
 
 /**
  * @addtogroup Plugin
@@ -55,9 +56,11 @@ public:
 
 private:
 	QPointer<Configuration> m_configuration;
+	QPointer<VersionService> m_versionService;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setVersionService(VersionService *versionService);
 
 };
 

@@ -39,8 +39,8 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/version-service.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "gui/windows/message-dialog.h"
 #include "network/proxy/network-proxy-manager.h"
@@ -109,6 +109,11 @@ void GaduProtocol::setNetworkProxyManager(NetworkProxyManager *networkProxyManag
 	m_networkProxyManager = networkProxyManager;
 }
 
+void GaduProtocol::setVersionService(VersionService *versionService)
+{
+	m_versionService = versionService;
+}
+
 void GaduProtocol::init()
 {
 	Connection = new ProtocolGaduConnection(this);
@@ -150,7 +155,7 @@ void GaduProtocol::init()
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
-	CurrentDriveService = new GaduDriveService{account(), this};
+	CurrentDriveService = injectedFactory()->makeInjected<GaduDriveService>(account(), this);
 	CurrentDriveService->setGaduIMTokenService(CurrentImTokenService);
 
 	CurrentUserDataService = injectedFactory()->makeInjected<GaduUserDataService>(account(), this);
@@ -437,7 +442,7 @@ void GaduProtocol::setupLoginParams()
 
 	GaduLoginParams.protocol_version = GG_PROTOCOL_VERSION_110;
 	GaduLoginParams.compatibility = GG_COMPAT_LEGACY; // TODO: #2961
-	GaduLoginParams.client_version = qstrdup(Core::nameWithVersion().toUtf8().constData());
+	GaduLoginParams.client_version = qstrdup(m_versionService->nameWithVersion().toUtf8().constData());
 	GaduLoginParams.protocol_features =
 		GG_FEATURE_DND_FFC |
 		GG_FEATURE_TYPING_NOTIFICATION | GG_FEATURE_MULTILOGON |

@@ -40,7 +40,7 @@
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration.h"
-#include "core/core.h"
+#include "core/version-service.h"
 #include "dom/dom-processor-service.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
@@ -86,6 +86,11 @@ void About::setUrlOpener(UrlOpener *urlOpener)
 	m_urlOpener = urlOpener;
 }
 
+void About::setVersionService(VersionService *versionService)
+{
+	m_versionService = versionService;
+}
+
 void About::init()
 {
 	// set window properties and flags
@@ -104,7 +109,7 @@ void About::init()
 	l_info->setBackgroundRole(texts->backgroundRole());
 
 	l_info->setText("<font size=\"5\">Kadu</font><br /><b>"
-		+ tr("Version %1").arg(Core::version())
+		+ tr("Version %1").arg(m_versionService->version())
 		+ "</b><br/>"
 		+ tr("Qt %2 (compiled with Qt %3)").arg(qVersion()).arg(QT_VERSION_STR));
 

@@ -23,8 +23,9 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/memory.h"
 
-Configuration::Configuration(std::unique_ptr<ConfigurationApi> configurationApi, QObject *parent) :
+Configuration::Configuration(QString version, std::unique_ptr<ConfigurationApi> configurationApi, QObject *parent) :
 		QObject{parent},
+		m_version{std::move(version)},
 		m_configurationApi{std::move(configurationApi)}
 {
 	m_deprecatedConfigurationApi = make_unique<DeprecatedConfigurationApi>(m_configurationApi.get(), QLatin1String("kadu.conf"));
@@ -46,7 +47,7 @@ DeprecatedConfigurationApi * Configuration::deprecatedApi() const
 
 void Configuration::touch()
 {
-	m_configurationApi->touch();
+	m_configurationApi->touch(m_version);
 }
 
 QString Configuration::content() const

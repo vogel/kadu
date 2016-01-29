@@ -26,6 +26,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class GaduDriveAuthorization;
 class GaduDriveGetTransfer;
@@ -34,6 +35,7 @@ class GaduDriveSendStatusUpdateRequest;
 class GaduDriveSendTicket;
 class GaduDriveSendTicketRequest;
 class GaduIMTokenService;
+class VersionService;
 
 class QNetworkAccessManager;
 
@@ -53,12 +55,16 @@ public:
 	GaduDriveSendStatusUpdateRequest * requestSendStatusUpdate(QString ticketId);
 
 private:
+	QPointer<VersionService> m_versionService;
+
 	owned_qptr<QNetworkAccessManager> m_networkAccessManager;
 	owned_qptr<GaduDriveAuthorization> m_authorization;
 	QPointer<GaduIMTokenService> m_imTokenService;
 	GaduDriveSessionToken m_sessionToken;
 
 private slots:
+	INJEQT_SET void setVersionService(VersionService *versionService);
+
 	void authorized(GaduDriveSessionToken sessionToken);
 	void imTokenChanged(QByteArray);
 

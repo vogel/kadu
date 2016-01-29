@@ -32,7 +32,7 @@ class KADUAPI Configuration final : public QObject
 	Q_OBJECT
 
 public:
-	explicit Configuration(std::unique_ptr<ConfigurationApi> configurationApi, QObject *parent = nullptr);
+	explicit Configuration(QString version, std::unique_ptr<ConfigurationApi> configurationApi, QObject *parent = nullptr);
 	virtual ~Configuration();
 
 	ConfigurationApi * api() const;
@@ -42,6 +42,7 @@ public:
 	QString content() const;
 
 private:
+	QString m_version;
 	std::unique_ptr<ConfigurationApi> m_configurationApi;
 	std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;
 

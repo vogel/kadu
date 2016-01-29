@@ -34,8 +34,8 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/version-service.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/updates-dialog.h"
@@ -77,6 +77,11 @@ void Updates::setMainWindowService(KaduWindowService *kaduWindowService)
 	m_kaduWindowService = kaduWindowService;
 }
 
+void Updates::setVersionService(VersionService *versionService)
+{
+	m_versionService = versionService;
+}
+
 void Updates::init()
 {
 	buildQuery();
@@ -95,7 +100,7 @@ void Updates::accountUnregistered(Account account)
 
 void Updates::buildQuery()
 {
-	Query = QString("/update-new.php?uuid=%1&version=%2").arg(m_configurationManager->uuid().toString()).arg(Core::version());
+	Query = QString("/update-new.php?uuid=%1&version=%2").arg(m_configurationManager->uuid().toString()).arg(m_versionService->version());
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("General", "SendSysInfo"), true)
 	{
@@ -201,7 +206,7 @@ void Updates::run()
 
 bool Updates::isNewerVersionThan(const QString &version)
 {
-	QStringList thisVersion = stripVersion(Core::version()).split('.');
+	QStringList thisVersion = stripVersion(m_versionService->version()).split('.');
 	QStringList queryVersion = stripVersion(version).split('.');
 
 	for (int i = 0, end = qMin(thisVersion.size(), queryVersion.size()); i < end; ++i)

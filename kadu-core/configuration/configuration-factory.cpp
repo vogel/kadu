@@ -24,6 +24,7 @@
 #include "configuration/configuration-read-error-exception.h"
 #include "configuration/configuration-unusable-exception.h"
 #include "configuration/configuration.h"
+#include "core/version-service.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
@@ -41,6 +42,11 @@ ConfigurationFactory::~ConfigurationFactory()
 void ConfigurationFactory::setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider)
 {
 	m_configurationPathProvider = configurationPathProvider;
+}
+
+void ConfigurationFactory::setVersionService(VersionService *versionService)
+{
+	m_versionService = versionService;
 }
 
 Configuration * ConfigurationFactory::createConfiguration() const
@@ -68,7 +74,7 @@ not_owned_qptr<Configuration> ConfigurationFactory::readConfiguration() const
 		try
 		{
 			auto configurationApi = make_unique<ConfigurationApi>(content);
-			return make_not_owned<Configuration>(std::move(configurationApi));
+			return make_not_owned<Configuration>(m_versionService->version(), std::move(configurationApi));
 		}
 		catch (ConfigurationReadErrorException &)
 		{
@@ -85,7 +91,7 @@ not_owned_qptr<Configuration> ConfigurationFactory::createEmptyConfiguration() c
 		throw ConfigurationUnusableException();
 
 	auto configurationApi = make_unique<ConfigurationApi>();
-	return make_not_owned<Configuration>(std::move(configurationApi));
+	return make_not_owned<Configuration>(m_versionService->version(), std::move(configurationApi));
 }
 
 bool ConfigurationFactory::isConfigurationPathUsable() const

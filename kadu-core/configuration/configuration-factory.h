@@ -25,9 +25,11 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class Configuration;
+class VersionService;
 
 class KADUAPI ConfigurationFactory final : public QObject
 {
@@ -40,7 +42,8 @@ public:
 	Q_INVOKABLE Configuration * createConfiguration() const;
 
 private:
-	ConfigurationPathProvider *m_configurationPathProvider;
+	QPointer<ConfigurationPathProvider> m_configurationPathProvider;
+	QPointer<VersionService> m_versionService;
 
 	not_owned_qptr<Configuration> readConfiguration() const;
 	not_owned_qptr<Configuration> createEmptyConfiguration() const;
@@ -48,5 +51,6 @@ private:
 
 private slots:
 	INJEQT_SET void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
+	INJEQT_SET void setVersionService(VersionService *versionService);
 
 };
