@@ -280,7 +280,9 @@ int main(int argc, char *argv[]) try
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
 #endif
 
+#ifdef Q_OS_WIN
 	enableSignalHandling();
+#endif
 
 	Core::createInstance(std::move(injector));
 	return Core::instance()->executeSingle(executionArguments);

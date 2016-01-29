@@ -89,8 +89,8 @@
 #include "translation-loader.h"
 #include "updates.h"
 
-#ifdef Q_OS_LINUX
-#	include "os/unix/signal-handler.h"
+#ifndef Q_OS_WIN
+#	include "os/unix/unix-signal-handler.h"
 #endif
 
 #include <QtCore/QDir>
@@ -444,6 +444,10 @@ void Core::configurationUpdated()
 
 int Core::executeSingle(const ExecutionArguments &executionArguments)
 {
+#ifndef Q_OS_WIN
+	m_injector.get<UnixSignalHandler>()->startSignalHandling();
+#endif
+
 	auto ret = 0;
 	auto applicationId = QString{"kadu-%1"}.arg(m_injector.get<PathsProvider>()->profilePath());
 
@@ -549,17 +553,6 @@ void Core::activatePlugins()
 	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
 	m_injector.get<PluginManager>()->activatePlugins();
 	m_injector.get<PluginManager>()->activateReplacementPlugins();
-
-// TODO: move somewhere
-#ifdef Q_OS_LINUX
-	g_application = m_injector.get<Application>();
-	g_configuration = m_injector.get<Configuration>();
-	g_kaduWindowService = m_injector.get<KaduWindowService>();
-	g_pathsProvider = m_injector.get<PathsProvider>();
-	g_pluginActivationService = m_injector.get<PluginActivationService>();
-	g_versionService = m_injector.get<VersionService>();
-#endif
-
 }
 
 void Core::executeRemoteCommand(const QString &remoteCommand)

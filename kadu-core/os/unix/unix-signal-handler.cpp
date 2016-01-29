@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "signal-handler.h"
+#include "unix-signal-handler.h"
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
@@ -50,12 +50,68 @@
 #include <execinfo.h>
 #endif // HAVE_EXECINFO
 
+static void kadu_signal_handler(int signal);
+
 Application *g_application{nullptr};
 Configuration *g_configuration{nullptr};
 KaduWindowService *g_kaduWindowService{nullptr};
 PathsProvider *g_pathsProvider{nullptr};
 PluginActivationService *g_pluginActivationService{nullptr};
 VersionService *g_versionService{nullptr};
+
+UnixSignalHandler::UnixSignalHandler(QObject *parent) :
+		QObject{parent}
+{
+}
+
+UnixSignalHandler::~UnixSignalHandler()
+{
+}
+
+void UnixSignalHandler::setApplication(Application *application)
+{
+	g_application = application;
+}
+
+void UnixSignalHandler::setConfiguration(Configuration *configuration)
+{
+	g_configuration = configuration;
+}
+
+void UnixSignalHandler::setKaduWindowService(KaduWindowService *kaduWindowService)
+{
+	g_kaduWindowService = kaduWindowService;
+}
+
+void UnixSignalHandler::setPathsProvider(PathsProvider *pathsProvider)
+{
+	g_pathsProvider = pathsProvider;
+}
+
+void UnixSignalHandler::setPluginActivationService(PluginActivationService *pluginActivationService)
+{
+	g_pluginActivationService = pluginActivationService;
+}
+
+void UnixSignalHandler::setVersionService(VersionService *versionService)
+{
+	g_versionService = versionService;
+}
+
+void UnixSignalHandler::startSignalHandling()
+{
+	char *d = getenv("SIGNAL_HANDLING");
+	bool signalHandlingEnabled = d ? (atoi(d) != 0) : true;
+
+	if (signalHandlingEnabled)
+	{
+		signal(SIGSEGV, kadu_signal_handler);
+		signal(SIGINT, kadu_signal_handler);
+		signal(SIGTERM, kadu_signal_handler);
+		signal(SIGUSR1, kadu_signal_handler);
+		signal(SIGPIPE, SIG_IGN);
+	}
+}
 
 static void kadu_signal_handler(int signal)
 {
@@ -139,19 +195,4 @@ static void kadu_signal_handler(int signal)
 	}
 	else if (signal == SIGINT || signal == SIGTERM)
 		QCoreApplication::quit();
-}
-
-KADUAPI void enableSignalHandling()
-{
-	char *d = getenv("SIGNAL_HANDLING");
-	bool signalHandlingEnabled = d ? (atoi(d) != 0) : true;
-
-	if (signalHandlingEnabled)
-	{
-		signal(SIGSEGV, kadu_signal_handler);
-		signal(SIGINT, kadu_signal_handler);
-		signal(SIGTERM, kadu_signal_handler);
-		signal(SIGUSR1, kadu_signal_handler);
-		signal(SIGPIPE, SIG_IGN);
-	}
 }

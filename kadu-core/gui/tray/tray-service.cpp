@@ -43,3 +43,5 @@ QPoint TrayService::trayPosition() const
 			? m_trayPositionProvider->trayPosition()
 			: QPoint{0, 0};
 }
+
+#include "moc_tray-service.cpp"

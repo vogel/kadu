@@ -11,7 +11,7 @@ set (os_SRCS
 
 if (NOT WIN32)
 	list (APPEND os_SRCS
-		unix/signal-handler.cpp
+		unix/unix-signal-handler.cpp
 	)
 endif ()
 
