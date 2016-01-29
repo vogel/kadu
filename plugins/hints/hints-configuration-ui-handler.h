@@ -33,6 +33,7 @@ class Configuration;
 class HintsManager;
 class InjectedFactory;
 class PathsProvider;
+class TrayService;
 
 class QCheckBox;
 class QComboBox;
@@ -50,6 +51,7 @@ private:
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MainConfigurationWindow> m_mainConfigurationWindow;
 	QPointer<PathsProvider> m_pathsProvider;
+	QPointer<TrayService> m_trayService;
 
 	QFrame *previewHintsFrame;
 	QVBoxLayout *previewHintsLayout;
@@ -77,6 +79,7 @@ private slots:
 	INJEQT_SET void setHintManager(HintManager *hintManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setTrayService(TrayService *trayService);
 	INJEQT_INIT void init();
 
 	void showAdvanced();
@@ -92,9 +95,6 @@ private slots:
 	void updateHintsPreview();
 	void deleteHintsPreview(Hint *hint);
 	void deleteAllHintsPreview();
-
-signals:
-	void searchingForTrayPosition(QPoint &pos);
 
 public:
 	Q_INVOKABLE explicit HintsConfigurationUiHandler(QObject *parent = nullptr);

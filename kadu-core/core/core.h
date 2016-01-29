@@ -69,9 +69,6 @@ signals:
 	void connected();
 	void disconnected();
 
-	//TODO:
-	void searchingForTrayPosition(QPoint &);
-
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);

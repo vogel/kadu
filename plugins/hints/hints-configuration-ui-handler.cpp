@@ -33,8 +33,7 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/config-file-data-manager.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "core/core.h"
+#include "gui/tray/tray-service.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
@@ -101,6 +100,11 @@ void HintsConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
+void HintsConfigurationUiHandler::setTrayService(TrayService *trayService)
+{
+	m_trayService = trayService;
+}
+
 void HintsConfigurationUiHandler::init()
 {
 #ifdef Q_OS_MAC
@@ -120,8 +124,6 @@ void HintsConfigurationUiHandler::init()
 			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
 			.arg(BORDER_RADIUS);
 	previewHintsFrame->setStyleSheet(style);
-
-	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -229,9 +231,8 @@ void HintsConfigurationUiHandler::addHintsPreview()
 
 void HintsConfigurationUiHandler::setPreviewLayoutDirection()
 {
-	QPoint trayPosition;
-	QSize desktopSize = QApplication::desktop()->screenGeometry(previewHintsFrame).size();
-	emit searchingForTrayPosition(trayPosition);
+	auto trayPosition = m_trayService->trayPosition();
+	auto desktopSize = QApplication::desktop()->screenGeometry(previewHintsFrame).size();
 
 	switch (newHintUnder->currentIndex())
 	{
@@ -264,13 +265,12 @@ void HintsConfigurationUiHandler::setPreviewLayoutDirection()
 void HintsConfigurationUiHandler::updateHintsPreview()
 {
 	QPoint newPosition;
-	QPoint trayPosition;
+	auto trayPosition = m_trayService->trayPosition();
 
 	previewHintsFrame->adjustSize();
 	QSize preferredSize = previewHintsFrame->sizeHint();
 	QSize desktopSize = QApplication::desktop()->screenGeometry(previewHintsFrame).size();
 
-	emit searchingForTrayPosition(trayPosition);
 	if (ownPosition->isChecked() || trayPosition.isNull())
 	{
 		newPosition = QPoint(xPosition->value(), yPosition->value());

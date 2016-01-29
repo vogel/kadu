@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include "gui/tray/tray-position-provider.h"
 #include "docking-exports.h"
 
 #include <QtCore/QObject>
@@ -40,9 +41,10 @@ class KaduWindowService;
 class SessionService;
 class StatusContainerManager;
 class StatusNotifierItem;
+class TrayService;
 class UnreadMessageRepository;
 
-class DOCKINGAPI Docking final : public QObject
+class DOCKINGAPI Docking final : public QObject, public TrayPositionProvider
 {
 	Q_OBJECT
 
@@ -55,6 +57,9 @@ public:
 signals:
 	void messageClicked();
 
+protected:
+	virtual QPoint trayPosition() const override;
+
 private:
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
@@ -65,6 +70,7 @@ private:
 	QPointer<SessionService> m_sessionService;
 	QPointer<StatusContainerManager> m_statusContainerManager;
 	QPointer<StatusNotifierItem> m_statusNotifierItem;
+	QPointer<TrayService> m_trayService;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	void openUnreadMessages();
@@ -80,12 +86,13 @@ private slots:
 	INJEQT_SET void setSessionService(SessionService *sessionService);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_SET void setStatusNotifierItem(StatusNotifierItem *statusNotifierItem);
+	INJEQT_SET void setTrayService(TrayService *trayService);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 	void configurationUpdated();
 	void needAttentionChanged(bool needAttention);
-	void searchingForTrayPosition(QPoint &point);
 	void activateRequested();
 
 };

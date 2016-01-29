@@ -31,10 +31,10 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
+#include "gui/tray/tray-service.h"
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"
 #include "message/unread-message-repository.h"
@@ -105,6 +105,11 @@ void HintManager::setToolTipClassManager(ToolTipClassManager *toolTipClassManage
 	m_toolTipClassManager = toolTipClassManager;
 }
 
+void HintManager::setTrayService(TrayService *trayService)
+{
+	m_trayService = trayService;
+}
+
 void HintManager::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
 	m_unreadMessageRepository = unreadMessageRepository;
@@ -148,8 +153,6 @@ void HintManager::init()
 "[<hr><b>%s</b>][<b>:</b><br><small>%d</small>]"));
 	if (m_configuration->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax").isEmpty())
 		m_configuration->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", default_hints_syntax);
-
-	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 
 	m_notificationManager->registerNotifier(this);
 	m_toolTipClassManager->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
@@ -219,7 +222,7 @@ void HintManager::setHint()
 	maximumWidth = maximumWidth >= 285 ? maximumWidth : 285;
 
 	QPoint newPosition;
-	QPoint trayPosition;
+	auto trayPosition = m_trayService->trayPosition();
 
 	frame->adjustSize();
 	QSize preferredSize = frame->sizeHint();
@@ -229,7 +232,6 @@ void HintManager::setHint()
 		preferredSize.setWidth(maximumWidth);
 	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
 
-	emit searchingForTrayPosition(trayPosition);
 	if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "UseUserPosition") || trayPosition.isNull())
 	{
 		newPosition = QPoint(m_configuration->deprecatedApi()->readNumEntry("Hints", "HintsPositionX"), m_configuration->deprecatedApi()->readNumEntry("Hints", "HintsPositionY"));
@@ -495,9 +497,9 @@ Hint *HintManager::addHint(Notification *notification)
 void HintManager::setLayoutDirection()
 {
 	kdebugf();
-	QPoint trayPosition;
-	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
-	emit searchingForTrayPosition(trayPosition);
+	auto trayPosition = m_trayService->trayPosition();
+	auto desktopSize = QApplication::desktop()->screenGeometry(frame).size();
+
 	switch (m_configuration->deprecatedApi()->readNumEntry("Hints", "NewHintUnder"))
 	{
 		case 0:

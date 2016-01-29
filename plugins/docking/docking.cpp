@@ -32,13 +32,13 @@
 #include "status-notifier-item-attention-mode.h"
 #include "status-notifier-item-configuration.h"
 
-#include "core/core.h"
 #include "core/injected-factory.h"
 #include "core/session-service.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/tray/tray-service.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message.h"
@@ -110,6 +110,11 @@ void Docking::setStatusNotifierItem(StatusNotifierItem *statusNotifierItem)
 	m_statusNotifierItem = statusNotifierItem;
 }
 
+void Docking::setTrayService(TrayService *trayService)
+{
+	m_trayService = trayService;
+}
+
 void Docking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
 	m_unreadMessageRepository = unreadMessageRepository;
@@ -120,8 +125,6 @@ void Docking::init()
 	auto statusIcon = m_injectedFactory->makeOwned<StatusIcon>(m_statusContainerManager, this);
 	connect(statusIcon.get(), SIGNAL(iconUpdated(KaduIcon)), this, SLOT(configurationUpdated()));
 
-	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
-
 	connect(m_statusNotifierItem, SIGNAL(activateRequested()), this, SLOT(activateRequested()));
 	connect(m_statusNotifierItem, SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
 
@@ -131,6 +134,18 @@ void Docking::init()
 	if (m_dockingConfigurationProvider->configuration().RunDocked)
 		m_kaduWindowService->setShowMainWindowOnStart(false);
 	m_kaduWindowService->kaduWindow()->setDocked(true);
+
+	m_trayService->setTrayPositionProvider(this);
+}
+
+void Docking::done()
+{
+	m_trayService->setTrayPositionProvider(nullptr);
+}
+
+QPoint Docking::trayPosition() const
+{
+	return m_statusNotifierItem->trayPosition();
 }
 
 void Docking::needAttentionChanged(bool needAttention)
@@ -169,11 +184,6 @@ void Docking::activateRequested()
 		_activateWindow(m_configuration, kaduWindow);
 	else
 		kaduWindow->hide();
-}
-
-void Docking::searchingForTrayPosition(QPoint &point)
-{
-	point = m_statusNotifierItem->trayPosition();
 }
 
 void Docking::configurationUpdated()

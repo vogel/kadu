@@ -45,6 +45,7 @@ class InjectedFactory;
 class NotificationManager;
 class Parser;
 class ToolTipClassManager;
+class TrayService;
 class UnreadMessageRepository;
 
 class HintManager : public QObject, public Notifier, public AbstractToolTip, public ConfigurationAwareObject
@@ -58,6 +59,7 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<NotificationManager> m_notificationManager;
 	QPointer<Parser> m_parser;
 	QPointer<ToolTipClassManager> m_toolTipClassManager;
+	QPointer<TrayService> m_trayService;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	QPointer<QFrame> frame;
@@ -91,6 +93,7 @@ private slots:
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
+	INJEQT_SET void setTrayService(TrayService *trayService);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
@@ -152,12 +155,6 @@ private slots:
 
 protected:
 	virtual void configurationUpdated();
-
-signals:
-	/**
-		HintManager szuka pozycji traya, aby wy�wietli� w jego okolicy dymki
-	**/
-	void searchingForTrayPosition(QPoint& pos);
 
 public:
 	Q_INVOKABLE explicit HintManager(QObject *parent = nullptr);
