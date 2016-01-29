@@ -25,12 +25,15 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class QAction;
 
 class Action;
 class ActionContext;
 class ActionDescription;
+class SessionService;
 
 /**
  * @addtogroup Actions
@@ -134,7 +137,12 @@ public:
 	void remove(ActionDescription *action);
 
 private:
+	QPointer<SessionService> m_sessionService;
+
 	bool BlockSignals;
+
+private slots:
+	INJEQT_SET void setSessionService(SessionService *sessionService);
 
 };
 

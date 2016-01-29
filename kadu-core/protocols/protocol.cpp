@@ -30,8 +30,8 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/session-service.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
@@ -73,6 +73,11 @@ void Protocol::setContactManager(ContactManager *contactManager)
 void Protocol::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void Protocol::setSessionService(SessionService *sessionService)
+{
+	m_sessionService = sessionService;
 }
 
 void Protocol::setRosterService(RosterService * const rosterService)
@@ -161,7 +166,7 @@ void Protocol::passwordProvided()
 
 void Protocol::setAllOffline()
 {
-	if (Core::instance() && Core::instance()->isClosing())
+	if (m_sessionService->isClosing())
 		return;
 
 	Status status;

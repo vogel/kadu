@@ -34,6 +34,7 @@
 
 #include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/session-service.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/kadu-window-service.h"
@@ -54,7 +55,7 @@ Docking::Docking(QObject *parent) :
 
 Docking::~Docking()
 {
-	if (!Core::instance()->isClosing())
+	if (!m_sessionService->isClosing())
 		m_kaduWindowService->kaduWindow()->window()->show();
 	m_kaduWindowService->kaduWindow()->setDocked(false);
 }
@@ -92,6 +93,11 @@ void Docking::setInjectedFactory(InjectedFactory *injectedFactory)
 void Docking::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
 	m_kaduWindowService = kaduWindowService;
+}
+
+void Docking::setSessionService(SessionService *sessionService)
+{
+	m_sessionService = sessionService;
 }
 
 void Docking::setStatusContainerManager(StatusContainerManager *statusContainerManager)

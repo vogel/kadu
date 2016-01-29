@@ -55,6 +55,7 @@ class ChatWidgetSetTitle;
 class IconsManager;
 class InjectedFactory;
 class MenuInventory;
+class SessionService;
 
 enum class OpenChatActivation;
 
@@ -75,6 +76,7 @@ class TabsManager : public StorableObject, ConfigurationAwareObject
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
+	QPointer<SessionService> m_sessionService;
 
 	void createDefaultConfiguration();
 
@@ -115,6 +117,7 @@ private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setSessionService(SessionService *sessionService);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

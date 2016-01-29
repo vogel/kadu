@@ -26,8 +26,8 @@
 
 #include "chat/buddy-chat-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/session-service.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "os/generic/window-geometry-manager.h"
@@ -68,6 +68,11 @@ void HistoryWindow::setIconsManager(IconsManager *iconsManager)
 void HistoryWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void HistoryWindow::setSessionService(SessionService *sessionService)
+{
+	m_sessionService = sessionService;
 }
 
 void HistoryWindow::init()
@@ -140,7 +145,7 @@ void HistoryWindow::keyPressEvent(QKeyEvent *event)
 void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
 {
 	// TODO: fix it right, this is workaround only for crash when closing kadu with this window open
-	if (Core::instance() && Core::instance()->isClosing())
+	if (m_sessionService->isClosing())
 		return;
 
 	if (historyStorage)

@@ -32,8 +32,8 @@
 #include "configuration/configuration.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/session-service.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/configuration/toolbar-configuration-manager.h"
@@ -99,6 +99,11 @@ Configuration * MainWindow::configuration() const
 void MainWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void MainWindow::setSessionService(SessionService *sessionService)
+{
+	m_sessionService = sessionService;
 }
 
 void MainWindow::init()
@@ -369,7 +374,7 @@ void MainWindow::refreshToolBars()
 {
 	// We don't need it when closing.
 	// BTW, on Mac it caused crashes on exit. TODO: check out why, as there is probably a bug somewhere.
-	if (Core::instance() && Core::instance()->isClosing())
+	if (m_sessionService->isClosing())
 		return;
 
 	loadToolBarsFromConfig();

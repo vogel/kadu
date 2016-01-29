@@ -26,6 +26,7 @@
 #include "core/injector-provider.h"
 #include "core/myself.h"
 #include "core/version-service.h"
+#include "core/session-service.h"
 #include "dom/dom-processor-service.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/services/clipboard-html-transformer-service.h"
@@ -68,6 +69,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_ready_object<PathsProvider>(m_pathsProvider.get());
 	add_type<ProtocolsManager>();
 	add_type<RawMessageTransformerService>();
+	add_type<SessionService>();
 	add_type<StatusChangerManager>();
 	add_type<StatusContainerManager>();
 	add_type<StoragePointFactory>();

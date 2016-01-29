@@ -33,6 +33,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 typedef quint32 UinType;
 
@@ -56,6 +57,7 @@ class ProtocolFactory;
 class ProtocolStateMachine;
 class RosterService;
 class SearchService;
+class SessionService;
 class StatusTypeManager;
 class Status;
 class SubscriptionService;
@@ -177,6 +179,7 @@ private:
 	QPointer<ContactManager> m_contactManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<RosterService> m_rosterService;
+	QPointer<SessionService> m_sessionService;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	ProtocolFactory *Factory;
@@ -195,6 +198,7 @@ private:
 private slots:
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setSessionService(SessionService *sessionService);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
 

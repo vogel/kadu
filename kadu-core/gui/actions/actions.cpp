@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
+#include "core/session-service.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/windows/main-window.h"
@@ -36,6 +36,11 @@ Actions::~Actions()
 {
 }
 
+void Actions::setSessionService(SessionService *sessionService)
+{
+	m_sessionService = sessionService;
+}
+
 void Actions::insert(ActionDescription *action)
 {
 	QMap<QString, ActionDescription *>::insert(action->name(), action);
@@ -48,7 +53,7 @@ void Actions::remove(ActionDescription *action)
 {
 	QMap<QString, ActionDescription *>::remove(action->name());
 
-	if (Core::instance() && !Core::instance()->isClosing())
+	if (!m_sessionService->isClosing())
 		emit actionUnloaded(action);
 }
 

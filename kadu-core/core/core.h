@@ -47,8 +47,6 @@ public:
 	static void createInstance(injeqt::v1::injector &&injector);
 	static Core * instance();
 
-	bool isClosing() { return m_isClosing; }
-
 	int executeSingle(const ExecutionArguments &executionArguments);
 	void execute(const QStringList &openIds);
 
@@ -83,7 +81,6 @@ private:
 	static Core *m_instance;
 
 	mutable injeqt::v1::injector m_injector;
-	bool m_isClosing;
 
 	Core(injeqt::v1::injector &&injector);
 	virtual ~Core();

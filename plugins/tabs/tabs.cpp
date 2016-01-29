@@ -36,8 +36,8 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/session-service.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -136,6 +136,11 @@ void TabsManager::setMenuInventory(MenuInventory *menuInventory)
 	m_menuInventory = menuInventory;
 }
 
+void TabsManager::setSessionService(SessionService *sessionService)
+{
+	m_sessionService = sessionService;
+}
+
 void TabsManager::init()
 {
 	kdebugf();
@@ -199,7 +204,7 @@ void TabsManager::done()
 		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
-	if (!Core::instance()->isClosing())
+	if (!m_sessionService->isClosing())
 		for (int i = TabDialog->count() - 1; i >= 0; i--)
 			detachChat(static_cast<ChatWidget *>(TabDialog->widget(i)));
 

@@ -40,6 +40,7 @@
 #include "core/injected-factory.h"
 #include "core/injector-provider.h"
 #include "core/version-service.h"
+#include "core/session-service.h"
 #include "execution-arguments/execution-arguments.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
@@ -110,8 +111,7 @@ Core * Core::instance()
 }
 
 Core::Core(injeqt::injector &&injector) :
-		m_injector{std::move(injector)},
-		m_isClosing{false}
+		m_injector{std::move(injector)}
 {
 	// must be created first
 	// TODO: should be maybe created by factory factory?
@@ -133,7 +133,7 @@ Core::Core(injeqt::injector &&injector) :
 
 Core::~Core()
 {
-	m_isClosing = true;
+	m_injector.get<SessionService>()->setIsClosing(true);
 
 	m_injector.get<PluginStateManager>()->storePluginStates();
 	// CurrentPluginStateManager->storePluginStates();
@@ -400,7 +400,7 @@ void Core::deleteOldConfigurationFiles()
 
 void Core::updateIcon()
 {
-	if (isClosing())
+	if (m_injector.get<SessionService>()->isClosing())
 		return;
 
 	QApplication::setWindowIcon(m_injector.get<IconsManager>()->iconByPath(KaduIcon("kadu_icons/kadu")));

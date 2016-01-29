@@ -18,8 +18,8 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/application.h"
-#include "core/core.h"
 #include "core/injected-factory.h"
+#include "core/session-service.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/hot-key.h"
@@ -106,7 +106,7 @@ SingleWindow::~SingleWindow()
 	disconnect(m_tabs, 0, this, 0);
 	disconnect(kadu, 0, this, 0);
 
-	if (!Core::instance()->isClosing())
+	if (!m_sessionService->isClosing())
 	{
 		for (int i = m_tabs->count()-1; i >= 0; --i)
 		{
@@ -119,7 +119,7 @@ SingleWindow::~SingleWindow()
 	}
 
 	kadu->setParent(0);
-	if (!Core::instance()->isClosing())
+	if (!m_sessionService->isClosing())
 		kadu->setVisible(visible);
 }
 
@@ -156,6 +156,11 @@ void SingleWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 void SingleWindow::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
 	m_kaduWindowService = kaduWindowService;
+}
+
+void SingleWindow::setSessionService(SessionService *sessionService)
+{
+	m_sessionService = sessionService;
 }
 
 void SingleWindow::init()

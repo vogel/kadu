@@ -45,6 +45,7 @@ class Configuration;
 class Contact;
 class ContactSet;
 class InjectedFactory;
+class SessionService;
 class StatusContainer;
 class TalkableProxyModel;
 class ToolBar;
@@ -116,6 +117,7 @@ private:
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<SessionService> m_sessionService;
 
 	QString WindowName;
 	bool TransparencyEnabled;
@@ -132,6 +134,7 @@ private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setSessionService(SessionService *sessionService);
 	INJEQT_INIT void init();
 
 	void actionLoadedOrUnloaded(ActionDescription *action);
