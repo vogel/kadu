@@ -44,25 +44,15 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	Q_OBJECT
 
 public:
-	static void createInstance(injeqt::v1::injector &&injector);
-	static Core * instance();
+	explicit Core(injeqt::v1::injector &&injector);
+	virtual ~Core();
 
 	int executeSingle(const ExecutionArguments &executionArguments);
-	void execute(const QStringList &openIds);
-
-	void createGui();
-	void runServices();
-	void runGuiServices();
-	void stopServices();
-
-	void activatePlugins();
 
 	void setIcon(const KaduIcon &icon);
 
 public slots:
 	void executeRemoteCommand(const QString &signal);
-
-	void quit();
 
 signals:
 	void connecting();
@@ -75,12 +65,16 @@ protected:
 	virtual void configurationUpdated();
 
 private:
-	static Core *m_instance;
-
 	mutable injeqt::v1::injector m_injector;
 
-	Core(injeqt::v1::injector &&injector);
-	virtual ~Core();
+	void execute(const QStringList &openIds);
+
+	void createGui();
+	void runServices();
+	void runGuiServices();
+	void stopServices();
+
+	void activatePlugins();
 
 	void createDefaultConfiguration();
 	void createAllDefaultToolbars();

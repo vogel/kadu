@@ -162,9 +162,6 @@ static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 extern KADUAPI bool showTimesInDebug;
 #endif
 
-// defined in main_unix.cpp and main_win32.cpp
-void enableSignalHandling();
-
 static void printVersion()
 {
 	printf(
@@ -280,12 +277,8 @@ int main(int argc, char *argv[]) try
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
 #endif
 
-#ifdef Q_OS_WIN
-	enableSignalHandling();
-#endif
-
-	Core::createInstance(std::move(injector));
-	return Core::instance()->executeSingle(executionArguments);
+	Core core{std::move(injector)};
+	return core.executeSingle(executionArguments);
 }
 #if defined(Q_OS_WIN)
 catch (WSAException &)

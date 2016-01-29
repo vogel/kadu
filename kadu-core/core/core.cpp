@@ -97,26 +97,12 @@
 #include <QtCore/QTimer>
 #include <QtWidgets/QApplication>
 
-Core * Core::m_instance = 0;
-
-void Core::createInstance(injeqt::injector &&injector)
-{
-	m_instance = new Core(std::move(injector));
-	m_instance->init();
-}
-
-Core * Core::instance()
-{
-	return m_instance;
-}
-
 Core::Core(injeqt::injector &&injector) :
 		m_injector{std::move(injector)}
 {
 	// must be created first
 	// TODO: should be maybe created by factory factory?
 	m_injector.get<InjectorProvider>()->setInjector(&m_injector);
-	m_instance = this; // TODO: fix this hack
 
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 
@@ -129,6 +115,8 @@ Core::Core(injeqt::injector &&injector) :
 	DateTimeParserTags::registerParserTags(m_injector.get<Parser>());
 
 	m_injector.get<NotifyConfigurationImporter>()->import();
+
+	init();
 }
 
 Core::~Core()
@@ -561,15 +549,6 @@ void Core::executeRemoteCommand(const QString &remoteCommand)
 		_activateWindow(m_injector.get<Configuration>(), m_injector.get<KaduWindowService>()->mainWindowProvider()->provide());
 	else
 		m_injector.get<UrlHandlerManager>()->openUrl(remoteCommand.toUtf8(), true);
-}
-
-void Core::quit()
-{
-	if (!m_instance)
-		return;
-
-	delete m_instance;
-	m_instance = nullptr;
 }
 
 #include "moc_core.cpp"
