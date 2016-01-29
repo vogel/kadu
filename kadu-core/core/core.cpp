@@ -80,7 +80,6 @@
 #include "services/chat-image-request-service-configurator.h"
 #include "services/chat-image-request-service.h"
 #include "ssl/ssl-certificate-manager.h"
-#include "storage/storage-point-factory.h"
 #include "themes/icon-theme-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
@@ -575,11 +574,6 @@ void Core::activatePlugins()
 	g_pluginActivationService = m_injector.get<PluginActivationService>();
 #endif
 
-}
-
-StoragePointFactory * Core::storagePointFactory() const
-{
-	return m_injector.get<StoragePointFactory>();
 }
 
 void Core::executeRemoteCommand(const QString &remoteCommand)

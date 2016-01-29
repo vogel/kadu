@@ -38,7 +38,6 @@ class DefaultProvider;
 class ExecutionArguments;
 class KaduIcon;
 class Roster;
-class StoragePointFactory;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -63,8 +62,6 @@ public:
 	void stopServices();
 
 	void activatePlugins();
-
-	StoragePointFactory * storagePointFactory() const;
 
 	void setIcon(const KaduIcon &icon);
 
