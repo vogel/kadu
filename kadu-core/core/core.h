@@ -36,7 +36,6 @@ template<class T>
 class DefaultProvider;
 
 class ExecutionArguments;
-class InjectedFactory;
 class KaduIcon;
 class Roster;
 class StoragePointFactory;
@@ -65,7 +64,6 @@ public:
 
 	void activatePlugins();
 
-	InjectedFactory * injectedFactory() const;
 	StoragePointFactory * storagePointFactory() const;
 
 	void setIcon(const KaduIcon &icon);

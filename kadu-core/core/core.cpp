@@ -374,7 +374,7 @@ void Core::init()
 		m_injector.get<PluginManager>()->activateProtocolPlugins();
 	}
 
-	injectedFactory()->makeInjected<Updates>(this);
+	m_injector.get<InjectedFactory>()->makeInjected<Updates>(this);
 
 	QApplication::setWindowIcon(m_injector.get<IconsManager>()->iconByPath(KaduIcon("kadu_icons/kadu")));
 	connect(m_injector.get<IconsManager>(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
@@ -580,11 +580,6 @@ void Core::activatePlugins()
 StoragePointFactory * Core::storagePointFactory() const
 {
 	return m_injector.get<StoragePointFactory>();
-}
-
-InjectedFactory * Core::injectedFactory() const
-{
-	return m_injector.get<InjectedFactory>();
 }
 
 void Core::executeRemoteCommand(const QString &remoteCommand)
