@@ -208,7 +208,6 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	EncryptionMode->addItem(tr("Always"), JabberAccountDetails::Encryption_Yes);
 	EncryptionMode->addItem(tr("When available"), JabberAccountDetails::Encryption_Auto);
 	EncryptionMode->addItem(tr("Only in older version"), JabberAccountDetails::Encryption_Legacy);
-	connect(EncryptionMode, SIGNAL(activated(int)), SLOT(sslActivated(int)));
 	connect(EncryptionMode, SIGNAL(activated(int)), this, SLOT(dataChanged()));
 	boxLayout->addRow(EncryptionModeLabel, EncryptionMode);
 
@@ -324,17 +323,6 @@ void JabberEditAccountWidget::autoResourceToggled(bool on)
 {
 	ResourceName->setEnabled(!on);
 	ResourceLabel->setEnabled(!on);
-}
-
-void JabberEditAccountWidget::sslActivated(int i)
-{
-	if ((EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Auto || EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Legacy))
-		EncryptionMode->setCurrentIndex(EncryptionMode->findData(JabberAccountDetails::Encryption_No));
-	else if (EncryptionMode->itemData(i) == JabberAccountDetails::Encryption_Legacy && !CustomHostPort->isChecked())
-	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Legacy SSL is only available in combination with manual host/port."));
-		EncryptionMode->setCurrentIndex(EncryptionMode->findData(JabberAccountDetails::Encryption_Auto));
-	}
 }
 
 void JabberEditAccountWidget::stateChangedSlot(ConfigurationValueState state)

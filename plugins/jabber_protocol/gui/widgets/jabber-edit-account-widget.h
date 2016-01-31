@@ -95,7 +95,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 
 private slots:
 	virtual void removeAccount();
-	void sslActivated(int i);
 	void hostToggled(bool on);
 	void autoResourceToggled(bool on);
 	void dataChanged();

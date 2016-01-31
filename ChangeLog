@@ -1,5 +1,6 @@
 +++ version 3.0-rc5
 * chat-style: #3057 fixed: all chat styles work again (Vogel)
+* jabber: #3064 fixed: re-enable legacy SSL connection option (Vogel)
 
 +++ version 3.0-rc4
 * icons: #3058 fixed: remove too big icons (Vogel)
