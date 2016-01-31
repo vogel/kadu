@@ -353,10 +353,9 @@ void Core::init()
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	// TODO: add some life-cycle management
-	m_injector.get<NotificationManager>();
-	m_injector.get<SearchWindowActions>(); // temporary, during full-injection-port
-
-	m_injector.get<AvatarManager>();
+	m_injector.instantiate<NotificationManager>();
+	m_injector.instantiate<SearchWindowActions>(); // temporary, during full-injection-port
+	m_injector.instantiate<AvatarManager>();
 }
 
 void Core::deleteOldConfigurationFiles()
@@ -396,7 +395,7 @@ void Core::updateIcon()
 
 void Core::accountRegistered(Account account)
 {
-	Protocol *protocol = account.protocolHandler();
+	auto protocol = account.protocolHandler();
 	if (!protocol)
 		return;
 
@@ -407,7 +406,7 @@ void Core::accountRegistered(Account account)
 
 void Core::accountUnregistered(Account account)
 {
-	Protocol *protocol = account.protocolHandler();
+	auto protocol = account.protocolHandler();
 
 	if (protocol)
 		disconnect(protocol, 0, this, 0);
@@ -467,7 +466,7 @@ int Core::executeSingle(const ExecutionArguments &executionArguments)
 
 void Core::execute(const QStringList &openIds)
 {
-	m_injector.get<TranslationLoader>();
+	m_injector.instantiate<TranslationLoader>();
 
 	createGui();
 	runGuiServices();
@@ -485,14 +484,14 @@ void Core::createGui()
 	m_injector.get<KaduWindowService>()->createWindow();
 
 	// initialize file transfers
-	m_injector.get<FileTransferHandlerManager>();
-	m_injector.get<FileTransferManager>();
+	m_injector.instantiate<FileTransferHandlerManager>();
+	m_injector.instantiate<FileTransferManager>();
 }
 
 void Core::runServices()
 {
-	m_injector.get<ContactParserTags>();
-	m_injector.get<ChatWidgetStatePersistenceService>();
+	m_injector.instantiate<ContactParserTags>();
+	m_injector.instantiate<ChatWidgetStatePersistenceService>();
 
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
@@ -516,9 +515,9 @@ void Core::runServices()
 
 	m_injector.get<ConfigurationUiHandlerRepository>()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
 
-	m_injector.get<AccountEventListener>();
-	m_injector.get<ChatEventListener>();
-	m_injector.get<GroupEventListener>();
+	m_injector.instantiate<AccountEventListener>();
+	m_injector.instantiate<ChatEventListener>();
+	m_injector.instantiate<GroupEventListener>();
 }
 
 void Core::runGuiServices()
