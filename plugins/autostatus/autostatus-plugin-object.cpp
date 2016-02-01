@@ -25,7 +25,7 @@
 
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
-#include "kadu/kadu-core/misc/paths-provider.h"
+#include "misc/paths-provider.h"
 #include "status/status-changer-manager.h"
 
 AutostatusPluginObject::AutostatusPluginObject(QObject *parent) :
