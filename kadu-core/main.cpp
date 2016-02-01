@@ -28,74 +28,53 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QLibraryInfo>
-#include <QtCore/QTranslator>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMessageBox>
-
-#include <errno.h>
-#include <time.h>
-#ifndef Q_OS_WIN
-#include <sys/file.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <pwd.h>
-#include <unistd.h>
-#endif // !Q_OS_WIN
-
 #include "accounts/account-module.h"
 #include "avatars/avatar-module.h"
 #include "buddies/buddy-module.h"
-#include "chat/chat-module.h"
 #include "chat-style/chat-style-module.h"
-#include "configuration/configuration-api.h"
-#include "configuration/configuration-factory.h"
+#include "chat/chat-module.h"
 #include "configuration/configuration-module.h"
 #include "configuration/configuration-path-provider.h"
 #include "configuration/configuration-unusable-exception.h"
-#include "configuration/configuration-writer.h"
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-module.h"
 #include "core/application.h"
 #include "core/core-module.h"
 #include "core/core.h"
-#include "core/injector-provider.h"
 #include "execution-arguments/execution-arguments-parser.h"
 #include "execution-arguments/execution-arguments.h"
 #include "file-transfer/file-transfer-module.h"
 #include "gui/gui-module.h"
 #include "gui/widgets/chat-widget/chat-widget-module.h"
 #include "gui/windows/chat-window/chat-window-module.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/icons-manager.h"
 #include "icons/icons-module.h"
 #include "identities/identity-module.h"
 #include "message/message-module.h"
 #include "message/message.h"
-#include "misc/date-time.h"
-#include "misc/paths-provider.h"
 #include "network/network-module.h"
 #include "notification/notification-module.h"
 #include "os/os-module.h"
-#include "os/single-application/single-application.h"
 #include "os/win/wsa-exception.h"
 #include "os/win/wsa-handler.h"
 #include "parser/parser-module.h"
 #include "plugin/plugin-module.h"
-#include "protocols/protocols-manager.h"
 #include "roster/roster-module.h"
 #include "ssl/ssl-module.h"
 #include "status/status-module.h"
 #include "talkable/talkable-module.h"
 #include "themes/themes-module.h"
-#include "debug.h"
 #include "kadu-config.h"
 
+#include <QtCore/QCoreApplication>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
 #include <injeqt/injector.h>
 
 #ifndef Q_OS_WIN
+#include <sys/file.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <pwd.h>
+#include <unistd.h>
 #if HAVE_EXECINFO
 #include <execinfo.h>
 #endif
@@ -255,7 +234,19 @@ int main(int argc, char *argv[]) try
 
 	try
 	{
-		injector.get<Application>(); // force creation of Application object
+		injector.instantiate<Application>(); // force creation of Application object
+
+#ifndef Q_OS_WIN
+		// Qt version is better on win32
+		qInstallMsgHandler(kaduQtMessageHandler);
+#endif
+
+#ifdef DEBUG_OUTPUT_ENABLED
+		showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
+#endif
+
+		Core core{std::move(injector)};
+		return core.executeSingle(executionArguments);
 	}
 	catch (ConfigurationUnusableException &)
 	{
@@ -267,18 +258,6 @@ int main(int argc, char *argv[]) try
 
 		throw;
 	}
-
-#ifndef Q_OS_WIN
-	// Qt version is better on win32
-	qInstallMsgHandler(kaduQtMessageHandler);
-#endif
-
-#ifdef DEBUG_OUTPUT_ENABLED
-	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
-#endif
-
-	Core core{std::move(injector)};
-	return core.executeSingle(executionArguments);
 }
 #if defined(Q_OS_WIN)
 catch (WSAException &)
