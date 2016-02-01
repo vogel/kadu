@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "injeqt-type-roles.h"
+
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -32,7 +34,7 @@ class PathsProvider;
 class MprisPlayerPluginObject : public QObject
 {
 	Q_OBJECT
-	INJEQT_INSTANCE_IMMEDIATE
+	INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
 	Q_INVOKABLE explicit MprisPlayerPluginObject(QObject *parent = nullptr);

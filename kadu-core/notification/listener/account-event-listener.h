@@ -22,6 +22,7 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "contacts/contact.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -39,7 +40,7 @@ class Status;
 class AccountEventListener : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
-	//INJEQT_INSTANCE_IMMEDIATE
+	INJEQT_TYPE_ROLE(LISTENER)
 
 public:
 	Q_INVOKABLE explicit AccountEventListener(QObject *parent = nullptr);

@@ -22,6 +22,8 @@
 
 #include "configuration/configuration-aware-object.h"
 
+#include "injeqt-type-roles.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -45,7 +47,7 @@ class Configuration;
 class AutoresponderConfigurator : private QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
-	INJEQT_INSTANCE_IMMEDIATE
+	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
 	Q_INVOKABLE explicit AutoresponderConfigurator(QObject *parent = nullptr);

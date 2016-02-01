@@ -21,6 +21,8 @@
 
 #include "status/status-type.h"
 
+#include "injeqt-type-roles.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -32,7 +34,7 @@ class StatusNotifierItem;
 class DockingTooltipHandler final : public QObject
 {
 	Q_OBJECT
-	INJEQT_INSTANCE_IMMEDIATE
+	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
 	Q_INVOKABLE explicit DockingTooltipHandler(QObject *parent = nullptr);

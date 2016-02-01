@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,28 +19,6 @@
 
 #pragma once
 
-#include "injeqt-type-roles.h"
-
-#include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
-
-class IndicatorDocking;
-
-class IndicatorDockingPluginObject : public QObject
-{
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
-
-public:
-	Q_INVOKABLE explicit IndicatorDockingPluginObject(QObject *parent = nullptr);
-	virtual ~IndicatorDockingPluginObject();
-
-private:
-	QPointer<IndicatorDocking> m_indicatorDocking;
-
-private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setIndicatorDocking(IndicatorDocking *indicatorDocking);
-
-};
+#define LISTENER "listener"
+#define PLUGIN "plugin"
+#define SERVICE "service"

@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "injeqt-type-roles.h"
+
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -33,7 +35,7 @@ class ScreenShotConfiguration;
 class ScreenshotPluginObject : public QObject
 {
 	Q_OBJECT
-	INJEQT_INSTANCE_IMMEDIATE
+	INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
 	Q_INVOKABLE explicit ScreenshotPluginObject(QObject *parent = nullptr);

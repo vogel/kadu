@@ -21,6 +21,8 @@
 
 #include "docking-exports.h"
 
+#include "injeqt-type-roles.h"
+
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -42,7 +44,7 @@ class QMenu;
 class DOCKINGAPI DockingMenuHandler final : public QObject
 {
 	Q_OBJECT
-	INJEQT_INSTANCE_IMMEDIATE
+	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
 	Q_INVOKABLE explicit DockingMenuHandler(QObject *parent = nullptr);

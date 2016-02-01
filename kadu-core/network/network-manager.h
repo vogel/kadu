@@ -21,6 +21,7 @@
 #pragma once
 
 #include "exports.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QObject>
 #include <injeqt/injeqt.h>
@@ -48,7 +49,7 @@
 class KADUAPI NetworkManager : public QObject
 {
 	Q_OBJECT
-	INJEQT_INSTANCE_IMMEDIATE
+	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
 	explicit NetworkManager(QObject *parent = nullptr);

@@ -24,6 +24,7 @@
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/plugin-injector-provider.h"
 #include "plugin/plugin-modules-factory.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QEvent>
@@ -47,6 +48,8 @@ PluginLoader::PluginLoader(const QString &pluginDirPath, const QString &pluginNa
 		m_pluginLoader{createPluginLoader(pluginDirPath, pluginName)},
 		m_pluginInjector{createPluginInjector(pluginName, pluginInjectorProvider)}
 {
+	m_pluginInjector.instantiate_all_with_type_role(PLUGIN);
+	m_pluginInjector.instantiate_all_with_type_role(SERVICE);
 }
 
 PluginLoader::~PluginLoader() noexcept

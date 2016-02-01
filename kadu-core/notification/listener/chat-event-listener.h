@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "injeqt-type-roles.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -33,7 +35,7 @@ class NotificationService;
 class ChatEventListener : public QObject
 {
 	Q_OBJECT
-	//INJEQT_INSTANCE_IMMEDIATE
+	INJEQT_TYPE_ROLE(LISTENER)
 
 public:
 	Q_INVOKABLE explicit ChatEventListener(QObject *parent = nullptr);

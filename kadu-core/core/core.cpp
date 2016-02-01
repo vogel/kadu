@@ -65,9 +65,6 @@
 #include "misc/change-notifier-lock.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/paths-provider.h"
-#include "notification/listener/account-event-listener.h"
-#include "notification/listener/chat-event-listener.h"
-#include "notification/listener/group-event-listener.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
 #include "notification/notify-configuration-importer.h"
@@ -86,6 +83,7 @@
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 #include "debug.h"
+#include "injeqt-type-roles.h"
 #include "translation-loader.h"
 #include "updates.h"
 
@@ -490,6 +488,8 @@ void Core::createGui()
 
 void Core::runServices()
 {
+	m_injector.instantiate_all_with_type_role(SERVICE);
+
 	m_injector.instantiate<ContactParserTags>();
 	m_injector.instantiate<ChatWidgetStatePersistenceService>();
 
@@ -515,9 +515,7 @@ void Core::runServices()
 
 	m_injector.get<ConfigurationUiHandlerRepository>()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
 
-	m_injector.instantiate<AccountEventListener>();
-	m_injector.instantiate<ChatEventListener>();
-	m_injector.instantiate<GroupEventListener>();
+	m_injector.instantiate_all_with_type_role(LISTENER);
 }
 
 void Core::runGuiServices()

@@ -21,6 +21,8 @@
 
 #include "misc/memory.h"
 
+#include "injeqt-type-roles.h"
+
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
@@ -35,7 +37,7 @@ class StatusChangerManager;
 class AutoawayPluginObject : public QObject
 {
 	Q_OBJECT
-	INJEQT_INSTANCE_IMMEDIATE
+	INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
 	Q_INVOKABLE explicit AutoawayPluginObject(QObject *parent = nullptr);
