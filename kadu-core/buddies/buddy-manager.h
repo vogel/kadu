@@ -49,8 +49,8 @@ public:
 	Q_INVOKABLE explicit BuddyManager(QObject *parent = nullptr);
 	virtual ~BuddyManager();
 
-	virtual QString storageNodeName() { return QLatin1String("Buddies"); }
-	virtual QString storageNodeItemName() { return QLatin1String("Buddy"); }
+	virtual QString storageNodeName() override { return QLatin1String("Buddies"); }
+	virtual QString storageNodeItemName() override { return QLatin1String("Buddy"); }
 
 	BuddyList buddies(Account account, bool includeAnonymous = false);
 	void mergeBuddies(Buddy destination, Buddy source);
@@ -64,13 +64,13 @@ public:
 	void clearOwnerAndRemoveEmptyBuddy(Contact contact, bool checkBuddyOnlyForOtherContacts = false);
 
 protected:
-	virtual void load();
+	virtual void load() override;
 	virtual Buddy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void itemAboutToBeAdded(Buddy buddy);
-	virtual void itemAdded(Buddy buddy);
-	virtual void itemAboutToBeRemoved(Buddy buddy);
-	virtual void itemRemoved(Buddy buddy);
+	virtual void itemAboutToBeAdded(Buddy buddy) override;
+	virtual void itemAdded(Buddy buddy) override;
+	virtual void itemAboutToBeRemoved(Buddy buddy) override;
+	virtual void itemRemoved(Buddy buddy) override;
 
 signals:
 	void buddyAboutToBeAdded(const Buddy &buddy);

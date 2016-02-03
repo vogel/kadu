@@ -87,11 +87,11 @@ void GaduUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool d
 {
 	Q_UNUSED(urlOpener);
 
-	QVector<Account> gaduAccounts = m_accountManager->byProtocolName("gadu");
+	auto gaduAccounts = m_accountManager->byProtocolName("gadu");
 	if (gaduAccounts.isEmpty())
 		return;
 
-	QString gaduId = QString::fromUtf8(url);
+	auto gaduId = QString::fromUtf8(url);
 	if (gaduId.startsWith(QLatin1String("gg:")))
 	{
 		gaduId.remove(0, 3);
@@ -100,8 +100,8 @@ void GaduUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool d
 
 	if (gaduAccounts.count() == 1 || disableMenu)
 	{
-		const Contact &contact = m_contactManager->byId(gaduAccounts[0], gaduId, ActionCreateAndAdd);
-		const Chat &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
+		auto const &contact = m_contactManager->byId(gaduAccounts[0], gaduId, ActionCreateAndAdd);
+		auto const &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 		if (chat)
 		{
 			m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
@@ -113,7 +113,7 @@ void GaduUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool d
 		QMenu menu;
 
 		QStringList ids;
-		foreach (Account account, gaduAccounts)
+		for (auto const &account : gaduAccounts)
 		{
 			ids.clear();
 			ids.append(account.id());
@@ -135,7 +135,7 @@ void GaduUrlHandler::accountSelected(QAction *action)
 	if (ids.count() != 2)
 		return;
 
-	auto account = m_accountManager->byId("gadu", ids[0]);
+	auto account = m_accountManager->byId(QStringLiteral("gadu"), ids[0]);
 	if (!account)
 		return;
 

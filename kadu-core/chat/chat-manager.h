@@ -112,10 +112,10 @@ private slots:
 protected:
 	virtual Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void itemAboutToBeRegistered(Chat item);
-	virtual void itemRegistered(Chat item);
-	virtual void itemAboutToBeUnregisterd(Chat item);
-	virtual void itemUnregistered(Chat item);
+	virtual void itemAboutToBeRegistered(Chat item) override;
+	virtual void itemRegistered(Chat item) override;
+	virtual void itemAboutToBeUnregisterd(Chat item) override;
+	virtual void itemUnregistered(Chat item) override;
 
 public:
 	Q_INVOKABLE explicit ChatManager(QObject *parent = nullptr);
@@ -128,7 +128,7 @@ public:
 	 *
 	 * Returns node name for storage of all chat data - "Chat".
 	 */
-	virtual QString storageNodeName() { return QLatin1String("Chats"); }
+	virtual QString storageNodeName() override { return QLatin1String("Chats"); }
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -137,7 +137,7 @@ public:
 	 *
 	 * Returns node name for storage of given chat data - "Chat".
 	 */
-	virtual QString storageNodeItemName() { return QLatin1String("Chat"); }
+	virtual QString storageNodeItemName() override { return QLatin1String("Chat"); }
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

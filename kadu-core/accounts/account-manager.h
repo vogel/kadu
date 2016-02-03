@@ -76,15 +76,15 @@ private slots:
 protected:
 	virtual Account loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void itemAdded(Account item);
-	virtual void itemRemoved(Account item);
+	virtual void itemAdded(Account item) override;
+	virtual void itemRemoved(Account item) override;
 
-	virtual void itemAboutToBeRegistered(Account item);
-	virtual void itemRegistered(Account item);
-	virtual void itemAboutToBeUnregisterd(Account item);
-	virtual void itemUnregistered(Account item);
+	virtual void itemAboutToBeRegistered(Account item) override;
+	virtual void itemRegistered(Account item) override;
+	virtual void itemAboutToBeUnregisterd(Account item) override;
+	virtual void itemUnregistered(Account item) override;
 
-	virtual void loaded();
+	virtual void loaded() override;
 
 public:
 	Q_INVOKABLE explicit AccountManager(QObject *parent = nullptr);
@@ -118,8 +118,8 @@ public:
 		return result;
 	}
 
-	virtual QString storageNodeName() { return QLatin1String("Accounts"); }
-	virtual QString storageNodeItemName() { return QLatin1String("Account"); }
+	virtual QString storageNodeName() override { return QLatin1String("Accounts"); }
+	virtual QString storageNodeItemName() override { return QLatin1String("Account"); }
 
 	Account defaultAccount();
 	Account bestAccount();

@@ -119,7 +119,7 @@ void Themes::setTheme(const QString &theme)
 
 			themeSettings.beginGroup(Name);
 			auto keys = themeSettings.allKeys();
-			for (auto key : keys)
+			for (auto const &key : keys)
 			{
 				entries.insert(key, themeSettings.value(key).toString());
 			}

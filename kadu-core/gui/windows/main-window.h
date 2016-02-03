@@ -62,7 +62,7 @@ public:
 
 	const QString & windowName() { return WindowName; }
 
-	virtual QMenu * createPopupMenu() { return 0; }
+	virtual QMenu * createPopupMenu() override { return 0; }
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual TalkableProxyModel * talkableProxyModel() = 0;
@@ -104,9 +104,9 @@ protected:
 
 	void setTransparency(bool enable);
 	void setBlur(bool enable);
-	virtual void showEvent (QShowEvent * event);
+	virtual void showEvent (QShowEvent * event) override;
 
-	virtual void contextMenuEvent(QContextMenuEvent *event);
+	virtual void contextMenuEvent(QContextMenuEvent *event) override;
 	Configuration * configuration() const;
 
 protected slots:
