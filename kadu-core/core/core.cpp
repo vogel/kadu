@@ -102,8 +102,6 @@ Core::Core(injeqt::injector &&injector) :
 	// TODO: should be maybe created by factory factory?
 	m_injector.get<InjectorProvider>()->setInjector(&m_injector);
 
-	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
-
 	createDefaultConfiguration();
 	configurationUpdated();
 
