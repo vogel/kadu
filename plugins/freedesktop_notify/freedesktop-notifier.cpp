@@ -90,10 +90,10 @@ void FreedesktopNotifier::setPathsProvider(PathsProvider *pathsProvider)
 
 void FreedesktopNotifier::init()
 {
-	StripBr.setPattern(QLatin1String("<br ?/?>"));
-	StripHtml.setPattern(QLatin1String("<[^>]*>"));
+	StripBr.setPattern(QStringLiteral("<br ?/?>"));
+	StripHtml.setPattern(QStringLiteral("<[^>]*>"));
 	// this is meant to catch all HTML tags except <b>, <i>, <u>
-	StripUnsupportedHtml.setPattern(QLatin1String("<(/?[^/<>][^<>]+|//[^>]*|/?[^biu])>"));
+	StripUnsupportedHtml.setPattern(QStringLiteral("<(/?[^/<>][^<>]+|//[^>]*|/?[^biu])>"));
 
 	DesktopEntry = QFileInfo(m_pathsProvider->desktopFilePath()).baseName();
 	NotificationsInterface = new QDBusInterface("org.freedesktop.Notifications",
@@ -189,7 +189,7 @@ void FreedesktopNotifier::notify(Notification *notification)
 	else
 	{
 		summary = notification->text();
-		summary.replace(StripBr, QLatin1String(" "));
+		summary.replace(StripBr, QStringLiteral(" "));
 		summary.remove(StripHtml);
 	}
 
@@ -204,14 +204,14 @@ void FreedesktopNotifier::notify(Notification *notification)
 			body = !notification->details().isEmpty()
 					? notification->details().last()
 					: QString();
-			body.replace(StripBr, QLatin1String("\n"));
+			body.replace(StripBr, QStringLiteral("\n"));
 			if (ServerSupportsMarkup)
 				body.remove(StripUnsupportedHtml);
 			else
 				body.remove(StripHtml);
 
 			if (body.length() > CiteSign)
-				body = body.left(CiteSign) + QLatin1String("...");
+				body = body.left(CiteSign) + QStringLiteral("...");
 		}
 
 		if (useKdeStyle)
@@ -225,7 +225,7 @@ void FreedesktopNotifier::notify(Notification *notification)
 			}
 
 			if (body.length() > CiteSign)
-				body = body.left(CiteSign) + QLatin1String("...");
+				body = body.left(CiteSign) + QStringLiteral("...");
 		}
 
 		if (ServerSupportsHyperlinks && !body.isEmpty())

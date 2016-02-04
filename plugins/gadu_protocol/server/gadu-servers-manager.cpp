@@ -57,7 +57,7 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 {
 	QList<GaduServer> result;
 
-	if (serverAddress.isEmpty() || serverAddress.startsWith(QLatin1String("0.0.0.0")))
+	if (serverAddress.isEmpty() || serverAddress.startsWith(QStringLiteral("0.0.0.0")))
 		return result;
 
 	QString address;
@@ -148,7 +148,7 @@ void GaduServersManager::buildServerList()
 		AllPorts << 443;
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true))
-		loadServerListFromFile(m_pathsProvider->dataPath() + QLatin1String("plugins/data/gadu_protocol/servers.txt"));
+		loadServerListFromFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/gadu_protocol/servers.txt"));
 	else
 		loadServerListFromString(m_configuration->deprecatedApi()->readEntry("Network", "Server"));
 

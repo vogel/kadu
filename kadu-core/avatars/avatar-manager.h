@@ -46,8 +46,8 @@ public:
 	Q_INVOKABLE explicit AvatarManager(QObject *parent = nullptr);
 	virtual ~AvatarManager();
 
-	virtual QString storageNodeName() { return QLatin1String("Avatars"); }
-	virtual QString storageNodeItemName() { return QLatin1String("Avatar"); }
+	virtual QString storageNodeName() override { return QStringLiteral("Avatars"); }
+	virtual QString storageNodeItemName() override { return QStringLiteral("Avatar"); }
 
 	Avatar byBuddy(Buddy buddy, NotFoundAction action);
 	Avatar byContact(Contact contact, NotFoundAction action);
@@ -66,13 +66,13 @@ signals:
 protected:
 	virtual Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+	virtual void accountRegistered(Account account) override;
+	virtual void accountUnregistered(Account account) override;
 
-	virtual void itemAboutToBeAdded(Avatar item);
-	virtual void itemAdded(Avatar item);
-	virtual void itemAboutToBeRemoved(Avatar item);
-	virtual void itemRemoved(Avatar item);
+	virtual void itemAboutToBeAdded(Avatar item) override;
+	virtual void itemAdded(Avatar item) override;
+	virtual void itemAboutToBeRemoved(Avatar item) override;
+	virtual void itemRemoved(Avatar item) override;
 
 private:
 	QPointer<AccountManager> m_accountManager;

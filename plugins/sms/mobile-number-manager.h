@@ -51,8 +51,8 @@ public:
 	void registerNumber(QString number, QString gatewayId);
 	void unregisterNumber(QString number);
 
-	virtual QString storageNodeName() { return QLatin1String("MobileNumbers"); }
-	virtual QString storageNodeItemName() { return QLatin1String("MobileNumber"); }
+	virtual QString storageNodeName() { return QStringLiteral("MobileNumbers"); }
+	virtual QString storageNodeItemName() { return QStringLiteral("MobileNumber"); }
 	virtual StorableObject * storageParent();
 
 	QString gatewayId(const QString &mobileNumber);

@@ -62,7 +62,7 @@ QStringList ConfigurationPathProvider::possibleConfigurationFilePaths() const
 
 QString ConfigurationPathProvider::configurationFilePath() const
 {
-	return m_pathsProvider->profilePath() + QLatin1String("/kadu-0.12.conf.xml");
+	return m_pathsProvider->profilePath() + QStringLiteral("/kadu-0.12.conf.xml");
 }
 
 QString ConfigurationPathProvider::backupFilePath() const

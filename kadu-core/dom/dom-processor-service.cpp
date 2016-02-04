@@ -96,8 +96,8 @@ QString DomProcessorService::process(const QString &xml)
 
 	QString result = domDocument.toString(0).trimmed();
 	// remove <div></div>
-	Q_ASSERT(result.startsWith(QLatin1String("<div>")));
-	Q_ASSERT(result.endsWith(QLatin1String("</div>")));
+	Q_ASSERT(result.startsWith(QStringLiteral("<div>")));
+	Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
 	return result.mid(static_cast<int>(qstrlen("<div>")), result.length() - static_cast<int>(qstrlen("<div></div>")));
 }
 

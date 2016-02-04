@@ -47,7 +47,7 @@ Chat ChatTypeContactSet::findChat(ChatManager *chatManager, ChatStorage *chatSto
 			return Chat::null;
 
 	foreach (const Chat &chat, chatManager->allItems()) // search allItems, chats can be not loaded yet
-		if (chat.type() == QLatin1String("ContactSet") || chat.type() == QLatin1String("Conference"))
+		if (chat.type() == QStringLiteral("ContactSet") || chat.type() == QStringLiteral("Conference"))
 			if (chat.contacts() == contacts)
 			{
 				// when contacts changed their accounts we need to change account of chat too

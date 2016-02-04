@@ -42,7 +42,7 @@ void BuddyHistoryDeleteHandler::setHistory(History *history)
 
 QString BuddyHistoryDeleteHandler::name()
 {
-	return QLatin1String("history-delete-handler");
+	return QStringLiteral("history-delete-handler");
 }
 
 QString BuddyHistoryDeleteHandler::displayName()

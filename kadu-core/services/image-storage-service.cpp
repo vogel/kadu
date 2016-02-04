@@ -50,7 +50,7 @@ void ImageStorageService::setPathsProvider(PathsProvider *pathsProvider)
 
 void ImageStorageService::init()
 {
-	m_storagePath = m_pathsProvider->profilePath() + QLatin1String("images/");
+	m_storagePath = m_pathsProvider->profilePath() + QStringLiteral("images/");
 }
 
 QString ImageStorageService::storagePath() const

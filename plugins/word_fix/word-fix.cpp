@@ -85,7 +85,7 @@ void WordFix::init()
 	QString data = m_configuration->deprecatedApi()->readEntry("word_fix", "WordFix_list");
 	if (data.isEmpty())
 	{
-		QFile defList(m_pathsProvider->dataPath() + QLatin1String("plugins/data/word_fix/wf_default_list.data"));
+		QFile defList(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/word_fix/wf_default_list.data"));
 		if (defList.open(QIODevice::ReadOnly))
 		{
 			QTextStream s(&defList);

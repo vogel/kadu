@@ -30,11 +30,11 @@
 QMap<QString, PluginState> PluginStateStorage::load(StoragePoint &storagePoint) const
 {
 	auto result = QMap<QString, PluginState>();
-	auto elements = storagePoint.storage()->getNodes(storagePoint.point(), QLatin1String("Plugin"));
+	auto elements = storagePoint.storage()->getNodes(storagePoint.point(), QStringLiteral("Plugin"));
 	for (const auto &element : elements)
 	{
 		auto name = element.attribute("name");
-		auto state = stringToPluginState(storagePoint.storage()->getTextNode(element, QLatin1String("State")));
+		auto state = stringToPluginState(storagePoint.storage()->getTextNode(element, QStringLiteral("State")));
 		result.insert(name, state);
 	}
 
@@ -50,8 +50,8 @@ void PluginStateStorage::store(StoragePoint &storagePoint, const QMap<QString, P
 		auto stateString = pluginStateToString(pluginStates.value(name));
 		if (!stateString.isEmpty())
 		{
-			auto node = storagePoint.storage()->getNamedNode(storagePoint.point(), QLatin1String{"Plugin"}, name, ConfigurationApi::ModeAppend);
-			storagePoint.storage()->appendTextNode(node, QLatin1String{"State"}, stateString);
+			auto node = storagePoint.storage()->getNamedNode(storagePoint.point(), QStringLiteral("Plugin"), name, ConfigurationApi::ModeAppend);
+			storagePoint.storage()->appendTextNode(node, QStringLiteral("State"), stateString);
 		}
 	}
 }

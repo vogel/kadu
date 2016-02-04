@@ -271,7 +271,7 @@ QStringList MPDMediaPlayer::getPlayListFiles()
 
 QString MPDMediaPlayer::getPlayerName()
 {
-	return QLatin1String("mpd");
+	return QStringLiteral("mpd");
 }
 
 QString MPDMediaPlayer::getPlayerVersion()

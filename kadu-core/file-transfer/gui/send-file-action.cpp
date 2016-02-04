@@ -41,8 +41,8 @@ SendFileAction::SendFileAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
 		ActionDescription(parent)
 {
-	setIcon(KaduIcon("document-send"));
-	setName("sendFileAction");
+	setIcon(KaduIcon(QStringLiteral("document-send")));
+	setName(QStringLiteral("sendFileAction"));
 	setText(tr("Send File..."));
 	setType(ActionDescription::TypeUser);
 }

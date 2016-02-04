@@ -107,10 +107,10 @@ public:
 				if (result)
 					oldConnected = result.data()->protocolHandler() && result.data()->protocolHandler()->isConnected();
 
-				if (!result || (newConnected && !oldConnected)  || (account.protocolName() == "gadu" && result.protocolName() != "gadu"))
+				if (!result || (newConnected && !oldConnected)  || (account.protocolName() == QStringLiteral("gadu") && result.protocolName() != QStringLiteral("gadu")))
 				{
 					result = account;
-					if (newConnected && result.protocolName() == "gadu")
+					if (newConnected && result.protocolName() == QStringLiteral("gadu"))
 						break;
 				}
 			}
@@ -118,8 +118,8 @@ public:
 		return result;
 	}
 
-	virtual QString storageNodeName() override { return QLatin1String("Accounts"); }
-	virtual QString storageNodeItemName() override { return QLatin1String("Account"); }
+	virtual QString storageNodeName() override { return QStringLiteral("Accounts"); }
+	virtual QString storageNodeItemName() override { return QStringLiteral("Account"); }
 
 	Account defaultAccount();
 	Account bestAccount();

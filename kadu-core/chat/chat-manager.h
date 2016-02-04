@@ -128,7 +128,7 @@ public:
 	 *
 	 * Returns node name for storage of all chat data - "Chat".
 	 */
-	virtual QString storageNodeName() override { return QLatin1String("Chats"); }
+	virtual QString storageNodeName() override { return QStringLiteral("Chats"); }
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -137,7 +137,7 @@ public:
 	 *
 	 * Returns node name for storage of given chat data - "Chat".
 	 */
-	virtual QString storageNodeItemName() override { return QLatin1String("Chat"); }
+	virtual QString storageNodeItemName() override { return QStringLiteral("Chat"); }
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

@@ -57,7 +57,7 @@ StorableObject * GroupShared::storageParent()
 
 QString GroupShared::storageNodeName()
 {
-	return QLatin1String("Group");
+	return QStringLiteral("Group");
 }
 
 void GroupShared::importConfiguration(const QString &name)

@@ -53,7 +53,7 @@ private:
 	QPointer<FileTransferManager> m_fileTransferManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 
-	QList<FileTransferWidget *> m_widgets;
+	std::vector<FileTransferWidget *> m_widgets;
 
 	owned_qptr<QScrollArea> m_scrollView;
 

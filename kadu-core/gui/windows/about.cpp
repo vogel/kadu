@@ -155,7 +155,7 @@ void About::init()
 	tb_thanks->viewport()->setAutoFillBackground(false);
 	QString thanks = Qt::escape(loadFile("THANKS"));
 	thanks.prepend("<b>");
-	thanks.replace("\n\n", QLatin1String("</b><br/><br/>"));
+	thanks.replace("\n\n", QStringLiteral("</b><br/><br/>"));
 	thanks.replace("\n", "<br/>");
 	thanks.replace(" ", "&nbsp;");
 	tb_thanks->setHtml(thanks);
@@ -240,7 +240,7 @@ void About::init()
 
 void About::openUrl(const QUrl &url)
 {
-	if (url.scheme().startsWith(QLatin1String("http")))
+	if (url.scheme().startsWith(QStringLiteral("http")))
 		m_urlOpener->openUrl(url.toEncoded());
 }
 
@@ -271,7 +271,7 @@ QString About::loadFile(const QString &name)
 	QString data = str.readAll();
 	file.close();
 
-	data.replace(QRegExp("\r\n?"), QLatin1String("\n"));
+	data.replace(QRegExp("\r\n?"), QStringLiteral("\n"));
 
 	kdebugf2();
 	return data;

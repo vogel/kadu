@@ -52,12 +52,12 @@ QString SyntaxList::readSyntax(PathsProvider *pathsProvider, const QString &cate
 {
 	QString path;
 	QFile syntaxFile;
-	path = pathsProvider->dataPath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
+	path = pathsProvider->dataPath() + QStringLiteral("syntax/") + category + '/' + name + QStringLiteral(".syntax");
 
 	syntaxFile.setFileName(path);
 	if (!syntaxFile.open(QIODevice::ReadOnly))
 	{
-		path = pathsProvider->profilePath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
+		path = pathsProvider->profilePath() + QStringLiteral("syntax/") + category + '/' + name + QStringLiteral(".syntax");
 
 		syntaxFile.setFileName(path);
 		if (!syntaxFile.open(QIODevice::ReadOnly))
@@ -86,7 +86,7 @@ void SyntaxList::reload()
 	SyntaxInfo info;
 
 	info.global = false;
-	path = m_pathsProvider->profilePath() + QLatin1String("syntax/") + m_category + '/';
+	path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/';
 	dir.setPath(path);
 
 	dir.setNameFilters(QStringList("*.syntax"));
@@ -100,7 +100,7 @@ void SyntaxList::reload()
 	}
 
 	info.global = true;
-	path = m_pathsProvider->dataPath() + QLatin1String("syntax/") + m_category + '/';
+	path = m_pathsProvider->dataPath() + QStringLiteral("syntax/") + m_category + '/';
 	dir.setPath(path);
 
 	files = dir.entryList();
@@ -123,13 +123,13 @@ void SyntaxList::reload()
 
 bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 {
-	QString path = m_pathsProvider->profilePath() + QLatin1String("syntax/");
+	QString path = m_pathsProvider->profilePath() + QStringLiteral("syntax/");
 	QDir dir(path);
 	if (!dir.exists())
 		if (!dir.mkdir(path))
 			return false;
 
-	path = m_pathsProvider->profilePath() + QLatin1String("syntax/") + m_category + '/';
+	path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/';
 	dir.setPath(path);
 	if (!dir.exists())
 		if (!dir.mkdir(path))
@@ -162,9 +162,9 @@ QString SyntaxList::readSyntax(const QString &name)
 	SyntaxInfo info = *(find(name));
 	QString path;
 	if (info.global)
-		path = m_pathsProvider->dataPath() + QLatin1String("syntax/") + m_category + '/' + name + QLatin1String(".syntax");
+		path = m_pathsProvider->dataPath() + QStringLiteral("syntax/") + m_category + '/' + name + QStringLiteral(".syntax");
 	else
-		path = m_pathsProvider->profilePath() + QLatin1String("syntax/") + m_category + '/' + name + QLatin1String(".syntax");
+		path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/' + name + QStringLiteral(".syntax");
 
 	QFile syntaxFile;
 	syntaxFile.setFileName(path);
@@ -189,7 +189,7 @@ bool SyntaxList::deleteSyntax(const QString &name)
 	if (info.global)
 		return false;
 
-	QString path = m_pathsProvider->profilePath() + QLatin1String("syntax/") + m_category + '/' + name + QLatin1String(".syntax");
+	QString path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/' + name + QStringLiteral(".syntax");
 	QFile file;
 	file.setFileName(path);
 

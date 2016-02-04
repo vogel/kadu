@@ -227,7 +227,7 @@ void ChatStyleManager::loadStyles()
 	QFileInfo fi;
 	QStringList files;
 
-	path = m_pathsProvider->profilePath() + QLatin1String("syntax/chat/");
+	path = m_pathsProvider->profilePath() + QStringLiteral("syntax/chat/");
 	dir.setPath(path);
 
 	files = dir.entryList();
@@ -252,7 +252,7 @@ void ChatStyleManager::loadStyles()
 		}
 	}
 
-	path = m_pathsProvider->dataPath() + QLatin1String("syntax/chat/");
+	path = m_pathsProvider->dataPath() + QStringLiteral("syntax/chat/");
 	dir.setPath(path);
 
 	files = dir.entryList();

@@ -26,9 +26,9 @@ QString pluginStateToString(PluginState pluginState)
 	switch (pluginState)
 	{
 		case PluginState::Enabled:
-			return QLatin1String{"Loaded"};
+			return QStringLiteral("Loaded");
 		case PluginState::Disabled:
-			return QLatin1String{"NotLoaded"};
+			return QStringLiteral("NotLoaded");
 		default:
 			return {};
 	}
@@ -36,9 +36,9 @@ QString pluginStateToString(PluginState pluginState)
 
 PluginState stringToPluginState(const QString &string)
 {
-	if (string == QLatin1String{"Loaded"})
+	if (string == QStringLiteral("Loaded"))
 		return PluginState::Enabled;
-	else if (string == QLatin1String{"NotLoaded"})
+	else if (string == QStringLiteral("NotLoaded"))
 		return PluginState::Disabled;
 	else
 		return PluginState::New;

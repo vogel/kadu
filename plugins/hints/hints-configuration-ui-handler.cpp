@@ -183,7 +183,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 	if (!AdvancedWindow)
 	{
 		AdvancedWindow = m_injectedFactory->makeInjected<ConfigurationWindow>("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", m_mainConfigurationWindow->dataManager());
-		AdvancedWindow->widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints-advanced.ui"));
+		AdvancedWindow->widget()->appendUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints-advanced.ui"));
 
 		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
 
@@ -212,7 +212,7 @@ void HintsConfigurationUiHandler::showAdvanced()
 
 void HintsConfigurationUiHandler::addHintsPreview()
 {
-	auto previewNotify = m_injectedFactory->makeInjected<Notification>(Account::null, Chat::null, QLatin1String("Preview"), KaduIcon("protocols/common/message"));
+	auto previewNotify = m_injectedFactory->makeInjected<Notification>(Account::null, Chat::null, QStringLiteral("Preview"), KaduIcon("protocols/common/message"));
 	previewNotify->setText(QCoreApplication::translate("@default", "Hints position preview"));
 
 	auto previewHint = m_injectedFactory->makeInjected<Hint>(previewHintsFrame, previewNotify);

@@ -293,7 +293,7 @@ void HistorySqlStorage::initQueries()
 QString HistorySqlStorage::chatIdList(const Chat &chat)
 {
 	if (!chat)
-		return QLatin1String("(0)");
+		return QStringLiteral("(0)");
 
 	ChatDetailsBuddy *buddyChat = qobject_cast<ChatDetailsBuddy *>(chat.details());
 	if (!buddyChat)
@@ -303,7 +303,7 @@ QString HistorySqlStorage::chatIdList(const Chat &chat)
 	foreach (const Chat &aggregatedChat, buddyChat->chats())
 		ids.append(QString::number(ChatsMapping->idByChat(aggregatedChat, false)));
 
-	return QString("(%1)").arg(ids.join(QLatin1String(", ")));
+	return QString("(%1)").arg(ids.join(QStringLiteral(", ")));
 }
 
 QString HistorySqlStorage::talkableContactsWhere(const Talkable &talkable)
@@ -313,19 +313,19 @@ QString HistorySqlStorage::talkableContactsWhere(const Talkable &talkable)
 	else if (talkable.isValidContact())
 		return QString("contact_id = %1").arg(ContactsMapping->idByContact(m_talkableConverter->toContact(talkable), true));
 
-	return QLatin1String("1");
+	return QStringLiteral("1");
 }
 
 QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy)
 {
 	if (!buddy || buddy.contacts().isEmpty())
-		return QLatin1String("0");
+		return QStringLiteral("0");
 
 	QStringList ids;
 	foreach (const Contact &contact, buddy.contacts())
 		ids.append(QString("%1").arg(ContactsMapping->idByContact(contact, true)));
 
-	return QString("contact_id IN (%1)").arg(ids.join(QLatin1String(", ")));
+	return QString("contact_id IN (%1)").arg(ids.join(QStringLiteral(", ")));
 }
 
 void HistorySqlStorage::sync()

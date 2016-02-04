@@ -112,7 +112,7 @@ void JabberUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool
 		return;
 
 	QString jabberId = QString::fromUtf8(url);
-	if (jabberId.startsWith(QLatin1String("jid:")))
+	if (jabberId.startsWith(QStringLiteral("jid:")))
 	{
 		jabberId.remove(0, 3);
 		jabberId.remove(QRegExp("/*"));

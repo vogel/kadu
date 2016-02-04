@@ -48,7 +48,7 @@ StorableObject * NetworkProxyShared::storageParent()
 
 QString NetworkProxyShared::storageNodeName()
 {
-	return QLatin1String("Proxy");
+	return QStringLiteral("Proxy");
 }
 
 void NetworkProxyShared::load()

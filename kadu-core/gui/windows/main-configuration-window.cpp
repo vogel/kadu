@@ -161,7 +161,7 @@ void MainConfigurationWindow::init()
 {
 	setWindowRole("kadu-configuration");
 
-	widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("configuration/dialog.ui"));
+	widget()->appendUiFile(m_pathsProvider->dataPath() + QStringLiteral("configuration/dialog.ui"));
 
 #ifndef DEBUG_ENABLED
 	widget()->widgetById("debug")->hide();
@@ -367,7 +367,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	QStringList captions;
 	QStringList values;
 	captions << tr("None");
-	values << QLatin1String("none");
+	values << QStringLiteral("none");
 
 	QStringList toolTipClasses = m_toolTipClassManager->getToolTipClasses();
 	foreach(const QString &toolTipClass, toolTipClasses)
@@ -384,7 +384,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	if (!lookChatAdvanced)
 	{
 		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", dataManager());
-		lookChatAdvanced.data()->widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
+		lookChatAdvanced.data()->widget()->appendUiFile(m_pathsProvider->dataPath() + QStringLiteral("configuration/dialog-look-chat-advanced.ui"));
 	}
 
 	lookChatAdvanced.data()->show();

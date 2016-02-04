@@ -34,18 +34,18 @@ ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments)
 
 	for (auto it = arguments.constBegin(); it != arguments.constEnd(); ++it)
 	{
-		if (*it == QLatin1String("--version"))
+		if (*it == QStringLiteral("--version"))
 			queryVersion = true;
-		else if (*it == QLatin1String("--help"))
+		else if (*it == QStringLiteral("--help"))
 			queryUsage = true;
-		else if (*it == QLatin1String("--debug") && (it + 1) != arguments.constEnd())
+		else if (*it == QStringLiteral("--debug") && (it + 1) != arguments.constEnd())
 		{
 			bool ok;
 			(++it)->toInt(&ok);
 			if (ok)
 				debugMask = *it;
 		}
-		else if (*it == QLatin1String("--config-dir") && (it + 1) != arguments.constEnd())
+		else if (*it == QStringLiteral("--config-dir") && (it + 1) != arguments.constEnd())
 			profileDirectory = *(++it);
 		else if (QRegExp("^[a-zA-Z]+:(/){0,3}.+").exactMatch(*it))
 			openIds.append(*it);

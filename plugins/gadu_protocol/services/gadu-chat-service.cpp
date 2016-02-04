@@ -311,7 +311,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	// TODO: this is a hack, we get <img name= from GG servers, but
 	// FormattedStringFactory requires <img src= as it cannot parse name= attribute
 	// this is because of QTextDocument usage, this needs to be fixed in a proper way
-	string.replace(QLatin1String{"<img name="}, QLatin1String{"<img src="});
+	string.replace(QStringLiteral("<img name="), QStringLiteral("<img src="));
 	auto formattedString = CurrentFormattedStringFactory->fromHtml(string);
 	if (ignoreRichText(sender))
 	{
@@ -319,7 +319,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		formattedString->accept(&visitor);
 
 		// for history and sorted messages we must use html format
-		auto htmlBody = replacedNewLine(Qt::escape(visitor.result()), QLatin1String("<br/>"));
+		auto htmlBody = replacedNewLine(Qt::escape(visitor.result()), QStringLiteral("<br/>"));
 		formattedString = CurrentFormattedStringFactory->fromHtml(visitor.result());
 	}
 

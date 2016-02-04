@@ -142,14 +142,14 @@ void SpellChecker::init()
 	aspell_config_replace(SpellConfig, "sug-mode", "ultra");
 
 #	if defined(Q_OS_WIN)
-	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(m_pathsProvider->dataPath() + QLatin1String("aspell")));
-	aspell_config_replace(SpellConfig, "data-dir", qPrintable(m_pathsProvider->dataPath() + QLatin1String("aspell")));
-	aspell_config_replace(SpellConfig, "prefix", qPrintable(m_pathsProvider->profilePath() + QLatin1String("dicts")));
+	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(m_pathsProvider->dataPath() + QStringLiteral("aspell")));
+	aspell_config_replace(SpellConfig, "data-dir", qPrintable(m_pathsProvider->dataPath() + QStringLiteral("aspell")));
+	aspell_config_replace(SpellConfig, "prefix", qPrintable(m_pathsProvider->profilePath() + QStringLiteral("dicts")));
 #	endif
 #elif defined(HAVE_ENCHANT)
 	Broker = enchant_broker_init();
 #	if defined(Q_OS_WIN)
-	enchant_broker_set_param(Broker, "enchant.myspell.dictionary.path", qPrintable(m_pathsProvider->dataPath() + QLatin1String("share/enchant/myspell/")));
+	enchant_broker_set_param(Broker, "enchant.myspell.dictionary.path", qPrintable(m_pathsProvider->dataPath() + QStringLiteral("share/enchant/myspell/")));
 #	endif
 #endif
 

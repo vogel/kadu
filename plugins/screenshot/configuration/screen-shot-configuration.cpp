@@ -55,7 +55,7 @@ void ScreenShotConfiguration::createDefaultConfiguration()
 	m_configuration->deprecatedApi()->addVariable("ScreenShot", "fileFormat", "PNG");
 	m_configuration->deprecatedApi()->addVariable("ScreenShot", "use_short_jpg", true);
 	m_configuration->deprecatedApi()->addVariable("ScreenShot", "quality", -1);
-	m_configuration->deprecatedApi()->addVariable("ScreenShot", "path", m_pathsProvider->profilePath() + QLatin1String("images/"));
+	m_configuration->deprecatedApi()->addVariable("ScreenShot", "path", m_pathsProvider->profilePath() + QStringLiteral("images/"));
 	m_configuration->deprecatedApi()->addVariable("ScreenShot", "filenamePrefix", "shot");
 	m_configuration->deprecatedApi()->addVariable("ScreenShot", "paste_clause", true);
 	m_configuration->deprecatedApi()->addVariable("ScreenShot", "dir_size_warns", true);
@@ -67,7 +67,7 @@ void ScreenShotConfiguration::configurationUpdated()
 	FileFormat = m_configuration->deprecatedApi()->readEntry("ScreenShot", "fileFormat", "PNG");
 	UseShortJpgExtension = m_configuration->deprecatedApi()->readBoolEntry("ScreenShot", "use_short_jpg", true);
 	Quality = m_configuration->deprecatedApi()->readNumEntry("ScreenShot", "quality", -1);
-	ImagePath = m_configuration->deprecatedApi()->readEntry("ScreenShot", "path", m_pathsProvider->profilePath() + QLatin1String("images/"));
+	ImagePath = m_configuration->deprecatedApi()->readEntry("ScreenShot", "path", m_pathsProvider->profilePath() + QStringLiteral("images/"));
 	FileNamePrefix = m_configuration->deprecatedApi()->readEntry("ScreenShot", "filenamePrefix", "shot");
 	PasteImageClauseIntoChatWidget = m_configuration->deprecatedApi()->readBoolEntry("ScreenShot", "paste_clause", true);
 	WarnAboutDirectorySize = m_configuration->deprecatedApi()->readBoolEntry("ScreenShot", "dir_size_warns", true);
@@ -79,7 +79,7 @@ QString ScreenShotConfiguration::screenshotFileNameExtension()
 	bool useShortJpg = useShortJpgExtension();
 	QString extension = fileFormat();
 	if (useShortJpg && extension == "jpeg")
-		return QLatin1String("jpg");
+		return QStringLiteral("jpg");
 
 	return extension;
 }

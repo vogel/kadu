@@ -55,8 +55,8 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
 
 	QString result = domDocument.toString(-1).trimmed();
 	// remove <message></message>
-	Q_ASSERT(result.startsWith(QLatin1String("<message>")));
-	Q_ASSERT(result.endsWith(QLatin1String("</message>")));
+	Q_ASSERT(result.startsWith(QStringLiteral("<message>")));
+	Q_ASSERT(result.endsWith(QStringLiteral("</message>")));
 	return result.mid(static_cast<int>(qstrlen("<message>")), result.length() - static_cast<int>(qstrlen("<message></message>")));
 }
 

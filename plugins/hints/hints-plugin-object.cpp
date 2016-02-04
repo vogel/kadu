@@ -62,14 +62,14 @@ void HintsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void HintsPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_hintsConfigurationUiHandler);
 }
 
 void HintsPluginObject::done()
 {
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_hintsConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
 }
 
 #include "moc_hints-plugin-object.cpp"

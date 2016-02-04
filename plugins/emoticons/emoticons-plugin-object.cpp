@@ -100,7 +100,7 @@ void EmoticonsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 void EmoticonsPluginObject::init()
 {
 	m_actions->insert(m_insertEmoticonAction);
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/emoticons.ui"));
 	m_clipboardHtmlTransformerService->registerTransformer(m_emoticonClipboardHtmlTransformer);
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_emoticonsConfigurationUiHandler);
 	m_domProcessorService->registerVisitorProvider(m_emoticonExpanderDomVisitorProvider, 2000);
@@ -112,7 +112,7 @@ void EmoticonsPluginObject::done()
 	m_domProcessorService->unregisterVisitorProvider(m_emoticonExpanderDomVisitorProvider);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_emoticonsConfigurationUiHandler);
 	m_clipboardHtmlTransformerService->unregisterTransformer(m_emoticonClipboardHtmlTransformer);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/emoticons.ui"));
 }
 
 #include "moc_emoticons-plugin-object.cpp"

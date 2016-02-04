@@ -48,7 +48,7 @@ QString PathsProvider::webKitPath(const QString &path)
 {
 	if (path.isEmpty())
 		return path;
-	if (path.startsWith(QLatin1String("file:///")))
+	if (path.startsWith(QStringLiteral("file:///")))
 		return path;
 	if (path.startsWith('/'))
 		return "file://" + path;
@@ -69,16 +69,16 @@ PathsProvider::~PathsProvider()
 void PathsProvider::initBasicPaths()
 {
 #if defined(Q_OS_UNIX)
-	DesktopFilePath = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DESKTOP_FILE_PATH_RELATIVE_TO_BIN);
+	DesktopFilePath = QCoreApplication::applicationDirPath() + QStringLiteral("/" KADU_DESKTOP_FILE_PATH_RELATIVE_TO_BIN);
 	DesktopFilePath = QFileInfo(DesktopFilePath).canonicalFilePath();
 #endif
 
-	DataPath = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DATADIR_RELATIVE_TO_BIN);
+	DataPath = QCoreApplication::applicationDirPath() + QStringLiteral("/" KADU_DATADIR_RELATIVE_TO_BIN);
 	QString canonicalPath = QDir(DataPath).canonicalPath();
 	if (!canonicalPath.isEmpty())
 		DataPath = canonicalPath + '/';
 
-	PluginsLibPath = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_PLUGINS_LIBDIR_RELATIVE_TO_BIN);
+	PluginsLibPath = QCoreApplication::applicationDirPath() + QStringLiteral("/" KADU_PLUGINS_LIBDIR_RELATIVE_TO_BIN);
 	canonicalPath = QDir(PluginsLibPath).canonicalPath();
 	if (!canonicalPath.isEmpty())
 		PluginsLibPath = canonicalPath + '/';
@@ -87,31 +87,31 @@ void PathsProvider::initBasicPaths()
 void PathsProvider::initProfilePath(const QString &customProfileDir)
 {
 #if defined(Q_OS_WIN)
-	const QString defaultConfigDirRelativeToHome = QLatin1String("Kadu");
+	const QString defaultConfigDirRelativeToHome = QStringLiteral("Kadu");
 	const QString &oldMidConfigDir = defaultConfigDirRelativeToHome;
 #else
-	const QString defaultConfigDirRelativeToHome = QLatin1String(".kadu");
-	const QString oldMidConfigDir = QLatin1String("kadu");
+	const QString defaultConfigDirRelativeToHome = QStringLiteral(".kadu");
+	const QString oldMidConfigDir = QStringLiteral("kadu");
 #endif
 
 	if (customProfileDir.isEmpty())
 	{
-		if (QFileInfo(dataPath() + QLatin1String("portable")).exists())
-			ProfilePath = dataPath() + QLatin1String("config");
+		if (QFileInfo(dataPath() + QStringLiteral("portable")).exists())
+			ProfilePath = dataPath() + QStringLiteral("config");
 		else
 			ProfilePath = homePath() + '/' + defaultConfigDirRelativeToHome;
 	}
 	else
 	{
-		if (customProfileDir.startsWith(QLatin1String("./"))
+		if (customProfileDir.startsWith(QStringLiteral("./"))
 #ifdef Q_OS_WIN
-				|| customProfileDir.startsWith(QLatin1String(".\\"))
+				|| customProfileDir.startsWith(QStringLiteral(".\\"))
 #endif
 				)
 			ProfilePath = QDir::currentPath() + '/' + customProfileDir;
 		else if (QDir(customProfileDir).isAbsolute())
 			ProfilePath = customProfileDir;
-		else if (QFileInfo(dataPath() + QLatin1String("portable")).exists())
+		else if (QFileInfo(dataPath() + QStringLiteral("portable")).exists())
 			ProfilePath = dataPath() + customProfileDir;
 		else
 			ProfilePath = homePath() + '/' + customProfileDir;
@@ -136,6 +136,6 @@ void PathsProvider::initProfilePath(const QString &customProfileDir)
 	QString canonicalPath = QDir(ProfilePath).canonicalPath();
 	if (!canonicalPath.isEmpty())
 		ProfilePath = canonicalPath;
-	if (!ProfilePath.isEmpty() && !ProfilePath.endsWith(QLatin1String("/")))
+	if (!ProfilePath.isEmpty() && !ProfilePath.endsWith(QStringLiteral("/")))
 		ProfilePath += '/';
 }

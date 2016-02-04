@@ -75,7 +75,7 @@ public:
 	 * Returns node name for storage of recent chat ids - "RecentChat".
 	 * This node is only used when configuration allows of storing that data.
 	 */
-	virtual QString storageNodeName() { return QLatin1String("RecentChats"); }
+	virtual QString storageNodeName() { return QStringLiteral("RecentChats"); }
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

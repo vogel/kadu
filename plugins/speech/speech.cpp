@@ -157,7 +157,7 @@ void Speech::notify(Notification *notification)
 		text = notification->text();
 	else
 	{
-		QString details = notification->details().join(QLatin1String("\n"));
+		QString details = notification->details().join(QStringLiteral("\n"));
 		if (details.length() > m_configuration->deprecatedApi()->readNumEntry("Speech", "MaxLength"))
 			syntax = m_configuration->deprecatedApi()->readEntry("Speech", "MsgTooLong" + sex);
 

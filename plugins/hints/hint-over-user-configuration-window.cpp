@@ -73,7 +73,7 @@ void HintOverUserConfigurationWindow::setPathsProvider(PathsProvider *pathsProvi
 void HintOverUserConfigurationWindow::init()
 {
 	connect(this, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
-	widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hint-over-user.ui"));
+	widget()->appendUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hint-over-user.ui"));
 
 	connect(static_cast<ConfigSelectFont *>(widget()->widgetById("font")), SIGNAL(fontChanged(QFont)),
 			this, SLOT(fontChanged(QFont)));
@@ -180,9 +180,9 @@ void HintOverUserConfigurationWindow::syntaxChanged()
 	 * so we have to remove it here */
 	text = text.remove("file://");
 
-	while (text.endsWith(QLatin1String("<br/>")))
+	while (text.endsWith(QStringLiteral("<br/>")))
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-	while (text.startsWith(QLatin1String("<br/>")))
+	while (text.startsWith(QStringLiteral("<br/>")))
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
 	previewTipLabel->setText(text);

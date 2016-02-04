@@ -112,7 +112,7 @@ StorableObject * ContactShared::storageParent()
 
 QString ContactShared::storageNodeName()
 {
-	return QLatin1String("Contact");
+	return QStringLiteral("Contact");
 }
 
 void ContactShared::load()
@@ -135,7 +135,7 @@ void ContactShared::load()
 	// information is already lost.
 	bool detached = hasValue("Detached")
 		? loadValue<bool>("Detached", false)
-		: Id.endsWith(QLatin1String("@chat.facebook.com"));
+		: Id.endsWith(QStringLiteral("@chat.facebook.com"));
 	bool dirty = loadValue<bool>("Dirty", true);
 	if (detached)
 		Entry->setDetached();

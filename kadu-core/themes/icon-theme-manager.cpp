@@ -31,7 +31,7 @@
 
 QString IconThemeManager::defaultTheme()
 {
-	return QLatin1String{"default"};
+	return QStringLiteral("default");
 }
 
 IconThemeManager::IconThemeManager(QObject *parent) :
@@ -68,8 +68,8 @@ QString IconThemeManager::defaultThemeName() const
 QStringList IconThemeManager::defaultThemePaths() const
 {
 	// Allow local themes to override global ones.
-	auto result = getSubDirs(m_pathsProvider->profilePath() + QLatin1String("icons"));
-	result += getSubDirs(m_pathsProvider->dataPath() + QLatin1String("themes/icons"));
+	auto result = getSubDirs(m_pathsProvider->profilePath() + QStringLiteral("icons"));
+	result += getSubDirs(m_pathsProvider->dataPath() + QStringLiteral("themes/icons"));
 
 	return result;
 }

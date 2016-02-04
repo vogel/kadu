@@ -70,7 +70,7 @@ void PluginStateManager::loadPluginStates()
 	if (!m_pluginDependencyHandler || !m_pluginStateService || !m_storagePointFactory)
 		return;
 
-	auto storagePoint = m_storagePointFactory->createStoragePoint(QLatin1String{"Plugins"});
+	auto storagePoint = m_storagePointFactory->createStoragePoint(QStringLiteral("Plugins"));
 	if (!storagePoint)
 		return;
 
@@ -100,7 +100,7 @@ void PluginStateManager::storePluginStates()
 	if (!m_pluginStateService || !m_storagePointFactory)
 		return;
 
-	auto storagePoint = m_storagePointFactory->createStoragePoint(QLatin1String{"Plugins"});
+	auto storagePoint = m_storagePointFactory->createStoragePoint(QStringLiteral("Plugins"));
 	if (!storagePoint)
 		return;
 

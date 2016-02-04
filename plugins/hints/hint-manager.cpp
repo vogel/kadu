@@ -535,9 +535,9 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkab
 	syntax = syntax.remove("file:///");
 
 	auto text = m_parser->parse(syntax, talkable, ParserEscape::HtmlEscape);
-	while (text.endsWith(QLatin1String("<br/>")))
+	while (text.endsWith(QStringLiteral("<br/>")))
 		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-	while (text.startsWith(QLatin1String("<br/>")))
+	while (text.startsWith(QStringLiteral("<br/>")))
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
 #ifdef Q_OS_UNIX

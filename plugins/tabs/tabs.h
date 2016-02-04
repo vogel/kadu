@@ -147,7 +147,7 @@ public:
 	void detachChat(ChatWidget *chatWidget);
 
 	virtual StorableObject * storageParent() { return 0; }
-	virtual QString storageNodeName() { return QLatin1String("ModuleTabs"); }
+	virtual QString storageNodeName() { return QStringLiteral("ModuleTabs"); }
 
 	bool acceptChat(Chat chat) const;
 	ChatWidget * addChat(Chat chat, OpenChatActivation activation);

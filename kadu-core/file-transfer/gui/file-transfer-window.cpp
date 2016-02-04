@@ -64,10 +64,10 @@ void FileTransferWindow::init()
 {
 	new TaskbarProgress{m_fileTransferManager, this};
 
-	setWindowRole("kadu-file-transfer");
+	setWindowRole(QStringLiteral("kadu-file-transfer"));
 
 	createGui();
-	new WindowGeometryManager{new ConfigFileVariantWrapper{m_configuration, "General", "TransferWindowGeometry"}, QRect(200, 200, 500, 300), this};
+	new WindowGeometryManager{new ConfigFileVariantWrapper{m_configuration, QStringLiteral("General"), QStringLiteral("TransferWindowGeometry")}, QRect(200, 200, 500, 300), this};
 
 	for (auto &&fileTransfer : m_fileTransferManager->items())
 		fileTransferAdded(fileTransfer);
@@ -138,7 +138,7 @@ void FileTransferWindow::fileTransferAdded(FileTransfer fileTransfer)
 {
 	auto ftm = m_injectedFactory->makeInjected<FileTransferWidget>(fileTransfer, m_innerFrame.get());
 	m_transfersLayout->addWidget(ftm);
-	m_widgets.append(ftm);
+	m_widgets.push_back(ftm);
 
 	contentsChanged();
 }
@@ -149,7 +149,9 @@ void FileTransferWindow::fileTransferRemoved(FileTransfer fileTransfer)
 		if (ftm->fileTransfer() == fileTransfer)
 		{
 			ftm->deleteLater();
-			m_widgets.removeAll(ftm);
+			auto it = std::find(std::begin(m_widgets), std::end(m_widgets), ftm);
+			if (it != std::end(m_widgets))
+				m_widgets.erase(it);
 			contentsChanged();
 			return;
 		}

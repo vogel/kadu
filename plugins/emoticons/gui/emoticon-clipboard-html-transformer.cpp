@@ -34,7 +34,7 @@ EmoticonClipboardHtmlTransformer::~EmoticonClipboardHtmlTransformer()
 
 QString EmoticonClipboardHtmlTransformer::transform(const QString &clipboardHtml)
 {
-	return QString(clipboardHtml).replace(EmoticonRegularExpression, QLatin1String("\\1"));
+	return QString(clipboardHtml).replace(EmoticonRegularExpression, QStringLiteral("\\1"));
 }
 
 #include "moc_emoticon-clipboard-html-transformer.cpp"

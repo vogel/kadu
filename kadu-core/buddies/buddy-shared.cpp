@@ -125,7 +125,7 @@ StorableObject * BuddyShared::storageParent()
 
 QString BuddyShared::storageNodeName()
 {
-	return QLatin1String("Buddy");
+	return QStringLiteral("Buddy");
 }
 
 #define ImportProperty(name, old_name) \

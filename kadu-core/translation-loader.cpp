@@ -49,14 +49,14 @@ void TranslationLoader::init()
 {	
 	auto lang = m_configuration->deprecatedApi()->readEntry("General", "Language", QLocale::system().name().left(2));
 
-	m_qt.load("qt_" + lang, m_pathsProvider->dataPath() + QLatin1String("translations"));
-	m_qtbase.load("qtbase_" + lang, m_pathsProvider->dataPath() + QLatin1String("translations"));
-	m_qtdeclarative.load("qtdeclarative_" + lang, m_pathsProvider->dataPath() + QLatin1String("translations"));
-	m_qtmultimedia.load("qtmultimedia_" + lang, m_pathsProvider->dataPath() + QLatin1String("translations"));
-	m_qtquick1.load("qtquick1_" + lang, m_pathsProvider->dataPath() + QLatin1String("translations"));
-	m_qtscript.load("qtscript_" + lang, m_pathsProvider->dataPath() + QLatin1String("translations"));
-	m_qtxmlpatterns.load("qtxmlpatterns_" + lang, m_pathsProvider->dataPath() + QLatin1String("translations"));
-	m_kadu.load("kadu_" + lang, m_pathsProvider->dataPath() + QLatin1String("translations"));
+	m_qt.load("qt_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
+	m_qtbase.load("qtbase_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
+	m_qtdeclarative.load("qtdeclarative_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
+	m_qtmultimedia.load("qtmultimedia_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
+	m_qtquick1.load("qtquick1_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
+	m_qtscript.load("qtscript_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
+	m_qtxmlpatterns.load("qtxmlpatterns_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
+	m_kadu.load("kadu_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
 
 	QCoreApplication::installTranslator(&m_qt);
 	QCoreApplication::installTranslator(&m_qtbase);

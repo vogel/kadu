@@ -44,8 +44,8 @@ public:
 	Q_INVOKABLE explicit GroupManager(QObject *parent = nullptr);
 	virtual ~GroupManager();
 
-	virtual QString storageNodeName() { return QLatin1String("Groups"); }
-	virtual QString storageNodeItemName() { return QLatin1String("Group"); }
+	virtual QString storageNodeName() { return QStringLiteral("Groups"); }
+	virtual QString storageNodeItemName() { return QStringLiteral("Group"); }
 
 	Group byName(const QString &name, bool create = true);
 

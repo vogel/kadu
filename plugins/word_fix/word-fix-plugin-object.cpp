@@ -63,14 +63,14 @@ void WordFixPluginObject::setWordFix(WordFix *wordFix)
 
 void WordFixPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/word_fix.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_wordFixConfigurationUiHandler);
 }
 
 void WordFixPluginObject::done()
 {
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_wordFixConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/word_fix.ui"));
 }
 
 #include "moc_word-fix-plugin-object.cpp"

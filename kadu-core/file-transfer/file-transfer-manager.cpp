@@ -201,14 +201,14 @@ void FileTransferManager::cleanUp()
 {
 	QMutexLocker locker(&mutex());
 
-	auto toRemove = QList<FileTransfer>{};
+	auto toRemove = std::vector<FileTransfer>{};
 
 	for (auto &&fileTransfer : items())
 	{
 		if (FileTransferStatus::Finished == fileTransfer.transferStatus())
-			toRemove.append(fileTransfer);
+			toRemove.push_back(fileTransfer);
 		if (FileTransferStatus::Rejected == fileTransfer.transferStatus() && FileTransferDirection::Incoming == fileTransfer.transferDirection())
-			toRemove.append(fileTransfer);
+			toRemove.push_back(fileTransfer);
 	}
 
 	for (auto &&fileTransfer : toRemove)
@@ -237,7 +237,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer, QString loca
 		auto file = new QFile{saveFileName};
 		if (!file->open(QFile::WriteOnly | QIODevice::Truncate))
 		{
-			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Could not open file. Select another one."));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon(QStringLiteral("dialog-warning"))), tr("Kadu"), tr("Could not open file. Select another one."));
 			saveFileName.clear();
 			file->deleteLater();
 			continue;
@@ -305,13 +305,13 @@ QString FileTransferManager::getSaveFileName(QString fileName, QString remoteFil
 	{
 		if (fileName.isEmpty())
 			fileName = QFileDialog::getSaveFileName(parent, tr("Select file location"),
-					m_configuration->deprecatedApi()->readEntry("Network", "LastDownloadDirectory") + remoteFileName,
+					m_configuration->deprecatedApi()->readEntry(QStringLiteral("Network"), QStringLiteral("LastDownloadDirectory")) + remoteFileName,
 							QString(), 0, QFileDialog::DontConfirmOverwrite);
 
 		if (fileName.isEmpty())
 			return fileName;
 
-		m_configuration->deprecatedApi()->writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
+		m_configuration->deprecatedApi()->writeEntry(QStringLiteral("Network"), QStringLiteral("LastDownloadDirectory"), QFileInfo(fileName).absolutePath() + '/');
 		auto info = QFileInfo{fileName};
 
 		if (!haveFileName && info.exists())
@@ -337,7 +337,7 @@ QString FileTransferManager::getSaveFileName(QString fileName, QString remoteFil
 
 		if (info.exists() && !info.isWritable())
 		{
-			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Could not open file. Select another one."));
+			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon(QStringLiteral("dialog-warning"))), tr("Kadu"), tr("Could not open file. Select another one."));
 			fileName.clear();
 			continue;
 		}

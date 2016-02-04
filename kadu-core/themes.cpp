@@ -164,8 +164,9 @@ QStringList Themes::defaultPathsProviderWithThemes() const
 {
 	QStringList result;
 
-	foreach(const QString &it, getSubDirs(m_pathsProvider->dataPath() + QLatin1String("themes/") + Name))
-		result << (m_pathsProvider->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
+	auto path = m_pathsProvider->dataPath() + QStringLiteral("themes/") + Name;
+	foreach(const QString &it, getSubDirs(path))
+		result << (path + '/' + it + '/');
 
 	foreach(const QString &it, getSubDirs(m_pathsProvider->profilePath() + Name))
 		result << (m_pathsProvider->profilePath() + Name + '/' + it + '/');

@@ -151,7 +151,7 @@ void KaduWindow::init()
 	setHiddenParent();
 #endif
 
-	setWindowTitle(QLatin1String("Kadu"));
+	setWindowTitle(QStringLiteral("Kadu"));
 
 	// we need to create gui first, then actions, then menus
 	// TODO: fix it in 0.10 or whenever

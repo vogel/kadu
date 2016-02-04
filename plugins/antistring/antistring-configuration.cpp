@@ -56,7 +56,7 @@ void AntistringConfiguration::init()
 
 void AntistringConfiguration::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("PowerKadu", "log file", m_pathsProvider->profilePath() + QLatin1String("antistring.log"));
+	m_configuration->deprecatedApi()->addVariable("PowerKadu", "log file", m_pathsProvider->profilePath() + QStringLiteral("antistring.log"));
 	m_configuration->deprecatedApi()->addVariable("PowerKadu", "admonish_tresc_config",
 			"http://www.olsztyn.mm.pl/~silentman/lancuszki.htm");
 }
@@ -69,7 +69,7 @@ void AntistringConfiguration::configurationUpdated()
 	MessageStop = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "message stop");
 	LogMessage = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "log message");
 	ReturnMessage = m_configuration->deprecatedApi()->readEntry("PowerKadu", "admonish_tresc_config");
-	LogFile = m_configuration->deprecatedApi()->readEntry("PowerKadu", "log file", m_pathsProvider->profilePath() + QLatin1String("antistring.log"));
+	LogFile = m_configuration->deprecatedApi()->readEntry("PowerKadu", "log file", m_pathsProvider->profilePath() + QStringLiteral("antistring.log"));
 }
 
 void AntistringConfiguration::addCondition(const QString &conditionString)
@@ -87,7 +87,7 @@ void AntistringConfiguration::addCondition(const QString &conditionString)
 
 void AntistringConfiguration::readDefaultConditions()
 {
-	QFile defaultListFile(m_pathsProvider->dataPath() + QLatin1String("plugins/data/antistring/ant_conditions.conf"));
+	QFile defaultListFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/antistring/ant_conditions.conf"));
 	if (!defaultListFile.open(QFile::ReadOnly))
 	{
 		kdebug("Can't open file: %s\n", qPrintable(defaultListFile.fileName()));

@@ -49,8 +49,8 @@ public:
 	Q_INVOKABLE explicit BuddyManager(QObject *parent = nullptr);
 	virtual ~BuddyManager();
 
-	virtual QString storageNodeName() override { return QLatin1String("Buddies"); }
-	virtual QString storageNodeItemName() override { return QLatin1String("Buddy"); }
+	virtual QString storageNodeName() override { return QStringLiteral("Buddies"); }
+	virtual QString storageNodeItemName() override { return QStringLiteral("Buddy"); }
 
 	BuddyList buddies(Account account, bool includeAnonymous = false);
 	void mergeBuddies(Buddy destination, Buddy source);

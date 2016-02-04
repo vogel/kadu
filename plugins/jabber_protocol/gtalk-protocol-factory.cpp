@@ -141,7 +141,7 @@ bool GTalkProtocolFactory::allowChangeServer()
 
 QString GTalkProtocolFactory::defaultServer()
 {
-    return QLatin1String("gmail.com");
+    return QStringLiteral("gmail.com");
 }
 
 QWidget * GTalkProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)

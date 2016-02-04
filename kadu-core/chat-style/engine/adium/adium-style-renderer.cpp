@@ -132,9 +132,9 @@ void AdiumStyleRenderer::appendChatMessage(const Message &message, const Message
 			break;
 	}
 
-	formattedMessageHtml = replacedNewLine(replaceKeywords(m_style->baseHref(), formattedMessageHtml, message, messageRenderInfo.nickColor()), QLatin1String(" "));
-	formattedMessageHtml.replace('\\', QLatin1String("\\\\"));
-	formattedMessageHtml.replace('\'', QLatin1String("\\'"));
+	formattedMessageHtml = replacedNewLine(replaceKeywords(m_style->baseHref(), formattedMessageHtml, message, messageRenderInfo.nickColor()), QStringLiteral(" "));
+	formattedMessageHtml.replace('\\', QStringLiteral("\\\\"));
+	formattedMessageHtml.replace('\'', QStringLiteral("\\'"));
 	if (!message.id().isEmpty())
 		formattedMessageHtml.prepend(QString("<span id=\"message_%1\">").arg(Qt::escape(message.id())));
 	else
@@ -218,16 +218,16 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
 		if (!avatar.isEmpty())
 			photoIncoming = PathsProvider::webKitPath(avatar.smallFilePath());
 		else
-			photoIncoming = PathsProvider::webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
+			photoIncoming = PathsProvider::webKitPath(styleHref + QStringLiteral("Incoming/buddy_icon.png"));
 	}
 	else
-		photoIncoming = PathsProvider::webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
+		photoIncoming = PathsProvider::webKitPath(styleHref + QStringLiteral("Incoming/buddy_icon.png"));
 
 	const Avatar &avatar = configuration().chat().chatAccount().accountContact().avatar(true);
 	if (!avatar.isEmpty())
 		photoOutgoing = PathsProvider::webKitPath(avatar.smallFilePath());
 	else
-		photoOutgoing = PathsProvider::webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
+		photoOutgoing = PathsProvider::webKitPath(styleHref + QStringLiteral("Outgoing/buddy_icon.png"));
 
 	result.replace(QString("%incomingIconPath%"), Qt::escape(photoIncoming));
 	result.replace(QString("%outgoingIconPath%"), Qt::escape(photoOutgoing));
@@ -284,7 +284,7 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
 		if (!avatar.isEmpty())
 			photoPath = Qt::escape(PathsProvider::webKitPath(avatar.smallFilePath()));
 		else
-			photoPath = Qt::escape(PathsProvider::webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png")));
+			photoPath = Qt::escape(PathsProvider::webKitPath(styleHref + QStringLiteral("Incoming/buddy_icon.png")));
 	}
 	else if (message.type() == MessageTypeSent)
 	{
@@ -293,7 +293,7 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
 		if (!avatar.isEmpty())
 			photoPath = Qt::escape(PathsProvider::webKitPath(avatar.smallFilePath()));
 		else
-			photoPath = Qt::escape(PathsProvider::webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png")));
+			photoPath = Qt::escape(PathsProvider::webKitPath(styleHref + QStringLiteral("Outgoing/buddy_icon.png")));
 	}
 	else
 		result.remove(QString("%messageClasses%"));

@@ -84,7 +84,7 @@ void SqlRestore::setPathsProvider(PathsProvider *pathsProvider)
 
 SqlRestore::RestoreError SqlRestore::performRestore(const QString &databaseFilePath)
 {
-	QString recoveryScriptPath = m_pathsProvider->dataPath() + QLatin1String(RECOVERY_SCRIPT);
+	QString recoveryScriptPath = m_pathsProvider->dataPath() + QStringLiteral(RECOVERY_SCRIPT);
 
 	QFileInfo recoveryScriptFileInfo(recoveryScriptPath);
 	if (!recoveryScriptFileInfo.exists())

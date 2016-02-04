@@ -28,8 +28,8 @@
 ChatTypeBuddy::ChatTypeBuddy(QObject *parent) :
 		ChatType(parent)
 {
-	m_aliases.append("Buddy");
-	m_aliases.append("Aggregate");
+	m_aliases.append(QStringLiteral("Buddy"));
+	m_aliases.append(QStringLiteral("Aggregate"));
 }
 
 ChatTypeBuddy::~ChatTypeBuddy()
@@ -81,7 +81,7 @@ QStringList ChatTypeBuddy::aliases() const
  */
 KaduIcon ChatTypeBuddy::icon() const
 {
-	return KaduIcon("kadu_icons/conference");
+	return KaduIcon(QStringLiteral("kadu_icons/conference"));
 }
 
 /**
@@ -94,7 +94,7 @@ KaduIcon ChatTypeBuddy::icon() const
  */
 QString ChatTypeBuddy::windowRole() const
 {
-	return "kadu-chat-aggregate";
+	return QStringLiteral("kadu-chat-aggregate");
 }
 
 /**

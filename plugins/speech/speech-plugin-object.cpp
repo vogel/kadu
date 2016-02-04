@@ -70,7 +70,7 @@ void SpeechPluginObject::setSpeech(Speech *speech)
 void SpeechPluginObject::init()
 {
 
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/speech.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_speechConfigurationUiHandler);
 	m_notificationManager->registerNotifier(m_speech);
 }
@@ -79,7 +79,7 @@ void SpeechPluginObject::done()
 {
 	m_notificationManager->unregisterNotifier(m_speech);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_speechConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/speech.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/speech.ui"));
 }
 
 #include "moc_speech-plugin-object.cpp"

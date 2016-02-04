@@ -53,7 +53,7 @@ void AvatarShared::setPathsProvider(PathsProvider *pathsProvider)
 
 void AvatarShared::init()
 {
-	AvatarsDir = m_pathsProvider->profilePath() + QLatin1String("avatars/");
+	AvatarsDir = m_pathsProvider->profilePath() + QStringLiteral("avatars/");
 
 	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
@@ -65,7 +65,7 @@ StorableObject * AvatarShared::storageParent()
 
 QString AvatarShared::storageNodeName()
 {
-	return QLatin1String("Avatar");
+	return QStringLiteral("Avatar");
 }
 
 QString AvatarShared::filePath()
@@ -139,9 +139,9 @@ void AvatarShared::storeAvatar()
 	storeValue("LastUpdated", LastUpdated);
 	storeValue("NextUpdate", NextUpdate);
 
-	QDir avatarsDir(m_pathsProvider->profilePath() + QLatin1String("avatars"));
+	QDir avatarsDir(m_pathsProvider->profilePath() + QStringLiteral("avatars"));
 	if (!avatarsDir.exists())
-		avatarsDir.mkpath(QLatin1String("."));
+		avatarsDir.mkpath(QStringLiteral("."));
 
 	if (Pixmap.isNull())
 		QFile::remove(filePath());
@@ -169,9 +169,9 @@ void AvatarShared::storeSmallPixmap()
 	if (!isValidStorage())
 		return;
 
-	QDir avatarsDir(m_pathsProvider->profilePath() + QLatin1String("avatars"));
+	QDir avatarsDir(m_pathsProvider->profilePath() + QStringLiteral("avatars"));
 	if (!avatarsDir.exists())
-		avatarsDir.mkpath(QLatin1String("."));
+		avatarsDir.mkpath(QStringLiteral("."));
 
 	SmallFilePath = filePathToSmallFilePath(filePath());
 

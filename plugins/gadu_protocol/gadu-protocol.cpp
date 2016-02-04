@@ -562,7 +562,7 @@ void GaduProtocol::disconnectedFromServer()
 
 QString GaduProtocol::statusPixmapPath()
 {
-	return QLatin1String("gadu-gadu");
+	return QStringLiteral("gadu-gadu");
 }
 
 void GaduProtocol::disableSocketNotifiers()

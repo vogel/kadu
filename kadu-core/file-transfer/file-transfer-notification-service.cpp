@@ -73,11 +73,11 @@ void FileTransferNotificationService::setNotificationManager(NotificationManager
 
 void FileTransferNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
+	m_notificationEventRepository->addNotificationEvent(NotificationEvent{QStringLiteral("FileTransfer"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "File transfer"))});
+	m_notificationEventRepository->addNotificationEvent(NotificationEvent{QStringLiteral("FileTransfer/IncomingFile"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Incoming file transfer"))});
 
 	auto acceptTransferCallback = NotificationCallback{
-		"file-transfer-accept",
+		QStringLiteral("file-transfer-accept"),
 		tr("Accept"),
 		[](Notification *notification){
 			auto fileTransferNotification = qobject_cast<NewFileTransferNotification *>(notification);
@@ -86,7 +86,7 @@ void FileTransferNotificationService::init()
 		}
 	};
 	auto saveTransferCallback = NotificationCallback{
-		"file-transfer-save",
+		QStringLiteral("file-transfer-save"),
 		tr("Save"),
 		[](Notification *notification){
 			auto fileTransferNotification = qobject_cast<NewFileTransferNotification *>(notification);
@@ -95,7 +95,7 @@ void FileTransferNotificationService::init()
 		}
 	};
 	auto rejectTransferCallback = NotificationCallback{
-		"file-transfer-reject",
+		QStringLiteral("file-transfer-reject"),
 		tr("Reject"),
 		[](Notification *notification){
 			auto fileTransferNotification = qobject_cast<NewFileTransferNotification *>(notification);
@@ -104,7 +104,7 @@ void FileTransferNotificationService::init()
 		}
 	};
 	auto ignoreTransferCallback = NotificationCallback{
-		"file-transfer-ignore",
+		QStringLiteral("file-transfer-ignore"),
 		tr("Ignore"),
 		[](Notification *notification){
 			auto fileTransferNotification = qobject_cast<NewFileTransferNotification *>(notification);
@@ -120,14 +120,14 @@ void FileTransferNotificationService::init()
 
 void FileTransferNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"FileTransfer", QT_TRANSLATE_NOOP("@default", "File transfer")});
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"FileTransfer/IncomingFile", QT_TRANSLATE_NOOP("@default", "Incoming file transfer")});
+	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{QStringLiteral("FileTransfer"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "File transfer"))});
+	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{QStringLiteral("FileTransfer/IncomingFile"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Incoming file transfer"))});
 }
 
 void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTransfer &fileTransfer)
 {
 	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, fileTransfer.peer(), ActionCreateAndAdd);
-	auto notification = m_injectedFactory->makeInjected<NewFileTransferNotification>(chat, "FileTransfer/IncomingFile", fileTransfer);
+	auto notification = m_injectedFactory->makeInjected<NewFileTransferNotification>(chat, QStringLiteral("FileTransfer/IncomingFile"), fileTransfer);
 	notification->setTitle(tr("Incoming transfer"));
 	notification->setText(incomingFileTransferText(chat, fileTransfer));
 
@@ -136,41 +136,41 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 
 QString FileTransferNotificationService::incomingFileTransferText(const Chat &chat, const FileTransfer &fileTransfer)
 {
-	auto textFileSize = QString("%1 kB");
+	auto textFileSize = QStringLiteral("%1 kB");
 	auto size = static_cast<double>(fileTransfer.fileSize()) / 1024.0;
 
 	if (size > 1024.0)
 	{
 		size /= 1024.0;
-		textFileSize = "%1 MB";
+		textFileSize = QStringLiteral("%1 MB");
 	}
 
 	if (fileTransfer.fileSize() > 0)
 		if (fileTransfer.localFileName().isEmpty())
-			return tr("User <b>%1</b> wants to send you a file <b>%2</b><br/>of size <b>%3</b> using account <b>%4</b>.<br/>Accept transfer?")
-				.arg(Qt::escape(fileTransfer.peer().display(true)))
-				.arg(Qt::escape(fileTransfer.remoteFileName()))
-				.arg(Qt::escape(textFileSize.arg(size, 0, 'f', 2)))
-				.arg(Qt::escape(chat.chatAccount().accountIdentity().name()));
+			return tr("User <b>%1</b> wants to send you a file <b>%2</b><br/>of size <b>%3</b> using account <b>%4</b>.<br/>Accept transfer?").arg(
+				Qt::escape(fileTransfer.peer().display(true)),
+				Qt::escape(fileTransfer.remoteFileName()),
+				Qt::escape(textFileSize.arg(size, 0, 'f', 2)),
+				Qt::escape(chat.chatAccount().accountIdentity().name()));
 		else
 			return tr("User <b>%1</b> wants to send you a file <b/>%2</b><br/>of size <b>%3</b> using account <b>%4</b>.<br/>"
-				"This is probably a next part of <b>%5</b><br/>What should I do?")
-				.arg(Qt::escape(fileTransfer.peer().display(true)))
-				.arg(Qt::escape(fileTransfer.remoteFileName()))
-				.arg(Qt::escape(textFileSize.arg(size, 0, 'f', 2)))
-				.arg(Qt::escape(chat.chatAccount().accountIdentity().name()))
-				.arg(Qt::escape(fileTransfer.localFileName()));
+				"This is probably a next part of <b>%5</b><br/>What should I do?").arg(
+				Qt::escape(fileTransfer.peer().display(true)),
+				Qt::escape(fileTransfer.remoteFileName()),
+				Qt::escape(textFileSize.arg(size, 0, 'f', 2)),
+				Qt::escape(chat.chatAccount().accountIdentity().name()),
+				Qt::escape(fileTransfer.localFileName()));
 	else
 		if (fileTransfer.localFileName().isEmpty())
-			return tr("User <b>%1</b> wants to send you a file <b>%2</b><br/>using account <b>%3</b>.<br/>Accept transfer?")
-				.arg(Qt::escape(fileTransfer.peer().display(true)))
-				.arg(Qt::escape(fileTransfer.remoteFileName()))
-				.arg(Qt::escape(chat.chatAccount().accountIdentity().name()));
+			return tr("User <b>%1</b> wants to send you a file <b>%2</b><br/>using account <b>%3</b>.<br/>Accept transfer?").arg(
+				Qt::escape(fileTransfer.peer().display(true)),
+				Qt::escape(fileTransfer.remoteFileName()),
+				Qt::escape(chat.chatAccount().accountIdentity().name()));
 		else
 			return tr("User <b>%1</b> wants to send you a file <b/>%2</b><br/>using account <b>%3</b>.<br/>"
-				"This is probably a next part of <b>%4</b><br/>What should I do?")
-				.arg(Qt::escape(fileTransfer.peer().display(true)))
-				.arg(Qt::escape(fileTransfer.remoteFileName()))
-				.arg(Qt::escape(chat.chatAccount().accountIdentity().name()))
-				.arg(Qt::escape(fileTransfer.localFileName()));
+				"This is probably a next part of <b>%4</b><br/>What should I do?").arg(
+				Qt::escape(fileTransfer.peer().display(true)),
+				Qt::escape(fileTransfer.remoteFileName()),
+				Qt::escape(chat.chatAccount().accountIdentity().name()),
+				Qt::escape(fileTransfer.localFileName()));
 }

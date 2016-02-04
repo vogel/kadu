@@ -196,9 +196,9 @@ QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 
 QWidget * ToolBar::createActionWidget(QAction *before, ToolBarAction &action)
 {
-	if (action.actionName.startsWith(QLatin1String("__separator")))
+	if (action.actionName.startsWith(QStringLiteral("__separator")))
 		return createSeparator(before, action);
-	else if (action.actionName.startsWith(QLatin1String("__spacer")))
+	else if (action.actionName.startsWith(QStringLiteral("__spacer")))
 		return createSpacer(before, action);
 	else
 		return createPushButton(before, action);
@@ -331,8 +331,8 @@ void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 		auto action = m_actions->value(actionName);
 		auto mainWindow = qobject_cast<MainWindow *>(parentWidget());
 		auto supportedAction = action && mainWindow && mainWindow->supportsActionType(action->type());
-		auto isSeparator = actionName.startsWith(QLatin1String("__separator"));
-		auto isSpacer = actionName.startsWith(QLatin1String("__spacer"));
+		auto isSeparator = actionName.startsWith(QStringLiteral("__separator"));
+		auto isSpacer = actionName.startsWith(QStringLiteral("__spacer"));
 
 		if (mine || supportedAction || isSeparator || isSpacer)
 		{
@@ -601,9 +601,9 @@ void ToolBar::writeToConfig(const QDomElement &parent_element)
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
 	{
 		QDomElement button_elem = m_configuration->api()->createElement(toolbar_elem, "ToolButton");
-		if (toolBarAction.actionName.startsWith(QLatin1String("__separator")))
+		if (toolBarAction.actionName.startsWith(QStringLiteral("__separator")))
 			button_elem.setAttribute("action_name", "__separator");
-		else if (toolBarAction.actionName.startsWith(QLatin1String("__spacer")))
+		else if (toolBarAction.actionName.startsWith(QStringLiteral("__spacer")))
 			button_elem.setAttribute("action_name", "__spacer");
 		else
 			button_elem.setAttribute("action_name", toolBarAction.actionName);

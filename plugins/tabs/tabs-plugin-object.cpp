@@ -63,7 +63,7 @@ void TabsPluginObject::setTabsManager(TabsManager *tabsManager)
 
 void TabsPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/tabs.ui"));
 	m_chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_tabsChatWidgetContainerHandler);
 	m_tabsManager->openStoredChatTabs();
 }
@@ -72,7 +72,7 @@ void TabsPluginObject::done()
 {
 	m_tabsManager->storeOpenedChatTabs();
 	m_chatWidgetContainerHandlerRepository->unregisterChatWidgetContainerHandler(m_tabsChatWidgetContainerHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/tabs.ui"));
 }
 
 #include "moc_tabs-plugin-object.cpp"

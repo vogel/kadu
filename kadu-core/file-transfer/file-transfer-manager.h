@@ -55,8 +55,8 @@ public:
 	Q_INVOKABLE explicit FileTransferManager(QObject *parent = nullptr);
 	virtual ~FileTransferManager();
 
-	virtual QString storageNodeName() { return QLatin1String("FileTransfersNew"); }
-	virtual QString storageNodeItemName() { return QLatin1String("FileTransfer"); }
+	virtual QString storageNodeName() override { return QStringLiteral("FileTransfersNew"); }
+	virtual QString storageNodeItemName() override { return QStringLiteral("FileTransfer"); }
 
 	int totalProgress() const;
 
@@ -77,13 +77,13 @@ signals:
 protected:
 	virtual FileTransfer loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+	virtual void accountRegistered(Account account) override;
+	virtual void accountUnregistered(Account account) override;
 
-	virtual void itemAboutToBeAdded(FileTransfer fileTransfer);
-	virtual void itemAdded(FileTransfer fileTransfer);
-	virtual void itemAboutToBeRemoved(FileTransfer fileTransfer);
-	virtual void itemRemoved(FileTransfer fileTransfer);
+	virtual void itemAboutToBeAdded(FileTransfer fileTransfer) override;
+	virtual void itemAdded(FileTransfer fileTransfer) override;
+	virtual void itemAboutToBeRemoved(FileTransfer fileTransfer) override;
+	virtual void itemRemoved(FileTransfer fileTransfer) override;
 
 private:
 	QPointer<AccountManager> m_accountManager;

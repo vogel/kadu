@@ -59,7 +59,7 @@ public:
 	virtual ~UnreadMessageRepository();
 
 	virtual StorableObject * storageParent() { return {}; }
-	virtual QString storageNodeName() { return QLatin1String{"Messages"}; }
+	virtual QString storageNodeName() { return QStringLiteral("Messages"); }
 
 	/**
 	 * @short Returns list of all unread messages.

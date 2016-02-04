@@ -71,7 +71,7 @@ void MprisPlayerPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void MprisPlayerPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mprisplayer_mediaplayer.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_mprisPlayerConfigurationUiHandler);
 
 	if (!m_mediaPlayer->registerMediaPlayer(m_mprisPlayer, m_mprisPlayer))
@@ -87,7 +87,7 @@ void MprisPlayerPluginObject::done()
 {
 	m_mediaPlayer->unregisterMediaPlayer();
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_mprisPlayerConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mprisplayer_mediaplayer.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mprisplayer_mediaplayer.ui"));
 }
 
 #include "moc_mpris-player-plugin-object.cpp"

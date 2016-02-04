@@ -328,7 +328,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 				if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc"))
 				{
 					QString content = pe.decodedContent();
-					content.replace('\n', QLatin1String("<br/>"));
+					content.replace('\n', QStringLiteral("<br/>"));
 					content.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
 					pe.setContent(content);
 				}
@@ -686,10 +686,10 @@ QString Parser::parse(const QString &s, Talkable talkable, const ParserData * co
 									tokens.at(firstSpaceTokenIdx).rawContent().left(spacePos);
 
 #ifdef Q_OS_WIN
-						if (filePath.startsWith(QLatin1String("file:///")))
+						if (filePath.startsWith(QStringLiteral("file:///")))
 							filePath = filePath.mid(static_cast<int>(qstrlen("file:///")));
 #else
-						if (filePath.startsWith(QLatin1String("file:///")))
+						if (filePath.startsWith(QStringLiteral("file:///")))
 							filePath = filePath.mid(static_cast<int>(qstrlen("file://")));
 #endif
 

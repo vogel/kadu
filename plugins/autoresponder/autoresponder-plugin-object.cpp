@@ -69,7 +69,7 @@ void AutoresponderPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void AutoresponderPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoresponder.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoresponderConfigurationUiHandler);
 	m_messageFilterService->registerMessageFilter(m_autoresponderMessageFilter);
 }
@@ -78,7 +78,7 @@ void AutoresponderPluginObject::done()
 {
 	m_messageFilterService->unregisterMessageFilter(m_autoresponderMessageFilter);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoresponderConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoresponder.ui"));
 }
 
 #include "moc_autoresponder-plugin-object.cpp"

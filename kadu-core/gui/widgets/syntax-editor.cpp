@@ -97,9 +97,9 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 
 	SyntaxInfo info = (*syntaxList)[newSyntax];
 	if (info.global)
-		fileName = m_pathsProvider->dataPath() + QLatin1String("syntax/") + category.toLower() + '/' + newSyntax + QLatin1String(".syntax");
+		fileName = m_pathsProvider->dataPath() + QStringLiteral("syntax/") + category.toLower() + '/' + newSyntax + QStringLiteral(".syntax");
 	else
-		fileName = m_pathsProvider->profilePath() + QLatin1String("syntax/") + category.toLower() + '/' + newSyntax + QLatin1String(".syntax");
+		fileName = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + category.toLower() + '/' + newSyntax + QStringLiteral(".syntax");
 
 	file.setFileName(fileName);
 	if (!file.open(QIODevice::ReadOnly))

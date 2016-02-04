@@ -45,8 +45,8 @@ public:
 	Q_INVOKABLE explicit IdentityManager(QObject *parent = nullptr);
 	virtual ~IdentityManager();
 
-	virtual QString storageNodeName() { return QLatin1String("Identities"); }
-	virtual QString storageNodeItemName() { return QLatin1String("Identity"); }
+	virtual QString storageNodeName() { return QStringLiteral("Identities"); }
+	virtual QString storageNodeItemName() { return QStringLiteral("Identity"); }
 
 	Identity byName(const QString &name, bool create = true);
 	Identity identityForAcccount(Account account);

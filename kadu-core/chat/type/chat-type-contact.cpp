@@ -38,7 +38,7 @@ Chat ChatTypeContact::findChat(ChatManager *chatManager, ChatStorage *chatStorag
 		return Chat::null;
 
 	foreach (const Chat &chat, chatManager->allItems())
-		if (chat.type() == QLatin1String("Contact") || chat.type() == QLatin1String("Simple"))
+		if (chat.type() == QStringLiteral("Contact") || chat.type() == QStringLiteral("Simple"))
 			if (chat.contacts().toContact() == contact)
 			{
 				// when contacts changed their accounts we need to change account of chat too
@@ -135,7 +135,7 @@ KaduIcon ChatTypeContact::icon() const
  */
 QString ChatTypeContact::windowRole() const
 {
-	return "kadu-chat-contact";
+	return QStringLiteral("kadu-chat-contact");
 }
 
 /**

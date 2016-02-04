@@ -32,15 +32,15 @@ VersionService::~VersionService()
 
 QString VersionService::name() const
 {
-	return QLatin1String{"Kadu"};
+	return QStringLiteral("Kadu");
 }
 
 QString VersionService::version() const
 {
-	return QLatin1String(KADU_VERSION);
+	return QStringLiteral(KADU_VERSION);
 }
 
 QString VersionService::nameWithVersion() const
 {
-	return name() + QLatin1String{" "}  + version();
+	return name() + QStringLiteral(" ")  + version();
 }

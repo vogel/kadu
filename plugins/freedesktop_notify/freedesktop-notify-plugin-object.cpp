@@ -57,14 +57,14 @@ void FreedesktopNotifyPluginObject::setPathsProvider(PathsProvider *pathsProvide
 
 void FreedesktopNotifyPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/freedesktop_notify.ui"));
 	m_notificationManager->registerNotifier(m_freedesktopNotifier);
 }
 
 void FreedesktopNotifyPluginObject::done()
 {
 	m_notificationManager->unregisterNotifier(m_freedesktopNotifier);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/freedesktop_notify.ui"));
 }
 
 #include "moc_freedesktop-notify-plugin-object.cpp"

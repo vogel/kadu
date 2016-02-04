@@ -70,12 +70,12 @@ StorableObject * DescriptionManager::storageParent()
 
 QString DescriptionManager::storageNodeName()
 {
-	return QLatin1String("Descriptions");
+	return QStringLiteral("Descriptions");
 }
 
 QString DescriptionManager::storageItemNodeName()
 {
-	return QLatin1String("Description");
+	return QStringLiteral("Description");
 }
 
 DescriptionModel * DescriptionManager::model()

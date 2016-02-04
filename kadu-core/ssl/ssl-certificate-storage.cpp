@@ -44,7 +44,7 @@ std::unique_ptr<StoragePoint> SslCertificateStorage::storagePoint() const
 {
 	if (!m_storagePointFactory)
 		return {};
-	return m_storagePointFactory.data()->createStoragePoint(QLatin1String("SslCertificates"));
+	return m_storagePointFactory.data()->createStoragePoint(QStringLiteral("SslCertificates"));
 }
 
 QSet<SslCertificate> SslCertificateStorage::loadCertificates() const
@@ -54,7 +54,7 @@ QSet<SslCertificate> SslCertificateStorage::loadCertificates() const
 		return {};
 
 	auto result = QSet<SslCertificate>{};
-	auto elements = storage->storage()->getNodes(storage->point(), QLatin1String{"Certificate"});
+	auto elements = storage->storage()->getNodes(storage->point(), QStringLiteral("Certificate"));
 	for (const auto &element : elements)
 	{
 		auto hostName = element.attribute("hostName");
@@ -75,7 +75,7 @@ void SslCertificateStorage::storeCertificates(const QSet<SslCertificate> &certif
 
 	for (const auto &certificate : certificates)
 	{
-		auto element = storage->storage()->createElement(storage->point(), QLatin1String{"Certificate"});
+		auto element = storage->storage()->createElement(storage->point(), QStringLiteral("Certificate"));
 		auto textNode = element.ownerDocument().createTextNode(certificate.pemHexEncodedCertificate());
 		element.setAttribute("hostName", certificate.hostName());
 		element.appendChild(textNode);

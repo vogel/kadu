@@ -31,9 +31,9 @@
 QString EmoticonThemeManager::defaultTheme()
 {
 #ifdef Q_OS_LINUX
-	return QLatin1String("penguins");
+	return QStringLiteral("penguins");
 #else
-	return QLatin1String("tango");
+	return QStringLiteral("tango");
 #endif
 }
 
@@ -67,8 +67,8 @@ QString EmoticonThemeManager::defaultThemeName() const
 QStringList EmoticonThemeManager::defaultThemePaths() const
 {
 	// Allow local themes to override global ones.
-	QStringList result = getSubDirs(m_pathsProvider->profilePath() + QLatin1String("emoticons"));
-	result += getSubDirs(m_pathsProvider->dataPath() + QLatin1String("themes/emoticons"));
+	QStringList result = getSubDirs(m_pathsProvider->profilePath() + QStringLiteral("emoticons"));
+	result += getSubDirs(m_pathsProvider->dataPath() + QStringLiteral("themes/emoticons"));
 
 	return result;
 }

@@ -68,14 +68,14 @@ MediaPlayer * MediaplayerPluginObject::mediaPlayer() const
 
 void MediaplayerPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mediaplayer.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_mediaplayerConfigurationUiHandler);
 }
 
 void MediaplayerPluginObject::done()
 {
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_mediaplayerConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/mediaplayer.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mediaplayer.ui"));
 }
 
 #include "moc_mediaplayer-plugin-object.cpp"

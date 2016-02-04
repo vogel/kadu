@@ -147,7 +147,7 @@ StorableObject * AccountShared::storageParent()
 
 QString AccountShared::storageNodeName()
 {
-	return QLatin1String("Account");
+	return QStringLiteral("Account");
 }
 
 void AccountShared::importNetworkProxy()

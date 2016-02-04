@@ -63,14 +63,14 @@ void SpellcheckerPluginObject::setSpellChecker(SpellChecker *spellChecker)
 
 void SpellcheckerPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/spellchecker.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_spellcheckerConfigurationUiHandler);
 }
 
 void SpellcheckerPluginObject::done()
 {
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_spellcheckerConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/spellchecker.ui"));
 }
 
 #include "moc_spellchecker-plugin-object.cpp"

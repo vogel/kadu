@@ -101,8 +101,8 @@ void CenzorConfiguration::configurationUpdated()
 {
 	Enabled = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_cenzor");
 	Admonition = m_configuration->deprecatedApi()->readEntry("PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>");
-	SwearList = loadRegExpList("cenzor swearwords", m_pathsProvider->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words.conf"));
-	ExclusionList = loadRegExpList("cenzor exclusions", m_pathsProvider->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words_ok.conf"));
+	SwearList = loadRegExpList("cenzor swearwords", m_pathsProvider->dataPath() + QStringLiteral("plugins/data/cenzor/cenzor_words.conf"));
+	ExclusionList = loadRegExpList("cenzor exclusions", m_pathsProvider->dataPath() + QStringLiteral("plugins/data/cenzor/cenzor_words_ok.conf"));
 }
 
 void CenzorConfiguration::saveConfiguration()

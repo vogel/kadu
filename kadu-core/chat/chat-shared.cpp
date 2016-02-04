@@ -125,7 +125,7 @@ StorableObject * ChatShared::storageParent()
  */
 QString ChatShared::storageNodeName()
 {
-	return QLatin1String("Chat");
+	return QStringLiteral("Chat");
 }
 
 /**

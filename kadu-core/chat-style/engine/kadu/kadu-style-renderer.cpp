@@ -90,9 +90,9 @@ void KaduStyleRenderer::removeFirstMessage()
 
 void KaduStyleRenderer::appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
 {
-	QString html(replacedNewLine(formatMessage(message, messageRenderInfo), QLatin1String(" ")));
-	html.replace('\\', QLatin1String("\\\\"));
-	html.replace('\'', QLatin1String("\\'"));
+	QString html(replacedNewLine(formatMessage(message, messageRenderInfo), QStringLiteral(" ")));
+	html.replace('\\', QStringLiteral("\\\\"));
+	html.replace('\'', QStringLiteral("\\'"));
 	if (!message.id().isEmpty())
 		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(Qt::escape(message.id())));
 	else

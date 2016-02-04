@@ -67,9 +67,9 @@ QString AdiumStyleEngine::defaultVariant(const QString &styleName)
 QStringList AdiumStyleEngine::styleVariants(QString styleName)
 {
 	QDir dir;
-	QString styleBaseHref = m_pathsProvider->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
+	QString styleBaseHref = m_pathsProvider->profilePath() + QStringLiteral("syntax/chat/") + styleName + QStringLiteral("/Contents/Resources/Variants/");
 	if (!dir.exists(styleBaseHref))
-		styleBaseHref = m_pathsProvider->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
+		styleBaseHref = m_pathsProvider->dataPath() + QStringLiteral("syntax/chat/") + styleName + QStringLiteral("/Contents/Resources/Variants/");
 	dir.setPath(styleBaseHref);
 	dir.setNameFilters(QStringList("*.css"));
 	return dir.entryList();

@@ -105,9 +105,9 @@ Core::Core(injeqt::injector &&injector) :
 	createDefaultConfiguration();
 	configurationUpdated();
 
-	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("DATA_PATH"), m_injector.get<PathsProvider>()->dataPath());
-	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("HOME"), PathsProvider::homePath());
-	m_injector.get<Parser>()->GlobalVariables.insert(QLatin1String("KADU_CONFIG"), m_injector.get<PathsProvider>()->profilePath());
+	m_injector.get<Parser>()->GlobalVariables.insert(QStringLiteral("DATA_PATH"), m_injector.get<PathsProvider>()->dataPath());
+	m_injector.get<Parser>()->GlobalVariables.insert(QStringLiteral("HOME"), PathsProvider::homePath());
+	m_injector.get<Parser>()->GlobalVariables.insert(QStringLiteral("KADU_CONFIG"), m_injector.get<PathsProvider>()->profilePath());
 	DateTimeParserTags::registerParserTags(m_injector.get<Parser>());
 
 	m_injector.get<NotifyConfigurationImporter>()->import();
@@ -508,7 +508,7 @@ void Core::runServices()
 	auto configurator = new ChatImageRequestServiceConfigurator(m_injector.get<Configuration>());
 	configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 
-	m_injector.get<PluginMetadataFinder>()->setDirectory(m_injector.get<PathsProvider>()->dataPath() + QLatin1String{"plugins"});
+	m_injector.get<PluginMetadataFinder>()->setDirectory(m_injector.get<PathsProvider>()->dataPath() + QStringLiteral("plugins"));
 	m_injector.get<PluginStateManager>()->loadPluginStates();
 
 	m_injector.get<ConfigurationUiHandlerRepository>()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());

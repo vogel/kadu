@@ -75,7 +75,7 @@ void SmsPluginObject::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
 
 void SmsPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/sms.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_smsConfigurationUiHandler);
 	m_smsGatewayManager->load();
 }
@@ -83,7 +83,7 @@ void SmsPluginObject::init()
 void SmsPluginObject::done()
 {
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_smsConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/sms.ui"));
 }
 
 #include "moc_sms-plugin-object.cpp"

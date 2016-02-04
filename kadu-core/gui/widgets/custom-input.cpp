@@ -290,7 +290,7 @@ bool CustomInput::canInsertFromMimeData(const QMimeData *source) const
 	{
 		if (source->hasUrls())
 			return true;
-		if (source->hasFormat(QLatin1String("application/x-qt-image")))
+		if (source->hasFormat(QStringLiteral("application/x-qt-image")))
 			return true;
 	}
 	return QTextEdit::canInsertFromMimeData(source);
@@ -320,9 +320,9 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 		}
 	}
 
-	if (path.isEmpty() && source->hasFormat(QLatin1String("application/x-qt-image")))
+	if (path.isEmpty() && source->hasFormat(QStringLiteral("application/x-qt-image")))
 	{
-		QByteArray imagedata = source->data(QLatin1String("application/x-qt-image"));
+		QByteArray imagedata = source->data(QStringLiteral("application/x-qt-image"));
 		QBuffer buffer(&imagedata);
 		buffer.open(QIODevice::ReadOnly);
 		QString ext = QImageReader(&buffer).format().toLower();

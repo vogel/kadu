@@ -92,7 +92,7 @@ void GaduUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool d
 		return;
 
 	auto gaduId = QString::fromUtf8(url);
-	if (gaduId.startsWith(QLatin1String("gg:")))
+	if (gaduId.startsWith(QStringLiteral("gg:")))
 	{
 		gaduId.remove(0, 3);
 		gaduId.remove(QRegExp("/*"));

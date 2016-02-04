@@ -46,8 +46,8 @@ protected:
 	virtual void mainConfigurationWindowDestroyed() override;
 	virtual void mainConfigurationWindowApplied() override;
 
-	virtual void compositingEnabled();
-	virtual void compositingDisabled();
+	virtual void compositingEnabled() override;
+	virtual void compositingDisabled() override;
 
 private:
 	QPointer<Configuration> m_configuration;

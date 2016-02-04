@@ -30,13 +30,13 @@ NewFileTransferNotification::NewFileTransferNotification(Chat chat, const QStrin
 {
 	if (m_transfer.transferType() == FileTransferType::Stream)
 	{
-		addCallback("file-transfer-accept");
-		addCallback("file-transfer-reject");
+		addCallback(QStringLiteral("file-transfer-accept"));
+		addCallback(QStringLiteral("file-transfer-reject"));
 	}
 	else
 	{
-		addCallback("file-transfer-save");
-		addCallback("file-transfer-ignore");
+		addCallback(QStringLiteral("file-transfer-save"));
+		addCallback(QStringLiteral("file-transfer-ignore"));
 	}
 }
 

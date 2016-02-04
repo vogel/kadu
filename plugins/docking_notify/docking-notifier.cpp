@@ -110,7 +110,7 @@ QString DockingNotifier::parseText(const QString &text, Notification *notificati
 
 		ret = ret.replace("%&m", notification->text());
 		ret = ret.replace("%&t", notification->title());
-		ret = ret.replace("%&d", notification->details().join(QLatin1String("\n")));
+		ret = ret.replace("%&d", notification->details().join(QStringLiteral("\n")));
 	}
 	else
 		ret = def;
@@ -131,7 +131,7 @@ void DockingNotifier::notify(Notification *notification)
 	QString syntax = m_configuration->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_syntax");
 
 	m_docking->showMessage(parseText(title, notification, notification->text()),
-		parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
+		parseText(syntax, notification, notification->details().join(QStringLiteral("\n"))),
 		(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
 
 	notification->release(this);

@@ -92,7 +92,7 @@ History * HistoryPluginObject::history() const
 
 void HistoryPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/history.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/history.ui"));
 	m_buddyAdditionalDataDeleteHandlerManager->registerAdditionalDataDeleteHandler(m_buddyHistoryDeleteHandler);
 	m_buddyConfigurationWidgetFactoryRepository->registerFactory(m_historyBuddyConfigurationWidgetFactory);
 	m_chatConfigurationWidgetFactoryRepository->registerFactory(m_historyChatConfigurationWidgetFactory);
@@ -103,7 +103,7 @@ void HistoryPluginObject::done()
 	m_chatConfigurationWidgetFactoryRepository->unregisterFactory(m_historyChatConfigurationWidgetFactory);
 	m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_historyBuddyConfigurationWidgetFactory);
 	m_buddyAdditionalDataDeleteHandlerManager->unregisterAdditionalDataDeleteHandler(m_buddyHistoryDeleteHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/history.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/history.ui"));
 }
 
 #include "moc_history-plugin-object.cpp"

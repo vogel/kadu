@@ -110,7 +110,7 @@ SoundManager * SoundPluginObject::soundManager() const
 
 void SoundPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/sound.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_soundConfigurationUiHandler);
 	m_buddyConfigurationWidgetFactoryRepository->registerFactory(m_soundBuddyConfigurationWidgetFactory);
 	m_chatConfigurationWidgetFactoryRepository->registerFactory(m_soundChatConfigurationWidgetFactory);
@@ -123,7 +123,7 @@ void SoundPluginObject::done()
 	m_chatConfigurationWidgetFactoryRepository->unregisterFactory(m_soundChatConfigurationWidgetFactory);
 	m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_soundBuddyConfigurationWidgetFactory);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_soundConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/sound.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/sound.ui"));
 }
 
 #include "moc_sound-plugin-object.cpp"

@@ -28,7 +28,7 @@ Configuration::Configuration(QString version, std::unique_ptr<ConfigurationApi> 
 		m_version{std::move(version)},
 		m_configurationApi{std::move(configurationApi)}
 {
-	m_deprecatedConfigurationApi = make_unique<DeprecatedConfigurationApi>(m_configurationApi.get(), QLatin1String("kadu.conf"));
+	m_deprecatedConfigurationApi = make_unique<DeprecatedConfigurationApi>(m_configurationApi.get(), QStringLiteral("kadu.conf"));
 }
 
 Configuration::~Configuration()

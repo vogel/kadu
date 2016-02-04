@@ -67,7 +67,7 @@ StorableObject * IdentityShared::storageParent()
 
 QString IdentityShared::storageNodeName()
 {
-	return QLatin1String("Identity");
+	return QStringLiteral("Identity");
 }
 
 void IdentityShared::load()

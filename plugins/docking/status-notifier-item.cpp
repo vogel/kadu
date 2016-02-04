@@ -97,7 +97,7 @@ void StatusNotifierItem::setTooltip(const QString &tooltip)
 	// checked on XP and 7
 	auto const maxTooltipLength = 127;
 	auto truncatedTooltip = tooltip.length() > maxTooltipLength
-			? tooltip.left(maxTooltipLength - 3) + QLatin1String{"..."}
+			? tooltip.left(maxTooltipLength - 3) + QStringLiteral("...")
 			: tooltip;
 	m_systemTrayIcon->setToolTip(truncatedTooltip);
 #else

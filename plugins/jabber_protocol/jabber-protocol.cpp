@@ -97,7 +97,7 @@ void JabberProtocol::init()
 	connect(details, SIGNAL(priorityChanged()), this, SLOT(updatePresence()), Qt::UniqueConnection);
 
 	// TODO: remove after 01.05.2015
-	if (account().id().endsWith(QLatin1String("@chat.facebook.com")))
+	if (account().id().endsWith(QStringLiteral("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
 	m_presenceService = injectedFactory()->makeInjected<JabberPresenceService>(this);
@@ -387,7 +387,7 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 
 QString JabberProtocol::statusPixmapPath()
 {
-	return QLatin1String("xmpp");
+	return QStringLiteral("xmpp");
 }
 
 JabberChangePasswordService * JabberProtocol::changePasswordService() const

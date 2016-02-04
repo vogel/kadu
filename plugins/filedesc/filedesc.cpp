@@ -69,7 +69,7 @@ void FileDescription::init()
 
 void FileDescription::configurationUpdated()
 {
-	m_file = m_configuration->deprecatedApi()->readEntry("FileDesc", "file", m_pathsProvider->profilePath() + QLatin1String("description.txt"));
+	m_file = m_configuration->deprecatedApi()->readEntry("FileDesc", "file", m_pathsProvider->profilePath() + QStringLiteral("description.txt"));
 	m_forceDesc = m_configuration->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
 	m_allowOther = m_configuration->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
 
@@ -97,7 +97,7 @@ void FileDescription::checkTitle()
 
 void FileDescription::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("FileDesc", "file", m_pathsProvider->profilePath() + QLatin1String("description.txt"));
+	m_configuration->deprecatedApi()->addVariable("FileDesc", "file", m_pathsProvider->profilePath() + QStringLiteral("description.txt"));
 	m_configuration->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
 	m_configuration->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
 }

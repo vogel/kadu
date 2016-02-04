@@ -81,7 +81,7 @@ void DockingNotifyConfigurationWidget::showConfigurationWindow()
 
 	dataManager->configurationWindowCreated(configWindow);
 
-	configWindow->widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/docking-notify.ui"));
+	configWindow->widget()->appendUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/docking-notify.ui"));
 
 	QString tooltip = QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxTextNotify) +
 	tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");

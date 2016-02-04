@@ -387,7 +387,7 @@ void ProxyEditWindow::selectProxy(NetworkProxy proxy)
 
 void ProxyEditWindow::dataChanged()
 {
-	PollingUrl->setEnabled(Type->itemData(Type->currentIndex()).toString() == QLatin1String("poll"));
+	PollingUrl->setEnabled(Type->itemData(Type->currentIndex()).toString() == QStringLiteral("poll"));
 
 	ConfigurationValueState changeState = state();
 	SaveButton->setEnabled(StateChangedDataValid == changeState);

@@ -93,7 +93,7 @@ QString IconsManager::iconPath(const KaduIcon &icon, IconsManager::AllowEmpty al
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
-	if (realPath == QLatin1String("protocols/common"))
+	if (realPath == QStringLiteral("protocols/common"))
 	{
 		QString protocolPath;
 		if (m_accountManager->defaultAccount().protocolHandler())
@@ -114,14 +114,14 @@ QString IconsManager::iconPath(const KaduIcon &icon, IconsManager::AllowEmpty al
 
 QIcon IconsManager::buildPngIcon(const QString &themePath, const QString &path)
 {
-	static QLatin1String sizes [] = {
-		QLatin1String("16x16"),
-		QLatin1String("22x22"),
-		QLatin1String("32x32"),
-		QLatin1String("64x64"),
-		QLatin1String("96x96"),
-		QLatin1String("128x128"),
-		QLatin1String("256x256")
+	static QString sizes [] = {
+		QStringLiteral("16x16"),
+		QStringLiteral("22x22"),
+		QStringLiteral("32x32"),
+		QStringLiteral("64x64"),
+		QStringLiteral("96x96"),
+		QStringLiteral("128x128"),
+		QStringLiteral("256x256")
 	};
 	static int sizes_count = 7;
 

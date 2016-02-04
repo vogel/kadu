@@ -58,8 +58,8 @@ public:
 	Q_INVOKABLE explicit ContactManager(QObject *parent = nullptr);
 	virtual ~ContactManager();
 
-	virtual QString storageNodeName() { return QLatin1String("Contacts"); }
-	virtual QString storageNodeItemName() { return QLatin1String("Contact"); }
+	virtual QString storageNodeName() override { return QStringLiteral("Contacts"); }
+	virtual QString storageNodeItemName() override { return QStringLiteral("Contact"); }
 
 	Contact byId(Account account, const QString &id, NotFoundAction action);
 	QVector<Contact> contacts(Account account, AnonymousInclusion inclusion = IncludeAnonymous);
@@ -73,8 +73,8 @@ signals:
 	void contactUpdated(const Contact &contact);
 
 protected:
-	virtual void loaded();
-	virtual Contact loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+	virtual void loaded() override;
+	virtual Contact loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
 	virtual void itemAboutToBeAdded(Contact item) override;
 	virtual void itemAdded(Contact item) override;

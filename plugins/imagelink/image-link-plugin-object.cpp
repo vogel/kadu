@@ -69,7 +69,7 @@ void ImageLinkPluginObject::setVideoExpanderDomVisitorProvider(VideoExpanderDomV
 
 void ImageLinkPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/image-link.ui"));
 	m_domProcessorService->registerVisitorProvider(m_imageExpanderDomVisitorProvider, -100);
 	m_domProcessorService->registerVisitorProvider(m_videoExpanderDomVisitorProvider, -50);
 	m_imageLinkConfigurator->configure();
@@ -79,7 +79,7 @@ void ImageLinkPluginObject::done()
 {
 	m_domProcessorService->unregisterVisitorProvider(m_videoExpanderDomVisitorProvider);
 	m_domProcessorService->unregisterVisitorProvider(m_imageExpanderDomVisitorProvider);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/image-link.ui"));
 }
 
 #include "moc_image-link-plugin-object.cpp"

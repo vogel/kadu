@@ -43,7 +43,7 @@ public:
 	virtual ~MobileNumber();
 
 	virtual StorableObject * storageParent();
-	virtual QString storageNodeName() { return QLatin1String("MobileNumber"); }
+	virtual QString storageNodeName() { return QStringLiteral("MobileNumber"); }
 
 	const QString & number() const { return m_number; };
 	void setNumber(const QString &number) { m_number = number; };

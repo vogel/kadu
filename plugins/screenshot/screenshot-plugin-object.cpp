@@ -76,7 +76,7 @@ void ScreenshotPluginObject::setScreenShotConfiguration(ScreenShotConfiguration 
 
 void ScreenshotPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/screenshot.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_screenShotConfigurationUiHandler);
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
 }
@@ -85,7 +85,7 @@ void ScreenshotPluginObject::done()
 {
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_screenShotConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/screenshot.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/screenshot.ui"));
 }
 
 #include "moc_screenshot-plugin-object.cpp"

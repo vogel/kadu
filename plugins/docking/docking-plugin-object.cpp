@@ -51,12 +51,12 @@ void DockingPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void DockingPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/docking.ui"));
 }
 
 void DockingPluginObject::done()
 {
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/docking.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/docking.ui"));
 }
 
 #include "moc_docking-plugin-object.cpp"

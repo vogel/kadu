@@ -25,8 +25,8 @@ ShowFileTransferWindowAction::ShowFileTransferWindowAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
 		ActionDescription(parent)
 {
-	setIcon(KaduIcon("document-send"));
-	setName("sendFileWindowAction");
+	setIcon(KaduIcon(QStringLiteral("document-send")));
+	setName(QStringLiteral("sendFileWindowAction"));
 	setText(tr("View File Transfers"));
 	setType(ActionDescription::TypeMainMenu);
 }

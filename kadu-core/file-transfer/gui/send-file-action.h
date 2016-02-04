@@ -38,7 +38,7 @@ public:
 	virtual ~SendFileAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action);
+	virtual void actionInstanceCreated(Action *action) override;
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled) override;
 	virtual void updateActionState(Action *action) override;
 

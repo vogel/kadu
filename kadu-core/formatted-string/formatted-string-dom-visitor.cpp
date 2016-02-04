@@ -87,7 +87,7 @@ QString FormattedStringDomVisitor::style(const FormattedStringTextBlock * const 
 
 void FormattedStringDomVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	QString content(replacedNewLine(formattedStringTextBlock->content(), QLatin1String("\n")));
+	QString content(replacedNewLine(formattedStringTextBlock->content(), QStringLiteral("\n")));
 	QStringList lines = content.split("\n");
 
 	QDomElement span = Result.createElement("span");

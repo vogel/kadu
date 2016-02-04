@@ -73,7 +73,7 @@ StorableObject * FileTransferShared::storageParent()
 
 QString FileTransferShared::storageNodeName()
 {
-	return QLatin1String("FileTransfer");
+	return QStringLiteral("FileTransfer");
 }
 
 void FileTransferShared::load()

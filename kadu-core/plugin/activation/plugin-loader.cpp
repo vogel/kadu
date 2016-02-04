@@ -69,7 +69,7 @@ injeqt::injector & PluginLoader::injector() const noexcept
 
 std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginDirPath, const QString &pluginName) const
 {
-	auto result = make_unique<QPluginLoader>(pluginDirPath + "/" + QLatin1String(SO_PREFIX) + pluginName + QLatin1String("." SO_EXT));
+	auto result = make_unique<QPluginLoader>(pluginDirPath + "/" + QStringLiteral(SO_PREFIX) + pluginName + QStringLiteral("." SO_EXT));
 	result->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 	return result;
 }

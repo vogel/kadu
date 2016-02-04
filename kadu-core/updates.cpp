@@ -201,7 +201,7 @@ void Updates::run()
 	connect(manager, SIGNAL(finished(QNetworkReply*)),
 			this, SLOT(gotUpdatesInfo(QNetworkReply*)));
 
-	manager->get(QNetworkRequest{QUrl{QLatin1String{"http://www.kadu.im"} + Query}});
+	manager->get(QNetworkRequest{QUrl{QStringLiteral("http://www.kadu.im") + Query}});
 }
 
 bool Updates::isNewerVersionThan(const QString &version)

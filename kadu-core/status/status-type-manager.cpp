@@ -77,7 +77,7 @@ KaduIcon StatusTypeManager::statusIcon(const QString &protocol, const Status &st
 	QString iconName = QString("protocols/%1/%2%3")
 			.arg(protocol)
 			.arg(statusTypeData.iconName())
-			.arg(status.description().isEmpty() ? QString() : QLatin1String("_d"));
+			.arg(status.description().isEmpty() ? QString() : QStringLiteral("_d"));
 
 	return KaduIcon(iconName, "16x16");
 }

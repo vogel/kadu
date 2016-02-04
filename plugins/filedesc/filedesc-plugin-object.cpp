@@ -58,12 +58,12 @@ void FiledescPluginObject::setStatusChangerManager(StatusChangerManager *statusC
 void FiledescPluginObject::init()
 {
 	m_statusChangerManager->registerStatusChanger(m_fileDescStatusChanger);
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/filedesc.ui"));
 }
 
 void FiledescPluginObject::done()
 {
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/filedesc.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/filedesc.ui"));
 	m_statusChangerManager->unregisterStatusChanger(m_fileDescStatusChanger);
 }
 

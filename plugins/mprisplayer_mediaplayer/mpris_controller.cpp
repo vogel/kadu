@@ -44,7 +44,7 @@ MPRISController::MPRISController(MediaPlayer *mediaPlayer, const QString &servic
 	QDBusConnection bus = QDBusConnection::sessionBus();
 
 	bus.connect("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus",
-	            QLatin1String("NameOwnerChanged"), this, SLOT(nameOwnerChanged(QString, QString, QString)));
+	            QStringLiteral("NameOwnerChanged"), this, SLOT(nameOwnerChanged(QString, QString, QString)));
 
 	if (bus.interface()->registeredServiceNames().value().contains(Service))
 		activate();
@@ -55,7 +55,7 @@ MPRISController::~MPRISController()
 	QDBusConnection bus = QDBusConnection::sessionBus();
 
 	bus.disconnect("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus",
-	               QLatin1String("NameOwnerChanged"), this, SLOT(nameOwnerChanged(QString, QString, QString)));
+	               QStringLiteral("NameOwnerChanged"), this, SLOT(nameOwnerChanged(QString, QString, QString)));
 }
 
 void MPRISController::call(const QString &methodName)

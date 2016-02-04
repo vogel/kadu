@@ -78,7 +78,7 @@ StorableObject * MessageShared::storageParent()
 
 QString MessageShared::storageNodeName()
 {
-	return QLatin1String("Message");
+	return QStringLiteral("Message");
 }
 
 void MessageShared::load()

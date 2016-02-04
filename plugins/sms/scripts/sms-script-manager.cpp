@@ -70,20 +70,20 @@ void SmsScriptsManager::init()
  	debugger->standardWindow()->show();
 #endif
 
-	QString scriptPath = m_pathsProvider->profilePath() + QLatin1String("plugins/data/sms/scripts/gateway.js");
+	QString scriptPath = m_pathsProvider->profilePath() + QStringLiteral("plugins/data/sms/scripts/gateway.js");
 	if (QFile::exists(scriptPath))
 		loadScript(scriptPath);
 	else
 	{
-		scriptPath = m_pathsProvider->dataPath() + QLatin1String("plugins/data/sms/scripts/gateway.js");
+		scriptPath = m_pathsProvider->dataPath() + QStringLiteral("plugins/data/sms/scripts/gateway.js");
 		if (QFile::exists(scriptPath))
 			loadScript(scriptPath);
 		// TODO: maybe we should return here if no gateway.js was found?
 	}
 
 	// scripts from profile path can replace the ones from data path if the file name is the same
-	loadScripts(QDir(m_pathsProvider->profilePath() + QLatin1String("plugins/data/sms/scripts")));
-	loadScripts(QDir(m_pathsProvider->dataPath() + QLatin1String("plugins/data/sms/scripts")));
+	loadScripts(QDir(m_pathsProvider->profilePath() + QStringLiteral("plugins/data/sms/scripts")));
+	loadScripts(QDir(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/sms/scripts")));
 }
 
 void SmsScriptsManager::loadScripts(const QDir &dir)

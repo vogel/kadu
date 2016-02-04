@@ -46,7 +46,7 @@ void LanguagesManager::init()
 
 void LanguagesManager::loadLanguages()
 {
-	auto tranlationsDir = QDir{m_pathsProvider->dataPath() + QLatin1String{"translations"}};
+	auto tranlationsDir = QDir{m_pathsProvider->dataPath() + QStringLiteral("translations")};
 	auto languagesFilter = QStringList{} << "*.language";
 	auto languageFiles = tranlationsDir.entryInfoList(languagesFilter, QDir::Files);
 

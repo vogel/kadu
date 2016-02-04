@@ -77,7 +77,7 @@ class StoragePointFactory;
  * when storageNodeName is defined as:
  *
  * <pre>
- * return QLatin1String("Application");
+ * return QStringLiteral("Application");
  * </pre>
  *
  * will result in following XML structure:

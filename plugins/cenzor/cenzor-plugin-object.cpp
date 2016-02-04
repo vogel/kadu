@@ -80,12 +80,12 @@ void CenzorPluginObject::init()
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_cenzorConfigurationUiHandler);
 	m_messageFilterService->registerMessageFilter(m_cenzorMessageFilter);
 	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored")});
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
 }
 
 void CenzorPluginObject::done()
 {
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
 	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored")});
 	m_messageFilterService->unregisterMessageFilter(m_cenzorMessageFilter);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_cenzorConfigurationUiHandler);

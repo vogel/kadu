@@ -51,12 +51,12 @@ void SimpleviewPluginObject::setSimpleView(SimpleView *simpleView)
 
 void SimpleviewPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/simpleview.ui"));
 }
 
 void SimpleviewPluginObject::done()
 {
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/simpleview.ui"));
 }
 
 #include "moc_simpleview-plugin-object.cpp"

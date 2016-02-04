@@ -68,14 +68,14 @@ void SingleWindowPluginObject::setSingleWindow(SingleWindow *singleWindow)
 
 void SingleWindowPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/single_window.ui"));
 	m_chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler);
 }
 
 void SingleWindowPluginObject::done()
 {
 	m_chatWidgetContainerHandlerRepository->unregisterChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/single_window.ui"));
 }
 
 #include "moc_single-window-plugin-object.cpp"

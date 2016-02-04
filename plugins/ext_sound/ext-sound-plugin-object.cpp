@@ -60,12 +60,12 @@ void ExtSoundPluginObject::setSoundManager(SoundManager *soundManager)
 void ExtSoundPluginObject::init()
 {
 	m_soundManager->setPlayer(m_externalPlayer);
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QLatin1String{"plugins/configuration/ext_sound.ui"});
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/ext_sound.ui"));
 }
 
 void ExtSoundPluginObject::done()
 {
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QLatin1String{"plugins/configuration/ext_sound.ui"});
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/ext_sound.ui"));
 	m_soundManager->setPlayer(nullptr);
 }
 

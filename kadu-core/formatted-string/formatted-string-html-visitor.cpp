@@ -60,7 +60,7 @@ void FormattedStringHtmlVisitor::visit(const FormattedStringImageBlock * const f
 
 void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	QString content(replacedNewLine(Qt::escape(formattedStringTextBlock->content()), QLatin1String("<br/>")));
+	QString content(replacedNewLine(Qt::escape(formattedStringTextBlock->content()), QStringLiteral("<br/>")));
 
 	if (!formattedStringTextBlock->bold() && !formattedStringTextBlock->italic() && !formattedStringTextBlock->underline() && !formattedStringTextBlock->color().isValid())
 	{

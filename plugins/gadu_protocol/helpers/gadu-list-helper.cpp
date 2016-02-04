@@ -128,9 +128,9 @@ BuddyList GaduListHelper::streamToBuddyList(Account account, QTextStream &conten
 
 	QString line = content.readLine(70);
 
-	if (line.startsWith(QLatin1String("<ContactBook>")))
+	if (line.startsWith(QStringLiteral("<ContactBook>")))
 		result = streamPost70ToBuddyList(line, account, content);
-	else if (line.startsWith(QLatin1String("GG70ExportString")))
+	else if (line.startsWith(QStringLiteral("GG70ExportString")))
 		result = stream70ToBuddyList(account, content);
 	else
 		result = streamPre70ToBuddyList(line, account, content);
@@ -225,7 +225,7 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 		for (; !groupElement.isNull(); groupElement = groupElement.nextSiblingElement("Group"))
 		{
 			QDomElement idElement = groupElement.firstChildElement("Id");
-			if (idElement.text().startsWith(QLatin1String("00000000-0000-0000-0000-")))
+			if (idElement.text().startsWith(QStringLiteral("00000000-0000-0000-0000-")))
 				continue;
 
 			QDomElement nameElement = groupElement.firstChildElement("Name");

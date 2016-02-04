@@ -207,7 +207,7 @@ void JabberChatService::handleReceivedMessage(const QXmppMessage &xmppMessage)
 	if (rawMessageTransformerService())
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message).rawContent());
 
-	auto htmlBody = replacedNewLine(Qt::escape(body), QLatin1String("<br/>"));
+	auto htmlBody = replacedNewLine(Qt::escape(body), QStringLiteral("<br/>"));
 	auto formattedString = m_formattedStringFactory.data()->fromHtml(htmlBody);
 	if (!formattedString || formattedString->isEmpty())
 		return;

@@ -44,8 +44,8 @@ public:
 	Q_INVOKABLE explicit NetworkProxyManager(QObject *parent = nullptr);
 	virtual ~NetworkProxyManager();
 
-	virtual QString storageNodeName() { return QLatin1String("Proxys"); }
-	virtual QString storageNodeItemName() { return QLatin1String("Proxy"); }
+	virtual QString storageNodeName() { return QStringLiteral("Proxys"); }
+	virtual QString storageNodeItemName() { return QStringLiteral("Proxy"); }
 
 	void setDefaultProxy(const NetworkProxy &proxy);
 	const NetworkProxy &defaultProxy();

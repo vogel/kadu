@@ -222,7 +222,7 @@ void WebkitMessagesView::refreshView()
 
 ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
 {
-	QFile file{m_pathsProvider->dataPath() + QLatin1String("scripts/chat-scripts.js")};
+	QFile file{m_pathsProvider->dataPath() + QStringLiteral("scripts/chat-scripts.js")};
 	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
 			? file.readAll()
 			: QString{};

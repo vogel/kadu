@@ -59,7 +59,7 @@ void HintsConfigurationWindow::setPathsProvider(PathsProvider *pathsProvider)
 
 void HintsConfigurationWindow::init()
 {
-	widget()->appendUiFile(m_pathsProvider->dataPath() + QLatin1String("plugins/configuration/hints-notifier.ui"));
+	widget()->appendUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints-notifier.ui"));
 
 	widget()->widgetById("syntax")->setToolTip(tr(MainConfigurationWindow::SyntaxTextNotify));
 	static_cast<QSpinBox *>(widget()->widgetById("timeout"))->setSpecialValueText(tr("Don't hide"));

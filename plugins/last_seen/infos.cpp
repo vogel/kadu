@@ -84,7 +84,7 @@ void Infos::init()
 
 	triggerAllAccountsRegistered(m_accountManager);
 
-	fileName = m_pathsProvider->profilePath() + QLatin1String("last_seen.data");
+	fileName = m_pathsProvider->profilePath() + QStringLiteral("last_seen.data");
 
 	if (QFile::exists(fileName))
 	{

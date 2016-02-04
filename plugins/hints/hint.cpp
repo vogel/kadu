@@ -234,7 +234,7 @@ void Hint::updateText()
 			QString itemSyntax = m_configuration->deprecatedApi()->readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", defaultSyntax);
 			for (; i < count; i++)
 			{
-				const QString &message = details[i].replace("<br/>", QLatin1String(""));
+				const QString &message = details[i].replace("<br/>", QStringLiteral(""));
 
 				if (message.length() > citeSign)
 					text += itemSyntax.arg(details[i].left(citeSign) + "...");
@@ -245,7 +245,7 @@ void Hint::updateText()
 	}
 
 	label->setText(QString("<div style='width:100%; height:100%; vertical-align:middle;'>")
-		+ text.replace('\n', QLatin1String("<br />"))
+		+ text.replace('\n', QStringLiteral("<br />"))
 		+ "</div>"
 		);
 
