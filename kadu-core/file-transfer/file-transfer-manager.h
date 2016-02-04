@@ -40,14 +40,12 @@ class ConfigurationManager;
 class Configuration;
 class FileTransferActions;
 class FileTransferHandlerManager;
+class FileTransferNotificationService;
 class FileTransferStorage;
 class FileTransferWindow;
 class IconsManager;
 class InjectedFactory;
 class KaduWindowService;
-class NotificationCallbackRepository;
-class NotificationEventRepository;
-class NotificationManager;
 
 class KADUAPI FileTransferManager : public SimpleManager<FileTransfer>, AccountsAwareObject
 {
@@ -96,15 +94,12 @@ private:
 	QPointer<Configuration> m_configuration;
 	QPointer<FileTransferActions> m_fileTransferActions;
 	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
+	QPointer<FileTransferNotificationService> m_fileTransferNotificationService;
 	QPointer<FileTransferStorage> m_fileTransferStorage;
 	QPointer<FileTransferWindow> m_window;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
-	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationManager> m_notificationManager;
-
 	int m_totalProgress;
 
 	void addFileTransferService(Account account);
@@ -120,13 +115,11 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFileTransferActions(FileTransferActions *fileTransferActions);
 	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+	INJEQT_SET void setFileTransferNotificationService(FileTransferNotificationService *fileTransferNotificationService);
 	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

@@ -12,6 +12,7 @@ set (file-transfer_SRCS
 	file-transfer-manager.cpp
 	file-transfer-module.cpp
 	file-transfer-notifications.cpp
+	file-transfer-notification-service.cpp
 	file-transfer-shared.cpp
 	file-transfer-storage.cpp
 	outgoing-file-transfer-handler.cpp

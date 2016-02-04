@@ -40,11 +40,6 @@ class NewFileTransferNotification : public Notification
 	Q_OBJECT
 
 public:
-	static void registerEvents(NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository);
-	static void unregisterEvents(NotificationEventRepository *notificationEventRepository);
-
-	static void notifyIncomingFileTransfer(InjectedFactory *injectedFactory, ChatManager *chatManager, ChatStorage *chatStorage, NotificationManager *notificationManager, const FileTransfer &fileTransfer);
-
 	NewFileTransferNotification(Chat chat, const QString &type, FileTransfer transfer);
 
 public slots:

@@ -36,6 +36,7 @@
 #include "core/injected-factory.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler-manager.h"
+#include "file-transfer/file-transfer-notification-service.h"
 #include "file-transfer/file-transfer-notifications.h"
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/file-transfer-storage.h"
@@ -52,9 +53,6 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
-#include "notification/notification-callback-repository.h"
-#include "notification/notification-event-repository.h"
-#include "notification/notification-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 #include "storage/storage-point.h"
@@ -114,6 +112,11 @@ void FileTransferManager::setFileTransferHandlerManager(FileTransferHandlerManag
 	m_fileTransferHandlerManager = fileTransferHandlerManager;
 }
 
+void FileTransferManager::setFileTransferNotificationService(FileTransferNotificationService *fileTransferNotificationService)
+{
+	m_fileTransferNotificationService = fileTransferNotificationService;
+}
+
 void FileTransferManager::setFileTransferStorage(FileTransferStorage *fileTransferStorage)
 {
 	m_fileTransferStorage = fileTransferStorage;
@@ -134,24 +137,8 @@ void FileTransferManager::setKaduWindowService(KaduWindowService *kaduWindowServ
 	m_kaduWindowService = kaduWindowService;
 }
 
-void FileTransferManager::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
-{
-	m_notificationCallbackRepository = notificationCallbackRepository;
-}
-
-void FileTransferManager::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
-{
-	m_notificationEventRepository = notificationEventRepository;
-}
-
-void FileTransferManager::setNotificationManager(NotificationManager *notificationManager)
-{
-	m_notificationManager = notificationManager;
-}
-
 void FileTransferManager::init()
 {
-	NewFileTransferNotification::registerEvents(m_notificationEventRepository, m_notificationCallbackRepository);
 	m_configurationManager->registerStorableObject(this);
 	triggerAllAccountsRegistered(m_accountManager);
 }
@@ -162,7 +149,6 @@ void FileTransferManager::done()
 	m_configurationManager->unregisterStorableObject(this);
 	if (m_window)
 		m_window.data()->deleteLater();
-	NewFileTransferNotification::unregisterEvents(m_notificationEventRepository);
 }
 
 void FileTransferManager::addFileTransferService(Account account)
@@ -373,7 +359,8 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 {
 	QMutexLocker locker(&mutex());
 	addItem(fileTransfer);
-	NewFileTransferNotification::notifyIncomingFileTransfer(m_injectedFactory, m_chatManager, m_chatStorage, m_notificationManager, fileTransfer);
+
+	m_fileTransferNotificationService->notifyIncomingFileTransfer(fileTransfer);
 }
 
 void FileTransferManager::itemAboutToBeAdded(FileTransfer fileTransfer)
