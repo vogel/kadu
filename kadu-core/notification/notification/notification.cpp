@@ -25,6 +25,8 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
+#include "notification/notification-callback-repository.h"
+#include "notification/notification-callback.h"
 #include "notification/notification-manager.h"
 #include "notification/notifier.h"
 #include "parser/parser.h"
@@ -108,6 +110,11 @@ void Notification::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 	m_chatWidgetManager = chatWidgetManager;
 }
 
+void Notification::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
+{
+	m_notificationCallbackRepository = notificationCallbackRepository;
+}
+
 void Notification::setNotificationManager(NotificationManager *notificationManager)
 {
 	m_notificationManager = notificationManager;
@@ -163,17 +170,34 @@ void Notification::addChatCallbacks()
 	addCallback("ignore");
 }
 
+void Notification::setAcceptCallback(QString acceptCallback)
+{
+	m_acceptCallback = std::move(acceptCallback);
+}
+
+void Notification::setDiscardCallback(QString discardCallback)
+{
+	m_discardCallback = std::move(discardCallback);
+}
+
 void Notification::callbackAccept()
 {
-	close();
-
-	if (m_chat)
-		m_chatWidgetManager->openChat(m_chat, OpenChatActivation::Activate);
+	if (m_acceptCallback.isEmpty())
+	{
+		close();
+		if (m_chat)
+			m_chatWidgetManager->openChat(m_chat, OpenChatActivation::Activate);
+	}
+	else
+		m_notificationCallbackRepository->callback(m_acceptCallback).call(this);
 }
 
 void Notification::callbackDiscard()
 {
-	close();
+	if (m_discardCallback.isEmpty())
+		close();
+	else
+		m_notificationCallbackRepository->callback(m_discardCallback).call(this);
 }
 
 QString Notification::key() const

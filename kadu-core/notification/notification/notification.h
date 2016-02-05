@@ -33,6 +33,7 @@
 #include <injeqt/injeqt.h>
 
 class ChatWidgetManager;
+class NotificationCallbackRepository;
 class NotificationManager;
 class Notifier;
 class Parser;
@@ -60,6 +61,9 @@ public:
 	void clearCallbacks();
 	void addCallback(const QString &name);
 	void addChatCallbacks();
+
+	void setAcceptCallback(QString acceptCallback);
+	void setDiscardCallback(QString discardCallback);
 
 	virtual const QString & type() const { return Type; }
 
@@ -98,9 +102,12 @@ protected:
 
 private:
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationManager> m_notificationManager;
 
 	QVariantMap m_data;
+	QString m_acceptCallback;
+	QString m_discardCallback;
 
 	QString Type;
 
@@ -116,6 +123,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };
