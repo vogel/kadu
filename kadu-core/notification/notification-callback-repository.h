@@ -35,6 +35,7 @@ public:
 
 	void addCallback(NotificationCallback callback);
 	void removeCallback(NotificationCallback callback);
+	void removeCallback(const QString &name);
 
 	NotificationCallback callback(const QString &name);
 

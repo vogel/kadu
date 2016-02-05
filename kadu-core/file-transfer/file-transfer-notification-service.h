@@ -28,11 +28,13 @@
 class ChatManager;
 class ChatStorage;
 class Chat;
+class FileTransferManager;
 class FileTransfer;
 class InjectedFactory;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationManager;
+class Notification;
 
 class FileTransferNotificationService : public QObject
 {
@@ -48,6 +50,7 @@ public:
 private:
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatStorage> m_chatStorage;
+	QPointer<FileTransferManager> m_fileTransferManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
@@ -55,9 +58,13 @@ private:
 
 	QString incomingFileTransferText(const Chat &chat, const FileTransfer &fileTransfer);
 
+	void acceptFileTransfer(Notification *notification);
+	void rejectFileTransfer(Notification *notification);
+
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);

@@ -37,7 +37,6 @@
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-notification-service.h"
-#include "file-transfer/file-transfer-notifications.h"
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/file-transfer-storage.h"
 #include "file-transfer/file-transfer.h"

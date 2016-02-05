@@ -44,6 +44,15 @@ void NotificationCallbackRepository::removeCallback(NotificationCallback callbac
 		m_callbacks.erase(it);
 }
 
+void NotificationCallbackRepository::removeCallback(const QString &name)
+{
+	auto it = std::find_if(std::begin(m_callbacks), std::end(m_callbacks), [&name](const NotificationCallback &x){
+		return x.name() == name;
+	});
+	if (it != std::end(m_callbacks))
+		m_callbacks.erase(it);
+}
+
 NotificationCallback NotificationCallbackRepository::callback(const QString &name)
 {
 	auto it = std::find_if(std::begin(m_callbacks), std::end(m_callbacks), [&name](const NotificationCallback &x){
