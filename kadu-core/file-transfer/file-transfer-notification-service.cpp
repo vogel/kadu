@@ -125,8 +125,8 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, fileTransfer.peer(), ActionCreateAndAdd);
 
 	auto data = QVariantMap{};
-	data.insert("file-transfer", fileTransfer);
-	data.insert("chat", chat);
+	data.insert(QStringLiteral("file-transfer"), fileTransfer);
+	data.insert(QStringLiteral("chat"), chat);
 
 	auto notification = m_injectedFactory->makeInjected<Notification>(data, QStringLiteral("FileTransfer/IncomingFile"), KaduIcon{});
 	notification->setTitle(tr("Incoming transfer"));
@@ -193,14 +193,14 @@ QString FileTransferNotificationService::incomingFileTransferText(const Chat &ch
 
 void FileTransferNotificationService::acceptFileTransfer(Notification *notification)
 {
-	auto fileTransfer = qvariant_cast<FileTransfer>(notification->data()["file-transfer"]);
+	auto fileTransfer = qvariant_cast<FileTransfer>(notification->data()[QStringLiteral("file-transfer")]);
 	notification->close();
 	m_fileTransferManager->acceptFileTransfer(fileTransfer, fileTransfer.localFileName());
 }
 
 void FileTransferNotificationService::rejectFileTransfer(Notification *notification)
 {
-	auto fileTransfer = qvariant_cast<FileTransfer>(notification->data()["file-transfer"]);
+	auto fileTransfer = qvariant_cast<FileTransfer>(notification->data()[QStringLiteral("file-transfer")]);
 	notification->close();
 	m_fileTransferManager->rejectFileTransfer(fileTransfer);
 }
