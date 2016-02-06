@@ -54,9 +54,9 @@ public:
 
 	const QVariantMap & data() const;
 
-	virtual void acquire(Notifier *notifier);
-	virtual void release(Notifier *notifier);
-	virtual void close();
+	void acquire(Notifier *notifier);
+	void release(Notifier *notifier);
+	void close();
 
 	void clearCallbacks();
 	void addCallback(const QString &name);
@@ -65,24 +65,22 @@ public:
 	void setAcceptCallback(QString acceptCallback);
 	void setDiscardCallback(QString discardCallback);
 
-	virtual const QString & type() const { return Type; }
+	const QString & type() const { return Type; }
 
-	virtual QString key() const;
-
-	virtual QString groupKey() const;
+	QString key() const;
 
 	void setTitle(const QString &title);
 
-	virtual const QString title() const { return Title; }
-	virtual void setText(const QString &text);
-	virtual const QString text() const { return Text; }
-	virtual void setDetails(const QStringList &details);
-	virtual void setDetails(const QString &details);
-	virtual const QStringList details() const { return Details; }
+	const QString title() const { return Title; }
+	void setText(const QString &text);
+	const QString text() const { return Text; }
+	void setDetails(const QStringList &details);
+	void setDetails(const QString &details);
+	const QStringList details() const { return Details; }
 
-	virtual void setIcon(const KaduIcon &icon);
-	virtual const KaduIcon & icon() const { return Icon; }
-	virtual const QList<QString> & getCallbacks() { return Callbacks; }
+	void setIcon(const KaduIcon &icon);
+	const KaduIcon & icon() const { return Icon; }
+	const QList<QString> & getCallbacks() { return Callbacks; }
 
 public slots:
 	virtual void callbackAccept();

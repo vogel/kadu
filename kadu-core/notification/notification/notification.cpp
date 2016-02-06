@@ -205,14 +205,6 @@ QString Notification::key() const
 	return m_notificationManager->notifyConfigurationKey(Type);
 }
 
-QString Notification::groupKey() const
-{
-	if (m_chat)
-		return m_chat.uuid().toString();
-	else
-		return Title;
-}
-
 void Notification::setTitle(const QString &title)
 {
 	Title = title;

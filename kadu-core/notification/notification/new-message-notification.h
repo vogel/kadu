@@ -42,8 +42,6 @@ public:
 		NewMessage
 	};
 
-	virtual QString groupKey() const { return CurrentMessage.messageSender().id(); }
-
 	static void registerEvents(NotificationEventRepository *notificationEventRepository);
 	static void unregisterEvents(NotificationEventRepository *notificationEventRepository);
 

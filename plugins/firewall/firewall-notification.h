@@ -36,8 +36,6 @@ public:
 	explicit FirewallNotification(const Chat &chat);
 	virtual ~FirewallNotification();
 
-	virtual QString groupKey() const { return "firewall"; }
-
 };
 
 #endif // FIREWALL_NOTIFICATION_H

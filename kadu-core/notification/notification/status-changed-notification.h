@@ -34,8 +34,6 @@ class StatusChangedNotification : public Notification
 	Contact CurrentContact;
 
 public:
-	virtual QString groupKey() const { return CurrentContact.id(); }
-
 	explicit StatusChangedNotification(StatusTypeManager *statusTypeManager, ChatManager *chatManager, ChatStorage *chatStorage, const QString &toStatus, const Contact &contact, const QString &statusDisplayName, const QString &description);
 	virtual ~StatusChangedNotification() {}
 };
