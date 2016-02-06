@@ -35,13 +35,13 @@
 
 StatusNotificationService::StatusNotificationService(QObject *parent) :
 		QObject{parent},
-		m_statusChangedEvent{"StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")},
-		m_statusChangedToFreeForChatEvent{"StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")},
-		m_statusChangedToOnlineEvent{"StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")},
-		m_statusChangedToAwayEvent{"StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")},
-		m_statusChangedToNotAvailableEvent{"StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")},
-		m_statusChangedToDoNotDisturbEvent{"StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")},
-		m_statusChangedToOfflineEvent{"StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")}
+		m_statusChangedEvent{QStringLiteral("StatusChanged"), QT_TRANSLATE_NOOP("@default", QStringLiteral("User changed status"))},
+		m_statusChangedToFreeForChatEvent{QStringLiteral("StatusChanged/ToFreeForChat"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to free for chat"))},
+		m_statusChangedToOnlineEvent{QStringLiteral("StatusChanged/ToOnline"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to online"))},
+		m_statusChangedToAwayEvent{QStringLiteral("StatusChanged/ToAway"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to away"))},
+		m_statusChangedToNotAvailableEvent{QStringLiteral("StatusChanged/ToNotAvailable"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to not available"))},
+		m_statusChangedToDoNotDisturbEvent{QStringLiteral("StatusChanged/ToDoNotDisturb"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to do not disturb"))},
+		m_statusChangedToOfflineEvent{QStringLiteral("StatusChanged/ToOffline"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to offline"))}
 {
 }
 
@@ -107,12 +107,12 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 
 	if (m_notificationService->notifyIgnoreOnConnection())
 	{
-		auto dateTime = contact.contactAccount().property("notify:notify-account-connected", QDateTime()).toDateTime();
+		auto dateTime = contact.contactAccount().property(QStringLiteral("notify:notify-account-connected"), QDateTime()).toDateTime();
 		if (dateTime.isValid() && dateTime >= QDateTime::currentDateTime())
 			return;
 	}
 
-	if (!contact.ownerBuddy().property("notify:Notify", true).toBool())
+	if (!contact.ownerBuddy().property(QStringLiteral("notify:Notify"), true).toBool())
 		return;
 
 	if (contact == contact.contactAccount().accountContact()) // myself
@@ -125,7 +125,7 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 	auto statusDisplayName = status.displayName();
 	auto description = status.description();
 
-	if (contact.ownerBuddy().property("kadu:HideDescription", false).toBool())
+	if (contact.ownerBuddy().property(QStringLiteral("kadu:HideDescription"), false).toBool())
 	{
 		if (oldStatus.type() == status.type())
 			return;
@@ -139,7 +139,7 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 		return;
 
 	auto const &typeData = m_statusTypeManager->statusTypeData(status.type());
-	auto notificationEventName = QString("StatusChanged/To") + typeData.name();
+	auto notificationEventName = QStringLiteral("StatusChanged/To%1").arg(typeData.name());
 
 	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 	auto data = QVariantMap{};
