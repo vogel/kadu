@@ -21,7 +21,6 @@
 #include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "notification/notification-manager.h"
@@ -60,11 +59,6 @@ void OtrNotifier::setChatWidgetRepository(ChatWidgetRepository *chatWidgetReposi
 	MyChatWidgetRepository = chatWidgetRepository;
 }
 
-void OtrNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void OtrNotifier::setNotificationManager(NotificationManager *notificationManager)
 {
 	m_notificationManager = notificationManager;
@@ -80,11 +74,11 @@ QList<NotificationEvent > OtrNotifier::notifyEvents()
 
 void OtrNotifier::notify(const QString &topic, const Account &account, const QString &message)
 {
-	auto notification = m_injectedFactory->makeInjected<Notification>(account, Chat::null, topic, KaduIcon());
+	auto notification = make_unique<Notification>(account, Chat::null, topic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));
 	notification->setText(message);
 
-	m_notificationManager->notify(notification);
+	m_notificationManager->notify(notification.release());
 }
 
 void OtrNotifier::notify(const Contact &contact, const QString &message)

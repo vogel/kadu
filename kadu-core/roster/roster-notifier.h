@@ -27,7 +27,6 @@
 #include <injeqt/injeqt.h>
 
 class Account;
-class InjectedFactory;
 class NotificationEvent;
 class NotificationManager;
 
@@ -72,7 +71,6 @@ private:
 	static QString sm_exportSucceededNotifyTopic;
 	static QString sm_exportFailedNotifyTopic;
 
-	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationManager> m_notificationManager;
 
 	NotificationEvent m_rosterNotificationEvent;
@@ -84,7 +82,6 @@ private:
 	void notify(const QString &topic, const Account &account, const QString &message);
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };

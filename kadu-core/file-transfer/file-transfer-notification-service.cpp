@@ -23,7 +23,6 @@
 #include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
-#include "core/injected-factory.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-type.h"
 #include "identities/identity.h"
@@ -66,11 +65,6 @@ void FileTransferNotificationService::setChatStorage(ChatStorage *chatStorage)
 void FileTransferNotificationService::setFileTransferManager(FileTransferManager *fileTransferManager)
 {
 	m_fileTransferManager = fileTransferManager;
-}
-
-void FileTransferNotificationService::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
 }
 
 void FileTransferNotificationService::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
@@ -118,7 +112,7 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 	data.insert(QStringLiteral("file-transfer"), fileTransfer);
 	data.insert(QStringLiteral("chat"), chat);
 
-	auto notification = m_injectedFactory->makeInjected<Notification>(data, QStringLiteral("FileTransfer/IncomingFile"), KaduIcon{});
+	auto notification = make_unique<Notification>(data, QStringLiteral("FileTransfer/IncomingFile"), KaduIcon{});
 	notification->setTitle(tr("Incoming transfer"));
 	notification->setText(incomingFileTransferText(chat, fileTransfer));
 
@@ -137,7 +131,7 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 		notification->setDiscardCallback(m_fileTransferIgnoreCallback.name());
 	}
 
-	m_notificationService->notify(notification);
+	m_notificationService->notify(notification.release());
 }
 
 QString FileTransferNotificationService::incomingFileTransferText(const Chat &chat, const FileTransfer &fileTransfer)
