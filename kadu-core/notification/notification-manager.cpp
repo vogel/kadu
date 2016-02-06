@@ -135,7 +135,7 @@ void NotificationManager::notify(Notification *rawNotification)
 
 	rawNotification->acquire(nullptr);
 
-	auto notifyType = rawNotification->key();
+	auto notifyType = notifyConfigurationKey(rawNotification->type());
 	auto foundNotifier = false;
 
 	for (auto notifier : Notifiers)

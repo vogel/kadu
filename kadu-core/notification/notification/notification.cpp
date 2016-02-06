@@ -24,7 +24,6 @@
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
-#include "notification/notification-manager.h"
 #include "notification/notifier.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
@@ -102,11 +101,6 @@ Notification::~Notification()
 {
 }
 
-void Notification::setNotificationManager(NotificationManager *notificationManager)
-{
-	m_notificationManager = notificationManager;
-}
-
 const QVariantMap & Notification::data() const
 {
 	return m_data;
@@ -175,11 +169,6 @@ void Notification::setDiscardCallback(QString discardCallback)
 QString Notification::discardCallback() const
 {
 	return m_discardCallback;
-}
-
-QString Notification::key() const
-{
-	return m_notificationManager->notifyConfigurationKey(Type);
 }
 
 void Notification::setTitle(const QString &title)

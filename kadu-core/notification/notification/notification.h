@@ -30,9 +30,7 @@
 
 #include <QtCore/QPair>
 #include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
 
-class NotificationManager;
 class Notifier;
 class Parser;
 
@@ -68,8 +66,6 @@ public:
 
 	const QString & type() const { return Type; }
 
-	QString key() const;
-
 	void setTitle(const QString &title);
 
 	const QString title() const { return Title; }
@@ -92,8 +88,6 @@ protected:
 	bool Closing;
 
 private:
-	QPointer<NotificationManager> m_notificationManager;
-
 	QVariantMap m_data;
 	QString m_acceptCallback;
 	QString m_discardCallback;
@@ -109,8 +103,5 @@ private:
 	Chat m_chat;
 
 	QList<QString> Callbacks;
-
-private slots:
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };

@@ -24,6 +24,7 @@
 #include "gui/sound-configuration-ui-handler.h"
 #include "sound-manager.h"
 
+#include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
 
 #include <QtCore/QFileInfo>
@@ -36,6 +37,11 @@ SoundNotifier::SoundNotifier(QObject *parent) :
 
 SoundNotifier::~SoundNotifier()
 {
+}
+
+void SoundNotifier::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
 }
 
 void SoundNotifier::setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler)
@@ -78,7 +84,8 @@ void SoundNotifier::notify(Notification *notification)
 		}
 	}
 
-	m_soundManager->playSoundByName(notification->key());
+	auto key = m_notificationManager->notifyConfigurationKey(notification->type());
+	m_soundManager->playSoundByName(key);
 }
 
 NotifierConfigurationWidget * SoundNotifier::createConfigurationWidget(QWidget* parent)

@@ -24,6 +24,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class NotificationManager;
 class SoundConfigurationUiHandler;
 class SoundManager;
 
@@ -31,6 +32,7 @@ class SoundNotifier : public QObject, public Notifier
 {
 	Q_OBJECT
 
+	QPointer<NotificationManager> m_notificationManager;
 	QPointer<SoundConfigurationUiHandler> m_soundConfigurationUiHandler;
 	QPointer<SoundManager> m_soundManager;
 
@@ -42,6 +44,7 @@ public:
 	virtual void notify(Notification *notification) override;
 
 private slots:
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
 	INJEQT_SET void setSoundManager(SoundManager *soundManager);
 

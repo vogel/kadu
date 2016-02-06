@@ -27,6 +27,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
+#include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
 #include "parser/parser.h"
 
@@ -50,6 +51,11 @@ void ExecNotifier::setConfiguration(Configuration *configuration)
 void ExecNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void ExecNotifier::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
 }
 
 void ExecNotifier::setParser(Parser *parser)
@@ -164,7 +170,8 @@ QStringList mySplit(const QChar &sep, const QString &str)
 
 void ExecNotifier::notify(Notification *notification)
 {
-	auto syntax = m_configuration->deprecatedApi()->readEntry("Exec Notify", notification->key() + "Cmd");
+	auto key = m_notificationManager->notifyConfigurationKey(notification->type());
+	auto syntax = m_configuration->deprecatedApi()->readEntry("Exec Notify", key + "Cmd");
 	if (syntax.isEmpty())
 		return;
 	auto s = mySplit(' ', syntax);

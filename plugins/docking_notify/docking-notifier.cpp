@@ -74,6 +74,11 @@ void DockingNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void DockingNotifier::setNotificationManager(NotificationManager *notificationManager)
+{
+	m_notificationManager = notificationManager;
+}
+
 void DockingNotifier::setParser(Parser *parser)
 {
 	m_parser = parser;
@@ -125,10 +130,11 @@ void DockingNotifier::notify(Notification *notification)
 
 	notification->acquire(this);
 
-	unsigned int timeout = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_timeout");
-	unsigned int icon = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_icon");
-	QString title = m_configuration->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_title");
-	QString syntax = m_configuration->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + notification->key() + "_syntax");
+	auto key = m_notificationManager->notifyConfigurationKey(notification->type());
+	unsigned int timeout = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + key + "_timeout");
+	unsigned int icon = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + key + "_icon");
+	QString title = m_configuration->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + key + "_title");
+	QString syntax = m_configuration->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + key + "_syntax");
 
 	m_docking->showMessage(parseText(title, notification, notification->text()),
 		parseText(syntax, notification, notification->details().join(QStringLiteral("\n"))),

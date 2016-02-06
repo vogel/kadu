@@ -38,6 +38,7 @@ class Chat;
 class Configuration;
 class IconsManager;
 class NotificationCallbackRepository;
+class NotificationManager;
 class NotificationService;
 class Notification;
 class Parser;
@@ -50,6 +51,7 @@ class Hint : public QFrame, ConfigurationAwareObject
 	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+	QPointer<NotificationManager> m_notificationManager;
 	QPointer<NotificationService> m_notificationService;
 	QPointer<Parser> m_parser;
 
@@ -79,6 +81,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *IconsManager);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
@@ -109,11 +112,6 @@ public:
 	Notification * getNotification() { return notification; }
 
 public slots:
-	/**
-		min�a sekunda, zmniejsza licznik pozosta�ych sekund,
-		zwraca true je�eli jeszcze pozosta� czas
-		false, gdy czas si� sko�czy�
-	**/
 	void nextSecond();
 
 	void acceptNotification();
