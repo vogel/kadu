@@ -35,7 +35,14 @@
 #include "status/status-type-manager.h"
 
 StatusNotificationService::StatusNotificationService(QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		m_statusChangedEvent{"StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")},
+		m_statusChangedToFreeForChatEvent{"StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")},
+		m_statusChangedToOnlineEvent{"StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")},
+		m_statusChangedToAwayEvent{"StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")},
+		m_statusChangedToNotAvailableEvent{"StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")},
+		m_statusChangedToDoNotDisturbEvent{"StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")},
+		m_statusChangedToOfflineEvent{"StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")}
 {
 }
 
@@ -75,10 +82,24 @@ void StatusNotificationService::setStatusTypeManager(StatusTypeManager *statusTy
 
 void StatusNotificationService::init()
 {
+	m_notificationEventRepository->addNotificationEvent(m_statusChangedEvent);
+	m_notificationEventRepository->addNotificationEvent(m_statusChangedToFreeForChatEvent);
+	m_notificationEventRepository->addNotificationEvent(m_statusChangedToOnlineEvent);
+	m_notificationEventRepository->addNotificationEvent(m_statusChangedToAwayEvent);
+	m_notificationEventRepository->addNotificationEvent(m_statusChangedToNotAvailableEvent);
+	m_notificationEventRepository->addNotificationEvent(m_statusChangedToDoNotDisturbEvent);
+	m_notificationEventRepository->addNotificationEvent(m_statusChangedToOfflineEvent);
 }
 
 void StatusNotificationService::done()
 {
+	m_notificationEventRepository->removeNotificationEvent(m_statusChangedEvent);
+	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToFreeForChatEvent);
+	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToOnlineEvent);
+	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToAwayEvent);
+	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToNotAvailableEvent);
+	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToDoNotDisturbEvent);
+	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToOfflineEvent);
 }
  
 void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldStatus)

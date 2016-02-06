@@ -21,6 +21,8 @@
 
 #include "injeqt-type-roles.h"
 
+#include "notification/notification-event.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -54,6 +56,14 @@ private:
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationService> m_notificationService;
 	QPointer<StatusTypeManager> m_statusTypeManager;
+
+	NotificationEvent m_statusChangedEvent;
+	NotificationEvent m_statusChangedToFreeForChatEvent;
+	NotificationEvent m_statusChangedToOnlineEvent;
+	NotificationEvent m_statusChangedToAwayEvent;
+	NotificationEvent m_statusChangedToNotAvailableEvent;
+	NotificationEvent m_statusChangedToDoNotDisturbEvent;
+	NotificationEvent m_statusChangedToOfflineEvent;
 
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
