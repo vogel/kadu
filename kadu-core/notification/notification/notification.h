@@ -71,8 +71,6 @@ public:
 
 	virtual QString groupKey() const;
 
-	virtual QString identifier() { return Type + "_" + groupKey(); }
-
 	void setTitle(const QString &title);
 
 	virtual const QString title() const { return Title; }
@@ -82,8 +80,6 @@ public:
 	virtual void setDetails(const QString &details);
 	virtual const QStringList details() const { return Details; }
 
-	virtual bool isPeriodic() { return false; }
-	virtual int period() { return 0; }
 	virtual void setIcon(const KaduIcon &icon);
 	virtual const KaduIcon & icon() const { return Icon; }
 	virtual const QList<QString> & getCallbacks() { return Callbacks; }

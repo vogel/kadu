@@ -24,7 +24,6 @@
 #include "window-notifier-window.h"
 
 #include "icons/icons-manager.h"
-#include "notification/notification/aggregate-notification.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
 #include "notification/notification/notification.h"
@@ -125,8 +124,6 @@ void WindowNotifierWindow::addButton(QWidget *parent, const QString &title, cons
 void WindowNotifierWindow::buttonClicked()
 {
 	auto callbackNotifiation = m_notification;
-	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
-		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
 
 	auto callbackName = sender()->property("notify:callback").toString();
 	if (!callbackName.isEmpty())

@@ -58,6 +58,4 @@ public:
 	const QString & errorServer() const { return ErrorServer; }
 	const QString & errorMessage() const { return ErrorMessage; }
 
-	virtual bool isPeriodic() { return true; }
-	virtual int period() { return 20; }
 };

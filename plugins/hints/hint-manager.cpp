@@ -306,8 +306,6 @@ void HintManager::deleteHint(Hint *hint)
 
 	Notification *notification = hint->getNotification();
 
-	if (notification)
-		DisplayedNotifications.removeAll(notification->identifier());
 	hints.removeAll(hint);
 
 	layout->removeWidget(hint);
@@ -458,17 +456,6 @@ Hint *HintManager::addHint(Notification *notification)
 {
 	kdebugf();
 
-	if (DisplayedNotifications.contains(notification->identifier()))
-	{
-		for (auto hint : hints)
-			if (hint->getNotification()->identifier() == notification->identifier())
-			{
-				//hope this refreshes this hint
-				hint->notificationUpdated();
-				return hint;
-			}
-	}
-
 	notification->acquire(this);
 
 	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
@@ -488,8 +475,6 @@ Hint *HintManager::addHint(Notification *notification)
 
 	if (!hint_timer->isActive())
 		hint_timer->start(1000);
-
-	DisplayedNotifications.append(notification->identifier());
 
 	return hint;
 }

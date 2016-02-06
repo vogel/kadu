@@ -24,7 +24,6 @@
 #include "gui/sound-configuration-ui-handler.h"
 #include "sound-manager.h"
 
-#include "notification/notification/aggregate-notification.h"
 #include "notification/notification/notification.h"
 
 #include <QtCore/QFileInfo>
@@ -51,10 +50,6 @@ void SoundNotifier::setSoundManager(SoundManager *soundManager)
 
 void SoundNotifier::notify(Notification *notification)
 {
-	auto aggregate = qobject_cast<AggregateNotification *>(notification);
-	if (aggregate)
-		notification = aggregate->notifications().front();
-
 	auto chat = notification->data()["chat"].value<Chat>();
 	if (chat && chat.property("sound:use_custom_sound", false).toBool())
 	{

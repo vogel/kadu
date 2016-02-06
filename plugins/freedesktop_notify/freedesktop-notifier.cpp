@@ -34,7 +34,6 @@
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
-#include "notification/notification/aggregate-notification.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
 #include "notification/notification/notification.h"
@@ -239,12 +238,6 @@ void FreedesktopNotifier::notify(Notification *notification)
 	{
 		Notification *firstNotification = notification;
 
-		AggregateNotification *aggregateNotification = qobject_cast<AggregateNotification *>(notification);
-		if (aggregateNotification)
-		{
-			firstNotification = aggregateNotification->notifications().first();
-		}
-
 		for (auto &&callbackName : firstNotification->getCallbacks())
 		{
 			auto callback = m_notificationCallbackRepository->callback(callbackName);
@@ -334,9 +327,6 @@ void FreedesktopNotifier::actionInvoked(unsigned int id, QString callbackName)
 		return;
 
 	auto callbackNotifiation = notification;
-	if (qobject_cast<AggregateNotification *>(callbackNotifiation))
-		callbackNotifiation = qobject_cast<AggregateNotification *>(callbackNotifiation)->notifications()[0];
-
 	auto callback = m_notificationCallbackRepository->callback(callbackName);
 	callback.call(callbackNotifiation);
 	notification->close();

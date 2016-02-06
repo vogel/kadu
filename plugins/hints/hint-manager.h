@@ -69,7 +69,6 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QString Style;
 	double Opacity;
 
-	QStringList DisplayedNotifications;
 	QList<Hint *> hints;
 
 	HintsConfigurationWidget *configurationWidget;

@@ -3,7 +3,6 @@ set (notification_SRCS
 	listener/chat-event-listener.cpp
 	listener/group-event-listener.cpp
 
-	notification/aggregate-notification.cpp
 	notification/new-message-notification.cpp
 	notification/multilogon-notification.cpp
 	notification/notification.cpp

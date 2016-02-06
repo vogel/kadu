@@ -26,7 +26,7 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
-#include "notification/notification/aggregate-notification.h"
+#include "notification/notification/notification.h"
 
 ChatNotifier::ChatNotifier(QObject *parent) :
 		QObject{parent},
@@ -71,21 +71,15 @@ void ChatNotifier::notify(Notification *notification)
 	if (!m_chatWidgetRepository)
 		return;
 
-	auto aggregateNotification = qobject_cast<AggregateNotification *>(notification);
-	if (!aggregateNotification)
-		return;
-
-	auto latestNotification = aggregateNotification->notifications().last();
-
 	auto buddies = BuddySet();
-	auto chat = latestNotification->data()["chat"].value<Chat>();
+	auto chat = notification->data()["chat"].value<Chat>();
 	if (chat)
 		buddies = chat.contacts().toBuddySet();
 
 	for (auto chatWidget : m_chatWidgetRepository.data())
 		// warning: do not exchange intersect caller and argument, it will modify buddies variable if you do
 		if (buddies.isEmpty() || !chatWidget->chat().contacts().toBuddySet().intersect(buddies).isEmpty())
-			sendNotificationToChatWidget(latestNotification, chatWidget);
+			sendNotificationToChatWidget(notification, chatWidget);
 }
 
 #include "moc_chat-notifier.cpp"

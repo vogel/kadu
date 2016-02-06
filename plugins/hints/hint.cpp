@@ -31,7 +31,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "icons/icons-manager.h"
-#include "notification/notification/aggregate-notification.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
 #include "notification/notification/notification.h"
@@ -76,12 +75,6 @@ void Hint::setParser(Parser *parser)
 void Hint::init()
 {
 	kdebugf();
-
-	AggregateNotification *aggregateNotification = qobject_cast<AggregateNotification *>(notification);
-	if (aggregateNotification)
-	{
-		notification = aggregateNotification->notifications().first();
-	}
 
 	CurrentChat = notification->data()["chat"].value<Chat>();
 
@@ -129,8 +122,6 @@ void Hint::init()
 void Hint::buttonClicked()
 {
 	auto callbackNotification = notification;
-	if (qobject_cast<AggregateNotification *>(callbackNotification))
-		callbackNotification = qobject_cast<AggregateNotification *>(callbackNotification)->notifications()[0];
 
 	auto callbackName = sender()->property("notify:callback").toString();
 	if (!callbackName.isEmpty())

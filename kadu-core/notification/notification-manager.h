@@ -38,7 +38,6 @@
 #include "status/status.h"
 
 class Action;
-class AggregateNotification;
 class Configuration;
 class Group;
 class InjectedFactory;
@@ -62,17 +61,9 @@ class KADUAPI NotificationManager : public QObject
 	QList<Notifier *> Notifiers;
 	QStringList IgnoredAccounts;
 
-	QHash<QString, AggregateNotification*> ActiveNotifications;
-	QHash<QString, QTimer*> PeriodicNotifications;
-
-	AggregateNotification * findGroup(Notification *notification);
-
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
-	void removeGrouped(Notification *notification);
-	void removePeriodicEntries();
 
 public:
 	Q_INVOKABLE explicit NotificationManager(QObject *parent = nullptr);
