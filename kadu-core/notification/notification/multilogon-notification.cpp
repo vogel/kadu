@@ -56,8 +56,8 @@ void MultilogonNotification::unregisterEvents(NotificationEventRepository *notif
 	notificationEventRepository->removeNotificationEvent(NotificationEvent("multilogon/sessionDisconnected", QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected")));
 }
 
-MultilogonNotification::MultilogonNotification(MultilogonSession *session, const QString &type, bool addKillCallback) :
-		Notification(session->account(), Chat::null, type, KaduIcon("kadu_icons/multilogon")), Session(session)
+MultilogonNotification::MultilogonNotification(MultilogonSession session, const QString &type, bool addKillCallback) :
+		Notification(session.account, Chat::null, type, KaduIcon("kadu_icons/multilogon")), Session(session)
 {
 	if (addKillCallback)
 	{
@@ -75,10 +75,7 @@ MultilogonNotification::~MultilogonNotification()
 
 void MultilogonNotification::killSession()
 {
-	if (!Session)
-		return;
-
-	Protocol *protocolHandler = Session->account().protocolHandler();
+	Protocol *protocolHandler = Session.account.protocolHandler();
 	if (!protocolHandler)
 		return;
 

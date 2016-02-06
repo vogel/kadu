@@ -140,14 +140,14 @@ MultilogonService * MultilogonWindow::multilogonService()
 	return protocol->multilogonService();
 }
 
-MultilogonSession * MultilogonWindow::multilogonSession()
+MultilogonSession MultilogonWindow::multilogonSession()
 {
 	QItemSelectionModel *selectionModel = SessionsTable->selectionModel();
 	if (!selectionModel)
-		return 0;
+		return {};
 
 	QModelIndex index = selectionModel->currentIndex();
-	return index.data(MultilogonSessionRole).value<MultilogonSession *>();
+	return index.data(MultilogonSessionRole).value<MultilogonSession>();
 }
 
 void MultilogonWindow::accountChanged()
@@ -166,7 +166,7 @@ void MultilogonWindow::accountChanged()
 
 void MultilogonWindow::selectionChanged()
 {
-	KillSessionButton->setEnabled(0 != multilogonSession());
+	KillSessionButton->setEnabled(multilogonSession() != MultilogonSession{});
 }
 
 void MultilogonWindow::killSession()
@@ -175,9 +175,7 @@ void MultilogonWindow::killSession()
 	if (!service)
 		return;
 
-	MultilogonSession *session = multilogonSession();
-	if (session)
-		service->killSession(session);
+	service->killSession(multilogonSession());
 }
 
 #include "moc_multilogon-window.cpp"

@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MULTILOGON_SESSION_H
-#define MULTILOGON_SESSION_H
+#pragma once
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
@@ -29,32 +28,16 @@
 #include "accounts/account.h"
 #include "exports.h"
 
-class KADUAPI MultilogonSession : public QObject
+struct KADUAPI MultilogonSession
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(MultilogonSession)
-
-	Account MyAccount;
-	QString Name;
-	QHostAddress RemoteAddress;
-	QDateTime LogonTime;
-
-protected:
-	void setName(const QString &name);
-	void setRemoteAddres(const QHostAddress &remoteAddress);
-	void setLogonTime(const QDateTime &logonTime);
-
-public:
-	explicit MultilogonSession(Account account, QObject *parent = nullptr);
-	virtual ~MultilogonSession();
-
-	Account account() const;
-	const QString & name() const;
-	const QHostAddress & remoteAddress() const;
-	const QDateTime & logonTime() const;
-
+	Account account;
+	QByteArray id;
+	QString name;
+	QHostAddress remoteAddress;
+	QDateTime logonTime;
 };
 
-Q_DECLARE_METATYPE(MultilogonSession *)
+KADUAPI bool operator == (const MultilogonSession &x, const MultilogonSession &y);
+KADUAPI bool operator != (const MultilogonSession &x, const MultilogonSession &y);
 
-#endif // MULTILOGON_SESSION_H
+Q_DECLARE_METATYPE(MultilogonSession)

@@ -21,10 +21,10 @@
 #ifndef MULTILOGON_NOTIFICATION_H
 #define MULTILOGON_NOTIFICATION_H
 
+#include "multilogon/multilogon-session.h"
 #include "notification/notification-manager.h"
 #include "notification/notification/notification.h"
 
-class MultilogonSession;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 
@@ -32,13 +32,13 @@ class MultilogonNotification : public Notification
 {
 	Q_OBJECT
 
-	MultilogonSession *Session;
+	MultilogonSession Session;
 
 private slots:
 	void killSession();
 
 public:
-	MultilogonNotification(MultilogonSession *session, const QString &type, bool addKillCallback);
+	MultilogonNotification(MultilogonSession session, const QString &type, bool addKillCallback);
 	virtual ~MultilogonNotification();
 
 	static void registerEvents(NotificationEventRepository *notificationEventRepository, NotificationCallbackRepository *notificationCallbackRepository);

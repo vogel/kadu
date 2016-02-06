@@ -36,7 +36,7 @@ class AccountsComboBox;
 class Configuration;
 class InjectedFactory;
 class MultilogonService;
-class MultilogonSession;
+struct MultilogonSession;
 
 class KADUAPI MultilogonWindow : public QWidget, DesktopAwareObject
 {
@@ -52,7 +52,7 @@ class KADUAPI MultilogonWindow : public QWidget, DesktopAwareObject
 	void createGui();
 
 	MultilogonService * multilogonService();
-	MultilogonSession * multilogonSession();
+	MultilogonSession multilogonSession();
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);

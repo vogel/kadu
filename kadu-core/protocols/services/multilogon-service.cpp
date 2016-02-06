@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,27 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_MULTILOGON_SESSION_H
-#define GADU_MULTILOGON_SESSION_H
-
-#include <libgadu.h>
+#include "multilogon-service.h"
 
 #include "multilogon/multilogon-session.h"
 
-class GaduMultilogonSession : public MultilogonSession
+MultilogonService::MultilogonService(Account account, QObject *parent) :
+		AccountService{account, parent}
 {
-	Q_OBJECT
+}
 
-	gg_multilogon_id_t Id;
+MultilogonService::~MultilogonService()
+{
+}
 
-public:
-	explicit GaduMultilogonSession(Account account, QObject *parent = nullptr);
-	virtual ~GaduMultilogonSession();
-
-	GaduMultilogonSession(Account account, const gg_multilogon_session &session, QObject *parent = nullptr);
-
-	const gg_multilogon_id_t & id() const;
-
-};
-
-#endif // GADU_MULTILOGON_SESSION_H
+#include "moc_multilogon-service.cpp"

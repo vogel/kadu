@@ -11,6 +11,7 @@ set (protocols_SRCS
 	services/chat-image-service.cpp
 	services/chat-service.cpp
 	services/chat-state-service.cpp
+	services/multilogon-service.cpp
 	services/protocol-service.cpp
 
 	connection-error-notification.cpp
@@ -35,7 +36,6 @@ set (protocols_MOC_SRCS
 	services/chat-state-service.h
 	services/contact-personal-info-service.h
 	services/file-transfer-service.h
-	services/multilogon-service.h
 	services/personal-info-service.h
 	services/search-service.h
 	services/subscription-service.h

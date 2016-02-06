@@ -32,7 +32,7 @@ class ChatManager;
 class ChatStorage;
 class InjectedFactory;
 class Message;
-class MultilogonSession;
+struct MultilogonSession;
 class NotificationService;
 class StatusNotificationService;
 class StatusTypeManager;
@@ -71,8 +71,8 @@ private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void multilogonSessionConnected(MultilogonSession *session);
-	void multilogonSessionDisconnected(MultilogonSession *session);
+	void multilogonSessionConnected(MultilogonSession session);
+	void multilogonSessionDisconnected(MultilogonSession session);
 	void accountConnected();
 
 };

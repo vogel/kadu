@@ -44,8 +44,8 @@ public:
 	Q_INVOKABLE explicit GroupManager(QObject *parent = nullptr);
 	virtual ~GroupManager();
 
-	virtual QString storageNodeName() { return QStringLiteral("Groups"); }
-	virtual QString storageNodeItemName() { return QStringLiteral("Group"); }
+	virtual QString storageNodeName() override { return QStringLiteral("Groups"); }
+	virtual QString storageNodeItemName() override { return QStringLiteral("Group"); }
 
 	Group byName(const QString &name, bool create = true);
 
@@ -63,14 +63,14 @@ signals:
 	void saveGroupData();
 
 protected:
-	virtual void load();
-	virtual void store();
+	virtual void load() override;
+	virtual void store() override;
 	virtual Group loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void itemAboutToBeAdded(Group item);
-	virtual void itemAdded(Group item);
-	virtual void itemAboutToBeRemoved(Group item);
-	virtual void itemRemoved(Group item);
+	virtual void itemAboutToBeAdded(Group item) override;
+	virtual void itemAdded(Group item) override;
+	virtual void itemAboutToBeRemoved(Group item) override;
+	virtual void itemRemoved(Group item) override;
 
 private:
 	QPointer<ConfigurationManager> m_configurationManager;

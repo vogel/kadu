@@ -42,7 +42,7 @@ class Configuration;
 class Group;
 class InjectedFactory;
 class Message;
-class MultilogonSession;
+struct MultilogonSession;
 class NotificationService;
 class Notification;
 class Notifier;

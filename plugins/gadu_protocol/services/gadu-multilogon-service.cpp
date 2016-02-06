@@ -18,15 +18,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <libgadu.h>
-
+#include "multilogon/multilogon-session.h"
 #include "protocols/protocol.h"
 
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
-#include "services/multilogon/gadu-multilogon-session.h"
 
 #include "gadu-multilogon-service.h"
+
+// for Q_OS_WIN macro
+#include <QtCore/QtGlobal>
+#ifdef Q_OS_WIN
+#include <winsock2.h>
+#else
+#include <arpa/inet.h>
+#endif
+#include <libgadu.h>
 
 static bool operator == (const gg_multilogon_id_t &left, const gg_multilogon_id_t &right)
 {
@@ -51,32 +58,45 @@ void GaduMultilogonService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-const QList<MultilogonSession *> & GaduMultilogonService::sessions() const
+const QList<MultilogonSession> & GaduMultilogonService::sessions() const
 {
 	return Sessions;
 }
 
-void GaduMultilogonService::killSession(MultilogonSession *session)
+void GaduMultilogonService::killSession(MultilogonSession session)
 {
 	if (!Connection || !Connection->hasSession())
 		return;
 
-	GaduMultilogonSession *gaduSession = dynamic_cast<GaduMultilogonSession *>(session);
-	if (!gaduSession)
-		return;
-
+	auto sessionId = toMultilogonId(session.id);
 	auto writableSessionToken = Connection->writableSessionToken();
-	gg_multilogon_disconnect(writableSessionToken.rawSession(), gaduSession->id());
+	gg_multilogon_disconnect(writableSessionToken.rawSession(), sessionId);
+}
+
+QByteArray GaduMultilogonService::toByteArray(const gg_multilogon_id_t &multilogonId)
+{
+	auto result = QByteArray{};
+	QDataStream stream{&result, QIODevice::WriteOnly};
+
+	stream.writeRawData(reinterpret_cast<const char *>(&multilogonId), sizeof(gg_multilogon_id_t));
+	return result;
+}
+
+gg_multilogon_id_t GaduMultilogonService::toMultilogonId(QByteArray byteArray)
+{
+	auto result = gg_multilogon_id_t{};
+	QDataStream stream{&byteArray, QIODevice::ReadOnly};
+
+	stream.readRawData(reinterpret_cast<char *>(&result), sizeof(gg_multilogon_id_t));
+	return result;
 }
 
 bool GaduMultilogonService::containsSession(const gg_multilogon_session &session)
 {
-	foreach (MultilogonSession *multilogonSession, Sessions)
-	{
-		GaduMultilogonSession *gaduSession = static_cast<GaduMultilogonSession *>(multilogonSession);
-		if (session.id == gaduSession->id())
+	auto sessionId = toByteArray(session.id);
+	for (const auto &multilogonSession : Sessions)
+		if (sessionId == multilogonSession.id)
 			return true;
-	}
 
 	return false;
 }
@@ -97,7 +117,21 @@ void GaduMultilogonService::addNewSessions(const gg_event_multilogon_info &multi
 	for (int i = 0; i < multilogonInfo.count; i++)
 		if (!containsSession(multilogonInfo.sessions[i]))
 		{
-			GaduMultilogonSession *session = new GaduMultilogonSession(account(), multilogonInfo.sessions[i]);
+			auto remoteAddress = QHostAddress{};
+			remoteAddress.setAddress(ntohl(multilogonInfo.sessions[i].remote_addr));
+
+			auto logonTime = QDateTime{};
+			logonTime.setTime_t(multilogonInfo.sessions[i].logon_time);
+
+			auto session = MultilogonSession
+			{
+				account(),
+				toByteArray(multilogonInfo.sessions[i].id),
+				multilogonInfo.sessions[i].name,
+				remoteAddress,
+				logonTime
+			};
+
 			emit multilogonSessionAboutToBeConnected(session);
 			Sessions.append(session);
 			emit multilogonSessionConnected(session);
@@ -108,18 +142,17 @@ void GaduMultilogonService::removeOldSessions(const gg_event_multilogon_info &mu
 {
 	// this does not scale above 100 connections
 	// but anyone will ever have that many?
-	QList<MultilogonSession *>::iterator i = Sessions.begin();
+	auto i = Sessions.begin();
 
 	while (i != Sessions.end())
 	{
-		GaduMultilogonSession *gaduSession = static_cast<GaduMultilogonSession *>(*i);
+		auto session = *i;
 
-		if (!containsSession(multilogonInfo, gaduSession->id()))
+		if (!containsSession(multilogonInfo, toMultilogonId(session.id)))
 		{
-			emit multilogonSessionAboutToBeDisconnected(gaduSession);
+			emit multilogonSessionAboutToBeDisconnected(session);
 			i = Sessions.erase(i);
-			emit multilogonSessionDisconnected(gaduSession);
-			delete gaduSession;
+			emit multilogonSessionDisconnected(session);
 		}
 		else
 			++i;
@@ -134,15 +167,14 @@ void GaduMultilogonService::handleEventMultilogonInfo(gg_event *e)
 
 void GaduMultilogonService::removeAllSessions()
 {
-	QList<MultilogonSession *>::iterator i = Sessions.begin();
+	auto i = Sessions.begin();
 
 	while (i != Sessions.end())
 	{
-		GaduMultilogonSession *gaduSession = static_cast<GaduMultilogonSession *>(*i);
-		emit multilogonSessionAboutToBeDisconnected(gaduSession);
+		auto session = *i;
+		emit multilogonSessionAboutToBeDisconnected(session);
 		i = Sessions.erase(i);
-		emit multilogonSessionDisconnected(gaduSession);
-		delete gaduSession;
+		emit multilogonSessionDisconnected(session);
 	}
 }
 

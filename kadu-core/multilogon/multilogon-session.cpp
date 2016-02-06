@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2011, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,48 +19,22 @@
 
 #include "multilogon-session.h"
 
-MultilogonSession::MultilogonSession(Account account, QObject *parent) :
-		QObject(parent), MyAccount(account)
+bool operator == (const MultilogonSession &x, const MultilogonSession &y)
 {
+	if (x.account != y.account)
+		return false;
+	if (x.id != y.id)
+		return false;
+	if (x.name != y.name)
+		return false;
+	if (x.remoteAddress != y.remoteAddress)
+		return false;
+	if (x.logonTime != y.logonTime)
+		return false;
+	return true;
 }
 
-MultilogonSession::~MultilogonSession()
+bool operator != (const MultilogonSession &x, const MultilogonSession &y)
 {
+	return !(x == y);
 }
-
-void MultilogonSession::setName(const QString &name)
-{
-	Name = name;
-}
-
-void MultilogonSession::setRemoteAddres(const QHostAddress &remoteAddress)
-{
-	RemoteAddress = remoteAddress;
-}
-
-void MultilogonSession::setLogonTime(const QDateTime &logonTime)
-{
-	LogonTime = logonTime;
-}
-
-Account MultilogonSession::account() const
-{
-	return MyAccount;
-}
-
-const QString & MultilogonSession::name() const
-{
-	return Name;
-}
-
-const QHostAddress & MultilogonSession::remoteAddress() const
-{
-	return RemoteAddress;
-}
-
-const QDateTime & MultilogonSession::logonTime() const
-{
-	return LogonTime;
-}
-
-#include "moc_multilogon-session.cpp"

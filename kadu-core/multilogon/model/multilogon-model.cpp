@@ -29,14 +29,14 @@ MultilogonModel::MultilogonModel(MultilogonService *service, QObject *parent) :
 {
 	if (Service)
 	{
-		connect(Service, SIGNAL(multilogonSessionAboutToBeConnected(MultilogonSession*)),
-				this, SLOT(multilogonSessionAboutToBeConnected(MultilogonSession*)));
-		connect(Service, SIGNAL(multilogonSessionConnected(MultilogonSession*)),
-				this, SLOT(multilogonSessionConnected(MultilogonSession*)));
-		connect(Service, SIGNAL(multilogonSessionAboutToBeDisconnected(MultilogonSession*)),
-				this, SLOT(multilogonSessionAboutToBeDisconnected(MultilogonSession*)));
-		connect(Service, SIGNAL(multilogonSessionDisconnected(MultilogonSession*)),
-				this, SLOT(multilogonSessionDisconnected(MultilogonSession*)));
+		connect(Service, SIGNAL(multilogonSessionAboutToBeConnected(MultilogonSession)),
+				this, SLOT(multilogonSessionAboutToBeConnected(MultilogonSession)));
+		connect(Service, SIGNAL(multilogonSessionConnected(MultilogonSession)),
+				this, SLOT(multilogonSessionConnected(MultilogonSession)));
+		connect(Service, SIGNAL(multilogonSessionAboutToBeDisconnected(MultilogonSession)),
+				this, SLOT(multilogonSessionAboutToBeDisconnected(MultilogonSession)));
+		connect(Service, SIGNAL(multilogonSessionDisconnected(MultilogonSession)),
+				this, SLOT(multilogonSessionDisconnected(MultilogonSession)));
 	}
 }
 
@@ -85,10 +85,7 @@ QVariant MultilogonModel::data(const QModelIndex &index, int role) const
 	if (row < 0 || row >= Service->sessions().count())
 		return QVariant();
 
-	MultilogonSession *session = Service->sessions().at(row);
-	if (!session)
-		return QVariant();
-
+	MultilogonSession session = Service->sessions().at(row);
 	if (role == MultilogonSessionRole)
 		return QVariant::fromValue(session);
 
@@ -98,17 +95,17 @@ QVariant MultilogonModel::data(const QModelIndex &index, int role) const
 	switch (index.column())
 	{
 		case 0:
-			return session->name();
+			return session.name;
 		case 1:
-			return session->remoteAddress().toString();
+			return session.remoteAddress.toString();
 		case 2:
-			return session->logonTime();
+			return session.logonTime;
 	}
 
 	return QVariant();
 }
 
-void MultilogonModel::multilogonSessionAboutToBeConnected(MultilogonSession *session)
+void MultilogonModel::multilogonSessionAboutToBeConnected(MultilogonSession session)
 {
 	Q_UNUSED(session)
 
@@ -116,14 +113,14 @@ void MultilogonModel::multilogonSessionAboutToBeConnected(MultilogonSession *ses
 	beginInsertRows(QModelIndex(), row, row);
 }
 
-void MultilogonModel::multilogonSessionConnected(MultilogonSession *session)
+void MultilogonModel::multilogonSessionConnected(MultilogonSession session)
 {
 	Q_UNUSED(session)
 
 	endInsertRows();
 }
 
-void MultilogonModel::multilogonSessionAboutToBeDisconnected(MultilogonSession *session)
+void MultilogonModel::multilogonSessionAboutToBeDisconnected(MultilogonSession session)
 {
 	int row = Service->sessions().indexOf(session);
 	if (-1 == row)
@@ -132,7 +129,7 @@ void MultilogonModel::multilogonSessionAboutToBeDisconnected(MultilogonSession *
 	beginRemoveRows(QModelIndex(), row, row);
 }
 
-void MultilogonModel::multilogonSessionDisconnected(MultilogonSession *session)
+void MultilogonModel::multilogonSessionDisconnected(MultilogonSession session)
 {
 	Q_UNUSED(session)
 

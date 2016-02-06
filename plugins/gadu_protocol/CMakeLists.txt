@@ -84,8 +84,6 @@ set (SOURCES
 	services/gadu-roster-state-machine.cpp
 	services/gadu-search-service.cpp
 
-	services/multilogon/gadu-multilogon-session.cpp
-
 	socket-notifiers/gadu-protocol-socket-notifiers.cpp
 	socket-notifiers/gadu-pubdir-socket-notifiers.cpp
 	socket-notifiers/gadu-socket-notifiers.cpp

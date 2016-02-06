@@ -32,7 +32,7 @@ class GaduMultilogonService : public MultilogonService
 	Q_OBJECT
 
 	QPointer<GaduConnection> Connection;
-	QList<MultilogonSession *> Sessions;
+	QList<MultilogonSession> Sessions;
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventMultilogonInfo(struct gg_event *e);
@@ -51,8 +51,11 @@ public:
 
 	void setConnection(GaduConnection *connection);
 
-	virtual const QList<MultilogonSession *> & sessions() const;
-	virtual void killSession(MultilogonSession *session);
+	virtual const QList<MultilogonSession> & sessions() const;
+	virtual void killSession(MultilogonSession session);
+
+	gg_multilogon_id_t toMultilogonId(QByteArray byteArray);
+	QByteArray toByteArray(const gg_multilogon_id_t &multilogonId);
 
 };
 
