@@ -35,7 +35,17 @@
 #include "notification/notification-service.h"
 
 FileTransferNotificationService::FileTransferNotificationService(QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		m_fileTransferAcceptCallback{QStringLiteral("file-transfer-accept"), tr("Accept"),
+			[this](Notification *notification){ return acceptFileTransfer(notification); }},
+		m_fileTransferSaveCallback{QStringLiteral("file-transfer-save"), tr("Save"),
+			[this](Notification *notification){ return acceptFileTransfer(notification); }},
+		m_fileTransferRejectCallback{QStringLiteral("file-transfer-reject"), tr("Reject"),
+			[this](Notification *notification){ return rejectFileTransfer(notification); }},
+		m_fileTransferIgnoreCallback{QStringLiteral("file-transfer-ignore"), tr("Ignore"),
+			[this](Notification *notification){ return rejectFileTransfer(notification); }},
+		m_fileTransferEvent{QStringLiteral("FileTransfer"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "File transfer"))},
+		m_fileTransferIncomingEvent{QStringLiteral("FileTransfer/IncomingFile"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Incoming file transfer"))}
 {
 }
 
@@ -80,44 +90,24 @@ void FileTransferNotificationService::setNotificationService(NotificationService
 
 void FileTransferNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent{QStringLiteral("FileTransfer"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "File transfer"))});
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent{QStringLiteral("FileTransfer/IncomingFile"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Incoming file transfer"))});
+	m_notificationEventRepository->addNotificationEvent(m_fileTransferEvent);
+	m_notificationEventRepository->addNotificationEvent(m_fileTransferIncomingEvent);
 
-	auto acceptTransferCallback = NotificationCallback{
-		QStringLiteral("file-transfer-accept"),
-		tr("Accept"),
-		[this](Notification *notification){ return acceptFileTransfer(notification); }
-	};
-	auto saveTransferCallback = NotificationCallback{
-		QStringLiteral("file-transfer-save"),
-		tr("Save"),
-		[this](Notification *notification){ return acceptFileTransfer(notification); }
-	};
-	auto rejectTransferCallback = NotificationCallback{
-		QStringLiteral("file-transfer-reject"),
-		tr("Reject"),
-		[this](Notification *notification){ return rejectFileTransfer(notification); }
-	};
-	auto ignoreTransferCallback = NotificationCallback{
-		QStringLiteral("file-transfer-ignore"),
-		tr("Ignore"),
-		[this](Notification *notification){ return rejectFileTransfer(notification); }
-	};
-	m_notificationCallbackRepository->addCallback(acceptTransferCallback);
-	m_notificationCallbackRepository->addCallback(saveTransferCallback);
-	m_notificationCallbackRepository->addCallback(rejectTransferCallback);
-	m_notificationCallbackRepository->addCallback(ignoreTransferCallback);
+	m_notificationCallbackRepository->addCallback(m_fileTransferAcceptCallback);
+	m_notificationCallbackRepository->addCallback(m_fileTransferSaveCallback);
+	m_notificationCallbackRepository->addCallback(m_fileTransferRejectCallback);
+	m_notificationCallbackRepository->addCallback(m_fileTransferIgnoreCallback);
 }
 
 void FileTransferNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{QStringLiteral("FileTransfer"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "File transfer"))});
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{QStringLiteral("FileTransfer/IncomingFile"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Incoming file transfer"))});
+	m_notificationEventRepository->addNotificationEvent(m_fileTransferEvent);
+	m_notificationEventRepository->addNotificationEvent(m_fileTransferIncomingEvent);
 
-	m_notificationCallbackRepository->removeCallback(QStringLiteral("file-transfer-accept"));
-	m_notificationCallbackRepository->removeCallback(QStringLiteral("file-transfer-save"));
-	m_notificationCallbackRepository->removeCallback(QStringLiteral("file-transfer-reject"));
-	m_notificationCallbackRepository->removeCallback(QStringLiteral("file-transfer-ignore"));
+	m_notificationCallbackRepository->removeCallback(m_fileTransferAcceptCallback);
+	m_notificationCallbackRepository->removeCallback(m_fileTransferSaveCallback);
+	m_notificationCallbackRepository->removeCallback(m_fileTransferRejectCallback);
+	m_notificationCallbackRepository->removeCallback(m_fileTransferIgnoreCallback);
 }
 
 void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTransfer &fileTransfer)
@@ -134,17 +124,17 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 
 	if (fileTransfer.transferType() == FileTransferType::Stream)
 	{
-		notification->addCallback(QStringLiteral("file-transfer-accept"));
-		notification->addCallback(QStringLiteral("file-transfer-reject"));
-		notification->setAcceptCallback(QStringLiteral("file-transfer-accept"));
-		notification->setDiscardCallback(QStringLiteral("file-transfer-reject"));
+		notification->addCallback(m_fileTransferAcceptCallback.name());
+		notification->addCallback(m_fileTransferRejectCallback.name());
+		notification->setAcceptCallback(m_fileTransferAcceptCallback.name());
+		notification->setDiscardCallback(m_fileTransferRejectCallback.name());
 	}
 	else
 	{
-		notification->addCallback(QStringLiteral("file-transfer-save"));
-		notification->addCallback(QStringLiteral("file-transfer-ignore"));
-		notification->setAcceptCallback(QStringLiteral("file-transfer-save"));
-		notification->setDiscardCallback(QStringLiteral("file-transfer-ignore"));
+		notification->addCallback(m_fileTransferSaveCallback.name());
+		notification->addCallback(m_fileTransferIgnoreCallback.name());
+		notification->setAcceptCallback(m_fileTransferSaveCallback.name());
+		notification->setDiscardCallback(m_fileTransferIgnoreCallback.name());
 	}
 
 	m_notificationService->notify(notification);

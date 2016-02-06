@@ -21,6 +21,9 @@
 
 #include "injeqt-type-roles.h"
 
+#include "notification/notification-callback.h"
+#include "notification/notification-event.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -56,6 +59,13 @@ private:
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationService> m_notificationService;
+
+	NotificationCallback m_fileTransferAcceptCallback;
+	NotificationCallback m_fileTransferSaveCallback;
+	NotificationCallback m_fileTransferRejectCallback;
+	NotificationCallback m_fileTransferIgnoreCallback;
+	NotificationEvent m_fileTransferEvent;
+	NotificationEvent m_fileTransferIncomingEvent;
 
 	QString incomingFileTransferText(const Chat &chat, const FileTransfer &fileTransfer);
 
