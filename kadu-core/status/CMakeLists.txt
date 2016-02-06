@@ -11,6 +11,7 @@ set (status_SRCS
 	status-container-aware-object.cpp
 	status-container-manager.cpp
 	status-module.cpp
+	status-notification-service.cpp
 	status-setter.cpp
 	status-type-data.cpp
 	status-type-manager.cpp

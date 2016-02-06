@@ -32,7 +32,7 @@
 #include "notification/notification-callback.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
-#include "notification/notification-manager.h"
+#include "notification/notification-service.h"
 
 FileTransferNotificationService::FileTransferNotificationService(QObject *parent) :
 		QObject{parent}
@@ -73,9 +73,9 @@ void FileTransferNotificationService::setNotificationEventRepository(Notificatio
 	m_notificationEventRepository = notificationEventRepository;
 }
 
-void FileTransferNotificationService::setNotificationManager(NotificationManager *notificationManager)
+void FileTransferNotificationService::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationManager = notificationManager;
+	m_notificationService = notificationService;
 }
 
 void FileTransferNotificationService::init()
@@ -147,7 +147,7 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 		notification->setDiscardCallback(QStringLiteral("file-transfer-ignore"));
 	}
 
-	m_notificationManager->notify(notification);
+	m_notificationService->notify(notification);
 }
 
 QString FileTransferNotificationService::incomingFileTransferText(const Chat &chat, const FileTransfer &fileTransfer)

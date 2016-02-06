@@ -30,6 +30,7 @@
 #include "notification/notification/status-changed-notification.h"
 #include "notification/notification-service.h"
 #include "protocols/services/multilogon-service.h"
+#include "status/status-notification-service.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "debug.h"
@@ -70,6 +71,11 @@ void AccountEventListener::setNotificationService(NotificationService *notificat
 	m_notificationService = notificationService;
 }
 
+void AccountEventListener::setStatusNotificationService(StatusNotificationService *statusNotificationService)
+{
+	m_statusNotificationService = statusNotificationService;
+}
+
 void AccountEventListener::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
 	m_statusTypeManager = statusTypeManager;
@@ -92,7 +98,7 @@ void AccountEventListener::accountRegistered(Account account)
 		return;
 
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(contactStatusChanged(Contact, Status)));
+			m_statusNotificationService, SLOT(notifyStatusChanged(Contact,Status)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 
 	auto multilogonService = protocol->multilogonService();
@@ -128,58 +134,6 @@ void AccountEventListener::accountConnected()
 
 	if (m_notificationService->notifyIgnoreOnConnection())
 		account.addProperty("notify:notify-account-connected", QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);
-}
-
-void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatus)
-{
-	if (contact.isAnonymous() || !contact.contactAccount())
-		return;
-
-	auto protocol = contact.contactAccount().protocolHandler();
-	if (!protocol || !protocol->isConnected())
-		return;
-
-	if (m_notificationService->notifyIgnoreOnConnection())
-	{
-		QDateTime dateTime = contact.contactAccount().property("notify:notify-account-connected", QDateTime()).toDateTime();
-		if (dateTime.isValid() && dateTime >= QDateTime::currentDateTime())
-			return;
-	}
-
-	if (!contact.ownerBuddy().property("notify:Notify", true).toBool())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
-		return;
-	}
-
-	if (contact == contact.contactAccount().accountContact()) // myself
-		return;
-
-	auto status = contact.currentStatus();
-	if (oldStatus == status)
-		return;
-
-	auto statusDisplayName = status.displayName();
-	auto description = status.description();
-
-	if (contact.ownerBuddy().property("kadu:HideDescription", false).toBool())
-	{
-		if (oldStatus.type() == status.type())
-			return;
-		else
-			description.clear();
-	}
-
-	if (m_notificationService->ignoreOnlineToOnline() &&
-			!status.isDisconnected() &&
-			!oldStatus.isDisconnected())
-		return;
-
-	auto const &typeData = m_statusTypeManager->statusTypeData(status.type());
-	QString changedTo = "/To" + typeData.name();
-
-	auto statusChangedNotification = m_injectedFactory->makeInjected<StatusChangedNotification>(m_statusTypeManager, m_chatManager, m_chatStorage, changedTo, contact, statusDisplayName, description);
-	m_notificationService->notify(statusChangedNotification);
 }
 
 void AccountEventListener::multilogonSessionConnected(MultilogonSession *session)

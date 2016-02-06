@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,59 +19,50 @@
 
 #pragma once
 
-#include "accounts/accounts-aware-object.h"
-#include "contacts/contact.h"
 #include "injeqt-type-roles.h"
 
+#include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class AccountManager;
 class ChatManager;
 class ChatStorage;
+class Chat;
+class Contact;
 class InjectedFactory;
-class Message;
-class MultilogonSession;
+class NotificationEventRepository;
 class NotificationService;
-class StatusNotificationService;
 class StatusTypeManager;
 class Status;
 
-class AccountEventListener : public QObject, AccountsAwareObject
+class StatusNotificationService : public QObject
 {
 	Q_OBJECT
-	INJEQT_TYPE_ROLE(LISTENER)
+	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit AccountEventListener(QObject *parent = nullptr);
-	virtual ~AccountEventListener();
+	Q_INVOKABLE explicit StatusNotificationService(QObject *parent = nullptr);
+	virtual ~StatusNotificationService();
 
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+public slots:
+	void notifyStatusChanged(Contact contact, Status oldStatus);
 
 private:
-	QPointer<AccountManager> m_accountManager;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatStorage> m_chatStorage;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationService> m_notificationService;
-	QPointer<StatusNotificationService> m_statusNotificationService;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_SET void setStatusNotificationService(StatusNotificationService *statusNotificationService);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-
-	void multilogonSessionConnected(MultilogonSession *session);
-	void multilogonSessionDisconnected(MultilogonSession *session);
-	void accountConnected();
 
 };

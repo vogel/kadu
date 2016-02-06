@@ -33,7 +33,7 @@ class FileTransfer;
 class InjectedFactory;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
-class NotificationManager;
+class NotificationService;
 class Notification;
 
 class FileTransferNotificationService : public QObject
@@ -45,6 +45,7 @@ public:
 	Q_INVOKABLE explicit FileTransferNotificationService(QObject *parent = nullptr);
 	virtual ~FileTransferNotificationService();
 
+public slots:
 	void notifyIncomingFileTransfer(const FileTransfer &fileTransfer);
 
 private:
@@ -54,7 +55,7 @@ private:
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotificationService> m_notificationService;
 
 	QString incomingFileTransferText(const Chat &chat, const FileTransfer &fileTransfer);
 
@@ -68,7 +69,7 @@ private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
