@@ -23,10 +23,9 @@
 #include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
-#include "core/injected-factory.h"
 #include "identities/identity.h"
+#include "misc/memory.h"
 #include "notification/notification/notification.h"
-#include "notification/notification/status-changed-notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-service.h"
@@ -58,11 +57,6 @@ void StatusNotificationService::setChatManager(ChatManager *chatManager)
 void StatusNotificationService::setChatStorage(ChatStorage *chatStorage)
 {
 	m_chatStorage = chatStorage;
-}
-
-void StatusNotificationService::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
 }
 
 void StatusNotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
@@ -145,8 +139,19 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 		return;
 
 	auto const &typeData = m_statusTypeManager->statusTypeData(status.type());
-	QString changedTo = "/To" + typeData.name();
+	auto notificationEventName = QString("StatusChanged/To") + typeData.name();
 
-	auto statusChangedNotification = m_injectedFactory->makeInjected<StatusChangedNotification>(m_statusTypeManager, m_chatManager, m_chatStorage, changedTo, contact, statusDisplayName, description);
-	m_notificationService->notify(statusChangedNotification);
+	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
+	auto data = QVariantMap{};
+	data.insert(QStringLiteral("chat"), chat);
+
+	auto icon = contact.contactAccount().protocolHandler()->statusIcon(Status{m_statusTypeManager, contact.currentStatus().type()});
+	
+	auto notification = make_unique<Notification>(data, notificationEventName, icon);
+	notification->addChatCallbacks();
+	notification->setDetails(Qt::escape(description));
+	notification->setText(tr("<b>%1</b> changed status to <i>%2</i>").arg(Qt::escape(contact.display(true)), Qt::escape(statusDisplayName)));
+	notification->setTitle(tr("Status changed"));
+
+	m_notificationService->notify(notification.release());
 }

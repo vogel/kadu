@@ -31,7 +31,6 @@ class ChatManager;
 class ChatStorage;
 class Chat;
 class Contact;
-class InjectedFactory;
 class NotificationEventRepository;
 class NotificationService;
 class StatusTypeManager;
@@ -52,7 +51,6 @@ public slots:
 private:
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatStorage> m_chatStorage;
-	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationService> m_notificationService;
 	QPointer<StatusTypeManager> m_statusTypeManager;
@@ -68,7 +66,6 @@ private:
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);

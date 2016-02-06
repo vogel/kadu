@@ -6,7 +6,6 @@ set (notification_SRCS
 	notification/new-message-notification.cpp
 	notification/multilogon-notification.cpp
 	notification/notification.cpp
-	notification/status-changed-notification.cpp
 
 	notification-callback-repository.cpp
 	notification-callback.cpp

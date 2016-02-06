@@ -27,7 +27,6 @@
 #include "core/injected-factory.h"
 #include "multilogon/multilogon-session.h"
 #include "notification/notification/multilogon-notification.h"
-#include "notification/notification/status-changed-notification.h"
 #include "notification/notification-service.h"
 #include "protocols/services/multilogon-service.h"
 #include "status/status-notification-service.h"

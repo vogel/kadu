@@ -39,7 +39,6 @@
 #include "notification/notification-callback.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-event-repository.h"
-#include "notification/notification/status-changed-notification.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/window-notifier.h"
 #include "parser/parser.h"
@@ -162,14 +161,6 @@ void NotificationService::init()
 
 	MessageNotification::registerEvents(m_notificationEventRepository);
 
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
-
 	m_notificationManager->registerNotifier(m_windowNotifier);
 
 	MultilogonNotification::registerEvents(m_notificationEventRepository, m_notificationCallbackRepository);
@@ -189,14 +180,6 @@ void NotificationService::done()
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_notifyConfigurationUiHandler);
 
 	m_notificationManager->unregisterNotifier(m_windowNotifier);
-
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged", QT_TRANSLATE_NOOP("@default", "User changed status")));
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToFreeForChat", QT_TRANSLATE_NOOP("@default", "to free for chat")));
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "to online")));
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToAway", QT_TRANSLATE_NOOP("@default", "to away")));
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToNotAvailable", QT_TRANSLATE_NOOP("@default", "to not available")));
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "to do not disturb")));
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "to offline")));
 
 	MessageNotification::unregisterEvents(m_notificationEventRepository);
 	MultilogonNotification::unregisterEvents(m_notificationEventRepository);
