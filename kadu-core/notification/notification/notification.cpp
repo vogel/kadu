@@ -22,11 +22,8 @@
 #include <QtCore/QTimer>
 
 #include "core/core.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
-#include "notification/notification-callback-repository.h"
-#include "notification/notification-callback.h"
 #include "notification/notification-manager.h"
 #include "notification/notifier.h"
 #include "parser/parser.h"
@@ -105,16 +102,6 @@ Notification::~Notification()
 {
 }
 
-void Notification::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
-{
-	m_chatWidgetManager = chatWidgetManager;
-}
-
-void Notification::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
-{
-	m_notificationCallbackRepository = notificationCallbackRepository;
-}
-
 void Notification::setNotificationManager(NotificationManager *notificationManager)
 {
 	m_notificationManager = notificationManager;
@@ -175,29 +162,19 @@ void Notification::setAcceptCallback(QString acceptCallback)
 	m_acceptCallback = std::move(acceptCallback);
 }
 
+QString Notification::acceptCallback() const
+{
+	return m_acceptCallback;
+}
+
 void Notification::setDiscardCallback(QString discardCallback)
 {
 	m_discardCallback = std::move(discardCallback);
 }
 
-void Notification::callbackAccept()
+QString Notification::discardCallback() const
 {
-	if (m_acceptCallback.isEmpty())
-	{
-		close();
-		if (m_chat)
-			m_chatWidgetManager->openChat(m_chat, OpenChatActivation::Activate);
-	}
-	else
-		m_notificationCallbackRepository->callback(m_acceptCallback).call(this);
-}
-
-void Notification::callbackDiscard()
-{
-	if (m_discardCallback.isEmpty())
-		close();
-	else
-		m_notificationCallbackRepository->callback(m_discardCallback).call(this);
+	return m_discardCallback;
 }
 
 QString Notification::key() const

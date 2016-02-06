@@ -365,12 +365,33 @@ void NotificationService::createDefaultConfiguration()
 	m_configuration->deprecatedApi()->addVariable("Notify", "NotifyIgnoreOnConnection", true);
 }
 
-void NotificationService::notify(Notification* notification)
+void NotificationService::notify(Notification *notification)
 {
 	if (!ignoreNotifications())
 		m_notificationManager->notify(notification);
 	else
-		notification->callbackDiscard();
+		discardNotification(notification);
+}
+
+void NotificationService::acceptNotification(Notification *notification)
+{
+	if (notification->acceptCallback().isEmpty())
+	{
+		auto chat = qvariant_cast<Chat>(notification->data()["chat"]);
+		notification->close();
+		if (chat)
+			m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
+	}
+	else
+		m_notificationCallbackRepository->callback(notification->acceptCallback()).call(notification);
+}
+
+void NotificationService::discardNotification(Notification *notification)
+{
+	if (notification->discardCallback().isEmpty())
+		notification->close();
+	else
+		m_notificationCallbackRepository->callback(notification->discardCallback()).call(notification);
 }
 
 void checkNotify(Action *action)

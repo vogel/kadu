@@ -33,6 +33,7 @@
 #include "icons/icons-manager.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
+#include "notification/notification-service.h"
 #include "notification/notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -65,6 +66,11 @@ void Hint::setIconsManager(IconsManager *iconsManager)
 void Hint::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
 {
 	m_notificationCallbackRepository = notificationCallbackRepository;
+}
+
+void Hint::setNotificationService(NotificationService *notificationService)
+{
+	m_notificationService = notificationService;
 }
 
 void Hint::setParser(Parser *parser)
@@ -344,12 +350,12 @@ void Hint::getData(QString &text, QPixmap &pixmap, int &timeout, QFont &font, QC
 
 void Hint::acceptNotification()
 {
-	notification->callbackAccept();
+	m_notificationService->acceptNotification(notification);
 }
 
 void Hint::discardNotification()
 {
-	notification->callbackDiscard();
+	m_notificationService->discardNotification(notification);
 }
 
 /** @} */

@@ -43,6 +43,7 @@ class Group;
 class InjectedFactory;
 class Message;
 class MultilogonSession;
+class NotificationService;
 class Notification;
 class Notifier;
 
@@ -57,6 +58,7 @@ class KADUAPI NotificationManager : public QObject
 
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<NotificationService> m_notificationService;
 
 	QList<Notifier *> Notifiers;
 	QStringList IgnoredAccounts;
@@ -64,6 +66,7 @@ class KADUAPI NotificationManager : public QObject
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 
 public:
 	Q_INVOKABLE explicit NotificationManager(QObject *parent = nullptr);

@@ -38,6 +38,7 @@ class Chat;
 class Configuration;
 class IconsManager;
 class NotificationCallbackRepository;
+class NotificationService;
 class Notification;
 class Parser;
 
@@ -49,6 +50,7 @@ class Hint : public QFrame, ConfigurationAwareObject
 	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+	QPointer<NotificationService> m_notificationService;
 	QPointer<Parser> m_parser;
 
 	QVBoxLayout *vbox;
@@ -77,6 +79,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *IconsManager);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 

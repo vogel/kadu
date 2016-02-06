@@ -30,6 +30,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
 #include "gui/windows/message-dialog.h"
+#include "notification/notification-service.h"
 #include "notification/notifier.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"
@@ -59,6 +60,11 @@ void NotificationManager::setConfiguration(Configuration *configuration)
 void NotificationManager::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
+}
+
+void NotificationManager::setNotificationService(NotificationService *notificationService)
+{
+	m_notificationService = notificationService;
 }
 
 void NotificationManager::registerNotifier(Notifier *notifier)
@@ -142,7 +148,7 @@ void NotificationManager::notify(Notification *rawNotification)
 	}
 
 	if (!foundNotifier)
-		rawNotification->callbackDiscard();
+		m_notificationService->discardNotification(rawNotification);
 
 	rawNotification->release(nullptr);
 

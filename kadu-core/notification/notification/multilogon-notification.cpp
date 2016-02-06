@@ -64,7 +64,8 @@ MultilogonNotification::MultilogonNotification(MultilogonSession *session, const
 		addCallback("ignore");
 		addCallback("multilogon-disconnect");
 
-		connect(session, SIGNAL(destroyed()), this, SLOT(callbackDiscard()));
+		// TODO: move to MultilogonNotificationService when removing this class
+		// connect(session, SIGNAL(destroyed()), this, SLOT(callbackDiscard()));
 	}
 }
 

@@ -32,8 +32,6 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class ChatWidgetManager;
-class NotificationCallbackRepository;
 class NotificationManager;
 class Notifier;
 class Parser;
@@ -63,7 +61,10 @@ public:
 	void addChatCallbacks();
 
 	void setAcceptCallback(QString acceptCallback);
+	QString acceptCallback() const;
+
 	void setDiscardCallback(QString discardCallback);
+	QString discardCallback() const;
 
 	const QString & type() const { return Type; }
 
@@ -82,10 +83,6 @@ public:
 	const KaduIcon & icon() const { return Icon; }
 	const QList<QString> & getCallbacks() { return Callbacks; }
 
-public slots:
-	virtual void callbackAccept();
-	virtual void callbackDiscard();
-
 signals:
 	void updated(Notification *);
 	void closed(Notification *);
@@ -95,8 +92,6 @@ protected:
 	bool Closing;
 
 private:
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationManager> m_notificationManager;
 
 	QVariantMap m_data;
@@ -116,8 +111,6 @@ private:
 	QList<QString> Callbacks;
 
 private slots:
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };

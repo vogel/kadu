@@ -110,6 +110,8 @@ public:
 	bool silentMode();
 
 	void notify(Notification *notification);
+	void acceptNotification(Notification *notification);
+	void discardNotification(Notification *notification);
 
 signals:
 	void silentModeToggled(bool);
