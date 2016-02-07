@@ -22,7 +22,8 @@
 class ParserData
 {
 
-public:
+protected:
+	ParserData() {}
 	virtual ~ParserData() {}
 
 };
