@@ -79,9 +79,6 @@ public:
 	const KaduIcon & icon() const { return Icon; }
 	const QList<QString> & getCallbacks() { return Callbacks; }
 
-signals:
-	void closed(Notification *);
-
 protected:
 	QSet<Notifier *> Notifiers;
 	bool Closing;

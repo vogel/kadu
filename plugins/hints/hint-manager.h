@@ -130,8 +130,6 @@ private slots:
 	void deleteHint(Hint *hint);
 	void deleteHintAndUpdate(Hint *hint);
 
-	void notificationClosed(Notification *notification);
-
 	/**
 		Pokazuje dymek zwi�zany z notyfikacj�.
 	**/

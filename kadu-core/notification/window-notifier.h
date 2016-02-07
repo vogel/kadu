@@ -56,8 +56,6 @@ private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_INIT void init();
 
-	void notificationClosed(Notification *notification);
-
 };
 
 /** @} */

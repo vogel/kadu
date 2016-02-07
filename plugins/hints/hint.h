@@ -86,7 +86,6 @@ private slots:
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 
-	void notificationClosed();
 	void buttonClicked();
 
 protected:

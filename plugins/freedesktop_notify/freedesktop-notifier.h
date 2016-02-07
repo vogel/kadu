@@ -100,7 +100,6 @@ private slots:
 
 	void actionInvoked(unsigned int id, QString action);
 
-	void notificationClosed(Notification *notification);
 	void notificationClosed(unsigned int id, unsigned int reason);
 
 	void slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner);

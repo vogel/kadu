@@ -164,10 +164,7 @@ void FreedesktopNotifier::notify(Notification *notification)
 	unsigned int notificationUid = NotificationMap.key(notification);
 
 	if (notificationUid)
-	{
-		notificationClosed(notification);
 		replacedNotificationId = notificationUid;
-	}
 
 	args.append(replacedNotificationId);
 
@@ -262,29 +259,7 @@ void FreedesktopNotifier::notify(Notification *notification)
 	{
 		notification->acquire(this); // do not remove now
 
-		connect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
-
 		NotificationMap.insert(reply.value(), notification);
-	}
-}
-
-void FreedesktopNotifier::notificationClosed(Notification *notification)
-{
-	QMap<unsigned int, Notification *>::iterator i = NotificationMap.begin();
-	while (i != NotificationMap.end())
-	{
-		if (i.value() == notification)
-		{
-			QList<QVariant> args;
-			args.append(i.key());
-			NotificationsInterface->callWithArgumentList(QDBus::Block, "CloseNotification", args);
-
-			NotificationMap.erase(i);
-
-			return;
-		}
-
-		++i;
 	}
 }
 
@@ -296,7 +271,6 @@ void FreedesktopNotifier::notificationClosed(unsigned int id, unsigned int reaso
 		return;
 
 	Notification *notification = NotificationMap.take(id);
-	disconnect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
 	notification->release(this);
 }
 

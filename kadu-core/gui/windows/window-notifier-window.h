@@ -32,22 +32,21 @@
 class IconsManager;
 class Notification;
 class NotificationCallbackRepository;
+class WindowNotifier;
 
 class WindowNotifierWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
 public:
-	explicit WindowNotifierWindow(Notification *notification, QWidget *parent = nullptr);
+	explicit WindowNotifierWindow(WindowNotifier *windowNotifier, Notification *notification, QWidget *parent = nullptr);
 	virtual ~WindowNotifierWindow();
-
-signals:
-	void closed(Notification *notification);
 
 private:
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 
+	WindowNotifier *m_windowNotifier;
 	Notification *m_notification;
 
 	void createGui();

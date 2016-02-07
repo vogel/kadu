@@ -64,18 +64,10 @@ void WindowNotifier::init()
 
 void WindowNotifier::notify(Notification *notification)
 {
-	notification->acquire(this);
+	auto window = m_injectedFactory->makeInjected<WindowNotifierWindow>(this, notification);
 
-	auto window = m_injectedFactory->makeInjected<WindowNotifierWindow>(notification);
-
-	connect(window, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 	window->show();
 	_activateWindow(m_configuration, window);
-}
-
-void WindowNotifier::notificationClosed(Notification *notification)
-{
-	notification->release(this);
 }
 
 void WindowNotifier::createDefaultConfiguration()

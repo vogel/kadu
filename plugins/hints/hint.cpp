@@ -121,8 +121,6 @@ void Hint::init()
 		callbacksBox->addStretch(9);
 	}
 
-	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed()));
-
 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	configurationUpdated();
@@ -263,11 +261,6 @@ void Hint::updateText()
 void Hint::resetTimeout()
 {
 	secs = startSecs;
-}
-
-void Hint::notificationClosed()
-{
-	emit closing(this);
 }
 
 void Hint::nextSecond(void)

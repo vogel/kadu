@@ -27,25 +27,29 @@
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
 #include "notification/notification.h"
+#include "notification/window-notifier.h"
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-WindowNotifierWindow::WindowNotifierWindow(Notification *notification, QWidget *parent) :
+WindowNotifierWindow::WindowNotifierWindow(WindowNotifier *windowNotifier, Notification *notification, QWidget *parent) :
 		QDialog{parent, Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint},
 		DesktopAwareObject{this},
+		m_windowNotifier{windowNotifier},
 		m_notification{notification}
 {
 	setWindowRole("kadu-window-notifier");
 
 	setWindowTitle(m_notification->title());
 	setAttribute(Qt::WA_DeleteOnClose);
+
+	m_notification->acquire(m_windowNotifier);
 }
 
 WindowNotifierWindow::~WindowNotifierWindow()
 {
-	emit closed(m_notification);
+	m_notification->release(m_windowNotifier);
 }
 
 void WindowNotifierWindow::setIconsManager(IconsManager *iconsManager)
@@ -105,8 +109,6 @@ void WindowNotifierWindow::createGui()
 		}
 	else
 		addButton(buttons, tr("OK"), QString{});
-
-	connect(m_notification, SIGNAL(closed(Notification *)), this, SLOT(close()));
 
 	buttons->setMaximumSize(buttons->sizeHint());
 }

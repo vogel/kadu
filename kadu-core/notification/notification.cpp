@@ -130,7 +130,6 @@ void Notification::close()
 	if (!Closing)
 	{
 		Closing = true;
-		emit closed(this);
 		deleteLater();
 	}
 }

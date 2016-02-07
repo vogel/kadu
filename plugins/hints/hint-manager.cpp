@@ -458,8 +458,6 @@ Hint *HintManager::addHint(Notification *notification)
 
 	notification->acquire(this);
 
-	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
-
 	auto hint = m_injectedFactory->makeInjected<Hint>(frame, notification);
 	hints.append(hint);
 
@@ -608,11 +606,6 @@ void HintManager::notify(Notification *notification)
 	addHint(notification);
 
 	kdebugf2();
-}
-
-void HintManager::notificationClosed(Notification *notification)
-{
-	Q_UNUSED(notification)
 }
 
 void HintManager::createDefaultConfiguration()
