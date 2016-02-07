@@ -25,7 +25,7 @@
 #include "chat/type/chat-type-contact.h"
 #include "identities/identity.h"
 #include "misc/memory.h"
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-service.h"

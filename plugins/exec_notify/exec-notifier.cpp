@@ -28,7 +28,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
 #include "notification/notification-manager.h"
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 #include "parser/parser.h"
 
 #include <QtCore/QProcess>

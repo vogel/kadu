@@ -25,7 +25,7 @@
 #include "sound-manager.h"
 
 #include "notification/notification-manager.h"
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 
 #include <QtCore/QFileInfo>
 

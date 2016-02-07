@@ -22,7 +22,7 @@
 #ifndef MEDIAPLAYER_NOTIFICATION_H
 #define MEDIAPLAYER_NOTIFICATION_H
 
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 
 #include "mediaplayer-exports.h"
 

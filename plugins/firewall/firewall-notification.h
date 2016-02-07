@@ -21,7 +21,7 @@
 #ifndef FIREWALL_NOTIFICATION_H
 #define FIREWALL_NOTIFICATION_H
 
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 
 class Chat;
 class NotificationManager;

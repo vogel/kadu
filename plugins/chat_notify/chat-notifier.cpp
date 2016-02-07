@@ -26,7 +26,7 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 
 ChatNotifier::ChatNotifier(QObject *parent) :
 		QObject{parent},

@@ -26,7 +26,7 @@
 #include "icons/icons-manager.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>

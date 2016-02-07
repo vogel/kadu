@@ -340,7 +340,6 @@ kadu_api_directories (kadu-core
 	network/proxy/model
 	notification
 	notification/listener
-	notification/notification
 	os
 	os/generic
 	os/qtsingleapplication

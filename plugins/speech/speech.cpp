@@ -28,7 +28,7 @@
 #include "core/core.h"
 #include "core/core.h"
 #include "notification/notification-manager.h"
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
 #include "speech-configuration-widget.h"

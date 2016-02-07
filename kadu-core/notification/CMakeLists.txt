@@ -3,8 +3,6 @@ set (notification_SRCS
 	listener/chat-event-listener.cpp
 	listener/group-event-listener.cpp
 
-	notification/notification.cpp
-
 	notification-callback-repository.cpp
 	notification-callback.cpp
 	notification-event-repository.cpp
@@ -12,6 +10,7 @@ set (notification_SRCS
 	notification-manager.cpp
 	notification-module.cpp
 	notification-service.cpp
+	notification.cpp
 	notifier.cpp
 	notifier-configuration-data-manager.cpp
 	notify-configuration-importer.cpp

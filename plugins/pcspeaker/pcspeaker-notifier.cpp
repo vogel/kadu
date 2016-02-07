@@ -27,7 +27,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>

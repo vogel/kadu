@@ -25,7 +25,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 
 class InjectedFactory;
 class NotificationCallbackRepository;

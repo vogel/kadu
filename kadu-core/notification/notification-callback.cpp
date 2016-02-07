@@ -19,7 +19,7 @@
 
 #include "notification-callback.h"
 
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 
 NotificationCallback::NotificationCallback()
 {

@@ -33,7 +33,7 @@
 #include "notification/listener/account-event-listener.h"
 #include "notification/listener/chat-event-listener.h"
 #include "notification/listener/group-event-listener.h"
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 #include "notification/notification-callback.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-event-repository.h"

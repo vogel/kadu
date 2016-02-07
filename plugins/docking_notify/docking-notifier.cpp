@@ -23,7 +23,7 @@
 #include <QtWidgets/QSystemTrayIcon>
 
 #include "notification/notification-manager.h"
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"

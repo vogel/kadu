@@ -24,7 +24,7 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "notification/notification-manager.h"
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 #include "notification/notification-event.h"
 
 #include "otr-notifier.h"

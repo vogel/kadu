@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "notification/notification/notification.h"
+#include "notification/notification.h"
 
 class InjectedFactory;
 class NotificationManager;
