@@ -36,7 +36,7 @@ class Parser;
 
 class QTimer;
 
-class KADUAPI Notification : public QObject, public ParserData
+class KADUAPI Notification final : public QObject, public ParserData
 {
 	Q_OBJECT
 
