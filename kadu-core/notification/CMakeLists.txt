@@ -4,7 +4,6 @@ set (notification_SRCS
 	listener/group-event-listener.cpp
 
 	notification/new-message-notification.cpp
-	notification/multilogon-notification.cpp
 	notification/notification.cpp
 
 	notification-callback-repository.cpp

@@ -93,8 +93,8 @@ Notification::Notification(Account account, Chat chat, const QString &type, cons
 		m_account{account},
 		m_chat{chat}
 {
-	m_data.insert("account", account);
-	m_data.insert("chat", chat);
+	m_data.insert("account", qVariantFromValue(account));
+	m_data.insert("chat", qVariantFromValue(chat));
 }
 
 Notification::~Notification()

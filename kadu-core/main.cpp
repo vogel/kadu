@@ -50,6 +50,7 @@
 #include "identities/identity-module.h"
 #include "message/message-module.h"
 #include "message/message.h"
+#include "multilogon/multilogon-module.h"
 #include "network/network-module.h"
 #include "notification/notification-module.h"
 #include "os/os-module.h"
@@ -225,6 +226,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<IconsModule>());
 	modules.emplace_back(make_unique<IdentityModule>());
 	modules.emplace_back(make_unique<MessageModule>());
+	modules.emplace_back(make_unique<MultilogonModule>());
 	modules.emplace_back(make_unique<NetworkModule>());
 	modules.emplace_back(make_unique<NotificationModule>());
 	modules.emplace_back(make_unique<OsModule>());

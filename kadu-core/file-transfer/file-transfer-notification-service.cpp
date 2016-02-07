@@ -95,8 +95,8 @@ void FileTransferNotificationService::init()
 
 void FileTransferNotificationService::done()
 {
-	m_notificationEventRepository->addNotificationEvent(m_fileTransferEvent);
-	m_notificationEventRepository->addNotificationEvent(m_fileTransferIncomingEvent);
+	m_notificationEventRepository->removeNotificationEvent(m_fileTransferEvent);
+	m_notificationEventRepository->removeNotificationEvent(m_fileTransferIncomingEvent);
 
 	m_notificationCallbackRepository->removeCallback(m_fileTransferAcceptCallback);
 	m_notificationCallbackRepository->removeCallback(m_fileTransferSaveCallback);
@@ -109,8 +109,8 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, fileTransfer.peer(), ActionCreateAndAdd);
 
 	auto data = QVariantMap{};
-	data.insert(QStringLiteral("file-transfer"), fileTransfer);
-	data.insert(QStringLiteral("chat"), chat);
+	data.insert(QStringLiteral("file-transfer"), qVariantFromValue(fileTransfer));
+	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
 	auto notification = make_unique<Notification>(data, QStringLiteral("FileTransfer/IncomingFile"), KaduIcon{});
 	notification->setTitle(tr("Incoming transfer"));

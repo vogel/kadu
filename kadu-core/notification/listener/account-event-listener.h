@@ -30,9 +30,8 @@
 class AccountManager;
 class ChatManager;
 class ChatStorage;
-class InjectedFactory;
 class Message;
-struct MultilogonSession;
+class MultilogonNotificationService;
 class NotificationService;
 class StatusNotificationService;
 class StatusTypeManager;
@@ -55,7 +54,7 @@ private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatStorage> m_chatStorage;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<MultilogonNotificationService> m_multilogonNotificationService;
 	QPointer<NotificationService> m_notificationService;
 	QPointer<StatusNotificationService> m_statusNotificationService;
 	QPointer<StatusTypeManager> m_statusTypeManager;
@@ -64,15 +63,13 @@ private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMultilogonNotificationService(MultilogonNotificationService *multilogonNotificationService);
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 	INJEQT_SET void setStatusNotificationService(StatusNotificationService *statusNotificationService);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void multilogonSessionConnected(MultilogonSession session);
-	void multilogonSessionDisconnected(MultilogonSession session);
 	void accountConnected();
 
 };

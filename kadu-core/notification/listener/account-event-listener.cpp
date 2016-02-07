@@ -24,9 +24,8 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/chat-storage.h"
-#include "core/injected-factory.h"
+#include "multilogon/multilogon-notification-service.h"
 #include "multilogon/multilogon-session.h"
-#include "notification/notification/multilogon-notification.h"
 #include "notification/notification-service.h"
 #include "protocols/services/multilogon-service.h"
 #include "status/status-notification-service.h"
@@ -60,9 +59,9 @@ void AccountEventListener::setChatStorage(ChatStorage *chatStorage)
 	m_chatStorage = chatStorage;
 }
 
-void AccountEventListener::setInjectedFactory(InjectedFactory *injectedFactory)
+void AccountEventListener::setMultilogonNotificationService(MultilogonNotificationService *multilogonNotificationService)
 {
-	m_injectedFactory = injectedFactory;
+	m_multilogonNotificationService = multilogonNotificationService;
 }
 
 void AccountEventListener::setNotificationService(NotificationService *notificationService)
@@ -104,9 +103,9 @@ void AccountEventListener::accountRegistered(Account account)
 	if (multilogonService)
 	{
 		connect(multilogonService, SIGNAL(multilogonSessionConnected(MultilogonSession)),
-				this, SLOT(multilogonSessionConnected(MultilogonSession)));
+				m_multilogonNotificationService, SLOT(notifyMultilogonSessionConnected(MultilogonSession)));
 		connect(multilogonService, SIGNAL(multilogonSessionDisconnected(MultilogonSession)),
-				this, SLOT(multilogonSessionDisconnected(MultilogonSession)));
+				m_multilogonNotificationService, SLOT(notifyMultilogonSessionDisonnected(MultilogonSession)));
 	}
 }
 
@@ -133,32 +132,6 @@ void AccountEventListener::accountConnected()
 
 	if (m_notificationService->notifyIgnoreOnConnection())
 		account.addProperty("notify:notify-account-connected", QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);
-}
-
-void AccountEventListener::multilogonSessionConnected(MultilogonSession session)
-{
-	MultilogonNotification *notification = m_injectedFactory->makeInjected<MultilogonNotification>(session, "multilogon/sessionConnected", true);
-	notification->setTitle(tr("Multilogon"));
-	notification->setText(tr("Multilogon session connected from %1 at %2 with %3 for %4 account")
-			.arg(session.remoteAddress.toString())
-			.arg(session.logonTime.toString())
-			.arg(session.name)
-			.arg(session.account.id()));
-
-	m_notificationService->notify(notification);
-}
-
-void AccountEventListener::multilogonSessionDisconnected(MultilogonSession session)
-{
-	MultilogonNotification *notification = m_injectedFactory->makeInjected<MultilogonNotification>(session, "multilogon/sessionDisconnected", false);
-	notification->setTitle(tr("Multilogon"));
-	notification->setText(tr("Multilogon session disconnected from %1 at %2 with %3 for %4 account")
-			.arg(session.remoteAddress.toString())
-			.arg(session.logonTime.toString())
-			.arg(session.name)
-			.arg(session.account.id()));
-
-	m_notificationService->notify(notification);
 }
 
 #include "moc_account-event-listener.cpp"

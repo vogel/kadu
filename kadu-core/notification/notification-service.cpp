@@ -33,7 +33,6 @@
 #include "notification/listener/account-event-listener.h"
 #include "notification/listener/chat-event-listener.h"
 #include "notification/listener/group-event-listener.h"
-#include "notification/notification/multilogon-notification.h"
 #include "notification/notification/new-message-notification.h"
 #include "notification/notification/notification.h"
 #include "notification/notification-callback.h"
@@ -163,8 +162,6 @@ void NotificationService::init()
 
 	m_notificationManager->registerNotifier(m_windowNotifier);
 
-	MultilogonNotification::registerEvents(m_notificationEventRepository, m_notificationCallbackRepository);
-
 	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
 	createActionDescriptions();
@@ -182,7 +179,6 @@ void NotificationService::done()
 	m_notificationManager->unregisterNotifier(m_windowNotifier);
 
 	MessageNotification::unregisterEvents(m_notificationEventRepository);
-	MultilogonNotification::unregisterEvents(m_notificationEventRepository);
 
 	delete notifyAboutUserActionDescription;
 	delete SilentModeActionDescription;
