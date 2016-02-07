@@ -26,7 +26,6 @@
 
 class ConfigurationUiHandlerRepository;
 class MainConfigurationWindowService;
-class NotificationEventRepository;
 class PathsProvider;
 class ScreenshotActions;
 class ScreenShotConfigurationUiHandler;
@@ -44,7 +43,6 @@ public:
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<ScreenshotActions> m_screenshotActions;
 	QPointer<ScreenShotConfigurationUiHandler> m_screenShotConfigurationUiHandler;
@@ -52,7 +50,6 @@ private:
 
 private slots:
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setScreenshotActions(ScreenshotActions *screenshotActions);

@@ -22,6 +22,7 @@
 #include "configuration/gui/screenshot-configuration-ui-handler.h"
 #include "configuration/screen-shot-configuration.h"
 #include "gui/actions/screenshot-actions.h"
+#include "screenshot-notification-service.h"
 #include "screenshot-plugin-object.h"
 
 ScreenshotModule::ScreenshotModule()
@@ -29,6 +30,7 @@ ScreenshotModule::ScreenshotModule()
 	add_type<ScreenshotActions>();
 	add_type<ScreenShotConfigurationUiHandler>();
 	add_type<ScreenShotConfiguration>();
+	add_type<ScreenshotNotificationService>();
 	add_type<ScreenshotPluginObject>();
 }
 

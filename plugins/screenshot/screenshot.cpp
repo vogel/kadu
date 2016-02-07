@@ -25,20 +25,20 @@
 #include <QtCore/QDir>
 #include <QtCore/QTimer>
 
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
-#include "notification/notification-manager.h"
 #include "activate.h"
 #include "debug.h"
 
 #include "configuration/screen-shot-configuration.h"
 #include "gui/widgets/screenshot-widget.h"
-#include "notification/screenshot-notification.h"
 #include "pixmap-grabber.h"
+#include "screenshot-notification-service.h"
 #include "screenshot-taker.h"
 
 #include "screen-shot-saver.h"
@@ -76,9 +76,9 @@ void ScreenShot::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
-void ScreenShot::setNotificationManager(NotificationManager *notificationManager)
+void ScreenShot::setScreenshotNotificationService(ScreenshotNotificationService *screenshotNotificationService)
 {
-	m_notificationManager = notificationManager;
+	m_screenshotNotificationService = screenshotNotificationService;
 }
 
 void ScreenShot::init()
@@ -183,7 +183,7 @@ void ScreenShot::checkShotsSize()
 		size += f.size();
 
 	if (size/1024 >= limit)
-		ScreenshotNotification::notifySizeLimit(m_injectedFactory, m_notificationManager, size);
+		m_screenshotNotificationService->notifySizeLimit(size);
 }
 
 #undef Bool

@@ -14,10 +14,10 @@ set (SOURCES
 	gui/widgets/crop-image-widget.cpp
 	gui/widgets/screenshot-tool-box.cpp
 	gui/widgets/screenshot-widget.cpp
-	notification/screenshot-notification.cpp
 	pixmap-grabber.cpp
 	screen-shot-saver.cpp
 	screenshot-module.cpp
+	screenshot-notification-service.cpp
 	screenshot-plugin-modules-factory.cpp
 	screenshot-plugin-object.cpp
 	screenshot-taker.cpp

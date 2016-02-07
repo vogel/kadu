@@ -27,8 +27,6 @@
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
-#include "notification/notification-event-repository.h"
-#include "notification/notification-event.h"
 
 ScreenshotPluginObject::ScreenshotPluginObject(QObject *parent) :
 		QObject{parent}
@@ -47,11 +45,6 @@ void ScreenshotPluginObject::setConfigurationUiHandlerRepository(ConfigurationUi
 void ScreenshotPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
 {
 	m_mainConfigurationWindowService = mainConfigurationWindowService;
-}
-
-void ScreenshotPluginObject::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
-{
-	m_notificationEventRepository = notificationEventRepository;
 }
 
 void ScreenshotPluginObject::setPathsProvider(PathsProvider *pathsProvider)
@@ -78,12 +71,10 @@ void ScreenshotPluginObject::init()
 {
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/screenshot.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_screenShotConfigurationUiHandler);
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
 }
 
 void ScreenshotPluginObject::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"ssSizeLimit", QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit")});
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_screenShotConfigurationUiHandler);
 	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/screenshot.ui"));
 }

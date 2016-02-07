@@ -41,8 +41,8 @@ class Configuration;
 class CropImageWidget;
 class IconsManager;
 class InjectedFactory;
-class NotificationManager;
 class ScreenShotConfiguration;
+class ScreenshotNotificationService;
 class ScreenshotTaker;
 class ScreenshotToolBox;
 class ScreenshotWidget;
@@ -54,8 +54,8 @@ class ScreenShot : public QObject
 	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<NotificationManager> m_notificationManager;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
+	QPointer<ScreenshotNotificationService> m_screenshotNotificationService;
 
 	ScreenShotMode Mode;
 	ScreenshotTaker *MyScreenshotTaker;
@@ -72,7 +72,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setScreenshotNotificationService(ScreenshotNotificationService *screenshotNotificationService);
 	INJEQT_INIT void init();
 
 	void screenshotTaken(QPixmap screenshot, bool needsCrop);
