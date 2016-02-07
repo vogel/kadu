@@ -48,6 +48,7 @@
 PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 		QWidget{window}, m_listView{0}, m_processingChange{false}
 {
+	connect(window, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
 PluginListWidget::~PluginListWidget()
@@ -134,11 +135,10 @@ void PluginListWidget::init()
 	layout->addWidget(filterEdit);
 	layout->addWidget(m_listView);
 
-	auto pluginsSection = static_cast<MainConfigurationWindow *>(parent())->widget()->configSection("Plugins");
+	auto window = static_cast<MainConfigurationWindow *>(parent());
+	auto pluginsSection = window->widget()->configSection("Plugins");
 	if (pluginsSection)
 		pluginsSection->addFullPageWidget("Plugins", this);
-
-	connect(static_cast<MainConfigurationWindow *>(parent()), SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
 int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth) const
