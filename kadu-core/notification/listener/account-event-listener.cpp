@@ -148,7 +148,7 @@ void AccountEventListener::accountConnected()
 		return;
 
 	if (m_notificationService->notifyIgnoreOnConnection())
-		account.addProperty("notify:notify-account-connected", QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);
+		account.addProperty(QStringLiteral("notify:notify-account-connected"), QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);
 }
 
 #include "moc_account-event-listener.cpp"

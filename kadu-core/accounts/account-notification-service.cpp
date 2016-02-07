@@ -35,7 +35,7 @@ static QString getErrorMessage(const ParserData * const object)
 {
 	auto notification = dynamic_cast<const Notification * const>(object);
 	if (notification)
-		return notification->data()["error-message"].toString();
+		return notification->data()[QStringLiteral("error-message")].toString();
 	else
 		return QString{};
 }
@@ -44,7 +44,7 @@ static QString getErrorServer(const ParserData * const object)
 {
 	auto notification = dynamic_cast<const Notification * const>(object);
 	if (notification)
-		return notification->data()["error-server"].toString();
+		return notification->data()[QStringLiteral("error-server")].toString();
 	else
 		return QString{};
 }
@@ -86,8 +86,8 @@ void AccountNotificationService::init()
 	m_notificationEventRepository->addNotificationEvent(m_connectionErrorEvent);
 	m_notificationCallbackRepository->addCallback(m_ignoreErrorsCallback);
 
-	m_parser->registerObjectTag("error", getErrorMessage);
-	m_parser->registerObjectTag("errorServer", getErrorServer);
+	m_parser->registerObjectTag(QStringLiteral("error"), getErrorMessage);
+	m_parser->registerObjectTag(QStringLiteral("errorServer"), getErrorServer);
 }
 
 void AccountNotificationService::done()
@@ -95,20 +95,20 @@ void AccountNotificationService::done()
 	m_notificationEventRepository->removeNotificationEvent(m_connectionErrorEvent);
 	m_notificationCallbackRepository->removeCallback(m_ignoreErrorsCallback);
 
-	m_parser->unregisterObjectTag("error");
-	m_parser->unregisterObjectTag("errorServer");
+	m_parser->unregisterObjectTag(QStringLiteral("error"));
+	m_parser->unregisterObjectTag(QStringLiteral("errorServer"));
 }
 
 void AccountNotificationService::notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage)
 {
-	if (account.property("ignore-connection-errors", false).toBool())
+	if (account.property(QStringLiteral("notify:ignore-connection-errors"), false).toBool())
 		return;
 
-	auto lastConnectionError = account.property("last-connection-error", QDateTime{}).toDateTime();
+	auto lastConnectionError = account.property(QStringLiteral("notify:last-connection-error"), QDateTime{}).toDateTime();
 	if (lastConnectionError.isValid() && lastConnectionError.addSecs(60) > QDateTime::currentDateTime())
 		return;
 
-	account.addProperty("last-connection-error", QDateTime::currentDateTime(), CustomProperties::NonStorable);
+	account.addProperty(QStringLiteral("notify:last-connection-error"), QDateTime::currentDateTime(), CustomProperties::NonStorable);
 
 	auto data = QVariantMap{};
 	data.insert(QStringLiteral("account"), qVariantFromValue(account));
@@ -117,9 +117,9 @@ void AccountNotificationService::notifyConnectionError(const Account &account, c
 
 	auto notification = make_unique<Notification>(data, m_connectionErrorEvent.name(), KaduIcon{});
 	notification->setTitle(tr("Connection error"));
-	notification->setText(Qt::escape(tr("Connection error on account: %1 (%2)").arg(account.id()).arg(account.accountIdentity().name())));
+	notification->setText(Qt::escape(tr("Connection error on account: %1 (%2)").arg(account.id(), account.accountIdentity().name())));
 	notification->setDetails(Qt::escape(errorDetails(errorServer, errorMessage)));
-	notification->addCallback("connection-ignore-errors");
+	notification->addCallback(QStringLiteral("connection-ignore-errors"));
 
 	m_notificationService->notify(notification.release());
 }
@@ -135,8 +135,8 @@ QString AccountNotificationService::errorDetails(const QString &errorServer, con
 
 void AccountNotificationService::ignoreErrors(Notification *notification)
 {
-	auto account = qvariant_cast<Account>(notification->data()["account"]);
-	account.addProperty("ignore-connection-errors", false, CustomProperties::NonStorable);
+	auto account = qvariant_cast<Account>(notification->data()[QStringLiteral("account")]);
+	account.addProperty(QStringLiteral("notify:ignore-connection-errors"), false, CustomProperties::NonStorable);
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 	notification->close();
 }
@@ -144,7 +144,7 @@ void AccountNotificationService::ignoreErrors(Notification *notification)
 void AccountNotificationService::accountConnected()
 {
 	auto account = Account{sender()};
-	account.removeProperty("ignore-connection-errors");
+	account.removeProperty(QStringLiteral("notify:ignore-connection-errors"));
 }
 
 #include "moc_account-notification-service.cpp"
