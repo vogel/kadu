@@ -20,12 +20,14 @@
 #include "mediaplayer-module.h"
 
 #include "mediaplayer-configuration-ui-handler.h"
+#include "mediaplayer-notification-service.h"
 #include "mediaplayer-plugin-object.h"
 #include "mediaplayer.h"
 
 MediaplayerModule::MediaplayerModule()
 {
 	add_type<MediaplayerConfigurationUiHandler>();
+	add_type<MediaplayerNotificationService>();
 	add_type<MediaplayerPluginObject>();
 	add_type<MediaPlayer>();
 }

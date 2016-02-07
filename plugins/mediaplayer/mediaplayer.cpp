@@ -52,13 +52,12 @@
 #include "plugins/docking/docking.h"
 #include "plugins/docking/docking-menu-action-repository.h"
 
-#include "notification/mediaplayer-notification.h"
+#include "mediaplayer-notification-service.h"
 #include "media-player-status-changer.h"
 #include "player-commands.h"
 #include "player-info.h"
 
 #include "mediaplayer.h"
-#include <docking-plugin-object.h>
 
 #define MODULE_MEDIAPLAYER_VERSION 1.3
 #define CHECK_STATUS_INTERVAL 1*1000 /* 1s */
@@ -119,19 +118,14 @@ void MediaPlayer::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void MediaPlayer::setMediaplayerNotificationService(MediaplayerNotificationService *mediaplayerNotificationService)
+{
+	m_mediaplayerNotificationService = mediaplayerNotificationService;
+}
+
 void MediaPlayer::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
-}
-
-void MediaPlayer::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
-{
-	m_notificationEventRepository = notificationEventRepository;
-}
-
-void MediaPlayer::setNotificationManager(NotificationManager *notificationManager)
-{
-	m_notificationManager = notificationManager;
 }
 
 void MediaPlayer::setStatusChangerManager(StatusChangerManager *statusChangerManager)
@@ -221,8 +215,6 @@ void MediaPlayer::init()
 	setControlsEnabled(false);
 	isPaused = true;
 
-	MediaPlayerNotification::registerNotifications(m_notificationEventRepository);
-
 	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)m_configuration->deprecatedApi()->readNumEntry("MediaPlayer", "statusPosition"));
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -234,8 +226,6 @@ void MediaPlayer::done()
 		m_dockingMenuActionRepository->removeAction(DockedMediaplayerStatus);
 
 	kdebugf();
-
-	MediaPlayerNotification::unregisterNotifications(m_notificationEventRepository);
 
 	m_statusChangerManager->unregisterStatusChanger(Changer);
 
@@ -753,7 +743,7 @@ void MediaPlayer::checkTitle()
 
 	// If OSD is enabled and current track position is betwean 0 and 1000 ms, then shows OSD
 	if (m_configuration->deprecatedApi()->readBoolEntry("MediaPlayer", "osd", true) && pos < 1000 && pos > 0)
-		MediaPlayerNotification::notifyTitleHint(m_injectedFactory, m_notificationManager, getTitle());
+		m_mediaplayerNotificationService->notifyPlayingTitle(getTitle());
 
 	Changer->setTitle(parse(m_configuration->deprecatedApi()->readEntry("MediaPlayer", "statusTagString")));
 }

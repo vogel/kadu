@@ -24,9 +24,8 @@ class CustomInput;
 class DockingMenuActionRepository;
 class IconsManager;
 class InjectedFactory;
+class MediaplayerNotificationService;
 class MenuInventory;
-class NotificationEventRepository;
-class NotificationManager;
 class PlayerCommands;
 class PlayerInfo;
 class StatusChangerManager;
@@ -46,9 +45,8 @@ class MEDIAPLAYERAPI MediaPlayer : public QObject, ConfigurationAwareObject
 	QPointer<DockingMenuActionRepository> m_dockingMenuActionRepository;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<MediaplayerNotificationService> m_mediaplayerNotificationService;
 	QPointer<MenuInventory> m_menuInventory;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationManager> m_notificationManager;
 	QPointer<StatusChangerManager> m_statusChangerManager;
 
 	MediaPlayerStatusChanger *Changer;
@@ -101,9 +99,8 @@ private slots:
 	INJEQT_SET void setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setMediaplayerNotificationService(MediaplayerNotificationService *mediaplayerNotificationService);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
