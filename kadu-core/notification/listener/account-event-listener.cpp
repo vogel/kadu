@@ -20,6 +20,7 @@
  */
 
 #include "accounts/account-manager.h"
+#include "accounts/account-notification-service.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
@@ -47,6 +48,11 @@ AccountEventListener::~AccountEventListener()
 void AccountEventListener::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
+}
+
+void AccountEventListener::setAccountNotificationService(AccountNotificationService *accountNotificationService)
+{
+	m_accountNotificationService = accountNotificationService;
 }
 
 void AccountEventListener::setChatManager(ChatManager *chatManager)
@@ -99,6 +105,14 @@ void AccountEventListener::accountRegistered(Account account)
 			m_statusNotificationService, SLOT(notifyStatusChanged(Contact,Status)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 
+	/* NOTE: We need QueuedConnection here so when the protocol emits the signal, it can cleanup
+	 * itself before we do something (e.g., reset connection data after invalidPassword, so when
+	 * we try to log in after entering new password, a new connection can be estabilished instead
+	 * of giving up because of already existing connection).
+	 */
+	connect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
+			m_accountNotificationService, SLOT(notifyConnectionError(Account,QString,QString)), Qt::QueuedConnection);
+
 	auto multilogonService = protocol->multilogonService();
 	if (multilogonService)
 	{
@@ -117,6 +131,9 @@ void AccountEventListener::accountUnregistered(Account account)
 		return;
 
 	disconnect(account, 0, this, 0);
+
+	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
+			m_accountNotificationService, SLOT(notifyConnectionError(Account,QString,QString)));
 
 	auto multilogonService = protocol->multilogonService();
 	if (multilogonService)

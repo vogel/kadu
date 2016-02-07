@@ -40,7 +40,6 @@ class ConfigurationManager;
 class ContactManager;
 class InjectedFactory;
 class Myself;
-class NotificationManager;
 class Status;
 
 class KADUAPI AccountManager : public Manager<Account>
@@ -54,7 +53,6 @@ class KADUAPI AccountManager : public Manager<Account>
 	QPointer<ContactManager> m_contactManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<Myself> m_myself;
-	QPointer<NotificationManager> m_notificationManager;
 
 private slots:
 	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
@@ -64,14 +62,12 @@ private slots:
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
 	void passwordProvided(const QVariant &data, const QString &password, bool permament);
 
 	void accountDataUpdated();
-	void connectionError(Account account, const QString &server, const QString &message);
 
 protected:
 	virtual Account loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;

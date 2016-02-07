@@ -28,6 +28,7 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class AccountNotificationService;
 class ChatManager;
 class ChatStorage;
 class Message;
@@ -52,6 +53,7 @@ protected:
 
 private:
 	QPointer<AccountManager> m_accountManager;
+	QPointer<AccountNotificationService> m_accountNotificationService;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatStorage> m_chatStorage;
 	QPointer<MultilogonNotificationService> m_multilogonNotificationService;
@@ -61,6 +63,7 @@ private:
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setAccountNotificationService(AccountNotificationService *accountNotificationService);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setMultilogonNotificationService(MultilogonNotificationService *multilogonNotificationService);

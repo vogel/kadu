@@ -34,8 +34,6 @@
 #include "gui/widgets/dialog/password-dialog-widget.h"
 #include "gui/windows/kadu-dialog.h"
 #include "identities/identity.h"
-#include "notification/notification-manager.h"
-#include "protocols/connection-error-notification.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
@@ -88,11 +86,6 @@ void AccountManager::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
-void AccountManager::setNotificationManager(NotificationManager *notificationManager)
-{
-	m_notificationManager = notificationManager;
-}
-
 void AccountManager::init()
 {
 	// needed for QueuedConnection
@@ -140,13 +133,6 @@ void AccountManager::itemRegistered(Account item)
 
 	AccountsAwareObject::notifyAccountRegistered(item);
 
-	/* NOTE: We need QueuedConnection here so when the protocol emits the signal, it can cleanup
-	 * itself before we do something (e.g., reset connection data after invalidPassword, so when
-	 * we try to log in after entering new password, a new connection can be estabilished instead
-	 * of giving up because of already existing connection).
-	 */
-	connect(protocol(item), SIGNAL(connectionError(Account, const QString &, const QString &)),
-			this, SLOT(connectionError(Account, const QString &, const QString &)), Qt::QueuedConnection);
 	connect(protocol(item), SIGNAL(invalidPassword(Account)),
 			this, SLOT(providePassword(Account)), Qt::QueuedConnection);
 
@@ -238,13 +224,6 @@ void AccountManager::accountDataUpdated()
 	Account account(sender());
 	if (account)
 		emit accountUpdated(account);
-}
-
-void AccountManager::connectionError(Account account, const QString &server, const QString &message)
-{
-	QMutexLocker locker(&mutex());
-
-	ConnectionErrorNotification::notifyConnectionError(m_injectedFactory, m_notificationManager, account, server, message);
 }
 
 void AccountManager::removeAccountAndBuddies(Account account)

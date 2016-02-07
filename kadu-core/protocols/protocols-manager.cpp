@@ -23,10 +23,6 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "misc/misc.h"
-#include "notification/notification-callback-repository.h"
-#include "notification/notification-event-repository.h"
-#include "parser/parser.h"
-#include "protocols/connection-error-notification.h"
 #include "protocols/protocol-factory.h"
 
 #include "debug.h"
@@ -40,31 +36,6 @@ ProtocolsManager::ProtocolsManager(QObject *parent) :
 
 ProtocolsManager::~ProtocolsManager()
 {
-}
-
-void ProtocolsManager::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
-{
-	m_notificationCallbackRepository = notificationCallbackRepository;
-}
-
-void ProtocolsManager::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
-{
-	m_notificationEventRepository = notificationEventRepository;
-}
-
-void ProtocolsManager::setParser(Parser *parser)
-{
-	m_parser = parser;
-}
-
-void ProtocolsManager::init()
-{
-	ConnectionErrorNotification::registerEvent(m_parser, m_notificationEventRepository, m_notificationCallbackRepository);
-}
-
-void ProtocolsManager::done()
-{
-	ConnectionErrorNotification::unregisterEvent(m_parser, m_notificationEventRepository);
 }
 
 void ProtocolsManager::registerProtocolFactory(ProtocolFactory *factory)

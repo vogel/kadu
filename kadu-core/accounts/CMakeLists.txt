@@ -3,6 +3,7 @@ set (accounts_SRCS
 	account-details.cpp
 	account-manager.cpp
 	account-module.cpp
+	account-notification-service.cpp
 	account-shared.cpp
 	account-status-container.cpp
 	account-storage.cpp

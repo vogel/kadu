@@ -20,11 +20,13 @@
 #include "account-module.h"
 
 #include "accounts/account-manager.h"
+#include "accounts/account-notification-service.h"
 #include "accounts/account-storage.h"
 
 AccountModule::AccountModule()
 {
 	add_type<AccountManager>();
+	add_type<AccountNotificationService>();
 	add_type<AccountStorage>();
 }
 

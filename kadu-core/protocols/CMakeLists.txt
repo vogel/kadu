@@ -14,7 +14,6 @@ set (protocols_SRCS
 	services/multilogon-service.cpp
 	services/protocol-service.cpp
 
-	connection-error-notification.cpp
 	protocol.cpp
 	protocols-manager.cpp
 	protocol-state-machine.cpp
@@ -40,7 +39,6 @@ set (protocols_MOC_SRCS
 	services/search-service.h
 	services/subscription-service.h
 
-	connection-error-notification.h
 	protocol.h
 	protocol-factory.h
 	protocols-manager.h

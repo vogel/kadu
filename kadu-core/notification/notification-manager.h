@@ -61,7 +61,6 @@ class KADUAPI NotificationManager : public QObject
 	QPointer<NotificationService> m_notificationService;
 
 	QList<Notifier *> Notifiers;
-	QStringList IgnoredAccounts;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
@@ -80,10 +79,6 @@ public:
 	const QList<Notifier *> & notifiers() const;
 
 	QString notifyConfigurationKey(const QString &eventType);
-	void ignoreConnectionErrors(Account account);
-
-public slots:
-	void unignoreConnectionErrors(Account account);
 
 signals:
 	void notiferRegistered(Notifier *notifier);

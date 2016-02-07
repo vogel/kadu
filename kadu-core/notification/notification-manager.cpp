@@ -31,8 +31,8 @@
 #include "core/injected-factory.h"
 #include "gui/windows/message-dialog.h"
 #include "notification/notification-service.h"
+#include "notification/notification.h"
 #include "notification/notifier.h"
-#include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"
 #include "debug.h"
 
@@ -106,32 +106,9 @@ const QList<Notifier *> & NotificationManager::notifiers() const
 	return Notifiers;
 }
 
-void NotificationManager::ignoreConnectionErrors(Account account)
-{
-	IgnoredAccounts.append(account.id());
-	connect(account.protocolHandler(), SIGNAL(connected(Account)), this, SLOT(unignoreConnectionErrors(Account)));
-}
-
-void NotificationManager::unignoreConnectionErrors(Account account)
-{
-	IgnoredAccounts.removeAll(account.id());
-}
-
 void NotificationManager::notify(Notification *rawNotification)
 {
 	kdebugf();
-
-	const ConnectionErrorNotification * const connectionErrorNotification = qobject_cast<const ConnectionErrorNotification * const>(rawNotification);
-	if (connectionErrorNotification)
-	{
-		auto account = connectionErrorNotification->data()["account"].value<Account>();
-
-		if (IgnoredAccounts.contains(account.id()))
-		{
-			rawNotification->close();
-			return;
-		}
-	}
 
 	rawNotification->acquire(nullptr);
 
