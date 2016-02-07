@@ -31,7 +31,6 @@ class CenzorMessageFilter;
 class ConfigurationUiHandlerRepository;
 class MainConfigurationWindowService;
 class MessageFilterService;
-class NotificationEventRepository;
 class PathsProvider;
 
 class CenzorPluginObject : public QObject
@@ -49,7 +48,6 @@ private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MessageFilterService> m_messageFilterService;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
@@ -60,7 +58,6 @@ private slots:
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 };

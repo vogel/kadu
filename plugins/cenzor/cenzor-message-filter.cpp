@@ -20,9 +20,9 @@
 
 #include "cenzor-message-filter.h"
 
+#include "cenzor-notification-service.h"
+
 #include "configuration/cenzor-configuration.h"
-#include "core/injected-factory.h"
-#include "notification/cenzor-notification.h"
 
 #include "message/message-manager.h"
 #include "notification/notification-manager.h"
@@ -41,19 +41,14 @@ void CenzorMessageFilter::setCenzorConfiguration(CenzorConfiguration *cenzorConf
 	m_cenzorConfiguration = cenzorConfiguration;
 }
 
-void CenzorMessageFilter::setInjectedFactory(InjectedFactory *injectedFactory)
+void CenzorMessageFilter::setCenzorNotificationService(CenzorNotificationService *cenzorNotificationService)
 {
-	m_injectedFactory = injectedFactory;
+	m_cenzorNotificationService = cenzorNotificationService;
 }
 
 void CenzorMessageFilter::setMessageManager(MessageManager *messageManager)
 {
 	m_messageManager = messageManager;
-}
-
-void CenzorMessageFilter::setNotificationManager(NotificationManager *notificationManager)
-{
-	m_notificationManager = notificationManager;
 }
 
 bool CenzorMessageFilter::acceptMessage(const Message &message)
@@ -75,7 +70,7 @@ bool CenzorMessageFilter::acceptMessage(const Message &message)
 
 
 	if (m_messageManager->sendMessage(message.messageChat(), m_cenzorConfiguration->admonition(), true))
-		CenzorNotification::notifyCenzored(m_injectedFactory, m_notificationManager, message.messageChat());
+		m_cenzorNotificationService->notifyCenzored(message.messageChat());
 
 	return false;
 }

@@ -27,8 +27,6 @@
 #include "gui/windows/main-configuration-window.h"
 #include "message/message-filter-service.h"
 #include "misc/paths-provider.h"
-#include "notification/notification-event-repository.h"
-#include "notification/notification-event.h"
 #include "status/status-changer-manager.h"
 
 CenzorPluginObject::CenzorPluginObject(QObject *parent) :
@@ -65,11 +63,6 @@ void CenzorPluginObject::setMessageFilterService(MessageFilterService *messageFi
 	m_messageFilterService = messageFilterService;
 }
 
-void CenzorPluginObject::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
-{
-	m_notificationEventRepository = notificationEventRepository;
-}
-
 void CenzorPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -77,18 +70,16 @@ void CenzorPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void CenzorPluginObject::init()
 {
+	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_cenzorConfigurationUiHandler);
 	m_messageFilterService->registerMessageFilter(m_cenzorMessageFilter);
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored")});
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
 }
 
 void CenzorPluginObject::done()
 {
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"cenzorNotification", QT_TRANSLATE_NOOP("@default", "Message was cenzored")});
 	m_messageFilterService->unregisterMessageFilter(m_cenzorMessageFilter);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_cenzorConfigurationUiHandler);
+	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
 }
 
 #include "moc_cenzor-plugin-object.cpp"

@@ -8,10 +8,10 @@ set (SOURCES
 	configuration/gui/cenzor-configuration-ui-handler.cpp
 	configuration/cenzor-configuration.cpp
 	gui/widgets/list-edit-widget.cpp
-	notification/cenzor-notification.cpp
 
 	cenzor-message-filter.cpp
 	cenzor-module.cpp
+	cenzor-notification-service.cpp
 	cenzor-plugin-modules-factory.cpp
 	cenzor-plugin-object.cpp
 )

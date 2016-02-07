@@ -27,11 +27,10 @@
 #include <injeqt/injeqt.h>
 
 class CenzorConfiguration;
+class CenzorNotificationService;
 class Chat;
 class Contact;
-class InjectedFactory;
 class MessageManager;
-class NotificationManager;
 
 class CenzorMessageFilter : public QObject, public MessageFilter
 {
@@ -46,17 +45,15 @@ protected:
 
 private:
 	QPointer<CenzorConfiguration> m_cenzorConfiguration;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<CenzorNotificationService> m_cenzorNotificationService;
 	QPointer<MessageManager> m_messageManager;
-	QPointer<NotificationManager> m_notificationManager;
 
 	bool shouldIgnore(const QString &message);
 	bool isExclusion(const QString &word);
 
 private slots:
 	INJEQT_SET void setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setCenzorNotificationService(CenzorNotificationService *cenzorNotificationService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };
