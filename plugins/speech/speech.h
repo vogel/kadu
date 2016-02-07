@@ -46,7 +46,7 @@ public:
 	Q_INVOKABLE explicit Speech(QObject *parent = nullptr);
 	virtual ~Speech();
 
-	virtual void notify(Notification *notification);
+	virtual void notify(const Notification &notification);
 	NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent);
 
 	void say(const QString &s,

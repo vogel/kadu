@@ -212,10 +212,10 @@ void HintsConfigurationUiHandler::showAdvanced()
 
 void HintsConfigurationUiHandler::addHintsPreview()
 {
-	auto previewNotify = make_unique<Notification>(Account::null, Chat::null, QStringLiteral("Preview"), KaduIcon("protocols/common/message"));
-	previewNotify->setText(QCoreApplication::translate("@default", "Hints position preview"));
+	auto previewNotify = Notification{Account::null, Chat::null, QStringLiteral("Preview"), KaduIcon("protocols/common/message")};
+	previewNotify.setText(QCoreApplication::translate("@default", "Hints position preview"));
 
-	auto previewHint = m_injectedFactory->makeInjected<Hint>(previewHintsFrame, previewNotify.release());
+	auto previewHint = m_injectedFactory->makeInjected<Hint>(previewHintsFrame, previewNotify);
 	previewHints.append(previewHint);
 
 	setPreviewLayoutDirection();
@@ -337,7 +337,7 @@ void HintsConfigurationUiHandler::deleteHintsPreview(Hint *hint)
 
 	foreach (Hint *h, previewHints)
 	{
-		if (h->getNotification()->type() == "Preview")
+		if (h->getNotification().type() == "Preview")
 			return;
 	}
 
@@ -348,7 +348,7 @@ void HintsConfigurationUiHandler::deleteAllHintsPreview()
 {
 	foreach (Hint *h, previewHints)
 	{
-		if (h->getNotification()->type() == "Preview")
+		if (h->getNotification().type() == "Preview")
 		{
 			previewHints.removeAll(h);
 			previewHintsLayout->removeWidget(h);

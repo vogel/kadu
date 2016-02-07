@@ -61,7 +61,7 @@ public:
 		sygna� closed(), po kt�rym notyfikator musi przesta� informowa� u�ytkownika
 		o danym zdarzeniu (na przyk�ad, musi zamkn�� skojarzone ze zdarzeniem okno).
 	 **/
-	virtual void notify(Notification *notification) = 0;
+	virtual void notify(const Notification &notification) = 0;
 
 	/**
 		Zwraca widget, jaki zostanie dodany do okna konfiguracyjnego

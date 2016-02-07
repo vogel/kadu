@@ -31,18 +31,18 @@ class KADUAPI NotificationCallback
 
 public:
 	NotificationCallback();
-	explicit NotificationCallback(QString name, QString title, std::function<void(Notification *)> callback);
+	explicit NotificationCallback(QString name, QString title, std::function<void(const Notification &)> callback);
 
 	QString name() const;
 	QString title() const;
-	std::function<void(Notification *)> callback() const;
+	std::function<void(const Notification &)> callback() const;
 
-	void call(Notification *notification) const;
+	void call(const Notification &notification) const;
 
 private:
 	QString m_name;
 	QString m_title;
-	std::function<void(Notification *)> m_callback;
+	std::function<void(const Notification &)> m_callback;
 
 };
 

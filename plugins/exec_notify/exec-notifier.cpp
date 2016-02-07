@@ -168,16 +168,16 @@ QStringList mySplit(const QChar &sep, const QString &str)
 	return strlist;
 }
 
-void ExecNotifier::notify(Notification *notification)
+void ExecNotifier::notify(const Notification &notification)
 {
-	auto key = m_notificationManager->notifyConfigurationKey(notification->type());
+	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
 	auto syntax = m_configuration->deprecatedApi()->readEntry("Exec Notify", key + "Cmd");
 	if (syntax.isEmpty())
 		return;
 	auto s = mySplit(' ', syntax);
 	auto result = QStringList{};
 
-	auto chat = notification->data()["chat"].value<Chat>();
+	auto chat = notification.data()["chat"].value<Chat>();
 	if (chat)
 	{
 		auto contacts = chat.contacts();
@@ -189,11 +189,11 @@ void ExecNotifier::notify(Notification *notification)
 
 		Contact contact = *contacts.constBegin();
 		foreach (QString it, s)
-			result.append(m_parser->parse(it.replace("%ids", sendersString), Talkable(contact), notification, ParserEscape::HtmlEscape));
+			result.append(m_parser->parse(it.replace("%ids", sendersString), Talkable(contact), &notification, ParserEscape::HtmlEscape));
 	}
 	else
 		foreach (const QString &it, s)
-			result.append(m_parser->parse(it, notification, ParserEscape::HtmlEscape));
+			result.append(m_parser->parse(it, &notification, ParserEscape::HtmlEscape));
 
 	run(result);
 }

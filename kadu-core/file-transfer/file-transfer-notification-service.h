@@ -67,8 +67,8 @@ private:
 
 	QString incomingFileTransferText(const Chat &chat, const FileTransfer &fileTransfer);
 
-	void acceptFileTransfer(Notification *notification);
-	void rejectFileTransfer(Notification *notification);
+	void acceptFileTransfer(const Notification &notification);
+	void rejectFileTransfer(const Notification &notification);
 
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);

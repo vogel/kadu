@@ -54,9 +54,9 @@ void SoundNotifier::setSoundManager(SoundManager *soundManager)
 	m_soundManager = soundManager;
 }
 
-void SoundNotifier::notify(Notification *notification)
+void SoundNotifier::notify(const Notification &notification)
 {
-	auto chat = notification->data()["chat"].value<Chat>();
+	auto chat = notification.data()["chat"].value<Chat>();
 	if (chat && chat.property("sound:use_custom_sound", false).toBool())
 	{
 		// we need abstraction for that
@@ -84,7 +84,7 @@ void SoundNotifier::notify(Notification *notification)
 		}
 	}
 
-	auto key = m_notificationManager->notifyConfigurationKey(notification->type());
+	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
 	m_soundManager->playSoundByName(key);
 }
 

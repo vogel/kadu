@@ -106,13 +106,11 @@ const QList<Notifier *> & NotificationManager::notifiers() const
 	return Notifiers;
 }
 
-void NotificationManager::notify(Notification *rawNotification)
+void NotificationManager::notify(const Notification &rawNotification)
 {
 	kdebugf();
 
-	rawNotification->acquire(nullptr);
-
-	auto notifyType = notifyConfigurationKey(rawNotification->type());
+	auto notifyType = notifyConfigurationKey(rawNotification.type());
 	auto foundNotifier = false;
 
 	for (auto notifier : Notifiers)
@@ -126,8 +124,6 @@ void NotificationManager::notify(Notification *rawNotification)
 
 	if (!foundNotifier)
 		m_notificationService->discardNotification(rawNotification);
-
-	rawNotification->release(nullptr);
 
 	kdebugf2();
 }

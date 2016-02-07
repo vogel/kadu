@@ -140,7 +140,7 @@ void NotificationService::init()
 	auto ignoreCallback = NotificationCallback{
 		"ignore",
 		tr("Ignore"),
-		[](Notification *) {}
+		[](const Notification &) {}
 	};
 
 	m_notificationCallbackRepository->addCallback(ignoreCallback);
@@ -329,7 +329,7 @@ void NotificationService::createDefaultConfiguration()
 	m_configuration->deprecatedApi()->addVariable("Notify", "NotifyIgnoreOnConnection", true);
 }
 
-void NotificationService::notify(Notification *notification)
+void NotificationService::notify(const Notification &notification)
 {
 	if (!ignoreNotifications())
 		m_notificationManager->notify(notification);
@@ -337,25 +337,22 @@ void NotificationService::notify(Notification *notification)
 		discardNotification(notification);
 }
 
-void NotificationService::acceptNotification(Notification *notification)
+void NotificationService::acceptNotification(const Notification &notification)
 {
-	if (notification->acceptCallback().isEmpty())
+	if (notification.acceptCallback().isEmpty())
 	{
-		auto chat = qvariant_cast<Chat>(notification->data()["chat"]);
-		notification->close();
+		auto chat = qvariant_cast<Chat>(notification.data()["chat"]);
 		if (chat)
 			m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 	}
 	else
-		m_notificationCallbackRepository->callback(notification->acceptCallback()).call(notification);
+		m_notificationCallbackRepository->callback(notification.acceptCallback()).call(notification);
 }
 
-void NotificationService::discardNotification(Notification *notification)
+void NotificationService::discardNotification(const Notification &notification)
 {
-	if (notification->discardCallback().isEmpty())
-		notification->close();
-	else
-		m_notificationCallbackRepository->callback(notification->discardCallback()).call(notification);
+	if (!notification.discardCallback().isEmpty())
+		m_notificationCallbackRepository->callback(notification.discardCallback()).call(notification);
 }
 
 void checkNotify(Action *action)

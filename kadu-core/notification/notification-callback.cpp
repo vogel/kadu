@@ -25,7 +25,7 @@ NotificationCallback::NotificationCallback()
 {
 }
 
-NotificationCallback::NotificationCallback(QString name, QString title, std::function<void(Notification *)> callback) :
+NotificationCallback::NotificationCallback(QString name, QString title, std::function<void(const Notification &)> callback) :
 		m_name{std::move(name)},
 		m_title{std::move(title)},
 		m_callback{std::move(callback)}
@@ -42,12 +42,12 @@ QString NotificationCallback::title() const
 	return m_title;
 }
 
-std::function<void(Notification *)> NotificationCallback::callback() const
+std::function<void(const Notification &)> NotificationCallback::callback() const
 {
 	return m_callback;
 }
 
-void NotificationCallback::call(Notification *notification) const
+void NotificationCallback::call(const Notification &notification) const
 {
 	if (m_callback)
 		m_callback(notification);

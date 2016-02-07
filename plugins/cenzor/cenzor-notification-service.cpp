@@ -19,7 +19,6 @@
 
 #include "cenzor-notification-service.h"
 
-#include "misc/memory.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -61,13 +60,13 @@ void CenzorNotificationService::notifyCenzored(const Chat &chat)
 	data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
 	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
-	auto notification = make_unique<Notification>(QVariantMap{}, m_CenzoredEvent.name(), KaduIcon{"kadu_icons/blocking"});
-	notification->addChatCallbacks();
-	notification->setTitle(tr("Cenzor"));
-	notification->setText(tr("Message was cenzored"));
-	notification->setDetails(tr("Your interlocutor used obscene word and became admonished"));
+	auto notification = Notification{QVariantMap{}, m_CenzoredEvent.name(), KaduIcon{"kadu_icons/blocking"}};
+	notification.addChatCallbacks();
+	notification.setTitle(tr("Cenzor"));
+	notification.setText(tr("Message was cenzored"));
+	notification.setDetails(tr("Your interlocutor used obscene word and became admonished"));
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 
 }
 

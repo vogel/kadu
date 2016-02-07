@@ -24,7 +24,6 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "identities/identity.h"
-#include "misc/memory.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -147,11 +146,11 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 
 	auto icon = contact.contactAccount().protocolHandler()->statusIcon(Status{m_statusTypeManager, contact.currentStatus().type()});
 	
-	auto notification = make_unique<Notification>(data, notificationEventName, icon);
-	notification->addChatCallbacks();
-	notification->setDetails(Qt::escape(description));
-	notification->setText(tr("<b>%1</b> changed status to <i>%2</i>").arg(Qt::escape(contact.display(true)), Qt::escape(statusDisplayName)));
-	notification->setTitle(tr("Status changed"));
+	auto notification = Notification{data, notificationEventName, icon};
+	notification.addChatCallbacks();
+	notification.setDetails(Qt::escape(description));
+	notification.setText(tr("<b>%1</b> changed status to <i>%2</i>").arg(Qt::escape(contact.display(true)), Qt::escape(statusDisplayName)));
+	notification.setTitle(tr("Status changed"));
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 }

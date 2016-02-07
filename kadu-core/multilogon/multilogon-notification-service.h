@@ -58,7 +58,7 @@ private:
 	NotificationEvent m_multilogonConnectedEvent;
 	NotificationEvent m_multilogonDisconnectedEvent;
 
-	void disconnectSession(Notification *notification);
+	void disconnectSession(const Notification &notification);
 
 private slots:
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);

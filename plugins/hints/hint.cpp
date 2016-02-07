@@ -45,7 +45,7 @@
  * @ingroup hints
  * @{
  */
-Hint::Hint(QWidget *parent, Notification *xnotification)
+Hint::Hint(QWidget *parent, const Notification &xnotification)
 	: QFrame(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(xnotification)
 {
 }
@@ -88,14 +88,14 @@ void Hint::init()
 {
 	kdebugf();
 
-	CurrentChat = notification->data()["chat"].value<Chat>();
+	CurrentChat = notification.data()["chat"].value<Chat>();
 
-	auto key = m_notificationManager->notifyConfigurationKey(notification->type());
+	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
 	startSecs = secs = m_configuration->deprecatedApi()->readNumEntry("Hints", "Event_" + key + "_timeout", 10);
 
-	createLabels(m_iconsManager->iconByPath(notification->icon()).pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
+	createLabels(m_iconsManager->iconByPath(notification.icon()).pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
 
-	auto callbacks = notification->getCallbacks();
+	auto callbacks = notification.getCallbacks();
 	bool showButtons = !callbacks.isEmpty();
 	if (showButtons)
 		if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons"))
@@ -141,7 +141,6 @@ void Hint::buttonClicked()
 		callback.call(callbackNotification);
 	}
 
-	notification->close();
 	close();
 }
 
@@ -150,7 +149,7 @@ void Hint::configurationUpdated()
 	QFont font(qApp->font());
 	QPalette palette(qApp->palette());
 
-	auto key = m_notificationManager->notifyConfigurationKey(notification->type());
+	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
 	bcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + key + "_bgcolor", &palette.window().color());
 	fcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + key + "_fgcolor", &palette.windowText().color());
 	label->setFont(m_configuration->deprecatedApi()->readFontEntry("Hints", "Event_" + key + "_font", &font));
@@ -195,21 +194,21 @@ void Hint::updateText()
 {
 	QString text;
 
-	auto key = m_notificationManager->notifyConfigurationKey(notification->type());
+	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
 	QString syntax = m_configuration->deprecatedApi()->readEntry("Hints", "Event_" + key + "_syntax", QString());
 	if (syntax.isEmpty())
-		text = notification->text();
+		text = notification.text();
 	else
 	{
-		kdebug("syntax is: %s, text is: %s\n", qPrintable(syntax), qPrintable(notification->text()));
+		kdebug("syntax is: %s, text is: %s\n", qPrintable(syntax), qPrintable(notification.text()));
 
 		if (CurrentChat)
 		{
 			Contact contact = *CurrentChat.contacts().constBegin();
-			text = m_parser->parse(syntax, Talkable(contact), notification, ParserEscape::HtmlEscape);
+			text = m_parser->parse(syntax, Talkable(contact), &notification, ParserEscape::HtmlEscape);
 		}
 		else
-			text = m_parser->parse(syntax, notification, ParserEscape::HtmlEscape);
+			text = m_parser->parse(syntax, &notification, ParserEscape::HtmlEscape);
 
 		/* Dorr: the file:// in img tag doesn't generate the image on hint.
 		 * for compatibility with other syntaxes we're allowing to put the file://
@@ -220,8 +219,8 @@ void Hint::updateText()
 	if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
 	{
 		QStringList details;
-		if (!notification->details().isEmpty())
-			details = notification->details();
+		if (!notification.details().isEmpty())
+			details = notification.details();
 		int count = details.count();
 
 		if (count)
@@ -231,7 +230,7 @@ void Hint::updateText()
 			int citeSign = m_configuration->deprecatedApi()->readNumEntry("Hints","CiteSign");
 
 			QString defaultSyntax;
-			if (notification->type() == "NewMessage" || notification->type() == "NewChat")
+			if (notification.type() == "NewMessage" || notification.type() == "NewChat")
 				defaultSyntax = "\n&bull; <small>%1</small>";
 			else
 				defaultSyntax = "\n <small>%1</small>";

@@ -42,7 +42,7 @@ public:
 	Q_INVOKABLE explicit WindowNotifier(QObject *parent = nullptr);
 	virtual ~WindowNotifier();
 
-	virtual void notify(Notification *notification);
+	virtual void notify(const Notification &notification);
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) { Q_UNUSED(parent) return nullptr; }
 
 private:

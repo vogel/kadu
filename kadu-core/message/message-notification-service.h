@@ -59,7 +59,7 @@ private:
 	NotificationEvent m_newChatEvent;
 	NotificationEvent m_newMessageEvent;
 
-	void openChat(Notification *notification);
+	void openChat(const Notification &notification);
 
 private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);

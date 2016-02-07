@@ -151,7 +151,7 @@ void FreedesktopNotifier::checkServerCapabilities()
 	}
 }
 
-void FreedesktopNotifier::notify(Notification *notification)
+void FreedesktopNotifier::notify(const Notification &notification)
 {
 	checkServerCapabilities();
 
@@ -168,7 +168,7 @@ void FreedesktopNotifier::notify(Notification *notification)
 
 	args.append(replacedNotificationId);
 
-	KaduIcon icon(notification->icon());
+	KaduIcon icon(notification.icon());
 	if (icon.isNull())
 	{
 		icon.setPath("kadu_icons/section-kadu");
@@ -184,21 +184,21 @@ void FreedesktopNotifier::notify(Notification *notification)
 		summary = "Kadu";
 	else
 	{
-		summary = notification->text();
+		summary = notification.text();
 		summary.replace(StripBr, QStringLiteral(" "));
 		summary.remove(StripHtml);
 	}
 
 	args.append(summary);
 
-	bool typeNewMessage = (notification->type() == "NewMessage" || notification->type() == "NewChat");
+	bool typeNewMessage = (notification.type() == "NewMessage" || notification.type() == "NewChat");
 	QString body;
 	if (ServerSupportsBody)
 	{
 		if (!typeNewMessage || ShowContentMessage)
 		{
-			body = !notification->details().isEmpty()
-					? notification->details().last()
+			body = !notification.details().isEmpty()
+					? notification.details().last()
 					: QString();
 			body.replace(StripBr, QStringLiteral("\n"));
 			if (ServerSupportsMarkup)
@@ -213,10 +213,10 @@ void FreedesktopNotifier::notify(Notification *notification)
 		if (useKdeStyle)
 		{
 			if (body.isEmpty())
-				body = notification->text();
+				body = notification.text();
 			else
 			{
-				body.prepend(notification->text() + "\n<small>");
+				body.prepend(notification.text() + "\n<small>");
 				body.append("</small>");
 			}
 
@@ -233,9 +233,7 @@ void FreedesktopNotifier::notify(Notification *notification)
 	QStringList actions;
 	if (ServerSupportsActions)
 	{
-		Notification *firstNotification = notification;
-
-		for (auto &&callbackName : firstNotification->getCallbacks())
+		for (auto &&callbackName : notification.getCallbacks())
 		{
 			auto callback = m_notificationCallbackRepository->callback(callbackName);
 			actions << callbackName;
@@ -257,8 +255,6 @@ void FreedesktopNotifier::notify(Notification *notification)
 	QDBusReply<unsigned int> reply = NotificationsInterface->callWithArgumentList(QDBus::Block, "Notify", args);
 	if (reply.isValid())
 	{
-		notification->acquire(this); // do not remove now
-
 		NotificationMap.insert(reply.value(), notification);
 	}
 }
@@ -267,11 +263,7 @@ void FreedesktopNotifier::notificationClosed(unsigned int id, unsigned int reaso
 {
 	Q_UNUSED(reason);
 
-	if (!NotificationMap.contains(id))
-		return;
-
-	Notification *notification = NotificationMap.take(id);
-	notification->release(this);
+	NotificationMap.remove(id);
 }
 
 void FreedesktopNotifier::slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
@@ -280,14 +272,7 @@ void FreedesktopNotifier::slotServiceOwnerChanged(const QString &serviceName, co
 	Q_UNUSED(oldOwner)
 	Q_UNUSED(newOwner)
 
-	foreach (Notification *notification, NotificationMap)
-	{
-		disconnect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
-		notification->release(this);
-	}
-
 	NotificationMap.clear();
-
 	ServerCapabilitiesRequireChecking = true;
 }
 
@@ -296,14 +281,9 @@ void FreedesktopNotifier::actionInvoked(unsigned int id, QString callbackName)
 	if (!NotificationMap.contains(id))
 		return;
 
-	auto notification = NotificationMap.value(id);
-	if (!notification)
-		return;
-
-	auto callbackNotifiation = notification;
+	auto notification = NotificationMap.take(id);
 	auto callback = m_notificationCallbackRepository->callback(callbackName);
-	callback.call(callbackNotifiation);
-	notification->close();
+	callback.call(notification);
 
 	QList<QVariant> args;
 	args.append(id);

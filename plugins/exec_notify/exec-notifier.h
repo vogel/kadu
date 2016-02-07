@@ -39,7 +39,7 @@ public:
 	virtual ~ExecNotifier();
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr);
-	virtual void notify(Notification *notification);
+	virtual void notify(const Notification &notification);
 
 private:
 	QPointer<Configuration> m_configuration;

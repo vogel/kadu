@@ -304,15 +304,13 @@ void HintManager::deleteHint(Hint *hint)
 {
 	kdebugf();
 
-	Notification *notification = hint->getNotification();
+	const Notification &notification = hint->getNotification();
 
 	hints.removeAll(hint);
 
 	layout->removeWidget(hint);
 
 	hint->deleteLater();
-	if (notification)
-		notification->release(this);
 
 	if (hints.isEmpty())
 	{
@@ -411,7 +409,7 @@ void HintManager::openChat(Hint *hint)
 		return;
 
 	if (!m_configuration->deprecatedApi()->readBoolEntry("Hints", "OpenChatOnEveryNotification"))
-		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
+		if ((hint->getNotification().type() != "NewChat") && (hint->getNotification().type() != "NewMessage"))
 			return;
 
 	m_chatWidgetManager->openChat(hint->chat(), OpenChatActivation::Activate);
@@ -452,11 +450,9 @@ void HintManager::deleteAllHints()
 	kdebugf2();
 }
 
-Hint *HintManager::addHint(Notification *notification)
+Hint *HintManager::addHint(const Notification &notification)
 {
 	kdebugf();
-
-	notification->acquire(this);
 
 	auto hint = m_injectedFactory->makeInjected<Hint>(frame, notification);
 	hints.append(hint);
@@ -599,7 +595,7 @@ void HintManager::hideToolTip()
 	}
 }
 
-void HintManager::notify(Notification *notification)
+void HintManager::notify(const Notification &notification)
 {
 	kdebugf();
 

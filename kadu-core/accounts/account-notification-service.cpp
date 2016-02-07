@@ -20,7 +20,6 @@
 #include "account-notification-service.h"
 
 #include "identities/identity.h"
-#include "misc/memory.h"
 #include "notification/notification.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
@@ -52,7 +51,7 @@ static QString getErrorServer(const ParserData * const object)
 AccountNotificationService::AccountNotificationService(QObject *parent) :
 		QObject{parent},
 		m_ignoreErrorsCallback{QStringLiteral("connection-ignore-errors"), tr("Ignore"),
-			[this](Notification *notification){ return ignoreErrors(notification); }},
+			[this](const Notification &notification){ return ignoreErrors(notification); }},
 		m_connectionErrorEvent{QStringLiteral("ConnectionError"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Connection error"))}
 {
 }
@@ -115,13 +114,13 @@ void AccountNotificationService::notifyConnectionError(const Account &account, c
 	data.insert(QStringLiteral("error-server"), errorServer);
 	data.insert(QStringLiteral("error-message"), errorMessage);
 
-	auto notification = make_unique<Notification>(data, m_connectionErrorEvent.name(), KaduIcon{});
-	notification->setTitle(tr("Connection error"));
-	notification->setText(Qt::escape(tr("Connection error on account: %1 (%2)").arg(account.id(), account.accountIdentity().name())));
-	notification->setDetails(Qt::escape(errorDetails(errorServer, errorMessage)));
-	notification->addCallback(QStringLiteral("connection-ignore-errors"));
+	auto notification = Notification{data, m_connectionErrorEvent.name(), KaduIcon{}};
+	notification.setTitle(tr("Connection error"));
+	notification.setText(Qt::escape(tr("Connection error on account: %1 (%2)").arg(account.id(), account.accountIdentity().name())));
+	notification.setDetails(Qt::escape(errorDetails(errorServer, errorMessage)));
+	notification.addCallback(QStringLiteral("connection-ignore-errors"));
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 }
 
 QString AccountNotificationService::errorDetails(const QString &errorServer, const QString &errorMessage)
@@ -133,12 +132,11 @@ QString AccountNotificationService::errorDetails(const QString &errorServer, con
 			: QStringLiteral("%1 (%2)").arg(errorMessage, errorServer);
 }
 
-void AccountNotificationService::ignoreErrors(Notification *notification)
+void AccountNotificationService::ignoreErrors(const Notification &notification)
 {
-	auto account = qvariant_cast<Account>(notification->data()[QStringLiteral("account")]);
+	auto account = qvariant_cast<Account>(notification.data()[QStringLiteral("account")]);
 	account.addProperty(QStringLiteral("notify:ignore-connection-errors"), false, CustomProperties::NonStorable);
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
-	notification->close();
 }
 
 void AccountNotificationService::accountConnected()

@@ -59,7 +59,7 @@ private:
 	NotificationEvent m_connectionErrorEvent;
 
 	QString errorDetails(const QString &errorServer, const QString &errorMessage);
-	void ignoreErrors(Notification *notification);
+	void ignoreErrors(const Notification &notification);
 
 private slots:
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);

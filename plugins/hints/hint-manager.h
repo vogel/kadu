@@ -133,7 +133,7 @@ private slots:
 	/**
 		Pokazuje dymek zwi�zany z notyfikacj�.
 	**/
-	Hint *addHint(Notification *notification);
+	Hint *addHint(const Notification &notification);
 
 	/**
 		je�eli dymek dotyczy� konkrentej osoby lub grupy os�b, to otwierane jest okno chatu
@@ -157,7 +157,7 @@ public:
 	Q_INVOKABLE explicit HintManager(QObject *parent = nullptr);
 	virtual ~HintManager();
 
-	virtual void notify(Notification *notification);
+	virtual void notify(const Notification &notification);
 
 	virtual void showToolTip(const QPoint &point, Talkable talkable);
 	virtual void hideToolTip();

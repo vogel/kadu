@@ -79,6 +79,10 @@ void Notification::unregisterParserTags(Parser *parser)
 	parser->unregisterObjectTag("protocol");
 }
 
+Notification::Notification()
+{
+}
+
 Notification::Notification(QVariantMap data, const QString &type, const KaduIcon &icon) :
 		m_data{std::move(data)},
 		Type(type),
@@ -87,7 +91,6 @@ Notification::Notification(QVariantMap data, const QString &type, const KaduIcon
 }
 
 Notification::Notification(Account account, Chat chat, const QString &type, const KaduIcon &icon) :
-		Closing(false),
 		Type(type),
 		Icon(icon),
 		m_account{account},
@@ -104,34 +107,6 @@ Notification::~Notification()
 const QVariantMap & Notification::data() const
 {
 	return m_data;
-}
-
-void Notification::acquire(Notifier *notifier)
-{
-	kdebugf();
-
-	Notifiers.insert(notifier);
-}
-
-void Notification::release(Notifier *notifier)
-{
-	kdebugf();
-
-	Notifiers.remove(notifier);
-
-	if (Notifiers.size() <= 0)
-		close();
-}
-
-void Notification::close()
-{
-	kdebugf();
-
-	if (!Closing)
-	{
-		Closing = true;
-		deleteLater();
-	}
 }
 
 void Notification::clearCallbacks()
@@ -195,4 +170,17 @@ void Notification::setIcon(const KaduIcon &icon)
 	Icon = icon;
 }
 
-#include "moc_notification.cpp"
+bool operator == (const Notification &x, const Notification &y)
+{
+	if (x.type() != y.type())
+		return false;
+	if (x.title() != y.title())
+		return false;
+	if (x.text() != y.text())
+		return false;
+	if (x.details() != y.details())
+		return false;
+	if (x.data() != y.data())
+		return false;
+	return true;
+}

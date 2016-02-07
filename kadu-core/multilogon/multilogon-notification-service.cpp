@@ -20,7 +20,6 @@
 #include "multilogon-notification-service.h"
 
 #include "accounts/account.h"
-#include "misc/memory.h"
 #include "multilogon/multilogon-session.h"
 #include "notification/notification.h"
 #include "notification/notification-callback-repository.h"
@@ -34,7 +33,7 @@
 MultilogonNotificationService::MultilogonNotificationService(QObject *parent) :
 		QObject{parent},
 		m_mutlilogonDisconnectCallback{QStringLiteral("multilogon-disconnect"), tr("Disconnect session"),
-			[this](Notification *notification){ return disconnectSession(notification); }},
+			[this](const Notification &notification){ return disconnectSession(notification); }},
 		m_multilogonEvent{QStringLiteral("multilogon"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon"))},
 		m_multilogonConnectedEvent{QStringLiteral("multilogon/sessionConnected"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon session connected"))},
 		m_multilogonDisconnectedEvent{QStringLiteral("multilogon/sessionDisconnected"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected"))}
@@ -84,17 +83,17 @@ void MultilogonNotificationService::notifyMultilogonSessionConnected(const Multi
 	data.insert(QStringLiteral("account"), qVariantFromValue(session.account));
 	data.insert(QStringLiteral("multilogon-session"), qVariantFromValue(session));
 
-	auto notification = make_unique<Notification>(data, QStringLiteral("multilogon/sessionConnected"), KaduIcon{});
-	notification->setTitle(tr("Multilogon"));
-	notification->setText(tr("Multilogon session connected from %1 at %2 with %3 for %4 account").arg(
+	auto notification = Notification{data, QStringLiteral("multilogon/sessionConnected"), KaduIcon{}};
+	notification.setTitle(tr("Multilogon"));
+	notification.setText(tr("Multilogon session connected from %1 at %2 with %3 for %4 account").arg(
 			session.remoteAddress.toString(),
 			session.logonTime.toString(),
 			session.name,
 			session.account.id()));
-	notification->addCallback(QStringLiteral("ignore"));
-	notification->addCallback(m_mutlilogonDisconnectCallback.name());
+	notification.addCallback(QStringLiteral("ignore"));
+	notification.addCallback(m_mutlilogonDisconnectCallback.name());
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 }
 
 void MultilogonNotificationService::notifyMultilogonSessionDisonnected(const MultilogonSession &session)
@@ -102,20 +101,20 @@ void MultilogonNotificationService::notifyMultilogonSessionDisonnected(const Mul
 	auto data = QVariantMap{};
 	data.insert(QStringLiteral("account"), qVariantFromValue(session.account));
 
-	auto notification = make_unique<Notification>(data, QStringLiteral("multilogon/sessionDisonnected"), KaduIcon{});
-	notification->setTitle(tr("Multilogon"));
-	notification->setText(tr("Multilogon session disconnected from %1 at %2 with %3 for %4 account").arg(
+	auto notification = Notification{data, QStringLiteral("multilogon/sessionDisonnected"), KaduIcon{}};
+	notification.setTitle(tr("Multilogon"));
+	notification.setText(tr("Multilogon session disconnected from %1 at %2 with %3 for %4 account").arg(
 			session.remoteAddress.toString(),
 			session.logonTime.toString(),
 			session.name,
 			session.account.id()));
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 }
 
-void MultilogonNotificationService::disconnectSession(Notification *notification)
+void MultilogonNotificationService::disconnectSession(const Notification &notification)
 {
-	auto session = qvariant_cast<MultilogonSession>(notification->data()[QStringLiteral("multilogon-session")]);
+	auto session = qvariant_cast<MultilogonSession>(notification.data()[QStringLiteral("multilogon-session")]);
 	if (session == MultilogonSession{})
 		return;
 

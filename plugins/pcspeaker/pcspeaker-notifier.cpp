@@ -124,15 +124,13 @@ NotifierConfigurationWidget * PCSpeakerNotifier::createConfigurationWidget(QWidg
 	return m_injectedFactory->makeInjected<PCSpeakerConfigurationWidget>(this, parent);
 }
 
-void PCSpeakerNotifier::notify(Notification *notification)
+void PCSpeakerNotifier::notify(const Notification &notification)
 {
-	notification->acquire(this);
 #ifdef Q_OS_MACX
 	SysBeep(1);
 #else
-	parseAndPlay(m_configuration->deprecatedApi()->readEntry("PC Speaker", notification->type() + "_Sound"));
+	parseAndPlay(m_configuration->deprecatedApi()->readEntry("PC Speaker", notification.type() + "_Sound"));
 #endif
-	notification->release(this);
 }
 
 void PCSpeakerNotifier::parseStringToSound(QString line, int tab[21], int tab2[21])

@@ -21,7 +21,6 @@
 
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "message/message.h"
-#include "misc/memory.h"
 #include "notification/notification.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
@@ -32,7 +31,7 @@
 MessageNotificationService::MessageNotificationService(QObject *parent) :
 		QObject{parent},
 		m_openChatCallback{QStringLiteral("chat-open"), tr("Chat"),
-			[this](Notification *notification){ return openChat(notification); }},
+			[this](const Notification &notification){ return openChat(notification); }},
 		m_newChatEvent{QStringLiteral("NewChat"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "New chat"))},
 		m_newMessageEvent{QStringLiteral("NewMessage"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "New message"))}
 {
@@ -84,14 +83,14 @@ void MessageNotificationService::notifyNewChat(const Message &message)
 	data.insert(QStringLiteral("account"), qVariantFromValue(message.messageChat().chatAccount()));
 	data.insert(QStringLiteral("chat"), qVariantFromValue(message.messageChat()));
 
-	auto notification = make_unique<Notification>(data, m_newChatEvent.name(), KaduIcon{});
-	notification->setTitle(tr("New chat"));
-	notification->setText(tr("Chat with <b>%1</b>").arg(Qt::escape(message.messageSender().display(true))));
-	notification->setDetails(message.htmlContent());
-	notification->addCallback(m_openChatCallback.name());
-	notification->addCallback("ignore");
+	auto notification = Notification{data, m_newChatEvent.name(), KaduIcon{}};
+	notification.setTitle(tr("New chat"));
+	notification.setText(tr("Chat with <b>%1</b>").arg(Qt::escape(message.messageSender().display(true))));
+	notification.setDetails(message.htmlContent());
+	notification.addCallback(m_openChatCallback.name());
+	notification.addCallback("ignore");
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 }
 
 void MessageNotificationService::notifyNewMessage(const Message &message)
@@ -100,19 +99,19 @@ void MessageNotificationService::notifyNewMessage(const Message &message)
 	data.insert(QStringLiteral("account"), qVariantFromValue(message.messageChat().chatAccount()));
 	data.insert(QStringLiteral("chat"), qVariantFromValue(message.messageChat()));
 
-	auto notification = make_unique<Notification>(data, m_newMessageEvent.name(), KaduIcon{});
-	notification->setTitle(tr("New message"));
-	notification->setText(tr("New message from <b>%1</b>").arg(Qt::escape(message.messageSender().display(true))));
-	notification->setDetails(message.htmlContent());
-	notification->addCallback(m_openChatCallback.name());
-	notification->addCallback("ignore");
+	auto notification = Notification{data, m_newMessageEvent.name(), KaduIcon{}};
+	notification.setTitle(tr("New message"));
+	notification.setText(tr("New message from <b>%1</b>").arg(Qt::escape(message.messageSender().display(true))));
+	notification.setDetails(message.htmlContent());
+	notification.addCallback(m_openChatCallback.name());
+	notification.addCallback("ignore");
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 }
 
-void MessageNotificationService::openChat(Notification *notification)
+void MessageNotificationService::openChat(const Notification &notification)
 {
-	auto chat = qvariant_cast<Chat>(notification->data()["chat"]);
+	auto chat = qvariant_cast<Chat>(notification.data()["chat"]);
 	if (chat)
 		m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }

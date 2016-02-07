@@ -36,23 +36,19 @@ class Parser;
 
 class QTimer;
 
-class KADUAPI Notification final : public QObject, public ParserData
+class KADUAPI Notification final : public ParserData
 {
-	Q_OBJECT
 
 public:
 	static void registerParserTags(Parser *parser);
 	static void unregisterParserTags(Parser *parser);
 
+	Notification();
 	Notification(QVariantMap data, const QString &type, const KaduIcon &icon);
 	Notification(Account account, Chat chat, const QString &type, const KaduIcon &icon);
 	virtual ~Notification();
 
 	const QVariantMap & data() const;
-
-	void acquire(Notifier *notifier);
-	void release(Notifier *notifier);
-	void close();
 
 	void clearCallbacks();
 	void addCallback(const QString &name);
@@ -77,11 +73,7 @@ public:
 
 	void setIcon(const KaduIcon &icon);
 	const KaduIcon & icon() const { return Icon; }
-	const QList<QString> & getCallbacks() { return Callbacks; }
-
-protected:
-	QSet<Notifier *> Notifiers;
-	bool Closing;
+	const QList<QString> & getCallbacks() const { return Callbacks; }
 
 private:
 	QVariantMap m_data;
@@ -101,3 +93,5 @@ private:
 	QList<QString> Callbacks;
 
 };
+
+KADUAPI bool operator == (const Notification &x, const Notification &y);

@@ -36,13 +36,13 @@
 FileTransferNotificationService::FileTransferNotificationService(QObject *parent) :
 		QObject{parent},
 		m_fileTransferAcceptCallback{QStringLiteral("file-transfer-accept"), tr("Accept"),
-			[this](Notification *notification){ return acceptFileTransfer(notification); }},
+			[this](const Notification &notification){ return acceptFileTransfer(notification); }},
 		m_fileTransferSaveCallback{QStringLiteral("file-transfer-save"), tr("Save"),
-			[this](Notification *notification){ return acceptFileTransfer(notification); }},
+			[this](const Notification &notification){ return acceptFileTransfer(notification); }},
 		m_fileTransferRejectCallback{QStringLiteral("file-transfer-reject"), tr("Reject"),
-			[this](Notification *notification){ return rejectFileTransfer(notification); }},
+			[this](const Notification &notification){ return rejectFileTransfer(notification); }},
 		m_fileTransferIgnoreCallback{QStringLiteral("file-transfer-ignore"), tr("Ignore"),
-			[this](Notification *notification){ return rejectFileTransfer(notification); }},
+			[this](const Notification &notification){ return rejectFileTransfer(notification); }},
 		m_fileTransferEvent{QStringLiteral("FileTransfer"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "File transfer"))},
 		m_fileTransferIncomingEvent{QStringLiteral("FileTransfer/IncomingFile"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Incoming file transfer"))}
 {
@@ -112,26 +112,26 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 	data.insert(QStringLiteral("file-transfer"), qVariantFromValue(fileTransfer));
 	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
-	auto notification = make_unique<Notification>(data, QStringLiteral("FileTransfer/IncomingFile"), KaduIcon{});
-	notification->setTitle(tr("Incoming transfer"));
-	notification->setText(incomingFileTransferText(chat, fileTransfer));
+	auto notification = Notification{data, QStringLiteral("FileTransfer/IncomingFile"), KaduIcon{}};
+	notification.setTitle(tr("Incoming transfer"));
+	notification.setText(incomingFileTransferText(chat, fileTransfer));
 
 	if (fileTransfer.transferType() == FileTransferType::Stream)
 	{
-		notification->addCallback(m_fileTransferAcceptCallback.name());
-		notification->addCallback(m_fileTransferRejectCallback.name());
-		notification->setAcceptCallback(m_fileTransferAcceptCallback.name());
-		notification->setDiscardCallback(m_fileTransferRejectCallback.name());
+		notification.addCallback(m_fileTransferAcceptCallback.name());
+		notification.addCallback(m_fileTransferRejectCallback.name());
+		notification.setAcceptCallback(m_fileTransferAcceptCallback.name());
+		notification.setDiscardCallback(m_fileTransferRejectCallback.name());
 	}
 	else
 	{
-		notification->addCallback(m_fileTransferSaveCallback.name());
-		notification->addCallback(m_fileTransferIgnoreCallback.name());
-		notification->setAcceptCallback(m_fileTransferSaveCallback.name());
-		notification->setDiscardCallback(m_fileTransferIgnoreCallback.name());
+		notification.addCallback(m_fileTransferSaveCallback.name());
+		notification.addCallback(m_fileTransferIgnoreCallback.name());
+		notification.setAcceptCallback(m_fileTransferSaveCallback.name());
+		notification.setDiscardCallback(m_fileTransferIgnoreCallback.name());
 	}
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 }
 
 QString FileTransferNotificationService::incomingFileTransferText(const Chat &chat, const FileTransfer &fileTransfer)
@@ -175,16 +175,14 @@ QString FileTransferNotificationService::incomingFileTransferText(const Chat &ch
 				Qt::escape(fileTransfer.localFileName()));
 }
 
-void FileTransferNotificationService::acceptFileTransfer(Notification *notification)
+void FileTransferNotificationService::acceptFileTransfer(const Notification &notification)
 {
-	auto fileTransfer = qvariant_cast<FileTransfer>(notification->data()[QStringLiteral("file-transfer")]);
-	notification->close();
+	auto fileTransfer = qvariant_cast<FileTransfer>(notification.data()[QStringLiteral("file-transfer")]);
 	m_fileTransferManager->acceptFileTransfer(fileTransfer, fileTransfer.localFileName());
 }
 
-void FileTransferNotificationService::rejectFileTransfer(Notification *notification)
+void FileTransferNotificationService::rejectFileTransfer(const Notification &notification)
 {
-	auto fileTransfer = qvariant_cast<FileTransfer>(notification->data()[QStringLiteral("file-transfer")]);
-	notification->close();
+	auto fileTransfer = qvariant_cast<FileTransfer>(notification.data()[QStringLiteral("file-transfer")]);
 	m_fileTransferManager->rejectFileTransfer(fileTransfer);
 }

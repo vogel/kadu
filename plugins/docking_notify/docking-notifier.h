@@ -27,7 +27,7 @@ public:
 	Q_INVOKABLE explicit DockingNotifier(QObject *parent = nullptr);
 	virtual ~DockingNotifier();
 
-	virtual void notify(Notification *notification);
+	virtual void notify(const Notification &notification);
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr);
 
@@ -44,7 +44,7 @@ private:
 
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
-	QString parseText(const QString &text, Notification *notification, const QString &def);
+	QString parseText(const QString &text, const Notification &notification, const QString &def);
 	Chat chat;
 	DockingNotifyConfigurationWidget *configurationWidget;
 

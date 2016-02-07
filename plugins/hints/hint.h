@@ -67,7 +67,7 @@ class Hint : public QFrame, ConfigurationAwareObject
 	int secs;
 	int startSecs;
 
-	Notification *notification;
+	const Notification &notification;
 	QStringList details;
 
 	void createLabels(const QPixmap &pixmap);
@@ -96,7 +96,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	Hint(QWidget *parent, Notification *notification);
+	Hint(QWidget *parent, const Notification &notification);
 	virtual ~Hint();
 
 	void mouseOver();
@@ -108,7 +108,7 @@ public:
 
 	Chat  chat() { return CurrentChat; }
 
-	Notification * getNotification() { return notification; }
+	const Notification & getNotification() { return notification; }
 
 public slots:
 	void nextSecond();

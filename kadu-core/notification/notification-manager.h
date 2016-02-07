@@ -71,7 +71,7 @@ public:
 	Q_INVOKABLE explicit NotificationManager(QObject *parent = nullptr);
 	virtual ~NotificationManager();
 
-	void notify(Notification *notification);
+	void notify(const Notification &notification);
 
 	void registerNotifier(Notifier *notifier);
 	void unregisterNotifier(Notifier *notifier);

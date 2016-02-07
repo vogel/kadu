@@ -39,13 +39,13 @@ public:
 
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr);
 
-	virtual void notify(Notification *notification);
+	virtual void notify(const Notification &notification);
 
 private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
-	void sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget);
+	void sendNotificationToChatWidget(const Notification &notification, ChatWidget *chatWidget);
 
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);

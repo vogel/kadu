@@ -50,7 +50,7 @@ public:
 	virtual ~FreedesktopNotifier();
 
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) { Q_UNUSED(parent); return 0; }
-	virtual void notify(Notification *notification);
+	virtual void notify(const Notification &notification);
 
 protected:
 	void configurationUpdated();
@@ -67,7 +67,7 @@ private:
 	QRegExp StripBr;
 	QRegExp StripHtml;
 	QRegExp StripUnsupportedHtml;
-	QMap<unsigned int, Notification *> NotificationMap;
+	QMap<unsigned int, Notification> NotificationMap;
 
 	bool CustomTimeout;
 	int Timeout;

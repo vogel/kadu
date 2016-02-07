@@ -62,9 +62,9 @@ void WindowNotifier::init()
 	createDefaultConfiguration();
 }
 
-void WindowNotifier::notify(Notification *notification)
+void WindowNotifier::notify(const Notification &notification)
 {
-	auto window = m_injectedFactory->makeInjected<WindowNotifierWindow>(this, notification);
+	auto window = m_injectedFactory->makeInjected<WindowNotifierWindow>(notification);
 
 	window->show();
 	_activateWindow(m_configuration, window);

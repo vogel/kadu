@@ -19,7 +19,6 @@
 
 #include "mediaplayer-notification-service.h"
 
-#include "misc/memory.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -57,10 +56,10 @@ void MediaplayerNotificationService::done()
 
 void MediaplayerNotificationService::notifyPlayingTitle(const QString &title)
 {
-	auto notification = make_unique<Notification>(QVariantMap{}, m_playingTitleEvent.name(), KaduIcon{"external_modules/mediaplayer-media-playback-play"});
-	notification->setText(Qt::escape(title));
+	auto notification = Notification{QVariantMap{}, m_playingTitleEvent.name(), KaduIcon{"external_modules/mediaplayer-media-playback-play"}};
+	notification.setText(Qt::escape(title));
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 }
 
 #include "moc_mediaplayer-notification-service.cpp"

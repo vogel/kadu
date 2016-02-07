@@ -97,25 +97,25 @@ QString DockingNotifier::toPlainText(const QString &text)
 	return doc.toPlainText();
 }
 
-QString DockingNotifier::parseText(const QString &text, Notification *notification, const QString &def)
+QString DockingNotifier::parseText(const QString &text, const Notification &notification, const QString &def)
 {
 	QString ret;
 
-	chat = notification->data()["chat"].value<Chat>();
+	chat = notification.data()["chat"].value<Chat>();
 
 	if (!text.isEmpty())
 	{
 		if (chat)
 		{
 			Contact contact = *chat.contacts().constBegin();
-			ret = m_parser->parse(text, Talkable(contact), notification, ParserEscape::HtmlEscape);
+			ret = m_parser->parse(text, Talkable(contact), &notification, ParserEscape::HtmlEscape);
 		}
 		else
-			ret = m_parser->parse(text, notification, ParserEscape::HtmlEscape);
+			ret = m_parser->parse(text, &notification, ParserEscape::HtmlEscape);
 
-		ret = ret.replace("%&m", notification->text());
-		ret = ret.replace("%&t", notification->title());
-		ret = ret.replace("%&d", notification->details().join(QStringLiteral("\n")));
+		ret = ret.replace("%&m", notification.text());
+		ret = ret.replace("%&t", notification.title());
+		ret = ret.replace("%&d", notification.details().join(QStringLiteral("\n")));
 	}
 	else
 		ret = def;
@@ -124,23 +124,19 @@ QString DockingNotifier::parseText(const QString &text, Notification *notificati
 	return toPlainText(ret);
 }
 
-void DockingNotifier::notify(Notification *notification)
+void DockingNotifier::notify(const Notification &notification)
 {
 	kdebugf();
 
-	notification->acquire(this);
-
-	auto key = m_notificationManager->notifyConfigurationKey(notification->type());
+	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
 	unsigned int timeout = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + key + "_timeout");
 	unsigned int icon = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + key + "_icon");
 	QString title = m_configuration->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + key + "_title");
 	QString syntax = m_configuration->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + key + "_syntax");
 
-	m_docking->showMessage(parseText(title, notification, notification->text()),
-		parseText(syntax, notification, notification->details().join(QStringLiteral("\n"))),
+	m_docking->showMessage(parseText(title, notification, notification.text()),
+		parseText(syntax, notification, notification.details().join(QStringLiteral("\n"))),
 		(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
-
-	notification->release(this);
 
 	kdebugf2();
 }

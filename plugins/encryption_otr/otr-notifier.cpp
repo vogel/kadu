@@ -74,11 +74,11 @@ QList<NotificationEvent > OtrNotifier::notifyEvents()
 
 void OtrNotifier::notify(const QString &topic, const Account &account, const QString &message)
 {
-	auto notification = make_unique<Notification>(account, Chat::null, topic, KaduIcon());
-	notification->setTitle(tr("OTR Encryption"));
-	notification->setText(message);
+	auto notification = Notification{account, Chat::null, topic, KaduIcon()};
+	notification.setTitle(tr("OTR Encryption"));
+	notification.setText(message);
 
-	m_notificationManager->notify(notification.release());
+	m_notificationManager->notify(notification);
 }
 
 void OtrNotifier::notify(const Contact &contact, const QString &message)

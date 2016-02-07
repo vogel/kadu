@@ -19,7 +19,6 @@
 
 #include "screenshot-notification-service.h"
 
-#include "misc/memory.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -57,11 +56,11 @@ void ScreenshotNotificationService::done()
 
 void ScreenshotNotificationService::notifySizeLimit(long size)
 {
-	auto notification = make_unique<Notification>(QVariantMap{}, m_sizeLimitEvent.name(), KaduIcon{"kadu_icons/blocking"});
-	notification->setTitle(tr("ScreenShot size limit"));
-	notification->setText(tr("Images size limit exceed: %1 KB").arg(size/1024));
+	auto notification = Notification{QVariantMap{}, m_sizeLimitEvent.name(), KaduIcon{"kadu_icons/blocking"}};
+	notification.setTitle(tr("ScreenShot size limit"));
+	notification.setText(tr("Images size limit exceed: %1 KB").arg(size/1024));
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 }
 
 #include "moc_screenshot-notification-service.cpp"

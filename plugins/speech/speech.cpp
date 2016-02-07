@@ -130,7 +130,7 @@ void Speech::say(const QString &s, const QString &path,
 	kdebugf2();
 }
 
-void Speech::notify(Notification *notification)
+void Speech::notify(const Notification &notification)
 {
 	kdebugf();
 
@@ -143,7 +143,7 @@ void Speech::notify(Notification *notification)
 	QString text;
 	QString sex = "Male";
 
-	auto chat = notification->data()["chat"].value<Chat>();
+	auto chat = notification.data()["chat"].value<Chat>();
 
 	// TODO:
 	if (chat)
@@ -152,12 +152,12 @@ void Speech::notify(Notification *notification)
 			sex = "Female";
 	}
 
-	QString syntax = m_configuration->deprecatedApi()->readEntry("Speech", notification->type() + "_Syntax/" + sex, QString());
+	QString syntax = m_configuration->deprecatedApi()->readEntry("Speech", notification.type() + "_Syntax/" + sex, QString());
 	if (syntax.isEmpty())
-		text = notification->text();
+		text = notification.text();
 	else
 	{
-		QString details = notification->details().join(QStringLiteral("\n"));
+		QString details = notification.details().join(QStringLiteral("\n"));
 		if (details.length() > m_configuration->deprecatedApi()->readNumEntry("Speech", "MaxLength"))
 			syntax = m_configuration->deprecatedApi()->readEntry("Speech", "MsgTooLong" + sex);
 
@@ -166,10 +166,10 @@ void Speech::notify(Notification *notification)
 		if (chat)
 		{
 			Contact contact = *chat.contacts().begin();
-			text = m_parser->parse(syntax, Talkable(contact), notification, ParserEscape::HtmlEscape);
+			text = m_parser->parse(syntax, Talkable(contact), &notification, ParserEscape::HtmlEscape);
 		}
 		else
-			text= m_parser->parse(syntax, notification, ParserEscape::HtmlEscape);
+			text= m_parser->parse(syntax, &notification, ParserEscape::HtmlEscape);
 	}
 
 	QTextDocument document;

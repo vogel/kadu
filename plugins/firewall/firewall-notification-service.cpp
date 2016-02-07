@@ -21,7 +21,6 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "misc/memory.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -68,14 +67,14 @@ void FirewallNotificationService::notifyBlockedMessage(const Chat &chat, const C
 	data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
 	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
-	auto notification = make_unique<Notification>(data, m_blockedMessageEvent.name(), KaduIcon{"kadu_icons/blocking"});
-	notification->addChatCallbacks();
-	notification->setTitle(tr("Message was blocked"));
-	notification->setText(m_configuration->deprecatedApi()->readEntry("Firewall", "notification_syntax",
+	auto notification = Notification{data, m_blockedMessageEvent.name(), KaduIcon{"kadu_icons/blocking"}};
+	notification.addChatCallbacks();
+	notification.setTitle(tr("Message was blocked"));
+	notification.setText(m_configuration->deprecatedApi()->readEntry("Firewall", "notification_syntax",
 		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m"));
-	notification->setDetails(Qt::escape(message));
+	notification.setDetails(Qt::escape(message));
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 }
 
 #include "moc_firewall-notification-service.cpp"

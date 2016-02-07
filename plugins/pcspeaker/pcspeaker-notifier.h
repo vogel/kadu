@@ -43,7 +43,7 @@ public:
 	Q_INVOKABLE explicit PCSpeakerNotifier(QObject *parent = nullptr);
 	~PCSpeakerNotifier();
 
-	virtual void notify(Notification *notification) override;
+	virtual void notify(const Notification &notification) override;
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) override;
 
 	void parseAndPlay(QString linia);

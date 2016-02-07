@@ -41,7 +41,7 @@ public:
 	virtual ~SoundNotifier();
 
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr) override;
-	virtual void notify(Notification *notification) override;
+	virtual void notify(const Notification &notification) override;
 
 private slots:
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);

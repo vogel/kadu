@@ -109,9 +109,9 @@ public:
 	void setSilentMode(bool silentMode);
 	bool silentMode();
 
-	void notify(Notification *notification);
-	void acceptNotification(Notification *notification);
-	void discardNotification(Notification *notification);
+	void notify(const Notification &notification);
+	void acceptNotification(const Notification &notification);
+	void discardNotification(const Notification &notification);
 
 signals:
 	void silentModeToggled(bool);

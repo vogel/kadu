@@ -19,7 +19,6 @@
 
 #include "antistring-notification-service.h"
 
-#include "misc/memory.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -61,12 +60,12 @@ void AntistringNotificationService::notifyStringReceived(const Chat &chat)
 	data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
 	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
-	auto notification = make_unique<Notification>(QVariantMap{}, m_stringReceivedEvent.name(), KaduIcon{"kadu_icons/blocking"});
-	notification->addChatCallbacks();
-	notification->setTitle(tr("Antistring"));
-	notification->setText(tr("Your interlocutor send you love letter"));
+	auto notification = Notification{QVariantMap{}, m_stringReceivedEvent.name(), KaduIcon{"kadu_icons/blocking"}};
+	notification.addChatCallbacks();
+	notification.setTitle(tr("Antistring"));
+	notification.setText(tr("Your interlocutor send you love letter"));
 
-	m_notificationService->notify(notification.release());
+	m_notificationService->notify(notification);
 
 }
 
