@@ -28,10 +28,9 @@
 
 class Account;
 class AntistringConfiguration;
+class AntistringNotificationService;
 class Contact;
-class InjectedFactory;
 class MessageManager;
-class NotificationManager;
 
 class AntistringMessageFilter : public QObject, public MessageFilter
 {
@@ -45,17 +44,15 @@ public:
 
 private:
 	QPointer<AntistringConfiguration> m_antistringConfiguration;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<AntistringNotificationService> m_antistringNotificationService;
 	QPointer<MessageManager> m_messageManager;
-	QPointer<NotificationManager> m_notificationManager;
 
 	int points(const QString &message);
 	void writeLog(Contact sender, const QString &message);
 
 private slots:
 	INJEQT_SET void setAntistringConfiguration(AntistringConfiguration *antistringConfiguration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setAntistringNotificationService(AntistringNotificationService *antistringNotificationService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 
 };

@@ -22,6 +22,7 @@
 #include "antistring-configuration-ui-handler.h"
 #include "antistring-configuration.h"
 #include "antistring-message-filter.h"
+#include "antistring-notification-service.h"
 #include "antistring-plugin-object.h"
 
 AntistringModule::AntistringModule()
@@ -29,5 +30,6 @@ AntistringModule::AntistringModule()
 	add_type<AntistringConfigurationUiHandler>();
 	add_type<AntistringConfiguration>();
 	add_type<AntistringMessageFilter>();
+	add_type<AntistringNotificationService>();
 	add_type<AntistringPluginObject>();
 }

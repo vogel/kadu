@@ -9,7 +9,7 @@ set (SOURCES
 	antistring-configuration-ui-handler.cpp
 	antistring-message-filter.cpp
 	antistring-module.cpp
-	antistring-notification.cpp
+	antistring-notification-service.cpp
 	antistring-plugin-modules-factory.cpp
 	antistring-plugin-object.cpp
 )

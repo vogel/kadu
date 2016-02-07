@@ -21,13 +21,14 @@
 #include "antistring-message-filter.h"
 
 #include "antistring-configuration.h"
-#include "antistring-notification.h"
+#include "antistring-notification-service.h"
 
-#include "core/injected-factory.h"
+#include "chat/chat.h"
+#include "contacts/contact.h"
 #include "message/message-manager.h"
-#include "notification/notification-manager.h"
 
 #include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
 AntistringMessageFilter::AntistringMessageFilter(QObject *parent) :
 		QObject{parent}
@@ -43,19 +44,14 @@ void AntistringMessageFilter::setAntistringConfiguration(AntistringConfiguration
 	m_antistringConfiguration = antistringConfiguration;
 }
 
-void AntistringMessageFilter::setInjectedFactory(InjectedFactory *injectedFactory)
+void AntistringMessageFilter::setAntistringNotificationService(AntistringNotificationService *antistringNotificationService)
 {
-	m_injectedFactory = injectedFactory;
+	m_antistringNotificationService = antistringNotificationService;
 }
 
 void AntistringMessageFilter::setMessageManager(MessageManager *messageManager)
 {
 	m_messageManager = messageManager;
-}
-
-void AntistringMessageFilter::setNotificationManager(NotificationManager *notificationManager)
-{
-	m_notificationManager = notificationManager;
 }
 
 bool AntistringMessageFilter::acceptMessage(const Message &message)
@@ -69,7 +65,7 @@ bool AntistringMessageFilter::acceptMessage(const Message &message)
 	if (points(message.plainTextContent()) < 3)
 		return true;
 
-	AntistringNotification::notifyStringReceived(m_injectedFactory, m_notificationManager, message.messageChat());
+	m_antistringNotificationService->notifyStringReceived(message.messageChat());
 	m_messageManager->sendMessage(message.messageChat(), m_antistringConfiguration->returnMessage(), true);
 
 	if (m_antistringConfiguration->logMessage())

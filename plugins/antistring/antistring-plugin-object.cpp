@@ -27,8 +27,6 @@
 #include "gui/windows/main-configuration-window.h"
 #include "message/message-filter-service.h"
 #include "misc/paths-provider.h"
-#include "notification/notification-event.h"
-#include "notification/notification-event-repository.h"
 
 AntistringPluginObject::AntistringPluginObject(QObject *parent) :
 		QObject{parent},
@@ -65,11 +63,6 @@ void AntistringPluginObject::setMessageFilterService(MessageFilterService *messa
 	m_messageFilterService = messageFilterService;
 }
 
-void AntistringPluginObject::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
-{
-	m_notificationEventRepository = notificationEventRepository;
-}
-
 void AntistringPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -80,12 +73,10 @@ void AntistringPluginObject::init()
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/antistring.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_antistringConfigurationUiHandler);
 	m_messageFilterService->registerMessageFilter(m_antistringMessageFilter);
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")});
 }
 
 void AntistringPluginObject::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"Antistring", QT_TRANSLATE_NOOP("@default", "Antistring notifications")});
 	m_messageFilterService->unregisterMessageFilter(m_antistringMessageFilter);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_antistringConfigurationUiHandler);
 	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/antistring.ui"));
