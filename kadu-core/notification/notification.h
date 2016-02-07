@@ -80,7 +80,6 @@ public:
 	const QList<QString> & getCallbacks() { return Callbacks; }
 
 signals:
-	void updated(Notification *);
 	void closed(Notification *);
 
 protected:
