@@ -4,6 +4,7 @@ set (message_SRCS
 	message-html-renderer-service.cpp
 	message-manager.cpp
 	message-module.cpp
+	message-notification-service.cpp
 	message-render-info.cpp
 	message-render-info-builder.cpp
 	message-render-info-factory.cpp
@@ -14,10 +15,4 @@ set (message_SRCS
 	unread-message-repository.cpp
 )
 
-set (message_MOC_SRCS
-	message-html-renderer-service.h
-	message-manager.h
-	message-shared.h
-)
-
-kadu_subdirectory (message "${message_SRCS}" "${message_MOC_SRCS}" "")
+kadu_subdirectory (message "${message_SRCS}" "" "")

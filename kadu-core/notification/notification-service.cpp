@@ -33,7 +33,6 @@
 #include "notification/listener/account-event-listener.h"
 #include "notification/listener/chat-event-listener.h"
 #include "notification/listener/group-event-listener.h"
-#include "notification/notification/new-message-notification.h"
 #include "notification/notification/notification.h"
 #include "notification/notification-callback.h"
 #include "notification/notification-callback-repository.h"
@@ -143,22 +142,10 @@ void NotificationService::init()
 		tr("Ignore"),
 		[](Notification *) {}
 	};
-	auto openChatCallback = NotificationCallback{
-		"chat-open",
-		tr("Chat"),
-		[this](Notification *notification) {
-			auto chat = notification->data()["chat"].value<Chat>();
-			if (chat)
-				m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
-		}
-	};
 
 	m_notificationCallbackRepository->addCallback(ignoreCallback);
-	m_notificationCallbackRepository->addCallback(openChatCallback);
 
 	Notification::registerParserTags(m_parser);
-
-	MessageNotification::registerEvents(m_notificationEventRepository);
 
 	m_notificationManager->registerNotifier(m_windowNotifier);
 
@@ -177,8 +164,6 @@ void NotificationService::done()
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_notifyConfigurationUiHandler);
 
 	m_notificationManager->unregisterNotifier(m_windowNotifier);
-
-	MessageNotification::unregisterEvents(m_notificationEventRepository);
 
 	delete notifyAboutUserActionDescription;
 	delete SilentModeActionDescription;
