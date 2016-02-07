@@ -29,7 +29,6 @@ class FirewallConfigurationUiHandler;
 class FirewallMessageFilter;
 class MainConfigurationWindowService;
 class MessageFilterService;
-class NotificationEventRepository;
 class PathsProvider;
 
 class FirewallPluginObject : public QObject
@@ -47,7 +46,6 @@ private:
 	QPointer<FirewallMessageFilter> m_firewallMessageFilter;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MessageFilterService> m_messageFilterService;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
@@ -56,7 +54,6 @@ private slots:
 	INJEQT_SET void setFirewallMessageFilter(FirewallMessageFilter *firewallMessageFilter);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

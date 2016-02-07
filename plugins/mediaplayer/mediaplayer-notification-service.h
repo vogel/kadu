@@ -21,7 +21,6 @@
 
 #include "injeqt-type-roles.h"
 
-#include "notification/notification-callback.h"
 #include "notification/notification-event.h"
 
 #include <QtCore/QObject>

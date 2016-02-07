@@ -21,12 +21,14 @@
 
 #include "firewall-configuration-ui-handler.h"
 #include "firewall-message-filter.h"
+#include "firewall-notification-service.h"
 #include "firewall-plugin-object.h"
 
 FirewallModule::FirewallModule()
 {
 	add_type<FirewallConfigurationUiHandler>();
 	add_type<FirewallMessageFilter>();
+	add_type<FirewallNotificationService>();
 	add_type<FirewallPluginObject>();
 }
 

@@ -39,6 +39,9 @@ Nowa funkcjonalnosc - Dorregaray
 #include <QtCore/QTimer>
 #include <QtWidgets/QMessageBox>
 
+#include "firewall-message-filter.h"
+#include "firewall-notification-service.h"
+
 #include "plugins/history/history-plugin-object.h"
 #include "plugins/history/history.h"
 
@@ -63,14 +66,8 @@ Nowa funkcjonalnosc - Dorregaray
 #include "message/message-manager.h"
 #include "message/message-storage.h"
 #include "misc/paths-provider.h"
-#include "notification/notification-manager.h"
-#include "notification/notification.h"
 #include "status/status-container.h"
 #include "debug.h"
-
-#include "firewall-notification.h"
-
-#include "firewall-message-filter.h"
 
 FirewallMessageFilter::FirewallMessageFilter(QObject *parent) :
 		QObject{parent},
@@ -115,6 +112,11 @@ void FirewallMessageFilter::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void FirewallMessageFilter::setFirewallNotificationService(FirewallNotificationService *firewallNotificationService)
+{
+	m_firewallNotificationService = firewallNotificationService;
+}
+
 void FirewallMessageFilter::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	m_formattedStringFactory = formattedStringFactory;
@@ -143,11 +145,6 @@ void FirewallMessageFilter::setMessageManager(MessageManager *messageManager)
 void FirewallMessageFilter::setMessageStorage(MessageStorage *messageStorage)
 {
 	m_messageStorage = messageStorage;
-}
-
-void FirewallMessageFilter::setNotificationManager(NotificationManager *notificationManager)
-{
-	m_notificationManager = notificationManager;
 }
 
 void FirewallMessageFilter::setPathsProvider(PathsProvider *pathsProvider)
@@ -216,7 +213,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 			ignore = true;
 			if (LastNotify.elapsed() > min_interval_notify)
 			{
-				FirewallNotification::notify(m_configuration, m_injectedFactory, m_notificationManager, message.messageChat(), message.messageSender(), tr("flooding DoS attack with emoticons!"));
+				m_firewallNotificationService->notifyBlockedMessage(message.messageChat(), message.messageSender(), tr("flooding DoS attack with emoticons!"));
 
 				writeLog(message.messageSender(), message.plainTextContent());
 
@@ -233,7 +230,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 		ignore = true;
 		if (LastNotify.elapsed() > min_interval_notify)
 		{
-			FirewallNotification::notify(m_configuration, m_injectedFactory, m_notificationManager, message.messageChat(), message.messageSender(), tr("flooding DoS attack!"));
+			m_firewallNotificationService->notifyBlockedMessage(message.messageChat(), message.messageSender(), tr("flooding DoS attack!"));
 
 			writeLog(message.messageSender(), message.plainTextContent());
 
@@ -255,9 +252,9 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 	if (ignore)
 	{
 		if (message.plainTextContent().length() > 50)
-			FirewallNotification::notify(m_configuration, m_injectedFactory, m_notificationManager, message.messageChat(), message.messageSender(), message.plainTextContent().left(50).append("..."));
+			m_firewallNotificationService->notifyBlockedMessage(message.messageChat(), message.messageSender(), message.plainTextContent().left(50).append("..."));
 		else
-			FirewallNotification::notify(m_configuration, m_injectedFactory, m_notificationManager, message.messageChat(), message.messageSender(), message.plainTextContent());
+			m_firewallNotificationService->notifyBlockedMessage(message.messageChat(), message.messageSender(), message.plainTextContent());
 
 		writeLog(message.messageSender(), message.plainTextContent());
 

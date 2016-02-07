@@ -43,6 +43,7 @@ class ChatWidget;
 class ChatWidgetRepository;
 class Configuration;
 class Contact;
+class FirewallNotificationService;
 class FormattedStringFactory;
 class History;
 class IncomingMessageFirewallFilter;
@@ -51,7 +52,6 @@ class KaduWindowService;
 class MessageManager;
 class MessageStorage;
 class Message;
-class NotificationManager;
 class OutgoingMessageFirewallFilter;
 class PathsProvider;
 
@@ -75,13 +75,13 @@ private:
 	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
+	QPointer<FirewallNotificationService> m_firewallNotificationService;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<History> m_history;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MessageStorage> m_messageStorage;
 	QPointer<MessageManager> m_messageManager;
-	QPointer<NotificationManager> m_notificationManager;
 	QPointer<PathsProvider> m_pathsProvider;
 
 	BuddySet SecuredTemporaryAllowed;
@@ -127,13 +127,13 @@ private slots:
 	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setFirewallNotificationService(FirewallNotificationService *firewallNotificationService);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setHistory(History *history);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

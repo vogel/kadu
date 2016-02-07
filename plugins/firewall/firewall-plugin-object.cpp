@@ -27,8 +27,6 @@
 #include "gui/windows/main-configuration-window.h"
 #include "message/message-filter-service.h"
 #include "misc/paths-provider.h"
-#include "notification/notification-event-repository.h"
-#include "notification/notification-event.h"
 #include "status/status-changer-manager.h"
 
 FirewallPluginObject::FirewallPluginObject(QObject *parent) :
@@ -65,11 +63,6 @@ void FirewallPluginObject::setMessageFilterService(MessageFilterService *message
 	m_messageFilterService = messageFilterService;
 }
 
-void FirewallPluginObject::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
-{
-	m_notificationEventRepository = notificationEventRepository;
-}
-
 void FirewallPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -80,12 +73,10 @@ void FirewallPluginObject::init()
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/firewall.ui"));
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_firewallConfigurationUiHandler);
 	m_messageFilterService->registerMessageFilter(m_firewallMessageFilter);
-	m_notificationEventRepository->addNotificationEvent(NotificationEvent{"firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")});
 }
 
 void FirewallPluginObject::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(NotificationEvent{"firewallNotification", QT_TRANSLATE_NOOP("@default", "Message was firewalled")});
 	m_messageFilterService->unregisterMessageFilter(m_firewallMessageFilter);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_firewallConfigurationUiHandler);
 	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/firewall.ui"));

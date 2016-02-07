@@ -8,7 +8,7 @@ set (SOURCES
 	firewall-configuration-ui-handler.cpp
 	firewall-message-filter.cpp
 	firewall-module.cpp
-	firewall-notification.cpp
+	firewall-notification-service.cpp
 	firewall-plugin-modules-factory.cpp
 	firewall-plugin-object.cpp
 )

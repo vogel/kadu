@@ -27,33 +27,35 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class ChatWidgetManager;
-class ScreenshotManager;
-class Screenshot;
+class Chat;
+class Configuration;
+class Contact;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationService;
 class Notification;
 
-class ScreenshotNotificationService : public QObject
+class FirewallNotificationService : public QObject
 {
 	Q_OBJECT
 	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit ScreenshotNotificationService(QObject *parent = nullptr);
-	virtual ~ScreenshotNotificationService();
+	Q_INVOKABLE explicit FirewallNotificationService(QObject *parent = nullptr);
+	virtual ~FirewallNotificationService();
 
 public slots:
-	void notifySizeLimit(long size);
+	void notifyBlockedMessage(const Chat &chat, const Contact &sender, const QString &message);
 
 private:
+	QPointer<Configuration> m_configuration;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationService> m_notificationService;
 
-	NotificationEvent m_sizeLimitEvent;
+	NotificationEvent m_blockedMessageEvent;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 	INJEQT_INIT void init();
