@@ -111,7 +111,7 @@ QObject * SoundManager::playSoundByName(const QString &soundName)
 
 QObject * SoundManager::testSoundPlaying()
 {
-	auto soundFile = QString{m_soundThemeManager->themes()->themePath("default") + "msg.wav"};
+	auto soundFile = m_soundThemeManager->themes()->themePath("default") + "msg.wav";
 	return playFile(soundFile, true, true);
 }
 
