@@ -22,13 +22,14 @@
 #include "buddies/buddy.h"
 #include "configuration/configuration-aware-object.h"
 #include "exports.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class BuddyStorage;
 class Configuration;
+class InjectorProvider;
 
 class KADUAPI Myself : public QObject, private ConfigurationAwareObject
 {
@@ -44,14 +45,14 @@ protected:
 	virtual void configurationUpdated() override;
 
 private:
-	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<Configuration> m_configuration;
+	QPointer<InjectorProvider> m_injectorProvider;
 
 	Buddy m_buddy;
 
 private slots:
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
 	INJEQT_INIT void init();
 
 };
