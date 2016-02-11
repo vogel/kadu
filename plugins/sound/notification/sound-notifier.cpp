@@ -26,6 +26,7 @@
 
 #include "notification/notification-manager.h"
 #include "notification/notification.h"
+#include "notification/notifier-repository.h"
 
 #include <QtCore/QFileInfo>
 
@@ -42,6 +43,11 @@ SoundNotifier::~SoundNotifier()
 void SoundNotifier::setNotificationManager(NotificationManager *notificationManager)
 {
 	m_notificationManager = notificationManager;
+}
+
+void SoundNotifier::setNotifierRepository(NotifierRepository *notifierRepository)
+{
+	m_notifierRepository = notifierRepository;
 }
 
 void SoundNotifier::setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler)

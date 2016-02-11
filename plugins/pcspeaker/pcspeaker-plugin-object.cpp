@@ -21,7 +21,7 @@
 
 #include "pcspeaker-notifier.h"
 
-#include "notification/notification-manager.h"
+#include "notification/notifier-repository.h"
 
 PCSpeakerPluginObject::PCSpeakerPluginObject(QObject *parent) :
 		QObject{parent}
@@ -32,9 +32,9 @@ PCSpeakerPluginObject::~PCSpeakerPluginObject()
 {
 }
 
-void PCSpeakerPluginObject::setNotificationManager(NotificationManager *notificationManager)
+void PCSpeakerPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notificationManager = notificationManager;
+	m_notifierRepository = notifierRepository;
 }
 
 void PCSpeakerPluginObject::setPCSpeakerNotifier(PCSpeakerNotifier *pcSpeakerNotifier)
@@ -44,12 +44,12 @@ void PCSpeakerPluginObject::setPCSpeakerNotifier(PCSpeakerNotifier *pcSpeakerNot
 
 void PCSpeakerPluginObject::init()
 {
-	m_notificationManager->registerNotifier(m_pcSpeakerNotifier);
+	m_notifierRepository->registerNotifier(m_pcSpeakerNotifier);
 }
 
 void PCSpeakerPluginObject::done()
 {
-	m_notificationManager->unregisterNotifier(m_pcSpeakerNotifier);
+	m_notifierRepository->unregisterNotifier(m_pcSpeakerNotifier);
 }
 
 #include "moc_pcspeaker-plugin-object.cpp"

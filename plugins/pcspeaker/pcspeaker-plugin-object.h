@@ -24,7 +24,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class NotificationManager;
+class NotifierRepository;
 class PCSpeakerNotifier;
 
 class PCSpeakerPluginObject : public QObject
@@ -37,13 +37,13 @@ public:
 	virtual ~PCSpeakerPluginObject();
 
 private:
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<PCSpeakerNotifier> m_pcSpeakerNotifier;
 
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setPCSpeakerNotifier(PCSpeakerNotifier *pcSpeakerNotifier);
 
 };

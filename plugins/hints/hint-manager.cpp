@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QHBoxLayout>
@@ -39,8 +40,8 @@
 #include "message/sorted-messages.h"
 #include "message/unread-message-repository.h"
 #include "misc/misc.h"
-#include "notification/notification-manager.h"
 #include "notification/notification.h"
+#include "notification/notifier-repository.h"
 #include "parser/parser.h"
 
 #include "icons/icons-manager.h"
@@ -90,9 +91,9 @@ void HintManager::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
-void HintManager::setNotificationManager(NotificationManager *notificationManager)
+void HintManager::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notificationManager = notificationManager;
+	m_notifierRepository = notifierRepository;
 }
 
 void HintManager::setParser(Parser *parser)
@@ -154,7 +155,7 @@ void HintManager::init()
 	if (m_configuration->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax").isEmpty())
 		m_configuration->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", default_hints_syntax);
 
-	m_notificationManager->registerNotifier(this);
+	m_notifierRepository->registerNotifier(this);
 	m_toolTipClassManager->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
 	configurationUpdated();
@@ -172,7 +173,7 @@ void HintManager::done()
 		hint_timer->stop();
 
 	m_toolTipClassManager->unregisterToolTipClass("Hints");
-	m_notificationManager->unregisterNotifier(this);
+	m_notifierRepository->unregisterNotifier(this);
 
 	disconnect();
 

@@ -45,6 +45,7 @@ class Message;
 struct MultilogonSession;
 class NotificationService;
 class Notification;
+class NotifierRepository;
 class Notifier;
 
 /**
@@ -59,13 +60,13 @@ class KADUAPI NotificationManager : public QObject
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationService> m_notificationService;
-
-	QList<Notifier *> Notifiers;
+	QPointer<NotifierRepository> m_notifierRepository;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 
 public:
 	Q_INVOKABLE explicit NotificationManager(QObject *parent = nullptr);
@@ -73,16 +74,7 @@ public:
 
 	void notify(const Notification &notification);
 
-	void registerNotifier(Notifier *notifier);
-	void unregisterNotifier(Notifier *notifier);
-
-	const QList<Notifier *> & notifiers() const;
-
 	QString notifyConfigurationKey(const QString &eventType);
-
-signals:
-	void notiferRegistered(Notifier *notifier);
-	void notiferUnregistered(Notifier *notifier);
 
 };
 

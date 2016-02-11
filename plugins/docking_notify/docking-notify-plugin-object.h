@@ -25,7 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class DockingNotifier;
-class NotificationManager;
+class NotifierRepository;
 
 class DockingNotifyPluginObject : public QObject
 {
@@ -38,12 +38,12 @@ public:
 
 private:
 	QPointer<DockingNotifier> m_dockingNotifier;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotifierRepository> m_notifierRepository;
 
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 	INJEQT_SET void setDockingNotifier(DockingNotifier *dockingNotifier);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 
 };

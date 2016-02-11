@@ -31,7 +31,7 @@
 #include <QtWidgets/QHeaderView>
 
 #include "core/injected-factory.h"
-#include "notification/notification-manager.h"
+#include "notification/notifier-repository.h"
 #include "notification/notifier.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/notification-event.h"
@@ -54,9 +54,9 @@ void NotifyTreeWidgetDelegate::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void NotifyTreeWidgetDelegate::setNotificationManager(NotificationManager *notificationManager)
+void NotifyTreeWidgetDelegate::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notificationManager = notificationManager;
+	m_notifierRepository = notifierRepository;
 }
 
 void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -75,7 +75,7 @@ void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 	int iconWidth = option.decorationSize.width();
 	int iconHeight = option.decorationSize.height();
 
-	for (auto notifier : m_notificationManager->notifiers())
+	for (auto notifier : m_notifierRepository)
 	{
 		if (notifiers.contains(notifier->name()))
 			m_iconsManager->iconByPath(notifier->icon()).paint(painter, rect.left() + position + 4, rect.top() + (rect.height() - iconHeight) / 2, iconWidth, iconHeight);
@@ -104,9 +104,9 @@ void NotifyTreeWidget::setNotificationEventRepository(NotificationEventRepositor
 	m_notificationEventRepository = notificationEventRepository;
 }
 
-void NotifyTreeWidget::setNotificationManager(NotificationManager *notificationManager)
+void NotifyTreeWidget::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notificationManager = notificationManager;
+	m_notifierRepository = notifierRepository;
 }
 
 void NotifyTreeWidget::init()
@@ -144,7 +144,7 @@ void NotifyTreeWidget::refresh()
 	clear();
 	TreeItems.clear();
 
-	ColumnWidth = (IconWidth + 4) * m_notificationManager->notifiers().count();
+	ColumnWidth = (IconWidth + 4) * m_notifierRepository->size();
 	header()->resizeSection(0, eventColumnWidth());
 
 	const QMap<Notifier *, NotifierConfigurationGuiItem> &notifierGuiItems = UiHandler->notifierGui();
@@ -155,7 +155,7 @@ void NotifyTreeWidget::refresh()
 	for (auto &&notifyEvent : m_notificationEventRepository->notificationEvents())
 	{
 		eventName = notifyEvent.name();
-		foreach (Notifier *notifier, m_notificationManager->notifiers())
+		for (auto notifier : m_notifierRepository)
 			if (notifierGuiItems[notifier].Events[eventName])
 				notifiersNames << notifier->name();
 

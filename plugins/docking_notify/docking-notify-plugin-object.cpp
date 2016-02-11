@@ -21,7 +21,7 @@
 
 #include "docking-notifier.h"
 
-#include "notification/notification-manager.h"
+#include "notification/notifier-repository.h"
 
 DockingNotifyPluginObject::DockingNotifyPluginObject(QObject *parent) :
 		QObject{parent}
@@ -37,19 +37,19 @@ void DockingNotifyPluginObject::setDockingNotifier(DockingNotifier *dockingNotif
 	m_dockingNotifier = dockingNotifier;
 }
 
-void DockingNotifyPluginObject::setNotificationManager(NotificationManager *notificationManager)
+void DockingNotifyPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notificationManager = notificationManager;
+	m_notifierRepository = notifierRepository;
 }
 
 void DockingNotifyPluginObject::init()
 {
-	m_notificationManager->registerNotifier(m_dockingNotifier);
+	m_notifierRepository->registerNotifier(m_dockingNotifier);
 }
 
 void DockingNotifyPluginObject::done()
 {
-	m_notificationManager->unregisterNotifier(m_dockingNotifier);
+	m_notifierRepository->unregisterNotifier(m_dockingNotifier);
 }
 
 #include "moc_docking-notify-plugin-object.cpp"

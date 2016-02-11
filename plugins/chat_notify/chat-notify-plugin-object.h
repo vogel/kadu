@@ -26,7 +26,7 @@
 
 class ChatNotifier;
 class Configuration;
-class NotificationManager;
+class NotifierRepository;
 
 class ChatNotifyPluginObject : public QObject
 {
@@ -40,14 +40,14 @@ public:
 private:
 	QPointer<ChatNotifier> m_chatNotifier;
 	QPointer<Configuration> m_configuration;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotifierRepository> m_notifierRepository;
 
 	void createDefaultConfiguration();
 
 private slots:
 	INJEQT_SET void setChatNotifier(ChatNotifier *chatNotifier);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

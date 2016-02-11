@@ -43,6 +43,7 @@ class NotificationManager;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class Notification;
+class NotifierRepository;
 class NotifyConfigurationUiHandler;
 class Parser;
 class ScreenModeChecker;
@@ -64,6 +65,7 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<NotifyConfigurationUiHandler> m_notifyConfigurationUiHandler;
 	QPointer<Parser> m_parser;
 	QPointer<StatusContainerManager> m_statusContainerManager;
@@ -127,6 +129,7 @@ private slots:
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);

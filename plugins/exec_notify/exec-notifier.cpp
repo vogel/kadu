@@ -27,6 +27,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
+#include "notification/notifier-repository.h"
 #include "notification/notification-manager.h"
 #include "notification/notification.h"
 #include "parser/parser.h"
@@ -56,6 +57,11 @@ void ExecNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
 void ExecNotifier::setNotificationManager(NotificationManager *notificationManager)
 {
 	m_notificationManager = notificationManager;
+}
+
+void ExecNotifier::setNotifierRepository(NotifierRepository *notifierRepository)
+{
+	m_notifierRepository = notifierRepository;
 }
 
 void ExecNotifier::setParser(Parser *parser)

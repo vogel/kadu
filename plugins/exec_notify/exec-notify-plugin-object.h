@@ -25,7 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class ExecNotifier;
-class NotificationManager;
+class NotifierRepository;
 
 class ExecNotifyPluginObject : public QObject
 {
@@ -38,12 +38,12 @@ public:
 
 private:
 	QPointer<ExecNotifier> m_execNotifier;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotifierRepository> m_notifierRepository;
 
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 	INJEQT_SET void setExecNotifier(ExecNotifier *execNotifier);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 
 };

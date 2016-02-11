@@ -42,7 +42,7 @@ class HintsConfigurationUiHandler;
 class HintsConfigurationWidget;
 class HintOverUserConfigurationWindow;
 class InjectedFactory;
-class NotificationManager;
+class NotifierRepository;
 class Parser;
 class ToolTipClassManager;
 class TrayService;
@@ -56,7 +56,7 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<Parser> m_parser;
 	QPointer<ToolTipClassManager> m_toolTipClassManager;
 	QPointer<TrayService> m_trayService;
@@ -89,7 +89,7 @@ private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
 	INJEQT_SET void setTrayService(TrayService *trayService);

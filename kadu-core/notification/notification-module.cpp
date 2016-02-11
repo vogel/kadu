@@ -26,6 +26,7 @@
 #include "notification/notification-event-repository.h"
 #include "notification/notification-manager.h"
 #include "notification/notification-service.h"
+#include "notification/notifier-repository.h"
 #include "notification/notify-configuration-importer.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/window-notifier.h"
@@ -39,6 +40,7 @@ NotificationModule::NotificationModule()
 	add_type<NotificationEventRepository>();
 	add_type<NotificationManager>();
 	add_type<NotificationService>();
+	add_type<NotifierRepository>();
 	add_type<NotifyConfigurationImporter>();
 	add_type<NotifyConfigurationUiHandler>();
 	add_type<WindowNotifier>();

@@ -36,6 +36,7 @@
 #include <injeqt/injeqt.h>
 
 class InjectedFactory;
+class NotifierRepository;
 class Notifier;
 
 class NotifyTreeWidgetDelegate : public QStyledItemDelegate
@@ -50,11 +51,11 @@ public:
 
 private:
 	QPointer<IconsManager> m_iconsManager;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotifierRepository> m_notifierRepository;
 
 private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 
 };
 
@@ -97,7 +98,7 @@ private:
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotifierRepository> m_notifierRepository;
 
 	NotifyConfigurationUiHandler *UiHandler;
 
@@ -113,7 +114,7 @@ private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_INIT void init();
 
 };

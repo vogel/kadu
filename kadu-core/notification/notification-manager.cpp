@@ -32,6 +32,7 @@
 #include "gui/windows/message-dialog.h"
 #include "notification/notification-service.h"
 #include "notification/notification.h"
+#include "notification/notifier-repository.h"
 #include "notification/notifier.h"
 #include "protocols/protocol.h"
 #include "debug.h"
@@ -45,11 +46,6 @@ NotificationManager::NotificationManager(QObject *parent) :
 
 NotificationManager::~NotificationManager()
 {
-	while (!Notifiers.isEmpty())
-	{
-		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
-		unregisterNotifier(Notifiers.at(0));
-	}
 }
 
 void NotificationManager::setConfiguration(Configuration *configuration)
@@ -67,43 +63,9 @@ void NotificationManager::setNotificationService(NotificationService *notificati
 	m_notificationService = notificationService;
 }
 
-void NotificationManager::registerNotifier(Notifier *notifier)
+void NotificationManager::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	kdebugf();
-
-	if (Notifiers.contains(notifier))
-	{
-		kdebugm(KDEBUG_WARNING, "WARNING: '%s' already exists in notifiers! "
-		"strange... unregistering old Notifier\n", qPrintable(notifier->name()));
-
-		unregisterNotifier(notifier);
-	}
-
-	Notifiers.append(notifier);
-	emit notiferRegistered(notifier);
-
-	kdebugf2();
-}
-
-void NotificationManager::unregisterNotifier(Notifier *notifier)
-{
-	kdebugf();
-
-	if (!Notifiers.contains(notifier))
-	{
-		kdebugm(KDEBUG_WARNING, "WARNING: '%s' not registered!\n", qPrintable(notifier->name()));
-		return;
-	}
-
-	emit notiferUnregistered(notifier);
-	Notifiers.removeAll(notifier);
-
-	kdebugf2();
-}
-
-const QList<Notifier *> & NotificationManager::notifiers() const
-{
-	return Notifiers;
+	m_notifierRepository = notifierRepository;
 }
 
 void NotificationManager::notify(const Notification &rawNotification)
@@ -113,7 +75,7 @@ void NotificationManager::notify(const Notification &rawNotification)
 	auto notifyType = notifyConfigurationKey(rawNotification.type());
 	auto foundNotifier = false;
 
-	for (auto notifier : Notifiers)
+	for (auto notifier : m_notifierRepository)
 	{
 		if (m_configuration->deprecatedApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
 		{

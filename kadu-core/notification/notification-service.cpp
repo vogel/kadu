@@ -37,6 +37,7 @@
 #include "notification/notification-callback.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-event-repository.h"
+#include "notification/notifier-repository.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/window-notifier.h"
 #include "parser/parser.h"
@@ -113,6 +114,11 @@ void NotificationService::setNotificationManager(NotificationManager *notificati
 	m_notificationManager = notificationManager;
 }
 
+void NotificationService::setNotifierRepository(NotifierRepository *notifierRepository)
+{
+	m_notifierRepository = notifierRepository;
+}
+
 void NotificationService::setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler)
 {
 	m_notifyConfigurationUiHandler = notifyConfigurationUiHandler;
@@ -147,7 +153,7 @@ void NotificationService::init()
 
 	Notification::registerParserTags(m_parser);
 
-	m_notificationManager->registerNotifier(m_windowNotifier);
+	m_notifierRepository->registerNotifier(m_windowNotifier);
 
 	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
@@ -163,7 +169,7 @@ void NotificationService::done()
 
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_notifyConfigurationUiHandler);
 
-	m_notificationManager->unregisterNotifier(m_windowNotifier);
+	m_notifierRepository->unregisterNotifier(m_windowNotifier);
 
 	delete notifyAboutUserActionDescription;
 	delete SilentModeActionDescription;

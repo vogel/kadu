@@ -21,9 +21,10 @@
 
 #include "chat-notifier.h"
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "notification/notification-manager.h"
+#include "notification/notifier-repository.h"
 
 ChatNotifyPluginObject::ChatNotifyPluginObject(QObject *parent) :
 		QObject{parent}
@@ -44,21 +45,21 @@ void ChatNotifyPluginObject::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void ChatNotifyPluginObject::setNotificationManager(NotificationManager *notificationManager)
+void ChatNotifyPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notificationManager = notificationManager;
+	m_notifierRepository = notifierRepository;
 }
 
 void ChatNotifyPluginObject::init()
 {
 	createDefaultConfiguration();
 	
-	m_notificationManager->registerNotifier(m_chatNotifier);
+	m_notifierRepository->registerNotifier(m_chatNotifier);
 }
 
 void ChatNotifyPluginObject::done()
 {
-	m_notificationManager->unregisterNotifier(m_chatNotifier);
+	m_notifierRepository->unregisterNotifier(m_chatNotifier);
 }
 
 void ChatNotifyPluginObject::createDefaultConfiguration()

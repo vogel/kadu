@@ -32,7 +32,7 @@
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
-#include "notification/notification-manager.h"
+#include "notification/notifier-repository.h"
 
 SoundPluginObject::SoundPluginObject(QObject *parent) :
 		QObject{parent}
@@ -63,9 +63,9 @@ void SoundPluginObject::setMainConfigurationWindowService(MainConfigurationWindo
 	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
-void SoundPluginObject::setNotificationManager(NotificationManager *notificationManager)
+void SoundPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notificationManager = notificationManager;
+	m_notifierRepository = notifierRepository;
 }
 
 void SoundPluginObject::setPathsProvider(PathsProvider *pathsProvider)
@@ -114,12 +114,12 @@ void SoundPluginObject::init()
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_soundConfigurationUiHandler);
 	m_buddyConfigurationWidgetFactoryRepository->registerFactory(m_soundBuddyConfigurationWidgetFactory);
 	m_chatConfigurationWidgetFactoryRepository->registerFactory(m_soundChatConfigurationWidgetFactory);
-	m_notificationManager->registerNotifier(m_soundNotifier);
+	m_notifierRepository->registerNotifier(m_soundNotifier);
 }
 
 void SoundPluginObject::done()
 {
-	m_notificationManager->unregisterNotifier(m_soundNotifier);
+	m_notifierRepository->unregisterNotifier(m_soundNotifier);
 	m_chatConfigurationWidgetFactoryRepository->unregisterFactory(m_soundChatConfigurationWidgetFactory);
 	m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_soundBuddyConfigurationWidgetFactory);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_soundConfigurationUiHandler);

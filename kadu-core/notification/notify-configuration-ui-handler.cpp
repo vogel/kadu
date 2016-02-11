@@ -43,6 +43,7 @@
 #include "gui/widgets/configuration/notify-tree-widget.h"
 #include "gui/windows/configuration-window.h"
 
+#include "notifier-repository.h"
 #include "notifier.h"
 #include "notification-event-repository.h"
 #include "notification-event.h"
@@ -76,16 +77,16 @@ void NotifyConfigurationUiHandler::setNotificationEventRepository(NotificationEv
 	m_notificationEventRepository = notificationEventRepository;
 }
 
-void NotifyConfigurationUiHandler::setNotificationManager(NotificationManager *notificationManager)
+void NotifyConfigurationUiHandler::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notificationManager = notificationManager;
+	m_notifierRepository = notifierRepository;
 }
 
 void NotifyConfigurationUiHandler::init()
 {
-	connect(m_notificationManager, SIGNAL(notiferRegistered(Notifier *)),
+	connect(m_notifierRepository, SIGNAL(notifierRegistered(Notifier *)),
 			this, SLOT(notifierRegistered(Notifier *)));
-	connect(m_notificationManager, SIGNAL(notiferUnregistered(Notifier *)),
+	connect(m_notifierRepository, SIGNAL(notifierUnregistered(Notifier *)),
 			this, SLOT(notifierUnregistered(Notifier *)));
 
 	connect(m_notificationEventRepository, SIGNAL(notificationEventAdded(NotificationEvent)),
@@ -133,7 +134,7 @@ void NotifyConfigurationUiHandler::removeConfigurationWidget(Notifier *notifier)
 
 void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	foreach (Notifier *notifier, m_notificationManager->notifiers())
+	for (auto notifier : m_notifierRepository)
 	{
 		for (auto &&notifyEvent : m_notificationEventRepository->notificationEvents())
 		{
@@ -174,7 +175,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	connect(useCustomSettingsCheckBox, SIGNAL(toggled(bool)), this, SLOT(customSettingsCheckBoxToggled(bool)));
 	notifierMainWidgetLayout->addWidget(useCustomSettingsCheckBox);
 
-	foreach (Notifier *notifier, m_notificationManager->notifiers())
+	for (auto notifier : m_notifierRepository)
 		addConfigurationWidget(notifier);
 
 	eventSwitched();
@@ -196,7 +197,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowApplied()
 		m_configuration->deprecatedApi()->writeEntry("Notify", notifyEvent.name() + "_UseCustomSettings", NotificationEvents[notifyEvent.name()].useCustomSettings);
 	}
 
-	foreach (Notifier *notifier, m_notificationManager->notifiers())
+	for (auto notifier : m_notifierRepository)
 	{
 		if (!NotifierGui.contains(notifier))
 			continue;
@@ -297,7 +298,7 @@ void NotifyConfigurationUiHandler::eventSwitched()
 	useCustomSettingsCheckBox->setChecked(NotificationEvents[CurrentEvent].useCustomSettings);
 	customSettingsCheckBoxToggled(useCustomSettingsCheckBox->isHidden() || NotificationEvents[CurrentEvent].useCustomSettings);
 
-	foreach (Notifier *notifier, m_notificationManager->notifiers())
+	for (auto notifier : m_notifierRepository)
 	{
 		if (!NotifierGui.contains(notifier))
 			NotifierGui.insert(notifier, NotifierConfigurationGuiItem());

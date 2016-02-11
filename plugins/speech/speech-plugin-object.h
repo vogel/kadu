@@ -26,7 +26,7 @@
 
 class ConfigurationUiHandlerRepository;
 class MainConfigurationWindowService;
-class NotificationManager;
+class NotifierRepository;
 class PathsProvider;
 class SpeechConfigurationUiHandler;
 class Speech;
@@ -43,7 +43,7 @@ public:
 private:
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<SpeechConfigurationUiHandler> m_speechConfigurationUiHandler;
 	QPointer<Speech> m_speech;
@@ -51,7 +51,7 @@ private:
 private slots:
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setSpeechConfigurationUiHandler(SpeechConfigurationUiHandler *speechConfigurationUiHandler);
 	INJEQT_SET void setSpeech(Speech *speech);
