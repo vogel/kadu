@@ -1,4 +1,4 @@
-+++ version 3.0-rc5
++++ version 3.0
 * chat-style: #3057 fixed: all chat styles work again (Vogel)
 * jabber: #3064 fixed: re-enable legacy SSL connection option (Vogel)
 
