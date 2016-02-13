@@ -36,6 +36,7 @@
 #include "notification/notification.h"
 #include "notification/notification-callback.h"
 #include "notification/notification-callback-repository.h"
+#include "notification/notification-dispatcher.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notifier-repository.h"
 #include "notification/notify-configuration-ui-handler.h"
@@ -104,14 +105,14 @@ void NotificationService::setNotificationCallbackRepository(NotificationCallback
 	m_notificationCallbackRepository = notificationCallbackRepository;
 }
 
+void NotificationService::setNotificationDispatcher(NotificationDispatcher *notificationDispatcher)
+{
+	m_notificationDispatcher = notificationDispatcher;
+}
+
 void NotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
 {
 	m_notificationEventRepository = notificationEventRepository;
-}
-
-void NotificationService::setNotificationManager(NotificationManager *notificationManager)
-{
-	m_notificationManager = notificationManager;
 }
 
 void NotificationService::setNotifierRepository(NotifierRepository *notifierRepository)
@@ -337,9 +338,7 @@ void NotificationService::createDefaultConfiguration()
 
 void NotificationService::notify(const Notification &notification)
 {
-	if (!ignoreNotifications())
-		m_notificationManager->notify(notification);
-	else
+	if (ignoreNotifications() || !m_notificationDispatcher->dispatchNotification(notification))
 		discardNotification(notification);
 }
 

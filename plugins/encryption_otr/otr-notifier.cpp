@@ -23,9 +23,9 @@
 #include "chat/type/chat-type-contact.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
-#include "notification/notification-manager.h"
-#include "notification/notification.h"
 #include "notification/notification-event.h"
+#include "notification/notification-service.h"
+#include "notification/notification.h"
 
 #include "otr-notifier.h"
 
@@ -59,9 +59,9 @@ void OtrNotifier::setChatWidgetRepository(ChatWidgetRepository *chatWidgetReposi
 	MyChatWidgetRepository = chatWidgetRepository;
 }
 
-void OtrNotifier::setNotificationManager(NotificationManager *notificationManager)
+void OtrNotifier::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationManager = notificationManager;
+	m_notificationService = notificationService;
 }
 
 QList<NotificationEvent > OtrNotifier::notifyEvents()
@@ -78,7 +78,7 @@ void OtrNotifier::notify(const QString &topic, const Account &account, const QSt
 	notification.setTitle(tr("OTR Encryption"));
 	notification.setText(message);
 
-	m_notificationManager->notify(notification);
+	m_notificationService->notify(notification);
 }
 
 void OtrNotifier::notify(const Contact &contact, const QString &message)

@@ -53,43 +53,6 @@ void NotificationManager::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void NotificationManager::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
-void NotificationManager::setNotificationService(NotificationService *notificationService)
-{
-	m_notificationService = notificationService;
-}
-
-void NotificationManager::setNotifierRepository(NotifierRepository *notifierRepository)
-{
-	m_notifierRepository = notifierRepository;
-}
-
-void NotificationManager::notify(const Notification &rawNotification)
-{
-	kdebugf();
-
-	auto notifyType = notifyConfigurationKey(rawNotification.type());
-	auto foundNotifier = false;
-
-	for (auto notifier : m_notifierRepository)
-	{
-		if (m_configuration->deprecatedApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
-		{
-			notifier->notify(rawNotification);
-			foundNotifier = true;
-		}
-	}
-
-	if (!foundNotifier)
-		m_notificationService->discardNotification(rawNotification);
-
-	kdebugf2();
-}
-
 QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 {
 	QString event = eventType;

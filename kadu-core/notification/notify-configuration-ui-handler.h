@@ -38,6 +38,7 @@ class Configuration;
 class InjectedFactory;
 class NotificationEventRepository;
 class NotifierConfigurationWidget;
+class NotifierRepository;
 class NotifyGroupBox;
 class NotifyTreeWidget;
 

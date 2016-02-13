@@ -5,6 +5,7 @@ set (notification_SRCS
 
 	notification-callback-repository.cpp
 	notification-callback.cpp
+	notification-dispatcher.cpp
 	notification-event-repository.cpp
 	notification-event.cpp
 	notification-manager.cpp

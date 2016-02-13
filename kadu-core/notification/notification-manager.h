@@ -37,16 +37,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "status/status.h"
 
-class Action;
 class Configuration;
-class Group;
-class InjectedFactory;
-class Message;
-struct MultilogonSession;
-class NotificationService;
-class Notification;
-class NotifierRepository;
-class Notifier;
 
 /**
  * @defgroup notify Notify
@@ -58,21 +49,13 @@ class KADUAPI NotificationManager : public QObject
 	Q_OBJECT
 
 	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<NotificationService> m_notificationService;
-	QPointer<NotifierRepository> m_notifierRepository;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 
 public:
 	Q_INVOKABLE explicit NotificationManager(QObject *parent = nullptr);
 	virtual ~NotificationManager();
-
-	void notify(const Notification &notification);
 
 	QString notifyConfigurationKey(const QString &eventType);
 

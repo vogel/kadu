@@ -30,7 +30,7 @@ class ChatManager;
 class ChatStorage;
 class ChatWidgetRepository;
 class Contact;
-class NotificationManager;
+class NotificationService;
 
 class OtrNotifier : public QObject
 {
@@ -43,7 +43,7 @@ class OtrNotifier : public QObject
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ChatWidgetRepository> MyChatWidgetRepository;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotificationService> m_notificationService;
 
 	NotificationEvent OtrNotificationEvent;
 	NotificationEvent CreatePrivateKeyStartedNotificationEvent;
@@ -62,7 +62,7 @@ public slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotificationService(NotificationService *notificationService);
 
 	void notifyTryingToStartSession(const Contact &contact);
 	void notifyTryingToRefreshSession(const Contact &contact);

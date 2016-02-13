@@ -19,9 +19,9 @@
 
 #include "roster-notifier.h"
 
-#include "notification/notification-manager.h"
-#include "notification/notification.h"
 #include "notification/notification-event.h"
+#include "notification/notification-service.h"
+#include "notification/notification.h"
 
 QString RosterNotifier::sm_rosterNotifyTopic("Roster");
 QString RosterNotifier::sm_importSucceededNotifyTopic("Roster/ImportSucceeded");
@@ -48,9 +48,9 @@ RosterNotifier::~RosterNotifier()
 {
 }
 
-void RosterNotifier::setNotificationManager(NotificationManager *notificationManager)
+void RosterNotifier::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationManager = notificationManager;
+	m_notificationService = notificationService;
 }
 
 QList<NotificationEvent> RosterNotifier::notifyEvents()
@@ -69,7 +69,7 @@ void RosterNotifier::notify(const QString &topic, const Account &account, const 
 	notification.setTitle(tr("Roster"));
 	notification.setText(message);
 
-	m_notificationManager->notify(notification);
+	m_notificationService->notify(notification);
 }
 
 void RosterNotifier::notifyImportSucceeded(const Account &account)
