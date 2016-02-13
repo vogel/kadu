@@ -22,7 +22,6 @@
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QSystemTrayIcon>
 
-#include "notification/notification-manager.h"
 #include "notification/notification.h"
 
 #include "configuration/configuration.h"
@@ -30,6 +29,7 @@
 #include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
+#include "notification/notification-configuration.h"
 #include "parser/parser.h"
 #include "debug.h"
 
@@ -74,9 +74,9 @@ void DockingNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
-void DockingNotifier::setNotificationManager(NotificationManager *notificationManager)
+void DockingNotifier::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationManager = notificationManager;
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void DockingNotifier::setParser(Parser *parser)
@@ -128,7 +128,7 @@ void DockingNotifier::notify(const Notification &notification)
 {
 	kdebugf();
 
-	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
 	unsigned int timeout = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + key + "_timeout");
 	unsigned int icon = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + key + "_icon");
 	QString title = m_configuration->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + key + "_title");

@@ -22,12 +22,12 @@
  */
 
 #include <QtWidgets/QCheckBox>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QVBoxLayout>
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "notification/notification-manager.h"
 #include "protocols/protocol.h"
 
 #include "buddy-options-configuration-widget.h"

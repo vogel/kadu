@@ -33,11 +33,12 @@
 #include "notification/listener/account-event-listener.h"
 #include "notification/listener/chat-event-listener.h"
 #include "notification/listener/group-event-listener.h"
-#include "notification/notification.h"
 #include "notification/notification-callback.h"
 #include "notification/notification-callback-repository.h"
+#include "notification/notification-configuration.h"
 #include "notification/notification-dispatcher.h"
 #include "notification/notification-event-repository.h"
+#include "notification/notification.h"
 #include "notification/notifier-repository.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/window-notifier.h"
@@ -57,7 +58,10 @@
 #include "notification-service.h"
 
 NotificationService::NotificationService(QObject *parent) :
-		QObject(parent), SilentMode(false), AutoSilentMode(false), IsFullScreen(false), FullscreenChecker(0)
+		QObject{parent},
+		m_isFullScreen{false},
+		m_fullscreenChecker{0},
+		m_autoSilentMode{false}
 {
 }
 
@@ -103,6 +107,11 @@ void NotificationService::setMessageManager(MessageManager *messageManager)
 void NotificationService::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
 {
 	m_notificationCallbackRepository = notificationCallbackRepository;
+}
+
+void NotificationService::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
+{
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void NotificationService::setNotificationDispatcher(NotificationDispatcher *notificationDispatcher)
@@ -161,7 +170,9 @@ void NotificationService::init()
 	createActionDescriptions();
 
 	createDefaultConfiguration();
-	configurationUpdated();
+	connect(m_notificationConfiguration, &NotificationConfiguration::notificationConfigurationUpdated,
+			this, &NotificationService::notificationConfigurationUpdated);
+	notificationConfigurationUpdated();
 }
 
 void NotificationService::done()
@@ -172,13 +183,13 @@ void NotificationService::done()
 
 	m_notifierRepository->unregisterNotifier(m_windowNotifier);
 
-	delete notifyAboutUserActionDescription;
-	delete SilentModeActionDescription;
+	delete m_notifyAboutUserActionDescription;
+	delete m_silentModeActionDescription;
 }
 
 void NotificationService::createActionDescriptions()
 {
-	notifyAboutUserActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
+	m_notifyAboutUserActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "notifyAboutUserAction",
 		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/notify-about-buddy"), tr("Notify About Buddy"), true,
@@ -187,36 +198,36 @@ void NotificationService::createActionDescriptions()
 
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(notifyAboutUserActionDescription, KaduMenu::SectionActions);
+		->addAction(m_notifyAboutUserActionDescription, KaduMenu::SectionActions);
 
-	SilentModeActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
+	m_silentModeActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/enable-notifications"), tr("Silent Mode"), true
 	);
 
-	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
+	connect(m_silentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
 	m_menuInventory
 		->menu("main")
-		->addAction(SilentModeActionDescription, KaduMenu::SectionMiscTools, 5);
+		->addAction(m_silentModeActionDescription, KaduMenu::SectionMiscTools, 5);
 }
 
 void NotificationService::statusUpdated(StatusContainer *container)
 {
-	if (SilentModeWhenDnD && !silentMode() && container->status().type() == StatusTypeDoNotDisturb)
+	if (m_notificationConfiguration->silentModeWhenDnD() && !m_notificationConfiguration->silentMode() && container->status().type() == StatusTypeDoNotDisturb)
 	{
-		foreach (Action *action, SilentModeActionDescription->actions())
+		foreach (Action *action, m_silentModeActionDescription->actions())
 			action->setChecked(true);
 
-		AutoSilentMode = true;
+		m_autoSilentMode = true;
 	}
-	else if (!silentMode() && AutoSilentMode)
+	else if (!m_notificationConfiguration->silentMode() && m_autoSilentMode)
 	{
-		foreach (Action *action, SilentModeActionDescription->actions())
+		foreach (Action *action, m_silentModeActionDescription->actions())
 			action->setChecked(false);
 
-		AutoSilentMode = false;
+		m_autoSilentMode = false;
 	}
 }
 
@@ -239,14 +250,14 @@ void NotificationService::notifyAboutUserActionActivated(QAction *sender, bool t
 			buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
 	}
 
-	foreach (Action *action, notifyAboutUserActionDescription->actions())
+	foreach (Action *action, m_notifyAboutUserActionDescription->actions())
 		if (action->context()->contacts().toBuddySet() == buddies)
 			action->setChecked(toggled);
 }
 
 void NotificationService::silentModeActionCreated(Action *action)
 {
-	action->setChecked(SilentMode);
+	action->setChecked(m_notificationConfiguration->silentMode());
 }
 
 void NotificationService::silentModeActionActivated(QAction *sender, bool toggled)
@@ -258,40 +269,30 @@ void NotificationService::silentModeActionActivated(QAction *sender, bool toggle
 
 void NotificationService::setSilentMode(bool newSilentMode)
 {
-	if (newSilentMode == SilentMode)
+	if (newSilentMode == m_notificationConfiguration->silentMode())
 		return;
 
-	bool wasSilent = SilentMode;
-	SilentMode = newSilentMode;
-	foreach (Action *action, SilentModeActionDescription->actions())
-		action->setChecked(SilentMode);
-
-	m_configuration->deprecatedApi()->writeEntry("Notify", "SilentMode", SilentMode);
-
-	if (SilentMode != wasSilent)
-		emit silentModeToggled(SilentMode);
+	bool wasSilent = m_notificationConfiguration->silentMode();
+	m_notificationConfiguration->setSilentMode(newSilentMode);
+	foreach (Action *action, m_silentModeActionDescription->actions())
+		action->setChecked(m_notificationConfiguration->silentMode());
+	if (m_notificationConfiguration->silentMode() != wasSilent)
+		emit silentModeToggled(m_notificationConfiguration->silentMode());
 }
 
-bool NotificationService::silentMode()
+bool NotificationService::silentMode() const
 {
-	return SilentMode || (IsFullScreen && m_configuration->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false));
+	return m_notificationConfiguration->silentMode() || (m_isFullScreen && m_notificationConfiguration->silentModeWhenFullscreen());
 }
 
 bool NotificationService::ignoreNotifications()
 {
-	return AutoSilentMode || silentMode();
+	return m_autoSilentMode || silentMode();
 }
 
-void NotificationService::configurationUpdated()
+void NotificationService::notificationConfigurationUpdated()
 {
-	NewMessageOnlyIfInactive = m_configuration->deprecatedApi()->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
-	NotifyIgnoreOnConnection = m_configuration->deprecatedApi()->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
-	IgnoreOnlineToOnline = m_configuration->deprecatedApi()->readBoolEntry("Notify", "IgnoreOnlineToOnline");
-	SilentModeWhenDnD = m_configuration->deprecatedApi()->readBoolEntry("Notify", "AwaySilentMode", false);
-	SilentModeWhenFullscreen = m_configuration->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false);
-	setSilentMode(m_configuration->deprecatedApi()->readBoolEntry("Notify", "SilentMode", false));
-
-	if (SilentModeWhenFullscreen)
+	if (m_notificationConfiguration->silentModeWhenFullscreen())
 		startScreenModeChecker();
 	else
 		stopScreenModeChecker();
@@ -299,34 +300,34 @@ void NotificationService::configurationUpdated()
 
 void NotificationService::startScreenModeChecker()
 {
-	if (FullscreenChecker)
+	if (m_fullscreenChecker)
 		return;
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	FullscreenChecker = new X11ScreenModeChecker();
+	m_fullscreenChecker = new X11ScreenModeChecker();
 #elif defined(Q_OS_WIN)
-	FullscreenChecker = new WindowsScreenModeChecker();
+	m_fullscreenChecker = new WindowsScreenModeChecker();
 #else
-	FullscreenChecker = new ScreenModeChecker();
+	m_fullscreenChecker = new ScreenModeChecker();
 #endif
-	connect(FullscreenChecker, SIGNAL(fullscreenToggled(bool)), this, SLOT(fullscreenToggled(bool)));
+	connect(m_fullscreenChecker, SIGNAL(fullscreenToggled(bool)), this, SLOT(fullscreenToggled(bool)));
 
-	FullscreenChecker->enable();
+	m_fullscreenChecker->enable();
 }
 
 void NotificationService::stopScreenModeChecker()
 {
-	if (!FullscreenChecker)
+	if (!m_fullscreenChecker)
 		return;
 
-	disconnect(FullscreenChecker, SIGNAL(fullscreenToggled(bool)), this, SLOT(fullscreenToggled(bool)));
+	disconnect(m_fullscreenChecker, SIGNAL(fullscreenToggled(bool)), this, SLOT(fullscreenToggled(bool)));
 
-	FullscreenChecker->disable();
+	m_fullscreenChecker->disable();
 }
 
 void NotificationService::fullscreenToggled(bool inFullscreen)
 {
-	IsFullScreen = inFullscreen;
+	m_isFullScreen = inFullscreen;
 }
 
 void NotificationService::createDefaultConfiguration()

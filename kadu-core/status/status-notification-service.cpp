@@ -24,10 +24,11 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "identities/identity.h"
-#include "notification/notification.h"
+#include "notification/notification-configuration.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-service.h"
+#include "notification/notification.h"
 #include "protocols/protocol.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
@@ -56,6 +57,11 @@ void StatusNotificationService::setChatManager(ChatManager *chatManager)
 void StatusNotificationService::setChatStorage(ChatStorage *chatStorage)
 {
 	m_chatStorage = chatStorage;
+}
+
+void StatusNotificationService::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
+{
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void StatusNotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
@@ -104,7 +110,7 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 	if (!protocol || !protocol->isConnected())
 		return;
 
-	if (m_notificationService->notifyIgnoreOnConnection())
+	if (m_notificationConfiguration->notifyIgnoreOnConnection())
 	{
 		auto dateTime = contact.contactAccount().property(QStringLiteral("notify:notify-account-connected"), QDateTime()).toDateTime();
 		if (dateTime.isValid() && dateTime >= QDateTime::currentDateTime())
@@ -132,7 +138,7 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 			description.clear();
 	}
 
-	if (m_notificationService->ignoreOnlineToOnline() &&
+	if (m_notificationConfiguration->ignoreOnlineToOnline() &&
 			!status.isDisconnected() &&
 			!oldStatus.isDisconnected())
 		return;

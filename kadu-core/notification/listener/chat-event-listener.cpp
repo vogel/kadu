@@ -24,7 +24,7 @@
 #include "message/message-manager.h"
 #include "message/message-notification-service.h"
 #include "message/message.h"
-#include "notification/notification-service.h"
+#include "notification/notification-configuration.h"
 #include "activate.h"
 
 #include "chat-event-listener.h"
@@ -53,9 +53,9 @@ void ChatEventListener::setMessageNotificationService(MessageNotificationService
 	m_messageNotificationService = messageNotificationService;
 }
 
-void ChatEventListener::setNotificationService(NotificationService *notificationService)
+void ChatEventListener::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationService = notificationService;
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void ChatEventListener::messageReceived(const Message &message)
@@ -63,7 +63,7 @@ void ChatEventListener::messageReceived(const Message &message)
 	if (message.messageChat().isOpen())
 	{
 		auto chatWidget = m_chatWidgetRepository->widgetForChat(message.messageChat());
-		if (!m_notificationService->newMessageOnlyIfInactive() || !_isWindowActiveOrFullyVisible(chatWidget))
+		if (!m_notificationConfiguration->newMessageOnlyIfInactive() || !_isWindowActiveOrFullyVisible(chatWidget))
 			m_messageNotificationService->notifyNewMessage(message);
 	}
 	else

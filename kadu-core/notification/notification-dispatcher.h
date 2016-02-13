@@ -24,7 +24,7 @@
 #include <injeqt/injeqt.h>
 
 class Configuration;
-class NotificationManager;
+class NotificationConfiguration;
 class Notification;
 class NotifierRepository;
 
@@ -40,12 +40,12 @@ public:
 
 private:
 	QPointer<Configuration> m_configuration;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotificationConfiguration> m_notificationConfiguration;
 	QPointer<NotifierRepository> m_notifierRepository;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
 	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 
 };

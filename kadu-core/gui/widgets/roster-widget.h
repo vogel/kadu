@@ -76,10 +76,10 @@ private slots:
 	INJEQT_INIT void init();
 
 protected:
-	void configurationUpdated();
+	virtual void configurationUpdated() override;
 
-	void compositingEnabled();
-	void compositingDisabled();
+	virtual void compositingEnabled() override;
+	virtual void compositingDisabled() override;
 
 public:
 	explicit RosterWidget(QWidget *parent = nullptr);

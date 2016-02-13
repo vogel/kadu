@@ -36,7 +36,7 @@ class Configuration;
 class KaduWindowService;
 class Message;
 class MessageManager;
-class NotificationService;
+class NotificationConfiguration;
 class SortedMessages;
 class UnreadMessageRepository;
 
@@ -76,7 +76,7 @@ private:
 	QPointer<Configuration> m_configuration;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MessageManager> m_messageManager;
-	QPointer<NotificationService> m_notificationService;
+	QPointer<NotificationConfiguration> m_notificationConfiguration;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	ChatWidgetMessageHandlerConfiguration m_chatWidgetMessageHandlerConfiguration;
@@ -93,7 +93,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
+	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();
 

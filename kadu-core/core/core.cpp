@@ -66,7 +66,6 @@
 #include "misc/date-time-parser-tags.h"
 #include "misc/paths-provider.h"
 #include "notification/notification-event-repository.h"
-#include "notification/notification-manager.h"
 #include "notification/notify-configuration-importer.h"
 #include "os/single-application/single-application.h"
 #include "parser/parser.h"
@@ -349,7 +348,6 @@ void Core::init()
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	// TODO: add some life-cycle management
-	m_injector.instantiate<NotificationManager>();
 	m_injector.instantiate<SearchWindowActions>(); // temporary, during full-injection-port
 	m_injector.instantiate<AvatarManager>();
 }

@@ -24,7 +24,7 @@
 #include "gui/sound-configuration-ui-handler.h"
 #include "sound-manager.h"
 
-#include "notification/notification-manager.h"
+#include "notification/notification-configuration.h"
 #include "notification/notification.h"
 #include "notification/notifier-repository.h"
 
@@ -40,9 +40,9 @@ SoundNotifier::~SoundNotifier()
 {
 }
 
-void SoundNotifier::setNotificationManager(NotificationManager *notificationManager)
+void SoundNotifier::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationManager = notificationManager;
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void SoundNotifier::setNotifierRepository(NotifierRepository *notifierRepository)
@@ -90,7 +90,7 @@ void SoundNotifier::notify(const Notification &notification)
 		}
 	}
 
-	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
 	m_soundManager->playSoundByName(key);
 }
 

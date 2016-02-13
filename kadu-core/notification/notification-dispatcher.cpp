@@ -21,7 +21,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "notification/notification-manager.h"
+#include "notification/notification-configuration.h"
 #include "notification/notification.h"
 #include "notification/notifier-repository.h"
 #include "notification/notifier.h"
@@ -40,9 +40,9 @@ void NotificationDispatcher::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void NotificationDispatcher::setNotificationManager(NotificationManager *notificationManager)
+void NotificationDispatcher::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationManager = notificationManager;
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void NotificationDispatcher::setNotifierRepository(NotifierRepository *notifierRepository)
@@ -52,7 +52,7 @@ void NotificationDispatcher::setNotifierRepository(NotifierRepository *notifierR
 
 bool NotificationDispatcher::dispatchNotification(const Notification &notification)
 {
-	auto notifyType = m_notificationManager->notifyConfigurationKey(notification.type());
+	auto notifyType = m_notificationConfiguration->notifyConfigurationKey(notification.type());
 	auto foundNotifier = false;
 
 	for (auto notifier : m_notifierRepository)

@@ -27,6 +27,7 @@
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/icons-manager.h"
+#include "notification/notification-configuration.h"
 #include "notification/notification-service.h"
 #include "status/status-container-manager.h"
 #include "activate.h"
@@ -74,6 +75,11 @@ void DockingMenuHandler::setInjectedFactory(InjectedFactory *injectedFactory)
 void DockingMenuHandler::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
 	m_kaduWindowService = kaduWindowService;
+}
+
+void DockingMenuHandler::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
+{
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void DockingMenuHandler::setNotificationService(NotificationService *notificationService)
@@ -155,7 +161,7 @@ void DockingMenuHandler::doUpdate()
 	addStatusContainerMenus();
 	addActionRepositoryMenus();
 	m_menu->addSeparator();
-	m_silentModeAction->setChecked(m_notificationService->silentMode());
+	m_silentModeAction->setChecked(m_notificationConfiguration->silentMode());
 	m_menu->addAction(m_silentModeAction);
 	m_menu->addSeparator();
 #if defined(Q_OS_UNIX)
@@ -217,7 +223,7 @@ void DockingMenuHandler::hideKaduWindow()
 
 void DockingMenuHandler::silentModeToggled(bool enabled)
 {
-	m_notificationService->setSilentMode(enabled);
+	m_notificationConfiguration->setSilentMode(enabled);
 }
 
 #include "moc_docking-menu-handler.cpp"

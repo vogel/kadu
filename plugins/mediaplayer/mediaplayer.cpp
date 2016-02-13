@@ -43,7 +43,6 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "notification/notification-event-repository.h"
-#include "notification/notification-manager.h"
 #include "notification/notification.h"
 #include "notification/notification-event.h"
 #include "status/status-changer-manager.h"

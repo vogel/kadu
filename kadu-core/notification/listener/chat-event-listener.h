@@ -30,7 +30,7 @@ class ChatWidgetRepository;
 class MessageManager;
 class MessageNotificationService;
 class Message;
-class NotificationService;
+class NotificationConfiguration;
 
 class ChatEventListener : public QObject
 {
@@ -44,13 +44,13 @@ public:
 private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<MessageNotificationService> m_messageNotificationService;
-	QPointer<NotificationService> m_notificationService;
+	QPointer<NotificationConfiguration> m_notificationConfiguration;
 
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setMessageNotificationService(MessageNotificationService *messageNotificationService);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
+	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
 
 	void messageReceived(const Message &message);
 

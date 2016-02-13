@@ -27,7 +27,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "core/core.h"
-#include "notification/notification-manager.h"
 #include "notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"

@@ -33,7 +33,7 @@
 #include "icons/icons-manager.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
-#include "notification/notification-manager.h"
+#include "notification/notification-configuration.h"
 #include "notification/notification-service.h"
 #include "notification/notification.h"
 #include "parser/parser.h"
@@ -69,9 +69,9 @@ void Hint::setNotificationCallbackRepository(NotificationCallbackRepository *not
 	m_notificationCallbackRepository = notificationCallbackRepository;
 }
 
-void Hint::setNotificationManager(NotificationManager *notificationManager)
+void Hint::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationManager = notificationManager;
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void Hint::setNotificationService(NotificationService *notificationService)
@@ -90,7 +90,7 @@ void Hint::init()
 
 	CurrentChat = notification.data()["chat"].value<Chat>();
 
-	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
 	startSecs = secs = m_configuration->deprecatedApi()->readNumEntry("Hints", "Event_" + key + "_timeout", 10);
 
 	createLabels(m_iconsManager->iconByPath(notification.icon()).pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
@@ -149,7 +149,7 @@ void Hint::configurationUpdated()
 	QFont font(qApp->font());
 	QPalette palette(qApp->palette());
 
-	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
 	bcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + key + "_bgcolor", &palette.window().color());
 	fcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + key + "_fgcolor", &palette.windowText().color());
 	label->setFont(m_configuration->deprecatedApi()->readFontEntry("Hints", "Event_" + key + "_font", &font));
@@ -194,7 +194,7 @@ void Hint::updateText()
 {
 	QString text;
 
-	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
 	QString syntax = m_configuration->deprecatedApi()->readEntry("Hints", "Event_" + key + "_syntax", QString());
 	if (syntax.isEmpty())
 		text = notification.text();

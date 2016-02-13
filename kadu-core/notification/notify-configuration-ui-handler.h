@@ -25,8 +25,6 @@
 #include "gui/windows/main-configuration-window.h"
 #include "notification/notification-event.h"
 
-#include "notification-manager.h"
-
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 

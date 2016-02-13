@@ -28,7 +28,6 @@
 #include "core/injected-factory.h"
 #include "gui/windows/window-notifier-window.h"
 #include "icons/icons-manager.h"
-#include "notification/notification-manager.h"
 #include "notification/notification.h"
 #include "activate.h"
 

@@ -32,7 +32,7 @@
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"
 #include "message/unread-message-repository.h"
-#include "notification/notification-service.h"
+#include "notification/notification-configuration.h"
 #include "protocols/protocol.h"
 
 #include <QtWidgets/QApplication>
@@ -81,9 +81,9 @@ void ChatWidgetMessageHandler::setMessageManager(MessageManager *messageManager)
 	m_messageManager = messageManager;
 }
 
-void ChatWidgetMessageHandler::setNotificationService(NotificationService *notificationService)
+void ChatWidgetMessageHandler::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationService = notificationService;
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void ChatWidgetMessageHandler::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
@@ -197,7 +197,7 @@ bool ChatWidgetMessageHandler::shouldOpenChatWidget(const Chat &chat) const
 	if (!m_chatWidgetMessageHandlerConfiguration.openChatOnMessage())
 		return false;
 
-	auto silentMode = m_notificationService ? m_notificationService.data()->silentMode() : false;
+	auto silentMode = m_notificationConfiguration->silentMode();
 	if (silentMode)
 		return false;
 

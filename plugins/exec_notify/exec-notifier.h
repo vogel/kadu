@@ -27,7 +27,7 @@
 
 class Configuration;
 class InjectedFactory;
-class NotificationManager;
+class NotificationConfiguration;
 class NotifierRepository;
 class Parser;
 
@@ -45,7 +45,7 @@ public:
 private:
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<NotificationManager> m_notificationManager;
+	QPointer<NotificationConfiguration> m_notificationConfiguration;
 	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<Parser> m_parser;
 
@@ -55,7 +55,7 @@ private:
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setNotificationManager(NotificationManager *notificationManager);
+	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
 	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();

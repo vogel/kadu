@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include "configuration/configuration-aware-object.h"
 #include "exports.h"
 
 #include <QtCore/QPointer>
@@ -40,6 +39,7 @@ class InjectedFactory;
 class MenuInventory;
 class MessageManager;
 class NotificationCallbackRepository;
+class NotificationConfiguration;
 class NotificationDispatcher;
 class NotificationEventRepository;
 class Notification;
@@ -51,7 +51,7 @@ class StatusContainerManager;
 class StatusContainer;
 class WindowNotifier;
 
-class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
+class KADUAPI NotificationService : public QObject
 {
 	Q_OBJECT
 
@@ -63,6 +63,7 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+	QPointer<NotificationConfiguration> m_notificationConfiguration;
 	QPointer<NotificationDispatcher> m_notificationDispatcher;
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotifierRepository> m_notifierRepository;
@@ -71,23 +72,19 @@ class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 	QPointer<StatusContainerManager> m_statusContainerManager;
 	QPointer<WindowNotifier> m_windowNotifier;
 
-	bool NewMessageOnlyIfInactive;
-	bool NotifyIgnoreOnConnection;
-	bool IgnoreOnlineToOnline;
-	bool SilentMode;
-	bool SilentModeWhenDnD;
-	bool SilentModeWhenFullscreen;
-	bool AutoSilentMode;
+	bool m_isFullScreen;
+	ScreenModeChecker *m_fullscreenChecker;
+	bool m_autoSilentMode;
 
-	bool IsFullScreen;
-	ScreenModeChecker *FullscreenChecker;
-
-	ActionDescription *notifyAboutUserActionDescription;
-	ActionDescription *SilentModeActionDescription;
+	ActionDescription *m_notifyAboutUserActionDescription;
+	ActionDescription *m_silentModeActionDescription;
 
 	void createDefaultConfiguration();
 	bool ignoreNotifications();
 	void createActionDescriptions();
+
+	bool silentMode() const;
+	void setSilentMode(bool silentMode);
 
 private slots:
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
@@ -98,18 +95,9 @@ private slots:
 	void startScreenModeChecker();
 	void stopScreenModeChecker();
 
-protected:
-	virtual void configurationUpdated();
-
 public:
 	Q_INVOKABLE explicit NotificationService(QObject *parent = nullptr);
 	virtual ~NotificationService();
-
-	bool notifyIgnoreOnConnection() { return NotifyIgnoreOnConnection; }
-	bool ignoreOnlineToOnline() { return IgnoreOnlineToOnline; }
-	bool newMessageOnlyIfInactive() { return NewMessageOnlyIfInactive; }
-	void setSilentMode(bool silentMode);
-	bool silentMode();
 
 	void notify(const Notification &notification);
 	void acceptNotification(const Notification &notification);
@@ -127,6 +115,7 @@ private slots:
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
 	INJEQT_SET void setNotificationDispatcher(NotificationDispatcher *notificationDispatcher);
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
@@ -136,6 +125,8 @@ private slots:
 	INJEQT_SET void setWindowNotifier(WindowNotifier *windowNotifier);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
+
+	void notificationConfigurationUpdated();
 
 };
 

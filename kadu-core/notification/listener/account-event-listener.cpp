@@ -27,7 +27,7 @@
 #include "chat/chat-storage.h"
 #include "multilogon/multilogon-notification-service.h"
 #include "multilogon/multilogon-session.h"
-#include "notification/notification-service.h"
+#include "notification/notification-configuration.h"
 #include "protocols/services/multilogon-service.h"
 #include "status/status-notification-service.h"
 #include "status/status-type-data.h"
@@ -70,9 +70,9 @@ void AccountEventListener::setMultilogonNotificationService(MultilogonNotificati
 	m_multilogonNotificationService = multilogonNotificationService;
 }
 
-void AccountEventListener::setNotificationService(NotificationService *notificationService)
+void AccountEventListener::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationService = notificationService;
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void AccountEventListener::setStatusNotificationService(StatusNotificationService *statusNotificationService)
@@ -147,7 +147,7 @@ void AccountEventListener::accountConnected()
 	if (!account)
 		return;
 
-	if (m_notificationService->notifyIgnoreOnConnection())
+	if (m_notificationConfiguration->notifyIgnoreOnConnection())
 		account.addProperty(QStringLiteral("notify:notify-account-connected"), QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);
 }
 

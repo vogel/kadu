@@ -27,9 +27,9 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
-#include "notification/notifier-repository.h"
-#include "notification/notification-manager.h"
+#include "notification/notification-configuration.h"
 #include "notification/notification.h"
+#include "notification/notifier-repository.h"
 #include "parser/parser.h"
 
 #include <QtCore/QProcess>
@@ -54,9 +54,9 @@ void ExecNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
-void ExecNotifier::setNotificationManager(NotificationManager *notificationManager)
+void ExecNotifier::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationManager = notificationManager;
+	m_notificationConfiguration = notificationConfiguration;
 }
 
 void ExecNotifier::setNotifierRepository(NotifierRepository *notifierRepository)
@@ -176,7 +176,7 @@ QStringList mySplit(const QChar &sep, const QString &str)
 
 void ExecNotifier::notify(const Notification &notification)
 {
-	auto key = m_notificationManager->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
 	auto syntax = m_configuration->deprecatedApi()->readEntry("Exec Notify", key + "Cmd");
 	if (syntax.isEmpty())
 		return;

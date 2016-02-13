@@ -24,8 +24,9 @@
 
 #include "configuration/cenzor-configuration.h"
 
+#include "accounts/account.h"
+#include "chat/chat.h"
 #include "message/message-manager.h"
-#include "notification/notification-manager.h"
 
 CenzorMessageFilter::CenzorMessageFilter(QObject *parent) :
 		QObject{parent}
