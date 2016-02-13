@@ -61,9 +61,9 @@ public slots:
 protected:
     virtual void configurationUpdated() override;
 
-	void closeEvent(QCloseEvent *event);
-	void keyPressEvent(QKeyEvent *event);
-	void resizeEvent(QResizeEvent *event);
+	virtual void closeEvent(QCloseEvent *event) override;
+	virtual void keyPressEvent(QKeyEvent *event) override;
+	virtual void resizeEvent(QResizeEvent *event) override;
 
 private:
 	QPointer<Application> m_application;

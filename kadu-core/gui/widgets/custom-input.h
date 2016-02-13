@@ -65,11 +65,11 @@ protected:
 	bool autosend_enabled;
 
     virtual void showEvent(QShowEvent *e) override;
-	virtual void keyPressEvent(QKeyEvent *e);
-	virtual void keyReleaseEvent(QKeyEvent *e);
-	virtual void contextMenuEvent(QContextMenuEvent *e);
-	virtual bool canInsertFromMimeData(const QMimeData *source) const;
-	virtual void insertFromMimeData(const QMimeData *source);
+	virtual void keyPressEvent(QKeyEvent *e) override;
+	virtual void keyReleaseEvent(QKeyEvent *e) override;
+	virtual void contextMenuEvent(QContextMenuEvent *e) override;
+	virtual bool canInsertFromMimeData(const QMimeData *source) const override;
+	virtual void insertFromMimeData(const QMimeData *source) override;
 
 public:
 	explicit CustomInput(Chat chat, QWidget *parent = nullptr);

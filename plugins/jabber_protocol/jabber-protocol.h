@@ -59,15 +59,15 @@ public:
 	virtual ~JabberProtocol();
 
 	void setContactsListReadOnly(bool contactsListReadOnly);
-	virtual bool contactsListReadOnly() { return m_contactsListReadOnly; }
+	virtual bool contactsListReadOnly() override { return m_contactsListReadOnly; }
 
-	virtual QString statusPixmapPath();
+	virtual QString statusPixmapPath() override;
 
-	virtual AvatarService * avatarService() { return m_avatarService; }
-	virtual ContactPersonalInfoService * contactPersonalInfoService() { return m_contactPersonalInfoService; }
-	virtual FileTransferService * fileTransferService() { return m_fileTransferService; }
-	virtual PersonalInfoService * personalInfoService() { return m_personalInfoService; }
-	virtual SubscriptionService * subscriptionService() { return m_subscriptionService; }
+	virtual AvatarService * avatarService() override { return m_avatarService; }
+	virtual ContactPersonalInfoService * contactPersonalInfoService() override { return m_contactPersonalInfoService; }
+	virtual FileTransferService * fileTransferService() override { return m_fileTransferService; }
+	virtual PersonalInfoService * personalInfoService() override { return m_personalInfoService; }
+	virtual SubscriptionService * subscriptionService() override { return m_subscriptionService; }
 	virtual JabberStreamDebugService * streamDebugService() { return m_streamDebugService; }
 	virtual JabberVCardService * vcardService() { return m_vcardService; }
 

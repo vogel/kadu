@@ -81,19 +81,19 @@ signals:
 	void currentChanged(const Talkable &talkable);
 
 protected:
-	virtual void contextMenuEvent(QContextMenuEvent *event);
-	virtual void keyPressEvent(QKeyEvent *event);
+	virtual void contextMenuEvent(QContextMenuEvent *event) override;
+	virtual void keyPressEvent(QKeyEvent *event) override;
 
-	virtual void wheelEvent(QWheelEvent *event);
-	virtual void leaveEvent(QEvent *event);
+	virtual void wheelEvent(QWheelEvent *event) override;
+	virtual void leaveEvent(QEvent *event) override;
 
-	virtual void mousePressEvent(QMouseEvent *event);
-	virtual void mouseReleaseEvent(QMouseEvent *event);
-	virtual void mouseMoveEvent(QMouseEvent *event);
+	virtual void mousePressEvent(QMouseEvent *event) override;
+	virtual void mouseReleaseEvent(QMouseEvent *event) override;
+	virtual void mouseMoveEvent(QMouseEvent *event) override;
 
-	virtual void hideEvent(QHideEvent *event);
+	virtual void hideEvent(QHideEvent *event) override;
 
-	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous) override;
 
 private:
 	friend class TalkableDelegateConfiguration;
