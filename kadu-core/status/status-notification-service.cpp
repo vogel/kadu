@@ -153,7 +153,8 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 	auto icon = contact.contactAccount().protocolHandler()->statusIcon(Status{m_statusTypeManager, contact.currentStatus().type()});
 	
 	auto notification = Notification{data, notificationEventName, icon};
-	notification.addChatCallbacks();
+	notification.addCallback("chat-open");
+	notification.addCallback("ignore");
 	notification.setDetails(Qt::escape(description));
 	notification.setText(tr("<b>%1</b> changed status to <i>%2</i>").arg(Qt::escape(contact.display(true)), Qt::escape(statusDisplayName)));
 	notification.setTitle(tr("Status changed"));

@@ -44,15 +44,11 @@ public:
 	static void unregisterParserTags(Parser *parser);
 
 	Notification();
-	Notification(QVariantMap data, const QString &type, const KaduIcon &icon);
-	Notification(Account account, Chat chat, const QString &type, const KaduIcon &icon);
-	virtual ~Notification();
+	explicit Notification(QVariantMap data, const QString &type, const KaduIcon &icon);
 
 	const QVariantMap & data() const;
 
-	void clearCallbacks();
 	void addCallback(const QString &name);
-	void addChatCallbacks();
 
 	void setAcceptCallback(QString acceptCallback);
 	QString acceptCallback() const;

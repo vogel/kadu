@@ -68,7 +68,8 @@ void FirewallNotificationService::notifyBlockedMessage(const Chat &chat, const C
 	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
 	auto notification = Notification{data, m_blockedMessageEvent.name(), KaduIcon{"kadu_icons/blocking"}};
-	notification.addChatCallbacks();
+	notification.addCallback("chat-open");
+	notification.addCallback("ignore");
 	notification.setTitle(tr("Message was blocked"));
 	notification.setText(m_configuration->deprecatedApi()->readEntry("Firewall", "notification_syntax",
 		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m"));

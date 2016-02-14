@@ -90,39 +90,14 @@ Notification::Notification(QVariantMap data, const QString &type, const KaduIcon
 {
 }
 
-Notification::Notification(Account account, Chat chat, const QString &type, const KaduIcon &icon) :
-		Type(type),
-		Icon(icon),
-		m_account{account},
-		m_chat{chat}
-{
-	m_data.insert("account", qVariantFromValue(account));
-	m_data.insert("chat", qVariantFromValue(chat));
-}
-
-Notification::~Notification()
-{
-}
-
 const QVariantMap & Notification::data() const
 {
 	return m_data;
 }
 
-void Notification::clearCallbacks()
-{
-	Callbacks.clear();
-}
-
 void Notification::addCallback(const QString &name)
 {
 	Callbacks.append(name);
-}
-
-void Notification::addChatCallbacks()
-{
-	addCallback("chat-open");
-	addCallback("ignore");
 }
 
 void Notification::setAcceptCallback(QString acceptCallback)

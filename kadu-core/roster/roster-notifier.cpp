@@ -65,7 +65,10 @@ QList<NotificationEvent> RosterNotifier::notifyEvents()
 
 void RosterNotifier::notify(const QString &topic, const Account &account, const QString &message)
 {
-	auto notification = Notification{account, Chat::null, topic, KaduIcon{}};
+	auto data = QVariantMap{};
+	data.insert("account", qVariantFromValue(account));
+
+	auto notification = Notification{std::move(data), topic, KaduIcon{}};
 	notification.setTitle(tr("Roster"));
 	notification.setText(message);
 

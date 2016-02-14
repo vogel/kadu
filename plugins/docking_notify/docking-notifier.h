@@ -46,7 +46,6 @@ private:
 	QString toPlainText(const QString &text);
 	QString parseText(const QString &text, const Notification &notification, const QString &def);
 	Chat chat;
-	DockingNotifyConfigurationWidget *configurationWidget;
 
 private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);

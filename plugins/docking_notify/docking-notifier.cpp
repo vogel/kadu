@@ -45,8 +45,7 @@
 
 DockingNotifier::DockingNotifier(QObject *parent) :
 		QObject{parent},
-		Notifier("Tray Icon Balloon", QT_TRANSLATE_NOOP("@default", "Tray Icon Balloon"), KaduIcon("external_modules/qt4notify")),
-		configurationWidget{}
+		Notifier("Tray Icon Balloon", QT_TRANSLATE_NOOP("@default", "Tray Icon Balloon"), KaduIcon("external_modules/qt4notify"))
 {
 }
 

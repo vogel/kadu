@@ -61,7 +61,8 @@ void CenzorNotificationService::notifyCenzored(const Chat &chat)
 	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
 	auto notification = Notification{QVariantMap{}, m_CenzoredEvent.name(), KaduIcon{"kadu_icons/blocking"}};
-	notification.addChatCallbacks();
+	notification.addCallback("chat-open");
+	notification.addCallback("ignore");
 	notification.setTitle(tr("Cenzor"));
 	notification.setText(tr("Message was cenzored"));
 	notification.setDetails(tr("Your interlocutor used obscene word and became admonished"));
