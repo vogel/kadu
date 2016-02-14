@@ -29,7 +29,6 @@
 
 class QAction;
 
-class Actions;
 class ActionDescription;
 class Action;
 class ChatWidgetManager;
@@ -37,17 +36,13 @@ class ConfigurationUiHandlerRepository;
 class Configuration;
 class InjectedFactory;
 class MenuInventory;
-class MessageManager;
 class NotificationCallbackRepository;
-class NotificationConfiguration;
 class NotificationDispatcher;
-class NotificationEventRepository;
 class Notification;
 class NotifierRepository;
 class NotifyConfigurationUiHandler;
 class Parser;
-class ScreenModeChecker;
-class StatusContainerManager;
+class SilentModeService;
 class StatusContainer;
 class WindowNotifier;
 
@@ -55,45 +50,26 @@ class KADUAPI NotificationService : public QObject
 {
 	Q_OBJECT
 
-	QPointer<Actions> m_actions;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
-	QPointer<MessageManager> m_messageManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
 	QPointer<NotificationDispatcher> m_notificationDispatcher;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<NotifyConfigurationUiHandler> m_notifyConfigurationUiHandler;
 	QPointer<Parser> m_parser;
-	QPointer<StatusContainerManager> m_statusContainerManager;
+	QPointer<SilentModeService> m_silentModeService;
 	QPointer<WindowNotifier> m_windowNotifier;
 
-	bool m_isFullScreen;
-	ScreenModeChecker *m_fullscreenChecker;
-	bool m_autoSilentMode;
-
 	ActionDescription *m_notifyAboutUserActionDescription;
-	ActionDescription *m_silentModeActionDescription;
 
 	void createDefaultConfiguration();
-	bool ignoreNotifications();
 	void createActionDescriptions();
 
 	bool silentMode() const;
 	void setSilentMode(bool silentMode);
-
-private slots:
-	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
-	void silentModeActionCreated(Action *action);
-	void silentModeActionActivated(QAction *sender, bool toggled);
-	void statusUpdated(StatusContainer *container);
-	void fullscreenToggled(bool inFullscreen);
-	void startScreenModeChecker();
-	void stopScreenModeChecker();
 
 public:
 	Q_INVOKABLE explicit NotificationService(QObject *parent = nullptr);
@@ -103,30 +79,23 @@ public:
 	void acceptNotification(const Notification &notification);
 	void discardNotification(const Notification &notification);
 
-signals:
-	void silentModeToggled(bool);
-
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
 	INJEQT_SET void setNotificationDispatcher(NotificationDispatcher *notificationDispatcher);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
 	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler);
 	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
 	INJEQT_SET void setWindowNotifier(WindowNotifier *windowNotifier);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void notificationConfigurationUpdated();
+	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
 
 };
 

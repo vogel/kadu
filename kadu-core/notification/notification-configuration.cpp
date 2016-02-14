@@ -26,10 +26,7 @@ NotificationConfiguration::NotificationConfiguration(QObject *parent) :
 		QObject{parent},
 		m_newMessageOnlyIfInactive{true},
 		m_notifyIgnoreOnConnection{true},
-		m_ignoreOnlineToOnline{true},
-		m_silentMode{false},
-		m_silentModeWhenDnD{true},
-		m_silentModeWhenFullscreen{true}
+		m_ignoreOnlineToOnline{true}
 {
 }
 
@@ -52,17 +49,6 @@ void NotificationConfiguration::configurationUpdated()
 	m_newMessageOnlyIfInactive = m_configuration->deprecatedApi()->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
 	m_notifyIgnoreOnConnection = m_configuration->deprecatedApi()->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
 	m_ignoreOnlineToOnline = m_configuration->deprecatedApi()->readBoolEntry("Notify", "IgnoreOnlineToOnline");
-	m_silentModeWhenDnD = m_configuration->deprecatedApi()->readBoolEntry("Notify", "AwaySilentMode", false);
-	m_silentModeWhenFullscreen = m_configuration->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false);
-	setSilentMode(m_configuration->deprecatedApi()->readBoolEntry("Notify", "SilentMode", false));
-
-	emit notificationConfigurationUpdated();
-}
-
-void NotificationConfiguration::setSilentMode(bool silentMode)
-{
-	m_silentMode = silentMode;
-	m_configuration->deprecatedApi()->writeEntry("Notify", "SilentMode", m_silentMode);
 }
 
 QString NotificationConfiguration::notifyConfigurationKey(const QString &eventType) const

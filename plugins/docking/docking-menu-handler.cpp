@@ -27,8 +27,7 @@
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/icons-manager.h"
-#include "notification/notification-configuration.h"
-#include "notification/notification-service.h"
+#include "notification/silent-mode-service.h"
 #include "status/status-container-manager.h"
 #include "activate.h"
 
@@ -77,14 +76,9 @@ void DockingMenuHandler::setKaduWindowService(KaduWindowService *kaduWindowServi
 	m_kaduWindowService = kaduWindowService;
 }
 
-void DockingMenuHandler::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
+void DockingMenuHandler::setSilentModeService(SilentModeService *silentModeService)
 {
-	m_notificationConfiguration = notificationConfiguration;
-}
-
-void DockingMenuHandler::setNotificationService(NotificationService *notificationService)
-{
-	m_notificationService = notificationService;
+	m_silentModeService = silentModeService;
 }
 
 void DockingMenuHandler::setStatusContainerManager(StatusContainerManager *statusContainerManager)
@@ -111,7 +105,7 @@ void DockingMenuHandler::init()
 	connect(m_statusContainerManager, SIGNAL(statusContainerUnregistered(StatusContainer*)),
 	        this, SLOT(statusContainerUnregistered(StatusContainer*)));
 
-	connect(m_notificationService, SIGNAL(silentModeToggled(bool)), this, SLOT(update()));
+	connect(m_silentModeService, &SilentModeService::silentModeToggled, this, &DockingMenuHandler::update);
 
 	m_menu->setSeparatorsCollapsible(true);
 	connect(m_menu, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
@@ -161,7 +155,7 @@ void DockingMenuHandler::doUpdate()
 	addStatusContainerMenus();
 	addActionRepositoryMenus();
 	m_menu->addSeparator();
-	m_silentModeAction->setChecked(m_notificationConfiguration->silentMode());
+	m_silentModeAction->setChecked(m_silentModeService->isSilent());
 	m_menu->addAction(m_silentModeAction);
 	m_menu->addSeparator();
 #if defined(Q_OS_UNIX)
@@ -223,7 +217,7 @@ void DockingMenuHandler::hideKaduWindow()
 
 void DockingMenuHandler::silentModeToggled(bool enabled)
 {
-	m_notificationConfiguration->setSilentMode(enabled);
+	m_silentModeService->setSilent(enabled);
 }
 
 #include "moc_docking-menu-handler.cpp"

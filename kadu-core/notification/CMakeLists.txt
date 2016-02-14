@@ -3,6 +3,8 @@ set (notification_SRCS
 	listener/chat-event-listener.cpp
 	listener/group-event-listener.cpp
 
+	full-screen-service-handler.cpp
+	full-screen-service.cpp
 	notification-callback-repository.cpp
 	notification-callback.cpp
 	notification-configuration.cpp
@@ -18,6 +20,7 @@ set (notification_SRCS
 	notify-configuration-importer.cpp
 	notify-configuration-ui-handler.cpp
 	screen-mode-checker.cpp
+	silent-mode-service.cpp
 	window-notifier.cpp
 )
 

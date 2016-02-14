@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2012 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,32 +19,37 @@
 
 #pragma once
 
+#include "misc/memory.h"
+#include "injeqt-type-roles.h"
+
 #include <QtCore/QObject>
+#include <injeqt/injeqt.h>
 
-class QTimer;
+class ScreenModeChecker;
 
-class ScreenModeChecker : public QObject
+class FullScreenService : public QObject
 {
 	Q_OBJECT
-
-	QTimer *FullScreenCheckTimer;
-	bool InFullScreen;
-
-private slots:
-	void checkFullScreen();
+	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	ScreenModeChecker();
-	virtual ~ScreenModeChecker();
+	Q_INVOKABLE explicit FullScreenService(QObject *parent = nullptr);
+	virtual ~FullScreenService();
 
-	void enable();
-	void disable();
+	bool hasFullscreenApplication() const;
 
-	// Do not call these methods in c-tor/d-tor!
-	virtual bool isFullscreenAppActive() { return false; }
-	virtual bool isScreensaverActive() { return false; }
-	virtual bool isDummy() { return true; }
+	void start();
+	void stop();
 
 signals:
-	void fullscreenToggled(bool inFullscreen);
+	void fullscreenToggled(bool fullscreen);
+
+private:
+	not_owned_qptr<ScreenModeChecker> m_fullscreenChecker;
+	bool m_hasFullscreenApplication;
+	int m_started;
+
+private slots:
+	void fullscreenToggledSlot(bool fullscreen);
+
 };

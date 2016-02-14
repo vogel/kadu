@@ -41,13 +41,6 @@ public:
 	bool notifyIgnoreOnConnection() const { return m_notifyIgnoreOnConnection; }
 	bool ignoreOnlineToOnline() const { return m_ignoreOnlineToOnline; }
 	bool newMessageOnlyIfInactive() const { return m_newMessageOnlyIfInactive; }
-	bool silentModeWhenFullscreen() const { return m_silentModeWhenFullscreen; }
-	void setSilentMode(bool silentMode);
-	bool silentMode() const { return m_silentMode; }
-	bool silentModeWhenDnD() const { return m_silentModeWhenDnD; }
-
-signals:
-	void notificationConfigurationUpdated();
 
 protected:
 	virtual void configurationUpdated() override;
@@ -58,9 +51,6 @@ private:
 	bool m_newMessageOnlyIfInactive;
 	bool m_notifyIgnoreOnConnection;
 	bool m_ignoreOnlineToOnline;
-	bool m_silentMode;
-	bool m_silentModeWhenDnD;
-	bool m_silentModeWhenFullscreen;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);

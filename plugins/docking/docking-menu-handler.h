@@ -33,8 +33,7 @@ class DockingMenuActionRepository;
 class IconsManager;
 class InjectedFactory;
 class KaduWindowService;
-class NotificationConfiguration;
-class NotificationService;
+class SilentModeService;
 class StatusContainer;
 class StatusContainerManager;
 class StatusNotifierItem;
@@ -57,8 +56,7 @@ private:
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
-	QPointer<NotificationService> m_notificationService;
+	QPointer<SilentModeService> m_silentModeService;
 	QPointer<StatusContainerManager> m_statusContainerManager;
 
 	QPointer<QMenu> m_menu;
@@ -83,8 +81,7 @@ private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
+	INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_SET void setStatusNotifierItem(StatusNotifierItem *statusNotifierItem);
 	INJEQT_INIT void init();

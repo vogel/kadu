@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2012 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,32 +19,19 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+class FullScreenService;
 
-class QTimer;
-
-class ScreenModeChecker : public QObject
+class FullScreenServiceHandler
 {
-	Q_OBJECT
-
-	QTimer *FullScreenCheckTimer;
-	bool InFullScreen;
-
-private slots:
-	void checkFullScreen();
 
 public:
-	ScreenModeChecker();
-	virtual ~ScreenModeChecker();
+	explicit FullScreenServiceHandler(FullScreenService *fullScreenService);
+	~FullScreenServiceHandler();
 
-	void enable();
-	void disable();
+	void start();
+	void stop();
 
-	// Do not call these methods in c-tor/d-tor!
-	virtual bool isFullscreenAppActive() { return false; }
-	virtual bool isScreensaverActive() { return false; }
-	virtual bool isDummy() { return true; }
+private:
+	FullScreenService *m_fullScreenService;
 
-signals:
-	void fullscreenToggled(bool inFullscreen);
 };
