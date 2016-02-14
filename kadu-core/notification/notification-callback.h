@@ -24,7 +24,7 @@
 #include <QtCore/QString>
 #include <functional>
 
-class Notification;
+struct Notification;
 
 class KADUAPI NotificationCallback
 {

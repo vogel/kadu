@@ -410,7 +410,7 @@ void HintManager::openChat(Hint *hint)
 		return;
 
 	if (!m_configuration->deprecatedApi()->readBoolEntry("Hints", "OpenChatOnEveryNotification"))
-		if ((hint->getNotification().type() != "NewChat") && (hint->getNotification().type() != "NewMessage"))
+		if ((hint->getNotification().type != "NewChat") && (hint->getNotification().type != "NewMessage"))
 			return;
 
 	m_chatWidgetManager->openChat(hint->chat(), OpenChatActivation::Activate);

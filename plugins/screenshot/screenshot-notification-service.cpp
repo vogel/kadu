@@ -56,9 +56,11 @@ void ScreenshotNotificationService::done()
 
 void ScreenshotNotificationService::notifySizeLimit(long size)
 {
-	auto notification = Notification{QVariantMap{}, m_sizeLimitEvent.name(), KaduIcon{"kadu_icons/blocking"}};
-	notification.setTitle(tr("ScreenShot size limit"));
-	notification.setText(tr("Images size limit exceed: %1 KB").arg(size/1024));
+	auto notification = Notification{};
+	notification.type = m_sizeLimitEvent.name();
+	notification.icon = KaduIcon{"kadu_icons/blocking"};
+	notification.title = tr("ScreenShot size limit");
+	notification.text = tr("Images size limit exceed: %1 KB").arg(size/1024);
 
 	m_notificationService->notify(notification);
 }

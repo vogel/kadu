@@ -24,8 +24,10 @@
 
 #include "exec-configuration-widget.h"
 
+#include "chat/chat.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "contacts/contact-set.h"
 #include "core/injected-factory.h"
 #include "notification/notification-configuration.h"
 #include "notification/notification.h"
@@ -176,14 +178,14 @@ QStringList mySplit(const QChar &sep, const QString &str)
 
 void ExecNotifier::notify(const Notification &notification)
 {
-	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
 	auto syntax = m_configuration->deprecatedApi()->readEntry("Exec Notify", key + "Cmd");
 	if (syntax.isEmpty())
 		return;
 	auto s = mySplit(' ', syntax);
 	auto result = QStringList{};
 
-	auto chat = notification.data()["chat"].value<Chat>();
+	auto chat = notification.data["chat"].value<Chat>();
 	if (chat)
 	{
 		auto contacts = chat.contacts();

@@ -33,7 +33,7 @@ struct MultilogonSession;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationService;
-class Notification;
+struct Notification;
 
 class MultilogonNotificationService : public QObject
 {

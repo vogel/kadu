@@ -19,6 +19,8 @@
 
 #include "firewall-notification-service.h"
 
+#include "accounts/account.h"
+#include "chat/chat.h"
 #include "configuration/configuration-api.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "notification/notification.h"
@@ -66,14 +68,18 @@ void FirewallNotificationService::notifyBlockedMessage(const Chat &chat, const C
 	auto data = QVariantMap{};
 	data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
 	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
+	data.insert(QStringLiteral("contact"), qVariantFromValue(sender));
 
-	auto notification = Notification{data, m_blockedMessageEvent.name(), KaduIcon{"kadu_icons/blocking"}};
-	notification.addCallback("chat-open");
-	notification.addCallback("ignore");
-	notification.setTitle(tr("Message was blocked"));
-	notification.setText(m_configuration->deprecatedApi()->readEntry("Firewall", "notification_syntax",
-		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m"));
-	notification.setDetails(Qt::escape(message));
+	auto notification = Notification{};
+	notification.type = m_blockedMessageEvent.name();
+	notification.icon = KaduIcon{"kadu_icons/blocking"};
+	notification.title = tr("Message was blocked");
+	notification.text = m_configuration->deprecatedApi()->readEntry("Firewall", "notification_syntax",
+		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m");
+	notification.details = Qt::escape(message);
+	notification.callbacks.append("chat-open");
+	notification.callbacks.append("ignore");
+	notification.data = std::move(data);
 
 	m_notificationService->notify(notification);
 }

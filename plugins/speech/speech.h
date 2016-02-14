@@ -28,7 +28,7 @@
 #include <injeqt/injeqt.h>
 
 class Configuration;
-class Notification;
+struct Notification;
 class Parser;
 
 /**

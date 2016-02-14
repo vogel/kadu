@@ -56,8 +56,10 @@ void MediaplayerNotificationService::done()
 
 void MediaplayerNotificationService::notifyPlayingTitle(const QString &title)
 {
-	auto notification = Notification{QVariantMap{}, m_playingTitleEvent.name(), KaduIcon{"external_modules/mediaplayer-media-playback-play"}};
-	notification.setText(Qt::escape(title));
+	auto notification = Notification{};
+	notification.type = m_playingTitleEvent.name();
+	notification.icon = KaduIcon{"external_modules/mediaplayer-media-playback-play"};
+	notification.text = Qt::escape(title);
 
 	m_notificationService->notify(notification);
 }

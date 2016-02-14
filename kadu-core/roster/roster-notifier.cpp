@@ -19,6 +19,7 @@
 
 #include "roster-notifier.h"
 
+#include "accounts/account.h"
 #include "notification/notification-event.h"
 #include "notification/notification-service.h"
 #include "notification/notification.h"
@@ -68,9 +69,11 @@ void RosterNotifier::notify(const QString &topic, const Account &account, const 
 	auto data = QVariantMap{};
 	data.insert("account", qVariantFromValue(account));
 
-	auto notification = Notification{std::move(data), topic, KaduIcon{}};
-	notification.setTitle(tr("Roster"));
-	notification.setText(message);
+	auto notification = Notification{};
+	notification.type = topic;
+	notification.title = tr("Roster");
+	notification.text = message;
+	notification.data = std::move(data);
 
 	m_notificationService->notify(notification);
 }

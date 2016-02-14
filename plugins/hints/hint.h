@@ -40,7 +40,7 @@ class IconsManager;
 class NotificationCallbackRepository;
 class NotificationConfiguration;
 class NotificationService;
-class Notification;
+struct Notification;
 class Parser;
 
 // Hint needs to inherit QFrame (not just QWidget) for better stylesheets support.

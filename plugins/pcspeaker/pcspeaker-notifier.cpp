@@ -129,7 +129,7 @@ void PCSpeakerNotifier::notify(const Notification &notification)
 #ifdef Q_OS_MACX
 	SysBeep(1);
 #else
-	parseAndPlay(m_configuration->deprecatedApi()->readEntry("PC Speaker", notification.type() + "_Sound"));
+	parseAndPlay(m_configuration->deprecatedApi()->readEntry("PC Speaker", notification.type + "_Sound"));
 #endif
 }
 

@@ -34,7 +34,7 @@ class Message;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationService;
-class Notification;
+struct Notification;
 
 class MessageNotificationService : public QObject
 {

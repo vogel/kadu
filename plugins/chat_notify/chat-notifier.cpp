@@ -59,9 +59,9 @@ void ChatNotifier::sendNotificationToChatWidget(const Notification &notification
 	if (!m_formattedStringFactory)
 		return;
 
-	auto content = notification.text();
-	if (!notification.details().isEmpty())
-		content += "<br/> <small>" + notification.details().join("<br/>") + "</small>";
+	auto content = notification.text;
+	if (!notification.details.isEmpty())
+		content += "<br/> <small>" + notification.details + "</small>";
 
 	chatWidget->appendSystemMessage(m_formattedStringFactory.data()->fromHtml(content));
 }
@@ -72,7 +72,7 @@ void ChatNotifier::notify(const Notification &notification)
 		return;
 
 	auto buddies = BuddySet();
-	auto chat = notification.data()["chat"].value<Chat>();
+	auto chat = notification.data["chat"].value<Chat>();
 	if (chat)
 		buddies = chat.contacts().toBuddySet();
 

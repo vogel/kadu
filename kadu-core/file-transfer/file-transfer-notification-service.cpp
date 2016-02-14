@@ -19,6 +19,7 @@
 
 #include "file-transfer-notification-service.h"
 
+#include "accounts/account.h"
 #include "chat/chat-manager.h"
 #include "chat/chat-storage.h"
 #include "chat/chat.h"
@@ -112,23 +113,25 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 	data.insert(QStringLiteral("file-transfer"), qVariantFromValue(fileTransfer));
 	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
-	auto notification = Notification{data, QStringLiteral("FileTransfer/IncomingFile"), KaduIcon{}};
-	notification.setTitle(tr("Incoming transfer"));
-	notification.setText(incomingFileTransferText(chat, fileTransfer));
+	auto notification = Notification{};
+	notification.type = QStringLiteral("FileTransfer/IncomingFile");
+	notification.title = tr("Incoming transfer");
+	notification.text = incomingFileTransferText(chat, fileTransfer);
+	notification.data = std::move(data);
 
 	if (fileTransfer.transferType() == FileTransferType::Stream)
 	{
-		notification.addCallback(m_fileTransferAcceptCallback.name());
-		notification.addCallback(m_fileTransferRejectCallback.name());
-		notification.setAcceptCallback(m_fileTransferAcceptCallback.name());
-		notification.setDiscardCallback(m_fileTransferRejectCallback.name());
+		notification.callbacks.append(m_fileTransferAcceptCallback.name());
+		notification.callbacks.append(m_fileTransferRejectCallback.name());
+		notification.acceptCallback = m_fileTransferAcceptCallback.name();
+		notification.discardCallback = m_fileTransferRejectCallback.name();
 	}
 	else
 	{
-		notification.addCallback(m_fileTransferSaveCallback.name());
-		notification.addCallback(m_fileTransferIgnoreCallback.name());
-		notification.setAcceptCallback(m_fileTransferSaveCallback.name());
-		notification.setDiscardCallback(m_fileTransferIgnoreCallback.name());
+		notification.callbacks.append(m_fileTransferSaveCallback.name());
+		notification.callbacks.append(m_fileTransferIgnoreCallback.name());
+		notification.acceptCallback = m_fileTransferSaveCallback.name();
+		notification.discardCallback = m_fileTransferIgnoreCallback.name();
 	}
 
 	m_notificationService->notify(notification);
@@ -177,12 +180,12 @@ QString FileTransferNotificationService::incomingFileTransferText(const Chat &ch
 
 void FileTransferNotificationService::acceptFileTransfer(const Notification &notification)
 {
-	auto fileTransfer = qvariant_cast<FileTransfer>(notification.data()[QStringLiteral("file-transfer")]);
+	auto fileTransfer = qvariant_cast<FileTransfer>(notification.data[QStringLiteral("file-transfer")]);
 	m_fileTransferManager->acceptFileTransfer(fileTransfer, fileTransfer.localFileName());
 }
 
 void FileTransferNotificationService::rejectFileTransfer(const Notification &notification)
 {
-	auto fileTransfer = qvariant_cast<FileTransfer>(notification.data()[QStringLiteral("file-transfer")]);
+	auto fileTransfer = qvariant_cast<FileTransfer>(notification.data[QStringLiteral("file-transfer")]);
 	m_fileTransferManager->rejectFileTransfer(fileTransfer);
 }

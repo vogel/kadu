@@ -33,7 +33,7 @@ class Screenshot;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationService;
-class Notification;
+struct Notification;
 
 class ScreenshotNotificationService : public QObject
 {

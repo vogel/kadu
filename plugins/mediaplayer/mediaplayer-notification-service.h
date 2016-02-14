@@ -31,7 +31,7 @@ class ChatWidgetManager;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationService;
-class Notification;
+struct Notification;
 
 class MediaplayerNotificationService : public QObject
 {

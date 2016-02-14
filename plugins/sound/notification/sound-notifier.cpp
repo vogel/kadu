@@ -24,6 +24,8 @@
 #include "gui/sound-configuration-ui-handler.h"
 #include "sound-manager.h"
 
+#include "chat/chat.h"
+#include "contacts/contact-set.h"
 #include "notification/notification-configuration.h"
 #include "notification/notification.h"
 #include "notification/notifier-repository.h"
@@ -62,7 +64,7 @@ void SoundNotifier::setSoundManager(SoundManager *soundManager)
 
 void SoundNotifier::notify(const Notification &notification)
 {
-	auto chat = notification.data()["chat"].value<Chat>();
+	auto chat = notification.data["chat"].value<Chat>();
 	if (chat && chat.property("sound:use_custom_sound", false).toBool())
 	{
 		// we need abstraction for that
@@ -90,7 +92,7 @@ void SoundNotifier::notify(const Notification &notification)
 		}
 	}
 
-	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
 	m_soundManager->playSoundByName(key);
 }
 

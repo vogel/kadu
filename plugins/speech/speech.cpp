@@ -25,7 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "notification/notification.h"
 #include "parser/parser.h"
@@ -142,7 +142,7 @@ void Speech::notify(const Notification &notification)
 	QString text;
 	QString sex = "Male";
 
-	auto chat = notification.data()["chat"].value<Chat>();
+	auto chat = notification.data["chat"].value<Chat>();
 
 	// TODO:
 	if (chat)
@@ -151,12 +151,12 @@ void Speech::notify(const Notification &notification)
 			sex = "Female";
 	}
 
-	QString syntax = m_configuration->deprecatedApi()->readEntry("Speech", notification.type() + "_Syntax/" + sex, QString());
+	auto syntax = m_configuration->deprecatedApi()->readEntry("Speech", notification.type + "_Syntax/" + sex, QString());
 	if (syntax.isEmpty())
-		text = notification.text();
+		text = notification.text;
 	else
 	{
-		QString details = notification.details().join(QStringLiteral("\n"));
+		auto details = notification.details;
 		if (details.length() > m_configuration->deprecatedApi()->readNumEntry("Speech", "MaxLength"))
 			syntax = m_configuration->deprecatedApi()->readEntry("Speech", "MsgTooLong" + sex);
 

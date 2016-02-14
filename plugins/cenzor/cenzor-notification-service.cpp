@@ -19,6 +19,8 @@
 
 #include "cenzor-notification-service.h"
 
+#include "accounts/account.h"
+#include "chat/chat.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -26,7 +28,7 @@
 
 CenzorNotificationService::CenzorNotificationService(QObject *parent) :
 		QObject{parent},
-		m_CenzoredEvent{QStringLiteral("cenzorNotification"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Message was cenzored"))}
+		m_cenzoredEvent{QStringLiteral("cenzorNotification"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Message was cenzored"))}
 {
 }
 
@@ -46,12 +48,12 @@ void CenzorNotificationService::setNotificationService(NotificationService *noti
 
 void CenzorNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(m_CenzoredEvent);
+	m_notificationEventRepository->addNotificationEvent(m_cenzoredEvent);
 }
 
 void CenzorNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(m_CenzoredEvent);
+	m_notificationEventRepository->removeNotificationEvent(m_cenzoredEvent);
 }
 
 void CenzorNotificationService::notifyCenzored(const Chat &chat)
@@ -60,12 +62,14 @@ void CenzorNotificationService::notifyCenzored(const Chat &chat)
 	data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
 	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
-	auto notification = Notification{QVariantMap{}, m_CenzoredEvent.name(), KaduIcon{"kadu_icons/blocking"}};
-	notification.addCallback("chat-open");
-	notification.addCallback("ignore");
-	notification.setTitle(tr("Cenzor"));
-	notification.setText(tr("Message was cenzored"));
-	notification.setDetails(tr("Your interlocutor used obscene word and became admonished"));
+	auto notification = Notification{};
+	notification.type = m_cenzoredEvent.name();
+	notification.icon = KaduIcon{"kadu_icons/blocking"};
+	notification.title = (tr("Cenzor"));
+	notification.text = tr("Message was cenzored");
+	notification.details = tr("Your interlocutor used obscene word and became admonished");
+	notification.callbacks.append("chat-open");
+	notification.callbacks.append("ignore");
 
 	m_notificationService->notify(notification);
 

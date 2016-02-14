@@ -26,6 +26,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "contacts/contact-set.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
@@ -100,7 +101,7 @@ QString DockingNotifier::parseText(const QString &text, const Notification &noti
 {
 	QString ret;
 
-	chat = notification.data()["chat"].value<Chat>();
+	chat = notification.data["chat"].value<Chat>();
 
 	if (!text.isEmpty())
 	{
@@ -112,9 +113,9 @@ QString DockingNotifier::parseText(const QString &text, const Notification &noti
 		else
 			ret = m_parser->parse(text, &notification, ParserEscape::HtmlEscape);
 
-		ret = ret.replace("%&m", notification.text());
-		ret = ret.replace("%&t", notification.title());
-		ret = ret.replace("%&d", notification.details().join(QStringLiteral("\n")));
+		ret = ret.replace("%&m", notification.text);
+		ret = ret.replace("%&t", notification.title);
+		ret = ret.replace("%&d", notification.details);
 	}
 	else
 		ret = def;
@@ -127,14 +128,14 @@ void DockingNotifier::notify(const Notification &notification)
 {
 	kdebugf();
 
-	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
 	unsigned int timeout = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + key + "_timeout");
 	unsigned int icon = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + key + "_icon");
 	QString title = m_configuration->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + key + "_title");
 	QString syntax = m_configuration->deprecatedApi()->readEntry("Qt4DockingNotifier", QString("Event_") + key + "_syntax");
 
-	m_docking->showMessage(parseText(title, notification, notification.text()),
-		parseText(syntax, notification, notification.details().join(QStringLiteral("\n"))),
+	m_docking->showMessage(parseText(title, notification, notification.text),
+		parseText(syntax, notification, notification.details),
 		(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
 
 	kdebugf2();

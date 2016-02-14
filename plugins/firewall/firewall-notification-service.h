@@ -33,7 +33,7 @@ class Contact;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationService;
-class Notification;
+struct Notification;
 
 class FirewallNotificationService : public QObject
 {

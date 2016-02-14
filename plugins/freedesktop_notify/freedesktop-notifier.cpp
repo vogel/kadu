@@ -168,7 +168,7 @@ void FreedesktopNotifier::notify(const Notification &notification)
 
 	args.append(replacedNotificationId);
 
-	KaduIcon icon(notification.icon());
+	KaduIcon icon(notification.icon);
 	if (icon.isNull())
 	{
 		icon.setPath("kadu_icons/section-kadu");
@@ -184,22 +184,20 @@ void FreedesktopNotifier::notify(const Notification &notification)
 		summary = "Kadu";
 	else
 	{
-		summary = notification.text();
+		summary = notification.text;
 		summary.replace(StripBr, QStringLiteral(" "));
 		summary.remove(StripHtml);
 	}
 
 	args.append(summary);
 
-	bool typeNewMessage = (notification.type() == "NewMessage" || notification.type() == "NewChat");
+	bool typeNewMessage = (notification.type == "NewMessage" || notification.type == "NewChat");
 	QString body;
 	if (ServerSupportsBody)
 	{
 		if (!typeNewMessage || ShowContentMessage)
 		{
-			body = !notification.details().isEmpty()
-					? notification.details().last()
-					: QString();
+			body = notification.details;
 			body.replace(StripBr, QStringLiteral("\n"));
 			if (ServerSupportsMarkup)
 				body.remove(StripUnsupportedHtml);
@@ -213,10 +211,10 @@ void FreedesktopNotifier::notify(const Notification &notification)
 		if (useKdeStyle)
 		{
 			if (body.isEmpty())
-				body = notification.text();
+				body = notification.text;
 			else
 			{
-				body.prepend(notification.text() + "\n<small>");
+				body.prepend(notification.text + "\n<small>");
 				body.append("</small>");
 			}
 
@@ -233,7 +231,7 @@ void FreedesktopNotifier::notify(const Notification &notification)
 	QStringList actions;
 	if (ServerSupportsActions)
 	{
-		for (auto &&callbackName : notification.getCallbacks())
+		for (auto &&callbackName : notification.callbacks)
 		{
 			auto callback = m_notificationCallbackRepository->callback(callbackName);
 			actions << callbackName;

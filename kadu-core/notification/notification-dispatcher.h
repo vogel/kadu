@@ -25,7 +25,7 @@
 
 class Configuration;
 class NotificationConfiguration;
-class Notification;
+struct Notification;
 class NotifierRepository;
 
 class NotificationDispatcher : public QObject

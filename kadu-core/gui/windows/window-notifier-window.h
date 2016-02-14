@@ -30,7 +30,7 @@
 #include <injeqt/injeqt.h>
 
 class IconsManager;
-class Notification;
+struct Notification;
 class NotificationCallbackRepository;
 
 class WindowNotifierWindow : public QDialog, DesktopAwareObject

@@ -38,7 +38,7 @@ class InjectedFactory;
 class MenuInventory;
 class NotificationCallbackRepository;
 class NotificationDispatcher;
-class Notification;
+struct Notification;
 class NotifierRepository;
 class NotifyConfigurationUiHandler;
 class Parser;

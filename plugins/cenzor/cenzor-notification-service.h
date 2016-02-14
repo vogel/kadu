@@ -31,7 +31,7 @@ class Chat;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationService;
-class Notification;
+struct Notification;
 
 class CenzorNotificationService : public QObject
 {
@@ -49,7 +49,7 @@ private:
 	QPointer<NotificationEventRepository> m_notificationEventRepository;
 	QPointer<NotificationService> m_notificationService;
 
-	NotificationEvent m_CenzoredEvent;
+	NotificationEvent m_cenzoredEvent;
 
 private slots:
 	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);

@@ -38,7 +38,7 @@ class DomProcessorService;
 class IconsManager;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
-class Notification;
+struct Notification;
 class PathsProvider;
 
 class FreedesktopNotifier : public QObject, public Notifier, public ConfigurationAwareObject

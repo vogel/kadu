@@ -26,7 +26,7 @@
 #include "icons/kadu-icon.h"
 #include "exports.h"
 
-class Notification;
+struct Notification;
 class NotifierConfigurationWidget;
 
 class QWidget;

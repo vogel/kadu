@@ -40,7 +40,7 @@ WindowNotifierWindow::WindowNotifierWindow(const Notification &notification, QWi
 {
 	setWindowRole("kadu-window-notifier");
 
-	setWindowTitle(m_notification.title());
+	setWindowTitle(m_notification.title);
 	setAttribute(Qt::WA_DeleteOnClose);
 }
 
@@ -73,17 +73,17 @@ void WindowNotifierWindow::createGui()
 	auto labelsLayout = new QHBoxLayout{labels};
 	labelsLayout->setSpacing(10);
 
-	if (!m_iconsManager->iconByPath(m_notification.icon()).isNull())
+	if (!m_iconsManager->iconByPath(m_notification.icon).isNull())
 	{
 		auto iconLabel = new QLabel{};
-		iconLabel->setPixmap(m_iconsManager->iconByPath(m_notification.icon()).pixmap(64, 64));
+		iconLabel->setPixmap(m_iconsManager->iconByPath(m_notification.icon).pixmap(64, 64));
 		labelsLayout->addWidget(iconLabel);
 	}
 
 	auto textLabel = new QLabel{};
-	auto text = m_notification.text();
-	if (!m_notification.details().isEmpty())
-		text += "<br/> <small>" + m_notification.details().join("<br/>") + "</small>";
+	auto text = m_notification.text;
+	if (!m_notification.details.isEmpty())
+		text += "<br/> <small>" + m_notification.details + "</small>";
 	textLabel->setText(text);
 
 	labelsLayout->addWidget(textLabel);
@@ -96,9 +96,8 @@ void WindowNotifierWindow::createGui()
 
 	layout->addWidget(buttons, 0, Qt::AlignCenter);
 
-	auto callbacks = m_notification.getCallbacks();
-	if (!callbacks.isEmpty())
-		for (auto &&callbackName : callbacks)
+	if (!m_notification.callbacks.isEmpty())
+		for (auto &&callbackName : m_notification.callbacks)
 		{
 			auto callback = m_notificationCallbackRepository->callback(callbackName);
 			addButton(buttons, callback.title(), callbackName);

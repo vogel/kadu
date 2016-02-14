@@ -88,15 +88,14 @@ void Hint::init()
 {
 	kdebugf();
 
-	CurrentChat = notification.data()["chat"].value<Chat>();
+	CurrentChat = notification.data["chat"].value<Chat>();
 
-	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
 	startSecs = secs = m_configuration->deprecatedApi()->readNumEntry("Hints", "Event_" + key + "_timeout", 10);
 
-	createLabels(m_iconsManager->iconByPath(notification.icon()).pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
+	createLabels(m_iconsManager->iconByPath(notification.icon).pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
 
-	auto callbacks = notification.getCallbacks();
-	bool showButtons = !callbacks.isEmpty();
+	auto showButtons = !notification.callbacks.isEmpty();
 	if (showButtons)
 		if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons"))
 			showButtons = false;
@@ -107,7 +106,7 @@ void Hint::init()
 		callbacksBox->addStretch(10);
 		vbox->addLayout(callbacksBox);
 
-		for (auto &&callbackName : callbacks)
+		for (auto &&callbackName : notification.callbacks)
 		{
 			auto callback = m_notificationCallbackRepository->callback(callbackName);
 			auto button = new QPushButton(callback.title(), this);
@@ -149,7 +148,7 @@ void Hint::configurationUpdated()
 	QFont font(qApp->font());
 	QPalette palette(qApp->palette());
 
-	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
 	bcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + key + "_bgcolor", &palette.window().color());
 	fcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + key + "_fgcolor", &palette.windowText().color());
 	label->setFont(m_configuration->deprecatedApi()->readFontEntry("Hints", "Event_" + key + "_font", &font));
@@ -194,13 +193,13 @@ void Hint::updateText()
 {
 	QString text;
 
-	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type());
+	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
 	QString syntax = m_configuration->deprecatedApi()->readEntry("Hints", "Event_" + key + "_syntax", QString());
 	if (syntax.isEmpty())
-		text = notification.text();
+		text = notification.text;
 	else
 	{
-		kdebug("syntax is: %s, text is: %s\n", qPrintable(syntax), qPrintable(notification.text()));
+		kdebug("syntax is: %s, text is: %s\n", qPrintable(syntax), qPrintable(notification.text));
 
 		if (CurrentChat)
 		{
@@ -217,10 +216,10 @@ void Hint::updateText()
 	}
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
-	{
-		QStringList details;
-		if (!notification.details().isEmpty())
-			details = notification.details();
+	{/*
+		auto details;
+		if (!notification.details.isEmpty())
+			details = notification.details;
 		int count = details.count();
 
 		if (count)
@@ -230,7 +229,7 @@ void Hint::updateText()
 			int citeSign = m_configuration->deprecatedApi()->readNumEntry("Hints","CiteSign");
 
 			QString defaultSyntax;
-			if (notification.type() == "NewMessage" || notification.type() == "NewChat")
+			if (notification.type == "NewMessage" || notification.type == "NewChat")
 				defaultSyntax = "\n&bull; <small>%1</small>";
 			else
 				defaultSyntax = "\n <small>%1</small>";
@@ -244,7 +243,7 @@ void Hint::updateText()
 				else
 					text += itemSyntax.arg(details[i]);
 			}
-		}
+		}*/
 	}
 
 	label->setText(QString("<div style='width:100%; height:100%; vertical-align:middle;'>")

@@ -21,73 +21,32 @@
 
 #pragma once
 
-#include "accounts/account.h"
-#include "buddies/buddy-set.h"
-#include "chat/chat.h"
 #include "icons/kadu-icon.h"
 #include "parser/parser-data.h"
 #include "exports.h"
 
-#include <QtCore/QPair>
-#include <QtCore/QPointer>
+#include <QtCore/QVariantMap>
 
-class Notifier;
 class Parser;
 
-class QTimer;
-
-class KADUAPI Notification final : public ParserData
+struct KADUAPI Notification final : public ParserData
 {
 
 public:
 	static void registerParserTags(Parser *parser);
 	static void unregisterParserTags(Parser *parser);
 
-	Notification();
-	explicit Notification(QVariantMap data, const QString &type, const KaduIcon &icon);
+	QString type;
+	QString title;
+	QString text;
+	QString details;
+	KaduIcon icon;
 
-	const QVariantMap & data() const;
+	QList<QString> callbacks;
+	QString acceptCallback;
+	QString discardCallback;
 
-	void addCallback(const QString &name);
-
-	void setAcceptCallback(QString acceptCallback);
-	QString acceptCallback() const;
-
-	void setDiscardCallback(QString discardCallback);
-	QString discardCallback() const;
-
-	const QString & type() const { return Type; }
-
-	void setTitle(const QString &title);
-
-	const QString title() const { return Title; }
-	void setText(const QString &text);
-	const QString text() const { return Text; }
-	void setDetails(const QStringList &details);
-	void setDetails(const QString &details);
-	const QStringList details() const { return Details; }
-
-	void setIcon(const KaduIcon &icon);
-	const KaduIcon & icon() const { return Icon; }
-	const QList<QString> & getCallbacks() const { return Callbacks; }
-
-private:
-	QVariantMap m_data;
-	QString m_acceptCallback;
-	QString m_discardCallback;
-
-	QString Type;
-
-	QString Title;
-	QString Text;
-	QStringList Details;
-	KaduIcon Icon;
-
-	Account m_account;
-	Chat m_chat;
-
-	QList<QString> Callbacks;
-
+	QVariantMap data;
 };
 
 KADUAPI bool operator == (const Notification &x, const Notification &y);

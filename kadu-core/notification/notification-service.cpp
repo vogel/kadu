@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-set.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
@@ -194,20 +195,20 @@ void NotificationService::notify(const Notification &notification)
 
 void NotificationService::acceptNotification(const Notification &notification)
 {
-	if (notification.acceptCallback().isEmpty())
+	if (notification.acceptCallback.isEmpty())
 	{
-		auto chat = qvariant_cast<Chat>(notification.data()["chat"]);
+		auto chat = qvariant_cast<Chat>(notification.data["chat"]);
 		if (chat)
 			m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 	}
 	else
-		m_notificationCallbackRepository->callback(notification.acceptCallback()).call(notification);
+		m_notificationCallbackRepository->callback(notification.acceptCallback).call(notification);
 }
 
 void NotificationService::discardNotification(const Notification &notification)
 {
-	if (!notification.discardCallback().isEmpty())
-		m_notificationCallbackRepository->callback(notification.discardCallback()).call(notification);
+	if (!notification.discardCallback.isEmpty())
+		m_notificationCallbackRepository->callback(notification.discardCallback).call(notification);
 }
 
 void checkNotify(Action *action)

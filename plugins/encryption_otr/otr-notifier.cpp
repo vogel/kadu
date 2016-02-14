@@ -77,9 +77,11 @@ void OtrNotifier::notify(const QString &topic, const Account &account, const QSt
 	auto data = QVariantMap{};
 	data.insert("account", qVariantFromValue(account));
 
-	auto notification = Notification{std::move(data), topic, KaduIcon()};
-	notification.setTitle(tr("OTR Encryption"));
-	notification.setText(message);
+	auto notification = Notification{};
+	notification.type = topic;
+	notification.title = (tr("OTR Encryption"));
+	notification.text = message;
+	notification.data = std::move(data);
 
 	m_notificationService->notify(notification);
 }
