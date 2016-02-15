@@ -38,7 +38,6 @@
 #include "gui/tray/tray-service.h"
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"
-#include "message/unread-message-repository.h"
 #include "misc/misc.h"
 #include "notification/notification.h"
 #include "notification/notifier-repository.h"
@@ -108,11 +107,6 @@ void HintManager::setToolTipClassManager(ToolTipClassManager *toolTipClassManage
 void HintManager::setTrayService(TrayService *trayService)
 {
 	m_trayService = trayService;
-}
-
-void HintManager::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
-{
-	m_unreadMessageRepository = unreadMessageRepository;
 }
 
 void HintManager::init()
@@ -365,13 +359,6 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 			break;
 
 		case 2:
-			if (hint->chat() && m_configuration->deprecatedApi()->readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
-			{
-				auto unreadMessages = m_unreadMessageRepository->unreadMessagesForChat(hint->chat());
-				for (auto const &message : unreadMessages)
-					m_unreadMessageRepository->removeUnreadMessage(message);
-			}
-
 			hint->discardNotification();
 			deleteHintAndUpdate(hint);
 			break;
@@ -631,7 +618,6 @@ void HintManager::createDefaultConfiguration()
 
 	m_configuration->deprecatedApi()->addVariable("Hints", "CiteSign", 50);
 	m_configuration->deprecatedApi()->addVariable("Hints", "Corner", 0);
-	m_configuration->deprecatedApi()->addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
 
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintsPositionX", 0);
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintsPositionY", 0);

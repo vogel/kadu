@@ -46,7 +46,6 @@ class NotifierRepository;
 class Parser;
 class ToolTipClassManager;
 class TrayService;
-class UnreadMessageRepository;
 
 class HintManager : public QObject, public Notifier, public AbstractToolTip, public ConfigurationAwareObject
 {
@@ -60,7 +59,6 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<Parser> m_parser;
 	QPointer<ToolTipClassManager> m_toolTipClassManager;
 	QPointer<TrayService> m_trayService;
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	QPointer<QFrame> frame;
 	QPointer<QTimer> hint_timer;
@@ -93,7 +91,6 @@ private slots:
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
 	INJEQT_SET void setTrayService(TrayService *trayService);
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
