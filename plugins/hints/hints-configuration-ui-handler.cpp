@@ -41,7 +41,6 @@
 #include "talkable/talkable.h"
 
 #include "hint-manager.h"
-#include "hint-over-user-configuration-window.h"
 
 #include "misc/paths-provider.h"
 #include "activate.h"
@@ -64,8 +63,7 @@ HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent):
 		ownPositionCorner{},
 		newHintUnder{},
 		overUserConfigurationPreview{},
-		overUserConfigurationTipLabel{},
-		configureOverUserHint{}
+		overUserConfigurationTipLabel{}
 {
 }
 
@@ -118,12 +116,6 @@ void HintsConfigurationUiHandler::init()
 	previewHintsLayout->setSpacing(0);
 	previewHintsLayout->setMargin(0);
 	previewHintsLayout->setSizeConstraint(QLayout::SetFixedSize);
-
-	auto style = QString("Hint {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
-			.arg(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
-			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
-			.arg(BORDER_RADIUS);
-	previewHintsFrame->setStyleSheet(style);
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -153,9 +145,6 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 	lay->addWidget(overUserConfigurationTipLabel);
 
-   	configureOverUserHint = new QPushButton(tr("Configure"));
-	connect(configureOverUserHint, SIGNAL(clicked()), this, SLOT(showOverUserConfigurationWindow()));
-
 	Buddy example = m_buddyDummyFactory->dummy();
 
 	if (!example.isNull())
@@ -163,7 +152,6 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 	lay = new QHBoxLayout(configureHint);
 	lay->addWidget(overUserConfigurationPreview);
-	lay->addWidget(configureOverUserHint);
 
 	toolTipBox->addWidgets(new QLabel(tr("Hint over buddy list: ")), configureHint);
 }
@@ -363,20 +351,7 @@ void HintsConfigurationUiHandler::deleteAllHintsPreview()
 
 void HintsConfigurationUiHandler::toolTipClassesHighlighted(const QString &value)
 {
-	configureOverUserHint->setEnabled(value == QCoreApplication::translate("@default", "Hints"));
 	overUserConfigurationPreview->setEnabled(value == QCoreApplication::translate("@default", "Hints"));
-}
-
-void HintsConfigurationUiHandler::showOverUserConfigurationWindow()
-{
-	if (overUserConfigurationWindow)
-		_activateWindow(m_configuration, overUserConfigurationWindow.data());
-	else
-	{
-		overUserConfigurationWindow = m_injectedFactory->makeInjected<HintOverUserConfigurationWindow>(m_hintManager, m_buddyDummyFactory->dummy(), m_mainConfigurationWindow->dataManager());
-		connect(overUserConfigurationWindow.data(), SIGNAL(configurationSaved()), this, SLOT(updateOverUserPreview()));
-		overUserConfigurationWindow->show();
-	}
 }
 
 void HintsConfigurationUiHandler::updateOverUserPreview()

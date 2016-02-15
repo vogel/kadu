@@ -186,12 +186,6 @@ void HintManager::hintUpdated()
 
 void HintManager::configurationUpdated()
 {
-	Style = QString("Hint {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
-			.arg(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
-			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "AllEvents_bdcolor").name())
-			.arg(BORDER_RADIUS);
-	frame->setStyleSheet(Style);
-
 	Opacity = m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_transparency", 0);
 	Opacity = 1 - Opacity/100;
 
@@ -513,16 +507,6 @@ void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkab
 	tipLabel->setText(text);
 
 	tipFrame->setObjectName("tip_frame");
-	QString style = QString("QFrame#tip_frame {border-width: %1px; border-style: solid; border-color: %2;"
-				"border-radius: %3px; background-color: %4} QFrame { color: %5}")
-			.arg(m_configuration->deprecatedApi()->readNumEntry("Hints", "HintOverUser_borderWidth", FRAME_WIDTH))
-			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bdcolor").name())
-			.arg(BORDER_RADIUS)
-			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "HintOverUser_bgcolor").name())
-			.arg(m_configuration->deprecatedApi()->readColorEntry("Hints", "HintOverUser_fgcolor").name());
-
-	tipFrame->setStyleSheet(style);
-
 	tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
 }
 

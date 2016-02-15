@@ -6,7 +6,6 @@ find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	hint-manager.cpp
-	hint-over-user-configuration-window.cpp
 	hint.cpp
 	hints-configuration-ui-handler.cpp
 	hints-module.cpp
@@ -15,7 +14,6 @@ set (SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/hint-over-user.ui
 	configuration/hints.ui
 	configuration/hints-advanced.ui
 )

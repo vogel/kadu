@@ -11,8 +11,6 @@
 					<item value="64" caption="64px" />
 				</combo-box>
 				<spin-box caption="Margin size" config-section="Hints" config-item="MarginSize" min-value="0" max-value="50" step="1" suffix=" px" />
-				<color-button caption="Border color" config-section="Hints" config-item="AllEvents_bdcolor" />
-				<spin-box caption="Border width" config-section="Hints" config-item="AllEvents_borderWidth" min-value="0" max-value="20" step="1" suffix=" px" />
 				<spin-box caption="Transparency" config-section="Hints" config-item="AllEvents_transparency"
 						min-value="0" max-value="100" step="1" suffix="%" />
 				<check-box caption="Show buttons only if notification requires user's action" config-section="Hints" config-item="ShowOnlyNecessaryButtons" />

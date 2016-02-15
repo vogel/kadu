@@ -323,14 +323,12 @@ void Hint::leaveEvent(QEvent *)
 
 void Hint::mouseOver()
 {
-	QString style = QString("* {color:%1; background-color:%2;}").arg(fcolor.name(), bcolor.lighter().name());
-	setStyleSheet(style);
+	setStyleSheet(QStringLiteral("* {background-color:%1;}").arg(palette().window().color().lighter().name()));
 }
 
 void Hint::mouseOut()
 {
-	QString style = QString("* {color:%1; background-color:%2;}").arg(fcolor.name(), bcolor.name());
-	setStyleSheet(style);
+	setStyleSheet(QStringLiteral(""));
 }
 
 void Hint::getData(QString &text, QPixmap &pixmap, int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)

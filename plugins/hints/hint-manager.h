@@ -40,7 +40,6 @@ class ChatWidget;
 class Configuration;
 class HintsConfigurationUiHandler;
 class HintsConfigurationWidget;
-class HintOverUserConfigurationWindow;
 class InjectedFactory;
 class NotifierRepository;
 class Parser;

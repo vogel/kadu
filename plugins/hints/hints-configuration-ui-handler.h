@@ -66,11 +66,9 @@ private:
 	QComboBox *ownPositionCorner;
 	QComboBox *newHintUnder;
 	
-	QPointer<HintOverUserConfigurationWindow> overUserConfigurationWindow;
 	QFrame *overUserConfigurationPreview;
 	QLabel *overUserConfigurationTipLabel;
-	
-	QPushButton *configureOverUserHint;
+
 	void setPreviewLayoutDirection();
 
 private slots:
@@ -89,7 +87,6 @@ private slots:
 	
 	void toolTipClassesHighlighted(const QString &value);
 
-	void showOverUserConfigurationWindow();
 	void updateOverUserPreview();
 	void addHintsPreview();
 	void updateHintsPreview();
