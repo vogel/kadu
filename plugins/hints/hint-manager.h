@@ -68,8 +68,6 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 
 	HintsConfigurationWidget *configurationWidget;
 
-	void processButtonPress(const QString &buttonName, Hint *hint);
-
 	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, const BuddyList &buddies, const QString &msg);
 
 	/**

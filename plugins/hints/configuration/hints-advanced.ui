@@ -21,27 +21,6 @@
 				<spin-box caption="Maximum width" config-section="Hints" config-item="MaximumWidth" min-value="285" max-value="10240" id="hints/maximumWidth" suffix=" px" />
 				<action-button caption="Hints position preview" id="hints/preview" />
 			</group-box>
-			<group-box name="Mouse Buttons">
-				<combo-box caption="Left button" config-section="Hints" config-item="LeftButton">
-					<item value="0" caption="Nothing" />
-					<item value="1" caption="Open Chat" />
-					<item value="2" caption="Delete Hint" />
-					<item value="3" caption="Delete All Hints" />
-				</combo-box>
-				<combo-box caption="Middle button" config-section="Hints" config-item="MiddleButton">
-					<item value="0" caption="Nothing" />
-					<item value="1" caption="Open Chat" />
-					<item value="2" caption="Delete Hint" />
-					<item value="3" caption="Delete All Hints" />
-				</combo-box>
-				<combo-box caption="Right button" config-section="Hints" config-item="RightButton">
-					<item value="0" caption="Nothing" />
-					<item value="1" caption="Open Chat" />
-					<item value="2" caption="Delete Hint" />
-					<item value="3" caption="Delete All Hints" />
-				</combo-box>
-				<check-box caption="'Open chat' works on all events" config-section="Hints" config-item="OpenChatOnEveryNotification" />
-			</group-box>
 		</tab>
 	</section>
 </configuration-ui>

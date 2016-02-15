@@ -338,61 +338,35 @@ NotifierConfigurationWidget * HintManager::createConfigurationWidget(QWidget *pa
 	return nullptr;
 }
 
-void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", buttonName.toUtf8().constData());
-
-	switch (m_configuration->deprecatedApi()->readNumEntry("Hints", buttonName))
-	{
-		case 1:
-			hint->acceptNotification();
-			break;
-
-		case 2:
-			hint->discardNotification();
-			deleteHintAndUpdate(hint);
-			break;
-
-		case 3:
-			deleteAllHints();
-			setHint();
-			break;
-	}
-
-	kdebugf2();
-}
-
 void HintManager::leftButtonSlot(Hint *hint)
 {
-	processButtonPress("LeftButton", hint);
+	hint->acceptNotification();
 }
 
 void HintManager::rightButtonSlot(Hint *hint)
 {
-	processButtonPress("RightButton", hint);
+	hint->discardNotification();
+	deleteHintAndUpdate(hint);
 }
 
 void HintManager::midButtonSlot(Hint *hint)
 {
-	processButtonPress("MiddleButton", hint);
+	Q_UNUSED(hint);
+
+	deleteAllHints();
+	setHint();
 }
 
 void HintManager::openChat(Hint *hint)
 {
-	kdebugf();
-
 	if (!hint->chat())
 		return;
 
-	if (!m_configuration->deprecatedApi()->readBoolEntry("Hints", "OpenChatOnEveryNotification"))
-		if ((hint->getNotification().type != "NewChat") && (hint->getNotification().type != "NewMessage"))
-			return;
+	if ((hint->getNotification().type != "NewChat") && (hint->getNotification().type != "NewMessage"))
+		return;
 
 	m_chatWidgetManager->openChat(hint->chat(), OpenChatActivation::Activate);
-
 	deleteHintAndUpdate(hint);
-
-	kdebugf2();
 }
 
 void HintManager::chatUpdated(const Chat &chat)
@@ -597,16 +571,12 @@ void HintManager::createDefaultConfiguration()
 
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintsPositionX", 0);
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintsPositionY", 0);
-	m_configuration->deprecatedApi()->addVariable("Hints", "LeftButton", 1);
-	m_configuration->deprecatedApi()->addVariable("Hints", "RightButton", 2);
 	m_configuration->deprecatedApi()->addVariable("Hints", "MaximumWidth", 500);
-	m_configuration->deprecatedApi()->addVariable("Hints", "MiddleButton", 3);
 	m_configuration->deprecatedApi()->addVariable("Hints", "MinimumWidth", 285);
 	m_configuration->deprecatedApi()->addVariable("Hints", "MouseOverUserSyntax", QString());
 	m_configuration->deprecatedApi()->addVariable("Hints", "NewHintUnder", 0);
 	m_configuration->deprecatedApi()->addVariable("Hints", "ShowContentMessage", true);
 	m_configuration->deprecatedApi()->addVariable("Hints", "UseUserPosition", false);
-	m_configuration->deprecatedApi()->addVariable("Hints", "OpenChatOnEveryNotification", false);
 
 	m_configuration->deprecatedApi()->addVariable("Hints", "AllEvents_iconSize", 32);
 
