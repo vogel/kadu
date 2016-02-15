@@ -47,7 +47,6 @@
 #include "icons/icons-manager.h"
 #include "activate.h"
 #include "debug.h"
-#include "hints-configuration-widget.h"
 
 #include "hint-manager.h"
 
@@ -305,8 +304,6 @@ void HintManager::deleteHint(Hint *hint)
 {
 	kdebugf();
 
-	const Notification &notification = hint->getNotification();
-
 	hints.removeAll(hint);
 
 	layout->removeWidget(hint);
@@ -350,10 +347,11 @@ void HintManager::oneSecond(void)
 	kdebugf2();
 }
 
-NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent)
+NotifierConfigurationWidget * HintManager::createConfigurationWidget(QWidget *parent)
 {
-	configurationWidget = m_injectedFactory->makeInjected<HintsConfigurationWidget>(parent);
-	return configurationWidget;
+	Q_UNUSED(parent);
+
+	return nullptr;
 }
 
 void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
@@ -634,20 +632,6 @@ void HintManager::createDefaultConfiguration()
 	m_configuration->deprecatedApi()->addVariable("Hints", "CiteSign", 50);
 	m_configuration->deprecatedApi()->addVariable("Hints", "Corner", 0);
 	m_configuration->deprecatedApi()->addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
-
-	//TODO:
-	QStringList events;
-	events << "ConnectionError" << "NewChat" << "NewMessage" << "StatusChanged"
-		<<"StatusChanged/ToFreeForChat" << "StatusChanged/ToOnline"  << "StatusChanged/ToAway"
-		<< "StatusChanged/ToNotAvailable"<< "StatusChanged/ToDoNotDisturb" << "StatusChanged/ToOffline"
-		<< "FileTransfer" << "FileTransfer/IncomingFile" << "FileTransfer/Finished" << "InvalidPassword";
-	foreach (const QString &event, events)
-	{
-		m_configuration->deprecatedApi()->addVariable("Hints", "Event_" + event + "_bgcolor", qApp->palette().window().color());
-		m_configuration->deprecatedApi()->addVariable("Hints", "Event_" + event + "_fgcolor",qApp->palette().windowText().color());
-		m_configuration->deprecatedApi()->addVariable("Hints", "Event_" + event + "_font", qApp->font());
-		m_configuration->deprecatedApi()->addVariable("Hints", "Event_" + event + "_timeout", 10);
-	}
 
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintsPositionX", 0);
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintsPositionY", 0);

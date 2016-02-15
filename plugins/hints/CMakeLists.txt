@@ -9,18 +9,15 @@ set (SOURCES
 	hint-over-user-configuration-window.cpp
 	hint.cpp
 	hints-configuration-ui-handler.cpp
-	hints-configuration-window.cpp
 	hints-module.cpp
 	hints-plugin-modules-factory.cpp
 	hints-plugin-object.cpp
-	hints-configuration-widget.cpp
 )
 
 set (CONFIGURATION_FILES
 	configuration/hint-over-user.ui
 	configuration/hints.ui
 	configuration/hints-advanced.ui
-	configuration/hints-notifier.ui
 )
 
 kadu_plugin (hints
