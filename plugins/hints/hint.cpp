@@ -95,11 +95,8 @@ void Hint::init()
 
 	createLabels(m_iconsManager->iconByPath(notification.icon).pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
 
-	auto showButtons = !notification.callbacks.isEmpty();
-	if (showButtons)
-		if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons"))
-			showButtons = false;
-
+	auto showButtons = !notification.callbacks.isEmpty() && m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowNotificationActions", 
+			!m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons", false));
 	if (showButtons)
 	{
 		callbacksBox = new QHBoxLayout();

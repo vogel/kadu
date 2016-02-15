@@ -2,7 +2,7 @@
 <configuration-ui>
 	<section name="Notifications">
 		<tab name="Hints">
-			<group-box name="Look">
+			<group-box name="General">
 				<combo-box caption="Icon size" config-section="Hints" config-item="AllEvents_iconSize">
 					<item value="16" caption="16px" />
 					<item value="22" caption="22px" />
@@ -10,9 +10,7 @@
 					<item value="48" caption="48px" />
 					<item value="64" caption="64px" />
 				</combo-box>
-				<check-box caption="Show buttons only if notification requires user's action" config-section="Hints" config-item="ShowOnlyNecessaryButtons" />
-			</group-box>
-			<group-box name="New Chat/Message">
+				<check-box caption="Show notification actions" config-section="Hints" config-item="ShowNotificationActions" />
 				<check-box caption="Show message content in hint" config-section="Hints" config-item="ShowContentMessage" id="hints/showContent" />
 				<spin-box caption="Number of quoted characters" config-section="Hints" config-item="CiteSign" min-value="1" max-value="2000" id="hints/showContentCount" />
 			</group-box>
