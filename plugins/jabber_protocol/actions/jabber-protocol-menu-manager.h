@@ -23,6 +23,7 @@
 #include "protocols/protocol-menu-manager.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class JabberActions;
@@ -39,7 +40,9 @@ public:
 	virtual const QString protocolName() const { return "jabber"; }
 
 private:
-	QList<ActionDescription *> m_rosterActions;
+	QPointer<JabberActions> m_jabberActions;
+
+	mutable QList<ActionDescription *> m_rosterActions;
 
 private slots:
 	INJEQT_SET void setJabberActions(JabberActions *jabberActions);

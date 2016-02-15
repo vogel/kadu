@@ -34,13 +34,18 @@ JabberProtocolMenuManager::~JabberProtocolMenuManager()
 
 void JabberProtocolMenuManager::setJabberActions(JabberActions *jabberActions)
 {
-	m_rosterActions.append(jabberActions->resendSubscription());
-	m_rosterActions.append(jabberActions->removeSubscription());
-	m_rosterActions.append(jabberActions->askForSubscription());
+	m_jabberActions = jabberActions;
 }
 
 const QList<ActionDescription *> & JabberProtocolMenuManager::protocolActions() const
 {
+	if (m_rosterActions.empty())
+	{
+		m_rosterActions.append(m_jabberActions->resendSubscription());
+		m_rosterActions.append(m_jabberActions->removeSubscription());
+		m_rosterActions.append(m_jabberActions->askForSubscription());
+	}
+
 	return m_rosterActions;
 }
 
