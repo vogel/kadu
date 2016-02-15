@@ -314,10 +314,7 @@ void HintsConfigurationUiHandler::updateHintsPreview()
 			newPosition.setY(trayPosition.y() - preferredSize.height());
 	}
 
-	previewHintsFrame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
-
-	previewHintsFrame->setWindowOpacity(m_hintManager->opacity());
-}
+	previewHintsFrame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());}
 
 void HintsConfigurationUiHandler::deleteHintsPreview(Hint *hint)
 {

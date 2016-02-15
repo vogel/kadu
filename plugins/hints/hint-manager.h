@@ -63,8 +63,6 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<QTimer> hint_timer;
 	QPointer<QFrame> tipFrame;
 	QVBoxLayout *layout;
-	QString Style;
-	double Opacity;
 
 	QList<Hint *> hints;
 
@@ -161,8 +159,5 @@ public:
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr);
 
 	void prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkable talkable);
-
-	const QString & style() const { return Style; }
-	double opacity() { return Opacity; }
 
 };

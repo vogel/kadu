@@ -186,9 +186,6 @@ void HintManager::hintUpdated()
 
 void HintManager::configurationUpdated()
 {
-	Opacity = m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_transparency", 0);
-	Opacity = 1 - Opacity/100;
-
 	setHint();
 }
 
@@ -274,7 +271,6 @@ void HintManager::setHint()
 			newPosition.setY(trayPosition.y() - preferredSize.height());
 	}
 
-	frame->setWindowOpacity(Opacity);
 	// Only setFixedSize() and move() (in this order) guarantees correct
 	// placement on all platforms (at least those I tested).
 	frame->setFixedSize(preferredSize);
@@ -536,10 +532,6 @@ void HintManager::showToolTip(const QPoint &point, Talkable talkable)
 
 	prepareOverUserHint(tipFrame, tipLabel, talkable);
 
-	double opacity = m_configuration->deprecatedApi()->readNumEntry("Hints", "HintOverUser_transparency", 0);
-	opacity = 1 - opacity/100;
-	tipFrame->setWindowOpacity(opacity);
-
 	QPoint pos(point + QPoint(5, 5));
 
 	QSize preferredSize = tipFrame->sizeHint();
@@ -615,18 +607,10 @@ void HintManager::createDefaultConfiguration()
 	m_configuration->deprecatedApi()->addVariable("Hints", "ShowContentMessage", true);
 	m_configuration->deprecatedApi()->addVariable("Hints", "UseUserPosition", false);
 	m_configuration->deprecatedApi()->addVariable("Hints", "OpenChatOnEveryNotification", false);
-	m_configuration->deprecatedApi()->addVariable("Hints", "MarginSize", 2);
 
-	m_configuration->deprecatedApi()->addVariable("Hints", "AllEvents_transparency", 0);
 	m_configuration->deprecatedApi()->addVariable("Hints", "AllEvents_iconSize", 32);
-	m_configuration->deprecatedApi()->addVariable("Hints", "AllEvents_borderWidth", FRAME_WIDTH);
 
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_transparency", 0);
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_iconSize", 32);
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_borderWidth", FRAME_WIDTH);
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_bdcolor", qApp->palette().window().color());
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_bgcolor", qApp->palette().window().color());
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_fgcolor", qApp->palette().windowText().color());
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_font", qApp->font());
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_Geometry", "50, 50, 640, 610");
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintEventConfiguration_Geometry", "50, 50, 520, 345");

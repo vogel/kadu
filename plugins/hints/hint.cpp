@@ -160,20 +160,18 @@ void Hint::configurationUpdated()
 
 void Hint::createLabels(const QPixmap &pixmap)
 {
-	int margin = m_configuration->deprecatedApi()->readNumEntry("Hints", "MarginSize", 0);
-
 	vbox = new QVBoxLayout(this);
 	vbox->setSpacing(0);
 	labels = new QHBoxLayout();
 	labels->setSpacing(0);
-	labels->setContentsMargins(margin + 4, margin + 2, margin + 4, margin + 2);
+	labels->setContentsMargins(6, 4, 6, 4);
 	vbox->addLayout(labels);
 
 	if (!pixmap.isNull())
 	{
 		icon = new QLabel(this);
 		icon->setPixmap(pixmap);
-		icon->setContentsMargins(0, 0, margin + 4, 0);
+		icon->setContentsMargins(0, 0, 6, 0);
 		icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 		// Without setting fixed size right margin is sometimes not respected on Windows.
 		// If you cannot reproduce, try setting MarginSize to 5 px.
