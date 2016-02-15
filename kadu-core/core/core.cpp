@@ -275,21 +275,12 @@ void Core::createDefaultConfiguration()
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Network", "Server", QString());
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Network", "UseProxy", false);
 
-#ifdef Q_OS_MAC
-	/* Dorr: for MacOS X define the function keys with 'apple' button
-	 * as it is the default system configuration */
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_clear", "Ctrl+F9");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_configure", "Ctrl+F2");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_modulesmanager", "Ctrl+F4");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_showoffline", "Ctrl+F9");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_showonlydesc", "Ctrl+F10");
-#else
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_clear", "F9");
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_configure", "F2");
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_modulesmanager", "F4");
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_showoffline", "F9");
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_showonlydesc", "F10");
-#endif
+
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_bold", "Ctrl+B");
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_close", "Esc");
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_italic", "Ctrl+I");

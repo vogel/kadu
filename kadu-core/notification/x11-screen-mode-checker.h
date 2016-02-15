@@ -24,7 +24,7 @@
 #include <X11/Xlib.h>
 #include <time.h>
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 #include "os/x11/x11tools.h" // this should be included as last one,
 #undef KeyPress
 #undef Status            // and Status defined by Xlib.h must be undefined

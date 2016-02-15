@@ -26,7 +26,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QHBoxLayout>
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 #include <QtX11Extras/QX11Info>
 #include <X11/Xatom.h>
 #include <X11/Xlib.h>
@@ -48,7 +48,7 @@ ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 	setWindowRole("kadu-screenshot");
 
 	setFocusPolicy(Qt::StrongFocus);
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	// set always-on-top and force taskbar and pager skipping
 	Atom win_state = XInternAtom( QX11Info::display(), "_NET_WM_STATE", False );
 	Atom win_state_setting[] =

@@ -41,9 +41,6 @@ void ConfigWizardPage::createGui()
 
 	DescriptionPane = new QTextBrowser(this);
 	DescriptionPane->setFocusPolicy(Qt::ClickFocus);
-#ifdef Q_OS_MAC
-	DescriptionPane->setMinimumWidth(150);
-#endif
 	mainLayout->addWidget(DescriptionPane, 2);
 
 	QWidget *formWidget = new QWidget(this);

@@ -36,7 +36,7 @@ class KADUAPI PathsProvider : public QObject
 	Q_OBJECT
 	Q_DISABLE_COPY(PathsProvider)
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	QString DesktopFilePath;
 #endif
 	QString ProfilePath;
@@ -70,7 +70,7 @@ public:
 	 */
 	static QString webKitPath(const QString &path);
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	/**
 	 * @short Returns absolute path to the .desktop file owned by Kadu.
 	 * @return absolute path to the .desktop file owned by Kadu

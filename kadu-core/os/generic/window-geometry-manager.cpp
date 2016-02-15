@@ -47,10 +47,6 @@
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QWidget>
 
-#ifdef Q_OS_MAC
-#include <QtWidgets/QMainWindow>
-#endif
-
 #include "misc/misc.h"
 #include "misc/variant-wrapper.h"
 

@@ -33,7 +33,7 @@
 #include <windows.h>
 #endif
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <unistd.h>
@@ -64,7 +64,7 @@ void PCSpeakerNotifier::beep(int pitch, int duration)
 	else
 		Beep(pitch, duration);
 }
-#elif defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#elif defined(Q_OS_UNIX)
 void PCSpeakerNotifier::beep(int pitch, int duration)
 {
 	if (pitch == 0)
@@ -98,7 +98,7 @@ void PCSpeakerNotifier::beep(int pitch, int duration)
 PCSpeakerNotifier::PCSpeakerNotifier(QObject *parent) :
 		QObject{parent},
 		Notifier{"PC Speaker", QT_TRANSLATE_NOOP("@default", "PC Speaker"), KaduIcon("audio-volume-low")},
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 		xdisplay{},
 #endif
 		volume{}
@@ -126,11 +126,7 @@ NotifierConfigurationWidget * PCSpeakerNotifier::createConfigurationWidget(QWidg
 
 void PCSpeakerNotifier::notify(const Notification &notification)
 {
-#ifdef Q_OS_MACX
-	SysBeep(1);
-#else
 	parseAndPlay(m_configuration->deprecatedApi()->readEntry("PC Speaker", notification.type + "_Sound"));
-#endif
 }
 
 void PCSpeakerNotifier::parseStringToSound(QString line, int tab[21], int tab2[21])
@@ -217,7 +213,7 @@ void PCSpeakerNotifier::parseStringToSound(QString line, int tab[21], int tab2[2
 
 void PCSpeakerNotifier::play(int sound[21], int soundlength[20])
 {
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	xdisplay = XOpenDisplay(NULL);
 #endif
 	for (int i=0; i<20; ++i)
@@ -225,7 +221,7 @@ void PCSpeakerNotifier::play(int sound[21], int soundlength[20])
 		if (sound[i] == -1) break;
 		beep(sound[i], soundlength[i]);
 	}
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	XCloseDisplay(xdisplay);
 #endif
 }

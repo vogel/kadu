@@ -22,7 +22,7 @@
 #ifndef PIXMAP_GRABBER_H
 #define PIXMAP_GRABBER_H
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 #include <X11/extensions/shape.h>
 #include <vector>
 #endif
@@ -37,7 +37,7 @@ class PixmapGrabber
 public:
 	// Methods from KSnapShot
 	static QPixmap grabCurrent();
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	static Window findRealWindow(Window w, int depth = 0);
 	static void getWindowsRecursive(std::vector<QRect> &windows, Window w, int rx = 0, int ry = 0, int depth = 0);
 	static QPixmap grabWindow(Window child, int x, int y, uint w, uint h, uint border);

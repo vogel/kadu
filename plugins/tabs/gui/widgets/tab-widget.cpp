@@ -101,12 +101,6 @@ void TabWidget::init()
 
 	setDocumentMode(true);
 
-#ifdef Q_OS_MAC
-	/* Dorr: on Mac make the tabs look like the ones from terminal or safari */
-	setAttribute(Qt::WA_MacBrushedMetal);
-	setStyleSheet("QToolButton { background: transparent; }");
-#endif
-
 	connect(tabbar, SIGNAL(contextMenu(int, const QPoint &)),
 			SLOT(onContextMenu(int, const QPoint &)));
 	connect(tabbar, SIGNAL(tabCloseRequested(int)),
@@ -314,7 +308,7 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 		switchTabRight();
 	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "ReopenClosedTab"))
 		Manager->reopenClosedChat();
-	#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+	#if defined(Q_OS_WIN)
 		#define TAB_SWITCH_MODIFIER "Ctrl"
 	#else
 		#define TAB_SWITCH_MODIFIER "Alt"

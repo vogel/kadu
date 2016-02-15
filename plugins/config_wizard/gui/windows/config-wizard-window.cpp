@@ -66,13 +66,6 @@ void ConfigWizardWindow::init()
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Kadu Wizard"));
 
-#ifdef Q_OS_MAC
-	/* MacOSX has it's own QWizard style which requires much more space
-	 * than the other ones so we're forcing the ClassicStyle to unify
-	 * the window sizes and look. Mac users will love us for that.
-	 */
-	setWizardStyle(QWizard::ClassicStyle);
-#else
 	#ifdef Q_OS_WIN
 		// NOTE: Workaround for bug #1912.
 		// TODO: Remove this as soon as QTBUG-10478 is fixed in
@@ -80,7 +73,6 @@ void ConfigWizardWindow::init()
 		setWizardStyle(QWizard::ModernStyle);
 	#endif
 	setMinimumSize(500, 500);
-#endif
 
 	setPage(ProfilePage, m_injectedFactory->makeInjected<ConfigWizardProfilePage>(this));
 	setPage(ChooseNetworkPage, m_injectedFactory->makeInjected<ConfigWizardChooseNetworkPage>(this));

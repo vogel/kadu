@@ -26,14 +26,11 @@
 #include <QtGui/QBitmap>
 #include <QtGui/QPainter>
 #include <QtGui/QPixmap>
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 #include <QtX11Extras/QX11Info>
 #else
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
-#endif
-#ifdef Q_OS_MAC
-#include <Carbon/Carbon.h>
 #endif
 #ifdef Q_OS_WIN
 #include <QtCore/QLibrary>
@@ -48,7 +45,7 @@ typedef BOOL (WINAPI *PrintWindow_t)(HWND hwnd, HDC  hdcBlt, UINT nFlags);
 
 #define MINIMUM_SIZE 8
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 
 //////////////////////////////////////////////////////////////////
 // Code below is copied (and changed a little) from KSnapShot,
@@ -294,30 +291,4 @@ QPixmap PixmapGrabber::grabCurrent()
 		return QPixmap();
 
 }
-
-#elif defined Q_OS_MAC
-
-QPixmap PixmapGrabber::grabCurrent()
-{
-	WindowRef window;
-	Point mousePos;
-	Rect rect;
-	int err;
-
-	GetGlobalMouse(&mousePos);
-
-	/* This code works only with our application windows.
-	 * In order to capture other application's windows the private CoreGraphics API must be used.
-	 */
-	err = MacFindWindow(mousePos, &window);
-	err = GetWindowBounds(window, kWindowStructureRgn, &rect);
-	if (err == noErr)
-	{
-		QPixmap desktop = QPixmap::grabWindow(QApplication::desktop()->winId());
-		return desktop.copy(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
-	}
-	else
-		return QPixmap();
-}
-
 #endif

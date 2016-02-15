@@ -38,7 +38,7 @@ public:
 	ChatWidget * addChat(Chat chat, OpenChatActivation activation);
 	void removeChat(Chat chat);
 
-	virtual void changeEvent(QEvent *event);
+	virtual void changeEvent(QEvent *event) override;
 
 	bool isChatWidgetActive(const ChatWidget *chatWidget);
 	void tryActivateChatWidget(ChatWidget *chatWidget);

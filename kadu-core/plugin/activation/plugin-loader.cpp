@@ -31,10 +31,7 @@
 #include <QtCore/QLibrary>
 #include <QtCore/QPluginLoader>
 
-#ifdef Q_OS_MAC
-	#define SO_PREFIX "lib"
-	#define SO_EXT "dylib"
-#elif defined(Q_OS_WIN)
+#if defined(Q_OS_WIN)
 	#define SO_PREFIX "lib"
 	#define SO_EXT "dll"
 #else

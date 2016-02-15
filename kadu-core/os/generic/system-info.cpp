@@ -36,10 +36,6 @@
 #include <windows.h>
 #endif
 
-#ifdef Q_OS_MAC
-#include <CoreServices/CoreServices.h>
-#endif
-
 #include "system-info.h"
 
 
@@ -229,21 +225,6 @@ SystemInfo::SystemInfo(QObject *parent) :
 
 		if (OsFullName.isEmpty())
 			OsFullName = linuxHeuristicDetect();
-#elif defined(Q_OS_MAC)
-	SInt32 minor_version, major_version, bug_fix;
-	if (Gestalt(gestaltSystemVersionMajor, &major_version) == noErr &&
-		Gestalt(gestaltSystemVersionMinor, &minor_version) == noErr &&
-		Gestalt(gestaltSystemVersionBugFix, &bug_fix) == noErr)
-	{
-		OsVersion = QString("%1.%2.%3").arg(major_version).arg(minor_version).arg(bug_fix);
-		OsFullName = QString("MacOS X %1.%2.%3").arg(major_version).arg(minor_version).arg(bug_fix);
-	}
-	else
-	{
-		OsVersion = "10.x";
-		OsFullName = "MacOS X 10.x";
-	}
-	OsName = "MacOS X";
 #endif
 
 #if defined(Q_OS_WIN)

@@ -115,11 +115,7 @@ void HintManager::init()
 
 	createDefaultConfiguration();
 
-#ifdef Q_OS_MAC
-	frame = new QFrame(0, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-#else
 	frame = new QFrame(0, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-#endif
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	layout = new QVBoxLayout(frame);
@@ -486,11 +482,7 @@ void HintManager::showToolTip(const QPoint &point, Talkable talkable)
 
 	delete tipFrame;
 
-#ifdef Q_OS_MAC
-	tipFrame = new QFrame(0, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-#else
 	tipFrame = new QFrame(0, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-#endif
 
 	QHBoxLayout *lay = new QHBoxLayout(tipFrame);
 	lay->setMargin(10);
@@ -543,7 +535,7 @@ void HintManager::notify(const Notification &notification)
 void HintManager::createDefaultConfiguration()
 {
 	// TODO: this should be more like: if (plugins.loaded(freedesktop_notify) && this_is_first_time_we_are_loaded_or_whatever)
-#if !defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+#if !defined(Q_OS_UNIX)
 	m_configuration->deprecatedApi()->addVariable("Notify", "ConnectionError_Hints", true);
 	m_configuration->deprecatedApi()->addVariable("Notify", "NewChat_Hints", true);
 	m_configuration->deprecatedApi()->addVariable("Notify", "NewMessage_Hints", true);

@@ -19,7 +19,7 @@
 
 #include "full-screen-service.h"
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 #include "notification/x11-screen-mode-checker.h"
 #elif defined(Q_OS_WIN)
 #include "notification/windows-screen-mode-checker.h"
@@ -50,7 +50,7 @@ void FullScreenService::start()
 	if (m_fullscreenChecker)
 		return;
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	m_fullscreenChecker = not_owned_qptr<ScreenModeChecker>(new X11ScreenModeChecker{});
 #elif defined(Q_OS_WIN)
 	m_fullscreenChecker = not_owned_qptr<ScreenModeChecker>(new WindowsScreenModeChecker{});

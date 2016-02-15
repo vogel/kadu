@@ -28,7 +28,7 @@
 #include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 #include <QtX11Extras/QX11Info>
 #endif
 
@@ -52,7 +52,7 @@ private:
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX)
 	Display *xdisplay;
 #endif
 	int volume;

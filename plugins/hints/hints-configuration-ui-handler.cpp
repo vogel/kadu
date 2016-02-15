@@ -105,11 +105,7 @@ void HintsConfigurationUiHandler::setTrayService(TrayService *trayService)
 
 void HintsConfigurationUiHandler::init()
 {
-#ifdef Q_OS_MAC
-	previewHintsFrame = new QFrame(qobject_cast<QWidget *>(parent()), Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-#else
 	previewHintsFrame = new QFrame(qobject_cast<QWidget *>(parent()), Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-#endif
 	previewHintsFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	previewHintsLayout = new QVBoxLayout(previewHintsFrame);

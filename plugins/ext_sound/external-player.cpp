@@ -67,11 +67,7 @@ QObject * ExternalPlayer::playSound(const QString &path)
 
 void ExternalPlayer::createDefaultConfiguration()
 {
-#ifdef Q_OS_MAC
-	m_configuration->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/Applications/Kadu.app/Contents/MacOS/playsound");
-#else
 	m_configuration->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
-#endif
 }
 
 #include "moc_external-player.cpp"

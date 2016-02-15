@@ -126,25 +126,6 @@ void Updates::buildQuery()
 		platform.append("OpenBSD");
 #elif defined(Q_OS_SOLARIS)
 		platform.append("Solaris");
-#elif defined(Q_OS_MAC)
-		switch (QSysInfo::MacintoshVersion)
-		{
-			case QSysInfo::MV_PANTHER:
-				platform.append("MacOSX-Panther");
-				break;
-			case QSysInfo::MV_TIGER:
-				platform.append("MacOSX-Tiger");
-				break;
-			case QSysInfo::MV_LEOPARD:
-				platform.append("MacOSX-Leopard");
-				break;
-			case QSysInfo::MV_SNOWLEOPARD:
-				platform.append("MacOSX-SnowLeopard");
-				break;
-			default:
-				platform.append("MacOSX-Unknown");
-				break;
-		}
 #elif defined(Q_OS_WIN)
 		switch (QSysInfo::WindowsVersion)
 		{
