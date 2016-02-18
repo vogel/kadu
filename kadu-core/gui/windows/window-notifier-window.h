@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include "notification/notification.h"
 #include "os/generic/desktop-aware-object.h"
 
 #include <QtCore/QPointer>
@@ -45,7 +46,7 @@ private:
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 
-	const Notification &m_notification;
+	Notification m_notification;
 
 	void createGui();
 	void addButton(QWidget *parent, const QString &title, const QString &name);

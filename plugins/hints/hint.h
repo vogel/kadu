@@ -22,6 +22,7 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
+#include "notification/notification.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QFrame>
@@ -61,7 +62,7 @@ class Hint : public QFrame, ConfigurationAwareObject
 	int secs;
 	int startSecs;
 
-	const Notification &notification;
+	Notification notification;
 	QStringList details;
 
 	void createLabels(const QPixmap &pixmap);
