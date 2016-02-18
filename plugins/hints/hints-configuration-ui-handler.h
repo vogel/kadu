@@ -45,7 +45,6 @@ class HintsConfigurationUiHandler : public QObject, public ConfigurationUiHandle
 
 private:
 	QPointer<BuddyDummyFactory> m_buddyDummyFactory;
-	QPointer<ConfigurationWindow> AdvancedWindow;
 	QPointer<Configuration> m_configuration;
 	QPointer<HintManager> m_hintManager;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -79,8 +78,6 @@ private slots:
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setTrayService(TrayService *trayService);
 	INJEQT_INIT void init();
-
-	void showAdvanced();
 
 	void minimumWidthChanged(int value);
 	void maximumWidthChanged(int value);

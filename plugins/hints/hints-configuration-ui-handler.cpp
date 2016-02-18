@@ -118,8 +118,6 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 {
 	m_mainConfigurationWindow = mainConfigurationWindow;
 
-	connect(mainConfigurationWindow->widget()->widgetById("hints/advanced"), SIGNAL(clicked()), this, SLOT(showAdvanced()));
-
 	connect(mainConfigurationWindow->widget()->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
 	mainConfigurationWindow->widget()->widgetById("hints/showContentCount"), SLOT(setEnabled(bool)));
 
@@ -150,6 +148,27 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	lay->addWidget(overUserConfigurationPreview);
 
 	toolTipBox->addWidgets(new QLabel(tr("Hint over buddy list: ")), configureHint);
+
+	newHintUnder = static_cast<QComboBox *>(mainConfigurationWindow->widget()->widgetById("hints/newHintUnder"));
+
+	ownPosition = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPosition"));
+	connect(ownPosition, SIGNAL(toggled(bool)), this, SLOT(updateHintsPreview()));
+
+	minimumWidth = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/minimumWidth"));
+	maximumWidth = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/maximumWidth"));
+	connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
+	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
+
+	xPosition = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionX"));
+	connect(xPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
+	yPosition = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionY"));
+	connect(yPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
+
+	ownPositionCorner = static_cast<QComboBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionCorner"));
+	connect(ownPositionCorner, SIGNAL(currentIndexChanged(int)), this, SLOT(updateHintsPreview()));
+
+	QPushButton *previewButton = static_cast<QPushButton *>(mainConfigurationWindow->widget()->widgetById("hints/preview"));
+	connect(previewButton, SIGNAL(clicked()), this, SLOT(addHintsPreview()));
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()
@@ -160,38 +179,6 @@ void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()
 
 void HintsConfigurationUiHandler::mainConfigurationWindowApplied()
 {
-}
-
-void HintsConfigurationUiHandler::showAdvanced()
-{
-	if (!AdvancedWindow)
-	{
-		AdvancedWindow = m_injectedFactory->makeInjected<ConfigurationWindow>("HintsAdvanced", tr("Advanced hints' configuration"), "Notification", m_mainConfigurationWindow->dataManager());
-		AdvancedWindow->widget()->appendUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints-advanced.ui"));
-
-		newHintUnder = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/newHintUnder"));
-
-		ownPosition = static_cast<QCheckBox *>(AdvancedWindow->widget()->widgetById("hints/ownPosition"));
-		connect(ownPosition, SIGNAL(toggled(bool)), this, SLOT(updateHintsPreview()));
-
-		minimumWidth = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/minimumWidth"));
-		maximumWidth = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/maximumWidth"));
-		connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
-		connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
-
-		xPosition = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionX"));
-		connect(xPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
-		yPosition = static_cast<QSpinBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionY"));
-		connect(yPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
-
-		ownPositionCorner = static_cast<QComboBox *>(AdvancedWindow->widget()->widgetById("hints/ownPositionCorner"));
-		connect(ownPositionCorner, SIGNAL(currentIndexChanged(int)), this, SLOT(updateHintsPreview()));
-
-		QPushButton *previewButton = static_cast<QPushButton *>(AdvancedWindow->widget()->widgetById("hints/preview"));
-		connect(previewButton, SIGNAL(clicked()), this, SLOT(addHintsPreview()));
-	}
-
-	AdvancedWindow->show();
 }
 
 void HintsConfigurationUiHandler::addHintsPreview()

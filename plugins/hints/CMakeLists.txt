@@ -15,7 +15,6 @@ set (SOURCES
 
 set (CONFIGURATION_FILES
 	configuration/hints.ui
-	configuration/hints-advanced.ui
 )
 
 kadu_plugin (hints
