@@ -69,9 +69,6 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 
 	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, const BuddyList &buddies, const QString &msg);
 
-	/**
-		ustala r�g, od kt�rego b�dzie liczona pozycja grupy dymk�w
-	**/
 	void setLayoutDirection();
 
 	void createDefaultConfiguration();
@@ -88,49 +85,19 @@ private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	/**
-		min��a sekunda: aktualizuje czasy wszystkich dymk�w
-		usuwa te, kt�rym min�� czas
-	**/
 	void oneSecond();
-
-	/**
-		przesuwa ca�� grup� hint�w zgodnie z preferowanym rozmiarem grupy
-		i wykryt�/okre�lon� w konfiguracji pozycj� traya
-	**/
 	void setHint();
 
-	/**
-		na dymku o numerze id klikni�to lewym przyciskiem myszy
-		w zale�no�ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s� wszystkie
-	**/
 	void leftButtonSlot(Hint *hint);
-
-	/**
-		na dymku o numerze id klikni�to prawym przyciskiem myszy
-		w zale�no�ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s� wszystkie
-	**/
 	void rightButtonSlot(Hint *hint);
-
-	/**
-		na dymku o numerze id klikni�to �rodkowym przyciskiem myszy
-		w zale�no�ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s� wszystkie
-	**/
 	void midButtonSlot(Hint *hint);
 
 	void deleteHint(Hint *hint);
 	void deleteHintAndUpdate(Hint *hint);
 
-	/**
-		Pokazuje dymek zwi�zany z notyfikacj�.
-	**/
 	Hint *addHint(const Notification &notification);
 
-	/**
-		usuwa wszystkie dymki
-	**/
 	void deleteAllHints();
-
 	void hintUpdated();
 
 protected:
