@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,16 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "hints-module.h"
-
 #include "hint-repository.h"
-#include "hints-configuration-ui-handler.h"
-#include "hints-plugin-object.h"
 
-HintsModule::HintsModule()
+HintRepository::HintRepository(QObject *parent) :
+		QObject{parent}
 {
-	add_type<HintsConfigurationUiHandler>();
-	add_type<HintManager>();
-	add_type<HintRepository>();
-	add_type<HintsPluginObject>();
+}
+
+HintRepository::~HintRepository()
+{
+}
+
+void HintRepository::addHint(Hint *hint)
+{
+	m_hints.push_back(hint);
+}
+
+void HintRepository::removeHint(Hint *hint)
+{
+	auto it = std::find(begin(), end(), hint);
+	if (it != end())
+		m_hints.erase(it);
 }

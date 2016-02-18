@@ -37,6 +37,7 @@ class BuddyList;
 class ChatWidgetManager;
 class ChatWidget;
 class Configuration;
+class HintRepository;
 class HintsConfigurationUiHandler;
 class HintsConfigurationWidget;
 class InjectedFactory;
@@ -52,6 +53,7 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
+	QPointer<HintRepository> m_hintRepository;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<Parser> m_parser;
@@ -62,8 +64,6 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<QTimer> hint_timer;
 	QPointer<QFrame> tipFrame;
 	QVBoxLayout *layout;
-
-	QList<Hint *> hints;
 
 	HintsConfigurationWidget *configurationWidget;
 
@@ -79,6 +79,7 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setHintRepository(HintRepository *hintRepository);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setParser(Parser *parser);

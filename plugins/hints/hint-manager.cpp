@@ -21,6 +21,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "hint-manager.h"
+
+#include "hint-repository.h"
+
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "contacts/contact.h"
+#include "core/injected-factory.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/tool-tip-class-manager.h"
+#include "gui/tray/tray-service.h"
+#include "icons/icons-manager.h"
+#include "message/message-manager.h"
+#include "message/sorted-messages.h"
+#include "misc/misc.h"
+#include "notification/notification.h"
+#include "notification/notifier-repository.h"
+#include "parser/parser.h"
+#include "activate.h"
+#include "debug.h"
+
 #include <QtCore/QTimer>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
@@ -29,26 +50,6 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "chat/chat-manager.h"
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "contacts/contact.h"
-#include "core/injected-factory.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/tool-tip-class-manager.h"
-#include "gui/tray/tray-service.h"
-#include "message/message-manager.h"
-#include "message/sorted-messages.h"
-#include "misc/misc.h"
-#include "notification/notification.h"
-#include "notification/notifier-repository.h"
-#include "parser/parser.h"
-
-#include "icons/icons-manager.h"
-#include "activate.h"
-#include "debug.h"
-
-#include "hint-manager.h"
-
 
 /**
  * @ingroup hints
@@ -61,7 +62,7 @@ HintManager::HintManager(QObject *parent) :
 		QObject{parent},
 		Notifier("Hints", "Hints", KaduIcon("kadu_icons/notify-hints")), AbstractToolTip(),
 		hint_timer(new QTimer(this)),
-		tipFrame(0), hints()
+		tipFrame(0)
 {
 }
 
@@ -77,6 +78,11 @@ void HintManager::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 void HintManager::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void HintManager::setHintRepository(HintRepository *hintRepository)
+{
+	m_hintRepository = hintRepository;
 }
 
 void HintManager::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -183,7 +189,7 @@ void HintManager::setHint()
 {
 	kdebugf();
 
-	if (hints.isEmpty())
+	if (m_hintRepository->isEmpty())
 	{
 		hint_timer->stop();
 		frame->hide();
@@ -278,13 +284,13 @@ void HintManager::deleteHint(Hint *hint)
 {
 	kdebugf();
 
-	hints.removeAll(hint);
+	m_hintRepository->removeHint(hint);
 
 	layout->removeWidget(hint);
 
 	hint->deleteLater();
 
-	if (hints.isEmpty())
+	if (m_hintRepository->isEmpty())
 	{
 		hint_timer->stop();
 		frame->hide();
@@ -301,24 +307,19 @@ void HintManager::deleteHintAndUpdate(Hint *hint)
 
 void HintManager::oneSecond(void)
 {
-	kdebugf();
+	for (auto hint : m_hintRepository)
+		hint->nextSecond();
 
-	bool removed = false;
-	for (int i = hints.count() - 1; i >= 0; i--)
+	std::vector<Hint *> deprecated;
+	std::copy_if(begin(m_hintRepository), end(m_hintRepository), std::back_inserter(deprecated), [](Hint *hint) { return hint->isDeprecated(); });
+	for (auto hint : deprecated)
 	{
-		hints.at(i)->nextSecond();
-
-		if (hints.at(i)->isDeprecated())
-		{
-			deleteHint(hints.at(i));
-			removed = true;
-		}
+		deleteHint(hint);
+		m_hintRepository->removeHint(hint);
 	}
 
-	if (removed)
+	if (!deprecated.empty())
 		setHint();
-
-	kdebugf2();
 }
 
 NotifierConfigurationWidget * HintManager::createConfigurationWidget(QWidget *parent)
@@ -349,19 +350,15 @@ void HintManager::midButtonSlot(Hint *hint)
 
 void HintManager::deleteAllHints()
 {
-	kdebugf();
 	hint_timer->stop();
 
-	for (int i = hints.count() - 1; i >= 0; i--)
+	while (begin(m_hintRepository) != end(m_hintRepository))
 	{
-		hints[i]->discardNotification();
-		deleteHint(hints[i]);
+		(*begin(m_hintRepository))->discardNotification();
+		m_hintRepository->removeHint(*begin(m_hintRepository));
 	}
 
-	if (hints.isEmpty())
-		frame->hide();
-
-	kdebugf2();
+	frame->hide();
 }
 
 Hint *HintManager::addHint(const Notification &notification)
@@ -369,7 +366,7 @@ Hint *HintManager::addHint(const Notification &notification)
 	kdebugf();
 
 	auto hint = m_injectedFactory->makeInjected<Hint>(frame, notification);
-	hints.append(hint);
+	m_hintRepository->addHint(hint);
 
 	setLayoutDirection();
 	layout->addWidget(hint);
