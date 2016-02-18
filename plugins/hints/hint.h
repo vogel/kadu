@@ -19,20 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HINT_H
-#define HINT_H
+#pragma once
+
+#include "configuration/configuration-aware-object.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QVBoxLayout>
 #include <injeqt/injeqt.h>
-
-#include "chat/chat.h"
-
-#include "configuration/configuration-aware-object.h"
-
-class QLabel;
-class QVBoxLayout;
 
 class Chat;
 class Configuration;
@@ -43,7 +37,9 @@ class NotificationService;
 struct Notification;
 class Parser;
 
-// Hint needs to inherit QFrame (not just QWidget) for better stylesheets support.
+class QLabel;
+class QVBoxLayout;
+
 class Hint : public QFrame, ConfigurationAwareObject
 {
 	Q_OBJECT
@@ -62,8 +58,6 @@ class Hint : public QFrame, ConfigurationAwareObject
 
 	QLabel *icon;
 	QLabel *label;
-	QColor bcolor; //kolor t�a
-	QColor fcolor;
 	int secs;
 	int startSecs;
 
@@ -74,8 +68,6 @@ class Hint : public QFrame, ConfigurationAwareObject
 	void updateText();
 
 	void resetTimeout();
-
-	Chat CurrentChat;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
@@ -96,17 +88,10 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	Hint(QWidget *parent, const Notification &notification);
+	explicit Hint(QWidget *parent, const Notification &notification);
 	virtual ~Hint();
 
-	void mouseOver();
-	void mouseOut();
-	void notificationUpdated();
-
-	void getData(QString &text, QPixmap &pixmap, int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
 	bool isDeprecated();
-
-	Chat  chat() { return CurrentChat; }
 
 	const Notification & getNotification() { return notification; }
 
@@ -122,6 +107,5 @@ signals:
 	void midButtonClicked(Hint *hint);
 	void closing(Hint *hint);
 	void updated(Hint *hint);
-};
 
-#endif // HINT_H
+};

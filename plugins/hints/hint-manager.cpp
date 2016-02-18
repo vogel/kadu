@@ -69,11 +69,6 @@ HintManager::~HintManager()
 {
 }
 
-void HintManager::setChatManager(ChatManager *chatManager)
-{
-	m_chatManager = chatManager;
-}
-
 void HintManager::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
 	m_chatWidgetManager = chatWidgetManager;
@@ -123,7 +118,6 @@ void HintManager::init()
 	layout->setMargin(0);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-	connect(m_chatManager, SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
 "<tr>"
@@ -350,32 +344,6 @@ void HintManager::midButtonSlot(Hint *hint)
 	Q_UNUSED(hint);
 
 	deleteAllHints();
-	setHint();
-}
-
-void HintManager::openChat(Hint *hint)
-{
-	if (!hint->chat())
-		return;
-
-	if ((hint->getNotification().type != "NewChat") && (hint->getNotification().type != "NewMessage"))
-		return;
-
-	m_chatWidgetManager->openChat(hint->chat(), OpenChatActivation::Activate);
-	deleteHintAndUpdate(hint);
-}
-
-void HintManager::chatUpdated(const Chat &chat)
-{
-	if (chat.unreadMessagesCount() > 0)
-		return;
-
-	for (int i = hints.count() - 1; i >= 0; i--)
-	{
-		if (hints[i]->chat() == chat)
-			deleteHint(hints[i]);
-	}
-
 	setHint();
 }
 

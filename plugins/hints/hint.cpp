@@ -20,11 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QMouseEvent>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QVBoxLayout>
+#include "hint.h"
 
 #include "chat/chat.h"
 #include "configuration/configuration.h"
@@ -39,14 +35,14 @@
 #include "parser/parser.h"
 #include "debug.h"
 
-#include "hint.h"
+#include <QtGui/QMouseEvent>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 
-/**
- * @ingroup hints
- * @{
- */
 Hint::Hint(QWidget *parent, const Notification &xnotification)
-	: QFrame(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(xnotification)
+	: QFrame(parent), vbox(0), callbacksBox(0), icon(0), label(0), notification(xnotification)
 {
 }
 
@@ -87,8 +83,6 @@ void Hint::setParser(Parser *parser)
 void Hint::init()
 {
 	kdebugf();
-
-	CurrentChat = notification.data["chat"].value<Chat>();
 
 	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
 	startSecs = secs = m_configuration->deprecatedApi()->readNumEntry("Hints", "Event_" + key + "_timeout", 10);
@@ -146,12 +140,10 @@ void Hint::configurationUpdated()
 	QPalette palette(qApp->palette());
 
 	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
-	bcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + key + "_bgcolor", &palette.window().color());
-	fcolor = m_configuration->deprecatedApi()->readColorEntry("Hints", "Event_" + key + "_fgcolor", &palette.windowText().color());
 	label->setFont(m_configuration->deprecatedApi()->readFontEntry("Hints", "Event_" + key + "_font", &font));
 	setMinimumWidth(m_configuration->deprecatedApi()->readNumEntry("Hints", "MinimumWidth", 100));
 	setMaximumWidth(m_configuration->deprecatedApi()->readNumEntry("Hints", "MaximumWidth", 500));
-	mouseOut();
+
 	updateText();
 }
 
@@ -196,9 +188,10 @@ void Hint::updateText()
 	{
 		kdebug("syntax is: %s, text is: %s\n", qPrintable(syntax), qPrintable(notification.text));
 
-		if (CurrentChat)
+		auto chat = notification.data["chat"].value<Chat>();
+		if (chat)
 		{
-			Contact contact = *CurrentChat.contacts().constBegin();
+			Contact contact = *chat.contacts().constBegin();
 			text = m_parser->parse(syntax, Talkable(contact), &notification, ParserEscape::HtmlEscape);
 		}
 		else
@@ -279,12 +272,6 @@ bool Hint::isDeprecated()
 	return startSecs != 0 && secs == 0;
 }
 
-void Hint::notificationUpdated()
-{
-	resetTimeout();
-	updateText();
-}
-
 void Hint::mouseReleaseEvent(QMouseEvent *event)
 {
 	switch (event->button())
@@ -308,37 +295,12 @@ void Hint::mouseReleaseEvent(QMouseEvent *event)
 
 void Hint::enterEvent(QEvent *)
 {
-	mouseOver();
+	setStyleSheet(QStringLiteral("* {background-color:%1;}").arg(palette().window().color().lighter().name()));
 }
 
 void Hint::leaveEvent(QEvent *)
 {
-	mouseOut();
-}
-
-void Hint::mouseOver()
-{
-	setStyleSheet(QStringLiteral("* {background-color:%1;}").arg(palette().window().color().lighter().name()));
-}
-
-void Hint::mouseOut()
-{
 	setStyleSheet(QStringLiteral(""));
-}
-
-void Hint::getData(QString &text, QPixmap &pixmap, int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
-{
-	text = label->text().remove(' ');
-
-	if (icon)
-		pixmap = *(icon->pixmap());
-	else
-		pixmap = QPixmap();
-
-	timeout = secs;
-	font = label->font();
-	fgcolor = fcolor;
-	bgcolor = bcolor;
 }
 
 void Hint::acceptNotification()
@@ -350,8 +312,5 @@ void Hint::discardNotification()
 {
 	m_notificationService->discardNotification(notification);
 }
-
-/** @} */
-
 
 #include "moc_hint.cpp"

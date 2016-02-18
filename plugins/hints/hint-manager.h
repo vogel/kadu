@@ -34,7 +34,6 @@ class QHBoxLayout;
 class QFrame;
 
 class BuddyList;
-class ChatManager;
 class ChatWidgetManager;
 class ChatWidget;
 class Configuration;
@@ -78,7 +77,6 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
@@ -126,14 +124,6 @@ private slots:
 		Pokazuje dymek zwi�zany z notyfikacj�.
 	**/
 	Hint *addHint(const Notification &notification);
-
-	/**
-		je�eli dymek dotyczy� konkrentej osoby lub grupy os�b, to otwierane jest okno chatu
-		dymek jest kasowany
-	**/
-	void openChat(Hint *hint);
-
-	void chatUpdated(const Chat &chat);
 
 	/**
 		usuwa wszystkie dymki
