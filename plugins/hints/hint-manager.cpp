@@ -24,6 +24,7 @@
 #include "hint-manager.h"
 
 #include "hint-repository.h"
+#include "hints-widget.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -116,14 +117,9 @@ void HintManager::init()
 
 	createDefaultConfiguration();
 
-	frame = new QFrame(0, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-	layout = new QVBoxLayout(frame);
-	layout->setSpacing(0);
-	layout->setMargin(0);
-
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
+
+	m_hintsWidget = make_not_owned<HintsWidget>();
 
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
 "<tr>"
@@ -156,8 +152,6 @@ void HintManager::init()
 
 void HintManager::done()
 {
-	kdebugf();
-
 	if (hint_timer)
 		hint_timer->stop();
 
@@ -169,10 +163,7 @@ void HintManager::done()
 	if (tipFrame)
 		tipFrame->deleteLater();
 
-	if (frame)
-		frame->deleteLater();
-
-	kdebugf2();
+	m_hintsWidget.reset();
 }
 
 void HintManager::hintUpdated()
@@ -192,7 +183,7 @@ void HintManager::setHint()
 	if (m_hintRepository->isEmpty())
 	{
 		hint_timer->stop();
-		frame->hide();
+		m_hintsWidget->hide();
 		return;
 	}
 
@@ -205,13 +196,13 @@ void HintManager::setHint()
 	QPoint newPosition;
 	auto trayPosition = m_trayService->trayPosition();
 
-	frame->adjustSize();
-	QSize preferredSize = frame->sizeHint();
+	m_hintsWidget->adjustSize();
+	QSize preferredSize = m_hintsWidget->sizeHint();
 	if (preferredSize.width() < minimumWidth)
 		preferredSize.setWidth(minimumWidth);
 	if (preferredSize.width() > maximumWidth)
 		preferredSize.setWidth(maximumWidth);
-	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
+	QSize desktopSize = QApplication::desktop()->screenGeometry(m_hintsWidget).size();
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "UseUserPosition") || trayPosition.isNull())
 	{
@@ -269,13 +260,13 @@ void HintManager::setHint()
 
 	// Only setFixedSize() and move() (in this order) guarantees correct
 	// placement on all platforms (at least those I tested).
-	frame->setFixedSize(preferredSize);
-	frame->move(newPosition);
+	m_hintsWidget->setFixedSize(preferredSize);
+	m_hintsWidget->move(newPosition);
 
-	if (frame->isVisible())
-		frame->update();
+	if (m_hintsWidget->isVisible())
+		m_hintsWidget->update();
 	else
-		frame->show();
+		m_hintsWidget->show();
 
 	kdebugf2();
 }
@@ -286,14 +277,14 @@ void HintManager::deleteHint(Hint *hint)
 
 	m_hintRepository->removeHint(hint);
 
-	layout->removeWidget(hint);
+	m_hintsWidget->removeHint(hint);
 
 	hint->deleteLater();
 
 	if (m_hintRepository->isEmpty())
 	{
 		hint_timer->stop();
-		frame->hide();
+		m_hintsWidget->hide();
 	}
 
 	kdebugf2();
@@ -358,18 +349,18 @@ void HintManager::deleteAllHints()
 		m_hintRepository->removeHint(*begin(m_hintRepository));
 	}
 
-	frame->hide();
+	m_hintsWidget->hide();
 }
 
 Hint *HintManager::addHint(const Notification &notification)
 {
 	kdebugf();
 
-	auto hint = m_injectedFactory->makeInjected<Hint>(frame, notification);
+	auto hint = m_injectedFactory->makeInjected<Hint>(m_hintsWidget, notification);
 	m_hintRepository->addHint(hint);
 
 	setLayoutDirection();
-	layout->addWidget(hint);
+	m_hintsWidget->addHint(hint);
 
 	connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
 	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
@@ -388,7 +379,7 @@ void HintManager::setLayoutDirection()
 {
 	kdebugf();
 	auto trayPosition = m_trayService->trayPosition();
-	auto desktopSize = QApplication::desktop()->screenGeometry(frame).size();
+	auto desktopSize = QApplication::desktop()->screenGeometry(m_hintsWidget).size();
 
 	switch (m_configuration->deprecatedApi()->readNumEntry("Hints", "NewHintUnder"))
 	{
@@ -396,23 +387,23 @@ void HintManager::setLayoutDirection()
 			if (trayPosition.isNull() || m_configuration->deprecatedApi()->readBoolEntry("Hints","UseUserPosition"))
 			{
 				if (m_configuration->deprecatedApi()->readNumEntry("Hints","HintsPositionY") < desktopSize.height()/2)
-					layout->setDirection(QBoxLayout::Down);
+					m_hintsWidget->setDirection(HintsWidget::Direction::Down);
 				else
-					layout->setDirection(QBoxLayout::Up);
+					m_hintsWidget->setDirection(HintsWidget::Direction::Up);
 			}
 			else
 			{
 				if (trayPosition.y() < desktopSize.height()/2)
-					layout->setDirection(QBoxLayout::Down);
+					m_hintsWidget->setDirection(HintsWidget::Direction::Down);
 				else
-					layout->setDirection(QBoxLayout::Up);
+					m_hintsWidget->setDirection(HintsWidget::Direction::Up);
 			}
 			break;
 		case 1:
-			layout->setDirection(QBoxLayout::Up);
+			m_hintsWidget->setDirection(HintsWidget::Direction::Up);
 			break;
 		case 2:
-			layout->setDirection(QBoxLayout::Down);
+			m_hintsWidget->setDirection(HintsWidget::Direction::Down);
 			break;
 	}
 	kdebugf2();
@@ -466,7 +457,7 @@ void HintManager::showToolTip(const QPoint &point, Talkable talkable)
 	QPoint pos(point + QPoint(5, 5));
 
 	QSize preferredSize = tipFrame->sizeHint();
-	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
+	QSize desktopSize = QApplication::desktop()->screenGeometry(m_hintsWidget).size();
 	if (pos.x() + preferredSize.width() > desktopSize.width())
 		pos.setX(pos.x() - preferredSize.width() - 10);
 	if (pos.y() + preferredSize.height() > desktopSize.height())

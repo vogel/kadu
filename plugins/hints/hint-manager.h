@@ -24,6 +24,7 @@
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/widgets/abstract-tool-tip.h"
+#include "misc/memory.h"
 #include "notification/notifier.h"
 #include "hint.h"
 
@@ -40,6 +41,7 @@ class Configuration;
 class HintRepository;
 class HintsConfigurationUiHandler;
 class HintsConfigurationWidget;
+class HintsWidget;
 class InjectedFactory;
 class NotifierRepository;
 class Parser;
@@ -60,10 +62,9 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<ToolTipClassManager> m_toolTipClassManager;
 	QPointer<TrayService> m_trayService;
 
-	QPointer<QFrame> frame;
+	not_owned_qptr<HintsWidget> m_hintsWidget;
 	QPointer<QTimer> hint_timer;
 	QPointer<QFrame> tipFrame;
-	QVBoxLayout *layout;
 
 	HintsConfigurationWidget *configurationWidget;
 

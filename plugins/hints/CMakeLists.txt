@@ -12,6 +12,7 @@ set (SOURCES
 	hints-module.cpp
 	hints-plugin-modules-factory.cpp
 	hints-plugin-object.cpp
+	hints-widget.cpp
 )
 
 set (CONFIGURATION_FILES
