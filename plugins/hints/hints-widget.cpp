@@ -63,4 +63,16 @@ void HintsWidget::setDirection(Direction direction)
 	}
 }
 
+void HintsWidget::resizeEvent(QResizeEvent *re)
+{
+	QWidget::resizeEvent(re);
+	emit sizeChanged();
+}
+
+void HintsWidget::showEvent(QShowEvent *se)
+{
+	QWidget::showEvent(se);
+	emit shown();
+}
+
 #include "moc_hints-widget.cpp"

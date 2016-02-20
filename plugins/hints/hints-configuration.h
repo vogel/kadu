@@ -19,36 +19,45 @@
 
 #pragma once
 
-#include <QtWidgets/QFrame>
+#include "configuration/configuration-aware-object.h"
 
-class Hint;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-class QVBoxLayout;
+class Configuration;
 
-class HintsWidget : public QFrame
+class HintsConfiguration : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
 public:
-	enum class Direction { Down, Up };
+	enum class Corner { TopLeft, TopRight, BottomLeft, BottomRight };
 
-	Q_INVOKABLE explicit HintsWidget(QWidget *parent = nullptr);
-	virtual ~HintsWidget();
+	Q_INVOKABLE explicit HintsConfiguration(QObject *parent = nullptr);
+	virtual ~HintsConfiguration();
 
-	void addHint(Hint *hint);
-	void removeHint(Hint *hint);
-
-	void setDirection(Direction direction);
+	int minimumWidth() const;
+	int maximumWidth() const;
+	Corner corner() const;
 
 signals:
-	void sizeChanged();
-	void shown();
+	void updated();
 
 protected:
-	virtual void resizeEvent(QResizeEvent *) override;
-	virtual void showEvent(QShowEvent *) override;
+	virtual void configurationUpdated();
 
 private:
-	QVBoxLayout *m_layout;
+	QPointer<Configuration> m_configuration;
+
+	int m_minimumWidth {285};
+	int m_maximumWidth {500};
+	Corner m_corner {Corner::BottomRight};
+
+	void createDefaultConfiguration();
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_INIT void init();
 
 };

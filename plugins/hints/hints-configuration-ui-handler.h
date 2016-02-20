@@ -52,23 +52,11 @@ private:
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<TrayService> m_trayService;
 
-	QFrame *previewHintsFrame;
-	QVBoxLayout *previewHintsLayout;
-
-	QList<Hint *> previewHints;
-
 	QSpinBox *minimumWidth;
 	QSpinBox *maximumWidth;
-	QSpinBox *xPosition;
-	QSpinBox *yPosition;
-	QCheckBox *ownPosition;
-	QComboBox *ownPositionCorner;
-	QComboBox *newHintUnder;
 	
 	QFrame *overUserConfigurationPreview;
 	QLabel *overUserConfigurationTipLabel;
-
-	void setPreviewLayoutDirection();
 
 private slots:
 	INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
@@ -77,7 +65,6 @@ private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setTrayService(TrayService *trayService);
-	INJEQT_INIT void init();
 
 	void minimumWidthChanged(int value);
 	void maximumWidthChanged(int value);
@@ -85,10 +72,6 @@ private slots:
 	void toolTipClassesHighlighted(const QString &value);
 
 	void updateOverUserPreview();
-	void addHintsPreview();
-	void updateHintsPreview();
-	void deleteHintsPreview(Hint *hint);
-	void deleteAllHintsPreview();
 
 public:
 	Q_INVOKABLE explicit HintsConfigurationUiHandler(QObject *parent = nullptr);

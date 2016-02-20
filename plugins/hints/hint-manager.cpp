@@ -24,6 +24,7 @@
 #include "hint-manager.h"
 
 #include "hint-repository.h"
+#include "hints-widget-positioner.h"
 #include "hints-widget.h"
 
 #include "configuration/configuration.h"
@@ -86,6 +87,11 @@ void HintManager::setHintRepository(HintRepository *hintRepository)
 	m_hintRepository = hintRepository;
 }
 
+void HintManager::setHintsWidget(HintsWidget *hintsWidget)
+{
+	m_hintsWidget = hintsWidget;
+}
+
 void HintManager::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -115,30 +121,7 @@ void HintManager::init()
 {
 	kdebugf();
 
-	createDefaultConfiguration();
-
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-
-	m_hintsWidget = make_not_owned<HintsWidget>();
-
-	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
-"<tr>"
-"<td align=\"left\" valign=\"top\">"
-"<img style=\"max-width:64px; max-height:64px;\" "
-"src=\"{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}\""
-">"
-"</td>"
-"<td width=\"100%\">"
-"<div>[<b>%a</b>][&nbsp;<b>(%g)</b>]</div>"
-"[<div><img height=\"16\" width=\"16\" src=\"#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
-"[<div><img height=\"16\" width=\"16\" src=\"@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
-"[<div><img height=\"16\" width=\"16\" src=\"@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
-"</td>"
-"</tr>"
-"</table>"
-"[<hr><b>%s</b>][<b>:</b><br><small>%d</small>]"));
-	if (m_configuration->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax").isEmpty())
-		m_configuration->deprecatedApi()->writeEntry("Hints", "MouseOverUserSyntax", default_hints_syntax);
 
 	m_notifierRepository->registerNotifier(this);
 	m_toolTipClassManager->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
@@ -162,8 +145,6 @@ void HintManager::done()
 
 	if (tipFrame)
 		tipFrame->deleteLater();
-
-	m_hintsWidget.reset();
 }
 
 void HintManager::hintUpdated()
@@ -178,97 +159,14 @@ void HintManager::configurationUpdated()
 
 void HintManager::setHint()
 {
-	kdebugf();
-
 	if (m_hintRepository->isEmpty())
 	{
 		hint_timer->stop();
 		m_hintsWidget->hide();
 		return;
 	}
-
-	int minimumWidth = m_configuration->deprecatedApi()->readNumEntry("Hints", "MinimumWidth", 285);
-	int maximumWidth = m_configuration->deprecatedApi()->readNumEntry("Hints", "MaximumWidth", 500);
-
-	minimumWidth = minimumWidth >= 285 ? minimumWidth : 285;
-	maximumWidth = maximumWidth >= 285 ? maximumWidth : 285;
-
-	QPoint newPosition;
-	auto trayPosition = m_trayService->trayPosition();
-
-	m_hintsWidget->adjustSize();
-	QSize preferredSize = m_hintsWidget->sizeHint();
-	if (preferredSize.width() < minimumWidth)
-		preferredSize.setWidth(minimumWidth);
-	if (preferredSize.width() > maximumWidth)
-		preferredSize.setWidth(maximumWidth);
-	QSize desktopSize = QApplication::desktop()->screenGeometry(m_hintsWidget).size();
-
-	if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "UseUserPosition") || trayPosition.isNull())
-	{
-		newPosition = QPoint(m_configuration->deprecatedApi()->readNumEntry("Hints", "HintsPositionX"), m_configuration->deprecatedApi()->readNumEntry("Hints", "HintsPositionY"));
-
-//		kdebugm(KDEBUG_INFO, "%d %d %d\n", m_configuration->deprecatedApi()->readNumEntry("Hints", "Corner"), preferredSize.width(), preferredSize.height());
-		switch(m_configuration->deprecatedApi()->readNumEntry("Hints", "Corner"))
-		{
-			case 1: // "TopRight"
-				newPosition -= QPoint(preferredSize.width(), 0);
-				break;
-			case 2: // "BottomLeft"
-				newPosition -= QPoint(0, preferredSize.height());
-				break;
-			case 3: // "BottomRight"
-				newPosition -= QPoint(preferredSize.width(), preferredSize.height());
-				break;
-			case 0: // "TopLeft"
-				break;
-		};
-
-		if (newPosition.x() < 0) // when hints go out of the screen (on left)
-			newPosition.setX(0);
-		if (newPosition.y() < 0) //when hints go out of the screen (on top)
-			newPosition.setY(0);
-
-		if (newPosition.x() + preferredSize.width() >= desktopSize.width()) //when hints go out of the screen (on right)
-			newPosition.setX(desktopSize.width() - preferredSize.width());
-		if (newPosition.y() + preferredSize.height() >= desktopSize.height()) //when hints go out of the screen (on bottom)
-			newPosition.setY(desktopSize.height() - preferredSize.height());
-	}
-	else
-	{
-		// those "strange" cases happens when "automatic panel hiding" is in use
-		if (trayPosition.x() < 0)
-			trayPosition.setX(0);
-		else if (trayPosition.x() > desktopSize.width())
-			trayPosition.setX(desktopSize.width() - 2);
-		if (trayPosition.y() < 0)
-			trayPosition.setY(0);
-		else if (trayPosition.y() > desktopSize.height())
-			trayPosition.setY(desktopSize.height() - 2);
-
-
-		if (trayPosition.x() < desktopSize.width() / 2) // tray is on left
-			newPosition.setX(trayPosition.x() + 32);
-		else // tray is on right
-			newPosition.setX(trayPosition.x() - preferredSize.width());
-
-		if (trayPosition.y() < desktopSize.height() / 2) // tray is on top
-			newPosition.setY(trayPosition.y() + 32);
-		else // tray is on bottom
-			newPosition.setY(trayPosition.y() - preferredSize.height());
-	}
-
-	// Only setFixedSize() and move() (in this order) guarantees correct
-	// placement on all platforms (at least those I tested).
-	m_hintsWidget->setFixedSize(preferredSize);
-	m_hintsWidget->move(newPosition);
-
-	if (m_hintsWidget->isVisible())
-		m_hintsWidget->update();
 	else
 		m_hintsWidget->show();
-
-	kdebugf2();
 }
 
 void HintManager::deleteHint(Hint *hint)
@@ -481,57 +379,7 @@ void HintManager::hideToolTip()
 
 void HintManager::notify(const Notification &notification)
 {
-	kdebugf();
-
 	addHint(notification);
-
-	kdebugf2();
-}
-
-void HintManager::createDefaultConfiguration()
-{
-	// TODO: this should be more like: if (plugins.loaded(freedesktop_notify) && this_is_first_time_we_are_loaded_or_whatever)
-#if !defined(Q_OS_UNIX)
-	m_configuration->deprecatedApi()->addVariable("Notify", "ConnectionError_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "NewChat_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "NewMessage_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/Finished_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "multilogon_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "multilogon/sessionConnected_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_Hints", true);
-#endif
-
-	m_configuration->deprecatedApi()->addVariable("Hints", "CiteSign", 50);
-	m_configuration->deprecatedApi()->addVariable("Hints", "Corner", 0);
-
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintsPositionX", 0);
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintsPositionY", 0);
-	m_configuration->deprecatedApi()->addVariable("Hints", "MaximumWidth", 500);
-	m_configuration->deprecatedApi()->addVariable("Hints", "MinimumWidth", 285);
-	m_configuration->deprecatedApi()->addVariable("Hints", "MouseOverUserSyntax", QString());
-	m_configuration->deprecatedApi()->addVariable("Hints", "NewHintUnder", 0);
-	m_configuration->deprecatedApi()->addVariable("Hints", "ShowContentMessage", true);
-	m_configuration->deprecatedApi()->addVariable("Hints", "UseUserPosition", false);
-
-	m_configuration->deprecatedApi()->addVariable("Hints", "AllEvents_iconSize", 32);
-
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_iconSize", 32);
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_font", qApp->font());
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_Geometry", "50, 50, 640, 610");
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintEventConfiguration_Geometry", "50, 50, 520, 345");
 }
 
 HintManager *hint_manager = NULL;

@@ -53,15 +53,8 @@
 
 HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent):
 		QObject(parent),
-		previewHintsFrame{},
-		previewHintsLayout{},
 		minimumWidth{},
 		maximumWidth{},
-		xPosition{},
-		yPosition{},
-		ownPosition{},
-		ownPositionCorner{},
-		newHintUnder{},
 		overUserConfigurationPreview{},
 		overUserConfigurationTipLabel{}
 {
@@ -69,8 +62,6 @@ HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent):
 
 HintsConfigurationUiHandler::~HintsConfigurationUiHandler()
 {
-	delete previewHintsFrame;
-	previewHintsFrame = 0;
 }
 
 void HintsConfigurationUiHandler::setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory)
@@ -101,17 +92,6 @@ void HintsConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvider)
 void HintsConfigurationUiHandler::setTrayService(TrayService *trayService)
 {
 	m_trayService = trayService;
-}
-
-void HintsConfigurationUiHandler::init()
-{
-	previewHintsFrame = new QFrame(qobject_cast<QWidget *>(parent()), Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-	previewHintsFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-	previewHintsLayout = new QVBoxLayout(previewHintsFrame);
-	previewHintsLayout->setSpacing(0);
-	previewHintsLayout->setMargin(0);
-	previewHintsLayout->setSizeConstraint(QLayout::SetFixedSize);
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -149,184 +129,19 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 	toolTipBox->addWidgets(new QLabel(tr("Hint over buddy list: ")), configureHint);
 
-	newHintUnder = static_cast<QComboBox *>(mainConfigurationWindow->widget()->widgetById("hints/newHintUnder"));
-
-	ownPosition = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPosition"));
-	connect(ownPosition, SIGNAL(toggled(bool)), this, SLOT(updateHintsPreview()));
-
 	minimumWidth = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/minimumWidth"));
 	maximumWidth = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/maximumWidth"));
 	connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
 	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
-
-	xPosition = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionX"));
-	connect(xPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
-	yPosition = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionY"));
-	connect(yPosition, SIGNAL(valueChanged(int)), this, SLOT(updateHintsPreview()));
-
-	ownPositionCorner = static_cast<QComboBox *>(mainConfigurationWindow->widget()->widgetById("hints/ownPositionCorner"));
-	connect(ownPositionCorner, SIGNAL(currentIndexChanged(int)), this, SLOT(updateHintsPreview()));
-
-	QPushButton *previewButton = static_cast<QPushButton *>(mainConfigurationWindow->widget()->widgetById("hints/preview"));
-	connect(previewButton, SIGNAL(clicked()), this, SLOT(addHintsPreview()));
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
-	deleteAllHintsPreview();
 	overUserConfigurationPreview = 0;
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowApplied()
 {
-}
-
-void HintsConfigurationUiHandler::addHintsPreview()
-{
-	auto previewNotify = Notification{};
-	previewNotify.type = QStringLiteral("Preview");
-	previewNotify.icon = KaduIcon("protocols/common/message");
-	previewNotify.text = QCoreApplication::translate("@default", "Hints position preview");
-
-	auto previewHint = m_injectedFactory->makeInjected<Hint>(previewHintsFrame, previewNotify);
-	previewHints.append(previewHint);
-
-	setPreviewLayoutDirection();
-	previewHintsLayout->addWidget(previewHint);
-
-	connect(previewHint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(deleteHintsPreview(Hint *)));
-	connect(previewHint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(deleteAllHintsPreview()));
-
-	updateHintsPreview();
-
-	previewHintsFrame->show();
-}
-
-void HintsConfigurationUiHandler::setPreviewLayoutDirection()
-{
-	auto trayPosition = m_trayService->trayPosition();
-	auto desktopSize = QApplication::desktop()->screenGeometry(previewHintsFrame).size();
-
-	switch (newHintUnder->currentIndex())
-	{
-		case 0:
-			if (trayPosition.isNull() || ownPosition->isChecked())
-			{
-				if (yPosition->value() < desktopSize.height()/2)
-					previewHintsLayout->setDirection(QBoxLayout::Down);
-				else
-					previewHintsLayout->setDirection(QBoxLayout::Up);
-			}
-			else
-			{
-				if (trayPosition.y() < desktopSize.height()/2)
-					previewHintsLayout->setDirection(QBoxLayout::Down);
-				else
-					previewHintsLayout->setDirection(QBoxLayout::Up);
-			}
-			break;
-		case 1:
-			previewHintsLayout->setDirection(QBoxLayout::Up);
-			break;
-		case 2:
-			previewHintsLayout->setDirection(QBoxLayout::Down);
-			break;
-	}
-
-}
-
-void HintsConfigurationUiHandler::updateHintsPreview()
-{
-	QPoint newPosition;
-	auto trayPosition = m_trayService->trayPosition();
-
-	previewHintsFrame->adjustSize();
-	QSize preferredSize = previewHintsFrame->sizeHint();
-	QSize desktopSize = QApplication::desktop()->screenGeometry(previewHintsFrame).size();
-
-	if (ownPosition->isChecked() || trayPosition.isNull())
-	{
-		newPosition = QPoint(xPosition->value(), yPosition->value());
-
-		switch (ownPositionCorner->currentIndex())
-		{
-			case 1: // "TopRight"
-				newPosition -= QPoint(preferredSize.width(), 0);
-				break;
-			case 2: // "BottomLeft"
-				newPosition -= QPoint(0, preferredSize.height());
-				break;
-			case 3: // "BottomRight"
-				newPosition -= QPoint(preferredSize.width(), preferredSize.height());
-				break;
-			case 0: // "TopLeft"
-				break;
-		};
-
-		if (newPosition.x() < 0) // when hints go out of the screen (on left)
-			newPosition.setX(0);
-		if (newPosition.y() < 0) //when hints go out of the screen (on top)
-			newPosition.setY(0);
-
-		if (newPosition.x() + preferredSize.width() >= desktopSize.width()) //when hints go out of the screen (on right)
-			newPosition.setX(desktopSize.width() - preferredSize.width());
-		if (newPosition.y() + preferredSize.height() >= desktopSize.height()) //when hints go out of the screen (on bottom)
-			newPosition.setY(desktopSize.height() - preferredSize.height());
-	}
-	else
-	{
-		// those "strange" cases happens when "automatic panel hiding" is in use
-		if (trayPosition.x() < 0)
-			trayPosition.setX(0);
-		else if (trayPosition.x() > desktopSize.width())
-			trayPosition.setX(desktopSize.width() - 2);
-		if (trayPosition.y() < 0)
-			trayPosition.setY(0);
-		else if (trayPosition.y() > desktopSize.height())
-			trayPosition.setY(desktopSize.height() - 2);
-
-
-		if (trayPosition.x() < desktopSize.width() / 2) // tray is on left
-			newPosition.setX(trayPosition.x() + 32);
-		else // tray is on right
-			newPosition.setX(trayPosition.x() - preferredSize.width());
-
-		if (trayPosition.y() < desktopSize.height() / 2) // tray is on top
-			newPosition.setY(trayPosition.y() + 32);
-		else // tray is on bottom
-			newPosition.setY(trayPosition.y() - preferredSize.height());
-	}
-
-	previewHintsFrame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());}
-
-void HintsConfigurationUiHandler::deleteHintsPreview(Hint *hint)
-{
-	previewHints.removeAll(hint);
-	previewHintsLayout->removeWidget(hint);
-	hint->deleteLater();
-
-	foreach (Hint *h, previewHints)
-	{
-		if (h->getNotification().type == "Preview")
-			return;
-	}
-
-	previewHintsFrame->hide();
-}
-
-void HintsConfigurationUiHandler::deleteAllHintsPreview()
-{
-	foreach (Hint *h, previewHints)
-	{
-		if (h->getNotification().type == "Preview")
-		{
-			previewHints.removeAll(h);
-			previewHintsLayout->removeWidget(h);
-			h->deleteLater();
-		}
-	}
-
-	previewHintsFrame->hide();
 }
 
 void HintsConfigurationUiHandler::toolTipClassesHighlighted(const QString &value)

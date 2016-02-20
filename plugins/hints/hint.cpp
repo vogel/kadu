@@ -141,8 +141,6 @@ void Hint::configurationUpdated()
 
 	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
 	label->setFont(m_configuration->deprecatedApi()->readFontEntry("Hints", "Event_" + key + "_font", &font));
-	setMinimumWidth(m_configuration->deprecatedApi()->readNumEntry("Hints", "MinimumWidth", 100));
-	setMaximumWidth(m_configuration->deprecatedApi()->readNumEntry("Hints", "MaximumWidth", 500));
 
 	updateText();
 }

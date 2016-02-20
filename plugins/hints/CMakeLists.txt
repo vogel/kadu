@@ -9,9 +9,11 @@ set (SOURCES
 	hint-repository.cpp
 	hint.cpp
 	hints-configuration-ui-handler.cpp
+	hints-configuration.cpp
 	hints-module.cpp
 	hints-plugin-modules-factory.cpp
 	hints-plugin-object.cpp
+	hints-widget-positioner.cpp
 	hints-widget.cpp
 )
 

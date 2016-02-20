@@ -19,36 +19,35 @@
 
 #pragma once
 
-#include <QtWidgets/QFrame>
+#include "injeqt-type-roles.h"
 
-class Hint;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
-class QVBoxLayout;
+class HintsConfiguration;
+class HintsWidget;
 
-class HintsWidget : public QFrame
+class HintsWidgetPositioner : public QObject
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	enum class Direction { Down, Up };
-
-	Q_INVOKABLE explicit HintsWidget(QWidget *parent = nullptr);
-	virtual ~HintsWidget();
-
-	void addHint(Hint *hint);
-	void removeHint(Hint *hint);
-
-	void setDirection(Direction direction);
-
-signals:
-	void sizeChanged();
-	void shown();
-
-protected:
-	virtual void resizeEvent(QResizeEvent *) override;
-	virtual void showEvent(QShowEvent *) override;
+	Q_INVOKABLE explicit HintsWidgetPositioner(QObject *parent = nullptr);
+	virtual ~HintsWidgetPositioner();
 
 private:
-	QVBoxLayout *m_layout;
+	QPointer<HintsConfiguration> m_hintsConfiguration;
+	QPointer<HintsWidget> m_hintsWidget;
+
+	QPoint positionForSize(QSize size);
+
+private slots:
+	INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
+	INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
+	INJEQT_INIT void init();
+
+	void update();
 
 };

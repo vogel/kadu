@@ -56,13 +56,13 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<HintRepository> m_hintRepository;
+	QPointer<HintsWidget> m_hintsWidget;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<Parser> m_parser;
 	QPointer<ToolTipClassManager> m_toolTipClassManager;
 	QPointer<TrayService> m_trayService;
 
-	not_owned_qptr<HintsWidget> m_hintsWidget;
 	QPointer<QTimer> hint_timer;
 	QPointer<QFrame> tipFrame;
 
@@ -72,12 +72,11 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 
 	void setLayoutDirection();
 
-	void createDefaultConfiguration();
-
 private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setHintRepository(HintRepository *hintRepository);
+	INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setParser(Parser *parser);
