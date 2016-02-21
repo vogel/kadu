@@ -33,7 +33,6 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "configuration/config-file-data-manager.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/tray/tray-service.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
@@ -87,11 +86,6 @@ void HintsConfigurationUiHandler::setInjectedFactory(InjectedFactory *injectedFa
 void HintsConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
-}
-
-void HintsConfigurationUiHandler::setTrayService(TrayService *trayService)
-{
-	m_trayService = trayService;
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)

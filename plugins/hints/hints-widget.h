@@ -30,15 +30,11 @@ class HintsWidget : public QFrame
 	Q_OBJECT
 
 public:
-	enum class Direction { Down, Up };
-
 	Q_INVOKABLE explicit HintsWidget(QWidget *parent = nullptr);
 	virtual ~HintsWidget();
 
 	void addHint(Hint *hint);
 	void removeHint(Hint *hint);
-
-	void setDirection(Direction direction);
 
 signals:
 	void sizeChanged();

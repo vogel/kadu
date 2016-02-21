@@ -46,7 +46,6 @@ class InjectedFactory;
 class NotifierRepository;
 class Parser;
 class ToolTipClassManager;
-class TrayService;
 
 class HintManager : public QObject, public Notifier, public AbstractToolTip, public ConfigurationAwareObject
 {
@@ -61,7 +60,6 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<Parser> m_parser;
 	QPointer<ToolTipClassManager> m_toolTipClassManager;
-	QPointer<TrayService> m_trayService;
 
 	QPointer<QTimer> hint_timer;
 	QPointer<QFrame> tipFrame;
@@ -69,8 +67,6 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	HintsConfigurationWidget *configurationWidget;
 
 	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, const BuddyList &buddies, const QString &msg);
-
-	void setLayoutDirection();
 
 private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
@@ -81,7 +77,6 @@ private slots:
 	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
-	INJEQT_SET void setTrayService(TrayService *trayService);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

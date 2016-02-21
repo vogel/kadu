@@ -644,10 +644,6 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 
 	ChangeNotifierLock lock(MyChangeNotifier, ChangeNotifierLock::ModeForget);
 
-//	QString align = toolbar_element.attribute("align");
-//	if (align == "right")
-//		setLayoutDirection(Qt::RightToLeft);
-
 	bool offset_ok;
 	int offset = toolbar_element.attribute("offset").toInt(&offset_ok);
 

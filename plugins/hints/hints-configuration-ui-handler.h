@@ -33,7 +33,6 @@ class Configuration;
 class HintsManager;
 class InjectedFactory;
 class PathsProvider;
-class TrayService;
 
 class QCheckBox;
 class QComboBox;
@@ -50,7 +49,6 @@ private:
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MainConfigurationWindow> m_mainConfigurationWindow;
 	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<TrayService> m_trayService;
 
 	QSpinBox *minimumWidth;
 	QSpinBox *maximumWidth;
@@ -64,7 +62,6 @@ private slots:
 	INJEQT_SET void setHintManager(HintManager *hintManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setTrayService(TrayService *trayService);
 
 	void minimumWidthChanged(int value);
 	void maximumWidthChanged(int value);

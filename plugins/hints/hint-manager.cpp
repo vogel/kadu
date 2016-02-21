@@ -33,7 +33,6 @@
 #include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
-#include "gui/tray/tray-service.h"
 #include "icons/icons-manager.h"
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"
@@ -110,11 +109,6 @@ void HintManager::setParser(Parser *parser)
 void HintManager::setToolTipClassManager(ToolTipClassManager *toolTipClassManager)
 {
 	m_toolTipClassManager = toolTipClassManager;
-}
-
-void HintManager::setTrayService(TrayService *trayService)
-{
-	m_trayService = trayService;
 }
 
 void HintManager::init()
@@ -256,8 +250,6 @@ Hint *HintManager::addHint(const Notification &notification)
 
 	auto hint = m_injectedFactory->makeInjected<Hint>(m_hintsWidget, notification);
 	m_hintRepository->addHint(hint);
-
-	setLayoutDirection();
 	m_hintsWidget->addHint(hint);
 
 	connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
@@ -271,40 +263,6 @@ Hint *HintManager::addHint(const Notification &notification)
 		hint_timer->start(1000);
 
 	return hint;
-}
-
-void HintManager::setLayoutDirection()
-{
-	kdebugf();
-	auto trayPosition = m_trayService->trayPosition();
-	auto desktopSize = QApplication::desktop()->screenGeometry(m_hintsWidget).size();
-
-	switch (m_configuration->deprecatedApi()->readNumEntry("Hints", "NewHintUnder"))
-	{
-		case 0:
-			if (trayPosition.isNull() || m_configuration->deprecatedApi()->readBoolEntry("Hints","UseUserPosition"))
-			{
-				if (m_configuration->deprecatedApi()->readNumEntry("Hints","HintsPositionY") < desktopSize.height()/2)
-					m_hintsWidget->setDirection(HintsWidget::Direction::Down);
-				else
-					m_hintsWidget->setDirection(HintsWidget::Direction::Up);
-			}
-			else
-			{
-				if (trayPosition.y() < desktopSize.height()/2)
-					m_hintsWidget->setDirection(HintsWidget::Direction::Down);
-				else
-					m_hintsWidget->setDirection(HintsWidget::Direction::Up);
-			}
-			break;
-		case 1:
-			m_hintsWidget->setDirection(HintsWidget::Direction::Up);
-			break;
-		case 2:
-			m_hintsWidget->setDirection(HintsWidget::Direction::Down);
-			break;
-	}
-	kdebugf2();
 }
 
 void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkable talkable)

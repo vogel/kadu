@@ -50,19 +50,6 @@ void HintsWidget::removeHint(Hint *hint)
 	m_layout->removeWidget(hint);
 }
 
-void HintsWidget::setDirection(Direction direction)
-{
-	switch (direction)
-	{
-		case Direction::Down:
-			m_layout->setDirection(QBoxLayout::Down);
-			break;
-		case Direction::Up:
-			m_layout->setDirection(QBoxLayout::Up);
-			break;
-	}
-}
-
 void HintsWidget::resizeEvent(QResizeEvent *re)
 {
 	QWidget::resizeEvent(re);

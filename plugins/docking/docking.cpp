@@ -38,7 +38,6 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/tray/tray-service.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message.h"
@@ -110,11 +109,6 @@ void Docking::setStatusNotifierItem(StatusNotifierItem *statusNotifierItem)
 	m_statusNotifierItem = statusNotifierItem;
 }
 
-void Docking::setTrayService(TrayService *trayService)
-{
-	m_trayService = trayService;
-}
-
 void Docking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
 	m_unreadMessageRepository = unreadMessageRepository;
@@ -134,18 +128,6 @@ void Docking::init()
 	if (m_dockingConfigurationProvider->configuration().RunDocked)
 		m_kaduWindowService->setShowMainWindowOnStart(false);
 	m_kaduWindowService->kaduWindow()->setDocked(true);
-
-	m_trayService->setTrayPositionProvider(this);
-}
-
-void Docking::done()
-{
-	m_trayService->setTrayPositionProvider(nullptr);
-}
-
-QPoint Docking::trayPosition() const
-{
-	return m_statusNotifierItem->trayPosition();
 }
 
 void Docking::needAttentionChanged(bool needAttention)
