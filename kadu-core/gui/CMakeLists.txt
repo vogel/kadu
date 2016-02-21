@@ -126,7 +126,8 @@ set (gui_SRCS
 	widgets/talkable-painter.cpp
 	widgets/talkable-tree-view.cpp
 	widgets/toolbar.cpp
-	widgets/tool-tip-class-manager.cpp
+	widgets/tool-tip-manager.cpp
+	widgets/tool-tip-widget.cpp
 	widgets/wait-overlay.cpp
 	widgets/webkit-messages-view/message-limiter.cpp
 	widgets/webkit-messages-view/webkit-messages-view.cpp

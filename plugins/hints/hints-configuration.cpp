@@ -75,7 +75,6 @@ void HintsConfiguration::createDefaultConfiguration()
 
 	m_configuration->deprecatedApi()->addVariable("Hints", "CiteSign", 50);
 
-	m_configuration->deprecatedApi()->addVariable("Hints", "MouseOverUserSyntax", QString());
 	m_configuration->deprecatedApi()->addVariable("Hints", "NewHintUnder", 0);
 	m_configuration->deprecatedApi()->addVariable("Hints", "ShowContentMessage", true);
 
@@ -85,24 +84,6 @@ void HintsConfiguration::createDefaultConfiguration()
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_font", qApp->font());
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_Geometry", "50, 50, 640, 610");
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintEventConfiguration_Geometry", "50, 50, 520, 345");
-
-	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "<table>"
-"<tr>"
-"<td align=\"left\" valign=\"top\">"
-"<img style=\"max-width:64px; max-height:64px;\" "
-"src=\"{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}\""
-">"
-"</td>"
-"<td width=\"100%\">"
-"<div>[<b>%a</b>][&nbsp;<b>(%g)</b>]</div>"
-"[<div><img height=\"16\" width=\"16\" src=\"#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
-"[<div><img height=\"16\" width=\"16\" src=\"@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
-"[<div><img height=\"16\" width=\"16\" src=\"@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
-"</td>"
-"</tr>"
-"</table>"
-"[<hr><b>%s</b>][<b>:</b><br><small>%d</small>]"));
-	m_configuration->deprecatedApi()->addVariable("Hints", "MouseOverUserSyntax", default_hints_syntax);
 }
 
 void HintsConfiguration::configurationUpdated()

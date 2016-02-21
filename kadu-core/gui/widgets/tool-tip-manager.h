@@ -20,46 +20,34 @@
 
 #pragma once
 
-#include "configuration/configuration-aware-object.h"
+#include "misc/memory.h"
 #include "exports.h"
-#include "gui/widgets/abstract-tool-tip.h"
 
-#include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtCore/QStringList>
 #include <injeqt/injeqt.h>
 
-class Configuration;
+class InjectedFactory;
+class Talkable;
+class ToolTipWidget;
 
-class KADUAPI ToolTipClassManager : public QObject, private ConfigurationAwareObject
+class KADUAPI ToolTipManager : public QObject
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ToolTipClassManager(QObject *parent = nullptr);
-	virtual ~ToolTipClassManager();
+	Q_INVOKABLE explicit ToolTipManager(QObject *parent = nullptr);
+	virtual ~ToolTipManager();
 
-	void registerToolTipClass(const QString &toolTipClassName, AbstractToolTip *toolTipClass);
-	void unregisterToolTipClass(const QString &toolTipClassName);
-
-	QStringList getToolTipClasses();
-	void useToolTipClass(const QString &toolTipClassName);
-
-	bool showToolTip(const QPoint &point, Talkable talkable);
-	bool hideToolTip();
-
-	virtual void configurationUpdated();
+	void showToolTip(const QPoint &point, const Talkable &talkable);
+	void hideToolTip();
 
 private:
-	QPointer<Configuration> m_configuration;
+	QPointer<InjectedFactory> m_injectedFactory;
 
-	QMap<QString, AbstractToolTip *> ToolTipClasses;
-	QString ToolTipClassName;
-	AbstractToolTip *CurrentToolTipClass;
+	not_owned_qptr<ToolTipWidget> m_toolTipWidget;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
 };

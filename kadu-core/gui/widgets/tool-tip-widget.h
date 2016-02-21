@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2012 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2009, 2010, 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,22 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ABSTRACT_TOOL_TIP_H
-#define ABSTRACT_TOOL_TIP_H
+#pragma once
 
-class QPoint;
+#include "misc/memory.h"
+#include "talkable/talkable.h"
 
-class Talkable;
+#include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtWidgets/QFrame>
+#include <injeqt/injeqt.h>
 
-class AbstractToolTip
+class Parser;
+
+class QLabel;
+
+class ToolTipWidget : public QFrame
 {
+	Q_OBJECT
 
 public:
-	virtual ~AbstractToolTip() {}
+	explicit ToolTipWidget(const Talkable &talkable, QWidget *parent = nullptr);
+	virtual ~ToolTipWidget();
 
-	virtual void showToolTip(const QPoint &point, Talkable talkable) = 0;
-	virtual void hideToolTip() = 0;
+private:
+	QPointer<Parser> m_parser;
+
+	owned_qptr<QLabel> m_tipLabel;
+	Talkable m_talkable;
+
+private slots:
+	INJEQT_SET void setParser(Parser *parser);
+	INJEQT_INIT void init();
 
 };
-
-#endif // ABSTRACT_TOOL_TIP_H

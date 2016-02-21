@@ -19,6 +19,7 @@
 
 #include "hints-module.h"
 
+#include "hint-manager.h"
 #include "hint-repository.h"
 #include "hints-configuration-ui-handler.h"
 #include "hints-configuration.h"

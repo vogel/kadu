@@ -20,42 +20,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QDesktopWidget>
-#include <QtWidgets/QFrame>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QSpinBox>
+#include "hints-configuration-ui-handler.h"
 
-#include "buddies/buddy-dummy-factory.h"
-#include "buddies/buddy-preferred-manager.h"
-#include "configuration/config-file-data-manager.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
-#include "notification/notification.h"
-#include "talkable/talkable.h"
 
-#include "hint-manager.h"
-
-#include "misc/paths-provider.h"
-#include "activate.h"
-
-#include "hints-configuration-ui-handler.h"
-#include <core/injected-factory.h>
-
-#define FRAME_WIDTH 1
-#define BORDER_RADIUS 0
+#include <QtWidgets/QSpinBox>
 
 HintsConfigurationUiHandler::HintsConfigurationUiHandler(QObject *parent):
-		QObject(parent),
+		QObject{parent},
 		minimumWidth{},
-		maximumWidth{},
-		overUserConfigurationPreview{},
-		overUserConfigurationTipLabel{}
+		maximumWidth{}
 {
 }
 
@@ -63,65 +38,10 @@ HintsConfigurationUiHandler::~HintsConfigurationUiHandler()
 {
 }
 
-void HintsConfigurationUiHandler::setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory)
-{
-	m_buddyDummyFactory = buddyDummyFactory;
-}
-
-void HintsConfigurationUiHandler::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
-}
-
-void HintsConfigurationUiHandler::setHintManager(HintManager *hintManager)
-{
-	m_hintManager = hintManager;
-}
-
-void HintsConfigurationUiHandler::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
-void HintsConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvider)
-{
-	m_pathsProvider = pathsProvider;
-}
-
 void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	m_mainConfigurationWindow = mainConfigurationWindow;
-
 	connect(mainConfigurationWindow->widget()->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
-	mainConfigurationWindow->widget()->widgetById("hints/showContentCount"), SLOT(setEnabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
-		this, SLOT(toolTipClassesHighlighted(const QString &)));
-
-	ConfigGroupBox *toolTipBox = mainConfigurationWindow->widget()->configGroupBox("Buddies list", "Information", "Tooltip over buddy");
-
-	QWidget *configureHint = new QWidget(toolTipBox->widget());
-	overUserConfigurationPreview = new QFrame(configureHint);
-	QHBoxLayout *lay = new QHBoxLayout(overUserConfigurationPreview);
-	lay->setMargin(10);
-	lay->setSizeConstraint(QLayout::SetFixedSize);
-
-	overUserConfigurationTipLabel = new QLabel(overUserConfigurationPreview);
-	overUserConfigurationTipLabel->setTextFormat(Qt::RichText);
-	overUserConfigurationTipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	overUserConfigurationTipLabel->setContentsMargins(10, 10, 10, 10);
-
-	lay->addWidget(overUserConfigurationTipLabel);
-
-	Buddy example = m_buddyDummyFactory->dummy();
-
-	if (!example.isNull())
-		m_hintManager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
-
-	lay = new QHBoxLayout(configureHint);
-	lay->addWidget(overUserConfigurationPreview);
-
-	toolTipBox->addWidgets(new QLabel(tr("Hint over buddy list: ")), configureHint);
+		mainConfigurationWindow->widget()->widgetById("hints/showContentCount"), SLOT(setEnabled(bool)));
 
 	minimumWidth = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/minimumWidth"));
 	maximumWidth = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/maximumWidth"));
@@ -131,27 +51,10 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 void HintsConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
-	overUserConfigurationPreview = 0;
 }
 
 void HintsConfigurationUiHandler::mainConfigurationWindowApplied()
 {
-}
-
-void HintsConfigurationUiHandler::toolTipClassesHighlighted(const QString &value)
-{
-	overUserConfigurationPreview->setEnabled(value == QCoreApplication::translate("@default", "Hints"));
-}
-
-void HintsConfigurationUiHandler::updateOverUserPreview()
-{
-	if (!overUserConfigurationPreview)
-		return;
-
-	auto example = m_buddyDummyFactory->dummy();
-
-	if (!example.isNull())
-		m_hintManager->prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationTipLabel, example);
 }
 
 void HintsConfigurationUiHandler::minimumWidthChanged(int value)

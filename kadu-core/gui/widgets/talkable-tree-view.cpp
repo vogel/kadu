@@ -48,7 +48,7 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate.h"
-#include "gui/widgets/tool-tip-class-manager.h"
+#include "gui/widgets/tool-tip-manager.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
@@ -105,9 +105,9 @@ void TalkableTreeView::setStatusConfigurationHolder(StatusConfigurationHolder *s
 	m_statusConfigurationHolder = statusConfigurationHolder;
 }
 
-void TalkableTreeView::setToolTipClassManager(ToolTipClassManager *toolTipClassManager)
+void TalkableTreeView::setToolTipManager(ToolTipManager *toolTipManager)
 {
-	m_toolTipClassManager = toolTipClassManager;
+	m_toolTipManager = toolTipManager;
 }
 
 void TalkableTreeView::init()
@@ -322,7 +322,7 @@ void TalkableTreeView::toolTipTimeout()
 {
 	if (Talkable::ItemNone != ToolTipItem.type())
 	{
-		m_toolTipClassManager->showToolTip(QCursor::pos(), ToolTipItem);
+		m_toolTipManager->showToolTip(QCursor::pos(), ToolTipItem);
 		ToolTipTimeoutTimer.stop();
 	}
 }
@@ -350,7 +350,7 @@ void TalkableTreeView::toolTipRestart(QPoint pos)
 
 void TalkableTreeView::toolTipHide(bool waitForAnother)
 {
-	m_toolTipClassManager->hideToolTip();
+	m_toolTipManager->hideToolTip();
 
 	if (waitForAnother)
 		ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);

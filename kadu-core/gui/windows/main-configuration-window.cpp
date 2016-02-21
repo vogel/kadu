@@ -58,7 +58,6 @@
 #include "gui/widgets/configuration/config-syntax-editor.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/proxy-combo-box.h"
-#include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
@@ -150,11 +149,6 @@ void MainConfigurationWindow::setLanguagesManager(LanguagesManager *languagesMan
 void MainConfigurationWindow::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
-}
-
-void MainConfigurationWindow::setToolTipClassManager(ToolTipClassManager *toolTipClassManager)
-{
-	m_toolTipClassManager = toolTipClassManager;
 }
 
 void MainConfigurationWindow::init()
@@ -262,7 +256,6 @@ void MainConfigurationWindow::show()
 	{
 		setLanguages();
 		setIconThemes();
-		setToolTipClasses();
 	}
 
 	ConfigurationWindow::show();
@@ -360,23 +353,6 @@ void MainConfigurationWindow::setIconThemes()
 
 	iconThemes->setIconSize(QSize(iconPaths.count() * 36, 36));
 	iconThemes->setIcons(icons);
-}
-
-void MainConfigurationWindow::setToolTipClasses()
-{
-	QStringList captions;
-	QStringList values;
-	captions << tr("None");
-	values << QStringLiteral("none");
-
-	QStringList toolTipClasses = m_toolTipClassManager->getToolTipClasses();
-	foreach(const QString &toolTipClass, toolTipClasses)
-	{
-		captions << QCoreApplication::translate("@default", toolTipClass.toUtf8().constData());
-		values << toolTipClass;
-	}
-
-	static_cast<ConfigComboBox *>(widget()->widgetById("toolTipClasses"))->setItems(values, captions);
 }
 
 void MainConfigurationWindow::showLookChatAdvanced()

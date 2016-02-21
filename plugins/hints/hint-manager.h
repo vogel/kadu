@@ -23,7 +23,6 @@
 
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
-#include "gui/widgets/abstract-tool-tip.h"
 #include "misc/memory.h"
 #include "notification/notifier.h"
 #include "hint.h"
@@ -45,9 +44,8 @@ class HintsWidget;
 class InjectedFactory;
 class NotifierRepository;
 class Parser;
-class ToolTipClassManager;
 
-class HintManager : public QObject, public Notifier, public AbstractToolTip, public ConfigurationAwareObject
+class HintManager : public QObject, public Notifier, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -59,10 +57,8 @@ class HintManager : public QObject, public Notifier, public AbstractToolTip, pub
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<Parser> m_parser;
-	QPointer<ToolTipClassManager> m_toolTipClassManager;
 
 	QPointer<QTimer> hint_timer;
-	QPointer<QFrame> tipFrame;
 
 	HintsConfigurationWidget *configurationWidget;
 
@@ -76,7 +72,6 @@ private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
@@ -104,11 +99,6 @@ public:
 
 	virtual void notify(const Notification &notification);
 
-	virtual void showToolTip(const QPoint &point, Talkable talkable);
-	virtual void hideToolTip();
-
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr);
-
-	void prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkable talkable);
 
 };

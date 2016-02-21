@@ -24,7 +24,6 @@ class PathsProvider;
 class PluginListWidget;
 class Preview;
 class SyntaxEditorWindow;
-class ToolTipClassManager;
 
 class MainConfigurationWindow;
 
@@ -46,7 +45,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<LanguagesManager> m_languagesManager;
 	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<ToolTipClassManager> m_toolTipClassManager;
 
 	QPointer<ConfigurationWindow> lookChatAdvanced;
 
@@ -61,8 +59,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 
 	void setLanguages();
 
-	void setToolTipClasses();
-
 	virtual void compositingEnabled();
 	virtual void compositingDisabled();
 
@@ -74,7 +70,6 @@ private slots:
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setLanguagesManager(LanguagesManager *languagesManager);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
 	INJEQT_INIT void init();
 
 	void onChangeStartupStatus(int index);

@@ -51,7 +51,7 @@ class StatusConfigurationHolder;
 class StatusContainerManager;
 class TalkableDelegate;
 class TalkableDelegateConfiguration;
-class ToolTipClassManager;
+class ToolTipManager;
 
 class KADUAPI TalkableTreeView : public KaduTreeView, public ActionContextProvider
 {
@@ -103,7 +103,7 @@ private:
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<StatusContainerManager> m_statusContainerManager;
 	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
-	QPointer<ToolTipClassManager> m_toolTipClassManager;
+	QPointer<ToolTipManager> m_toolTipManager;
 
 	TalkableDelegate *Delegate;
 	ModelChain *Chain;
@@ -130,7 +130,7 @@ private slots:
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
-	INJEQT_SET void setToolTipClassManager(ToolTipClassManager *toolTipClassManager);
+	INJEQT_SET void setToolTipManager(ToolTipManager *toolTipManager);
 	INJEQT_INIT void init();
 
 	void doubleClickedSlot(const QModelIndex &index);

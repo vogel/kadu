@@ -32,7 +32,6 @@
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/tool-tip-class-manager.h"
 #include "icons/icons-manager.h"
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"
@@ -61,9 +60,8 @@
 
 HintManager::HintManager(QObject *parent) :
 		QObject{parent},
-		Notifier("Hints", "Hints", KaduIcon("kadu_icons/notify-hints")), AbstractToolTip(),
-		hint_timer(new QTimer(this)),
-		tipFrame(0)
+		Notifier("Hints", "Hints", KaduIcon("kadu_icons/notify-hints")),
+		hint_timer(new QTimer(this))
 {
 }
 
@@ -106,11 +104,6 @@ void HintManager::setParser(Parser *parser)
 	m_parser = parser;
 }
 
-void HintManager::setToolTipClassManager(ToolTipClassManager *toolTipClassManager)
-{
-	m_toolTipClassManager = toolTipClassManager;
-}
-
 void HintManager::init()
 {
 	kdebugf();
@@ -118,7 +111,6 @@ void HintManager::init()
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 
 	m_notifierRepository->registerNotifier(this);
-	m_toolTipClassManager->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
 	configurationUpdated();
 
@@ -132,13 +124,9 @@ void HintManager::done()
 	if (hint_timer)
 		hint_timer->stop();
 
-	m_toolTipClassManager->unregisterToolTipClass("Hints");
 	m_notifierRepository->unregisterNotifier(this);
 
 	disconnect();
-
-	if (tipFrame)
-		tipFrame->deleteLater();
 }
 
 void HintManager::hintUpdated()
@@ -263,76 +251,6 @@ Hint *HintManager::addHint(const Notification &notification)
 		hint_timer->start(1000);
 
 	return hint;
-}
-
-void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *tipLabel, Talkable talkable)
-{
-	auto syntax = m_configuration->deprecatedApi()->readEntry("Hints", "MouseOverUserSyntax");
-	// file:/// is added by parser where required
-	syntax = syntax.remove("file:///");
-
-	auto text = m_parser->parse(syntax, talkable, ParserEscape::HtmlEscape);
-	while (text.endsWith(QStringLiteral("<br/>")))
-		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-	while (text.startsWith(QStringLiteral("<br/>")))
-		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
-
-#ifdef Q_OS_UNIX
-	text = text.remove("file://");
-#endif
-
-	tipLabel->setFont(m_configuration->deprecatedApi()->readFontEntry("Hints", "HintOverUser_font"));
-	tipLabel->setText(text);
-
-	tipFrame->setObjectName("tip_frame");
-	tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
-}
-
-void HintManager::showToolTip(const QPoint &point, Talkable talkable)
-{
-	kdebugf();
-
-	delete tipFrame;
-
-	tipFrame = new QFrame(0, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-
-	QHBoxLayout *lay = new QHBoxLayout(tipFrame);
-	lay->setMargin(10);
-	lay->setSizeConstraint(QLayout::SetFixedSize);
-
-	QLabel *tipLabel = new QLabel(tipFrame);
-	tipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	tipLabel->setContentsMargins(10, 10, 10, 10);
-	tipLabel->setTextFormat(Qt::RichText);
-	tipLabel->setWordWrap(true);
-
-	lay->addWidget(tipLabel);
-
-	prepareOverUserHint(tipFrame, tipLabel, talkable);
-
-	QPoint pos(point + QPoint(5, 5));
-
-	QSize preferredSize = tipFrame->sizeHint();
-	QSize desktopSize = QApplication::desktop()->screenGeometry(m_hintsWidget).size();
-	if (pos.x() + preferredSize.width() > desktopSize.width())
-		pos.setX(pos.x() - preferredSize.width() - 10);
-	if (pos.y() + preferredSize.height() > desktopSize.height())
-		pos.setY(pos.y() - preferredSize.height() - 10);
-
-	tipFrame->move(pos);
-	tipFrame->show();
-
-	kdebugf2();
-}
-
-void HintManager::hideToolTip()
-{
-	if (tipFrame)
-	{
-		tipFrame->hide();
-		tipFrame->deleteLater();
-		tipFrame = 0;
-	}
 }
 
 void HintManager::notify(const Notification &notification)

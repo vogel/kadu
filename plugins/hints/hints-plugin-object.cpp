@@ -19,6 +19,7 @@
 
 #include "hints-plugin-object.h"
 
+#include "hint-manager.h"
 #include "hints-configuration-ui-handler.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
