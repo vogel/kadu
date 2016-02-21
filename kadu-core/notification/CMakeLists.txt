@@ -21,7 +21,6 @@ set (notification_SRCS
 	notify-configuration-ui-handler.cpp
 	screen-mode-checker.cpp
 	silent-mode-service.cpp
-	window-notifier.cpp
 )
 
 if (WIN32)

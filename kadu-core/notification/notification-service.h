@@ -39,12 +39,10 @@ class MenuInventory;
 class NotificationCallbackRepository;
 class NotificationDispatcher;
 struct Notification;
-class NotifierRepository;
 class NotifyConfigurationUiHandler;
 class Parser;
 class SilentModeService;
 class StatusContainer;
-class WindowNotifier;
 
 class KADUAPI NotificationService : public QObject
 {
@@ -57,11 +55,9 @@ class KADUAPI NotificationService : public QObject
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationDispatcher> m_notificationDispatcher;
-	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<NotifyConfigurationUiHandler> m_notifyConfigurationUiHandler;
 	QPointer<Parser> m_parser;
 	QPointer<SilentModeService> m_silentModeService;
-	QPointer<WindowNotifier> m_windowNotifier;
 
 	ActionDescription *m_notifyAboutUserActionDescription;
 
@@ -87,11 +83,9 @@ private slots:
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationDispatcher(NotificationDispatcher *notificationDispatcher);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
-	INJEQT_SET void setWindowNotifier(WindowNotifier *windowNotifier);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

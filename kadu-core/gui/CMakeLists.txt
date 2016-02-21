@@ -216,7 +216,6 @@ set (gui_SRCS
 	windows/subscription-window.cpp
 	windows/token-window.cpp
 	windows/updates-dialog.cpp
-	windows/window-notifier-window.cpp
 	windows/your-accounts-window-service.cpp
 	windows/your-accounts.cpp
 
@@ -387,7 +386,6 @@ set (gui_MOC_SRCS
 	windows/subscription-window.h
 	windows/token-window.h
 	windows/updates-dialog.h
-	windows/window-notifier-window.h
 	windows/your-accounts.h
 
 	windows/open-chat-with/open-chat-with.h

@@ -33,10 +33,8 @@
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-dispatcher.h"
 #include "notification/notification.h"
-#include "notification/notifier-repository.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/silent-mode-service.h"
-#include "notification/window-notifier.h"
 #include "parser/parser.h"
 
 #include "notification-service.h"
@@ -85,11 +83,6 @@ void NotificationService::setNotificationDispatcher(NotificationDispatcher *noti
 	m_notificationDispatcher = notificationDispatcher;
 }
 
-void NotificationService::setNotifierRepository(NotifierRepository *notifierRepository)
-{
-	m_notifierRepository = notifierRepository;
-}
-
 void NotificationService::setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler)
 {
 	m_notifyConfigurationUiHandler = notifyConfigurationUiHandler;
@@ -103,11 +96,6 @@ void NotificationService::setParser(Parser *parser)
 void NotificationService::setSilentModeService(SilentModeService *silentModeService)
 {
 	m_silentModeService = silentModeService;
-}
-
-void NotificationService::setWindowNotifier(WindowNotifier *windowNotifier)
-{
-	m_windowNotifier = windowNotifier;
 }
 
 void NotificationService::init()
@@ -124,10 +112,7 @@ void NotificationService::init()
 
 	Notification::registerParserTags(m_parser);
 
-	m_notifierRepository->registerNotifier(m_windowNotifier);
-
 	createActionDescriptions();
-
 	createDefaultConfiguration();
 }
 
@@ -136,8 +121,6 @@ void NotificationService::done()
 	Notification::unregisterParserTags(m_parser);
 
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_notifyConfigurationUiHandler);
-
-	m_notifierRepository->unregisterNotifier(m_windowNotifier);
 
 	delete m_notifyAboutUserActionDescription;
 }
