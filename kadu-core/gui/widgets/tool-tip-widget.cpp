@@ -28,6 +28,9 @@ ToolTipWidget::ToolTipWidget(const Talkable &talkable, QWidget *parent) :
 		QFrame{parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC},
 		m_talkable{talkable}
 {
+	setObjectName(QStringLiteral("tool_tip"));
+	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	setStyleSheet(QStringLiteral("#tool_tip { border: 1px solid %1; }").arg(palette().window().color().darker().name()));
 
 	auto layout = make_owned<QHBoxLayout>(this);
 	layout->setMargin(10);
