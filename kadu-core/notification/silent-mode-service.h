@@ -67,13 +67,14 @@ private:
 	QPointer<StatusContainerManager> m_statusContainerManager;
 
 	std::unique_ptr<FullScreenServiceHandler> m_fullScreenServiceHandler;
-	owned_qptr<ActionDescription> m_silentModeActionDescription;
+	not_owned_qptr<ActionDescription> m_silentModeActionDescription;
 
 	bool m_silentModeWhenDnD;
 	bool m_silentModeWhenFullscreen;
 	bool m_silentMode;
 
 	void createActionDescriptions();
+	void destroyActionDescriptions();
 	void createDefaultConfiguration();
 
 private slots:
@@ -83,6 +84,7 @@ private slots:
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_INIT void init();
+	INJEQT_INIT void done();
 
 	void silentModeActionCreated(Action *action);
 	void silentModeActionActivated(QAction *sender, bool toggled);

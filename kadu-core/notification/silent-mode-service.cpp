@@ -73,9 +73,14 @@ void SilentModeService::init()
 	configurationUpdated();
 }
 
+void SilentModeService::done()
+{
+	destroyActionDescriptions();
+}
+
 void SilentModeService::createActionDescriptions()
 {
-	m_silentModeActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
+	m_silentModeActionDescription = m_injectedFactory->makeNotOwned<ActionDescription>(nullptr,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/enable-notifications"), tr("Silent Mode"), true
@@ -86,6 +91,15 @@ void SilentModeService::createActionDescriptions()
 	m_menuInventory
 		->menu("main")
 		->addAction(m_silentModeActionDescription, KaduMenu::SectionMiscTools, 5);
+}
+
+void SilentModeService::destroyActionDescriptions()
+{
+	m_menuInventory
+		->menu("main")
+		->removeAction(m_silentModeActionDescription);
+
+	m_silentModeActionDescription.reset();
 }
 
 void SilentModeService::silentModeActionCreated(Action *action)
