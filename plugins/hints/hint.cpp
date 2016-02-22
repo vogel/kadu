@@ -111,8 +111,6 @@ void Hint::init()
 		callbacksBox->addStretch(9);
 	}
 
-	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
 	configurationUpdated();
 	updateText();
 	show();
