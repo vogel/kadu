@@ -21,12 +21,10 @@
 
 #pragma once
 
-#include "configuration/configuration-aware-object.h"
 #include "notification/notification.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QFrame>
-#include <QtWidgets/QVBoxLayout>
 #include <injeqt/injeqt.h>
 
 class Chat;
@@ -37,61 +35,15 @@ class NotificationConfiguration;
 class NotificationService;
 struct Notification;
 
-class QLabel;
-class QVBoxLayout;
-
-class Hint : public QFrame, ConfigurationAwareObject
+class Hint : public QFrame
 {
 	Q_OBJECT
-
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
-	QPointer<NotificationService> m_notificationService;
-
-	QVBoxLayout *vbox;
-
-	QHBoxLayout *labels;
-	QHBoxLayout *callbacksBox;
-
-	QLabel *icon;
-	QLabel *label;
-	int secs;
-	int startSecs;
-
-	Notification notification;
-	QStringList details;
-
-	void createLabels(const QPixmap &pixmap);
-	void updateText();
-
-	void resetTimeout();
-
-private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *IconsManager);
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_INIT void init();
-
-	void buttonClicked();
-
-protected:
-	virtual void mouseReleaseEvent(QMouseEvent * event);
-	virtual void enterEvent(QEvent *event);
-	virtual void leaveEvent(QEvent *event);
-
-	virtual void configurationUpdated();
 
 public:
 	explicit Hint(QWidget *parent, const Notification &notification);
 	virtual ~Hint();
 
 	bool isDeprecated();
-
-	const Notification & getNotification() { return notification; }
 
 public slots:
 	void nextSecond();
@@ -105,5 +57,35 @@ signals:
 	void midButtonClicked(Hint *hint);
 	void closing(Hint *hint);
 	void updated(Hint *hint);
+
+protected:
+	virtual void mouseReleaseEvent(QMouseEvent * event);
+	virtual void enterEvent(QEvent *event);
+	virtual void leaveEvent(QEvent *event);
+
+private:
+	QPointer<Configuration> m_configuration;
+	QPointer<IconsManager> m_iconsManager;
+	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+	QPointer<NotificationConfiguration> m_notificationConfiguration;
+	QPointer<NotificationService> m_notificationService;
+
+	int secs;
+	int startSecs;
+
+	Notification m_notification;
+
+	void createGui();
+	QString details() const;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setIconsManager(IconsManager *IconsManager);
+	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
+	INJEQT_SET void setNotificationService(NotificationService *notificationService);
+	INJEQT_INIT void init();
+
+	void buttonClicked();
 
 };

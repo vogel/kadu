@@ -22,17 +22,15 @@
 
 #include "hint.h"
 
-#include "chat/chat.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "contacts/contact-set.h"
 #include "icons/icons-manager.h"
+#include "misc/memory.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
 #include "notification/notification-configuration.h"
 #include "notification/notification-service.h"
 #include "notification/notification.h"
-#include "debug.h"
 
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
@@ -40,8 +38,9 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-Hint::Hint(QWidget *parent, const Notification &xnotification)
-	: QFrame(parent), vbox(0), callbacksBox(0), icon(0), label(0), notification(xnotification)
+Hint::Hint(QWidget *parent, const Notification &notification) :
+		QFrame{parent},
+		m_notification{notification}
 {
 }
 
@@ -76,20 +75,55 @@ void Hint::setNotificationService(NotificationService *notificationService)
 
 void Hint::init()
 {
-	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
-	startSecs = secs = m_configuration->deprecatedApi()->readNumEntry("Hints", "Event_" + key + "_timeout", 10);
+	startSecs = secs = 10;
 
-	createLabels(m_iconsManager->iconByPath(notification.icon).pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32)));
+	createGui();
+}
 
-	auto showButtons = !notification.callbacks.isEmpty() && m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowNotificationActions", 
-			!m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons", false));
+void Hint::createGui()
+{
+	auto pixmap = m_iconsManager->iconByPath(m_notification.icon).pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32));
+	auto withPixmap = !pixmap.isNull();
+	auto detailsText = details();
+	auto withDetailsText = !detailsText.isEmpty();
+
+	auto layout = make_owned<QGridLayout>(this);
+	layout->setSpacing(0);
+
+	if (withPixmap)
+	{
+		auto icon = make_owned<QLabel>(this);
+		icon->setPixmap(pixmap);
+		icon->setContentsMargins(0, 0, 6, 0);
+		icon->setFixedSize(icon->sizeHint());
+		layout->addWidget(icon, 0, 0, 2, 1, Qt::AlignTop);
+	}
+
+	auto label = make_owned<QLabel>(this);
+	label->setTextInteractionFlags(Qt::NoTextInteraction);
+	label->setText(QString{m_notification.text}.replace('\n', QStringLiteral("<br />")));
+
+	layout->addWidget(label, 0, 1, withDetailsText ? 1 : 2, 1, Qt::AlignVCenter | Qt::AlignLeft);
+
+	if (withDetailsText)
+	{
+		auto detailsLabel = make_owned<QLabel>(this);
+		detailsLabel->setTextInteractionFlags(Qt::NoTextInteraction);
+		detailsLabel->setText(detailsText.replace('\n', QStringLiteral("<br />")));
+
+		layout->addWidget(detailsLabel, 1, 1, 1, 1, Qt::AlignVCenter | Qt::AlignLeft);
+	}
+
+	auto showButtons =
+			!m_notification.callbacks.isEmpty() && m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowNotificationActions", 
+				!m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons", false));
 	if (showButtons)
 	{
-		callbacksBox = new QHBoxLayout();
+		auto callbacksBox = new QHBoxLayout{};
 		callbacksBox->addStretch(10);
-		vbox->addLayout(callbacksBox);
+		layout->addLayout(callbacksBox, 2, 0, 1, 2);
 
-		for (auto &&callbackName : notification.callbacks)
+		for (auto &&callbackName : m_notification.callbacks)
 		{
 			auto callback = m_notificationCallbackRepository->callback(callbackName);
 			auto button = new QPushButton(callback.title(), this);
@@ -102,110 +136,37 @@ void Hint::init()
 
 		callbacksBox->addStretch(9);
 	}
+}
 
-	configurationUpdated();
-	updateText();
-	show();
+QString Hint::details() const
+{
+	if (!m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
+		return {};
 
-	kdebugf2();
+	auto citeSign = m_configuration->deprecatedApi()->readNumEntry("Hints", "CiteSign");
+	auto syntax = QStringLiteral("<small>%1</small>");
+	auto message = QString{m_notification.details}.replace("<br/>", QStringLiteral(""));
+	return (message.length() > citeSign
+			? syntax.arg(message.left(citeSign) + "...")
+			: syntax.arg(message)).replace('\n', QStringLiteral("<br />"));
 }
 
 void Hint::buttonClicked()
 {
-	auto callbackNotification = notification;
-
 	auto callbackName = sender()->property("notify:callback").toString();
 	if (!callbackName.isEmpty())
 	{
 		auto callback = m_notificationCallbackRepository->callback(callbackName);
-		callback.call(callbackNotification);
+		callback.call(m_notification);
 	}
 
 	close();
-}
-
-void Hint::configurationUpdated()
-{
-	QFont font(qApp->font());
-	QPalette palette(qApp->palette());
-
-	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
-	label->setFont(m_configuration->deprecatedApi()->readFontEntry("Hints", "Event_" + key + "_font", &font));
-
-	updateText();
-}
-
-void Hint::createLabels(const QPixmap &pixmap)
-{
-	vbox = new QVBoxLayout(this);
-	vbox->setSpacing(0);
-	labels = new QHBoxLayout();
-	labels->setSpacing(0);
-	labels->setContentsMargins(6, 4, 6, 4);
-	vbox->addLayout(labels);
-
-	if (!pixmap.isNull())
-	{
-		icon = new QLabel(this);
-		icon->setPixmap(pixmap);
-		icon->setContentsMargins(0, 0, 6, 0);
-		icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-		// Without setting fixed size right margin is sometimes not respected on Windows.
-		// If you cannot reproduce, try setting MarginSize to 5 px.
-		icon->setFixedSize(icon->sizeHint());
-		labels->addWidget(icon, 0, Qt::AlignTop);
-	}
-
-	label = new QLabel(this);
-	label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Ignored);
-	label->setTextInteractionFlags(Qt::NoTextInteraction);
-	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-	label->setWordWrap(true);
-	labels->addWidget(label);
-}
-
-void Hint::updateText()
-{
-	auto text = notification.text;
-
-	if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
-	{
-		auto citeSign = m_configuration->deprecatedApi()->readNumEntry("Hints", "CiteSign");
-		auto syntax = QStringLiteral("\n <small>%1</small>");
-		auto message = notification.details.replace("<br/>", QStringLiteral(""));
-		if (message.length() > citeSign)
-			text += syntax.arg(message.left(citeSign) + "...");
-		else
-			text += syntax.arg(message);
-	}
-
-	text = text.replace('\n', QStringLiteral("<br />"));
-
-	label->setText(QStringLiteral("<div style='width:100%; height:100%; vertical-align:middle;'>%1</div>").arg(text));
-
-	adjustSize();
-	updateGeometry();
-	emit updated(this);
-}
-
-void Hint::resetTimeout()
-{
-	secs = startSecs;
 }
 
 void Hint::nextSecond(void)
 {
 	if (startSecs == 0)
 		return;
-
-	if (secs == 0)
-	{
-		kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
-	}
-	else if (secs > 2000000000)
-	{
-		kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
-	}
 
 	if (secs > 0)
 		--secs;
@@ -249,12 +210,12 @@ void Hint::leaveEvent(QEvent *)
 
 void Hint::acceptNotification()
 {
-	m_notificationService->acceptNotification(notification);
+	m_notificationService->acceptNotification(m_notification);
 }
 
 void Hint::discardNotification()
 {
-	m_notificationService->discardNotification(notification);
+	m_notificationService->discardNotification(m_notification);
 }
 
 #include "moc_hint.cpp"
