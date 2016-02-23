@@ -32,7 +32,6 @@
 #include "notification/notification-configuration.h"
 #include "notification/notification-service.h"
 #include "notification/notification.h"
-#include "parser/parser.h"
 #include "debug.h"
 
 #include <QtGui/QMouseEvent>
@@ -75,15 +74,8 @@ void Hint::setNotificationService(NotificationService *notificationService)
 	m_notificationService = notificationService;
 }
 
-void Hint::setParser(Parser *parser)
-{
-	m_parser = parser;
-}
-
 void Hint::init()
 {
-	kdebugf();
-
 	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
 	startSecs = secs = m_configuration->deprecatedApi()->readNumEntry("Hints", "Event_" + key + "_timeout", 10);
 
@@ -174,66 +166,22 @@ void Hint::createLabels(const QPixmap &pixmap)
 
 void Hint::updateText()
 {
-	QString text;
-
-	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
-	QString syntax = m_configuration->deprecatedApi()->readEntry("Hints", "Event_" + key + "_syntax", QString());
-	if (syntax.isEmpty())
-		text = notification.text;
-	else
-	{
-		kdebug("syntax is: %s, text is: %s\n", qPrintable(syntax), qPrintable(notification.text));
-
-		auto chat = notification.data["chat"].value<Chat>();
-		if (chat)
-		{
-			Contact contact = *chat.contacts().constBegin();
-			text = m_parser->parse(syntax, Talkable(contact), &notification, ParserEscape::HtmlEscape);
-		}
-		else
-			text = m_parser->parse(syntax, &notification, ParserEscape::HtmlEscape);
-
-		/* Dorr: the file:// in img tag doesn't generate the image on hint.
-		 * for compatibility with other syntaxes we're allowing to put the file://
-		 * so we have to remove it here */
-		text = text.remove("file://");
-	}
+	auto text = notification.text;
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
-	{/*
-		auto details;
-		if (!notification.details.isEmpty())
-			details = notification.details;
-		int count = details.count();
-
-		if (count)
-		{
-			int i = (count > 5) ? count - 5 : 0;
-
-			int citeSign = m_configuration->deprecatedApi()->readNumEntry("Hints","CiteSign");
-
-			QString defaultSyntax;
-			if (notification.type == "NewMessage" || notification.type == "NewChat")
-				defaultSyntax = "\n&bull; <small>%1</small>";
-			else
-				defaultSyntax = "\n <small>%1</small>";
-			QString itemSyntax = m_configuration->deprecatedApi()->readEntry("Hints", "Event_" + key + "_detailSyntax", defaultSyntax);
-			for (; i < count; i++)
-			{
-				const QString &message = details[i].replace("<br/>", QStringLiteral(""));
-
-				if (message.length() > citeSign)
-					text += itemSyntax.arg(details[i].left(citeSign) + "...");
-				else
-					text += itemSyntax.arg(details[i]);
-			}
-		}*/
+	{
+		auto citeSign = m_configuration->deprecatedApi()->readNumEntry("Hints", "CiteSign");
+		auto syntax = QStringLiteral("\n <small>%1</small>");
+		auto message = notification.details.replace("<br/>", QStringLiteral(""));
+		if (message.length() > citeSign)
+			text += syntax.arg(message.left(citeSign) + "...");
+		else
+			text += syntax.arg(message);
 	}
 
-	label->setText(QString("<div style='width:100%; height:100%; vertical-align:middle;'>")
-		+ text.replace('\n', QStringLiteral("<br />"))
-		+ "</div>"
-		);
+	text = text.replace('\n', QStringLiteral("<br />"));
+
+	label->setText(QStringLiteral("<div style='width:100%; height:100%; vertical-align:middle;'>%1</div>").arg(text));
 
 	adjustSize();
 	updateGeometry();

@@ -36,7 +36,6 @@ class NotificationCallbackRepository;
 class NotificationConfiguration;
 class NotificationService;
 struct Notification;
-class Parser;
 
 class QLabel;
 class QVBoxLayout;
@@ -50,7 +49,6 @@ class Hint : public QFrame, ConfigurationAwareObject
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationConfiguration> m_notificationConfiguration;
 	QPointer<NotificationService> m_notificationService;
-	QPointer<Parser> m_parser;
 
 	QVBoxLayout *vbox;
 
@@ -76,7 +74,6 @@ private slots:
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 
 	void buttonClicked();
