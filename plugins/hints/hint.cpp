@@ -35,7 +35,7 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 
 Hint::Hint(const Notification &notification, HintsConfiguration *hintsConfiguration, QWidget *parent) :
@@ -107,22 +107,25 @@ void Hint::createGui()
 
 	if (shouldShowButtons())
 	{
+		auto f = font();
+		f.setPointSizeF(f.pointSizeF() * 0.8);
+
 		auto callbacksBox = new QHBoxLayout{};
-		callbacksBox->addStretch(10);
-		layout->addLayout(callbacksBox, 2, 0, 1, 2);
+		layout->addLayout(callbacksBox, 2, 0, 1, 2, Qt::AlignRight);
 
 		for (auto &&callbackName : m_notification.callbacks)
 		{
 			auto callback = m_notificationCallbackRepository->callback(callbackName);
-			auto button = new QPushButton(callback.title(), this);
+			auto button = make_owned<QToolButton>(this);
+			//button->setAutoRaise(true);
+			button->setFont(f);
+			button->setText(callback.title());
+			button->setToolButtonStyle(Qt::ToolButtonTextOnly);
 			button->setProperty("notify:callback", callbackName);
 			connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 
 			callbacksBox->addWidget(button);
-			callbacksBox->addStretch(1);
 		}
-
-		callbacksBox->addStretch(9);
 	}
 }
 
