@@ -22,7 +22,6 @@
 #pragma once
 
 #include "chat/chat.h"
-#include "configuration/configuration-aware-object.h"
 #include "misc/memory.h"
 #include "notification/notifier.h"
 #include "hint.h"
@@ -44,7 +43,7 @@ class InjectedFactory;
 class NotifierRepository;
 class Parser;
 
-class HintManager : public QObject, public Notifier, public ConfigurationAwareObject
+class HintManager : public QObject, public Notifier
 {
 	Q_OBJECT
 
@@ -87,10 +86,6 @@ private slots:
 	Hint *addHint(const Notification &notification);
 
 	void deleteAllHints();
-	void hintUpdated();
-
-protected:
-	virtual void configurationUpdated();
 
 public:
 	Q_INVOKABLE explicit HintManager(QObject *parent = nullptr);

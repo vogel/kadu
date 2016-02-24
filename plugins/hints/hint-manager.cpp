@@ -112,17 +112,9 @@ void HintManager::setParser(Parser *parser)
 
 void HintManager::init()
 {
-	kdebugf();
-
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 
 	m_notifierRepository->registerNotifier(this);
-
-	configurationUpdated();
-
-	// remember to call it after setting `Style' member
-
-	kdebugf2();
 }
 
 void HintManager::done()
@@ -133,16 +125,6 @@ void HintManager::done()
 	m_notifierRepository->unregisterNotifier(this);
 
 	disconnect();
-}
-
-void HintManager::hintUpdated()
-{
-	setHint();
-}
-
-void HintManager::configurationUpdated()
-{
-	setHint();
 }
 
 void HintManager::setHint()
@@ -250,7 +232,6 @@ Hint *HintManager::addHint(const Notification &notification)
 	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
 	connect(hint, SIGNAL(midButtonClicked(Hint *)), this, SLOT(midButtonSlot(Hint *)));
 	connect(hint, SIGNAL(closing(Hint *)), this, SLOT(deleteHintAndUpdate(Hint *)));
-	connect(hint, SIGNAL(updated(Hint *)), this, SLOT(hintUpdated()));
 	setHint();
 
 	if (!hint_timer->isActive())
