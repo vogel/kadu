@@ -69,10 +69,13 @@ void HintsConfiguration::createDefaultConfiguration()
 	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_Hints", true);
 #endif
 
+	m_configuration->deprecatedApi()->addVariable("Hints", "IconSize",
+		m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32));
 	m_configuration->deprecatedApi()->addVariable("Hints", "ScreenCorner", static_cast<int>(Corner::BottomRight));
+	m_configuration->deprecatedApi()->addVariable("Hints", "ShowAllNotificationActions",
+		m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowNotificationActions",
+			!m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons", true)));
 	m_configuration->deprecatedApi()->addVariable("Hints", "ShowContentMessage", true);
-	m_configuration->deprecatedApi()->addVariable("Hints", "AllEvents_iconSize", 32);
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_iconSize", 32);
 }
 
 void HintsConfiguration::configurationUpdated()
@@ -81,12 +84,31 @@ void HintsConfiguration::configurationUpdated()
 	if (m_corner < Corner::TopLeft || m_corner > Corner::BottomRight)
 		m_corner = Corner::BottomRight;
 
+	m_iconSize = m_configuration->deprecatedApi()->readNumEntry("Hints", "IconSize", 32);
+	m_showAllNotificationActions = m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowAllNotificationActions", false);
+	m_showContentMessage = m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage", true);
+
 	emit updated();
 }
 
 HintsConfiguration::Corner HintsConfiguration::corner() const
 {
 	return m_corner;
+}
+
+int HintsConfiguration::iconSize() const
+{
+	return m_iconSize;
+}
+
+bool HintsConfiguration::showAllNotificationActions() const
+{
+	return m_showAllNotificationActions;
+}
+
+bool HintsConfiguration::showContentMessage() const
+{
+	return m_showContentMessage;
 }
 
 #include "moc_hints-configuration.cpp"

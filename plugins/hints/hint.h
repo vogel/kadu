@@ -28,7 +28,7 @@
 #include <injeqt/injeqt.h>
 
 class Chat;
-class Configuration;
+class HintsConfiguration;
 class IconsManager;
 class NotificationCallbackRepository;
 class NotificationConfiguration;
@@ -40,7 +40,7 @@ class Hint : public QFrame
 	Q_OBJECT
 
 public:
-	explicit Hint(QWidget *parent, const Notification &notification);
+	explicit Hint(const Notification &notification, HintsConfiguration *hintsConfiguration, QWidget *parent = nullptr);
 	virtual ~Hint();
 
 	bool isDeprecated();
@@ -64,7 +64,7 @@ protected:
 	virtual void leaveEvent(QEvent *event);
 
 private:
-	QPointer<Configuration> m_configuration;
+	QPointer<HintsConfiguration> m_hintsConfiguration;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationConfiguration> m_notificationConfiguration;
@@ -77,9 +77,9 @@ private:
 
 	void createGui();
 	QString details() const;
+	bool shouldShowButtons() const;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *IconsManager);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);

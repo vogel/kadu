@@ -38,7 +38,7 @@ class ChatWidgetManager;
 class ChatWidget;
 class Configuration;
 class HintRepository;
-class HintsConfigurationWidget;
+class HintsConfiguration;
 class HintsWidget;
 class InjectedFactory;
 class NotifierRepository;
@@ -52,6 +52,7 @@ class HintManager : public QObject, public Notifier, public ConfigurationAwareOb
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<HintRepository> m_hintRepository;
+	QPointer<HintsConfiguration> m_hintsConfiguration;
 	QPointer<HintsWidget> m_hintsWidget;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<NotifierRepository> m_notifierRepository;
@@ -59,14 +60,13 @@ class HintManager : public QObject, public Notifier, public ConfigurationAwareOb
 
 	QPointer<QTimer> hint_timer;
 
-	HintsConfigurationWidget *configurationWidget;
-
 	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, const BuddyList &buddies, const QString &msg);
 
 private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setHintRepository(HintRepository *hintRepository);
+	INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
 	INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);

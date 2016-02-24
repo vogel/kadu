@@ -22,8 +22,8 @@
 
 #include "hint.h"
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
+#include "hints-configuration.h"
+
 #include "icons/icons-manager.h"
 #include "misc/memory.h"
 #include "notification/notification-callback-repository.h"
@@ -38,19 +38,15 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-Hint::Hint(QWidget *parent, const Notification &notification) :
+Hint::Hint(const Notification &notification, HintsConfiguration *hintsConfiguration, QWidget *parent) :
 		QFrame{parent},
+		m_hintsConfiguration{hintsConfiguration},
 		m_notification{notification}
 {
 }
 
 Hint::~Hint()
 {
-}
-
-void Hint::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
 }
 
 void Hint::setIconsManager(IconsManager *iconsManager)
@@ -82,27 +78,22 @@ void Hint::init()
 
 void Hint::createGui()
 {
-	auto pixmap = m_iconsManager->iconByPath(m_notification.icon).pixmap(m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32));
-	auto withPixmap = !pixmap.isNull();
+	auto pixmap = m_iconsManager->iconByPath(m_notification.icon).pixmap(m_hintsConfiguration->iconSize());
 	auto detailsText = details();
 	auto withDetailsText = !detailsText.isEmpty();
 
-	auto layout = make_owned<QGridLayout>(this);
-	layout->setSpacing(0);
-
-	if (withPixmap)
-	{
-		auto icon = make_owned<QLabel>(this);
-		icon->setPixmap(pixmap);
-		icon->setContentsMargins(0, 0, 6, 0);
-		icon->setFixedSize(icon->sizeHint());
-		layout->addWidget(icon, 0, 0, 2, 1, Qt::AlignTop);
-	}
+	auto icon = make_owned<QLabel>(this);
+	icon->setPixmap(pixmap);
+	icon->setContentsMargins(0, 0, 6, 0);
+	icon->setFixedSize(icon->sizeHint());
 
 	auto label = make_owned<QLabel>(this);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setText(QString{m_notification.text}.replace('\n', QStringLiteral("<br />")));
 
+	auto layout = make_owned<QGridLayout>(this);
+	layout->setSpacing(0);
+	layout->addWidget(icon, 0, 0, 2, 1, Qt::AlignTop);
 	layout->addWidget(label, 0, 1, withDetailsText ? 1 : 2, 1, Qt::AlignVCenter | Qt::AlignLeft);
 
 	if (withDetailsText)
@@ -114,10 +105,7 @@ void Hint::createGui()
 		layout->addWidget(detailsLabel, 1, 1, 1, 1, Qt::AlignVCenter | Qt::AlignLeft);
 	}
 
-	auto showButtons =
-			!m_notification.callbacks.isEmpty() && m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowNotificationActions", 
-				!m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons", false));
-	if (showButtons)
+	if (shouldShowButtons())
 	{
 		auto callbacksBox = new QHBoxLayout{};
 		callbacksBox->addStretch(10);
@@ -140,7 +128,7 @@ void Hint::createGui()
 
 QString Hint::details() const
 {
-	if (!m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
+	if (!m_hintsConfiguration->showContentMessage())
 		return {};
 
 	auto const citeSign = 50;
@@ -149,6 +137,27 @@ QString Hint::details() const
 	return (message.length() > citeSign
 			? syntax.arg(message.left(citeSign) + "...")
 			: syntax.arg(message)).replace('\n', QStringLiteral("<br />"));
+}
+
+bool Hint::shouldShowButtons() const
+{
+	if (m_notification.callbacks.isEmpty())
+		return false;
+
+	if (m_hintsConfiguration->showAllNotificationActions())
+		return true;
+
+	if (m_notification.callbacks.size() != 2)
+		return true;
+
+	auto acceptCallback = m_notification.acceptCallback.isEmpty()
+			? QStringLiteral("chat-open")
+			: m_notification.acceptCallback;
+	auto discardCallback = m_notification.discardCallback.isEmpty()
+			? QStringLiteral("ignore")
+			: m_notification.discardCallback;
+
+	return m_notification.callbacks[0] != acceptCallback || m_notification.callbacks[1] != discardCallback;
 }
 
 void Hint::buttonClicked()

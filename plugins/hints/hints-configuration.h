@@ -38,6 +38,9 @@ public:
 	virtual ~HintsConfiguration();
 
 	Corner corner() const;
+	int iconSize() const;
+	bool showAllNotificationActions() const;
+	bool showContentMessage() const;
 
 signals:
 	void updated();
@@ -49,6 +52,9 @@ private:
 	QPointer<Configuration> m_configuration;
 
 	Corner m_corner {Corner::BottomRight};
+	int m_iconSize {32};
+	bool m_showAllNotificationActions {false};
+	bool m_showContentMessage {true};
 
 	void createDefaultConfiguration();
 

@@ -24,6 +24,7 @@
 #include "hint-manager.h"
 
 #include "hint-repository.h"
+#include "hints-configuration.h"
 #include "hints-widget-positioner.h"
 #include "hints-widget.h"
 
@@ -82,6 +83,11 @@ void HintManager::setConfiguration(Configuration *configuration)
 void HintManager::setHintRepository(HintRepository *hintRepository)
 {
 	m_hintRepository = hintRepository;
+}
+
+void HintManager::setHintsConfiguration(HintsConfiguration *hintsConfiguration)
+{
+	m_hintsConfiguration = hintsConfiguration;
 }
 
 void HintManager::setHintsWidget(HintsWidget *hintsWidget)
@@ -236,7 +242,7 @@ Hint *HintManager::addHint(const Notification &notification)
 {
 	kdebugf();
 
-	auto hint = m_injectedFactory->makeInjected<Hint>(m_hintsWidget, notification);
+	auto hint = m_injectedFactory->makeInjected<Hint>(notification, m_hintsConfiguration, m_hintsWidget);
 	m_hintRepository->addHint(hint);
 	m_hintsWidget->addHint(hint);
 
