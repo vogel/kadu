@@ -8,7 +8,6 @@ set (SOURCES
 	hint-manager.cpp
 	hint-repository.cpp
 	hint.cpp
-	hints-configuration-ui-handler.cpp
 	hints-configuration.cpp
 	hints-module.cpp
 	hints-plugin-modules-factory.cpp

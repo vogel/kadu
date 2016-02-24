@@ -38,7 +38,6 @@ class ChatWidgetManager;
 class ChatWidget;
 class Configuration;
 class HintRepository;
-class HintsConfigurationUiHandler;
 class HintsConfigurationWidget;
 class HintsWidget;
 class InjectedFactory;

@@ -24,8 +24,6 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class ConfigurationUiHandlerRepository;
-class HintsConfigurationUiHandler;
 class HintManager;
 class MainConfigurationWindowService;
 class PathsProvider;
@@ -40,15 +38,11 @@ public:
 	virtual ~HintsPluginObject();
 
 private:
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<HintsConfigurationUiHandler> m_hintsConfigurationUiHandler;
 	QPointer<HintManager> m_hintManager;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setHintsConfigurationUiHandler(HintsConfigurationUiHandler *hintsConfigurationUiHandler);
 	INJEQT_SET void setHintManager(HintManager *hintManager);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);

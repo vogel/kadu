@@ -3,6 +3,12 @@
 	<section name="Notifications">
 		<tab name="Hints">
 			<group-box name="General">
+				<combo-box caption="Corner" config-section="Hints" config-item="ScreenCorner">
+					<item value="0" caption="Top Left" />
+					<item value="1" caption="Top Right" />
+					<item value="2" caption="Bottom Left" />
+					<item value="3" caption="Bottom Right" />
+				</combo-box>
 				<combo-box caption="Icon size" config-section="Hints" config-item="AllEvents_iconSize">
 					<item value="16" caption="16px" />
 					<item value="22" caption="22px" />
@@ -12,22 +18,6 @@
 				</combo-box>
 				<check-box caption="Show notification actions" config-section="Hints" config-item="ShowNotificationActions" />
 				<check-box caption="Show message content in hint" config-section="Hints" config-item="ShowContentMessage" id="hints/showContent" />
-				<spin-box caption="Number of quoted characters" config-section="Hints" config-item="CiteSign" min-value="1" max-value="2000" id="hints/showContentCount" />
-			</group-box>
-			<group-box name="Layout">
-				<combo-box caption="New hints go" config-section="Hints" config-item="NewHintUnder" id="hints/newHintUnder">
-					<item value="0" caption="Auto" />
-					<item value="1" caption="On Top" />
-					<item value="2" caption="On Bottom" />
-				</combo-box>
-				<combo-box caption="Corner" config-section="Hints" config-item="ScreenCorner">
-					<item value="0" caption="Top Left" />
-					<item value="1" caption="Top Right" />
-					<item value="2" caption="Bottom Left" />
-					<item value="3" caption="Bottom Right" />
-				</combo-box>
-				<spin-box caption="Minimum width" config-section="Hints" config-item="MinimumWidth" min-value="100" max-value="10240" id="hints/minimumWidth" suffix=" px" />
-				<spin-box caption="Maximum width" config-section="Hints" config-item="MaximumWidth" min-value="100" max-value="10240" id="hints/maximumWidth" suffix=" px" />
 			</group-box>
 		</tab>
 	</section>

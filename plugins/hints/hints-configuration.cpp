@@ -46,10 +46,6 @@ void HintsConfiguration::init()
 
 void HintsConfiguration::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("Hints", "MinimumWidth", 285);
-	m_configuration->deprecatedApi()->addVariable("Hints", "MaximumWidth", 500);
-	m_configuration->deprecatedApi()->addVariable("Hints", "ScreenCorner", static_cast<int>(Corner::BottomRight));
-
 #if !defined(Q_OS_UNIX)
 	m_configuration->deprecatedApi()->addVariable("Notify", "ConnectionError_Hints", true);
 	m_configuration->deprecatedApi()->addVariable("Notify", "NewChat_Hints", true);
@@ -73,40 +69,19 @@ void HintsConfiguration::createDefaultConfiguration()
 	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_Hints", true);
 #endif
 
-	m_configuration->deprecatedApi()->addVariable("Hints", "CiteSign", 50);
-
-	m_configuration->deprecatedApi()->addVariable("Hints", "NewHintUnder", 0);
+	m_configuration->deprecatedApi()->addVariable("Hints", "ScreenCorner", static_cast<int>(Corner::BottomRight));
 	m_configuration->deprecatedApi()->addVariable("Hints", "ShowContentMessage", true);
-
 	m_configuration->deprecatedApi()->addVariable("Hints", "AllEvents_iconSize", 32);
-
 	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_iconSize", 32);
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_font", qApp->font());
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintOverUser_Geometry", "50, 50, 640, 610");
-	m_configuration->deprecatedApi()->addVariable("Hints", "HintEventConfiguration_Geometry", "50, 50, 520, 345");
 }
 
 void HintsConfiguration::configurationUpdated()
 {
-	m_minimumWidth = qBound(100, m_configuration->deprecatedApi()->readNumEntry("Hints", "MinimumWidth", 285), 10240);
-	m_maximumWidth = qBound(100, m_configuration->deprecatedApi()->readNumEntry("Hints", "MaximumWidth", 500), 10240);
-	if (m_minimumWidth > m_maximumWidth)
-		std::swap(m_minimumWidth, m_maximumWidth);
 	m_corner = static_cast<Corner>(m_configuration->deprecatedApi()->readNumEntry("Hints", "ScreenCorner", static_cast<int>(Corner::BottomRight)));
 	if (m_corner < Corner::TopLeft || m_corner > Corner::BottomRight)
 		m_corner = Corner::BottomRight;
 
 	emit updated();
-}
-
-int HintsConfiguration::minimumWidth() const
-{
-	return m_minimumWidth;
-}
-
-int HintsConfiguration::maximumWidth() const
-{
-	return m_maximumWidth;
 }
 
 HintsConfiguration::Corner HintsConfiguration::corner() const

@@ -55,12 +55,6 @@ void HintsWidgetPositioner::init()
 
 void HintsWidgetPositioner::update()
 {
-	auto minimumWidth = m_hintsConfiguration->minimumWidth();
-	auto maximumWidth = m_hintsConfiguration->maximumWidth();
-
-	auto width = qBound(minimumWidth, m_hintsWidget->sizeHint().width(), maximumWidth);
-
-	m_hintsWidget->setFixedWidth(width);
 	m_hintsWidget->move(positionForSize(m_hintsWidget->size()));
 }
 

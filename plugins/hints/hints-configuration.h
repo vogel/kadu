@@ -37,8 +37,6 @@ public:
 	Q_INVOKABLE explicit HintsConfiguration(QObject *parent = nullptr);
 	virtual ~HintsConfiguration();
 
-	int minimumWidth() const;
-	int maximumWidth() const;
 	Corner corner() const;
 
 signals:
@@ -50,8 +48,6 @@ protected:
 private:
 	QPointer<Configuration> m_configuration;
 
-	int m_minimumWidth {285};
-	int m_maximumWidth {500};
 	Corner m_corner {Corner::BottomRight};
 
 	void createDefaultConfiguration();

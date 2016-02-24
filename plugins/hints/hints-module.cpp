@@ -21,7 +21,6 @@
 
 #include "hint-manager.h"
 #include "hint-repository.h"
-#include "hints-configuration-ui-handler.h"
 #include "hints-configuration.h"
 #include "hints-plugin-object.h"
 #include "hints-widget-positioner.h"
@@ -29,7 +28,6 @@
 
 HintsModule::HintsModule()
 {
-	add_type<HintsConfigurationUiHandler>();
 	add_type<HintsConfiguration>();
 	add_type<HintManager>();
 	add_type<HintRepository>();

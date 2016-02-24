@@ -143,9 +143,9 @@ QString Hint::details() const
 	if (!m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage"))
 		return {};
 
-	auto citeSign = m_configuration->deprecatedApi()->readNumEntry("Hints", "CiteSign");
-	auto syntax = QStringLiteral("<small>%1</small>");
-	auto message = QString{m_notification.details}.replace("<br/>", QStringLiteral(""));
+	auto const citeSign = 50;
+	auto const syntax = QStringLiteral("<small>%1</small>");
+	auto const message = QString{m_notification.details}.replace("<br/>", QStringLiteral(""));
 	return (message.length() > citeSign
 			? syntax.arg(message.left(citeSign) + "...")
 			: syntax.arg(message)).replace('\n', QStringLiteral("<br />"));
@@ -153,7 +153,7 @@ QString Hint::details() const
 
 void Hint::buttonClicked()
 {
-	auto callbackName = sender()->property("notify:callback").toString();
+	auto const callbackName = sender()->property("notify:callback").toString();
 	if (!callbackName.isEmpty())
 	{
 		auto callback = m_notificationCallbackRepository->callback(callbackName);
