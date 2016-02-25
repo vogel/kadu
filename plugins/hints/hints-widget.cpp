@@ -31,7 +31,6 @@ HintsWidget::HintsWidget(QWidget *parent) :
 		QFrame{parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::MSWindowsOwnDC}
 {
 	setObjectName(QStringLiteral("hints"));
-	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	setStyleSheet(QStringLiteral("#hints { border: 1px solid %1; }").arg(palette().window().color().darker().name()));
 
 	m_layout = make_owned<QVBoxLayout>(this);
@@ -63,6 +62,8 @@ void HintsWidget::addNotification(const Notification &notification)
 	connect(hint, &Hint::midButtonClicked, this, &HintsWidget::discardAllHints);
 
 	m_layout->addWidget(hint);
+	adjustSize();
+
 	show();
 }
 
@@ -73,6 +74,8 @@ void HintsWidget::removeHint(Hint *hint)
 
 	if (m_layout->isEmpty())
 		hide();
+	else
+		adjustSize();
 }
 
 void HintsWidget::resizeEvent(QResizeEvent *re)
