@@ -23,12 +23,7 @@
 
 #include "hints-notifier.h"
 
-#include "hints-widget-positioner.h"
 #include "hints-widget.h"
-
-#include "notification/notification.h"
-
-#include <QtCore/QTimer>
 
 HintsNotifier::HintsNotifier(QObject *parent) :
 		QObject{parent},
