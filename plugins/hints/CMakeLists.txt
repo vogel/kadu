@@ -6,7 +6,6 @@ find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	hint-manager.cpp
-	hint-repository.cpp
 	hint.cpp
 	hints-configuration.cpp
 	hints-module.cpp

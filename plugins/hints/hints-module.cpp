@@ -20,7 +20,6 @@
 #include "hints-module.h"
 
 #include "hint-manager.h"
-#include "hint-repository.h"
 #include "hints-configuration.h"
 #include "hints-plugin-object.h"
 #include "hints-widget-positioner.h"
@@ -30,7 +29,6 @@ HintsModule::HintsModule()
 {
 	add_type<HintsConfiguration>();
 	add_type<HintManager>();
-	add_type<HintRepository>();
 	add_type<HintsPluginObject>();
 	add_type<HintsWidgetPositioner>();
 	add_type<HintsWidget>();

@@ -26,46 +26,17 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class HintRepository;
-class HintsConfiguration;
 class HintsWidget;
 class Hint;
-class InjectedFactory;
-
-class QTimer;
 
 class HintManager : public QObject, public Notifier
 {
 	Q_OBJECT
 
-	QPointer<HintRepository> m_hintRepository;
-	QPointer<HintsConfiguration> m_hintsConfiguration;
 	QPointer<HintsWidget> m_hintsWidget;
-	QPointer<InjectedFactory> m_injectedFactory;
-
-	QPointer<QTimer> hint_timer;
 
 private slots:
-	INJEQT_SET void setHintRepository(HintRepository *hintRepository);
-	INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
 	INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
-	void oneSecond();
-	void setHint();
-
-	void leftButtonSlot(Hint *hint);
-	void rightButtonSlot(Hint *hint);
-	void midButtonSlot(Hint *hint);
-
-	void deleteHint(Hint *hint);
-	void deleteHintAndUpdate(Hint *hint);
-
-	Hint *addHint(const Notification &notification);
-
-	void deleteAllHints();
 
 public:
 	Q_INVOKABLE explicit HintManager(QObject *parent = nullptr);

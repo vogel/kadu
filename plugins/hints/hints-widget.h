@@ -19,9 +19,14 @@
 
 #pragma once
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QFrame>
+#include <injeqt/injeqt.h>
 
+class HintsConfiguration;
 class Hint;
+class InjectedFactory;
+struct Notification;
 
 class QVBoxLayout;
 
@@ -33,8 +38,7 @@ public:
 	Q_INVOKABLE explicit HintsWidget(QWidget *parent = nullptr);
 	virtual ~HintsWidget();
 
-	void addHint(Hint *hint);
-	void removeHint(Hint *hint);
+	void addNotification(const Notification &notification);
 
 signals:
 	void sizeChanged();
@@ -45,6 +49,19 @@ protected:
 	virtual void showEvent(QShowEvent *) override;
 
 private:
+	QPointer<HintsConfiguration> m_hintsConfiguration;
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	QVBoxLayout *m_layout;
+
+	void removeHint(Hint *hint);
+
+private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
+
+	void acceptHint(Hint *hint);
+	void discardHint(Hint *hint);
+	void discardAllHints();
 
 };

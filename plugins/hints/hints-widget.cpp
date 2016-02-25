@@ -19,8 +19,10 @@
 
 #include "hints-widget.h"
 
+#include "hints-configuration.h"
 #include "hint.h"
 
+#include "core/injected-factory.h"
 #include "misc/memory.h"
 
 #include <QtWidgets/QVBoxLayout>
@@ -42,14 +44,35 @@ HintsWidget::~HintsWidget()
 {
 }
 
-void HintsWidget::addHint(Hint *hint)
+void HintsWidget::setHintsConfiguration(HintsConfiguration *hintsConfiguration)
 {
+	m_hintsConfiguration = hintsConfiguration;
+}
+
+void HintsWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
+void HintsWidget::addNotification(const Notification &notification)
+{
+	auto hint = m_injectedFactory->makeOwned<Hint>(notification, m_hintsConfiguration, this);
+
+	connect(hint, &Hint::leftButtonClicked, this, &HintsWidget::acceptHint);
+	connect(hint, &Hint::rightButtonClicked, this, &HintsWidget::discardHint);
+	connect(hint, &Hint::midButtonClicked, this, &HintsWidget::discardAllHints);
+
 	m_layout->addWidget(hint);
+	show();
 }
 
 void HintsWidget::removeHint(Hint *hint)
 {
 	m_layout->removeWidget(hint);
+	hint->deleteLater();
+
+	if (m_layout->isEmpty())
+		hide();
 }
 
 void HintsWidget::resizeEvent(QResizeEvent *re)
@@ -62,6 +85,24 @@ void HintsWidget::showEvent(QShowEvent *se)
 {
 	QWidget::showEvent(se);
 	emit shown();
+}
+
+void HintsWidget::acceptHint(Hint *hint)
+{
+	hint->acceptNotification();
+	removeHint(hint);
+}
+
+void HintsWidget::discardHint(Hint *hint)
+{
+	hint->discardNotification();
+	removeHint(hint);
+}
+
+void HintsWidget::discardAllHints()
+{
+	while (!m_layout->isEmpty())
+		removeHint(static_cast<Hint *>(*m_layout->children().begin()));
 }
 
 #include "moc_hints-widget.cpp"

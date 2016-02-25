@@ -55,8 +55,6 @@ signals:
 	void leftButtonClicked(Hint *hint);
 	void rightButtonClicked(Hint *hint);
 	void midButtonClicked(Hint *hint);
-	void closing(Hint *hint);
-	void updated(Hint *hint);
 
 protected:
 	virtual void mouseReleaseEvent(QMouseEvent * event);
