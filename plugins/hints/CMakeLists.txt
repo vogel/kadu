@@ -5,10 +5,10 @@ cmake_minimum_required (VERSION 2.8)
 find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
-	hint-manager.cpp
 	hint.cpp
 	hints-configuration.cpp
 	hints-module.cpp
+	hints-notifier.cpp
 	hints-plugin-modules-factory.cpp
 	hints-plugin-object.cpp
 	hints-widget-positioner.cpp

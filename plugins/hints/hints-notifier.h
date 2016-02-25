@@ -29,7 +29,7 @@
 class HintsWidget;
 class Hint;
 
-class HintManager : public QObject, public Notifier
+class HintsNotifier : public QObject, public Notifier
 {
 	Q_OBJECT
 
@@ -39,8 +39,8 @@ private slots:
 	INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
 
 public:
-	Q_INVOKABLE explicit HintManager(QObject *parent = nullptr);
-	virtual ~HintManager();
+	Q_INVOKABLE explicit HintsNotifier(QObject *parent = nullptr);
+	virtual ~HintsNotifier();
 
 	virtual void notify(const Notification &notification);
 

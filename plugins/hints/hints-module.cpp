@@ -19,8 +19,8 @@
 
 #include "hints-module.h"
 
-#include "hint-manager.h"
 #include "hints-configuration.h"
+#include "hints-notifier.h"
 #include "hints-plugin-object.h"
 #include "hints-widget-positioner.h"
 #include "hints-widget.h"
@@ -28,7 +28,7 @@
 HintsModule::HintsModule()
 {
 	add_type<HintsConfiguration>();
-	add_type<HintManager>();
+	add_type<HintsNotifier>();
 	add_type<HintsPluginObject>();
 	add_type<HintsWidgetPositioner>();
 	add_type<HintsWidget>();

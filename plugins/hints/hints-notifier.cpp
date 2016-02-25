@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "hint-manager.h"
+#include "hints-notifier.h"
 
 #include "hints-widget-positioner.h"
 #include "hints-widget.h"
@@ -30,31 +30,31 @@
 
 #include <QtCore/QTimer>
 
-HintManager::HintManager(QObject *parent) :
+HintsNotifier::HintsNotifier(QObject *parent) :
 		QObject{parent},
 		Notifier{"Hints", "Hints", KaduIcon{"kadu_icons/notify-hints"}}
 {
 }
 
-HintManager::~HintManager()
+HintsNotifier::~HintsNotifier()
 {
 }
 
-void HintManager::setHintsWidget(HintsWidget *hintsWidget)
+void HintsNotifier::setHintsWidget(HintsWidget *hintsWidget)
 {
 	m_hintsWidget = hintsWidget;
 }
 
-NotifierConfigurationWidget * HintManager::createConfigurationWidget(QWidget *parent)
+NotifierConfigurationWidget * HintsNotifier::createConfigurationWidget(QWidget *parent)
 {
 	Q_UNUSED(parent);
 
 	return nullptr;
 }
 
-void HintManager::notify(const Notification &notification)
+void HintsNotifier::notify(const Notification &notification)
 {
 	m_hintsWidget->addNotification(notification);
 }
 
-#include "moc_hint-manager.cpp"
+#include "moc_hints-notifier.cpp"

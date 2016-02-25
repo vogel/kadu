@@ -19,7 +19,7 @@
 
 #include "hints-plugin-object.h"
 
-#include "hint-manager.h"
+#include "hints-notifier.h"
 
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
@@ -35,9 +35,9 @@ HintsPluginObject::~HintsPluginObject()
 {
 }
 
-void HintsPluginObject::setHintManager(HintManager *hintManager)
+void HintsPluginObject::setHintsNotifier(HintsNotifier *hintsNotifier)
 {
-	m_hintManager = hintManager;
+	m_hintsNotifier = hintsNotifier;
 }
 
 void HintsPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
@@ -58,12 +58,12 @@ void HintsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 void HintsPluginObject::init()
 {
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
-	m_notifierRepository->registerNotifier(m_hintManager);
+	m_notifierRepository->registerNotifier(m_hintsNotifier);
 }
 
 void HintsPluginObject::done()
 {
-	m_notifierRepository->unregisterNotifier(m_hintManager);
+	m_notifierRepository->unregisterNotifier(m_hintsNotifier);
 	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
 }
 
