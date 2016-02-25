@@ -23,60 +23,26 @@
 
 #include "hint-manager.h"
 
-#include "hint-repository.h"
 #include "hints-configuration.h"
 #include "hints-widget-positioner.h"
 #include "hints-widget.h"
+#include "hint-repository.h"
+#include "hint.h"
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "contacts/contact.h"
 #include "core/injected-factory.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "icons/icons-manager.h"
-#include "message/message-manager.h"
-#include "message/sorted-messages.h"
-#include "misc/misc.h"
 #include "notification/notification.h"
-#include "parser/parser.h"
-#include "activate.h"
-#include "debug.h"
 
 #include <QtCore/QTimer>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDesktopWidget>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QVBoxLayout>
-
-#include "chat/chat-manager.h"
-
-/**
- * @ingroup hints
- * @{
- */
-#define FRAME_WIDTH 1
-#define BORDER_RADIUS 0
 
 HintManager::HintManager(QObject *parent) :
 		QObject{parent},
 		Notifier("Hints", "Hints", KaduIcon("kadu_icons/notify-hints")),
-		hint_timer(new QTimer(this))
+		hint_timer{new QTimer{this}}
 {
 }
 
 HintManager::~HintManager()
 {
-}
-
-void HintManager::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
-{
-	m_chatWidgetManager = chatWidgetManager;
-}
-
-void HintManager::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
 }
 
 void HintManager::setHintRepository(HintRepository *hintRepository)
@@ -97,11 +63,6 @@ void HintManager::setHintsWidget(HintsWidget *hintsWidget)
 void HintManager::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
-}
-
-void HintManager::setParser(Parser *parser)
-{
-	m_parser = parser;
 }
 
 void HintManager::init()
@@ -131,10 +92,7 @@ void HintManager::setHint()
 
 void HintManager::deleteHint(Hint *hint)
 {
-	kdebugf();
-
 	m_hintRepository->removeHint(hint);
-
 	m_hintsWidget->removeHint(hint);
 
 	hint->deleteLater();
@@ -144,8 +102,6 @@ void HintManager::deleteHint(Hint *hint)
 		hint_timer->stop();
 		m_hintsWidget->hide();
 	}
-
-	kdebugf2();
 }
 
 void HintManager::deleteHintAndUpdate(Hint *hint)
@@ -212,8 +168,6 @@ void HintManager::deleteAllHints()
 
 Hint *HintManager::addHint(const Notification &notification)
 {
-	kdebugf();
-
 	auto hint = m_injectedFactory->makeInjected<Hint>(notification, m_hintsConfiguration, m_hintsWidget);
 	m_hintRepository->addHint(hint);
 	m_hintsWidget->addHint(hint);
@@ -234,7 +188,5 @@ void HintManager::notify(const Notification &notification)
 {
 	addHint(notification);
 }
-
-HintManager *hint_manager = NULL;
 
 #include "moc_hint-manager.cpp"

@@ -21,52 +21,35 @@
 
 #pragma once
 
-#include "chat/chat.h"
-#include "misc/memory.h"
 #include "notification/notifier.h"
-#include "hint.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class QHBoxLayout;
-class QFrame;
-
-class BuddyList;
-class ChatWidgetManager;
-class ChatWidget;
-class Configuration;
 class HintRepository;
 class HintsConfiguration;
 class HintsWidget;
+class Hint;
 class InjectedFactory;
-class Parser;
+
+class QTimer;
 
 class HintManager : public QObject, public Notifier
 {
 	Q_OBJECT
 
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<Configuration> m_configuration;
 	QPointer<HintRepository> m_hintRepository;
 	QPointer<HintsConfiguration> m_hintsConfiguration;
 	QPointer<HintsWidget> m_hintsWidget;
 	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<Parser> m_parser;
 
 	QPointer<QTimer> hint_timer;
 
-	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, const BuddyList &buddies, const QString &msg);
-
 private slots:
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setHintRepository(HintRepository *hintRepository);
 	INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
 	INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
