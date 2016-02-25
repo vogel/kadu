@@ -38,7 +38,6 @@
 #include "message/sorted-messages.h"
 #include "misc/misc.h"
 #include "notification/notification.h"
-#include "notification/notifier-repository.h"
 #include "parser/parser.h"
 #include "activate.h"
 #include "debug.h"
@@ -100,11 +99,6 @@ void HintManager::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
-void HintManager::setNotifierRepository(NotifierRepository *notifierRepository)
-{
-	m_notifierRepository = notifierRepository;
-}
-
 void HintManager::setParser(Parser *parser)
 {
 	m_parser = parser;
@@ -113,16 +107,12 @@ void HintManager::setParser(Parser *parser)
 void HintManager::init()
 {
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-
-	m_notifierRepository->registerNotifier(this);
 }
 
 void HintManager::done()
 {
 	if (hint_timer)
 		hint_timer->stop();
-
-	m_notifierRepository->unregisterNotifier(this);
 
 	disconnect();
 }

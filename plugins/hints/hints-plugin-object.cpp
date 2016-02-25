@@ -24,6 +24,7 @@
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
+#include "notification/notifier-repository.h"
 
 HintsPluginObject::HintsPluginObject(QObject *parent) :
 		QObject{parent}
@@ -44,6 +45,11 @@ void HintsPluginObject::setMainConfigurationWindowService(MainConfigurationWindo
 	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
+void HintsPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
+{
+	m_notifierRepository = notifierRepository;
+}
+
 void HintsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
@@ -52,10 +58,12 @@ void HintsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 void HintsPluginObject::init()
 {
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
+	m_notifierRepository->registerNotifier(m_hintManager);
 }
 
 void HintsPluginObject::done()
 {
+	m_notifierRepository->unregisterNotifier(m_hintManager);
 	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
 }
 

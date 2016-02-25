@@ -26,6 +26,7 @@
 
 class HintManager;
 class MainConfigurationWindowService;
+class NotifierRepository;
 class PathsProvider;
 
 class HintsPluginObject : public QObject
@@ -40,11 +41,13 @@ public:
 private:
 	QPointer<HintManager> m_hintManager;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
 	INJEQT_SET void setHintManager(HintManager *hintManager);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

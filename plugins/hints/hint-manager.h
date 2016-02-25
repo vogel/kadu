@@ -40,7 +40,6 @@ class HintRepository;
 class HintsConfiguration;
 class HintsWidget;
 class InjectedFactory;
-class NotifierRepository;
 class Parser;
 
 class HintManager : public QObject, public Notifier
@@ -54,7 +53,6 @@ class HintManager : public QObject, public Notifier
 	QPointer<HintsConfiguration> m_hintsConfiguration;
 	QPointer<HintsWidget> m_hintsWidget;
 	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<NotifierRepository> m_notifierRepository;
 	QPointer<Parser> m_parser;
 
 	QPointer<QTimer> hint_timer;
@@ -68,7 +66,6 @@ private slots:
 	INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
 	INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
