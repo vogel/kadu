@@ -104,8 +104,15 @@ void HintsWidget::discardHint(Hint *hint)
 
 void HintsWidget::discardAllHints()
 {
-	while (!m_layout->isEmpty())
-		removeHint(static_cast<Hint *>(*m_layout->children().begin()));
+	while (m_layout->count())
+	{
+		auto item = m_layout->itemAt(0);
+		auto hint = static_cast<Hint *>(item->widget());
+		hint->deleteLater();
+		m_layout->removeItem(item);
+	}
+
+	hide();
 }
 
 #include "moc_hints-widget.cpp"
