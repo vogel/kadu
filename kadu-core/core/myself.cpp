@@ -43,7 +43,7 @@ void Myself::setInjectorProvider(InjectorProvider *injectorProvider)
 	m_injectorProvider = injectorProvider;
 }
 
-void Myself::init()
+void Myself::makeMyself()
 {
 	m_buddy = Buddy{new BuddyShared{}};
 	m_buddy.setAnonymous(false);
@@ -58,5 +58,7 @@ void Myself::configurationUpdated()
 
 Buddy Myself::buddy()
 {
+	if (!m_buddy)
+		makeMyself();
 	return m_buddy;
 }

@@ -50,9 +50,10 @@ private:
 
 	Buddy m_buddy;
 
+	void makeMyself();
+
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
-	INJEQT_INIT void init();
 
 };
