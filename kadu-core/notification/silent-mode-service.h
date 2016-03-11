@@ -84,7 +84,7 @@ private slots:
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_INIT void init();
-	INJEQT_INIT void done();
+	INJEQT_DONE void done();
 
 	void silentModeActionCreated(Action *action);
 	void silentModeActionActivated(QAction *sender, bool toggled);
