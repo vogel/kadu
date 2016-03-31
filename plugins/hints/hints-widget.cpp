@@ -29,6 +29,7 @@
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QLayoutItem>
 #include <QtWidgets/QVBoxLayout>
+#include <QtCore/QDateTime>
 
 HintsWidget::HintsWidget(QWidget *parent) :
 		QFrame{parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::MSWindowsOwnDC}
@@ -40,6 +41,7 @@ HintsWidget::HintsWidget(QWidget *parent) :
 	m_layout->setSpacing(0);
 	m_layout->setMargin(0);
 
+	connect(&m_timer, &QTimer::timeout, this, &HintsWidget::removeExpiredHints);
 }
 
 HintsWidget::~HintsWidget()
@@ -59,6 +61,8 @@ void HintsWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 void HintsWidget::addNotification(const Notification &notification)
 {
 	auto hint = m_injectedFactory->makeOwned<Hint>(notification, m_hintsConfiguration, this);
+	hint->setProperty("expiration-time", QDateTime::currentDateTime().addSecs(10));
+	m_layout->addWidget(hint);
 
 	connect(hint, &Hint::leftButtonClicked, this, &HintsWidget::acceptHint);
 	connect(hint, &Hint::rightButtonClicked, this, &HintsWidget::discardHint);
@@ -75,15 +79,15 @@ void HintsWidget::addNotification(const Notification &notification)
 	auto maximumHeight = QApplication::desktop()->availableGeometry(this).height() / 2;
 	while (height > maximumHeight)
 	{
-		auto hintToRemove = static_cast<Hint *>(m_layout->takeAt(0)->widget());
+		auto hintToRemove = static_cast<Hint *>(m_layout->itemAt(0)->widget());
 		height -= hintToRemove->height();
 		m_layout->removeWidget(hintToRemove);
 		hintToRemove->deleteLater();
 	}
 
-	m_layout->addWidget(hint);
 	adjustSize();
 	show();
+	updateTimer();
 }
 
 void HintsWidget::removeHint(Hint *hint)
@@ -91,10 +95,47 @@ void HintsWidget::removeHint(Hint *hint)
 	m_layout->removeWidget(hint);
 	hint->deleteLater();
 
-	if (m_layout->isEmpty())
+	if (m_layout->count() == 0)
 		hide();
 	else
 		adjustSize();
+
+	updateTimer();
+}
+
+void HintsWidget::updateTimer()
+{
+	if (m_layout->count() == 0)
+	{
+		m_timer.stop();
+		return;
+	}
+
+	auto hint = static_cast<Hint *>(m_layout->itemAt(0)->widget());
+	auto expirationTime = hint->property("expiration-time").toDateTime();
+	if (expirationTime < QDateTime::currentDateTime())
+	{
+		removeExpiredHints();
+		return;
+	}
+
+	m_timer.start(QDateTime::currentDateTime().msecsTo(expirationTime) + 1000);
+}
+
+void HintsWidget::removeExpiredHints()
+{
+	while (m_layout->count() > 0)
+	{
+		auto hint = static_cast<Hint *>(m_layout->itemAt(0)->widget());
+		auto expirationTime = hint->property("expiration-time").toDateTime();
+
+		if (expirationTime < QDateTime::currentDateTime())
+			removeHint(hint);
+		else
+			break;
+	}
+
+	updateTimer();
 }
 
 void HintsWidget::resizeEvent(QResizeEvent *re)

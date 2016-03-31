@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QtCore/QPointer>
+#include <QtCore/QTimer>
 #include <QtWidgets/QFrame>
 #include <injeqt/injeqt.h>
 
@@ -52,9 +53,12 @@ private:
 	QPointer<HintsConfiguration> m_hintsConfiguration;
 	QPointer<InjectedFactory> m_injectedFactory;
 
+	QTimer m_timer;
 	QVBoxLayout *m_layout;
 
 	void removeHint(Hint *hint);
+	void removeExpiredHints();
+	void updateTimer();
 
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
