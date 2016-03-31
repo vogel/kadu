@@ -25,6 +25,9 @@
 #include "core/injected-factory.h"
 #include "misc/memory.h"
 
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QLayoutItem>
 #include <QtWidgets/QVBoxLayout>
 
 HintsWidget::HintsWidget(QWidget *parent) :
@@ -61,9 +64,25 @@ void HintsWidget::addNotification(const Notification &notification)
 	connect(hint, &Hint::rightButtonClicked, this, &HintsWidget::discardHint);
 	connect(hint, &Hint::midButtonClicked, this, &HintsWidget::discardAllHints);
 
+	auto count = m_layout->count();
+	auto height = hint->height();
+	for (auto i = 0; i < count; i++)
+	{
+		auto w = m_layout->itemAt(i)->widget();
+		height += w->height();
+	}
+
+	auto maximumHeight = QApplication::desktop()->availableGeometry(this).height() / 2;
+	while (height > maximumHeight)
+	{
+		auto hintToRemove = static_cast<Hint *>(m_layout->takeAt(0)->widget());
+		height -= hintToRemove->height();
+		m_layout->removeWidget(hintToRemove);
+		hintToRemove->deleteLater();
+	}
+
 	m_layout->addWidget(hint);
 	adjustSize();
-
 	show();
 }
 

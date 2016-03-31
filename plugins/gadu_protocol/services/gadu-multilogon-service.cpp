@@ -27,7 +27,7 @@
 #include "gadu-multilogon-service.h"
 
 // for Q_OS_WIN macro
-#include <QtCore/QtGlobal>
+#include <QtCore/QDataStream>
 #ifdef Q_OS_WIN
 #include <winsock2.h>
 #else
