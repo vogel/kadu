@@ -131,7 +131,7 @@ void Hint::createGui()
 
 QString Hint::details() const
 {
-	if (!m_hintsConfiguration->showContentMessage())
+	if (!m_hintsConfiguration->showContentMessage() || m_notification.details.isEmpty())
 		return {};
 
 	auto const citeSign = 50;
