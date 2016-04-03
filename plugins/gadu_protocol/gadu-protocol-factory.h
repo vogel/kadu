@@ -26,6 +26,7 @@
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
+#include <memory>
 
 class GaduListHelper;
 class GaduServersManager;

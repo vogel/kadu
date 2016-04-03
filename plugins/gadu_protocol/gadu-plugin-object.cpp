@@ -19,7 +19,6 @@
 
 #include "gadu-plugin-object.h"
 
-#include "actions/gadu-protocol-menu-manager.h"
 #include "protocols/protocols-manager.h"
 #include "gadu-protocol-factory.h"
 #include "gadu-url-dom-visitor-provider.h"
@@ -27,7 +26,6 @@
 
 #include "accounts/account-manager.h"
 #include "dom/dom-processor-service.h"
-#include "gui/menu/menu-inventory.h"
 #include "misc/memory.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "url-handlers/url-handler-manager.h"
@@ -59,11 +57,6 @@ void GaduPluginObject::setGaduProtocolFactory(GaduProtocolFactory *gaduProtocolF
 	m_gaduProtocolFactory = gaduProtocolFactory;
 }
 
-void GaduPluginObject::setGaduProtocolMenuManager(GaduProtocolMenuManager *gaduProtocolMenuManager)
-{
-	m_gaduProtocolMenuManager = gaduProtocolMenuManager;
-}
-
 void GaduPluginObject::setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *gaduUrlDomVisitorProvider)
 {
 	m_gaduUrlDomVisitorProvider = gaduUrlDomVisitorProvider;
@@ -72,11 +65,6 @@ void GaduPluginObject::setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *g
 void GaduPluginObject::setGaduUrlHandler(GaduUrlHandler *gaduUrlHandler)
 {
 	m_gaduUrlHandler = gaduUrlHandler;
-}
-
-void GaduPluginObject::setMenuInventory(MenuInventory *menuInventory)
-{
-	m_menuInventory = menuInventory;
 }
 
 void GaduPluginObject::setProtocolsManager(ProtocolsManager *protocolsManager)
@@ -108,12 +96,10 @@ void GaduPluginObject::init()
 	m_protocolsManager->registerProtocolFactory(m_gaduProtocolFactory);
 	m_urlHandlerManager->registerUrlHandler(m_gaduUrlHandler);
 	m_domProcessorService->registerVisitorProvider(m_gaduUrlDomVisitorProvider, 1000);
-	m_menuInventory->registerProtocolMenuManager(m_gaduProtocolMenuManager);
 }
 
 void GaduPluginObject::done()
 {
-	m_menuInventory->unregisterProtocolMenuManager(m_gaduProtocolMenuManager);
 	m_domProcessorService->unregisterVisitorProvider(m_gaduUrlDomVisitorProvider);
 	m_urlHandlerManager->unregisterUrlHandler(m_gaduUrlHandler);
 	m_protocolsManager->unregisterProtocolFactory(m_gaduProtocolFactory);

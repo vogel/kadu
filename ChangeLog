@@ -10,6 +10,7 @@
 * falf_mediaplayer: plugin removed (Vogel)
 * hints: plugin simplified (Vogel)
 * configuration: removed compatibility with 0.6.5 configuration files (Vogel)
+* gadu: #3068 fixed: send gift action removed (Vogel)
 
 +++ version 3.0-rc5
 * chat-style: #3057 fixed: all chat styles work again (Vogel)
