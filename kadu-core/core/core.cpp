@@ -347,10 +347,15 @@ void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
-	QDir oldConfigs(m_injector.get<PathsProvider>()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs(m_injector.get<PathsProvider>()->profilePath(), "kadu-4.conf.xml.backup.*", QDir::Name, QDir::Files);
 	if (oldConfigs.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs.count() - 20; i < max; ++i)
 			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs[static_cast<int>(i)]);
+
+	QDir oldConfigs1(m_injector.get<PathsProvider>()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
+	if (oldConfigs1.count() > 20)
+		for (unsigned int i = 0, max = oldConfigs1.count() - 20; i < max; ++i)
+			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs1[static_cast<int>(i)]);
 
 	QDir oldConfigs2(m_injector.get<PathsProvider>()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
 	if (oldConfigs2.count() > 20)

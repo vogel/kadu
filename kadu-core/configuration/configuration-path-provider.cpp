@@ -47,11 +47,14 @@ QString ConfigurationPathProvider::configurationDirectoryPath() const
 QStringList ConfigurationPathProvider::possibleConfigurationFilePaths() const
 {
 	auto profilePath = m_pathsProvider->profilePath();
+	auto backups_4 = QDir{profilePath, "kadu-4.conf.xml.backup.*", QDir::Name, QDir::Files};
 	auto backups_0_12 = QDir{profilePath, "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files};
 	auto backups_0_6_6 = QDir{profilePath, "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files};
 
 	auto files = QStringList{};
 
+	files += "kadu-4.conf.xml";
+	files += backups_4.entryList();
 	files += "kadu-0.12.conf.xml";
 	files += backups_0_12.entryList();
 	files += "kadu-0.6.6.conf.xml";
@@ -62,12 +65,12 @@ QStringList ConfigurationPathProvider::possibleConfigurationFilePaths() const
 
 QString ConfigurationPathProvider::configurationFilePath() const
 {
-	return m_pathsProvider->profilePath() + QStringLiteral("/kadu-0.12.conf.xml");
+	return m_pathsProvider->profilePath() + QStringLiteral("/kadu-4.conf.xml");
 }
 
 QString ConfigurationPathProvider::backupFilePath() const
 {
-	return m_pathsProvider->profilePath() + QString("kadu-0.12.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+	return m_pathsProvider->profilePath() + QString("kadu-4.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 }
 
 #include "moc_configuration-path-provider.cpp"
