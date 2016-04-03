@@ -65,7 +65,7 @@ private:
 	NotificationEvent m_fileTransferEvent;
 	NotificationEvent m_fileTransferIncomingEvent;
 
-	QString incomingFileTransferText(const Chat &chat, const FileTransfer &fileTransfer);
+	QString incomingFileTransferDetails(const Chat &chat, const FileTransfer &fileTransfer);
 
 	void acceptFileTransfer(const Notification &notification);
 	void rejectFileTransfer(const Notification &notification);

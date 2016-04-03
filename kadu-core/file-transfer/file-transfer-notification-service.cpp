@@ -116,7 +116,8 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 	auto notification = Notification{};
 	notification.type = QStringLiteral("FileTransfer/IncomingFile");
 	notification.title = tr("Incoming transfer");
-	notification.text = incomingFileTransferText(chat, fileTransfer);
+	notification.text = tr("<b>%1</b> wants to send you a file %2").arg(Qt::escape(fileTransfer.peer().display(true)), Qt::escape(fileTransfer.remoteFileName()));
+	notification.details = incomingFileTransferDetails(chat, fileTransfer);
 	notification.data = std::move(data);
 
 	if (fileTransfer.transferType() == FileTransferType::Stream)
@@ -137,7 +138,7 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 	m_notificationService->notify(notification);
 }
 
-QString FileTransferNotificationService::incomingFileTransferText(const Chat &chat, const FileTransfer &fileTransfer)
+QString FileTransferNotificationService::incomingFileTransferDetails(const Chat &chat, const FileTransfer &fileTransfer)
 {
 	auto textFileSize = QStringLiteral("%1 kB");
 	auto size = static_cast<double>(fileTransfer.fileSize()) / 1024.0;
@@ -149,33 +150,12 @@ QString FileTransferNotificationService::incomingFileTransferText(const Chat &ch
 	}
 
 	if (fileTransfer.fileSize() > 0)
-		if (fileTransfer.localFileName().isEmpty())
-			return tr("User <b>%1</b> wants to send you a file <b>%2</b><br/>of size <b>%3</b> using account <b>%4</b>.<br/>Accept transfer?").arg(
-				Qt::escape(fileTransfer.peer().display(true)),
-				Qt::escape(fileTransfer.remoteFileName()),
-				Qt::escape(textFileSize.arg(size, 0, 'f', 2)),
-				Qt::escape(chat.chatAccount().accountIdentity().name()));
-		else
-			return tr("User <b>%1</b> wants to send you a file <b/>%2</b><br/>of size <b>%3</b> using account <b>%4</b>.<br/>"
-				"This is probably a next part of <b>%5</b><br/>What should I do?").arg(
-				Qt::escape(fileTransfer.peer().display(true)),
-				Qt::escape(fileTransfer.remoteFileName()),
-				Qt::escape(textFileSize.arg(size, 0, 'f', 2)),
-				Qt::escape(chat.chatAccount().accountIdentity().name()),
-				Qt::escape(fileTransfer.localFileName()));
+		return tr("size: <b>%1</b>, account: <b>%2</b>").arg(
+			Qt::escape(textFileSize.arg(size, 0, 'f', 2)),
+			Qt::escape(chat.chatAccount().accountIdentity().name()));
 	else
-		if (fileTransfer.localFileName().isEmpty())
-			return tr("User <b>%1</b> wants to send you a file <b>%2</b><br/>using account <b>%3</b>.<br/>Accept transfer?").arg(
-				Qt::escape(fileTransfer.peer().display(true)),
-				Qt::escape(fileTransfer.remoteFileName()),
-				Qt::escape(chat.chatAccount().accountIdentity().name()));
-		else
-			return tr("User <b>%1</b> wants to send you a file <b/>%2</b><br/>using account <b>%3</b>.<br/>"
-				"This is probably a next part of <b>%4</b><br/>What should I do?").arg(
-				Qt::escape(fileTransfer.peer().display(true)),
-				Qt::escape(fileTransfer.remoteFileName()),
-				Qt::escape(chat.chatAccount().accountIdentity().name()),
-				Qt::escape(fileTransfer.localFileName()));
+		return tr("account: <b>%1</b>").arg(
+			Qt::escape(chat.chatAccount().accountIdentity().name()));
 }
 
 void FileTransferNotificationService::acceptFileTransfer(const Notification &notification)

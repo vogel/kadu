@@ -86,7 +86,8 @@ void MultilogonNotificationService::notifyMultilogonSessionConnected(const Multi
 	auto notification = Notification{};
 	notification.type = m_multilogonConnectedEvent.name();
 	notification.title = tr("Multilogon");
-	notification.text = tr("Multilogon session connected from %1 at %2 with %3 for %4 account").arg(
+	notification.text = tr("Multilogon session connected");
+	notification.details = tr("from %1 at %2 with %3 for %4 account").arg(
 			session.remoteAddress.toString(),
 			session.logonTime.toString(),
 			session.name,
@@ -106,7 +107,8 @@ void MultilogonNotificationService::notifyMultilogonSessionDisonnected(const Mul
 	auto notification = Notification{};
 	notification.type = m_multilogonDisconnectedEvent.name();
 	notification.title = tr("Multilogon");
-	notification.text = tr("Multilogon session disconnected from %1 at %2 with %3 for %4 account").arg(
+	notification.text = tr("Multilogon session disconnected");
+	notification.details = tr("from %1 at %2 with %3 for %4 account").arg(
 			session.remoteAddress.toString(),
 			session.logonTime.toString(),
 			session.name,

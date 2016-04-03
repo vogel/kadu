@@ -156,8 +156,10 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 	notification.type = notificationEventName;
 	notification.icon = icon;
 	notification.title = (tr("Status changed"));
-	notification.text = tr("<b>%1</b> changed status to <i>%2</i>").arg(Qt::escape(contact.display(true)), Qt::escape(statusDisplayName));
-	notification.details = Qt::escape(description);
+	notification.text = tr("<b>%1</b> changed status").arg(Qt::escape(contact.display(true)));
+	notification.details = description.isEmpty()
+			? Qt::escape(statusDisplayName)
+			: tr("%1: %2").arg(Qt::escape(statusDisplayName), Qt::escape(description));
 	notification.data = std::move(data);
 	notification.callbacks.append("chat-open");
 	notification.callbacks.append("ignore");
