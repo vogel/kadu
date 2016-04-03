@@ -99,6 +99,9 @@ void Hint::createGui()
 	if (withDetailsText)
 	{
 		auto detailsLabel = make_owned<QLabel>(this);
+		auto font = detailsLabel->font();
+		font.setPointSizeF(font.pointSizeF() * 0.8);
+		detailsLabel->setFont(font);
 		detailsLabel->setTextInteractionFlags(Qt::NoTextInteraction);
 		detailsLabel->setText(detailsText.replace('\n', QStringLiteral("<br />")));
 
@@ -117,7 +120,6 @@ void Hint::createGui()
 		{
 			auto callback = m_notificationCallbackRepository->callback(callbackName);
 			auto button = make_owned<QToolButton>(this);
-			//button->setAutoRaise(true);
 			button->setFont(f);
 			button->setText(callback.title());
 			button->setToolButtonStyle(Qt::ToolButtonTextOnly);
@@ -135,11 +137,10 @@ QString Hint::details() const
 		return {};
 
 	auto const citeSign = 50;
-	auto const syntax = QStringLiteral("<small>%1</small>");
 	auto const message = QString{m_notification.details}.replace("<br/>", QStringLiteral(""));
-	return (message.length() > citeSign
-			? syntax.arg(message.left(citeSign) + "...")
-			: syntax.arg(message)).replace('\n', QStringLiteral("<br />"));
+	return message.length() > citeSign
+			? message.left(citeSign) + "..."
+			: message;
 }
 
 bool Hint::shouldShowButtons() const
