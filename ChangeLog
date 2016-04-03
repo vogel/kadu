@@ -8,6 +8,8 @@
 * profiles_import: plugin removed (Vogel)
 * phonon_sound: plugin removed (Vogel)
 * falf_mediaplayer: plugin removed (Vogel)
+* hints: plugin simplified (Vogel)
+* configuration: removed compatibility with 0.6.5 configuration files (Vogel)
 
 +++ version 3.0-rc5
 * chat-style: #3057 fixed: all chat styles work again (Vogel)
