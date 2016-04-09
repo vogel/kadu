@@ -94,6 +94,10 @@
 #include <QtCore/QTimer>
 #include <QtWidgets/QApplication>
 
+#ifdef Q_OS_WIN
+#	include <QtCore/QSettings>
+#endif
+
 Core::Core(injeqt::injector &&injector) :
 		m_injector{std::move(injector)}
 {

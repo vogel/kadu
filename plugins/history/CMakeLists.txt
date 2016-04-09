@@ -55,6 +55,8 @@ set (CONFIGURATION_FILES
 	configuration/history.ui
 )
 
+add_definitions (-Dhistory_EXPORTS)
+
 kadu_plugin (history
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}

@@ -32,9 +32,11 @@ endif ()
 
 if (WIN32)
 	list (APPEND SOURCES
-		idle_win.cpp
+		idle-win.cpp
 	)
 endif ()
+
+add_definitions (-Didle_EXPORTS)
 
 kadu_plugin (idle
 	PLUGIN_SOURCES ${SOURCES}

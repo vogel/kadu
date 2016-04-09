@@ -18,7 +18,6 @@ SetCompressor /SOLID /FINAL lzma
 !define PRODUCT_REGISTRY_KEY_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_REGISTRY_STARTMENU_VALUE "NSIS:StartMenuDir"
 !define PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR "@CMAKE_INSTALL_PREFIX@"
-; !define PRODUCT_INSTALLATION_EXTERNAL_PLUGINS_SOURCE_DIR "C:\kadu\external-plugins\install"
 
 !define BIN_DIR "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\bin"
 !define DATA_DIR "${PRODUCT_INSTALLATION_OFFICIAL_SOURCE_DIR}\share"
@@ -119,11 +118,6 @@ LangString section_plugins ${LANG_ENGLISH} "Plugins"
 LangString section_plugins ${LANG_POLISH} "Wtyczki"
 LangString section_plugins_description ${LANG_ENGLISH} "Official Kadu plugins"
 LangString section_plugins_description ${LANG_POLISH} "Oficjalne wtyczki do Kadu"
-
-LangString section_external_plugins ${LANG_ENGLISH} "External plugins"
-LangString section_external_plugins ${LANG_POLISH} "Zewnêtrzne wtyczki"
-LangString section_external_plugins_description ${LANG_ENGLISH} "External plugins for Kadu"
-LangString section_external_plugins_description ${LANG_POLISH} "Zewnêtrzne wtyczki do Kadu"
 
 LangString section_desktop_shortcut ${LANG_ENGLISH} "Desktop Shortcut"
 LangString section_desktop_shortcut ${LANG_POLISH} "Skrót na pulpicie"
@@ -379,12 +373,6 @@ SectionGroupEnd
 	SectionEnd
 !macroend
 
-!macro kadu_external_plugin plugin_name plugin_display_name
-	Section /o ${plugin_display_name}
-		!insertmacro kadu_plugin_content ${plugin_name}
-	SectionEnd
-!macroend
-
 SectionGroup $(section_protocols) SectionProtocols
 
 	Section XMPP/Jabber
@@ -506,29 +494,8 @@ SectionGroup $(section_plugins) SectionPlugins
 
 	!insertmacro kadu_obligatory_plugin sql_history sql_history
 	!insertmacro kadu_plugin tabs tabs
-	!insertmacro kadu_plugin winamp_mediaplayer winamp_mediaplayer
+#	!insertmacro kadu_plugin winamp_mediaplayer winamp_mediaplayer
 	!insertmacro kadu_plugin word_fix word_fix
-
-SectionGroupEnd
-
-SectionGroup $(section_external_plugins) SectionExternalPlugins
-
-	!insertmacro kadu_external_plugin anonymous_check anonymous_check
-	!insertmacro kadu_external_plugin import_history import_history
-	!insertmacro kadu_external_plugin kadu_completion kadu_completion
-#	!insertmacro kadu_external_plugin lednotify lednotify
-#	!insertmacro kadu_external_plugin messagessplitter messagessplitter
-
-	Section /o mime_tex
-		!insertmacro kadu_plugin_content mime_tex
-
-		SetOutPath "$INSTDIR\plugins\bin\mime_tex\"
-		File /r "${LIB_DIR}\kadu\plugins\bin\mime_tex\mimetex.exe"
-	SectionEnd
-
-#	!insertmacro kadu_external_plugin networkping networkping
-#	!insertmacro kadu_external_plugin nextinfo nextinfo
-#	!insertmacro kadu_external_plugin senthistory senthistory
 
 SectionGroupEnd
 

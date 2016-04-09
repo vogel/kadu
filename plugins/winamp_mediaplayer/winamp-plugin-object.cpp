@@ -24,6 +24,11 @@
 #include "plugins/mediaplayer/mediaplayer-plugin-object.h"
 #include "plugins/mediaplayer/mediaplayer.h"
 
+#include "plugins/mediaplayer/mediaplayer-plugin-object.h"
+#include "plugins/mediaplayer/mediaplayer.h"
+
+#include "plugin/plugin-repository.h"
+
 WinampPluginObject::WinampPluginObject(QObject *parent) :
 		QObject{parent}
 {

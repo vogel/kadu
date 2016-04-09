@@ -11,7 +11,7 @@
 
 #include <QtCore/QtGlobal>
 
-#ifdef HISTORY_EXPORTS
+#ifdef history_EXPORTS
 #define HISTORYAPI Q_DECL_EXPORT
 #else
 #define HISTORYAPI Q_DECL_IMPORT
