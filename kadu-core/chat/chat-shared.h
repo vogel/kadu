@@ -23,7 +23,6 @@
 
 #pragma once
 
-#include "chat/type/chat-type-aware-object.h"
 #include "contacts/contact.h"
 #include "storage/shared.h"
 
@@ -56,7 +55,7 @@ class Group;
  * This class contains standard data that are common to all chat types used in application.
  * Data specific to given chat type is stored in classes derivered from @link ChatDetails @endlink..
  */
-class KADUAPI ChatShared : public Shared, ChatTypeAwareObject
+class KADUAPI ChatShared : public Shared
 {
 	Q_OBJECT
 
@@ -76,6 +75,7 @@ class KADUAPI ChatShared : public Shared, ChatTypeAwareObject
 	quint16 UnreadMessagesCount;
 	bool Open;
 
+	void loadDetails();
 	bool doAddToGroup(const Group &group);
 	bool doRemoveFromGroup(const Group &group);
 
@@ -93,9 +93,6 @@ protected:
 	virtual void load();
 	virtual void store();
 	virtual bool shouldStore();
-
-	virtual void chatTypeRegistered(ChatType *chatType);
-	virtual void chatTypeUnregistered(ChatType *chatType);
 
 public:
 	explicit ChatShared(const QUuid &uuid = QUuid::createUuid());

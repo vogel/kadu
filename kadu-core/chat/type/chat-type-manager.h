@@ -24,8 +24,6 @@
 #include "chat/type/chat-type.h"
 #include "exports.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMap>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -53,67 +51,19 @@ class KADUAPI ChatTypeManager : public QObject
 	Q_OBJECT
 
 private:
-	QPointer<ChatTypeBuddy> m_chatTypeBuddy;
-	QPointer<ChatTypeContactSet> m_chatTypeContactSet;
-	QPointer<ChatTypeContact> m_chatTypeContact;
-	QPointer<ChatTypeRoom> m_chatTypeRoom;
-
-	QList<ChatType *> ChatTypes;
-	QMap<QString, ChatType *> ChatTypesMap;
+	QList<QPointer<ChatType>> m_chatTypes;
 
 public:
 	Q_INVOKABLE explicit ChatTypeManager(QObject *parent = nullptr);
 	virtual ~ChatTypeManager();
 
-	void registerChatType(ChatType *chatType);
-	void unregisterChatType(ChatType *chatType);
-
-	const QList<ChatType *> & chatTypes() const;
-	ChatType * chatType(const QString &alias);
-
-signals:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted just before chat type is added to manager.
-	 * @param chatType added chat type
-	 *
-	 * Signal is emitted just before chat type is added to manager.
-	 */
-	void chatTypeAboutToBeAdded(ChatType *chatType);
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted just after chat type is added to manager.
-	 * @param chat added chat type
-	 *
-	 * Signal is emitted just after chat typeis added to manager.
-	 */
-	void chatTypeAdded(ChatType *chatType);
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted just before chat type is removed from manager.
-	 * @param chat removed chat type
-	 *
-	 * Signal is emitted just before chat type is removed from manager.
-	 */
-	void chatTypeAboutToBeRemoved(ChatType *chatType);
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted just after chat type is removed from manager.
-	 * @param chat removed chat type
-	 *
-	 * Signal is emitted just after chat type is removed from manager.
-	 */
-	void chatTypeRemoved(ChatType *chatType);
+	ChatType * chatType(const QString &alias) const;
 
 private slots:
 	INJEQT_SET void setChatTypeBuddy(ChatTypeBuddy *chatTypeBuddy);
 	INJEQT_SET void setChatTypeContactSet(ChatTypeContactSet *chatTypeContactSet);
 	INJEQT_SET void setChatTypeContact(ChatTypeContact *chatTypeContact);
 	INJEQT_SET void setChatTypeRoom(ChatTypeRoom *chatTypeRoom);
-	INJEQT_INIT void init();
 
 };
 

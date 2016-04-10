@@ -21,7 +21,6 @@
 
 #include "chat-type-manager.h"
 
-#include "chat/type/chat-type-aware-object.h"
 #include "chat/type/chat-type-buddy.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "chat/type/chat-type-contact.h"
@@ -39,91 +38,22 @@ ChatTypeManager::~ChatTypeManager()
 
 void ChatTypeManager::setChatTypeBuddy(ChatTypeBuddy *chatTypeBuddy)
 {
-	m_chatTypeBuddy = chatTypeBuddy;
+	m_chatTypes.append(chatTypeBuddy);
 }
 
 void ChatTypeManager::setChatTypeContactSet(ChatTypeContactSet *chatTypeContactSet)
 {
-	m_chatTypeContactSet = chatTypeContactSet;
+	m_chatTypes.append(chatTypeContactSet);
 }
 
 void ChatTypeManager::setChatTypeContact(ChatTypeContact *chatTypeContact)
 {
-	m_chatTypeContact = chatTypeContact;
+	m_chatTypes.append(chatTypeContact);
 }
 
 void ChatTypeManager::setChatTypeRoom(ChatTypeRoom *chatTypeRoom)
 {
-	m_chatTypeRoom = chatTypeRoom;
-}
-
-void ChatTypeManager::init()
-{
-	registerChatType(m_chatTypeBuddy);
-	registerChatType(m_chatTypeContactSet);
-	registerChatType(m_chatTypeContact);
-	registerChatType(m_chatTypeRoom);
-}
-
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Adds new chat type to manager.
- * @param chatType chat type to add.
- *
- * Adds new chat type to manager. After that all @link ChatTypeAwareObject @endlink
- * gets their chatTypeRegistered methods called.
- */
-void ChatTypeManager::registerChatType(ChatType *chatType)
-{
-	if (ChatTypes.contains(chatType))
-		return;
-
-	emit chatTypeAboutToBeAdded(chatType);
-	ChatTypes.append(chatType);
-
-	foreach (const QString &alias, chatType->aliases())
-		ChatTypesMap.insert(alias, chatType);
-
-	emit chatTypeAdded(chatType);
-
-	ChatTypeAwareObject::notifyChatTypeRegistered(chatType);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Removes chat type from manager.
- * @param chatType chat type to removed.
- *
- * Removes chat type from manager. After that all @link ChatTypeAwareObject @endlink
- * gets their chatTypeUnregistered methods called.
- */
-void ChatTypeManager::unregisterChatType(ChatType *chatType)
-{
-	if (!ChatTypes.contains(chatType))
-		return;
-
-	emit chatTypeAboutToBeRemoved(chatType);
-	ChatTypes.removeAll(chatType);
-
-	foreach (const QString &alias, chatType->aliases())
-		ChatTypesMap.remove(alias);
-
-	emit chatTypeRemoved(chatType);
-
-	ChatTypeAwareObject::notifyChatTypeUnregistered(chatType);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Returns list of all registered chat types.
- * @return list of all registered chat types
- *
- * Returns list of all registered chat types.
- */
-const QList<ChatType *> & ChatTypeManager::chatTypes() const
-{
-	return ChatTypes;
+	m_chatTypes.append(chatTypeRoom);
 }
 
 /**
@@ -134,9 +64,13 @@ const QList<ChatType *> & ChatTypeManager::chatTypes() const
  *
  * Returns chat type with given internal alias or null, if not found.
  */
-ChatType * ChatTypeManager::chatType(const QString &alias)
+ChatType * ChatTypeManager::chatType(const QString &alias) const
 {
-	return ChatTypesMap.value(alias);
+	for (auto chatType : m_chatTypes)
+		for (auto const &chatTypeAlias : chatType->aliases())
+			if (alias == chatTypeAlias)
+				return chatType;
+	return nullptr;
 }
 
 #include "moc_chat-type-manager.cpp"

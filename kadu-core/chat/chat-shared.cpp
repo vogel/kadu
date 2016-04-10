@@ -67,8 +67,6 @@ ChatShared::~ChatShared()
 {
 	ref.ref();
 
-	triggerAllChatTypesUnregistered(m_chatTypeManager);
-
 	delete ChatAccount;
 }
 
@@ -168,18 +166,18 @@ void ChatShared::load()
 
 	*ChatAccount = m_accountManager->byUuid(QUuid(loadValue<QString>("Account")));
 	Display = loadValue<QString>("Display");
-	Type = loadValue<QString>("Type");
+	auto type = loadValue<QString>("Type");
 
 	// import from alias to new name of chat type
-	ChatType *chatType = m_chatTypeManager->chatType(Type);
+	ChatType *chatType = m_chatTypeManager->chatType(type);
 	if (chatType)
-		Type = chatType->name();
+		type = chatType->name();
 
 	// we should not have display names for Contact chats
 	if (Type == "Contact")
 		Display.clear();
 
-	triggerAllChatTypesRegistered(m_chatTypeManager);
+	setType(Type);
 }
 
 /**
@@ -270,16 +268,10 @@ void ChatShared::aboutToBeRemoved()
 	}
 }
 
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Called after new chat type was registered.
- *
- * If no details class is loaded and registered chat type is valid for this chat
- * new details class is created, assigned and loaded for this object.
- */
-void ChatShared::chatTypeRegistered(ChatType *chatType)
+void ChatShared::loadDetails()
 {
-	if (chatType->name() != Type)
+	auto chatType = m_chatTypeManager->chatType(type());
+	if (!chatType)
 		return;
 
 	if (!Details)
@@ -299,28 +291,6 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
 	}
 
 	m_chatManager->registerItem(this);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Called after chat type was unregistered.
- *
- * If details class is loaded and unregistered chat type is valid for this chat
- * details class is stored and removed from this object.
- */
-void ChatShared::chatTypeUnregistered(ChatType *chatType)
-{
-	if (chatType->name() != Type)
-		return;
-
-	if (Details)
-	{
-		Details->ensureStored();
-		delete Details;
-		Details = 0;
-	}
-
-	m_chatManager->unregisterItem(this);
 }
 
 /**
@@ -370,10 +340,7 @@ void ChatShared::setType(const QString &type)
 	}
 
 	Type = type;
-
-	ChatType *chatType = m_chatTypeManager->chatType(type);
-	if (chatType)
-		chatTypeRegistered(chatType); // this will add details
+	loadDetails();
 }
 
 void ChatShared::setGroups(const QSet<Group> &groups)

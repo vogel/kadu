@@ -18,7 +18,6 @@ set (chat_SRCS
 	model/chat-manager-adapter.cpp
 
 	type/chat-type.cpp
-	type/chat-type-aware-object.cpp
 	type/chat-type-buddy.cpp
 	type/chat-type-contact.cpp
 	type/chat-type-contact-set.cpp
