@@ -185,8 +185,14 @@ protected:
 			if (!uuid.isNull())
 			{
 				Item item = loadStubFromStorage(storagePoint);
-				addItem(item);
+				Items.append(item);
 			}
+		}
+
+		for (auto const &item : Items)
+		{
+			itemAboutToBeAdded(item);
+			itemAdded(item);
 		}
 
 		loaded();

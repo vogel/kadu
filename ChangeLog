@@ -1,3 +1,6 @@
++++ version 4.0-alpha2:
+ *chat: #3081 fixed: properly load conferences from configuration (Vogel)
+
 +++ version 4.0-alpha1:
 * amarok1_mediaplayer: plugin removed (Vogel)
 * encryption_ng: plugin removed (Vogel)
@@ -12,7 +15,7 @@
 * configuration: removed compatibility with 0.6.5 configuration files (Vogel)
 * gadu: #3068 fixed: send gift action removed (Vogel)
 
-+++ version 3.0-rc5
++++ version 3.0
 * chat-style: #3057 fixed: all chat styles work again (Vogel)
 * jabber: #3064 fixed: re-enable legacy SSL connection option (Vogel)
 
