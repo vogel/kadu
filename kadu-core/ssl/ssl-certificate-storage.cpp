@@ -58,7 +58,7 @@ QSet<SslCertificate> SslCertificateStorage::loadCertificates() const
 	for (const auto &element : elements)
 	{
 		auto hostName = element.attribute("hostName");
-		auto pemHexEncodedCertificate = element.text();
+		auto pemHexEncodedCertificate = element.text().toUtf8();
 		if (!hostName.isEmpty() && !pemHexEncodedCertificate.isEmpty())
 			result.insert(SslCertificate{hostName, pemHexEncodedCertificate});
 	}

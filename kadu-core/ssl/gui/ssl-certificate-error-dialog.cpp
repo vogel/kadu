@@ -83,7 +83,7 @@ void SslCertificateErrorDialog::createGui(const QList<QSslError> &errors)
 	auto detailsLabel = new QLabel{tr("Certificate details:"), this};
 	detailsLabel->hide();
 
-	auto dataWidget = new SslCertificateWidget{QSslCertificate{QByteArray::fromHex(m_certificate.pemHexEncodedCertificate().toLatin1()), QSsl::Pem}, this};
+	auto dataWidget = new SslCertificateWidget{QSslCertificate{QByteArray::fromHex(m_certificate.pemHexEncodedCertificate()), QSsl::Pem}, this};
 	dataWidget->hide();
 
 	auto connectAnywayButton = new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Connect anyway"), this};

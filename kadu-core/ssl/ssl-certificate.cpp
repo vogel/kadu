@@ -21,7 +21,7 @@
 
 #include <QtCore/QHash>
 
-SslCertificate::SslCertificate(QString hostName, QString pemHexEncodedCertificate) :
+SslCertificate::SslCertificate(QString hostName, QByteArray pemHexEncodedCertificate) :
 		m_hostName{std::move(hostName)},
 		m_pemHexEncodedCertificate{std::move(pemHexEncodedCertificate)}
 {
@@ -32,7 +32,7 @@ QString SslCertificate::hostName() const
 	return m_hostName;
 }
 
-QString SslCertificate::pemHexEncodedCertificate() const
+QByteArray SslCertificate::pemHexEncodedCertificate() const
 {
 	return m_pemHexEncodedCertificate;
 }

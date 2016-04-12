@@ -19,20 +19,21 @@
 
 #pragma once
 
+#include <QtCore/QByteArray>
 #include <QtCore/QString>
 
 class SslCertificate
 {
 
 public:
-	SslCertificate(QString hostName, QString pemHexEncodedCertificate);
+	SslCertificate(QString hostName, QByteArray pemHexEncodedCertificate);
 
 	QString hostName() const;
-	QString pemHexEncodedCertificate() const;
+	QByteArray pemHexEncodedCertificate() const;
 
 private:
 	QString m_hostName;
-	QString m_pemHexEncodedCertificate;
+	QByteArray m_pemHexEncodedCertificate;
 
 };
 
