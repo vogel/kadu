@@ -28,8 +28,7 @@
 #endif
 
 TaskbarProgress::TaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent) :
-		QObject{parent},
-		m_taskbarProgress{nullptr}
+		QObject{parent}
 {
 #ifdef Q_OS_WIN
 	parent->window()->winId(); // force windowHandle() to be valid
@@ -38,7 +37,7 @@ TaskbarProgress::TaskbarProgress(FileTransferManager *fileTransferManager, QWidg
 	button->setWindow(parent->window()->windowHandle());
 
 	m_taskbarProgress = button->progress();
-	static_cast<QWinTaskbarProgress *>(m_taskbarProgress)->setRange(0, 100);
+	m_taskbarProgress->setRange(0, 100);
 
 	connect(fileTransferManager, SIGNAL(totalProgressChanged(int)), this, SLOT(progressChanged(int)));
 	progressChanged(fileTransferManager->totalProgress());
@@ -53,17 +52,14 @@ TaskbarProgress::~TaskbarProgress()
 
 void TaskbarProgress::progressChanged(int progress)
 {
-	if (!m_taskbarProgress)
-		return;
-
 #ifdef Q_OS_WIN
 	if (progress < 100)
 	{
-		static_cast<QWinTaskbarProgress *>(m_taskbarProgress)->setVisible(true);
-		static_cast<QWinTaskbarProgress *>(m_taskbarProgress)->setValue(progress);
+		m_taskbarProgress->setVisible(true);
+		m_taskbarProgress->setValue(progress);
 	}
 	else
-		static_cast<QWinTaskbarProgress *>(m_taskbarProgress)->setVisible(false);
+		m_taskbarProgress->setVisible(false);
 #else
 	Q_UNUSED(progress);
 #endif

@@ -23,6 +23,10 @@
 
 #include <QtCore/QObject>
 
+#ifdef Q_OS_WIN
+	class QWinTaskbarProgress;
+#endif
+
 class FileTransferManager;
 
 class QWidget;
@@ -36,7 +40,9 @@ public:
 	virtual ~TaskbarProgress();
 
 private:
-	QObject *m_taskbarProgress;
+#ifdef Q_OS_WIN
+	QWinTaskbarProgress *m_taskbarProgress;
+#endif
 
 private slots:
 	void progressChanged(int progress);
