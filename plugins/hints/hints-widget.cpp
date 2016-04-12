@@ -173,8 +173,11 @@ void HintsWidget::discardAllHints()
 
 void HintsWidget::hintDestroyed(Hint *hint)
 {
-	m_layout->removeWidget(hint);
-	updateHints();
+	if (m_layout)
+	{
+		m_layout->removeWidget(hint);
+		updateHints();
+	}
 }
 
 void HintsWidget::updateHints()

@@ -54,7 +54,7 @@ private:
 	QPointer<InjectedFactory> m_injectedFactory;
 
 	QTimer m_timer;
-	QVBoxLayout *m_layout;
+	QPointer<QVBoxLayout> m_layout;
 
 	void removeHint(Hint *hint);
 	void removeExpiredHints();
