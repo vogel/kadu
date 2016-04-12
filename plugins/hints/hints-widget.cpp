@@ -67,12 +67,16 @@ void HintsWidget::addNotification(const Notification &notification)
 	connect(hint, &Hint::leftButtonClicked, this, &HintsWidget::acceptHint);
 	connect(hint, &Hint::rightButtonClicked, this, &HintsWidget::discardHint);
 	connect(hint, &Hint::midButtonClicked, this, &HintsWidget::discardAllHints);
+	connect(hint, &Hint::hintDestroyed, this, &HintsWidget::hintDestroyed);
 
 	auto count = m_layout->count();
 	auto height = hint->height();
+	hint->adjustSize();
+
 	for (auto i = 0; i < count; i++)
 	{
 		auto w = m_layout->itemAt(i)->widget();
+		w->adjustSize();
 		height += w->height();
 	}
 
@@ -85,22 +89,14 @@ void HintsWidget::addNotification(const Notification &notification)
 		hintToRemove->deleteLater();
 	}
 
-	adjustSize();
-	show();
-	updateTimer();
+	updateHints();
 }
 
 void HintsWidget::removeHint(Hint *hint)
 {
 	m_layout->removeWidget(hint);
 	hint->deleteLater();
-
-	if (m_layout->count() == 0)
-		hide();
-	else
-		adjustSize();
-
-	updateTimer();
+	updateHints();
 }
 
 void HintsWidget::updateTimer()
@@ -135,7 +131,7 @@ void HintsWidget::removeExpiredHints()
 			break;
 	}
 
-	updateTimer();
+	updateHints();
 }
 
 void HintsWidget::resizeEvent(QResizeEvent *re)
@@ -173,6 +169,25 @@ void HintsWidget::discardAllHints()
 	}
 
 	hide();
+}
+
+void HintsWidget::hintDestroyed(Hint *hint)
+{
+	m_layout->removeWidget(hint);
+	updateHints();
+}
+
+void HintsWidget::updateHints()
+{
+	if (m_layout->count() >= 0)
+	{
+		adjustSize();
+		show();
+	}
+	else
+		hide();
+
+	updateTimer();
 }
 
 #include "moc_hints-widget.cpp"

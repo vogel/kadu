@@ -55,6 +55,7 @@ signals:
 	void leftButtonClicked(Hint *hint);
 	void rightButtonClicked(Hint *hint);
 	void midButtonClicked(Hint *hint);
+	void hintDestroyed(Hint *hint);
 
 protected:
 	virtual void mouseReleaseEvent(QMouseEvent * event);

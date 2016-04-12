@@ -67,5 +67,7 @@ private slots:
 	void acceptHint(Hint *hint);
 	void discardHint(Hint *hint);
 	void discardAllHints();
+	void hintDestroyed(Hint *hint);
+	void updateHints();
 
 };

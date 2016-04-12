@@ -47,6 +47,7 @@ Hint::Hint(const Notification &notification, HintsConfiguration *hintsConfigurat
 
 Hint::~Hint()
 {
+	emit hintDestroyed(this);
 }
 
 void Hint::setIconsManager(IconsManager *iconsManager)
@@ -173,7 +174,7 @@ void Hint::buttonClicked()
 		callback.call(m_notification);
 	}
 
-	close();
+	deleteLater();
 }
 
 void Hint::nextSecond(void)
