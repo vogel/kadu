@@ -24,7 +24,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class PluginRepository;
+class MediaPlayer;
 class WinampMediaPlayer;
 
 class WinampPluginObject : public QObject
@@ -37,13 +37,13 @@ public:
 	virtual ~WinampPluginObject();
 
 private:
-	QPointer<PluginRepository> m_pluginRepository;
+	QPointer<MediaPlayer> m_mediaPlayer;
 	QPointer<WinampMediaPlayer> m_winampMediaPlayer;
 
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
+	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
 	INJEQT_SET void setWinampMediaPlayer(WinampMediaPlayer *winampMediaPlayer);
 
 };

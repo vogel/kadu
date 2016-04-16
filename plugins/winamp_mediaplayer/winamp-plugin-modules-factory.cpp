@@ -40,4 +40,9 @@ std::vector<std::unique_ptr<injeqt::module>> WinampPluginModulesFactory::createP
 	return modules;
 }
 
+QString WinampPluginModulesFactory::parentInjectorName() const
+{
+	return "mediaplayer";
+}
+
 #include "moc_winamp-plugin-modules-factory.cpp"
