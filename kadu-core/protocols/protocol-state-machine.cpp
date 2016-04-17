@@ -66,6 +66,7 @@ void ProtocolStateMachine::init()
 	LoggingInMaybeOnlineState = new QState(this);
 	LoggedInState = new QState(this);
 	PasswordRequiredState = new QState(this);
+	WaitForSslErrorResult = new QState(this);
 
 	connect(LoggingOutState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(LoggedOutOnlineState, SIGNAL(entered()), this, SLOT(printConfiguration()));
@@ -76,6 +77,7 @@ void ProtocolStateMachine::init()
 	connect(LoggingInMaybeOnlineState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(LoggedInState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(PasswordRequiredState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(WaitForSslErrorResult, SIGNAL(entered()), this, SLOT(printConfiguration()));
 
 	connect(LoggingOutState, SIGNAL(entered()), this, SIGNAL(loggingOutStateEntered()));
 	connect(LoggedOutOnlineState, SIGNAL(entered()), this, SIGNAL(loggedOutOnlineStateEntered()));
@@ -112,6 +114,7 @@ void ProtocolStateMachine::init()
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordRequired()), PasswordRequiredState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInDelayState);
 	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
+	LoggingInState->addTransition(CurrentProtocol, SIGNAL(stateMachineSslError()), WaitForSslErrorResult);
 
 	LoggingInDelayState->addTransition(m_networkManager, SIGNAL(offline()), WantToLogInState);
 	LoggingInDelayState->addTransition(&DelayTimer, SIGNAL(timeout()), LoggingInState);
@@ -127,17 +130,25 @@ void ProtocolStateMachine::init()
 	// in this case we assume that user still wants to log in even if connection failed badly
 	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), WantToLogInState);
 	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), WantToLogInState);
+	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineSslError()), WantToLogInState);
 
 	LoggedInState->addTransition(m_networkManager, SIGNAL(offline()), WantToLogInState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggingOutState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), LoggingInState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
+	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineSslError()), LoggingInState);
 
 	PasswordRequiredState->addTransition(m_networkManager, SIGNAL(offline()), WantToLogInState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOnlineState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordAvailable()), LoggingInState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordNotAvailable()), LoggedOutOnlineState);
 	PasswordRequiredState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
+
+	WaitForSslErrorResult->addTransition(m_networkManager, SIGNAL(offline()), WantToLogInState);
+	WaitForSslErrorResult->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOnlineState);
+	WaitForSslErrorResult->addTransition(CurrentProtocol, SIGNAL(stateMachineSslErrorResolved()), LoggingInState);
+	WaitForSslErrorResult->addTransition(CurrentProtocol, SIGNAL(stateMachineSslErrorNotResolved()), LoggedOutOnlineState);
+	WaitForSslErrorResult->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
 
 	if (m_networkManager->isOnline())
 		setInitialState(LoggedOutOnlineState);

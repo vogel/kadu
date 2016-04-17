@@ -23,6 +23,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 #include <qxmpp/QXmppClient.h>
+#include <functional>
 
 class SslCertificateManager;
 class QSslError;
@@ -32,11 +33,14 @@ class JabberSslHandler : public QObject
 	Q_OBJECT
 
 public:
-	explicit JabberSslHandler(QXmppClient *parent);
+	explicit JabberSslHandler(QXmppClient *parent, const std::function<void()> &onAccepted, const std::function<void()> &onRejected);
 	virtual ~JabberSslHandler();
 
 private:
 	QPointer<SslCertificateManager> m_sslCertificateManager;
+
+	std::function<void()> m_onAccepted;
+	std::function<void()> m_onRejected;
 
 private slots:
 	INJEQT_SET void setSslCertificateManager(SslCertificateManager *sslCertificateManager);

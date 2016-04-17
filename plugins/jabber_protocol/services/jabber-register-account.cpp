@@ -105,15 +105,17 @@ void JabberRegisterAccount::start()
 	m_client = new QXmppClient{this};
 	m_client->addExtension(m_registerExtension.get());
 
-	m_injectedFactory->makeInjected<JabberSslHandler>(m_client);
-
-	m_client->connectToServer(configuration);
-
 	connect(m_client, SIGNAL(connected()), this, SLOT(askForRegistration()));
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(clientError(QXmppClient::Error)));
 	connect(m_registerExtension.get(), SIGNAL(registerIqReceived(QXmppRegisterIq)), this, SLOT(registerIqReceived(QXmppRegisterIq)));
 
-	m_state = State::Connecting;
+	auto connectToServer = [&](){
+		m_client->connectToServer(configuration);
+		m_state = State::Connecting;
+	};
+
+	m_injectedFactory->makeInjected<JabberSslHandler>(m_client, connectToServer, [&](){ handleError(tr("SSL certificate rejected")); });
+	connectToServer();
 }
 
 void JabberRegisterAccount::clientError(QXmppClient::Error error)

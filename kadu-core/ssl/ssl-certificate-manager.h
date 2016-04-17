@@ -24,6 +24,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
+#include <functional>
 
 class SslCertificateStorage;
 class SslCertificateRepository;
@@ -42,7 +43,13 @@ public:
 	void loadPersistentSslCertificates();
 	void storePersistentSslCertificates();
 
-	bool acceptCertificate(const QString &hostName, const QSslCertificate &certificate, const QList<QSslError> &errors) const;
+	bool acceptCertificate(const QString &hostName, const QSslCertificate &certificate) const;
+	void askForCertificateAcceptance(
+		const QString &hostName,
+		const QSslCertificate &certificate,
+		const QList<QSslError> &errors,
+		const std::function<void()> &onAccepted,
+		const std::function<void()> &onRejected);
 
 private:
 	QPointer<SslCertificateRepository> m_sslCertificateRepository;

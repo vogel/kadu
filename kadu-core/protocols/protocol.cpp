@@ -253,6 +253,13 @@ void Protocol::connectionClosed()
 	emit stateMachineConnectionClosed();
 }
 
+void Protocol::sslError()
+{
+	statusChanged(Status());
+
+	emit stateMachineSslError();
+}
+
 void Protocol::reconnect()
 {
 	setStatus(loginStatus(), SourceUser);

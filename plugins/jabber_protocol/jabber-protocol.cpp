@@ -61,6 +61,7 @@
 #include "url-handlers/url-handler-manager.h"
 
 #include <QtCore/QCoreApplication>
+#include <QtNetwork/QAbstractSocket>
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslSocket>
 #include <qxmpp/QXmppClient.h>
@@ -109,7 +110,14 @@ void JabberProtocol::init()
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 
-	injectedFactory()->makeInjected<JabberSslHandler>(m_client);
+	injectedFactory()->makeInjected<JabberSslHandler>(m_client,
+		[&](){
+			emit stateMachineSslErrorResolved();
+		},
+		[&](){
+			emit stateMachineSslErrorNotResolved();
+		}
+	);
 
 	m_registerExtension = make_unique<JabberRegisterExtension>();
 	m_rosterExtension = make_unique<JabberRosterExtension>();
@@ -298,20 +306,40 @@ void JabberProtocol::disconenctedFromServer()
 void JabberProtocol::error(QXmppClient::Error error)
 {
 	auto errorMessage = QString{};
-	if (error == QXmppClient::Error::XmppStreamError)
+	switch (error)
 	{
-		switch (m_client->xmppStreamError())
+		case QXmppClient::Error::SocketError:
 		{
-			case QXmppStanza::Error::NotAuthorized:
-				passwordRequired();
-				return;
-			case QXmppStanza::Error::Conflict:
-				errorMessage = tr("Another client connected on the same resource.");
-				setStatus(Status{}, SourceUser);
-				break;
-			default:
-				break;
+			switch (m_client->socketError())
+			{
+				case QAbstractSocket::SslHandshakeFailedError:
+					sslError();
+					return;
+				default:
+					break;
+			}
+			break;
 		}
+
+		case QXmppClient::Error::XmppStreamError:
+		{
+			switch (m_client->xmppStreamError())
+			{
+				case QXmppStanza::Error::NotAuthorized:
+					passwordRequired();
+					return;
+				case QXmppStanza::Error::Conflict:
+					errorMessage = tr("Another client connected on the same resource.");
+					setStatus(Status{}, SourceUser);
+					break;
+				default:
+					break;
+			}
+			break;
+		}
+
+		default:
+			break;
 	}
 
 	if (errorMessage.isEmpty())

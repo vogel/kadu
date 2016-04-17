@@ -104,6 +104,7 @@ class Protocol;
  *       <li>protocol password required -> password required</li>
  *       <li>protocol connection error -> Logging in (delay)</li>
  *       <li>protocol connection closed -> logged out, online</li>
+ *       <li>protocol ssl error -> Wait for SSL result</li>
  *     </ul>
  *   </dd>
  *   <dt>Logging in delay</dt>
@@ -128,6 +129,7 @@ class Protocol;
  *       <li>protocol password required -> password required</li>
  *       <li>protocol connection closed -> want to log in</li>
  *       <li>protocol connection error -> want to log in</li>
+ *       <li>protocol ssl error -> want to log in</li>
  *     </ul>
  *   </dd>
  *   <dt>Logged in</dt>
@@ -138,7 +140,8 @@ class Protocol;
  *     <ul>
  *       <li>network goes offline -> want to log in</li>
  *       <li>protocol changes state to offline state -> logging out</li>
- *       <li>protocol connection error -> Logging in (another try)</li>
+ *       <li>protocol connection error -> Logging in</li>
+ *       <li>protocol ssl error -> Logging in</li>
  *       <li>protocol connection closed -> logged out, online</li>
  *     </ul>
  *   </dd>
@@ -152,6 +155,18 @@ class Protocol;
  *       <li>protocol connection closed -> logged out, online</li>
  *       <li>password available -> logging in</li>
  *       <li>password not available -> logged out, online</li>
+ *     </ul>
+ *   </dd>
+ *   <td>Wait for SSL result</dt>
+ *   <dd>
+ *     This state is used when protocol SSL error occurs. Dialog should be displayed for user with possibility to
+ *     ignore that error:
+ *     <ul>
+ *       <li>network goes offline -> want to log in</li>
+ *       <li>protocol logged out -> logged out, online</li>
+ *       <li>protocol connection closed -> logged out, online</li>
+ *       <li>ssl error resolved -> logging in</li>
+ *       <li>ssl error not resolved -> logged out, online</li>
  *     </ul>
  *   </dd>
  * <dl>
@@ -202,6 +217,7 @@ class ProtocolStateMachine : public QStateMachine
 	QState *LoggingInDelayState;
 	QState *LoggingInMaybeOnlineState;
 	QState *LoggedInState;
+	QState *WaitForSslErrorResult;
 
 private slots:
 	INJEQT_SET void setNetworkManager(NetworkManager *networkManager);

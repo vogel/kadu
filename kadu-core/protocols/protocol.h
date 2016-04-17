@@ -143,6 +143,10 @@ signals:
 	void stateMachineConnectionError();
 	void stateMachineConnectionClosed();
 
+	void stateMachineSslError();
+	void stateMachineSslErrorResolved();
+	void stateMachineSslErrorNotResolved();
+
 protected:
 	ContactManager * contactManager() const;
 	InjectedFactory * injectedFactory() const;
@@ -171,6 +175,7 @@ protected slots:
 	void passwordRequired();
 	void connectionError();
 	void connectionClosed();
+	void sslError();
 	void reconnect();
 
 private:
