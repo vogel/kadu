@@ -19,12 +19,14 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QObject>
 #include <vector>
 
 class QWidget;
 
-class MainWindowRepository : public QObject
+class KADUAPI MainWindowRepository : public QObject
 {
 	Q_OBJECT
 
@@ -32,7 +34,7 @@ public:
 	using Storage = std::vector<QWidget *>;
 	using Iterator = Storage::iterator;
 
-	explicit MainWindowRepository(QObject *parent = nullptr);
+	Q_INVOKABLE explicit MainWindowRepository(QObject *parent = nullptr);
 	virtual ~MainWindowRepository();
 
 	void addMainWindow(QWidget *mainWindow);

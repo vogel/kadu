@@ -65,6 +65,7 @@
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window-actions.h"
+#include "gui/windows/main-window-repository.h"
 #include "gui/windows/proxy-action-context.h"
 #include "os/generic/url-opener.h"
 #include "os/generic/window-geometry-manager.h"
@@ -107,6 +108,11 @@ void KaduWindow::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 void KaduWindow::setFileTransferManager(FileTransferManager *fileTransferManager)
 {
 	m_fileTransferManager = fileTransferManager;
+}
+
+void KaduWindow::setMainWindowRepository(MainWindowRepository *mainWindowRepository)
+{
+	m_mainWindowRepository = mainWindowRepository;
 }
 
 void KaduWindow::setMenuInventory(MenuInventory *menuInventory)
@@ -167,6 +173,12 @@ void KaduWindow::init()
 	configurationUpdated();
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper(configuration(), "General", "Geometry"), QRect(0, 50, 350, 650), this);
+	m_mainWindowRepository->addMainWindow(this);
+}
+
+void KaduWindow::done()
+{
+	m_mainWindowRepository->removeMainWindow(this);
 }
 
 void KaduWindow::createGui()

@@ -31,6 +31,7 @@
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/main-configuration-window-service.h"
+#include "gui/windows/main-window-repository.h"
 #include "gui/windows/multilogon-window-service.h"
 #include "gui/windows/open-chat-with/open-chat-with-service.h"
 #include "gui/windows/proxy-edit-window-service.h"
@@ -51,6 +52,7 @@ GuiModule::GuiModule()
 	add_type<CustomInputMenuManager>();
 	add_type<KaduWindowService>();
 	add_type<MainConfigurationWindowService>();
+	add_type<MainWindowRepository>();
 	add_type<MenuInventory>();
 	add_type<MultilogonWindowService>();
 	add_type<OpenChatWithService>();

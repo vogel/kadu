@@ -53,6 +53,7 @@ class Configuration;
 class FileTransferManager;
 class InjectedFactory;
 class KaduWindowActions;
+class MainWindowRepository;
 class MenuInventory;
 class Myself;
 class ProxyActionContext;
@@ -82,6 +83,7 @@ private:
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<FileTransferManager> m_fileTransferManager;
+	QPointer<MainWindowRepository> m_mainWindowRepository;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<Myself> m_myself;
 	QPointer<StatusContainerManager> m_statusContainerManager;
@@ -136,6 +138,7 @@ private slots:
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_SET void setMainWindowRepository(MainWindowRepository *mainWindowRepository);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
@@ -143,6 +146,7 @@ private slots:
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 #ifdef Q_OS_WIN
 	void setHiddenParent();

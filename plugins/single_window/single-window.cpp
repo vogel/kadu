@@ -32,6 +32,7 @@
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/main-window-repository.h"
 #include "icons/kadu-icon.h"
 #include "message/unread-message-repository.h"
 #include "os/generic/window-geometry-manager.h"
@@ -158,6 +159,11 @@ void SingleWindow::setKaduWindowService(KaduWindowService *kaduWindowService)
 	m_kaduWindowService = kaduWindowService;
 }
 
+void SingleWindow::setMainWindowRepository(MainWindowRepository *mainWindowRepository)
+{
+	m_mainWindowRepository = mainWindowRepository;
+}
+
 void SingleWindow::setSessionService(SessionService *sessionService)
 {
 	m_sessionService = sessionService;
@@ -225,6 +231,12 @@ void SingleWindow::init()
 	kadu->setFocus();
 
 	setVisible(visible);
+	m_mainWindowRepository->addMainWindow(this);
+}
+
+void SingleWindow::done()
+{
+	m_mainWindowRepository->removeMainWindow(this);
 }
 
 void SingleWindow::titleChanged()

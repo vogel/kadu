@@ -25,6 +25,7 @@
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/gui/file-transfer-widget.h"
 #include "gui/taskbar-progress.h"
+#include "gui/windows/main-window-repository.h"
 #include "os/generic/window-geometry-manager.h"
 
 #include <QtGui/QKeyEvent>
@@ -60,6 +61,11 @@ void FileTransferWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void FileTransferWindow::setMainWindowRepository(MainWindowRepository *mainWindowRepository)
+{
+	m_mainWindowRepository = mainWindowRepository;
+}
+
 void FileTransferWindow::init()
 {
 	new TaskbarProgress{m_fileTransferManager, this};
@@ -78,7 +84,12 @@ void FileTransferWindow::init()
 			this, SLOT(fileTransferRemoved(FileTransfer)));
 
 	contentsChanged();
+	m_mainWindowRepository->addMainWindow(this);
+}
 
+void FileTransferWindow::done()
+{
+	m_mainWindowRepository->removeMainWindow(this);
 }
 
 void FileTransferWindow::createGui()
