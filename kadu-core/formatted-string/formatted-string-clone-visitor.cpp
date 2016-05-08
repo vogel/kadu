@@ -91,5 +91,5 @@ std::unique_ptr<FormattedString> FormattedStringCloneVisitor::result()
 
 	auto result = std::move(ItemsStack.top());
 	ItemsStack.pop();
-	return std::move(result);
+	return result;
 }

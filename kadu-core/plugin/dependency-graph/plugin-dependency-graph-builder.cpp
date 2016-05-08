@@ -101,7 +101,7 @@ QSet<QString> PluginDependencyGraphBuilder::setWithDependents(QSet<QString> set,
 	set.insert(pluginName);
 	for (auto dependent : graph.findDependents(pluginName))
 		set.insert(dependent);
-	return std::move(set);
+	return set;
 }
 
 PluginDependencyGraph PluginDependencyGraphBuilder::applyFilters(const std::map<QString, PluginMetadata> &plugins, std::vector<PluginFilter> filters) const
@@ -134,7 +134,7 @@ PluginDependencyGraph PluginDependencyGraphBuilder::buildGraph(const std::map<QS
 			result.addDependency(plugin.first, dependency);
 	}
 
-	return std::move(result);
+	return result;
 }
 
 std::set<QString> PluginDependencyGraphBuilder::invalidPlugins(const PluginDependencyGraph &graph,
