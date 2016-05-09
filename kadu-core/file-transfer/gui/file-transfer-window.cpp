@@ -24,7 +24,6 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/gui/file-transfer-widget.h"
-#include "gui/taskbar-progress.h"
 #include "gui/windows/main-window-repository.h"
 #include "os/generic/window-geometry-manager.h"
 
@@ -68,8 +67,6 @@ void FileTransferWindow::setMainWindowRepository(MainWindowRepository *mainWindo
 
 void FileTransferWindow::init()
 {
-	new TaskbarProgress{m_fileTransferManager, this};
-
 	setWindowRole(QStringLiteral("kadu-file-transfer"));
 
 	createGui();

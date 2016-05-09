@@ -23,7 +23,6 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/hot-key.h"
-#include "gui/taskbar-progress.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-set-title.h"
@@ -171,7 +170,6 @@ void SingleWindow::setSessionService(SessionService *sessionService)
 
 void SingleWindow::init()
 {
-	new TaskbarProgress{m_fileTransferManager, this};
 	setWindowRole("kadu-single-window");
 
 	KaduWindow *kadu = m_kaduWindowService->kaduWindow();

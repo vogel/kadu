@@ -56,7 +56,6 @@
 #include "gui/hot-key.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/menu/menu-item.h"
-#include "gui/taskbar-progress.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -147,7 +146,6 @@ void KaduWindow::setUrlOpener(UrlOpener *urlOpener)
 
 void KaduWindow::init()
 {
-	new TaskbarProgress{m_fileTransferManager, this};
 	setWindowRole("kadu-main");
 
 	setActionContext(new ProxyActionContext(m_statusContainerManager));
