@@ -19,9 +19,10 @@
 
 #include "windows-integration.h"
 
+#include "windows-taskbar-progress.h"
+
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/windows/main-window-repository.h"
-#include "gui/taskbar-progress.h"
 #include "misc/memory.h"
 
 #include <QtWidgets/QWidget>
@@ -54,7 +55,7 @@ void WindowsIntegration::init()
 
 void WindowsIntegration::mainWindowAdded(QWidget *mainWindow)
 {
-	make_owned<TaskbarProgress>(m_fileTransferManager, mainWindow->window());
+	make_owned<WindowsTaskbarProgress>(m_fileTransferManager, mainWindow->window());
 }
 
 #include "moc_windows-integration.cpp"

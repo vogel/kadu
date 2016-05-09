@@ -17,20 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "taskbar-progress.h"
+#include "windows-taskbar-progress.h"
 
 #include "file-transfer/file-transfer-manager.h"
 
 #include <QtWidgets/QWidget>
+#include <QtWinExtras/QtWinExtras>
 
-#ifdef Q_OS_WIN
-#	include <QtWinExtras/QtWinExtras>
-#endif
-
-TaskbarProgress::TaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent) :
+WindowsTaskbarProgress::WindowsTaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent) :
 		QObject{parent}
 {
-#ifdef Q_OS_WIN
 	parent->window()->winId(); // force windowHandle() to be valid
 
 	auto button = new QWinTaskbarButton{parent->window()};
@@ -41,18 +37,14 @@ TaskbarProgress::TaskbarProgress(FileTransferManager *fileTransferManager, QWidg
 
 	connect(fileTransferManager, SIGNAL(totalProgressChanged(int)), this, SLOT(progressChanged(int)));
 	progressChanged(fileTransferManager->totalProgress());
-#else
-	Q_UNUSED(fileTransferManager);
-#endif
 }
 
-TaskbarProgress::~TaskbarProgress()
+WindowsTaskbarProgress::~WindowsTaskbarProgress()
 {
 }
 
-void TaskbarProgress::progressChanged(int progress)
+void WindowsTaskbarProgress::progressChanged(int progress)
 {
-#ifdef Q_OS_WIN
 	if (progress < 100)
 	{
 		m_taskbarProgress->setVisible(true);
@@ -60,9 +52,6 @@ void TaskbarProgress::progressChanged(int progress)
 	}
 	else
 		m_taskbarProgress->setVisible(false);
-#else
-	Q_UNUSED(progress);
-#endif
 }
 
-#include "moc_taskbar-progress.cpp"
+#include "moc_windows-taskbar-progress.cpp"

@@ -9,8 +9,11 @@ set (SOURCES
 	windows-integration-plugin-modules-factory.cpp
 	windows-integration-plugin-object.cpp
 	windows-integration.cpp
+	windows-taskbar-progress.cpp
 )
 
 kadu_plugin (windows_integration
 	PLUGIN_SOURCES ${SOURCES}
 )
+
+qt5_use_modules (windows_integration LINK_PRIVATE WinExtras)

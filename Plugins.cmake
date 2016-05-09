@@ -83,8 +83,6 @@ set (DEFAULT_PLUGINS
 	tabs
 	# Automatic mispelled word replacement
 	word_fix
-
-	windows_integration
 )
 
 # Platform-speficic plugins

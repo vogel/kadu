@@ -495,6 +495,7 @@ SectionGroup $(section_plugins) SectionPlugins
 	!insertmacro kadu_obligatory_plugin sql_history sql_history
 	!insertmacro kadu_plugin tabs tabs
 	!insertmacro kadu_plugin winamp_mediaplayer winamp_mediaplayer
+	!insertmacro kadu_plugin windows_integration windows_integration
 	!insertmacro kadu_plugin word_fix word_fix
 
 SectionGroupEnd
