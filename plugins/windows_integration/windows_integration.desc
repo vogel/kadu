@@ -1,0 +1,9 @@
+[Module]
+DisplayName=Integration with Windows
+DisplayName[pl]=Integracja z Windows
+Description=Better integration with Windows
+Description[pl]=Integruje z Windows
+Author=Marcin Kadu Team
+Version=core
+Category=Integration
+LoadByDefault=true

@@ -83,6 +83,8 @@ set (DEFAULT_PLUGINS
 	tabs
 	# Automatic mispelled word replacement
 	word_fix
+
+	windows_integration
 )
 
 # Platform-speficic plugins
@@ -121,6 +123,11 @@ endif (UNIX AND NOT APPLE)
 
 if (WIN32)
 	list (APPEND DEFAULT_PLUGINS
+
+	# integration
+		# integration with Windows
+		# Comment if you are not compilign under Ubuntu flavor
+		windows_integration
 
 	# mediaplayer
 		# Winamp Media Player support
