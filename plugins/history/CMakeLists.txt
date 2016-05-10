@@ -42,6 +42,7 @@ set (SOURCES
 	buddy-history-delete-handler.cpp
 	chats-buddies-splitter.cpp
 	history.cpp
+	history-injected-factory.cpp
 	history-messages-prepender.cpp
 	history-module.cpp
 	history-plugin-modules-factory.cpp

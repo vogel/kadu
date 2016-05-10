@@ -19,7 +19,8 @@
 
 #include "history-buddy-configuration-widget-factory.h"
 
-#include "core/injected-factory.h"
+#include "history-injected-factory.h"
+
 #include "gui/widgets/history-buddy-configuration-widget.h"
 
 HistoryBuddyConfigurationWidgetFactory::HistoryBuddyConfigurationWidgetFactory(QObject *parent) :
@@ -31,14 +32,14 @@ HistoryBuddyConfigurationWidgetFactory::~HistoryBuddyConfigurationWidgetFactory(
 {
 }
 
-void HistoryBuddyConfigurationWidgetFactory::setInjectedFactory(InjectedFactory *injectedFactory)
+void HistoryBuddyConfigurationWidgetFactory::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_historyInjectedFactory = historyInjectedFactory;
 }
 
 BuddyConfigurationWidget * HistoryBuddyConfigurationWidgetFactory::createWidget(const Buddy &buddy, QWidget *parent)
 {
-	return m_injectedFactory->makeInjected<HistoryBuddyConfigurationWidget>(buddy, parent);
+	return m_historyInjectedFactory->makeInjected<HistoryBuddyConfigurationWidget>(buddy, parent);
 }
 
 #include "moc_history-buddy-configuration-widget-factory.cpp"

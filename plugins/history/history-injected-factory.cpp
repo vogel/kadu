@@ -17,33 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "history-injected-factory.h"
 
-#include "exports.h"
+#include "plugin/plugin-injector-provider.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <injeqt/injector.h>
-
-class InjectorProvider;
-class PluginRepository;
-
-class KADUAPI PluginInjectorProvider : public QObject
+HistoryInjectedFactory::HistoryInjectedFactory(QObject *parent) :
+		QObject{parent}
 {
-	Q_OBJECT
+}
 
-public:
-	Q_INVOKABLE explicit PluginInjectorProvider(QObject *instance = nullptr);
-	virtual ~PluginInjectorProvider();
+HistoryInjectedFactory::~HistoryInjectedFactory()
+{
+}
 
-	injeqt::injector & injector(const QString &pluginName);
+void HistoryInjectedFactory::setPluginInjectorProvider(PluginInjectorProvider *pluginInjectorProvider)
+{
+	m_pluginInjectorProvider = pluginInjectorProvider;
+}
 
-private:
-	QPointer<InjectorProvider> m_injectorProvider;
-	QPointer<PluginRepository> m_pluginRepository;
-
-private slots:
-	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
-
-};
+void HistoryInjectedFactory::injectInto(QObject *object)
+{
+	m_pluginInjectorProvider->injector("history").inject_into(object);
+}

@@ -23,10 +23,11 @@
 
 #include "buddies/model/buddy-list-model.h"
 #include "chat/model/chat-list-model.h"
-#include "core/injected-factory.h"
 #include "model/action-list-model.h"
 #include "model/merged-proxy-model-factory.h"
 #include "chats-buddies-splitter.h"
+
+#include "history-injected-factory.h"
 
 #include "history-talkable-combo-box.h"
 
@@ -39,6 +40,11 @@ HistoryTalkableComboBox::~HistoryTalkableComboBox()
 {
 }
 
+void HistoryTalkableComboBox::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
+{
+	m_historyInjectedFactory = historyInjectedFactory;
+}
+
 void HistoryTalkableComboBox::init()
 {
 	setShowAnonymous(true);
@@ -47,8 +53,8 @@ void HistoryTalkableComboBox::init()
 	AllAction = new QAction(this);
 	actionModel->appendAction(AllAction);
 
-	ChatsModel = injectedFactory()->makeInjected<ChatListModel>(this);
-	BuddiesModel = injectedFactory()->makeInjected<BuddyListModel>(this);
+	ChatsModel = m_historyInjectedFactory->makeInjected<ChatListModel>(this);
+	BuddiesModel = m_historyInjectedFactory->makeInjected<BuddyListModel>(this);
 
 	QList<KaduAbstractModel *> models;
 	models.append(actionModel);
@@ -67,7 +73,7 @@ void HistoryTalkableComboBox::setTalkables(const QVector<Talkable> &talkables)
 {
 	futureTalkablesCanceled();
 
-	auto chatsBuddies = injectedFactory()->makeUnique<ChatsBuddiesSplitter>(talkables);
+	auto chatsBuddies = m_historyInjectedFactory->makeUnique<ChatsBuddiesSplitter>(talkables);
 
 	ChatsModel->setChats(chatsBuddies->chats().toList().toVector());
 	BuddiesModel->setBuddyList(chatsBuddies->buddies().toList());

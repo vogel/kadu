@@ -26,7 +26,6 @@
 
 #include "chat/buddy-chat-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
-#include "core/injected-factory.h"
 #include "core/session-service.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
@@ -36,6 +35,7 @@
 #include "gui/widgets/chat-history-tab.h"
 #include "gui/widgets/search-tab.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
+#include "history-injected-factory.h"
 #include "history.h"
 
 #include "history-window.h"
@@ -65,9 +65,9 @@ void HistoryWindow::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void HistoryWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+void HistoryWindow::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_historyInjectedFactory = historyInjectedFactory;
 }
 
 void HistoryWindow::setSessionService(SessionService *sessionService)
@@ -103,17 +103,17 @@ void HistoryWindow::createGui()
 	connect(TabWidget, SIGNAL(currentChanged(int)),
 			this, SLOT(currentTabChanged(int)));
 
-	ChatTab = m_injectedFactory->makeInjected<ChatHistoryTab>(TabWidget);
+	ChatTab = m_historyInjectedFactory->makeInjected<ChatHistoryTab>(TabWidget);
 
-	StatusTab = m_injectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
+	StatusTab = m_historyInjectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
 	StatusTab->timelineView()->setTalkableVisible(false);
 	StatusTab->setClearHistoryMenuItemTitle(tr("&Clear Status History"));
 
-	SmsTab = m_injectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
+	SmsTab = m_historyInjectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
 	SmsTab->timelineView()->setTalkableVisible(false);
 	SmsTab->setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
 
-	MySearchTab = m_injectedFactory->makeInjected<SearchTab>(TabWidget);
+	MySearchTab = m_historyInjectedFactory->makeInjected<SearchTab>(TabWidget);
 
 	TabWidget->addTab(ChatTab, tr("Chats"));
 	TabWidget->addTab(StatusTab, tr("Statuses"));

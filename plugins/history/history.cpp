@@ -39,7 +39,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/myself.h"
-#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -56,6 +55,7 @@
 
 #include "actions/show-history-action-description.h"
 #include "gui/windows/history-window.h"
+#include "history-injected-factory.h"
 #include "history-messages-prepender.h"
 #include "history-query.h"
 #include "history-save-thread.h"
@@ -120,9 +120,9 @@ void History::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void History::setInjectedFactory(InjectedFactory *injectedFactory)
+void History::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_historyInjectedFactory = historyInjectedFactory;
 }
 
 void History::setMenuInventory(MenuInventory *menuInventory)
@@ -180,7 +180,7 @@ void History::createActionDescriptions()
 	// The last ActionDescription will send actionLoaded() signal.
 	m_actions->unblockSignals();
 
-	ClearHistoryActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
+	ClearHistoryActionDescription = m_historyInjectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "clearHistoryAction",
 		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/clear-history"), tr("Clear History"), false,

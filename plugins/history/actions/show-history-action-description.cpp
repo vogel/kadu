@@ -26,7 +26,6 @@
 #include "chat/chat.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -36,6 +35,7 @@
 
 #include "gui/windows/history-window-service.h"
 #include "gui/windows/history-window.h"
+#include "history-injected-factory.h"
 #include "history-messages-prepender.h"
 #include "history-query.h"
 #include "history.h"

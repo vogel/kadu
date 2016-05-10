@@ -23,11 +23,11 @@
 
 #include "model/history-query-results-model.h"
 #include "model/history-query-results-proxy-model.h"
+#include "history-injected-factory.h"
 #include "history-query-result.h"
 
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "contacts/contact-set.h"
-#include "core/injected-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "formatted-string/formatted-string.h"
 #include "gui/scoped-updates-disabler.h"
@@ -59,9 +59,9 @@ TimelineChatMessagesView::~TimelineChatMessagesView()
 {
 }
 
-void TimelineChatMessagesView::setInjectedFactory(InjectedFactory *injectedFactory)
+void TimelineChatMessagesView::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_historyInjectedFactory = historyInjectedFactory;
 }
 
 void TimelineChatMessagesView::setMessageManager(MessageManager *messageManager)
@@ -77,7 +77,7 @@ void TimelineChatMessagesView::setWebkitMessagesViewFactory(WebkitMessagesViewFa
 
 void TimelineChatMessagesView::init()
 {
-	ResultsModel = m_injectedFactory->makeInjected<HistoryQueryResultsModel>(this);
+	ResultsModel = m_historyInjectedFactory->makeInjected<HistoryQueryResultsModel>(this);
 	ResultsProxyModel = new HistoryQueryResultsProxyModel(ResultsModel);
 	ResultsProxyModel->setSourceModel(ResultsModel);
 
@@ -290,7 +290,7 @@ void TimelineChatMessagesView::hideTimelineWaitOverlay()
 void TimelineChatMessagesView::showMessagesViewWaitOverlay()
 {
 	if (!MessagesViewWaitOverlay)
-		MessagesViewWaitOverlay = m_injectedFactory->makeInjected<WaitOverlay>(MessagesView.get());
+		MessagesViewWaitOverlay = m_historyInjectedFactory->makeInjected<WaitOverlay>(MessagesView.get());
 	else
 		MessagesViewWaitOverlay->show();
 }

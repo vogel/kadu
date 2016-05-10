@@ -24,6 +24,7 @@
 #include "gui/widgets/history-chat-configuration-widget-factory.h"
 #include "gui/windows/history-window-service.h"
 #include "buddy-history-delete-handler.h"
+#include "history-injected-factory.h"
 #include "history-plugin-object.h"
 #include "history.h"
 
@@ -32,6 +33,7 @@ HistoryModule::HistoryModule()
 	add_type<BuddyHistoryDeleteHandler>();
 	add_type<HistoryBuddyConfigurationWidgetFactory>();
 	add_type<HistoryChatConfigurationWidgetFactory>();
+	add_type<HistoryInjectedFactory>();
 	add_type<HistoryPluginObject>();
 	add_type<HistoryWindowService>();
 	add_type<History>();

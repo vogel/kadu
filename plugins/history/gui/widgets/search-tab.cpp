@@ -34,7 +34,6 @@
 
 #include "chat/chat-storage.h"
 #include "core/core.h"
-#include "core/injected-factory.h"
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
@@ -48,6 +47,7 @@
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "storage/history-messages-storage.h"
 #include "talkable/talkable-converter.h"
+#include "history-injected-factory.h"
 #include "history-query.h"
 
 #include "search-tab.h"
@@ -66,9 +66,9 @@ void SearchTab::setChatStorage(ChatStorage *chatStorage)
 	m_chatStorage = chatStorage;
 }
 
-void SearchTab::setInjectedFactory(InjectedFactory *injectedFactory)
+void SearchTab::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_historyInjectedFactory = historyInjectedFactory;
 }
 
 void SearchTab::setTalkableConverter(TalkableConverter *talkableConverter)
@@ -110,20 +110,20 @@ void SearchTab::createGui()
 
 	SearchInChats = new QRadioButton(tr("Chats"), queryFormWidget);
 	SearchInChats->setChecked(true);
-	SelectChat = m_injectedFactory->makeInjected<HistoryTalkableComboBox>(queryFormWidget);
+	SelectChat = m_historyInjectedFactory->makeInjected<HistoryTalkableComboBox>(queryFormWidget);
 	SelectChat->setAllLabel(tr(" - All chats - "));
 	SelectChat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	queryFormLayout->addRow(SearchInChats, SelectChat);
 
 	SearchInStatuses = new QRadioButton(tr("Statuses"), queryFormWidget);
-	SelectStatusBuddy = m_injectedFactory->makeInjected<HistoryTalkableComboBox>(queryFormWidget);
+	SelectStatusBuddy = m_historyInjectedFactory->makeInjected<HistoryTalkableComboBox>(queryFormWidget);
 	SelectStatusBuddy->setAllLabel(tr(" - All buddies - "));
 	SelectStatusBuddy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	SelectStatusBuddy->setEnabled(false);
 	queryFormLayout->addRow(SearchInStatuses, SelectStatusBuddy);
 
 	SearchInSmses = new QRadioButton(tr("Smses"), queryFormWidget);
-	SelectSmsRecipient = m_injectedFactory->makeInjected<HistoryTalkableComboBox>(queryFormWidget);
+	SelectSmsRecipient = m_historyInjectedFactory->makeInjected<HistoryTalkableComboBox>(queryFormWidget);
 	SelectSmsRecipient->setAllLabel(tr(" - All recipients - "));
 	SelectSmsRecipient->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	SelectSmsRecipient->setEnabled(false);
@@ -170,7 +170,7 @@ void SearchTab::createGui()
 
 	connect(searchButton, SIGNAL(clicked()), this, SLOT(performSearch()));
 
-	TimelineView = m_injectedFactory->makeInjected<TimelineChatMessagesView>(Splitter);
+	TimelineView = m_historyInjectedFactory->makeInjected<TimelineChatMessagesView>(Splitter);
 	TimelineView->setTalkableVisible(true);
 	TimelineView->setTitleVisible(true);
 	TimelineView->setLengthHeader(tr("Found"));

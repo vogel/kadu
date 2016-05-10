@@ -34,7 +34,7 @@ class HistoryMessagesTab;
 class HistoryStorage;
 class History;
 class IconsManager;
-class InjectedFactory;
+class HistoryInjectedFactory;
 class SearchTab;
 class SessionService;
 
@@ -51,7 +51,7 @@ class HistoryWindow : public QWidget
 	QPointer<Configuration> m_configuration;
 	QPointer<History> m_history;
 	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<HistoryInjectedFactory> m_historyInjectedFactory;
 	QPointer<SessionService> m_sessionService;
 
 	QTabWidget *TabWidget;
@@ -68,7 +68,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setHistory(History *history);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory);
 	INJEQT_SET void setSessionService(SessionService *sessionService);
 	INJEQT_INIT void init();
 

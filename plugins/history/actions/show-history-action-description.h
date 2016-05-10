@@ -31,7 +31,6 @@
 class BuddyChatManager;
 class HistoryWindowService;
 class History;
-class InjectedFactory;
 
 class HISTORYAPI ShowHistoryActionDescription : public ActionDescription
 {

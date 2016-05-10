@@ -28,7 +28,7 @@ class Chat;
 class Configuration;
 class HistoryWindow;
 class History;
-class InjectedFactory;
+class HistoryInjectedFactory;
 
 class HistoryWindowService : public QObject
 {
@@ -45,12 +45,12 @@ private:
 	QPointer<Configuration> m_configuration;
 	QPointer<HistoryWindow> m_historyWindow;
 	QPointer<History> m_history;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<HistoryInjectedFactory> m_historyInjectedFactory;
 
 private slots:
 	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setHistory(History *history);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory);
 
 };
