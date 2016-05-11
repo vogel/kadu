@@ -22,6 +22,8 @@
 
 #include "misc/memory.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
+#include "plugin/plugin-injected-factory-module.h"
+#include "plugin/plugin-injected-factory.h"
 #include "plugin/plugin-injector-provider.h"
 #include "plugin/plugin-modules-factory.h"
 #include "injeqt-type-roles.h"
@@ -79,7 +81,12 @@ injeqt::injector PluginLoader::createPluginInjector(const QString &pluginName, P
 		{
 			auto parentInjectorName = pluginModulesFactory->parentInjectorName();
 			auto parentInjector = &pluginInjectorProvider->injector(parentInjectorName);
-			return injeqt::injector{std::vector<injeqt::injector *>{parentInjector}, pluginModulesFactory->createPluginModules()};
+			auto pluginModules = pluginModulesFactory->createPluginModules();
+			if (parentInjectorName.isEmpty())
+				pluginModules.emplace_back(make_unique<PluginInjectedFactoryModule>());
+			auto injector = injeqt::injector{std::vector<injeqt::injector *>{parentInjector}, std::move(pluginModules)};
+			injector.get<PluginInjectedFactory>()->setPluginName(pluginName);
+			return injector;
 		}
 		else
 			return injeqt::injector{};

@@ -17,25 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "history-injected-factory.h"
+#include "plugin-injected-factory.h"
 
 #include "plugin/plugin-injector-provider.h"
 
-HistoryInjectedFactory::HistoryInjectedFactory(QObject *parent) :
+PluginInjectedFactory::PluginInjectedFactory(QObject *parent) :
 		QObject{parent}
 {
 }
 
-HistoryInjectedFactory::~HistoryInjectedFactory()
+PluginInjectedFactory::~PluginInjectedFactory()
 {
 }
 
-void HistoryInjectedFactory::setPluginInjectorProvider(PluginInjectorProvider *pluginInjectorProvider)
+void PluginInjectedFactory::setPluginInjectorProvider(PluginInjectorProvider *pluginInjectorProvider)
 {
 	m_pluginInjectorProvider = pluginInjectorProvider;
 }
 
-void HistoryInjectedFactory::injectInto(QObject *object)
+void PluginInjectedFactory::setPluginName(QString pluginName)
 {
-	m_pluginInjectorProvider->injector("history").inject_into(object);
+	m_pluginName = std::move(pluginName);
+}
+
+void PluginInjectedFactory::injectInto(QObject *object)
+{
+	m_pluginInjectorProvider->injector(m_pluginName).inject_into(object);
 }

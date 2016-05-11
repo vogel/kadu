@@ -31,11 +31,11 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "plugin/plugin-injected-factory.h"
 #include "message/sorted-messages.h"
 
 #include "gui/windows/history-window-service.h"
 #include "gui/windows/history-window.h"
-#include "history-injected-factory.h"
 #include "history-messages-prepender.h"
 #include "history-query.h"
 #include "history.h"

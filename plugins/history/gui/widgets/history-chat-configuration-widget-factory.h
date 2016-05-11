@@ -26,7 +26,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class HistoryInjectedFactory;
+class PluginInjectedFactory;
 
 class HistoryChatConfigurationWidgetFactory : public QObject, public ChatConfigurationWidgetFactory
 {
@@ -39,9 +39,9 @@ public:
 	virtual ChatConfigurationWidget * createWidget(const Chat &chat, QWidget *parent);
 
 private:
-	QPointer<HistoryInjectedFactory> m_historyInjectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 private slots:
-	INJEQT_SET void setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 
 };

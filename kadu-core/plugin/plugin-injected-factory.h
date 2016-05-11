@@ -19,9 +19,8 @@
 
 #pragma once
 
-#include "history-exports.h"
-
 #include "misc/memory.h"
+#include "exports.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -29,13 +28,15 @@
 
 class PluginInjectorProvider;
 
-class HISTORYAPI HistoryInjectedFactory : public QObject
+class KADUAPI PluginInjectedFactory : public QObject
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit HistoryInjectedFactory(QObject *parent = nullptr);
-	virtual ~HistoryInjectedFactory();
+	Q_INVOKABLE explicit PluginInjectedFactory(QObject *parent = nullptr);
+	virtual ~PluginInjectedFactory();
+
+	void setPluginName(QString pluginName);
 
 	template<typename T, typename ...Args>
 	T * makeInjected(Args&& ...args)
@@ -71,6 +72,8 @@ public:
 
 private:
 	QPointer<PluginInjectorProvider> m_pluginInjectorProvider;
+
+	QString m_pluginName;
 
 	void injectInto(QObject *object);
 

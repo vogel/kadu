@@ -20,10 +20,10 @@
 #include "history-window-service.h"
 
 #include "gui/windows/history-window.h"
-#include "history-injected-factory.h"
 #include "history.h"
 
 #include "chat/buddy-chat-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "activate.h"
 
 HistoryWindowService::HistoryWindowService(QObject *parent) :
@@ -50,9 +50,9 @@ void HistoryWindowService::setHistory(History *history)
 	m_history = history;
 }
 
-void HistoryWindowService::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
+void HistoryWindowService::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_historyInjectedFactory = historyInjectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void HistoryWindowService::show(const Chat &chat)
@@ -62,7 +62,7 @@ void HistoryWindowService::show(const Chat &chat)
 		buddyChat = chat;
 
 	if (!m_historyWindow)
-		m_historyWindow = m_historyInjectedFactory->makeInjected<HistoryWindow>();
+		m_historyWindow = m_pluginInjectedFactory->makeInjected<HistoryWindow>();
 
 	m_historyWindow->updateData();
 	m_historyWindow->selectChat(buddyChat);

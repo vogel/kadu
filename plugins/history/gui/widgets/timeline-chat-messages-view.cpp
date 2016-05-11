@@ -23,7 +23,6 @@
 
 #include "model/history-query-results-model.h"
 #include "model/history-query-results-proxy-model.h"
-#include "history-injected-factory.h"
 #include "history-query-result.h"
 
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
@@ -39,6 +38,7 @@
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"
 #include "model/roles.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QSplitter>
@@ -59,9 +59,9 @@ TimelineChatMessagesView::~TimelineChatMessagesView()
 {
 }
 
-void TimelineChatMessagesView::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
+void TimelineChatMessagesView::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_historyInjectedFactory = historyInjectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void TimelineChatMessagesView::setMessageManager(MessageManager *messageManager)
@@ -77,7 +77,7 @@ void TimelineChatMessagesView::setWebkitMessagesViewFactory(WebkitMessagesViewFa
 
 void TimelineChatMessagesView::init()
 {
-	ResultsModel = m_historyInjectedFactory->makeInjected<HistoryQueryResultsModel>(this);
+	ResultsModel = m_pluginInjectedFactory->makeInjected<HistoryQueryResultsModel>(this);
 	ResultsProxyModel = new HistoryQueryResultsProxyModel(ResultsModel);
 	ResultsProxyModel->setSourceModel(ResultsModel);
 
@@ -290,7 +290,7 @@ void TimelineChatMessagesView::hideTimelineWaitOverlay()
 void TimelineChatMessagesView::showMessagesViewWaitOverlay()
 {
 	if (!MessagesViewWaitOverlay)
-		MessagesViewWaitOverlay = m_historyInjectedFactory->makeInjected<WaitOverlay>(MessagesView.get());
+		MessagesViewWaitOverlay = m_pluginInjectedFactory->makeInjected<WaitOverlay>(MessagesView.get());
 	else
 		MessagesViewWaitOverlay->show();
 }

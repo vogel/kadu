@@ -26,7 +26,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class HistoryInjectedFactory;
+class PluginInjectedFactory;
 
 class HistoryBuddyConfigurationWidgetFactory : public QObject, public BuddyConfigurationWidgetFactory
 {
@@ -39,9 +39,9 @@ public:
 	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent);
 
 private:
-	QPointer<HistoryInjectedFactory> m_historyInjectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 private slots:
-	INJEQT_SET void setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 
 };

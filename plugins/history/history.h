@@ -58,7 +58,7 @@ class ChatWidgetRepository;
 class Configuration;
 class HistorySaveThread;
 class HistoryWindow;
-class HistoryInjectedFactory;
+class PluginInjectedFactory;
 class MenuInventory;
 class MessageManager;
 class Myself;
@@ -73,7 +73,7 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
-	QPointer<HistoryInjectedFactory> m_historyInjectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<Myself> m_myself;
 	QPointer<ShowHistoryActionDescription> m_showHistoryActionDescription;
@@ -124,7 +124,7 @@ private slots:
 	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setMyself(Myself *myself);

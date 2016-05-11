@@ -29,7 +29,7 @@ class QAction;
 
 class BuddyListModel;
 class ChatListModel;
-class HistoryInjectedFactory;
+class PluginInjectedFactory;
 
 /**
  * @addtogroup History
@@ -50,7 +50,7 @@ class HistoryTalkableComboBox : public SelectTalkableComboBox
 {
 	Q_OBJECT
 
-	QPointer<HistoryInjectedFactory> m_historyInjectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	QFutureWatcher<QVector<Talkable> > *TalkablesFutureWatcher;
 
@@ -59,7 +59,7 @@ class HistoryTalkableComboBox : public SelectTalkableComboBox
 	BuddyListModel *BuddiesModel;
 
 private slots:
-	INJEQT_SET void setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_INIT void init();
 
 	void futureTalkablesAvailable();

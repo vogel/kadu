@@ -46,6 +46,7 @@
 #include "message/sorted-messages.h"
 #include "model/merged-proxy-model-factory.h"
 #include "model/model-chain.h"
+#include "plugin/plugin-injected-factory.h"
 #include "talkable/filter/hide-temporary-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
@@ -53,7 +54,6 @@
 
 #include "storage/history-messages-storage.h"
 #include "chats-buddies-splitter.h"
-#include "history-injected-factory.h"
 #include "history-query-result.h"
 #include "history-query.h"
 
@@ -79,9 +79,9 @@ void HistoryMessagesTab::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void HistoryMessagesTab::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
+void HistoryMessagesTab::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_historyInjectedFactory = historyInjectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void HistoryMessagesTab::setMenuInventory(MenuInventory *menuInventory)
@@ -111,11 +111,11 @@ void HistoryMessagesTab::createGui()
 
 	Splitter = new QSplitter(Qt::Horizontal, this);
 
-	FilteredView = m_historyInjectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtTop, Splitter);
+	FilteredView = m_pluginInjectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtTop, Splitter);
 	FilteredView->filterWidget()->setAutoVisibility(false);
 	FilteredView->filterWidget()->setLabel(tr("Filter") + ":");
 
-	TalkableTree = m_historyInjectedFactory->makeInjected<TalkableTreeView>(FilteredView);
+	TalkableTree = m_pluginInjectedFactory->makeInjected<TalkableTreeView>(FilteredView);
 	TalkableTree->setAlternatingRowColors(true);
 	TalkableTree->setContextMenuEnabled(true);
 	TalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -134,7 +134,7 @@ void HistoryMessagesTab::createGui()
 
 	FilteredView->setView(TalkableTree);
 
-	TimelineView = m_historyInjectedFactory->makeInjected<TimelineChatMessagesView>(Splitter);
+	TimelineView = m_pluginInjectedFactory->makeInjected<TimelineChatMessagesView>(Splitter);
 	TimelineView->searchBar()->setAutoVisibility(false);
 	TimelineView->searchBar()->setSearchWidget(this);
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -154,8 +154,8 @@ void HistoryMessagesTab::createGui()
 
 void HistoryMessagesTab::createModelChain()
 {
-	ChatsModel = m_historyInjectedFactory->makeInjected<ChatListModel>(TalkableTree);
-	BuddiesModel = m_historyInjectedFactory->makeInjected<BuddyListModel>(TalkableTree);
+	ChatsModel = m_pluginInjectedFactory->makeInjected<ChatListModel>(TalkableTree);
+	BuddiesModel = m_pluginInjectedFactory->makeInjected<BuddyListModel>(TalkableTree);
 
 	QList<KaduAbstractModel *> models;
 	models.append(ChatsModel);
@@ -164,7 +164,7 @@ void HistoryMessagesTab::createModelChain()
 	Chain = new ModelChain(TalkableTree);
 	Chain->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(models, Chain));
 
-	TalkableProxyModel *proxyModel = m_historyInjectedFactory->makeInjected<TalkableProxyModel>(Chain);
+	TalkableProxyModel *proxyModel = m_pluginInjectedFactory->makeInjected<TalkableProxyModel>(Chain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 
 	proxyModel->addFilter(new HideTemporaryTalkableFilter(proxyModel));
@@ -217,7 +217,7 @@ ModelChain * HistoryMessagesTab::modelChain() const
 void HistoryMessagesTab::showTabWaitOverlay()
 {
 	if (!TabWaitOverlay)
-		TabWaitOverlay = m_historyInjectedFactory->makeInjected<WaitOverlay>(this);
+		TabWaitOverlay = m_pluginInjectedFactory->makeInjected<WaitOverlay>(this);
 	else
 		TabWaitOverlay->show();
 }
@@ -239,7 +239,7 @@ TimelineChatMessagesView * HistoryMessagesTab::timelineView() const
 
 void HistoryMessagesTab::setTalkables(const QVector<Talkable> &talkables)
 {
-	auto chatsBuddies = m_historyInjectedFactory->makeUnique<ChatsBuddiesSplitter>(talkables);
+	auto chatsBuddies = m_pluginInjectedFactory->makeUnique<ChatsBuddiesSplitter>(talkables);
 
 	ChatsModel->setChats(chatsBuddies->chats().toList().toVector());
 	BuddiesModel->setBuddyList(chatsBuddies->buddies().toList());

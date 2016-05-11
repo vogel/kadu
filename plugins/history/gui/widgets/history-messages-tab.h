@@ -41,7 +41,7 @@ class FilteredTreeView;
 class HistoryQueryResult;
 class HistoryMessagesStorage;
 class IconsManager;
-class HistoryInjectedFactory;
+class PluginInjectedFactory;
 class MenuInventory;
 class Message;
 class ModelChain;
@@ -71,7 +71,7 @@ class HistoryMessagesTab : public HistoryTab
 
 	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<IconsManager> m_iconsManager;
-	QPointer<HistoryInjectedFactory> m_historyInjectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<TalkableConverter> m_talkableConverter;
 
@@ -100,7 +100,7 @@ class HistoryMessagesTab : public HistoryTab
 private slots:
 	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 	INJEQT_INIT void init();

@@ -30,12 +30,12 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "os/generic/window-geometry-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "activate.h"
 
 #include "gui/widgets/chat-history-tab.h"
 #include "gui/widgets/search-tab.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
-#include "history-injected-factory.h"
 #include "history.h"
 
 #include "history-window.h"
@@ -65,9 +65,9 @@ void HistoryWindow::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void HistoryWindow::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
+void HistoryWindow::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_historyInjectedFactory = historyInjectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void HistoryWindow::setSessionService(SessionService *sessionService)
@@ -103,17 +103,17 @@ void HistoryWindow::createGui()
 	connect(TabWidget, SIGNAL(currentChanged(int)),
 			this, SLOT(currentTabChanged(int)));
 
-	ChatTab = m_historyInjectedFactory->makeInjected<ChatHistoryTab>(TabWidget);
+	ChatTab = m_pluginInjectedFactory->makeInjected<ChatHistoryTab>(TabWidget);
 
-	StatusTab = m_historyInjectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
+	StatusTab = m_pluginInjectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
 	StatusTab->timelineView()->setTalkableVisible(false);
 	StatusTab->setClearHistoryMenuItemTitle(tr("&Clear Status History"));
 
-	SmsTab = m_historyInjectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
+	SmsTab = m_pluginInjectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
 	SmsTab->timelineView()->setTalkableVisible(false);
 	SmsTab->setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
 
-	MySearchTab = m_historyInjectedFactory->makeInjected<SearchTab>(TabWidget);
+	MySearchTab = m_pluginInjectedFactory->makeInjected<SearchTab>(TabWidget);
 
 	TabWidget->addTab(ChatTab, tr("Chats"));
 	TabWidget->addTab(StatusTab, tr("Statuses"));

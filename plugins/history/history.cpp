@@ -50,12 +50,12 @@
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "message/sorted-messages.h"
+#include "plugin/plugin-injected-factory.h"
 #include "protocols/services/chat-service.h"
 #include "debug.h"
 
 #include "actions/show-history-action-description.h"
 #include "gui/windows/history-window.h"
-#include "history-injected-factory.h"
 #include "history-messages-prepender.h"
 #include "history-query.h"
 #include "history-save-thread.h"
@@ -120,9 +120,9 @@ void History::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void History::setHistoryInjectedFactory(HistoryInjectedFactory *historyInjectedFactory)
+void History::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_historyInjectedFactory = historyInjectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void History::setMenuInventory(MenuInventory *menuInventory)
@@ -180,7 +180,7 @@ void History::createActionDescriptions()
 	// The last ActionDescription will send actionLoaded() signal.
 	m_actions->unblockSignals();
 
-	ClearHistoryActionDescription = m_historyInjectedFactory->makeInjected<ActionDescription>(this,
+	ClearHistoryActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "clearHistoryAction",
 		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/clear-history"), tr("Clear History"), false,
