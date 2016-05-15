@@ -182,7 +182,7 @@ void HintsWidget::hintDestroyed(Hint *hint)
 
 void HintsWidget::updateHints()
 {
-	if (m_layout->count() >= 0)
+	if (m_layout->count() > 0)
 	{
 		adjustSize();
 		show();
