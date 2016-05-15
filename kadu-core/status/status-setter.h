@@ -21,6 +21,7 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "status/status-container-aware-object.h"
+#include "exports.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -48,7 +49,7 @@ class Status;
  *
  * StatusSetter also allows receiving originally statused (not modified) by manuallySetStatus method.
  */
-class StatusSetter : public QObject, private StatusContainerAwareObject, private ConfigurationAwareObject
+class KADUAPI StatusSetter : public QObject, private StatusContainerAwareObject, private ConfigurationAwareObject
 {
 	Q_OBJECT
 

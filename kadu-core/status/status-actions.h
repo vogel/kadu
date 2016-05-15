@@ -24,6 +24,7 @@
 #pragma once
 
 #include "status/status-type.h"
+#include "exports.h"
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
@@ -40,15 +41,16 @@ class StatusTypeManager;
 class QAction;
 class QActionGroup;
 
-class StatusActions : public QObject
+class KADUAPI StatusActions : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit StatusActions(StatusContainer *statusContainer, bool includePrefix, QObject *parent);
+	explicit StatusActions(StatusContainer *statusContainer, bool includePrefix, bool onlyStatuses, QObject *parent = nullptr);
 	virtual ~StatusActions();
 
 	const QList<QAction *> & actions() const { return Actions; }
+	StatusContainer * statusContainer() const { return MyStatusContainer; }
 
 signals:
 	void statusActionsRecreated();
@@ -64,6 +66,7 @@ private:
 
 	StatusContainer *MyStatusContainer;
 	bool IncludePrefix;
+	bool OnlyStatuses;
 
 	QActionGroup *ChangeStatusActionGroup;
 	QAction *ChangeDescription;

@@ -39,8 +39,8 @@
 
 #include <QtWidgets/QAction>
 
-StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefix, QObject *parent) :
-		QObject(parent), MyStatusContainer(statusContainer), IncludePrefix(includePrefix), ChangeDescription(0)
+StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefix, bool onlyStatuses, QObject *parent) :
+		QObject(parent), MyStatusContainer(statusContainer), IncludePrefix(includePrefix), OnlyStatuses{onlyStatuses}, ChangeDescription(0)
 {
 }
 
@@ -100,15 +100,18 @@ void StatusActions::createActions()
 
 		if (!setDescriptionAdded && typeData.typeGroup() == StatusTypeGroupOffline)
 		{
-			if (!Actions.isEmpty())
+			if (!OnlyStatuses && !Actions.isEmpty())
+			{
 				Actions.append(createSeparator());
-			Actions.append(ChangeDescription);
-			setDescriptionAdded = true;
+				Actions.append(ChangeDescription);
+				setDescriptionAdded = true;
+			}
 		}
 
 		if (typeData.typeGroup() != currentGroup)
 		{
-			Actions.append(createSeparator());
+			if (!OnlyStatuses)
+				Actions.append(createSeparator());
 			currentGroup = typeData.typeGroup();
 		}
 

@@ -20,10 +20,14 @@
 #include "windows-integration.h"
 
 #include "windows-taskbar-progress.h"
+#include "windows-thumbnail-toolbar.h"
 
+#include "core/injected-factory.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/windows/main-window-repository.h"
 #include "misc/memory.h"
+#include "status/status-actions.h"
+#include "status/status-container-manager.h"
 
 #include <QtWidgets/QWidget>
 
@@ -41,10 +45,20 @@ void WindowsIntegration::setFileTransferManager(FileTransferManager *fileTransfe
 	m_fileTransferManager = fileTransferManager;
 }
 
+void WindowsIntegration::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void WindowsIntegration::setMainWindowRepository(MainWindowRepository *mainWindowRepository)
 {
 	m_mainWindowRepository = mainWindowRepository;
 	connect(m_mainWindowRepository, &MainWindowRepository::mainWindowAdded, this, &WindowsIntegration::mainWindowAdded);
+}
+
+void WindowsIntegration::setStatusContainerManager(StatusContainerManager *statusContainerManager)
+{
+	m_statusContainerManager = statusContainerManager;
 }
 
 void WindowsIntegration::init()
@@ -56,6 +70,9 @@ void WindowsIntegration::init()
 void WindowsIntegration::mainWindowAdded(QWidget *mainWindow)
 {
 	make_owned<WindowsTaskbarProgress>(m_fileTransferManager, mainWindow->window());
+
+	auto statusActions = m_injectedFactory->makeNotOwned<StatusActions>(m_statusContainerManager, false, true, nullptr);
+	m_injectedFactory->makeOwned<WindowsThumbnailToolbar>(std::move(statusActions), mainWindow->window());
 }
 
 #include "moc_windows-integration.cpp"

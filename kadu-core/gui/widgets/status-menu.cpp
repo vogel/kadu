@@ -75,7 +75,7 @@ void StatusMenu::setWindowManager(WindowManager *windowManager)
 
 void StatusMenu::init()
 {
-	Actions = m_injectedFactory->makeInjected<StatusActions>(Container, m_includePrefix, this);
+	Actions = m_injectedFactory->makeInjected<StatusActions>(Container, m_includePrefix, false, this);
 
 	connect(Actions, SIGNAL(statusActionsRecreated()), this, SLOT(addStatusActions()));
 	connect(Actions, SIGNAL(statusActionsRecreated()), this, SIGNAL(menuRecreated()));

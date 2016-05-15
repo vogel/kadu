@@ -10,6 +10,7 @@ set (SOURCES
 	windows-integration-plugin-object.cpp
 	windows-integration.cpp
 	windows-taskbar-progress.cpp
+	windows-thumbnail-toolbar.cpp
 )
 
 kadu_plugin (windows_integration
