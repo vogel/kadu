@@ -28,7 +28,6 @@
 
 class StatusActions;
 class StatusSetter;
-class StatusTypeManager;
 
 class QAction;
 class QWidget;
@@ -44,7 +43,6 @@ public:
 
 private:
 	QPointer<StatusSetter> m_statusSetter;
-	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	not_owned_qptr<StatusActions> m_statusActions;
 	owned_qptr<QWinThumbnailToolBar> m_toolbar;
@@ -54,6 +52,5 @@ private:
 
 private slots:
 	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 };

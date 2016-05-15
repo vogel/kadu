@@ -22,7 +22,6 @@
 #include "status/status-actions.h"
 #include "status/status-container.h"
 #include "status/status-setter.h"
-#include "status/status-type-manager.h"
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QWidget>
@@ -51,11 +50,6 @@ void WindowsThumbnailToolbar::setStatusSetter(StatusSetter *statusSetter)
 	m_statusSetter = statusSetter;
 }
 
-void WindowsThumbnailToolbar::setStatusTypeManager(StatusTypeManager *statusTypeManager)
-{
-	m_statusTypeManager = statusTypeManager;
-}
-
 void WindowsThumbnailToolbar::statusActionsRecreated()
 {
 	m_toolbar->clear();
@@ -78,7 +72,7 @@ void WindowsThumbnailToolbar::changeStatus(QAction *action)
 	for (auto &&container : m_statusActions->statusContainer()->subStatusContainers())
 	{
 		auto status = Status{m_statusSetter->manuallySetStatus(container)};
-		status.setType(m_statusTypeManager, statusType);
+		status.setType(statusType);
 
 		m_statusSetter->setStatusManually(container, status);
 		container->storeStatus(status);
