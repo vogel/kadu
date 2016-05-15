@@ -48,7 +48,6 @@ class Protocol;
 class RosterTask;
 class StatusContainer;
 class StatusSetter;
-class StatusTypeManager;
 
 class KADUAPI AccountShared : public Shared
 {
@@ -64,7 +63,6 @@ class KADUAPI AccountShared : public Shared
 	QPointer<NetworkProxyManager> m_networkProxyManager;
 	QPointer<ProtocolsManager> m_protocolsManager;
 	QPointer<StatusSetter> m_statusSetter;
-	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	QString ProtocolName;
 	Protocol *ProtocolHandler;
@@ -106,7 +104,6 @@ private slots:
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
 	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
 	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
 
 	void protocolRegistered(ProtocolFactory *protocolHandler);

@@ -30,7 +30,6 @@
 class BuddyStorage;
 class ContactStorage;
 class GaduConnection;
-class StatusTypeManager;
 
 class GaduSearchService : public SearchService
 {
@@ -39,7 +38,6 @@ class GaduSearchService : public SearchService
 	QPointer<BuddyStorage> m_buddyStorage;
 	QPointer<ContactStorage> m_contactStorage;
 	QPointer<GaduConnection> Connection;
-	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	QPointer<BuddySearchCriteria> Query;
 
@@ -53,7 +51,6 @@ class GaduSearchService : public SearchService
 private slots:
 	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 public:
 	explicit GaduSearchService(Account account, QObject *parent = nullptr);

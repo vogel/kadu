@@ -45,12 +45,12 @@ JabberProtocolFactory::JabberProtocolFactory(QObject *parent) :
 	m_statusAdapter = make_unique<JabberStatusAdapter>();
 
 	// already sorted
-	m_supportedStatusTypes.append(StatusTypeFreeForChat);
-	m_supportedStatusTypes.append(StatusTypeOnline);
-	m_supportedStatusTypes.append(StatusTypeAway);
-	m_supportedStatusTypes.append(StatusTypeNotAvailable);
-	m_supportedStatusTypes.append(StatusTypeDoNotDisturb);
-	m_supportedStatusTypes.append(StatusTypeOffline);
+	m_supportedStatusTypes.append(StatusType::FreeForChat);
+	m_supportedStatusTypes.append(StatusType::Online);
+	m_supportedStatusTypes.append(StatusType::Away);
+	m_supportedStatusTypes.append(StatusType::NotAvailable);
+	m_supportedStatusTypes.append(StatusType::DoNotDisturb);
+	m_supportedStatusTypes.append(StatusType::Offline);
 }
 
 JabberProtocolFactory::~JabberProtocolFactory()

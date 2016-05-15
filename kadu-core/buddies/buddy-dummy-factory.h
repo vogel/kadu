@@ -34,7 +34,6 @@ class ContactStorage;
 class IconsManager;
 class IdentityStorage;
 class InjectedFactory;
-class StatusTypeManager;
 class StoragePoint;
 
 class KADUAPI BuddyDummyFactory : public QObject
@@ -55,7 +54,6 @@ private:
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<IdentityStorage> m_identityStorage;
 	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<StatusTypeManager> m_statusTypeManager;
 
 private slots:
 	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
@@ -65,6 +63,5 @@ private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setIdentityStorage(IdentityStorage *identityStorage);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 };

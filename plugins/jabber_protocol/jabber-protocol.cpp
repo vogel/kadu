@@ -291,7 +291,7 @@ void JabberProtocol::connectedToServer()
 void JabberProtocol::logout()
 {
 	auto logoutStatus = status();
-	logoutStatus.setType(statusTypeManager(), StatusTypeOffline);
+	logoutStatus.setType(StatusType::Offline);
 	m_client->setClientPresence(m_presenceService->statusToPresence(logoutStatus));
 	m_client->disconnectFromServer();
 
@@ -386,7 +386,7 @@ void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 		return;
 
 	auto status = m_presenceService->presenceToStatus(presence);
-	if (status.type() != StatusTypeOffline)
+	if (status.type() != StatusType::Offline)
 	{
 		auto jabberResource = JabberResource{jid, presence.priority(), status};
 		m_resourceService->updateResource(jabberResource);

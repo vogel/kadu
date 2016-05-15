@@ -38,7 +38,6 @@ class InjectedFactory;
 class StatusActions;
 class StatusContainer;
 class StatusSetter;
-class StatusTypeManager;
 class StatusWindowService;
 class WindowManager;
 
@@ -49,7 +48,6 @@ class KADUAPI StatusMenu : public QObject
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<StatusSetter> m_statusSetter;
 	QPointer<StatusWindowService> m_statusWindowService;
-	QPointer<StatusTypeManager> m_statusTypeManager;
 	QPointer<WindowManager> m_windowManager;
 
 	QMenu *Menu;
@@ -63,7 +61,6 @@ class KADUAPI StatusMenu : public QObject
 private slots:
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_SET void setStatusWindowService(StatusWindowService *statusWindowService);
 	INJEQT_SET void setWindowManager(WindowManager *windowManager);
 	INJEQT_INIT void init();

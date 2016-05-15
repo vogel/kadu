@@ -31,7 +31,6 @@
 #include "icons/kadu-icon.h"
 #include "identities/identity-storage.h"
 #include "identities/identity.h"
-#include "status/status-type-manager.h"
 
 #include <QtWidgets/QApplication>
 
@@ -79,11 +78,6 @@ void BuddyDummyFactory::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
-void BuddyDummyFactory::setStatusTypeManager(StatusTypeManager *statusTypeManager)
-{
-	m_statusTypeManager = statusTypeManager;
-}
-
 Buddy BuddyDummyFactory::dummy()
 {
 	auto example = m_buddyStorage->create();
@@ -105,7 +99,7 @@ Buddy BuddyDummyFactory::dummy()
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(example);
 	contact.setId("999999");
-	contact.setCurrentStatus(Status(m_statusTypeManager, StatusTypeAway, QApplication::translate("Buddy", "Example description")));
+	contact.setCurrentStatus(Status(StatusType::Away, QApplication::translate("Buddy", "Example description")));
 
 	// this is just an example contact, do not add avatar to list
 	auto avatar = m_avatarManager->byContact(contact, ActionCreate);

@@ -38,6 +38,7 @@ class Message;
 class MessageManager;
 class SilentModeService;
 class SortedMessages;
+class StatusTypeManager;
 class UnreadMessageRepository;
 
 /**
@@ -77,6 +78,7 @@ private:
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<SilentModeService> m_silentModeService;
+	QPointer<StatusTypeManager> m_statusTypeManager;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	ChatWidgetMessageHandlerConfiguration m_chatWidgetMessageHandlerConfiguration;
@@ -94,6 +96,7 @@ private slots:
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 	INJEQT_INIT void init();
 

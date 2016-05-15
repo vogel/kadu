@@ -217,7 +217,7 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 
 bool StatusContainerManager::allStatusOfType(StatusType type)
 {
-	if (StatusTypeNone == type)
+	if (StatusType::None == type)
 		return false;
 
 	foreach (StatusContainer *container, StatusContainers)
@@ -259,7 +259,7 @@ KaduIcon StatusContainerManager::statusIcon()
 KaduIcon StatusContainerManager::statusIcon(const Status &status)
 {
 	if (!DefaultStatusContainer)
-		return m_statusTypeManager->statusIcon("common", Status{m_statusTypeManager, StatusTypeOffline});
+		return m_statusTypeManager->statusIcon("common", Status{StatusType::Offline});
 
 	return m_statusTypeManager->statusIcon("common", status);
 }

@@ -234,18 +234,18 @@ void StatusWindow::createLayout()
 void StatusWindow::setupStatusSelect()
 {
 	StatusType commonStatusType = findCommonStatusType(Container->subStatusContainers());
-	if (commonStatusType == StatusTypeNone)
-		StatusSelect->addItem(tr("do not change"), QVariant(StatusTypeNone));
+	if (commonStatusType == StatusType::None)
+		StatusSelect->addItem(tr("do not change"), QVariant(static_cast<int>(StatusType::None)));
 
 	foreach (StatusType statusType, Container->supportedStatusTypes())
 	{
-		if (StatusTypeNone == statusType)
+		if (StatusType::None == statusType)
 			continue;
 		const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(statusType);
-		StatusSelect->addItem(m_iconsManager->iconByPath(Container->statusIcon(Status{m_statusTypeManager, typeData.type()})), typeData.displayName(), QVariant(typeData.type()));
+		StatusSelect->addItem(m_iconsManager->iconByPath(Container->statusIcon(Status{typeData.type()})), typeData.displayName(), QVariant(static_cast<int>(typeData.type())));
 	}
 
-	StatusSelect->setCurrentIndex(StatusSelect->findData(QVariant(commonStatusType)));
+	StatusSelect->setCurrentIndex(StatusSelect->findData(QVariant(static_cast<int>(commonStatusType))));
 }
 
 void StatusWindow::setupDescriptionSelect(const QString &description)
@@ -284,15 +284,15 @@ QSize StatusWindow::sizeHint() const
 
 StatusType StatusWindow::findCommonStatusType(const QList<StatusContainer *> &containers)
 {
-	StatusType commonStatusType = StatusTypeNone;
+	StatusType commonStatusType = StatusType::None;
 	foreach (StatusContainer *container, containers)
 	{
 		StatusType statusType = container->status().type();
-		if (commonStatusType == StatusTypeNone)
+		if (commonStatusType == StatusType::None)
 			commonStatusType = statusType;
 		else if (commonStatusType != statusType)
 		{
-			commonStatusType = StatusTypeNone;
+			commonStatusType = StatusType::None;
 			break;
 		}
 	}
@@ -315,8 +315,8 @@ void StatusWindow::applyStatus()
 		status.setDescription(description);
 
 		StatusType statusType = static_cast<StatusType>(StatusSelect->itemData(StatusSelect->currentIndex()).toInt());
-		if (statusType != StatusTypeNone)
-			status.setType(m_statusTypeManager, statusType);
+		if (statusType != StatusType::None)
+			status.setType(statusType);
 
 		m_statusSetter->setStatusManually(container, status);
 		container->storeStatus(status);

@@ -24,6 +24,8 @@
 #include "status-notifier-item.h"
 
 #include "status/status-container-manager.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
 
 DockingTooltipHandler::DockingTooltipHandler(QObject *parent) :
 		QObject{parent}
@@ -49,6 +51,11 @@ void DockingTooltipHandler::setStatusNotifierItem(StatusNotifierItem *statusNoti
 	m_statusNotifierItem = statusNotifierItem;
 }
 
+void DockingTooltipHandler::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
 void DockingTooltipHandler::init()
 {
 	connect(m_dockingConfigurationProvider, SIGNAL(updated()), this, SLOT(updateTooltip()));
@@ -68,7 +75,7 @@ QString DockingTooltipHandler::tooltip() const
 		return {};
 
 	auto status = m_statusContainerManager->status();
-	auto result = status.displayName();
+	auto result = m_statusTypeManager->statusTypeData(status.type()).displayName();
 	if (!status.description().isEmpty())
 	{
 		result += "\n";

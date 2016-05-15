@@ -30,6 +30,7 @@
 class DockingConfigurationProvider;
 class StatusContainerManager;
 class StatusNotifierItem;
+class StatusTypeManager;
 
 class DockingTooltipHandler final : public QObject
 {
@@ -47,6 +48,7 @@ private:
 	DockingConfigurationProvider *m_dockingConfigurationProvider;
 	StatusContainerManager *m_statusContainerManager;
 	StatusNotifierItem *m_statusNotifierItem;
+	StatusTypeManager *m_statusTypeManager;
 
 	QString tooltip() const;
 
@@ -54,6 +56,7 @@ private slots:
 	INJEQT_SET void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_SET void setStatusNotifierItem(StatusNotifierItem *statusNotifierItem);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
 
 };

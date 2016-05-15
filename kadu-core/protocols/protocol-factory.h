@@ -47,7 +47,7 @@ class Protocol;
 class ProtocolMenuManager;
 class StoragePoint;
 
-enum StatusType;
+enum class StatusType;
 
 class KADUAPI ProtocolFactory : public QObject
 {

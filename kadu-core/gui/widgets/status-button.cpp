@@ -37,6 +37,9 @@
 #include "protocols/protocol.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-container.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
+
 
 #include "status-button.h"
 
@@ -62,6 +65,11 @@ void StatusButton::setInjectedFactory(InjectedFactory *injectedFactory)
 void StatusButton::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
 {
 	m_statusConfigurationHolder = statusConfigurationHolder;
+}
+
+void StatusButton::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
 }
 
 void StatusButton::init()
@@ -128,7 +136,7 @@ void StatusButton::updateStatus()
 	if (DisplayStatusName)
 	{
 		setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-		setText(MyStatusContainer->status().displayName());
+		setText(m_statusTypeManager->statusTypeData(MyStatusContainer->status().type()).displayName());
 	}
 	else
 	{
@@ -152,7 +160,7 @@ void StatusButton::updateStatus()
 
 	tooltip +=
 		QString("<tr><td align='right' style='font-weight:bold; white-space:nowrap;'>%1:</td><td style='white-space:nowrap;'>%2</td></tr>")
-			.arg(tr("Status"), MyStatusContainer->status().displayName());
+			.arg(tr("Status"), m_statusTypeManager->statusTypeData(MyStatusContainer->status().type()).displayName());
 	tooltip
 		+= QString("<tr><td align='right' style='font-weight:bold; white-space:nowrap;'>%1:</td><td>%2</td></tr>")
 			.arg(tr("Description"), prepareDescription(MyStatusContainer->status().description()));

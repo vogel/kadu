@@ -24,13 +24,9 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class StatusTypeManager;
-
 class AutostatusStatusChanger : public StatusChanger
 {
 	Q_OBJECT
-
-	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	bool Enabled;
 
@@ -40,9 +36,6 @@ class AutostatusStatusChanger : public StatusChanger
 	// 2 - invisible
 	int StatusIndex;
 	QString Description;
-
-private slots:
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 public:
 	Q_INVOKABLE explicit AutostatusStatusChanger(QObject *parent = nullptr);

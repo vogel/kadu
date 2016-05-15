@@ -318,7 +318,7 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
  		return false;
 	}
 
-	if (chat.chatAccount().statusContainer()->status().type() == StatusTypeInvisible && DropAnonymousWhenInvisible)
+	if (chat.chatAccount().statusContainer()->status().type() == StatusType::Invisible && DropAnonymousWhenInvisible)
 	{
 		writeLog(sender, tr("Chat with anonim silently dropped.\n") + "----------------------------------------------------\n");
 

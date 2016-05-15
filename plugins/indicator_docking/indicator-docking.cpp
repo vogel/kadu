@@ -26,7 +26,6 @@
 #include "message/message.h"
 #include "message/unread-message-repository.h"
 #include "status/status-container-manager.h"
-#include "status/status-type-manager.h"
 
 #include <libqmessagingmenu/qmessaging-menu-app.h>
 #include <libqmessagingmenu/qmessaging-menu-source.h>
@@ -69,11 +68,6 @@ void IndicatorDocking::setStatusContainerManager(StatusContainerManager *statusC
 
 	statusContainerUpdated(m_statusContainerManager);
 	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(statusContainerUpdated(StatusContainer*)));
-}
-
-void IndicatorDocking::setStatusTypeManager(StatusTypeManager *statusTypeManager)
-{
-	m_statusTypeManager = statusTypeManager;
 }
 
 void IndicatorDocking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
@@ -127,19 +121,19 @@ void IndicatorDocking::statusChanged(QMessagingMenuStatus status)
 	switch (status)
 	{
 		case QMessagingMenuStatus::Available:
-			currentStatus.setType(m_statusTypeManager, StatusTypeOnline);
+			currentStatus.setType(StatusType::Online);
 			break;
 		case QMessagingMenuStatus::Away:
-			currentStatus.setType(m_statusTypeManager, StatusTypeAway);
+			currentStatus.setType(StatusType::Away);
 			break;
 		case QMessagingMenuStatus::Busy:
-			currentStatus.setType(m_statusTypeManager, StatusTypeDoNotDisturb);
+			currentStatus.setType(StatusType::DoNotDisturb);
 			break;
 		case QMessagingMenuStatus::Invisible:
-			currentStatus.setType(m_statusTypeManager, StatusTypeInvisible);
+			currentStatus.setType(StatusType::Invisible);
 			break;
 		case QMessagingMenuStatus::Offline:
-			currentStatus.setType(m_statusTypeManager, StatusTypeOffline);
+			currentStatus.setType(StatusType::Offline);
 			break;
 	}
 
@@ -150,21 +144,21 @@ void IndicatorDocking::statusContainerUpdated(StatusContainer *statusContainer)
 {
 	switch (statusContainer->status().type())
 	{
-		case StatusTypeFreeForChat:
-		case StatusTypeOnline:
+		case StatusType::FreeForChat:
+		case StatusType::Online:
 			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Available);
 			break;
-		case StatusTypeAway:
+		case StatusType::Away:
 			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Away);
 			break;
-		case StatusTypeNotAvailable:
-		case StatusTypeDoNotDisturb:
+		case StatusType::NotAvailable:
+		case StatusType::DoNotDisturb:
 			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Busy);
 			break;
-		case StatusTypeInvisible:
+		case StatusType::Invisible:
 			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Invisible);
 			break;
-		case StatusTypeOffline:
+		case StatusType::Offline:
 			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Offline);
 			break;
 		default:

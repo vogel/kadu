@@ -19,7 +19,6 @@
 
 #include "jabber-presence-service.h"
 
-#include "status/status-type-manager.h"
 #include "status/status-type.h"
 #include "status/status.h"
 
@@ -34,11 +33,6 @@ JabberPresenceService::~JabberPresenceService()
 {
 }
 
-void JabberPresenceService::setStatusTypeManager(StatusTypeManager *statusTypeManager)
-{
-	m_statusTypeManager = statusTypeManager;
-}
-
 QXmppPresence JabberPresenceService::statusToPresence(const Status &status)
 {
 	auto result = QXmppPresence{};
@@ -47,25 +41,25 @@ QXmppPresence JabberPresenceService::statusToPresence(const Status &status)
 
 	switch (status.type())
 	{
-		case StatusTypeFreeForChat:
+		case StatusType::FreeForChat:
 			result.setAvailableStatusType(QXmppPresence::Chat);
 			break;
-		case StatusTypeOnline:
+		case StatusType::Online:
 			result.setAvailableStatusType(QXmppPresence::Online);
 			break;
-		case StatusTypeAway:
+		case StatusType::Away:
 			result.setAvailableStatusType(QXmppPresence::Away);
 			break;
-		case StatusTypeNotAvailable:
+		case StatusType::NotAvailable:
 			result.setAvailableStatusType(QXmppPresence::XA);
 			break;
-		case StatusTypeDoNotDisturb:
+		case StatusType::DoNotDisturb:
 			result.setAvailableStatusType(QXmppPresence::DND);
 			break;
-		case StatusTypeInvisible:
+		case StatusType::Invisible:
 			result.setAvailableStatusType(QXmppPresence::DND);
 			break;
-		case StatusTypeOffline:
+		case StatusType::Offline:
 		default:
 			result.setType(QXmppPresence::Unavailable);
 			break;
@@ -82,27 +76,27 @@ Status JabberPresenceService::presenceToStatus(const QXmppPresence &presence)
 		switch (presence.availableStatusType())
 		{
 			case QXmppPresence::AvailableStatusType::Online:
-				status.setType(m_statusTypeManager, StatusTypeOnline);
+				status.setType(StatusType::Online);
 				break;
 			case QXmppPresence::AvailableStatusType::Away:
-				status.setType(m_statusTypeManager, StatusTypeAway);
+				status.setType(StatusType::Away);
 				break;
 			case QXmppPresence::AvailableStatusType::XA:
-				status.setType(m_statusTypeManager, StatusTypeNotAvailable);
+				status.setType(StatusType::NotAvailable);
 				break;
 			case QXmppPresence::AvailableStatusType::DND:
-				status.setType(m_statusTypeManager, StatusTypeDoNotDisturb);
+				status.setType(StatusType::DoNotDisturb);
 				break;
 			case QXmppPresence::AvailableStatusType::Chat:
-				status.setType(m_statusTypeManager, StatusTypeFreeForChat);
+				status.setType(StatusType::FreeForChat);
 				break;
 			case QXmppPresence::AvailableStatusType::Invisible:
-				status.setType(m_statusTypeManager, StatusTypeDoNotDisturb);
+				status.setType(StatusType::DoNotDisturb);
 				break;
 		}
 	}
 	else if (presence.type() == QXmppPresence::Unavailable)
-		status.setType(m_statusTypeManager, StatusTypeOffline);
+		status.setType(StatusType::Offline);
 
 	status.setDescription(presence.statusText());
 

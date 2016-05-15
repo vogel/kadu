@@ -85,20 +85,20 @@ void StatusActions::createActions()
 	createBasicActions();
 
 	MyStatusTypes = MyStatusContainer->supportedStatusTypes();
-	StatusTypeGroup currentGroup = StatusTypeGroupNone;
+	StatusTypeGroup currentGroup = StatusTypeGroup::None;
 	bool setDescriptionAdded = false;
 
 	foreach (StatusType statusType, MyStatusTypes)
 	{
-		if (StatusTypeNone == statusType)
+		if (StatusType::None == statusType)
 			continue;
 
 		const StatusTypeData & typeData = m_statusTypeManager->statusTypeData(statusType);
 
-		if (StatusTypeGroupNone == currentGroup)
+		if (StatusTypeGroup::None == currentGroup)
 			currentGroup = typeData.typeGroup();
 
-		if (!setDescriptionAdded && typeData.typeGroup() == StatusTypeGroupOffline)
+		if (!setDescriptionAdded && typeData.typeGroup() == StatusTypeGroup::Offline)
 		{
 			if (!OnlyStatuses && !Actions.isEmpty())
 			{
@@ -138,7 +138,7 @@ QAction * StatusActions::createSeparator()
 
 QAction * StatusActions::createStatusAction(const StatusTypeData &typeData)
 {
-	KaduIcon icon = MyStatusContainer->statusIcon(Status{m_statusTypeManager, typeData.type()});
+	KaduIcon icon = MyStatusContainer->statusIcon(Status{typeData.type()});
 	QAction *statusAction = ChangeStatusActionGroup->addAction(m_iconsManager->iconByPath(icon), IncludePrefix
 			? MyStatusContainer->statusNamePrefix() + typeData.displayName()
 			: typeData.displayName());
@@ -183,9 +183,9 @@ void StatusActions::statusUpdated(StatusContainer *container)
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{
 		StatusType statusType = action->data().value<StatusType>();
-		if (StatusTypeNone == statusType)
+		if (StatusType::None == statusType)
 			continue;
-		action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{m_statusTypeManager, statusType})));
+		action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{statusType})));
 
 		if (!MyStatusContainer->isStatusSettingInProgress())
 		{
@@ -205,10 +205,10 @@ void StatusActions::iconThemeChanged()
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{
 		StatusType statusType = action->data().value<StatusType>();
-		if (StatusTypeNone == statusType)
+		if (StatusType::None == statusType)
 			continue;
 
-		action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{m_statusTypeManager, statusType})));
+		action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{statusType})));
 	}
 }
 

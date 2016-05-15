@@ -23,7 +23,6 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class StatusTypeManager;
 class Status;
 
 class QXmppPresence;
@@ -38,11 +37,5 @@ public:
 
 	QXmppPresence statusToPresence(const Status &status);
 	Status presenceToStatus(const QXmppPresence &presence);
-
-private:
-	QPointer<StatusTypeManager> m_statusTypeManager;
-
-private slots:
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 
 };

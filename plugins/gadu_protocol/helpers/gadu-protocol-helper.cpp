@@ -35,31 +35,31 @@ StatusType GaduProtocolHelper::statusTypeFromGaduStatus(unsigned int index)
 	{
 		case GG_STATUS_FFC_DESCR:
 		case GG_STATUS_FFC:
-			return StatusTypeFreeForChat;
+			return StatusType::FreeForChat;
 
 		case GG_STATUS_AVAIL_DESCR:
 		case GG_STATUS_AVAIL:
-			return StatusTypeOnline;
+			return StatusType::Online;
 
 		case GG_STATUS_BUSY_DESCR:
 		case GG_STATUS_BUSY:
-			return StatusTypeAway;
+			return StatusType::Away;
 
 		case GG_STATUS_DND_DESCR:
 		case GG_STATUS_DND:
-			return StatusTypeDoNotDisturb;
+			return StatusType::DoNotDisturb;
 
 		case GG_STATUS_INVISIBLE_DESCR:
 		case GG_STATUS_INVISIBLE:
 		case GG_STATUS_INVISIBLE2:
-			return StatusTypeInvisible;
+			return StatusType::Invisible;
 
 		case GG_STATUS_BLOCKED:
 		case GG_STATUS_NOT_AVAIL_DESCR:
 		case GG_STATUS_NOT_AVAIL:
 
 		default:
-			return StatusTypeOffline;
+			return StatusType::Offline;
 	}
 }
 
@@ -73,19 +73,19 @@ unsigned int GaduProtocolHelper::gaduStatusFromStatus(const Status &status)
 	bool hasDescription = !status.description().isEmpty();
 	StatusType type = status.type();
 
-	if (StatusTypeFreeForChat == type)
+	if (StatusType::FreeForChat == type)
 		return hasDescription ? GG_STATUS_FFC_DESCR : GG_STATUS_FFC;
 
-	if (StatusTypeOnline == type)
+	if (StatusType::Online == type)
 		return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
 
-	if (StatusTypeAway == type || StatusTypeNotAvailable == type)
+	if (StatusType::Away == type || StatusType::NotAvailable == type)
 		return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
 
-	if (StatusTypeDoNotDisturb == type)
+	if (StatusType::DoNotDisturb == type)
 		return hasDescription ? GG_STATUS_DND_DESCR : GG_STATUS_DND;
 
-	if (StatusTypeInvisible == type)
+	if (StatusType::Invisible == type)
 		return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
 
 	return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
@@ -140,7 +140,7 @@ bool GaduProtocolHelper::isConnectionErrorFatal(GaduProtocol::GaduError error)
 	}
 }
 
-Buddy GaduProtocolHelper::searchResultToBuddy(StatusTypeManager *statusTypeManager, BuddyStorage *buddyStorage, ContactStorage *contactStorage, Account account, gg_pubdir50_t res, int number)
+Buddy GaduProtocolHelper::searchResultToBuddy(BuddyStorage *buddyStorage, ContactStorage *contactStorage, Account account, gg_pubdir50_t res, int number)
 {
 	Buddy result = buddyStorage->create();
 
@@ -153,7 +153,7 @@ Buddy GaduProtocolHelper::searchResultToBuddy(StatusTypeManager *statusTypeManag
 	if (pubdirStatus)
 	{
 		Status status;
-		status.setType(statusTypeManager, GaduProtocolHelper::statusTypeFromGaduStatus(atoi(pubdirStatus) & 127));
+		status.setType(GaduProtocolHelper::statusTypeFromGaduStatus(atoi(pubdirStatus) & 127));
 		contact.setCurrentStatus(status);
 	}
 

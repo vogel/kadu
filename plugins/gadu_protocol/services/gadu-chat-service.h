@@ -122,7 +122,7 @@ public:
 	 */
 	void setConnection(GaduConnection *connection);
 
-	virtual int maxMessageLength() const;
+	virtual int maxMessageLength() const override;
 
 public slots:
 	virtual bool sendMessage(const Message &message) override;

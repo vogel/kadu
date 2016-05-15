@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "status/status.h"
 
@@ -51,6 +52,7 @@ void AutoawayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 	auto changeStatusTo = m_autoaway->changeStatusTo();
 	auto changeDescriptionTo = m_autoaway->changeDescriptionTo();
 	auto descriptionAddon = m_autoaway->descriptionAddon();
+	auto group = m_statusTypeManager->statusTypeData(status.type()).typeGroup();
 
 	if (changeStatusTo == NoChangeStatus)
 		return;
@@ -79,34 +81,34 @@ void AutoawayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 
 	if (changeStatusTo == ChangeStatusToOffline)
 	{
-		status.setType(m_statusTypeManager, StatusTypeOffline);
+		status.setType(StatusType::Offline);
 		status.setDescription(description);
 		return;
 	}
 
-	if (status.group() == StatusTypeGroupInvisible)
+	if (group == StatusTypeGroup::Invisible)
 		return;
 
 	if (changeStatusTo == ChangeStatusToInvisible)
 	{
-		status.setType(m_statusTypeManager, StatusTypeInvisible);
+		status.setType(StatusType::Invisible);
 		status.setDescription(description);
 		return;
 	}
 
-	if (status.group() == StatusTypeGroupAway)
+	if (group == StatusTypeGroup::Away)
 		return;
 
 	if (changeStatusTo == ChangeStatusToAway)
 	{
-		status.setType(m_statusTypeManager, StatusTypeAway);
+		status.setType(StatusType::Away);
 		status.setDescription(description);
 		return;
 	}
 
 	if (changeStatusTo == ChangeStatusToExtendedAway)
 	{
-		status.setType(m_statusTypeManager, StatusTypeNotAvailable);
+		status.setType(StatusType::NotAvailable);
 		status.setDescription(description);
 		return;
 	}

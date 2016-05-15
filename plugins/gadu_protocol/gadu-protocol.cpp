@@ -45,6 +45,7 @@
 #include "gui/windows/message-dialog.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "qt/long-validator.h"
+#include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
 #include "status/status.h"
@@ -259,12 +260,12 @@ void GaduProtocol::configureServices()
 
 	CurrentChatStateService->setSendTypingNotifications(gaduAccountDetails->sendTypingNotification());
 
-	switch (status().group())
+	switch (statusTypeManager()->statusTypeData(status().type()).typeGroup())
 	{
-		case StatusTypeGroupOffline:
+		case StatusTypeGroup::Offline:
 			CurrentChatImageService->setReceiveImages(false);
 			break;
-		case StatusTypeGroupInvisible:
+		case StatusTypeGroup::Invisible:
 			CurrentChatImageService->setReceiveImages(gaduAccountDetails->receiveImagesDuringInvisibility());
 			break;
 		default:
@@ -351,7 +352,7 @@ void GaduProtocol::connectedToServer()
 	loggedIn();
 
 	// workaround about servers errors
-	if (StatusTypeInvisible == status().type())
+	if (StatusType::Invisible == status().type())
 		sendStatusToServer();
 
 	kdebugf2();
@@ -493,7 +494,7 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 
 	Status oldStatus = contact.currentStatus();
 	Status newStatus;
-	newStatus.setType(statusTypeManager(), GaduProtocolHelper::statusTypeFromGaduStatus(status));
+	newStatus.setType(GaduProtocolHelper::statusTypeFromGaduStatus(status));
 	newStatus.setDescription(description);
 	contact.setCurrentStatus(newStatus);
 	contact.setBlocking(GaduProtocolHelper::isBlockingStatus(status));

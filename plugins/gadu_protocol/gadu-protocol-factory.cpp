@@ -45,12 +45,12 @@ GaduProtocolFactory::GaduProtocolFactory(QObject *parent) :
 	MyStatusAdapter = make_unique<GaduStatusAdapter>();
 
 	// already sorted
-	SupportedStatusTypes.append(StatusTypeFreeForChat);
-	SupportedStatusTypes.append(StatusTypeOnline);
-	SupportedStatusTypes.append(StatusTypeAway);
-	SupportedStatusTypes.append(StatusTypeDoNotDisturb);
-	SupportedStatusTypes.append(StatusTypeInvisible);
-	SupportedStatusTypes.append(StatusTypeOffline);
+	SupportedStatusTypes.append(StatusType::FreeForChat);
+	SupportedStatusTypes.append(StatusType::Online);
+	SupportedStatusTypes.append(StatusType::Away);
+	SupportedStatusTypes.append(StatusType::DoNotDisturb);
+	SupportedStatusTypes.append(StatusType::Invisible);
+	SupportedStatusTypes.append(StatusType::Offline);
 }
 
 GaduProtocolFactory::~GaduProtocolFactory()

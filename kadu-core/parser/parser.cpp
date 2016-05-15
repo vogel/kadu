@@ -300,9 +300,9 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			{
 				StatusContainer *container = contact.contactAccount().statusContainer();
 				if (container)
-					pe.setContent(container->statusIcon(Status{m_statusTypeManager, contact.currentStatus().type()}).path());
+					pe.setContent(container->statusIcon(Status{contact.currentStatus().type()}).path());
 				else
-					pe.setContent(m_statusContainerManager->statusIcon(Status{m_statusTypeManager, contact.currentStatus().type()}).path());
+					pe.setContent(m_statusContainerManager->statusIcon(Status{contact.currentStatus().type()}).path());
 			}
 			else if (chat)
 			{

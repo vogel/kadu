@@ -29,16 +29,14 @@
 
 #include <stdio.h>
 
-Status::Status(StatusTypeManager *statusTypeManager, StatusType statusType, const QString &description) :
-		m_statusTypeManager{statusTypeManager},
+Status::Status(StatusType statusType, const QString &description) :
 		Description(description)
 {
-	setType(statusTypeManager, statusType);
+	setType(statusType);
 }
 
 Status::Status(const Status& copyme) :
-		Type(copyme.Type), Group(copyme.Group), Description(copyme.Description),
-		DisplayName(copyme.DisplayName)
+		Type(copyme.Type), Description(copyme.Description)
 {
 }
 
@@ -46,30 +44,14 @@ Status::~Status()
 {
 }
 
-StatusTypeManager * Status::statusTypeManager() const
-{
-	return m_statusTypeManager;
-}
-
-void Status::setType(StatusTypeManager *statusTypeManager, StatusType type)
+void Status::setType(StatusType type)
 {
 	Type = type;
-
-	if (!statusTypeManager)
-	{
-		Group = StatusTypeGroupOffline;
-		return;
-	}
-
-	m_statusTypeManager = statusTypeManager;
-	const StatusTypeData & typeData = statusTypeManager->statusTypeData(Type);
-	DisplayName = typeData.displayName();
-	Group = typeData.typeGroup();
 }
 
 bool Status::isDisconnected() const
 {
-	return StatusTypeGroupOffline == Group;
+	return StatusType::Offline == Type;
 }
 
 bool Status::operator < (const Status &compare) const

@@ -34,7 +34,6 @@
 #include "status/status-actions.h"
 #include "status/status-container.h"
 #include "status/status-setter.h"
-#include "status/status-type-manager.h"
 #include "status/status-type.h"
 
 #include "status-menu.h"
@@ -56,11 +55,6 @@ void StatusMenu::setInjectedFactory(InjectedFactory *injectedFactory)
 void StatusMenu::setStatusSetter(StatusSetter *statusSetter)
 {
 	m_statusSetter = statusSetter;
-}
-
-void StatusMenu::setStatusTypeManager(StatusTypeManager *statusTypeManager)
-{
-	m_statusTypeManager = statusTypeManager;
 }
 
 void StatusMenu::setStatusWindowService(StatusWindowService *statusWindowService)
@@ -105,7 +99,7 @@ void StatusMenu::changeStatus(QAction *action)
 	for (auto &&container : Container->subStatusContainers())
 	{
 		Status status(m_statusSetter->manuallySetStatus(container));
-		status.setType(m_statusTypeManager, statusType);
+		status.setType(statusType);
 
 		m_statusSetter->setStatusManually(container, status);
 		container->storeStatus(status);

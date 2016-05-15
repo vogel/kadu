@@ -33,28 +33,28 @@
  *
  * This enum allows grouping of status types.
  */
-enum StatusTypeGroup
+enum class StatusTypeGroup
 {
 	/**
 	 * Empty (invalid) status type group.
 	 */
-	StatusTypeGroupNone = -1,
+	None = -1,
 	/**
 	 * Online status type group. Contains "Online" and "Free for chat" status types.
 	 */
-	StatusTypeGroupOnline = 0,
+	Online = 0,
 	/**
 	 * Away status type group. Contains "Away", "Not available" and "Do not disturb" status types.
 	 */
-	StatusTypeGroupAway = 10,
+	Away = 10,
 	/**
 	 * Invisible status type group. Contains "Invisible" status type.
 	 */
-	StatusTypeGroupInvisible = 20,
+	Invisible = 20,
 	/**
 	 * Offline status type group. Contains "Offline" status type.
 	 */
-	StatusTypeGroupOffline = 30
+	Offline = 30
 };
 
 /**

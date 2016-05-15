@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "status/status-type-manager.h"
 #include "status/status.h"
 
 #include "autostatus-status-changer.h"
@@ -32,11 +31,6 @@ AutostatusStatusChanger::AutostatusStatusChanger(QObject *parent) :
 
 AutostatusStatusChanger::~AutostatusStatusChanger()
 {
-}
-
-void AutostatusStatusChanger::setStatusTypeManager(StatusTypeManager *statusTypeManager)
-{
-	m_statusTypeManager = statusTypeManager;
 }
 
 void AutostatusStatusChanger::setEnabled(bool enabled)
@@ -69,13 +63,13 @@ void AutostatusStatusChanger::changeStatus(StatusContainer *container, Status &s
 	switch (StatusIndex)
 	{
 		case 0:
-			status.setType(m_statusTypeManager, StatusTypeOnline);
+			status.setType(StatusType::Online);
 			break;
 		case 1:
-			status.setType(m_statusTypeManager, StatusTypeAway);
+			status.setType(StatusType::Away);
 			break;
 		case 2:
-			status.setType(m_statusTypeManager, StatusTypeInvisible);
+			status.setType(StatusType::Invisible);
 			break;
 	}
 

@@ -40,7 +40,6 @@
 #include "roster/roster-service.h"
 #include "roster/roster-task-collection-storage.h"
 #include "status/status-setter.h"
-#include "status/status-type-manager.h"
 
 #include "account-shared.h"
 
@@ -112,11 +111,6 @@ void AccountShared::setProtocolsManager(ProtocolsManager *protocolsManager)
 void AccountShared::setStatusSetter(StatusSetter *statusSetter)
 {
 	m_statusSetter = statusSetter;
-}
-
-void AccountShared::setStatusTypeManager(StatusTypeManager *statusTypeManager)
-{
-	m_statusTypeManager = statusTypeManager;
 }
 
 void AccountShared::init()
@@ -315,7 +309,7 @@ void AccountShared::setDisconnectStatus()
 	auto disconnectDescription = m_configuration->deprecatedApi()->readEntry("General", "DisconnectDescription");
 
 	Status disconnectStatus;
-	disconnectStatus.setType(m_statusTypeManager, StatusTypeOffline);
+	disconnectStatus.setType(StatusType::Offline);
 
 	if (disconnectWithCurrentDescription)
 		disconnectStatus.setDescription(MyStatusContainer->status().description());

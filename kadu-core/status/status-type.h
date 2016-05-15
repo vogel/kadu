@@ -38,40 +38,40 @@
  *
  * This enum describes possible types of statuses.
  */
-enum StatusType
+enum class StatusType
 {
 	/**
 	 * Empty (invalid) status type.
 	 */
-	StatusTypeNone = -1,
+	None = -1,
 	/**
 	 * Free for chat status type.
 	 */
-	StatusTypeFreeForChat = 0,
+	FreeForChat = 0,
 	/**
 	 * Online status type.
 	 */
-	StatusTypeOnline = 10,
+	Online = 10,
 	/**
 	 * Away status type.
 	 */
-	StatusTypeAway = 20,
+	Away = 20,
 	/**
 	 * Not available status type.
 	 */
-	StatusTypeNotAvailable = 30,
+	NotAvailable = 30,
 	/**
 	 * Do not disturb status type.
 	 */
-	StatusTypeDoNotDisturb = 40,
+	DoNotDisturb = 40,
 	/**
 	 * Invisible status type.
 	 */
-	StatusTypeInvisible = 50,
+	Invisible = 50,
 	/**
 	 * Offline status type.
 	 */
-	StatusTypeOffline = 60
+	Offline = 60
 };
 
 /**

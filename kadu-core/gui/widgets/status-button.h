@@ -36,6 +36,7 @@ class StatusConfigurationHolder;
 class StatusContainer;
 class StatusIcon;
 class StatusMenu;
+class StatusTypeManager;
 
 class StatusButton : public QToolButton, private ConfigurationAwareObject
 {
@@ -55,6 +56,7 @@ private:
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+	QPointer<StatusTypeManager> m_statusTypeManager;
 
 	StatusContainer *MyStatusContainer;
 	bool DisplayStatusName;
@@ -70,6 +72,7 @@ private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
+	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();
 
 	void iconUpdated(const KaduIcon &icon);

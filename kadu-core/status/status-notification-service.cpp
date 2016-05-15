@@ -127,7 +127,7 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 	if (oldStatus == status)
 		return;
 
-	auto statusDisplayName = status.displayName();
+	auto statusDisplayName = m_statusTypeManager->statusTypeData(status.type()).displayName();
 	auto description = status.description();
 
 	if (contact.ownerBuddy().property(QStringLiteral("kadu:HideDescription"), false).toBool())
@@ -150,7 +150,7 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 	auto data = QVariantMap{};
 	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
-	auto icon = contact.contactAccount().protocolHandler()->statusIcon(Status{m_statusTypeManager, contact.currentStatus().type()});
+	auto icon = contact.contactAccount().protocolHandler()->statusIcon(Status{contact.currentStatus().type()});
 	
 	auto notification = Notification{};
 	notification.type = notificationEventName;

@@ -35,20 +35,20 @@
 StatusTypeManager::StatusTypeManager(QObject *parent) :
 		QObject{parent}
 {
-	m_statusTypes.insert(StatusTypeFreeForChat,
-	                   StatusTypeData(StatusTypeFreeForChat, "FreeForChat", QCoreApplication::translate("@default", "Free for chat"), "free_for_chat", StatusTypeGroupOnline));
-	m_statusTypes.insert(StatusTypeOnline,
-	                   StatusTypeData(StatusTypeOnline, "Online", QCoreApplication::translate("@default", "Online"), "online", StatusTypeGroupOnline));
-	m_statusTypes.insert(StatusTypeAway,
-	                   StatusTypeData(StatusTypeAway, "Away", QCoreApplication::translate("@default", "Away"), "away", StatusTypeGroupAway));
-	m_statusTypes.insert(StatusTypeNotAvailable,
-	                   StatusTypeData(StatusTypeNotAvailable, "NotAvailable", QCoreApplication::translate("@default", "Not available"), "not_available", StatusTypeGroupAway));
-	m_statusTypes.insert(StatusTypeDoNotDisturb,
-	                   StatusTypeData(StatusTypeDoNotDisturb, "DoNotDisturb", QCoreApplication::translate("@default", "Do not disturb"), "do_not_disturb", StatusTypeGroupAway));
-	m_statusTypes.insert(StatusTypeInvisible,
-	                   StatusTypeData(StatusTypeInvisible, "Invisible", QCoreApplication::translate("@default", "Invisible"), "invisible", StatusTypeGroupInvisible));
-	m_statusTypes.insert(StatusTypeOffline,
-	                   StatusTypeData(StatusTypeOffline, "Offline", QCoreApplication::translate("@default", "Offline"), "offline", StatusTypeGroupOffline));
+	m_statusTypes.insert(StatusType::FreeForChat,
+	                   StatusTypeData(StatusType::FreeForChat, "FreeForChat", QCoreApplication::translate("@default", "Free for chat"), "free_for_chat", StatusTypeGroup::Online));
+	m_statusTypes.insert(StatusType::Online,
+	                   StatusTypeData(StatusType::Online, "Online", QCoreApplication::translate("@default", "Online"), "online", StatusTypeGroup::Online));
+	m_statusTypes.insert(StatusType::Away,
+	                   StatusTypeData(StatusType::Away, "Away", QCoreApplication::translate("@default", "Away"), "away", StatusTypeGroup::Away));
+	m_statusTypes.insert(StatusType::NotAvailable,
+	                   StatusTypeData(StatusType::NotAvailable, "NotAvailable", QCoreApplication::translate("@default", "Not available"), "not_available", StatusTypeGroup::Away));
+	m_statusTypes.insert(StatusType::DoNotDisturb,
+	                   StatusTypeData(StatusType::DoNotDisturb, "DoNotDisturb", QCoreApplication::translate("@default", "Do not disturb"), "do_not_disturb", StatusTypeGroup::Away));
+	m_statusTypes.insert(StatusType::Invisible,
+	                   StatusTypeData(StatusType::Invisible, "Invisible", QCoreApplication::translate("@default", "Invisible"), "invisible", StatusTypeGroup::Invisible));
+	m_statusTypes.insert(StatusType::Offline,
+	                   StatusTypeData(StatusType::Offline, "Offline", QCoreApplication::translate("@default", "Offline"), "offline", StatusTypeGroup::Offline));
 }
 
 StatusTypeManager::~StatusTypeManager()
@@ -60,14 +60,14 @@ StatusType StatusTypeManager::fromName(const QString &name)
 	for (QMap<StatusType, StatusTypeData>::const_iterator it = m_statusTypes.constBegin(), end = m_statusTypes.constEnd(); it != end; ++it)
 		if (it.value().name() == name)
 			return it.key();
-	return StatusTypeOffline;
+	return StatusType::Offline;
 }
 
 const StatusTypeData StatusTypeManager::statusTypeData(StatusType statusType)
 {
 	if (m_statusTypes.contains(statusType))
 		return m_statusTypes.value(statusType);
-	return m_statusTypes.value(StatusTypeOffline);
+	return m_statusTypes.value(StatusType::Offline);
 }
 
 KaduIcon StatusTypeManager::statusIcon(const QString &protocol, const Status &status)

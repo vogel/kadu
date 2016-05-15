@@ -33,7 +33,9 @@
 #include "message/message-manager.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
+#include "status/status-type-data.h"
 #include "status/status-type-group.h"
+#include "status/status-type-manager.h"
 #include "debug.h"
 
 #include <QtWidgets/QApplication>
@@ -63,6 +65,11 @@ void AutoresponderMessageFilter::setParser(Parser *parser)
 	m_parser = parser;
 }
 
+void AutoresponderMessageFilter::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
+}
+
 void AutoresponderMessageFilter::init()
 {
 	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)),
@@ -88,9 +95,10 @@ bool AutoresponderMessageFilter::acceptMessage(const Message &message)
 		return true;
 
 	// Na chwilę obecną busy == away
-	if ((Configuration.statusAvailable() && protocol->status().group() == StatusTypeGroupOnline)
-			|| (Configuration.statusInvisible() && protocol->status().group() == StatusTypeGroupInvisible)
-			|| (Configuration.statusBusy() && protocol->status().group() == StatusTypeGroupAway))
+	auto group = m_statusTypeManager->statusTypeData(protocol->status().type()).typeGroup();
+	if ((Configuration.statusAvailable() && group == StatusTypeGroup::Online)
+			|| (Configuration.statusInvisible() && group == StatusTypeGroup::Invisible)
+			|| (Configuration.statusBusy() && group == StatusTypeGroup::Away))
 	{
 		m_messageManager->sendMessage(message.messageChat(), tr("KADU AUTORESPONDER:") + '\n'
 				+ m_parser->parse(Configuration.autoRespondText(), Talkable(message.messageSender()), ParserEscape::HtmlEscape), true);

@@ -120,7 +120,7 @@ bool SilentModeService::isSilentOrAutoSilent() const
 		return true;
 	if (m_silentModeWhenFullscreen && m_fullScreenService->hasFullscreenApplication())
 		return true;
-	if (m_silentModeWhenDnD && m_statusContainerManager->status().type() == StatusTypeDoNotDisturb)
+	if (m_silentModeWhenDnD && m_statusContainerManager->status().type() == StatusType::DoNotDisturb)
 		return true;
 
 	return false;

@@ -88,7 +88,7 @@ void ContactParserTags::init()
 		if (auto protocol = account.protocolHandler())
 			return PathsProvider::webKitPath(m_iconsManager->iconPath(m_statusTypeManager->statusIcon(protocol->statusPixmapPath(), status)));
 		else
-			return PathsProvider::webKitPath(m_iconsManager->iconPath(m_statusContainerManager->statusIcon(Status{m_statusTypeManager, status.type()})));
+			return PathsProvider::webKitPath(m_iconsManager->iconPath(m_statusContainerManager->statusIcon(Status{status.type()})));
 	});
 }
 

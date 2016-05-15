@@ -34,6 +34,8 @@
 #include "message/unread-message-repository.h"
 #include "notification/silent-mode-service.h"
 #include "protocols/protocol.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
 
 #include <QtWidgets/QApplication>
 
@@ -84,6 +86,11 @@ void ChatWidgetMessageHandler::setMessageManager(MessageManager *messageManager)
 void ChatWidgetMessageHandler::setSilentModeService(SilentModeService *silentModeService)
 {
 	m_silentModeService = silentModeService;
+}
+
+void ChatWidgetMessageHandler::setStatusTypeManager(StatusTypeManager *statusTypeManager)
+{
+	m_statusTypeManager = statusTypeManager;
 }
 
 void ChatWidgetMessageHandler::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
@@ -206,7 +213,7 @@ bool ChatWidgetMessageHandler::shouldOpenChatWidget(const Chat &chat) const
 		return false;
 
 	if (m_chatWidgetMessageHandlerConfiguration.openChatOnMessageOnlyWhenOnline())
-		return StatusTypeGroupOnline == handler->status().group();
+		return StatusTypeGroup::Online == m_statusTypeManager->statusTypeData(handler->status().type()).typeGroup();
 	else
 		return true;
 }
