@@ -1,9 +1,12 @@
-+++ version 4.0-alpha2:
++++ version 4.0-beta2
+* gadu: #3072 fixed: always use encryption when available (Vogel)
+
++++ version 4.0-beta1
 * chat: #3081 fixed: properly load conferences from configuration (Vogel)
 * jabber: #3082 fixed: do not crash when accepting SSL certificate after some time (Vogel)
 * windows: #2967 implemented: add status buttons to windows thumbnail toolbar (Vogel)
 
-+++ version 4.0-alpha1:
++++ version 4.0-alpha1
 * amarok1_mediaplayer: plugin removed (Vogel)
 * encryption_ng: plugin removed (Vogel)
 * encryption_ng_simlite: plugin removed (Vogel)

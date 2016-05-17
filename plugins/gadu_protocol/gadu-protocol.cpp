@@ -432,8 +432,8 @@ void GaduProtocol::setupLoginParams()
 	if (!loginStatus().description().isEmpty())
 		GaduLoginParams.status_descr = qstrdup(loginStatus().description().toUtf8().constData());
 
-	SecureConnection = gaduAccountDetails->tlsEncryption();
-	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? GG_SSL_ENABLED : GG_SSL_DISABLED;
+	SecureConnection = gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL);
+	GaduLoginParams.tls = SecureConnection ? GG_SSL_ENABLED : GG_SSL_DISABLED;
 
 	ActiveServer = m_gaduServersManager->getServer(1 == GaduLoginParams.tls);
 

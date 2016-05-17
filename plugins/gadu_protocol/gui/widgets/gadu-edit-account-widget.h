@@ -85,7 +85,6 @@ private:
 
 	QCheckBox *useDefaultServers;
 	QLineEdit *ipAddresses;
-	QCheckBox *UseTlsEncryption;
 
 	QCheckBox *ShowStatusToEveryone;
 	QCheckBox *SendTypingNotification;

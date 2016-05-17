@@ -31,7 +31,7 @@
 
 GaduAccountDetails::GaduAccountDetails(AccountShared *data, QObject *parent) :
 		AccountDetails(data, parent), ReceiveImagesDuringInvisibility(true),
-		ChatImageSizeWarning(true), InitialRosterImport(true), TlsEncryption(false),
+		ChatImageSizeWarning(true), InitialRosterImport(true),
 		SendTypingNotification(true), UserlistVersion(-1), ReceiveSpam(true)
 {
 }
@@ -64,7 +64,6 @@ void GaduAccountDetails::load()
 	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
 	ChatImageSizeWarning = loadValue<bool>("ChatImageSizeWarning", true);
 	InitialRosterImport = loadValue<bool>("InitialRosterImport", true);
-	TlsEncryption = loadValue<bool>("TlsEncryption", true);
 	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
 	UserlistVersion = loadValue<int>("UserlistVersion", -1);
 	ReceiveSpam = loadValue<bool>("ReceiveSpam", true);
@@ -78,7 +77,6 @@ void GaduAccountDetails::store()
 	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
 	storeValue("ChatImageSizeWarning", ChatImageSizeWarning);
 	storeValue("InitialRosterImport", InitialRosterImport);
-	storeValue("TlsEncryption", TlsEncryption);
 	storeValue("SendTypingNotification", SendTypingNotification);
 	storeValue("UserlistVersion", UserlistVersion);
 	storeValue("ReceiveSpam", ReceiveSpam);

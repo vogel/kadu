@@ -314,17 +314,6 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connect(useDefaultServers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
 	connect(ipAddresses, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 
-	UseTlsEncryption = new QCheckBox(tr("Use encrypted connection"), general);
-	generalLayout->addRow(UseTlsEncryption);
-
-	if (gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL))
-		connect(UseTlsEncryption, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
-	else
-	{
-		UseTlsEncryption->setDisabled(true);
-		UseTlsEncryption->setToolTip(tr("You have to compile libgadu with SSL support to be able to enable encrypted connection"));
-	}
-
 	QGroupBox *connection = new QGroupBox(tr("Network"), this);
 	QFormLayout *connectionLayout = new QFormLayout(connection);
 
@@ -364,11 +353,7 @@ void GaduEditAccountWidget::apply()
 	if (Details)
 	{
 		Details->setReceiveImagesDuringInvisibility(ReceiveImagesDuringInvisibility->isChecked());
-
 		Details->setChatImageSizeWarning(ChatImageSizeWarning->isChecked());
-
-		if (gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL))
-			Details->setTlsEncryption(UseTlsEncryption->isChecked());
 		Details->setSendTypingNotification(SendTypingNotification->isChecked());
 		Details->setReceiveSpam(!ReceiveSpam->isChecked());
 	}
@@ -419,7 +404,6 @@ void GaduEditAccountWidget::dataChanged()
 
 		&& m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
 		&& m_configuration->deprecatedApi()->readEntry("Network", "Server") == ipAddresses->text()
-		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
 		&& Details->receiveSpam() != ReceiveSpam->isChecked()
 		&& !gpiw->isModified())
@@ -453,10 +437,7 @@ void GaduEditAccountWidget::loadAccountData()
 	if (details)
 	{
 		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());;
-
 		ChatImageSizeWarning->setChecked(details->chatImageSizeWarning());
-
-		UseTlsEncryption->setChecked(gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) ? details->tlsEncryption() : false);
 		SendTypingNotification->setChecked(details->sendTypingNotification());
 		ReceiveSpam->setChecked(!details->receiveSpam());
 	}
