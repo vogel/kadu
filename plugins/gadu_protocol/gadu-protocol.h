@@ -115,6 +115,7 @@ private:
 
 	friend class GaduProtocolSocketNotifiers;
 	GaduProtocolSocketNotifiers *SocketNotifiers;
+	Status m_lastSentStatus;
 
 	QTimer *PingTimer;
 	bool SecureConnection;
@@ -129,7 +130,7 @@ private:
 	void startFileTransferService();
 	void stopFileTransferService();
 
-	void socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize);
+	void socketContactStatusChanged(UinType uin, unsigned int ggStatusId, const QString &description, unsigned int maxImageSize);
 	void socketConnFailed(GaduError error);
 	void connectedToServer();
 	void disconnectedFromServer();

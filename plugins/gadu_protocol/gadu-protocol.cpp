@@ -220,6 +220,7 @@ void GaduProtocol::sendStatusToServer()
 
 	setStatusFlags();
 
+	m_lastSentStatus = newStatus;
 	auto writableSessionToken = Connection->writableSessionToken();
 	if (hasDescription)
 		gg_change_status_descr(writableSessionToken.rawSession(), type | friends, newStatus.description().toUtf8().constData());
@@ -270,6 +271,7 @@ void GaduProtocol::configureServices()
 			break;
 		default:
 			CurrentChatImageService->setReceiveImages(true);
+			break;
 	}
 }
 
@@ -321,6 +323,7 @@ void GaduProtocol::login()
 
 	setupLoginParams();
 
+	m_lastSentStatus = loginStatus();
 	GaduSession = gg_login(&GaduLoginParams);
 
 	cleanUpLoginParams();
@@ -350,10 +353,6 @@ void GaduProtocol::connectedToServer()
 	PingTimer->start(60000);
 
 	loggedIn();
-
-	// workaround about servers errors
-	if (StatusType::Invisible == status().type())
-		sendStatusToServer();
 
 	kdebugf2();
 }
@@ -423,10 +422,7 @@ void GaduProtocol::setupLoginParams()
 
 	GaduLoginParams.async = 1;
 
-	// always start with inivisible, after sending notify data new status is resent again
-	auto gaduStatus = loginStatus().description().isEmpty()
-		? GG_STATUS_INVISIBLE
-		: GG_STATUS_INVISIBLE_DESCR;
+	auto gaduStatus = GaduProtocolHelper::gaduStatusFromStatus(loginStatus());
 	GaduLoginParams.status = gaduStatus | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0);
 
 	if (!loginStatus().description().isEmpty())
@@ -477,9 +473,24 @@ void GaduProtocol::cleanUpLoginParams()
 	GaduLoginParams.status_descr = 0;
 }
 
-void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)
+void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int ggStatusId, const QString &description, unsigned int maxImageSize)
 {
 	Contact contact = contactManager()->byId(account(), QString::number(uin), ActionReturnNull);
+
+	contact.setMaximumImageSize(maxImageSize);
+
+	Status oldStatus = contact.currentStatus();
+	Status newStatus;
+	newStatus.setType(GaduProtocolHelper::statusTypeFromGaduStatus(ggStatusId));
+	newStatus.setDescription(description);
+	contact.setCurrentStatus(newStatus);
+	contact.setBlocking(GaduProtocolHelper::isBlockingStatus(ggStatusId));
+
+	if (uin == GaduLoginParams.uin && (newStatus != m_lastSentStatus))
+	{
+		account().accountContact().setCurrentStatus(newStatus);
+		statusChanged(newStatus);
+	}
 
 	if (contact.isAnonymous())
 	{
@@ -489,15 +500,6 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 		rosterService()->removeContact(contact);
 		return;
 	}
-
-	contact.setMaximumImageSize(maxImageSize);
-
-	Status oldStatus = contact.currentStatus();
-	Status newStatus;
-	newStatus.setType(GaduProtocolHelper::statusTypeFromGaduStatus(status));
-	newStatus.setDescription(description);
-	contact.setCurrentStatus(newStatus);
-	contact.setBlocking(GaduProtocolHelper::isBlockingStatus(status));
 
 	// see issue #2159 - we need a way to ignore first status of given contact
 	if (contact.ignoreNextStatusChange())
