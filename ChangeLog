@@ -1,6 +1,7 @@
 +++ version 4.0-beta2
 * gadu: #3072 fixed: always use encryption when available (Vogel)
 * gadu: #2747 implemented: synchronize multi-session statuses (Vogel)
+* sms: #3067 fixed: sending SMS messages to Orange (Vogel)
 
 +++ version 4.0-beta1
 * chat: #3081 fixed: properly load conferences from configuration (Vogel)

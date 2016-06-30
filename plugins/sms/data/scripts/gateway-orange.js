@@ -67,7 +67,7 @@ GatewaySmsSender.prototype = {
 			return;
 		}
 
-		var formUrl = "http://sms.orange.pl/";
+		var formUrl = "https://sms.orange.pl/";
 
 		this.reply = network.get(formUrl);
 		this.reply.finished.connect(this, this.formReceived);

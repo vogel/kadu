@@ -45,6 +45,7 @@ public:
 	QScriptEngine * engine() { return Engine; }
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<PathsProvider> m_pathsProvider;
 
 	QScriptEngine *Engine;

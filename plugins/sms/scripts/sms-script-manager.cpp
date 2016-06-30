@@ -49,7 +49,7 @@ SmsScriptsManager::~SmsScriptsManager()
 
 void SmsScriptsManager::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	Network = injectedFactory->makeInjected<NetworkAccessManagerWrapper>(Engine, this);
+	m_injectedFactory = injectedFactory;
 }
 
 void SmsScriptsManager::setPathsProvider(PathsProvider *pathsProvider)
@@ -60,6 +60,7 @@ void SmsScriptsManager::setPathsProvider(PathsProvider *pathsProvider)
 void SmsScriptsManager::init()
 {
 	Engine = new QScriptEngine(this);
+	Network = m_injectedFactory->makeInjected<NetworkAccessManagerWrapper>(Engine, this);
 
 	Engine->globalObject().setProperty("network", Engine->newQObject(Network));
 	Engine->globalObject().setProperty("translator", Engine->newQObject(new SmsTranslator(this)));
