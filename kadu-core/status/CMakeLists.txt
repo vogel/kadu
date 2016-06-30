@@ -2,6 +2,7 @@ set (status_SRCS
 	all-accounts-status-container.cpp
 	description-manager.cpp
 	description-model.cpp
+	remote-status-request-handler.cpp
 	status.cpp
 	status-actions.cpp
 	status-changer.cpp

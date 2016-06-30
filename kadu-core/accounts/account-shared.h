@@ -34,6 +34,7 @@
 class AccountDetails;
 class AccountManager;
 class AccountStatusContainer;
+class Account;
 class Configuration;
 class ContactManager;
 class Contact;
@@ -156,6 +157,8 @@ signals:
 
 	void connected();
 	void disconnected();
+
+	void remoteStatusChangeRequest(Account account, Status requestedStatus);
 
 	void updated();
 	void protocolHandlerChanged();

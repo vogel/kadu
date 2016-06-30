@@ -301,4 +301,13 @@ QList<StatusContainer *> StatusContainerManager::subStatusContainers()
 	return StatusContainers;
 }
 
+StatusContainer * StatusContainerManager::statusContainerForAccount(Account account) const
+{
+	if (m_statusConfigurationHolder->isSetStatusPerAccount())
+		return account.statusContainer();
+	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
+		return account.accountIdentity().statusContainer();
+	return m_allAccountsStatusContainer;
+}
+
 #include "moc_status-container-manager.cpp"

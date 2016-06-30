@@ -20,6 +20,7 @@
 #include "status-module.h"
 
 #include "gui/windows/status-window-service.h"
+#include "status/remote-status-request-handler.h"
 #include "status/all-accounts-status-container.h"
 #include "status/description-manager.h"
 #include "status/status-configuration-holder.h"
@@ -31,6 +32,7 @@ StatusModule::StatusModule()
 {
 	add_type<AllAccountsStatusContainer>();
 	add_type<DescriptionManager>();
+	add_type<RemoteStatusRequestHandler>();
 	add_type<StatusConfigurationHolder>();
 	add_type<StatusNotificationService>();
 	add_type<StatusSetter>();

@@ -21,6 +21,7 @@
 #ifndef GADU_PROTOCOL_H
 #define GADU_PROTOCOL_H
 
+#include <QtCore/QElapsedTimer>
 #include <QtGui/QPixmap>
 #include <QtNetwork/QHostAddress>
 
@@ -115,6 +116,7 @@ private:
 
 	friend class GaduProtocolSocketNotifiers;
 	GaduProtocolSocketNotifiers *SocketNotifiers;
+	QElapsedTimer m_lastRemoteStatusRequest;
 	Status m_lastSentStatus;
 
 	QTimer *PingTimer;

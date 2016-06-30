@@ -345,6 +345,15 @@ public:
 	 */
 	virtual QList<StatusContainer *> subStatusContainers();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return status container for given account.
+	 * @param account account to check
+	 *
+	 * Depending on settings it can return account's status container, its identity's status container or global status container.
+	 */
+	StatusContainer * statusContainerForAccount(Account account) const;
+
 signals:
 	/**
 	 * @author Rafał 'Vogel' Malinowski

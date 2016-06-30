@@ -475,22 +475,29 @@ void GaduProtocol::cleanUpLoginParams()
 
 void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int ggStatusId, const QString &description, unsigned int maxImageSize)
 {
-	Contact contact = contactManager()->byId(account(), QString::number(uin), ActionReturnNull);
-
-	contact.setMaximumImageSize(maxImageSize);
-
-	Status oldStatus = contact.currentStatus();
-	Status newStatus;
+	auto newStatus = Status{};
 	newStatus.setType(GaduProtocolHelper::statusTypeFromGaduStatus(ggStatusId));
 	newStatus.setDescription(description);
+
+	if (uin == GaduLoginParams.uin)
+	{
+		if ((!m_lastRemoteStatusRequest.isValid() || m_lastRemoteStatusRequest.elapsed() > 10) && newStatus != m_lastSentStatus)
+		{
+			emit remoteStatusChangeRequest(account(), newStatus);
+			if (m_lastRemoteStatusRequest.isValid())
+				m_lastRemoteStatusRequest.restart();
+			else
+				m_lastRemoteStatusRequest.start();
+		}
+		return;
+	}
+
+	auto contact = contactManager()->byId(account(), QString::number(uin), ActionReturnNull);
+	contact.setMaximumImageSize(maxImageSize);
+
+	auto oldStatus = contact.currentStatus();
 	contact.setCurrentStatus(newStatus);
 	contact.setBlocking(GaduProtocolHelper::isBlockingStatus(ggStatusId));
-
-	if (uin == GaduLoginParams.uin && (newStatus != m_lastSentStatus))
-	{
-		account().accountContact().setCurrentStatus(newStatus);
-		statusChanged(newStatus);
-	}
 
 	if (contact.isAnonymous())
 	{

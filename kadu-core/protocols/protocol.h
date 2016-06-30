@@ -123,6 +123,7 @@ signals:
 	void disconnected(Account account);
 
 	void statusChanged(Account account, Status newStatus);
+	void remoteStatusChangeRequest(Account account, Status requestedStatus);
 	void contactStatusChanged(Contact contact, Status oldStatus);
 
 // TODO: REVIEW
