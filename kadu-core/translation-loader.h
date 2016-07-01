@@ -43,7 +43,6 @@ private:
 	QTranslator m_qtbase;
 	QTranslator m_qtdeclarative;
 	QTranslator m_qtmultimedia;
-	QTranslator m_qtquick1;
 	QTranslator m_qtscript;
 	QTranslator m_qtxmlpatterns;
 	QTranslator m_kadu;

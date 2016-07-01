@@ -53,7 +53,6 @@ void TranslationLoader::init()
 	m_qtbase.load("qtbase_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
 	m_qtdeclarative.load("qtdeclarative_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
 	m_qtmultimedia.load("qtmultimedia_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
-	m_qtquick1.load("qtquick1_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
 	m_qtscript.load("qtscript_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
 	m_qtxmlpatterns.load("qtxmlpatterns_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
 	m_kadu.load("kadu_" + lang, m_pathsProvider->dataPath() + QStringLiteral("translations"));
@@ -62,7 +61,6 @@ void TranslationLoader::init()
 	QCoreApplication::installTranslator(&m_qtbase);
 	QCoreApplication::installTranslator(&m_qtdeclarative);
 	QCoreApplication::installTranslator(&m_qtmultimedia);
-	QCoreApplication::installTranslator(&m_qtquick1);
 	QCoreApplication::installTranslator(&m_qtscript);
 	QCoreApplication::installTranslator(&m_qtxmlpatterns);
 	QCoreApplication::installTranslator(&m_kadu);
@@ -74,7 +72,6 @@ void TranslationLoader::done()
 	QCoreApplication::removeTranslator(&m_qtbase);
 	QCoreApplication::removeTranslator(&m_qtdeclarative);
 	QCoreApplication::removeTranslator(&m_qtmultimedia);
-	QCoreApplication::removeTranslator(&m_qtquick1);
 	QCoreApplication::removeTranslator(&m_qtscript);
 	QCoreApplication::removeTranslator(&m_qtxmlpatterns);
 	QCoreApplication::removeTranslator(&m_kadu);
