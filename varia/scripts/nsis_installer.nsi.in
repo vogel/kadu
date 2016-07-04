@@ -187,7 +187,6 @@ Section -section_generic_libraries
 	File "${BIN_DIR}\libp11-kit-0.dll"
 	File "${BIN_DIR}\libpng16-16.dll"
 	File "${BIN_DIR}\libprotobuf-c-1.dll"
-	File "${BIN_DIR}\libqca-qt5.dll"
 	File "${BIN_DIR}\libsqlite3-0.dll"
 	File "${BIN_DIR}\libssl-10.dll"
 	File "${BIN_DIR}\libstdc++-6.dll"
