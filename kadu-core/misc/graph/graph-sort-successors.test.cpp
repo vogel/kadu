@@ -79,7 +79,7 @@ void GraphSortSuccessorsTest::nondeterministicSortTest()
 	auto p5 = graph.node("p5");
 
 	auto p1Successors = graph_sort_successors<Tag1>(graph, "p1");
-	QCOMPARE(p1Successors.size(), 4UL);
+	QCOMPARE(p1Successors.size(), size_t{4});
 	QVERIFY(contains(p1Successors, p2));
 	QVERIFY(contains(p1Successors, p3));
 	QVERIFY(contains(p1Successors, p4));
@@ -110,7 +110,7 @@ void GraphSortSuccessorsTest::invalidNodeTest()
 	graph.addEdge<Tag1>("p1", "p3");
 
 	auto p4Successors = graph_sort_successors<Tag1>(graph, "p4");
-	QCOMPARE(p4Successors.size(), 0UL);
+	QCOMPARE(p4Successors.size(), size_t{0});
 }
 
 QTEST_APPLESS_MAIN(GraphSortSuccessorsTest)

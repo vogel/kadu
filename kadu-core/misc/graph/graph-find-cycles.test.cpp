@@ -81,7 +81,7 @@ void GraphFindCyclesTest::oneCycleTest()
 	graph.addEdge<Tag1>("p4", "p2");
 
 	auto nodesInCycle = graph_find_cycles<Tag1>(graph);
-	QCOMPARE(nodesInCycle.size(), 3UL);
+	QCOMPARE(nodesInCycle.size(), size_t{3});
 	QVERIFY(contains(nodesInCycle, "p2"));
 	QVERIFY(contains(nodesInCycle, "p3"));
 	QVERIFY(contains(nodesInCycle, "p4"));
@@ -120,7 +120,7 @@ void GraphFindCyclesTest::multipleCycleTest()
 	graph.addEdge<Tag1>("p10", "p4");
 
 	auto nodesInCycle = graph_find_cycles<Tag1>(graph);
-	QCOMPARE(nodesInCycle.size(), 8UL);
+	QCOMPARE(nodesInCycle.size(), size_t{8});
 	QVERIFY(contains(nodesInCycle, "p1"));
 	QVERIFY(contains(nodesInCycle, "p2"));
 	QVERIFY(contains(nodesInCycle, "p4"));
@@ -162,7 +162,7 @@ void GraphFindCyclesTest::multipleCycleMultipleTagsTest()
 	graph.addEdge<Tag2>("p2", "p4");
 
 	auto nodesInCycleTag1 = graph_find_cycles<Tag1>(graph);
-	QCOMPARE(nodesInCycleTag1.size(), 5UL);
+	QCOMPARE(nodesInCycleTag1.size(), size_t{5});
 	QVERIFY(contains(nodesInCycleTag1, "p1"));
 	QVERIFY(contains(nodesInCycleTag1, "p2"));
 	QVERIFY(contains(nodesInCycleTag1, "p3"));
@@ -170,7 +170,7 @@ void GraphFindCyclesTest::multipleCycleMultipleTagsTest()
 	QVERIFY(contains(nodesInCycleTag1, "p5"));
 
 	auto nodesInCycleTag2 = graph_find_cycles<Tag2>(graph);
-	QCOMPARE(nodesInCycleTag2.size(), 6UL);
+	QCOMPARE(nodesInCycleTag2.size(), size_t{6});
 	QVERIFY(contains(nodesInCycleTag2, "p1"));
 	QVERIFY(contains(nodesInCycleTag2, "p2"));
 	QVERIFY(contains(nodesInCycleTag2, "p3"));
@@ -199,7 +199,7 @@ void GraphFindCyclesTest::bigCycleTest()
 	graph.addEdge<Tag1>("p5", "p6");
 
 	auto nodesInCycle = graph_find_cycles<Tag1>(graph);
-	QCOMPARE(nodesInCycle.size(), 4UL);
+	QCOMPARE(nodesInCycle.size(), size_t{4});
 	QVERIFY(contains(nodesInCycle, "p2"));
 	QVERIFY(contains(nodesInCycle, "p3"));
 	QVERIFY(contains(nodesInCycle, "p4"));
