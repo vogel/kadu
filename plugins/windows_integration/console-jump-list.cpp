@@ -17,27 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "windows-integration-module.h"
+#include "console-jump-list.h"
 
-#ifdef Q_OS_WIN
-#	include "windows-jump-list.h"
-#else
-#	include "console-jump-list.h"
-#endif
+#include "chat/chat.h"
 
-#include "windows-integration-plugin-object.h"
-#include "windows-integration.h"
-#include "windows-jump-list-service.h"
+#include <QtCore/QDebug>
 
-WindowsIntegrationModule::WindowsIntegrationModule()
+ConsoleJumpList::ConsoleJumpList(QObject *parent) :
+		JumpList{parent}
 {
-	add_type<WindowsIntegrationPluginObject>();
-	add_type<WindowsIntegration>();
-	add_type<WindowsJumpListService>();
-
-#ifdef Q_OS_WIN
-	add_type<WindowsJumpList>();
-#else
-	add_type<ConsoleJumpList>();
-#endif
 }
+
+ConsoleJumpList::~ConsoleJumpList()
+{
+	clear();
+}
+
+void ConsoleJumpList::clear()
+{
+	qDebug() << "ConsoleJumpList::clear()";
+}
+
+void ConsoleJumpList::addChat(Chat chat)
+{
+	qDebug() << "ConsoleJumpList::addChat(" << chat.uuid().toString() << ")";
+}
+
+void ConsoleJumpList::addSeparator()
+{
+	qDebug() << "ConsoleJumpList::addSeparator()";
+}
+
+#include "console-jump-list.moc"

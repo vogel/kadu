@@ -19,38 +19,19 @@
 
 #pragma once
 
-#include "injeqt-type-roles.h"
+#include "jump-list.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
-
-class JumpList;
-
-class ChatWidgetRepository;
-class Chat;
-class RecentChatManager;
-
-class WindowsJumpListService : public QObject
+class ConsoleJumpList : public JumpList
 {
 	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit WindowsJumpListService(QObject *parent = nullptr);
-	virtual ~WindowsJumpListService();
+	Q_INVOKABLE explicit ConsoleJumpList(QObject *parent = nullptr);
+	virtual ~ConsoleJumpList();
 
 private:
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<JumpList> m_jumpList;
-	QPointer<RecentChatManager> m_recentChatManager;
-
-private slots:
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setJumpList(JumpList *jumpList);
-	INJEQT_SET void setRecentChatManager(RecentChatManager *recentChatManager);
-	INJEQT_INIT void init();
-
-	void updateJumpList();
+	virtual void clear();
+	virtual void addChat(Chat chat);
+	virtual void addSeparator();
 
 };

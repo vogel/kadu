@@ -19,23 +19,15 @@
 
 #include "windows-jump-list-service.h"
 
+#include "jump-list.h"
+
 #include "chat/recent-chat-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 
-#include <QtWidgets/QAction>
-#include <QtWidgets/QWidget>
-
-#ifdef Q_OS_WIN
-#	include <QtWinExtras/QtWinExtras>
-#endif
-
 WindowsJumpListService::WindowsJumpListService(QObject *parent) :
 		QObject{parent}
 {
-#ifdef Q_OS_WIN
-	m_jumpList = make_owned<QWinJumpList>(this);
-#endif
 }
 
 WindowsJumpListService::~WindowsJumpListService()
@@ -45,6 +37,11 @@ WindowsJumpListService::~WindowsJumpListService()
 void WindowsJumpListService::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
+}
+
+void WindowsJumpListService::setJumpList(JumpList *jumpList)
+{
+	m_jumpList = jumpList;
 }
 
 void WindowsJumpListService::setRecentChatManager(RecentChatManager *recentChatManager)
@@ -59,39 +56,31 @@ void WindowsJumpListService::init()
 	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetAdded, this, &WindowsJumpListService::updateJumpList);
 	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetRemoved, this, &WindowsJumpListService::updateJumpList);
 
+	m_recentChatManager->recentChats();
+
 	updateJumpList();
 }
 
 void WindowsJumpListService::updateJumpList()
 {
-#ifdef Q_OS_WIN
-	m_jumpList->tasks()->clear();
+	auto needSeparator = false;
 
+	m_jumpList->clear();
 	for (auto const chat : m_recentChatManager->recentChats())
-		addChat(chat);
-
-	addSeparator();
+	{
+		needSeparator = true;
+		m_jumpList->addChat(chat);
+	}
 
 	for (auto const chatWidget : m_chatWidgetRepository)
-		addChat(chatWidget->chat());
-
-	m_jumpList->tasks()->setVisible(m_jumpList->tasks()->count() > 0);
-#endif
-}
-
-void WindowsJumpListService::addChat(Chat chat)
-{
-#ifdef Q_OS_WIN
-	auto title = chat.display().isEmpty() ? chat.name() : chat.display();
-	m_jumpList->tasks()->addLink(title, QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), QStringList{"--open-uuid", chat.uuid().toString()});
-#endif
-}
-
-void WindowsJumpListService::addSeparator()
-{
-#ifdef Q_OS_WIN
-	m_jumpList->tasks()->addSeparator();
-#endif
+	{
+		if (needSeparator)
+		{
+			m_jumpList->addSeparator();
+			needSeparator = false;
+		}
+		m_jumpList->addChat(chatWidget->chat());
+	}
 }
 
 #include "windows-jump-list-service.moc"

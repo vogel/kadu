@@ -17,27 +17,5 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "windows-integration-module.h"
-
-#ifdef Q_OS_WIN
-#	include "windows-jump-list.h"
-#else
-#	include "console-jump-list.h"
-#endif
-
-#include "windows-integration-plugin-object.h"
-#include "windows-integration.h"
-#include "windows-jump-list-service.h"
-
-WindowsIntegrationModule::WindowsIntegrationModule()
-{
-	add_type<WindowsIntegrationPluginObject>();
-	add_type<WindowsIntegration>();
-	add_type<WindowsJumpListService>();
-
-#ifdef Q_OS_WIN
-	add_type<WindowsJumpList>();
-#else
-	add_type<ConsoleJumpList>();
-#endif
-}
+#include "jump-list.h"
+#include "jump-list.moc"
