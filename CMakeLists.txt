@@ -6,7 +6,6 @@ cmake_minimum_required (VERSION 2.8.11)
 
 option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)
 option (INSTALL_SDK "Install SDK (API headers, CMake modules, MSVC program libraries)" ON)
-option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
 option (WINDOWS_ARCHITECTURE "Architecture for Windows binaries." "x86")
 
 # Global CMake variables
@@ -29,9 +28,7 @@ endif ()
 # C++11 support, warnings and other flags
 
 set (DEFINITIONS QT_USE_QSTRINGBUILDER QT_NO_CAST_TO_ASCII QT_DISABLE_DEPRECATED_BEFORE=0x040900)
-if (BUILD_TESTING)
-	list (APPEND DEFINITIONS KADU_EXPORT_TESTS)
-endif ()
+list (APPEND DEFINITIONS KADU_EXPORT_TESTS)
 set (DEFINITIONS_DEBUG DEBUG_ENABLED DEBUG_OUTPUT_ENABLED)
 
 if (MSVC)
@@ -274,12 +271,8 @@ add_subdirectory (translations)
 
 include (Plugins.cmake)
 add_subdirectory (plugins)
-
-if (BUILD_TESTING)
-	enable_testing ()
-	add_subdirectory (tests)
-endif ()
-
+add_subdirectory (tests)
+enable_testing ()
 add_subdirectory (kthxbye)
 
 # Now write KaduConfig for installation.

@@ -25,20 +25,8 @@
 
 #ifdef libkadu_EXPORTS
 #	define KADUAPI Q_DECL_EXPORT
-
-#	ifdef KADU_EXPORT_TESTS
-#		define KADUAPI_TESTS Q_DECL_EXPORT
-#	else
-#		define KADUAPI_TESTS
-#	endif
 #else
 #	define KADUAPI Q_DECL_IMPORT
-
-#	ifdef KADU_EXPORT_TESTS
-#		define KADUAPI_TESTS Q_DECL_IMPORT
-#	else
-#		define KADUAPI_TESTS
-#	endif
 #endif
 
 #endif // EXPORTS_H

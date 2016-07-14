@@ -83,6 +83,10 @@ set (DEFAULT_PLUGINS
 	tabs
 	# Automatic mispelled word replacement
 	word_fix
+
+# integration
+	# integration with Windows
+	windows_integration
 )
 
 # Platform-speficic plugins
@@ -118,16 +122,6 @@ if (UNIX AND NOT APPLE)
 		mpd_mediaplayer
 	)
 endif (UNIX AND NOT APPLE)
-
-if (WIN32 OR BUILD_TESTING)
-	list (APPEND DEFAULT_PLUGINS
-
-	# integration
-		# integration with Windows
-		# Comment if you are not compilign under Ubuntu flavor
-		windows_integration
-	)
-endif (WIN32 OR BUILD_TESTING)
 
 if (WIN32)
 	list (APPEND DEFAULT_PLUGINS
