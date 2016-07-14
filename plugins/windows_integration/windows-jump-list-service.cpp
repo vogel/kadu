@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "windows-jump-list.h"
+#include "windows-jump-list-service.h"
 
 #include "chat/recent-chat-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
@@ -30,7 +30,7 @@
 #	include <QtWinExtras/QtWinExtras>
 #endif
 
-WindowsJumpList::WindowsJumpList(QObject *parent) :
+WindowsJumpListService::WindowsJumpListService(QObject *parent) :
 		QObject{parent}
 {
 #ifdef Q_OS_WIN
@@ -38,31 +38,31 @@ WindowsJumpList::WindowsJumpList(QObject *parent) :
 #endif
 }
 
-WindowsJumpList::~WindowsJumpList()
+WindowsJumpListService::~WindowsJumpListService()
 {
 }
 
-void WindowsJumpList::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+void WindowsJumpListService::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
 }
 
-void WindowsJumpList::setRecentChatManager(RecentChatManager *recentChatManager)
+void WindowsJumpListService::setRecentChatManager(RecentChatManager *recentChatManager)
 {
 	m_recentChatManager = recentChatManager;
 }
 
-void WindowsJumpList::init()
+void WindowsJumpListService::init()
 {
-	connect(m_recentChatManager, &RecentChatManager::recentChatAdded, this, &WindowsJumpList::updateJumpList);
-	connect(m_recentChatManager, &RecentChatManager::recentChatRemoved, this, &WindowsJumpList::updateJumpList);
-	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetAdded, this, &WindowsJumpList::updateJumpList);
-	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetRemoved, this, &WindowsJumpList::updateJumpList);
+	connect(m_recentChatManager, &RecentChatManager::recentChatAdded, this, &WindowsJumpListService::updateJumpList);
+	connect(m_recentChatManager, &RecentChatManager::recentChatRemoved, this, &WindowsJumpListService::updateJumpList);
+	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetAdded, this, &WindowsJumpListService::updateJumpList);
+	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetRemoved, this, &WindowsJumpListService::updateJumpList);
 
 	updateJumpList();
 }
 
-void WindowsJumpList::updateJumpList()
+void WindowsJumpListService::updateJumpList()
 {
 #ifdef Q_OS_WIN
 	m_jumpList->tasks()->clear();
@@ -79,7 +79,7 @@ void WindowsJumpList::updateJumpList()
 #endif
 }
 
-void WindowsJumpList::addChat(Chat chat)
+void WindowsJumpListService::addChat(Chat chat)
 {
 #ifdef Q_OS_WIN
 	auto title = chat.display().isEmpty() ? chat.name() : chat.display();
@@ -87,11 +87,11 @@ void WindowsJumpList::addChat(Chat chat)
 #endif
 }
 
-void WindowsJumpList::addSeparator()
+void WindowsJumpListService::addSeparator()
 {
 #ifdef Q_OS_WIN
 	m_jumpList->tasks()->addSeparator();
 #endif
 }
 
-#include "windows-jump-list.moc"
+#include "windows-jump-list-service.moc"

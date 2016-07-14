@@ -34,14 +34,14 @@ class RecentChatManager;
 class QWinJumpListCategory;
 class QWinJumpList;
 
-class WindowsJumpList : public QObject
+class WindowsJumpListService : public QObject
 {
 	Q_OBJECT
 	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit WindowsJumpList(QObject *parent = nullptr);
-	virtual ~WindowsJumpList();
+	Q_INVOKABLE explicit WindowsJumpListService(QObject *parent = nullptr);
+	virtual ~WindowsJumpListService();
 
 private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;

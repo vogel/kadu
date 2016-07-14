@@ -21,11 +21,11 @@
 
 #include "windows-integration-plugin-object.h"
 #include "windows-integration.h"
-#include "windows-jump-list.h"
+#include "windows-jump-list-service.h"
 
 WindowsIntegrationModule::WindowsIntegrationModule()
 {
 	add_type<WindowsIntegrationPluginObject>();
 	add_type<WindowsIntegration>();
-	add_type<WindowsJumpList>();
+	add_type<WindowsJumpListService>();
 }
