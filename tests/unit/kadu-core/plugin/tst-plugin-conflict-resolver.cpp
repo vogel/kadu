@@ -78,7 +78,7 @@ PluginDependencyHandler * tst_PluginConflictResolver::createPluginDependencyHand
 	auto result = new PluginDependencyHandler{parent};
 	result->setPluginDependencyGraphBuilder(new PluginDependencyGraphBuilder{result});
 	result->setPluginMetadataProvider(createMetatadataProvider(plugins, result));
-	result->initialize();
+	result->init();
 	return result;
 }
 

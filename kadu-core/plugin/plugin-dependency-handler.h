@@ -160,7 +160,7 @@ public slots: // TODO: make private, public only because of tests, should be don
 	 */
 	INJEQT_SET void setPluginMetadataProvider(PluginMetadataProvider *pluginMetadataProvider);
 
-private slots:
+public slots: // TODO: make private, public only because of tests, should be done by injector
 	/**
 	 * @short Initialize service data.
 	 *

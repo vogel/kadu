@@ -69,7 +69,7 @@ std::unique_ptr<PluginDependencyHandler> tst_PluginDependencyHandler::createPlug
 	auto result = make_unique<PluginDependencyHandler>();
 	result.get()->setPluginDependencyGraphBuilder(new PluginDependencyGraphBuilder{result.get()});
 	result.get()->setPluginMetadataProvider(createMetatadataProvider(plugins, result.get()));
-	result.get()->initialize();
+	result.get()->init();
 	return std::move(result);
 }
 
