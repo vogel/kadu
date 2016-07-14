@@ -18,4 +18,6 @@ kadu_plugin (windows_integration
 	PLUGIN_SOURCES ${SOURCES}
 )
 
-qt5_use_modules (windows_integration LINK_PRIVATE WinExtras)
+if (WIN32)
+	qt5_use_modules (windows_integration LINK_PRIVATE WinExtras)
+endif (WIN32)

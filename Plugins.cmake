@@ -119,13 +119,18 @@ if (UNIX AND NOT APPLE)
 	)
 endif (UNIX AND NOT APPLE)
 
-if (WIN32)
+if (WIN32 OR BUILD_TESTING)
 	list (APPEND DEFAULT_PLUGINS
 
 	# integration
 		# integration with Windows
 		# Comment if you are not compilign under Ubuntu flavor
 		windows_integration
+	)
+endif (WIN32 OR BUILD_TESTING)
+
+if (WIN32)
+	list (APPEND DEFAULT_PLUGINS
 
 	# mediaplayer
 		# Winamp Media Player support

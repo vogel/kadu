@@ -25,12 +25,17 @@
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QWidget>
-#include <QtWinExtras/QtWinExtras>
+
+#ifdef Q_OS_WIN
+#	include <QtWinExtras/QtWinExtras>
+#endif
 
 WindowsJumpList::WindowsJumpList(QObject *parent) :
 		QObject{parent}
 {
+#ifdef Q_OS_WIN
 	m_jumpList = make_owned<QWinJumpList>(this);
+#endif
 }
 
 WindowsJumpList::~WindowsJumpList()
@@ -59,6 +64,7 @@ void WindowsJumpList::init()
 
 void WindowsJumpList::updateJumpList()
 {
+#ifdef Q_OS_WIN
 	m_jumpList->tasks()->clear();
 
 	for (auto const chat : m_recentChatManager->recentChats())
@@ -70,17 +76,22 @@ void WindowsJumpList::updateJumpList()
 		addChat(chatWidget->chat());
 
 	m_jumpList->tasks()->setVisible(m_jumpList->tasks()->count() > 0);
+#endif
 }
 
 void WindowsJumpList::addChat(Chat chat)
 {
+#ifdef Q_OS_WIN
 	auto title = chat.display().isEmpty() ? chat.name() : chat.display();
 	m_jumpList->tasks()->addLink(title, QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), QStringList{"--open-uuid", chat.uuid().toString()});
+#endif
 }
 
 void WindowsJumpList::addSeparator()
 {
+#ifdef Q_OS_WIN
 	m_jumpList->tasks()->addSeparator();
+#endif
 }
 
 #include "windows-jump-list.moc"

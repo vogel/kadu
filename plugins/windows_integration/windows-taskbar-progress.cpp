@@ -22,18 +22,23 @@
 #include "file-transfer/file-transfer-manager.h"
 
 #include <QtWidgets/QWidget>
-#include <QtWinExtras/QtWinExtras>
+
+#ifdef Q_OS_WIN
+#	include <QtWinExtras/QtWinExtras>
+#endif
 
 WindowsTaskbarProgress::WindowsTaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent) :
 		QObject{parent}
 {
 	parent->window()->winId(); // force windowHandle() to be valid
 
+#ifdef Q_OS_WIN
 	auto button = new QWinTaskbarButton{parent->window()};
 	button->setWindow(parent->window()->windowHandle());
 
 	m_taskbarProgress = button->progress();
 	m_taskbarProgress->setRange(0, 100);
+#endif
 
 	connect(fileTransferManager, SIGNAL(totalProgressChanged(int)), this, SLOT(progressChanged(int)));
 	progressChanged(fileTransferManager->totalProgress());
@@ -45,6 +50,7 @@ WindowsTaskbarProgress::~WindowsTaskbarProgress()
 
 void WindowsTaskbarProgress::progressChanged(int progress)
 {
+#ifdef Q_OS_WIN
 	if (progress < 100)
 	{
 		m_taskbarProgress->setVisible(true);
@@ -52,6 +58,7 @@ void WindowsTaskbarProgress::progressChanged(int progress)
 	}
 	else
 		m_taskbarProgress->setVisible(false);
+#endif Q_OS_WIN
 }
 
 #include "moc_windows-taskbar-progress.cpp"
