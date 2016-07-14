@@ -21,7 +21,7 @@
 
 #include <QtTest/QtTest>
 
-class tst_PluginState : public QObject
+class PluginStateTest : public QObject
 {
 	Q_OBJECT
 
@@ -32,7 +32,7 @@ private slots:
 
 };
 
-void tst_PluginState::newTest()
+void PluginStateTest::newTest()
 {
 	QCOMPARE(pluginStateToString(PluginState::New), {});
 	QCOMPARE(stringToPluginState(""), PluginState::New);
@@ -40,17 +40,17 @@ void tst_PluginState::newTest()
 	QCOMPARE(stringToPluginState("Invalid"), PluginState::New);
 }
 
-void tst_PluginState::enabledTest()
+void PluginStateTest::enabledTest()
 {
 	QCOMPARE(pluginStateToString(PluginState::Enabled), QString{"Loaded"});
 	QCOMPARE(stringToPluginState("Loaded"), PluginState::Enabled);
 }
 
-void tst_PluginState::disabledTest()
+void PluginStateTest::disabledTest()
 {
 	QCOMPARE(pluginStateToString(PluginState::Disabled), QString{"NotLoaded"});
 	QCOMPARE(stringToPluginState("NotLoaded"), PluginState::Disabled);
 }
 
-QTEST_APPLESS_MAIN(tst_PluginState)
-#include "tst-plugin-state.moc"
+QTEST_APPLESS_MAIN(PluginStateTest)
+#include "plugin-state.test.moc"

@@ -4,4 +4,6 @@ set (execution-arguments_SRCS
 	execution-arguments-parser.cpp
 )
 
+kadu_add_test (execution-arguments-parser)
+
 kadu_subdirectory (execution-arguments "${execution-arguments_SRCS}" "" "")

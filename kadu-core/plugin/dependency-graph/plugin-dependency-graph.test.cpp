@@ -18,14 +18,14 @@
  */
 
 #include "misc/algorithm.h"
+#include "misc/exception.h"
 #include "plugin/dependency-graph/plugin-dependency-cycle-exception.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
-#include "utils/exception.h"
 
 #include <algorithm>
 #include <QtTest/QtTest>
 
-class tst_PluginDependencyGraph : public QObject
+class PluginDependencyGraphTest : public QObject
 {
 	Q_OBJECT
 
@@ -50,7 +50,7 @@ private slots:
 
 };
 
-PluginDependencyGraph tst_PluginDependencyGraph::linearGraph()
+PluginDependencyGraph PluginDependencyGraphTest::linearGraph()
 {
 	auto graph = PluginDependencyGraph{};
 
@@ -63,10 +63,10 @@ PluginDependencyGraph tst_PluginDependencyGraph::linearGraph()
 	graph.addDependency("p2", "p3");
 	graph.addDependency("p3", "p4");
 
-	return std::move(graph);
+	return graph;
 }
 
-PluginDependencyGraph tst_PluginDependencyGraph::treeGraph()
+PluginDependencyGraph PluginDependencyGraphTest::treeGraph()
 {
 	auto graph = PluginDependencyGraph{};
 
@@ -84,10 +84,10 @@ PluginDependencyGraph tst_PluginDependencyGraph::treeGraph()
 	graph.addDependency("p4", "p5");
 	graph.addDependency("p5", "p6");
 
-	return std::move(graph);
+	return graph;
 }
 
-PluginDependencyGraph tst_PluginDependencyGraph::cycleGraph()
+PluginDependencyGraph PluginDependencyGraphTest::cycleGraph()
 {
 	auto graph = PluginDependencyGraph{};
 
@@ -106,10 +106,10 @@ PluginDependencyGraph tst_PluginDependencyGraph::cycleGraph()
 	graph.addDependency("p5", "p2");
 	graph.addDependency("p5", "p6");
 
-	return std::move(graph);
+	return graph;
 }
 
-void tst_PluginDependencyGraph::invalidDirectDependencyTest()
+void PluginDependencyGraphTest::invalidDirectDependencyTest()
 {
 	auto graph = linearGraph();
 
@@ -117,7 +117,7 @@ void tst_PluginDependencyGraph::invalidDirectDependencyTest()
 	QCOMPARE(graph.directDependents("p8"), {});
 }
 
-void tst_PluginDependencyGraph::invalidDependencyTest()
+void PluginDependencyGraphTest::invalidDependencyTest()
 {
 	auto graph = linearGraph();
 
@@ -125,12 +125,12 @@ void tst_PluginDependencyGraph::invalidDependencyTest()
 	QCOMPARE(graph.findDependents("p8"), {});
 }
 
-void tst_PluginDependencyGraph::linearDependencyCycleTest()
+void PluginDependencyGraphTest::linearDependencyCycleTest()
 {
 	QVERIFY(linearGraph().findPluginsInDependencyCycle().isEmpty());
 }
 
-void tst_PluginDependencyGraph::linearDirectDependencyTest()
+void PluginDependencyGraphTest::linearDirectDependencyTest()
 {
 	auto graph = linearGraph();
 
@@ -144,7 +144,7 @@ void tst_PluginDependencyGraph::linearDirectDependencyTest()
 	QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p3");
 }
 
-void tst_PluginDependencyGraph::linearDependencyTest()
+void PluginDependencyGraphTest::linearDependencyTest()
 {
 	auto graph = linearGraph();
 
@@ -158,12 +158,12 @@ void tst_PluginDependencyGraph::linearDependencyTest()
 	QCOMPARE(graph.findDependents("p4"), QVector<QString>{} << "p1" << "p2" << "p3");
 }
 
-void tst_PluginDependencyGraph::treeCycleTest()
+void PluginDependencyGraphTest::treeCycleTest()
 {
 	QVERIFY(treeGraph().findPluginsInDependencyCycle().isEmpty());
 }
 
-void tst_PluginDependencyGraph::treeDirectDependencyTest()
+void PluginDependencyGraphTest::treeDirectDependencyTest()
 {
 	auto graph = treeGraph();
 
@@ -181,7 +181,7 @@ void tst_PluginDependencyGraph::treeDirectDependencyTest()
 	QCOMPARE(graph.directDependents("p6"), QSet<QString>{} << "p5");
 }
 
-void tst_PluginDependencyGraph::treeDependencyTest()
+void PluginDependencyGraphTest::treeDependencyTest()
 {
 	auto graph = treeGraph();
 
@@ -221,12 +221,12 @@ void tst_PluginDependencyGraph::treeDependencyTest()
 	QVERIFY(precedes(p6Dependents, "p4", "p5"));
 }
 
-void tst_PluginDependencyGraph::cycleCycleTest()
+void PluginDependencyGraphTest::cycleCycleTest()
 {
 	QCOMPARE(cycleGraph().findPluginsInDependencyCycle(), QSet<QString>{} << "p2" << "p3" << "p4" << "p5");
 }
 
-void tst_PluginDependencyGraph::cycleDirectDependencyTest()
+void PluginDependencyGraphTest::cycleDirectDependencyTest()
 {
 	auto graph = cycleGraph();
 
@@ -244,7 +244,7 @@ void tst_PluginDependencyGraph::cycleDirectDependencyTest()
 	QCOMPARE(graph.directDependents("p6"), QSet<QString>{} << "p5");
 }
 
-void tst_PluginDependencyGraph::cycleDependencyTest()
+void PluginDependencyGraphTest::cycleDependencyTest()
 {
 	auto graph = cycleGraph();
 
@@ -270,7 +270,7 @@ void tst_PluginDependencyGraph::cycleDependencyTest()
 	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p6"); });
 }
 
-void tst_PluginDependencyGraph::pluginsTest()
+void PluginDependencyGraphTest::pluginsTest()
 {
 	auto graph = PluginDependencyGraph{};
 
@@ -308,5 +308,5 @@ void tst_PluginDependencyGraph::pluginsTest()
 	QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2", "p3", "p4", "p5"}));
 }
 
-QTEST_APPLESS_MAIN(tst_PluginDependencyGraph)
-#include "tst-plugin-dependency-graph.moc"
+QTEST_APPLESS_MAIN(PluginDependencyGraphTest)
+#include "plugin-dependency-graph.test.moc"

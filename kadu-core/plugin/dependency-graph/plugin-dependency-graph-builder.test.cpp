@@ -28,7 +28,7 @@
 #include <map>
 #include <QtTest/QtTest>
 
-class tst_PluginDependencyGraphBuilder : public QObject
+class PluginDependencyGraphBuilderTest : public QObject
 {
 	Q_OBJECT
 
@@ -51,7 +51,7 @@ private slots:
 
 };
 
-::std::map<QString, PluginMetadata> tst_PluginDependencyGraphBuilder::createPlugins(const QVector<PluginTuple> &plugins)
+::std::map<QString, PluginMetadata> PluginDependencyGraphBuilderTest::createPlugins(const QVector<PluginTuple> &plugins)
 {
 	auto result = ::std::map<QString, PluginMetadata>{};
 	for (auto const &plugin : plugins)
@@ -59,7 +59,7 @@ private slots:
 	return result;
 }
 
-PluginMetadata tst_PluginDependencyGraphBuilder::createPluginMetadata(const PluginTuple &plugin)
+PluginMetadata PluginDependencyGraphBuilderTest::createPluginMetadata(const PluginTuple &plugin)
 {
 	auto builder = PluginMetadataBuilder{};
 	return builder
@@ -69,7 +69,7 @@ PluginMetadata tst_PluginDependencyGraphBuilder::createPluginMetadata(const Plug
 			.create();
 }
 
-void tst_PluginDependencyGraphBuilder::verifyDependencies(const PluginDependencyGraph &graph, const QString &pluginName, const QStringList &dependencies, const QStringList &dependents)
+void PluginDependencyGraphBuilderTest::verifyDependencies(const PluginDependencyGraph &graph, const QString &pluginName, const QStringList &dependencies, const QStringList &dependents)
 {
 	auto graphDependencies = graph.directDependencies(pluginName);
 	auto graphDependents = graph.directDependents(pluginName);
@@ -80,7 +80,7 @@ void tst_PluginDependencyGraphBuilder::verifyDependencies(const PluginDependency
 	QCOMPARE(graphDependents.size(), dependents.size());
 }
 
-void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
+void PluginDependencyGraphBuilderTest::simpleDependencyTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
@@ -98,7 +98,7 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 	verifyDependencies(graph, "p4", {}, {"p1", "p2", "p3"});
 }
 
-void tst_PluginDependencyGraphBuilder::selfDependencyTest()
+void PluginDependencyGraphBuilderTest::selfDependencyTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
@@ -110,7 +110,7 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 	verifyDependencies(graph, "p1", {}, {});
 }
 
-void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
+void PluginDependencyGraphBuilderTest::pluginOnlyAsDependencyTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
@@ -122,7 +122,7 @@ void tst_PluginDependencyGraphBuilder::pluginOnlyAsDependencyTest()
 	QCOMPARE(graph.size(), 0);
 }
 
-void tst_PluginDependencyGraphBuilder::cycleDependencyTest()
+void PluginDependencyGraphBuilderTest::cycleDependencyTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
@@ -133,7 +133,7 @@ void tst_PluginDependencyGraphBuilder::cycleDependencyTest()
 	QCOMPARE(graph.size(), 0);
 }
 
-void tst_PluginDependencyGraphBuilder::singleProvidesTest()
+void PluginDependencyGraphBuilderTest::singleProvidesTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
@@ -149,7 +149,7 @@ void tst_PluginDependencyGraphBuilder::singleProvidesTest()
 	verifyDependencies(graph, "p3", {}, {"p2"});
 }
 
-void tst_PluginDependencyGraphBuilder::noConflictingProvidesTest()
+void PluginDependencyGraphBuilderTest::noConflictingProvidesTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
@@ -165,7 +165,7 @@ void tst_PluginDependencyGraphBuilder::noConflictingProvidesTest()
 	verifyDependencies(graph, "p3", {}, {"p2"});
 }
 
-void tst_PluginDependencyGraphBuilder::conflictingProvidesTest()
+void PluginDependencyGraphBuilderTest::conflictingProvidesTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
@@ -184,7 +184,7 @@ void tst_PluginDependencyGraphBuilder::conflictingProvidesTest()
 	verifyDependencies(graph, "p5", {}, {"p2", "p4"});
 }
 
-void tst_PluginDependencyGraphBuilder::conflictingWithCyclesProvidesTest()
+void PluginDependencyGraphBuilderTest::conflictingWithCyclesProvidesTest()
 {
 	auto graph = PluginDependencyGraphBuilder{}.buildValidGraph(createPlugins(QVector<PluginTuple>
 	{
@@ -204,5 +204,5 @@ void tst_PluginDependencyGraphBuilder::conflictingWithCyclesProvidesTest()
 	verifyDependencies(graph, "p5", {}, {"p2"});
 }
 
-QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)
-#include "tst-plugin-dependency-graph-builder.moc"
+QTEST_APPLESS_MAIN(PluginDependencyGraphBuilderTest)
+#include "plugin-dependency-graph-builder.test.moc"

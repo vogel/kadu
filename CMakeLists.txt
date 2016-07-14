@@ -133,6 +133,28 @@ if (NOT KADU_VERSION STREQUAL simple_version)
 	set (KADU_PRERELEASE TRUE)
 endif ()
 
+# Tests
+find_package (Qt5Test REQUIRED)
+function (kadu_add_test name_)
+	set (test_file "${name_}.test")
+	string (REPLACE "/" "-" test_name ${test_file})
+
+	add_executable (${test_name} "${test_file}.cpp")
+	kadu_set_flags (${test_name})
+	if (NOT MSVC)
+		set_property (TARGET ${test_name} APPEND_STRING PROPERTY COMPILE_FLAGS " -Wno-error")
+	endif ()
+	add_test (
+		NAME ${test_name}
+		COMMAND ${test_name})
+
+	qt5_use_modules (${test_name} LINK_PRIVATE Core Gui Network Qml Quick QuickWidgets Test WebKit WebKitWidgets Widgets Xml)
+
+	# Add libkadu after the plugin so that --as-needed won't drop anything
+	target_link_libraries (${test_name} LINK_PRIVATE libkadu)
+endfunction ()
+
+
 # Installation paths.
 
 set (INSTALL_SDK_DIR "" CACHE PATH "SDK installation root")
@@ -265,14 +287,14 @@ endif ()
 
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core)
 
+enable_testing ()
+
 add_subdirectory (kadu-core)
 add_subdirectory (varia)
 add_subdirectory (translations)
 
 include (Plugins.cmake)
 add_subdirectory (plugins)
-add_subdirectory (tests)
-enable_testing ()
 add_subdirectory (kthxbye)
 
 # Now write KaduConfig for installation.

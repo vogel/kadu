@@ -23,7 +23,7 @@
 #include <vector>
 #include <QtTest/QtTest>
 
-class tst_ExcutionArgumentsParser : public QObject
+class ExcutionArgumentsParserTest : public QObject
 {
 	Q_OBJECT
 
@@ -44,7 +44,7 @@ private slots:
 
 };
 
-void tst_ExcutionArgumentsParser::shouldCreateDefaultArgumentsWhenNonePassed()
+void ExcutionArgumentsParserTest::shouldCreateDefaultArgumentsWhenNonePassed()
 {
 	auto arguments = QStringList{};
 	auto parser = ExecutionArgumentsParser{};
@@ -57,7 +57,7 @@ void tst_ExcutionArgumentsParser::shouldCreateDefaultArgumentsWhenNonePassed()
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldProperlyParseQueryVersion()
+void ExcutionArgumentsParserTest::shouldProperlyParseQueryVersion()
 {
 	auto arguments = QStringList{} << "--version";
 	auto parser = ExecutionArgumentsParser{};
@@ -70,7 +70,7 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseQueryVersion()
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldProperlyParseQueryUsage()
+void ExcutionArgumentsParserTest::shouldProperlyParseQueryUsage()
 {
 	auto arguments = QStringList{} << "--help";
 	auto parser = ExecutionArgumentsParser{};
@@ -83,7 +83,7 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseQueryUsage()
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldProperlyParseValidDebugMask()
+void ExcutionArgumentsParserTest::shouldProperlyParseValidDebugMask()
 {
 	auto arguments = QStringList{} << "--debug" << "126";
 	auto parser = ExecutionArgumentsParser{};
@@ -96,7 +96,7 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseValidDebugMask()
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldIgnoreEmptyDebugMask()
+void ExcutionArgumentsParserTest::shouldIgnoreEmptyDebugMask()
 {
 	auto arguments = QStringList{} << "--debug";
 	auto parser = ExecutionArgumentsParser{};
@@ -109,7 +109,7 @@ void tst_ExcutionArgumentsParser::shouldIgnoreEmptyDebugMask()
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldIgnoreInvalidDebugMask()
+void ExcutionArgumentsParserTest::shouldIgnoreInvalidDebugMask()
 {
 	auto arguments = QStringList{} << "--debug" << "--version";
 	auto parser = ExecutionArgumentsParser{};
@@ -122,7 +122,7 @@ void tst_ExcutionArgumentsParser::shouldIgnoreInvalidDebugMask()
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldAcceptLastValidDebugMask()
+void ExcutionArgumentsParserTest::shouldAcceptLastValidDebugMask()
 {
 	auto arguments = QStringList{} << "--debug" << "125" << "--debug" << "--version" << "--debug" << "256";
 	auto parser = ExecutionArgumentsParser{};
@@ -135,7 +135,7 @@ void tst_ExcutionArgumentsParser::shouldAcceptLastValidDebugMask()
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldProperlyParseProfileDirectory()
+void ExcutionArgumentsParserTest::shouldProperlyParseProfileDirectory()
 {
 	auto arguments = QStringList{} << "--config-dir" << "kadu-2";
 	auto parser = ExecutionArgumentsParser{};
@@ -148,7 +148,7 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseProfileDirectory()
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldIgnoreEmptyProfileDirectory()
+void ExcutionArgumentsParserTest::shouldIgnoreEmptyProfileDirectory()
 {
 	auto arguments = QStringList{} << "--config-dir";
 	auto parser = ExecutionArgumentsParser{};
@@ -161,7 +161,7 @@ void tst_ExcutionArgumentsParser::shouldIgnoreEmptyProfileDirectory()
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldAcceptLastProfileDirectory()
+void ExcutionArgumentsParserTest::shouldAcceptLastProfileDirectory()
 {
 	auto arguments = QStringList{} << "--config-dir" << "kadu-2" << "--config-dir" << "kadu-3";
 	auto parser = ExecutionArgumentsParser{};
@@ -174,7 +174,7 @@ void tst_ExcutionArgumentsParser::shouldAcceptLastProfileDirectory()
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
-void tst_ExcutionArgumentsParser::shouldProperlyParseListOfIds()
+void ExcutionArgumentsParserTest::shouldProperlyParseListOfIds()
 {
 	auto arguments = QStringList{} << "gg:123" << "gg:456" << "xmpp:test@example.com";
 	auto parser = ExecutionArgumentsParser{};
@@ -187,7 +187,7 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseListOfIds()
 	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:123" << "gg:456" << "xmpp:test@example.com");
 }
 
-void tst_ExcutionArgumentsParser::shouldIgnoreInvalidIds()
+void ExcutionArgumentsParserTest::shouldIgnoreInvalidIds()
 {
 	auto arguments = QStringList{} << "gg:123" << "gg:" << "gg:456" << "xmpp:test@example.com" << "xmpp:" << "no-id";
 	auto parser = ExecutionArgumentsParser{};
@@ -200,7 +200,7 @@ void tst_ExcutionArgumentsParser::shouldIgnoreInvalidIds()
 	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:123" << "gg:456" << "xmpp:test@example.com");
 }
 
-void tst_ExcutionArgumentsParser::shouldProperlyParseComplexArguments()
+void ExcutionArgumentsParserTest::shouldProperlyParseComplexArguments()
 {
 	auto arguments = QStringList{} << "--version" << "--help" << "--debug" << "15" << "--config-dir" << "kadu-7" << "gg:15" << "xmpp:12";
 	auto parser = ExecutionArgumentsParser{};
@@ -213,5 +213,5 @@ void tst_ExcutionArgumentsParser::shouldProperlyParseComplexArguments()
 	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:15" << "xmpp:12");
 }
 
-QTEST_APPLESS_MAIN(tst_ExcutionArgumentsParser)
-#include "tst-execution-arguments-parser.moc"
+QTEST_APPLESS_MAIN(ExcutionArgumentsParserTest)
+#include "execution-arguments-parser.test.moc"

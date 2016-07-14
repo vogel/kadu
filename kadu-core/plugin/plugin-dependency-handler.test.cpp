@@ -46,7 +46,7 @@ private:
 };
 }
 
-class tst_PluginDependencyHandler : public QObject
+class PluginDependencyHandlerTest : public QObject
 {
 	Q_OBJECT
 
@@ -64,16 +64,16 @@ private slots:
 
 };
 
-std::unique_ptr<PluginDependencyHandler> tst_PluginDependencyHandler::createPluginDependencyHandler(const QVector<QPair<QString, QStringList>> &plugins)
+std::unique_ptr<PluginDependencyHandler> PluginDependencyHandlerTest::createPluginDependencyHandler(const QVector<QPair<QString, QStringList>> &plugins)
 {
 	auto result = make_unique<PluginDependencyHandler>();
 	result.get()->setPluginDependencyGraphBuilder(new PluginDependencyGraphBuilder{result.get()});
 	result.get()->setPluginMetadataProvider(createMetatadataProvider(plugins, result.get()));
 	result.get()->init();
-	return std::move(result);
+	return result;
 }
 
-SimpleMetadataProvider * tst_PluginDependencyHandler::createMetatadataProvider(const QVector<QPair<QString, QStringList>> &plugins, QObject *parent)
+SimpleMetadataProvider * PluginDependencyHandlerTest::createMetatadataProvider(const QVector<QPair<QString, QStringList>> &plugins, QObject *parent)
 {
 	auto result = std::map<QString, PluginMetadata>{};
 	for (auto const &plugin : plugins)
@@ -81,7 +81,7 @@ SimpleMetadataProvider * tst_PluginDependencyHandler::createMetatadataProvider(c
 	return new SimpleMetadataProvider{result, parent};
 }
 
-PluginMetadata tst_PluginDependencyHandler::createPluginMetadata(const QPair<QString, QStringList> &plugin)
+PluginMetadata PluginDependencyHandlerTest::createPluginMetadata(const QPair<QString, QStringList> &plugin)
 {
 	auto builder = PluginMetadataBuilder{};
 	return builder
@@ -90,7 +90,7 @@ PluginMetadata tst_PluginDependencyHandler::createPluginMetadata(const QPair<QSt
 			.create();
 }
 
-void tst_PluginDependencyHandler::verifyDependencies(const PluginDependencyGraph &graph, const QString &pluginName, const QStringList &dependencies, const QStringList &dependents)
+void PluginDependencyHandlerTest::verifyDependencies(const PluginDependencyGraph &graph, const QString &pluginName, const QStringList &dependencies, const QStringList &dependents)
 {
 	auto graphDependencies = graph.directDependencies(pluginName);
 	auto graphDependents = graph.directDependents(pluginName);
@@ -101,7 +101,7 @@ void tst_PluginDependencyHandler::verifyDependencies(const PluginDependencyGraph
 	QCOMPARE(graphDependents.size(), dependents.size());
 }
 
-void tst_PluginDependencyHandler::simpleDependencyTest()
+void PluginDependencyHandlerTest::simpleDependencyTest()
 {
 	auto handler = createPluginDependencyHandler(QVector<QPair<QString, QStringList>>
 	{
@@ -133,7 +133,7 @@ void tst_PluginDependencyHandler::simpleDependencyTest()
 	QCOMPARE(handler.get()->withDependents("p5"), QVector<QString>{});
 }
 
-void tst_PluginDependencyHandler::selfDependencyTest()
+void PluginDependencyHandlerTest::selfDependencyTest()
 {
 	auto handler = createPluginDependencyHandler(QVector<QPair<QString, QStringList>>
 	{
@@ -148,7 +148,7 @@ void tst_PluginDependencyHandler::selfDependencyTest()
 	QCOMPARE(handler.get()->withDependents("p1"), QVector<QString>{} << "p1");
 }
 
-void tst_PluginDependencyHandler::pluginOnlyAsDependencyTest()
+void PluginDependencyHandlerTest::pluginOnlyAsDependencyTest()
 {
 	auto handler = createPluginDependencyHandler(QVector<QPair<QString, QStringList>>
 	{
@@ -164,7 +164,7 @@ void tst_PluginDependencyHandler::pluginOnlyAsDependencyTest()
 	QVERIFY(!handler.get()->hasPluginMetadata("p4"));
 }
 
-void tst_PluginDependencyHandler::cycleDependencyTest()
+void PluginDependencyHandlerTest::cycleDependencyTest()
 {
 	auto handler = createPluginDependencyHandler(QVector<QPair<QString, QStringList>>
 	{
@@ -177,5 +177,5 @@ void tst_PluginDependencyHandler::cycleDependencyTest()
 	QVERIFY(!handler.get()->hasPluginMetadata("p2"));
 }
 
-QTEST_APPLESS_MAIN(tst_PluginDependencyHandler)
-#include "tst-plugin-dependency-handler.moc"
+QTEST_APPLESS_MAIN(PluginDependencyHandlerTest)
+#include "plugin-dependency-handler.test.moc"

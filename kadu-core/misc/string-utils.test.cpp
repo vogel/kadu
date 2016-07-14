@@ -21,7 +21,7 @@
 
 #include "misc/string-utils.h"
 
-class tst_StringUtils : public QObject
+class StringUtilsTest : public QObject
 {
 	Q_OBJECT
 
@@ -31,7 +31,7 @@ private slots:
 
 };
 
-void tst_StringUtils::ellipsisTest_data()
+void StringUtilsTest::ellipsisTest_data()
 {
 	QTest::addColumn<QString>("input");
 	QTest::addColumn<int>("maxLen");
@@ -44,7 +44,7 @@ void tst_StringUtils::ellipsisTest_data()
 	QTest::newRow("string,6") << "string" << 6 << "string";
 }
 
-void tst_StringUtils::ellipsisTest()
+void StringUtilsTest::ellipsisTest()
 {
 	for (int i = 0; i < 5; i++)
 	{
@@ -56,5 +56,5 @@ void tst_StringUtils::ellipsisTest()
 	}
 }
 
-QTEST_APPLESS_MAIN(tst_StringUtils)
-#include "tst-string-utils.moc"
+QTEST_APPLESS_MAIN(StringUtilsTest)
+#include "string-utils.test.moc"

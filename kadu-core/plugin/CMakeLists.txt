@@ -34,4 +34,13 @@ set (plugin_SRCS
 	plugin-repository.cpp
 )
 
+kadu_add_test (dependency-graph/plugin-dependency-graph-builder)
+kadu_add_test (dependency-graph/plugin-dependency-graph)
+
+kadu_add_test (state/plugin-state-service)
+kadu_add_test (state/plugin-state)
+
+kadu_add_test (plugin-conflict-resolver)
+kadu_add_test (plugin-dependency-handler)
+
 kadu_subdirectory (plugin "${plugin_SRCS}" "" "")

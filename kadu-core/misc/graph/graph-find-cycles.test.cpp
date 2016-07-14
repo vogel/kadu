@@ -30,7 +30,7 @@ struct Tag2 {};
 using TestGraph = Graph<std::string, Tag1, Tag2>;
 
 
-class tst_GraphFindCycles : public QObject
+class GraphFindCyclesTest : public QObject
 {
 	Q_OBJECT
 
@@ -43,7 +43,7 @@ private slots:
 
 };
 
-void tst_GraphFindCycles::noCyclesTest()
+void GraphFindCyclesTest::noCyclesTest()
 {
 	auto graph = TestGraph{};
 
@@ -63,7 +63,7 @@ void tst_GraphFindCycles::noCyclesTest()
 	QVERIFY(nodesInCycle.empty());
 }
 
-void tst_GraphFindCycles::oneCycleTest()
+void GraphFindCyclesTest::oneCycleTest()
 {
 	auto graph = TestGraph{};
 
@@ -87,7 +87,7 @@ void tst_GraphFindCycles::oneCycleTest()
 	QVERIFY(contains(nodesInCycle, "p4"));
 }
 
-void tst_GraphFindCycles::multipleCycleTest()
+void GraphFindCyclesTest::multipleCycleTest()
 {
 	auto graph = TestGraph{};
 
@@ -131,7 +131,7 @@ void tst_GraphFindCycles::multipleCycleTest()
 	QVERIFY(contains(nodesInCycle, "p10"));
 }
 
-void tst_GraphFindCycles::multipleCycleMultipleTagsTest()
+void GraphFindCyclesTest::multipleCycleMultipleTagsTest()
 {
 	auto graph = TestGraph{};
 
@@ -179,7 +179,7 @@ void tst_GraphFindCycles::multipleCycleMultipleTagsTest()
 	QVERIFY(contains(nodesInCycleTag2, "p7"));
 }
 
-void tst_GraphFindCycles::bigCycleTest()
+void GraphFindCyclesTest::bigCycleTest()
 {
 	auto graph = TestGraph{};
 
@@ -206,5 +206,5 @@ void tst_GraphFindCycles::bigCycleTest()
 	QVERIFY(contains(nodesInCycle, "p5"));
 }
 
-QTEST_APPLESS_MAIN(tst_GraphFindCycles)
-#include "tst-graph-find-cycles.moc"
+QTEST_APPLESS_MAIN(GraphFindCyclesTest)
+#include "graph-find-cycles.test.moc"

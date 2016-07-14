@@ -22,7 +22,7 @@
 
 #include <QtTest/QtTest>
 
-class tst_PluginStateService : public QObject
+class PluginStateServiceTest : public QObject
 {
 	Q_OBJECT
 
@@ -34,7 +34,7 @@ private slots:
 
 };
 
-void tst_PluginStateService::noDataServiceTest()
+void PluginStateServiceTest::noDataServiceTest()
 {
 	PluginStateService service{};
 
@@ -44,7 +44,7 @@ void tst_PluginStateService::noDataServiceTest()
 	QCOMPARE(service.enabledPlugins(), {});
 }
 
-void tst_PluginStateService::setPluginStateTest()
+void PluginStateServiceTest::setPluginStateTest()
 {
 	PluginStateService service{};
 
@@ -63,7 +63,7 @@ void tst_PluginStateService::setPluginStateTest()
 	QCOMPARE(service.enabledPlugins(), {"p2"});
 }
 
-void tst_PluginStateService::setPluginStatesTest()
+void PluginStateServiceTest::setPluginStatesTest()
 {
 	PluginStateService service{};
 
@@ -85,7 +85,7 @@ void tst_PluginStateService::setPluginStatesTest()
 	QCOMPARE(service.enabledPlugins(), {"p2"});
 }
 
-void tst_PluginStateService::dynamicPluginStateTest()
+void PluginStateServiceTest::dynamicPluginStateTest()
 {
 	PluginStateService service{};
 
@@ -111,5 +111,5 @@ void tst_PluginStateService::dynamicPluginStateTest()
 	QCOMPARE(service.enabledPlugins(), {});
 }
 
-QTEST_APPLESS_MAIN(tst_PluginStateService)
-#include "tst-plugin-state-service.moc"
+QTEST_APPLESS_MAIN(PluginStateServiceTest)
+#include "plugin-state-service.test.moc"

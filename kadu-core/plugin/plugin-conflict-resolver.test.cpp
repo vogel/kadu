@@ -47,7 +47,7 @@ private:
 };
 }
 
-class tst_PluginConflictResolver : public QObject
+class PluginConflictResolverTest : public QObject
 {
 	Q_OBJECT
 
@@ -66,14 +66,14 @@ private slots:
 
 };
 
-std::unique_ptr<PluginConflictResolver> tst_PluginConflictResolver::createPluginConflictResolver(const QVector<PluginTuple> &plugins)
+std::unique_ptr<PluginConflictResolver> PluginConflictResolverTest::createPluginConflictResolver(const QVector<PluginTuple> &plugins)
 {
 	auto result = make_unique<PluginConflictResolver>();
 	result.get()->setPluginDependencyHandler(createPluginDependencyHandler(plugins, result.get()));
 	return result;
 }
 
-PluginDependencyHandler * tst_PluginConflictResolver::createPluginDependencyHandler(const QVector<PluginTuple> &plugins, QObject *parent)
+PluginDependencyHandler * PluginConflictResolverTest::createPluginDependencyHandler(const QVector<PluginTuple> &plugins, QObject *parent)
 {
 	auto result = new PluginDependencyHandler{parent};
 	result->setPluginDependencyGraphBuilder(new PluginDependencyGraphBuilder{result});
@@ -82,7 +82,7 @@ PluginDependencyHandler * tst_PluginConflictResolver::createPluginDependencyHand
 	return result;
 }
 
-SimpleMetadataProvider * tst_PluginConflictResolver::createMetatadataProvider(const QVector<PluginTuple> &plugins, QObject *parent)
+SimpleMetadataProvider * PluginConflictResolverTest::createMetatadataProvider(const QVector<PluginTuple> &plugins, QObject *parent)
 {
 	auto result = std::map<QString, PluginMetadata>{};
 	for (auto const &plugin : plugins)
@@ -90,7 +90,7 @@ SimpleMetadataProvider * tst_PluginConflictResolver::createMetatadataProvider(co
 	return new SimpleMetadataProvider{result, parent};
 }
 
-PluginMetadata tst_PluginConflictResolver::createPluginMetadata(const PluginTuple &plugin)
+PluginMetadata PluginConflictResolverTest::createPluginMetadata(const PluginTuple &plugin)
 {
 	auto builder = PluginMetadataBuilder{};
 	return builder
@@ -100,7 +100,7 @@ PluginMetadata tst_PluginConflictResolver::createPluginMetadata(const PluginTupl
 			.create();
 }
 
-void tst_PluginConflictResolver::noConflicts()
+void PluginConflictResolverTest::noConflicts()
 {
 	auto resolver = createPluginConflictResolver(QVector<PluginTuple>
 	{
@@ -125,7 +125,7 @@ void tst_PluginConflictResolver::noConflicts()
 	QCOMPARE(resolver.get()->conflictingPlugins({""}, "p4"), {});
 }
 
-void tst_PluginConflictResolver::simpleConflict()
+void PluginConflictResolverTest::simpleConflict()
 {
 	auto resolver = createPluginConflictResolver(QVector<PluginTuple>
 	{
@@ -157,7 +157,7 @@ void tst_PluginConflictResolver::simpleConflict()
 	QCOMPARE(resolver.get()->conflictingPlugins({"p4"}, "p4"), {});
 }
 
-void tst_PluginConflictResolver::dependencyConflict()
+void PluginConflictResolverTest::dependencyConflict()
 {
 	auto resolver = createPluginConflictResolver(QVector<PluginTuple>
 	{
@@ -194,5 +194,5 @@ void tst_PluginConflictResolver::dependencyConflict()
 	QCOMPARE(resolver.get()->conflictingPlugins({"p4"}, "p4"), {});
 }
 
-QTEST_APPLESS_MAIN(tst_PluginConflictResolver)
-#include "tst-plugin-conflict-resolver.moc"
+QTEST_APPLESS_MAIN(PluginConflictResolverTest)
+#include "plugin-conflict-resolver.test.moc"

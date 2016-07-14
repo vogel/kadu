@@ -18,9 +18,9 @@
  */
 
 #include "misc/algorithm.h"
+#include "misc/exception.h"
 #include "misc/graph/graph.h"
 #include "misc/graph/graph-algorithm.h"
-#include "utils/exception.h"
 
 #include <algorithm>
 #include <QtTest/QtTest>
@@ -30,7 +30,7 @@ struct Tag2 {};
 
 using TestGraph = Graph<std::string, Tag1, Tag2>;
 
-class tst_GraphSortSuccessors : public QObject
+class GraphSortSuccessorsTest : public QObject
 {
 	Q_OBJECT
 
@@ -42,7 +42,7 @@ private slots:
 
 };
 
-void tst_GraphSortSuccessors::deterministicSortTest()
+void GraphSortSuccessorsTest::deterministicSortTest()
 {
 	auto graph = TestGraph{};
 
@@ -63,7 +63,7 @@ void tst_GraphSortSuccessors::deterministicSortTest()
 	QCOMPARE(graph_sort_successors<Tag1>(graph, "p4"), (std::vector<TestGraph::NodePointer>{}));
 }
 
-void tst_GraphSortSuccessors::nondeterministicSortTest()
+void GraphSortSuccessorsTest::nondeterministicSortTest()
 {
 	auto graph = TestGraph{};
 
@@ -91,7 +91,7 @@ void tst_GraphSortSuccessors::nondeterministicSortTest()
 	QVERIFY(precedes(p1Successors, p3, p2));
 }
 
-void tst_GraphSortSuccessors::cycleSortTest()
+void GraphSortSuccessorsTest::cycleSortTest()
 {
 	auto graph = TestGraph{};
 
@@ -102,7 +102,7 @@ void tst_GraphSortSuccessors::cycleSortTest()
 	expect<GraphCycleException>([&]{ graph_sort_successors<Tag1>(graph, "p1"); });
 }
 
-void tst_GraphSortSuccessors::invalidNodeTest()
+void GraphSortSuccessorsTest::invalidNodeTest()
 {
 	auto graph = TestGraph{};
 
@@ -113,5 +113,5 @@ void tst_GraphSortSuccessors::invalidNodeTest()
 	QCOMPARE(p4Successors.size(), 0UL);
 }
 
-QTEST_APPLESS_MAIN(tst_GraphSortSuccessors)
-#include "tst-graph-sort-successors.moc"
+QTEST_APPLESS_MAIN(GraphSortSuccessorsTest)
+#include "graph-sort-successors.test.moc"
