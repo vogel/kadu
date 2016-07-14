@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,15 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "windows-integration-module.h"
+#pragma once
 
-#include "windows-integration-plugin-object.h"
-#include "windows-integration.h"
-#include "windows-jump-list.h"
+#include "exports.h"
 
-WindowsIntegrationModule::WindowsIntegrationModule()
+#include <QtCore/QObject>
+
+#ifdef Q_OS_WIN
+	class QWinTaskbarProgress;
+#endif
+
+class FileTransferManager;
+
+class QWidget;
+
+class KADUAPI TaskbarProgress : public QObject
 {
-	add_type<WindowsIntegrationPluginObject>();
-	add_type<WindowsIntegration>();
-	add_type<WindowsJumpList>();
-}
+	Q_OBJECT
+
+public:
+	explicit TaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent = nullptr);
+	virtual ~TaskbarProgress();
+
+private:
+#ifdef Q_OS_WIN
+	QWinTaskbarProgress *m_taskbarProgress;
+#endif
+
+private slots:
+	void progressChanged(int progress);
+
+};

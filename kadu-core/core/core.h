@@ -67,7 +67,7 @@ protected:
 private:
 	mutable injeqt::v1::injector m_injector;
 
-	void execute(const QStringList &openIds);
+	void execute(const QStringList &openIds, const QString &openUuid);
 
 	void createGui();
 	void runServices();

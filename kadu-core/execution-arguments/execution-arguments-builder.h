@@ -53,6 +53,7 @@ public:
 	ExecutionArgumentsBuilder & setDebugMask(QString debugMask);
 	ExecutionArgumentsBuilder & setProfileDirectory(QString profileDirectory);
 	ExecutionArgumentsBuilder & setOpenIds(QStringList openIds);
+	ExecutionArgumentsBuilder & setOpenUuid(QString openUuid);
 
 	/**
 	 * @short Create ExecutionArguments from values set before by setXXX methods.
@@ -65,6 +66,7 @@ private:
 	QString m_debugMask;
 	QString m_profileDirectory;
 	QStringList m_openIds;
+	QString m_openUuid;
 
 };
 

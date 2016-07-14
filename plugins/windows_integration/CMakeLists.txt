@@ -9,6 +9,7 @@ set (SOURCES
 	windows-integration-plugin-modules-factory.cpp
 	windows-integration-plugin-object.cpp
 	windows-integration.cpp
+	windows-jump-list.cpp
 	windows-taskbar-progress.cpp
 	windows-thumbnail-toolbar.cpp
 )

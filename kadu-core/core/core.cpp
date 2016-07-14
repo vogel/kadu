@@ -31,6 +31,7 @@
 #include "core.h"
 
 #include "avatars/avatar-manager.h"
+#include "chat/chat-manager.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -47,6 +48,7 @@
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
@@ -92,6 +94,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QTimer>
+#include <QtCore/QUuid>
 #include <QtWidgets/QApplication>
 
 #ifdef Q_OS_WIN
@@ -433,16 +436,20 @@ int Core::executeSingle(const ExecutionArguments &executionArguments)
 	auto applicationId = QString{"kadu-%1"}.arg(m_injector.get<PathsProvider>()->profilePath());
 
 	auto executeAsFirst = [&](){
-		execute(executionArguments.openIds());
+		execute(executionArguments.openIds(), executionArguments.openUuid());
 		ret = QApplication::exec();
 		kdebugm(KDEBUG_INFO, "after exec\n");
 		kdebugm(KDEBUG_INFO, "exiting main\n");
 	};
 
 	auto executeAsNext = [&](SingleApplication &singleApplication){
-		if (!executionArguments.openIds().isEmpty())
+		if (!executionArguments.openIds().isEmpty() || !executionArguments.openUuid().isEmpty())
+		{
 			for (auto const &id : executionArguments.openIds())
 				singleApplication.sendMessage(id, 1000);
+			if (!executionArguments.openUuid().isEmpty())
+				singleApplication.sendMessage(executionArguments.openUuid(), 1000);
+		}
 		else
 			singleApplication.sendMessage("activate", 1000);
 
@@ -458,7 +465,7 @@ int Core::executeSingle(const ExecutionArguments &executionArguments)
 	return ret;
 }
 
-void Core::execute(const QStringList &openIds)
+void Core::execute(const QStringList &openIds, const QString &openUuid)
 {
 	m_injector.instantiate<TranslationLoader>();
 
@@ -468,6 +475,8 @@ void Core::execute(const QStringList &openIds)
 
 	for (auto const &id : openIds)
 		executeRemoteCommand(id);
+	if (!openUuid.isEmpty())
+		executeRemoteCommand(openUuid);
 
 	// it has to be called after loading modules (docking might want to block showing the window)
 	m_injector.get<KaduWindowService>()->showMainWindow();
@@ -540,8 +549,18 @@ void Core::executeRemoteCommand(const QString &remoteCommand)
 {
 	if ("activate" == remoteCommand)
 		_activateWindow(m_injector.get<Configuration>(), m_injector.get<KaduWindowService>()->mainWindowProvider()->provide());
-	else
+	else if (!remoteCommand.startsWith("{"))
 		m_injector.get<UrlHandlerManager>()->openUrl(remoteCommand.toUtf8(), true);
+	else
+	{
+		auto uuid = QUuid{remoteCommand};
+		if (uuid.isNull())
+			return;
+		auto chat = m_injector.get<ChatManager>()->byUuid(uuid);
+		if (!chat)
+			return;
+		m_injector.get<ChatWidgetManager>()->openChat(chat, OpenChatActivation::Activate);
+	}
 }
 
 #include "moc_core.cpp"

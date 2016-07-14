@@ -57,6 +57,12 @@ ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setOpenIds(QStringList op
 	return *this;
 }
 
+ExecutionArgumentsBuilder &ExecutionArgumentsBuilder::setOpenUuid(QString openUuid)
+{
+	m_openUuid = std::move(openUuid);
+	return *this;
+}
+
 ExecutionArguments ExecutionArgumentsBuilder::build() const
 {
 	return {
@@ -64,6 +70,7 @@ ExecutionArguments ExecutionArgumentsBuilder::build() const
 		m_queryUsage,
 		m_debugMask,
 		m_profileDirectory,
-		m_openIds
+		m_openIds,
+		m_openUuid
 	};
 }

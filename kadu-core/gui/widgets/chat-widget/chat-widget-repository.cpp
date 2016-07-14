@@ -50,8 +50,8 @@ void ChatWidgetRepository::addChatWidget(ChatWidget *chatWidget)
 	if (!chatWidget || hasWidgetForChat(chatWidget->chat()))
 		return;
 
-	emit chatWidgetAdded(chatWidget);
 	m_widgets.insert(std::make_pair(chatWidget->chat(), chatWidget));
+	emit chatWidgetAdded(chatWidget);
 
 	connect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(removeChatWidget(ChatWidget*)));
 }

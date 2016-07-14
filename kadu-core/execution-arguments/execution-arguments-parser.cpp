@@ -31,6 +31,7 @@ ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments)
 	auto debugMask = QString{};
 	auto profileDirectory = QString{};
 	auto openIds = QStringList{};
+	auto openUuid = QString{};
 
 	for (auto it = arguments.constBegin(); it != arguments.constEnd(); ++it)
 	{
@@ -49,6 +50,8 @@ ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments)
 			profileDirectory = *(++it);
 		else if (QRegExp("^[a-zA-Z]+:(/){0,3}.+").exactMatch(*it))
 			openIds.append(*it);
+		else if (*it == QStringLiteral("--open-uuid") && (it + 1) != arguments.constEnd())
+			openUuid = *(++it);
 		else
 			fprintf(stderr, "Ignoring unknown parameter '%s'\n", it->toUtf8().constData());
 	}
@@ -59,5 +62,6 @@ ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments)
 		.setDebugMask(std::move(debugMask))
 		.setProfileDirectory(std::move(profileDirectory))
 		.setOpenIds(std::move(openIds))
+		.setOpenUuid(std::move(openUuid))
 		.build();
 }
