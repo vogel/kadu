@@ -38,8 +38,8 @@ void StringUtilsTest::ellipsisTest_data()
 	QTest::addColumn<QString>("expected");
 
 	QTest::newRow("string,0") << "string" << 0 << "";
-	QTest::newRow("string,0") << "string" << 1 << "s";
-	QTest::newRow("string,5") << "string" << 2 << "st...";
+	QTest::newRow("string,1") << "string" << 1 << "s...";
+	QTest::newRow("string,2") << "string" << 2 << "st...";
 	QTest::newRow("string,3") << "string" << 3 << "str...";
 	QTest::newRow("string,6") << "string" << 6 << "string";
 }

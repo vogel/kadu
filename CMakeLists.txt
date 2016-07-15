@@ -138,6 +138,7 @@ find_package (Qt5Test REQUIRED)
 function (kadu_add_test name_)
 	set (test_file "${name_}.test")
 	string (REPLACE "/" "-" test_name ${test_file})
+	list (APPEND UNIT_TEST_TARGETS ${test_name} PARENT_SCOPE)
 
 	add_executable (${test_name} "${test_file}.cpp")
 	kadu_set_flags (${test_name})
@@ -154,6 +155,13 @@ function (kadu_add_test name_)
 	target_link_libraries (${test_name} LINK_PRIVATE libkadu)
 endfunction ()
 
+add_custom_target (all_tests ALL DEPENDS kadu ${COMPILE_PLUGINS} ${UNIT_TEST_TARGETS})
+add_custom_command (
+	TARGET all_tests
+	COMMENT "Run tests"
+	POST_BUILD COMMAND ctest ARGS --output-on-failure
+	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
 
 # Installation paths.
 

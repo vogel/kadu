@@ -31,9 +31,8 @@ QString ellipsis(const QString &text, quint16 length)
 	if (text.isEmpty() || length == 0)
 		return QString();
 
-	QString trimmed = text.left(length);
-
-	if (trimmed.length() > 1 && trimmed.length() < text.length())
+	auto trimmed = text.left(length);
+	if (!trimmed.isEmpty() && trimmed.length() < text.length())
 		return trimmed + "...";
 
 	return trimmed;
