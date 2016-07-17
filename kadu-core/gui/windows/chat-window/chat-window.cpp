@@ -35,9 +35,9 @@
 #include "core/core.h"
 #include "core/injected-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
+#include "gui/widgets/chat-widget/chat-widget-impl.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
@@ -84,7 +84,7 @@ void ChatWindow::init()
 
 	setWindowRole("kadu-chat");
 
-	m_chatWidget = m_injectedFactory->makeInjected<ChatWidget>(m_chat, this);
+	m_chatWidget = m_injectedFactory->makeInjected<ChatWidgetImpl>(m_chat, this);
 	connect(m_chatWidget, SIGNAL(closeRequested(ChatWidget*)), this, SLOT(close()));
 
 	if (m_chatWidget && m_chatWidget->chat().details() && m_chatWidget->chat().details()->type())

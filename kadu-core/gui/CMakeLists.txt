@@ -25,12 +25,12 @@ set (gui_SRCS
 
 	services/clipboard-html-transformer-service.cpp
 
-	widgets/chat-widget/chat-widget.cpp
 	widgets/chat-widget/chat-widget-actions.cpp
 	widgets/chat-widget/chat-widget-activation-service.cpp
 	widgets/chat-widget/chat-widget-container-handler.cpp
 	widgets/chat-widget/chat-widget-container-handler-mapper.cpp
 	widgets/chat-widget/chat-widget-container-handler-repository.cpp
+	widgets/chat-widget/chat-widget-impl.cpp
 	widgets/chat-widget/chat-widget-manager.cpp
 	widgets/chat-widget/chat-widget-message-handler.cpp
 	widgets/chat-widget/chat-widget-message-handler-configuration.cpp
@@ -40,6 +40,7 @@ set (gui_SRCS
 	widgets/chat-widget/chat-widget-set-title.cpp
 	widgets/chat-widget/chat-widget-state-persistence-service.cpp
 	widgets/chat-widget/chat-widget-title.cpp
+	widgets/chat-widget/chat-widget.cpp
 
 	widgets/group-tab-bar/group-filter-tab-data.cpp
 	widgets/group-tab-bar/group-tab-bar.cpp

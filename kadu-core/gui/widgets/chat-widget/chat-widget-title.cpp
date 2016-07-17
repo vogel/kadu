@@ -19,6 +19,7 @@
 
 #include "chat-widget-title.h"
 
+#include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/model/contact-data-extractor.h"

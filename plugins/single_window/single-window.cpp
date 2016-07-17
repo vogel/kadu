@@ -23,11 +23,11 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/hot-key.h"
+#include "gui/widgets/chat-widget/chat-widget-impl.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-set-title.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
@@ -267,7 +267,7 @@ ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
 	if (!chat)
 		return nullptr;
 
-	auto chatWidget = m_injectedFactory->makeInjected<ChatWidget>(chat, m_tabs);
+	auto chatWidget = m_injectedFactory->makeInjected<ChatWidgetImpl>(chat, m_tabs);
 	m_title->addChatWidget(chatWidget);
 	setConfiguration(chatWidget);
 

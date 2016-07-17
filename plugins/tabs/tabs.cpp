@@ -44,11 +44,11 @@
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget/chat-widget-impl.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-set-title.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/toolbar.h"
 #include "icons/kadu-icon.h"
@@ -250,7 +250,7 @@ ChatWidget * TabsManager::addChat(Chat chat, OpenChatActivation activation)
 {
 	kdebugf();
 
-	auto chatWidget = m_injectedFactory->makeInjected<ChatWidget>(chat, nullptr);
+	auto chatWidget = m_injectedFactory->makeInjected<ChatWidgetImpl>(chat, nullptr);
 	setConfiguration(chatWidget);
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))

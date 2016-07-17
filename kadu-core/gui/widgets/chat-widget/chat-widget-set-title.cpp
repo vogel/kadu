@@ -19,6 +19,7 @@
 
 #include "chat-widget-set-title.h"
 
+#include "chat/chat.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
 

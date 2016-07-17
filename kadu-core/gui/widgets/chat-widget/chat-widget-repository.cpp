@@ -58,10 +58,11 @@ void ChatWidgetRepository::addChatWidget(ChatWidget *chatWidget)
 
 void ChatWidgetRepository::removeChatWidget(ChatWidget *chatWidget)
 {
-	if (!chatWidget || (widgetForChat(chatWidget->chat()) != chatWidget))
+	auto chat = chatWidget->chat();
+	if (!chatWidget || (widgetForChat(chat) != chatWidget))
 		return;
 
-	m_widgets.erase(chatWidget->chat());
+	m_widgets.erase(chat);
 	emit chatWidgetRemoved(chatWidget);
 }
 

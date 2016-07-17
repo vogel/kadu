@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2013, 2014, 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,172 +19,57 @@
 
 #pragma once
 
-#include <QtCore/QDateTime>
-#include <QtCore/QList>
-#include <QtCore/QPointer>
-#include <QtCore/QTimer>
-#include <QtGui/QIcon>
-#include <QtWidgets/QWidget>
-#include <injeqt/injeqt.h>
-
-#include "chat/chat.h"
-#include "configuration/configuration-aware-object.h"
-#include "message/message.h"
-#include "misc/memory.h"
-#include "protocols/services/chat-state-service.h"
 #include "exports.h"
 
-class QSplitter;
+#include <QtWidgets/QWidget>
+#include <memory>
 
-class Actions;
-class ChatConfigurationHolder;
-class ChatEditBoxSizeManager;
 class ChatEditBox;
-class ChatTopBarContainerWidget;
-class ChatTopBarWidgetFactoryRepository;
-class ChatTypeManager;
-class ChatWidgetActions;
 class ChatWidgetTitle;
-class Configuration;
+class Chat;
 class CustomInput;
-class FilteredTreeView;
-class FormattedStringFactory;
-class IconsManager;
-class InjectedFactory;
-class KaduWindowService;
-class MessageManager;
-class MessageStorage;
-class Protocol;
+class FormattedString;
+class Message;
 class SortedMessages;
 class TalkableProxyModel;
-class WebkitMessagesViewFactory;
 class WebkitMessagesView;
 
-class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
+enum class ChatState;
+
+class KADUAPI ChatWidget : public QWidget
 {
 	Q_OBJECT
 
-	friend class ChatWidgetManager;
-
-	QPointer<Actions> m_actions;
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<ChatEditBoxSizeManager> m_chatEditBoxSizeManager;
-	QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<ChatWidgetActions> m_chatWidgetActions;
-	QPointer<Configuration> m_configuration;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<KaduWindowService> m_kaduWindowService;
-	QPointer<MessageManager> m_messageManager;
-	QPointer<MessageStorage> m_messageStorage;
-	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
-
-	Chat CurrentChat;
-	ChatTopBarContainerWidget *TopBarContainer;
-	owned_qptr<WebkitMessagesView> MessagesView;
-	FilteredTreeView *BuddiesWidget;
-	TalkableProxyModel *ProxyModel;
-	ChatEditBox *InputBox;
-
-	QSplitter *VerticalSplitter;
-	QSplitter *HorizontalSplitter;
-
-	QTimer ComposingTimer;
-	bool IsComposing;
-	ChatState CurrentContactActivity;
-
-	bool SplittersInitialized;
-
-	ChatWidgetTitle *Title;
-
-	QDateTime LastReceivedMessageTime;
-
-	void createGui();
-	void createContactsList();
-
-	void resetEditBox();
-
-	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
-
-	void composingStopped();
-
-private slots:
-	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setChatEditBoxSizeManager(ChatEditBoxSizeManager *chatEditBoxSizeManager);
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
-	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
-	INJEQT_INIT void init();
-
-	void configurationUpdated();
-	void chatUpdated();
-
-	void setUpVerticalSizes();
-	void commonHeightChanged(int height);
-	void verticalSplitterMoved(int pos, int index);
-
-	void checkComposing();
-	void updateComposing();
-	void contactActivityChanged(const Contact &contact, ChatState state);
-
-	void keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled);
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
-	virtual void resizeEvent(QResizeEvent *e);
- 	virtual void showEvent(QShowEvent *e);
-	bool keyPressEventHandled(QKeyEvent *);
-
 public:
-	explicit ChatWidget(Chat chat, QWidget *parent = nullptr);
+	explicit ChatWidget(QWidget *parent = nullptr);
 	virtual ~ChatWidget();
 
-	Chat chat() const { return CurrentChat; }
+	virtual Chat chat() const = 0;
+	virtual ChatState chatState() const = 0;
 
-	void appendSystemMessage(const QString &content);
-	void appendSystemMessage(std::unique_ptr<FormattedString> &&content);
+	virtual void addMessages(const SortedMessages &messages) = 0;
+	virtual void addMessage(const Message &message) = 0;
+	virtual void appendSystemMessage(const QString &content) = 0;
+	virtual void appendSystemMessage(std::unique_ptr<FormattedString> &&content) = 0;
+	virtual SortedMessages messages() const = 0;
 
-	CustomInput * edit() const;
-	TalkableProxyModel * talkableProxyModel() const;
-	ChatEditBox * getChatEditBox() const { return InputBox; }
-	WebkitMessagesView * chatMessagesView() const { return MessagesView.get(); }
+	virtual const QDateTime & lastReceivedMessageTime() const = 0;
 
-	virtual void dragEnterEvent(QDragEnterEvent *e);
-	virtual void dropEvent(QDropEvent *e);
-	virtual void dragMoveEvent(QDragMoveEvent *e);
+	virtual void kaduStoreGeometry() = 0;
+	virtual void kaduRestoreGeometry() = 0;
 
-	Protocol * currentProtocol() const;
-
-	ChatWidgetTitle * title() const;
-
-	const QDateTime & lastReceivedMessageTime() const { return LastReceivedMessageTime; }
-
-	void kaduStoreGeometry();
-	void kaduRestoreGeometry();
-
-	void addMessages(const SortedMessages &messages);
-	void addMessage(const Message &message);
-	SortedMessages messages() const;
-	int countMessages() const;
-
-	ChatState chatState() const;
+	virtual ChatEditBox * getChatEditBox() const = 0;
+	virtual ChatWidgetTitle * title() const = 0;
+	virtual CustomInput * edit() const = 0;
+	virtual TalkableProxyModel * talkableProxyModel() const = 0;
+	virtual WebkitMessagesView * chatMessagesView() const = 0;
 
 public slots:
-	void sendMessage();
-	void colorSelectorAboutToClose();
-	void clearChatWindow();
+	virtual void sendMessage() = 0;
+	virtual void colorSelectorAboutToClose() = 0;
+	virtual void clearChatWindow() = 0;
 
-	void requestClose();
+	virtual void requestClose() = 0;
 
 signals:
 	void messageReceived(ChatWidget *chatWidget);
