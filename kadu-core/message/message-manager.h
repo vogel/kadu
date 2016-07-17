@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011, 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,18 +19,10 @@
 
 #pragma once
 
-#include "accounts/accounts-aware-object.h"
 #include "message/message.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
-#include <injeqt/injeqt.h>
-
-class AccountManager;
-class FormattedStringFactory;
-class MessageFilterService;
-class MessageStorage;
-class MessageTransformerService;
 
 /**
  * @addtogroup Message
@@ -46,12 +37,12 @@ class MessageTransformerService;
  * This singleton class manages messages that go trought Kadu. It also stores all pending messages in permanent storage.
  * Pending message is an incoming message that have not ever been displayed to user.
  */
-class KADUAPI MessageManager : public QObject, public AccountsAwareObject
+class KADUAPI MessageManager : public QObject
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MessageManager(QObject *parent = nullptr);
+	explicit MessageManager(QObject *parent = nullptr);
 	virtual ~MessageManager();
 
 	/**
@@ -67,7 +58,7 @@ public:
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
 	 */
-	bool sendMessage(const Chat &chat, const QString &content, bool silent = false);
+	virtual bool sendMessage(const Chat &chat, const QString &content, bool silent = false) = 0;
 
 	/**
 	 * @short Send new message to given chat.
@@ -82,7 +73,7 @@ public:
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
 	 */
-	bool sendMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content, bool silent = false);
+	virtual bool sendMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content, bool silent = false) = 0;
 
 	/**
 	 * @short Send new raw message to given chat.
@@ -93,11 +84,7 @@ public:
 	 *
 	 * Raw messages will not invoke messageSent signals.
 	 */
-	bool sendRawMessage(const Chat &chat, const QByteArray &content);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+	virtual bool sendRawMessage(const Chat &chat, const QByteArray &content) = 0;
 
 signals:
 	/**
@@ -118,62 +105,6 @@ signals:
 	 * This signal is emited every time a message is sent trought one of registered acocunts.
 	 */
 	void messageSent(const Message &message);
-
-private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<MessageFilterService> m_messageFilterService;
-	QPointer<MessageStorage> m_messageStorage;
-	QPointer<MessageTransformerService> m_messageTransformerService;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
-
-	/**
-	 * @short Create outoing message for given chat and given content.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat of outgoing message
-	 * @param content content of outgoing message
-	 */
-	Message createOutgoingMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content);
-
-private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-
-	/**
-	 * @short Set message filter service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param messageFilterService message filter service for this service
-	 */
-	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
-	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
-
-	/**
-	 * @short Set message transformer service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param messageTransformerService message transformer service for this service
-	 */
-	INJEQT_SET void setMessageTransformerService(MessageTransformerService *messageTransformerService);
-
-	/**
-	 * @short Set formatted string factory for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param formattedStringFactory formatted string factory for this service
-	 */
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
-
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
-	/**
-	 * @short Slot called every time a new message was received from any of registered accounts.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message received message
-	 *
-	 * This slot is called every time a new message was received from any of registered accounts.
-	 * Each receied message is automatically recorded as unread message and can be set as pending message
-	 * if no applicable chat widget is available.
-	 *
-	 * This slot emits messageReceived and unreadMessageAdded signals.
-	 */
-	void messageReceivedSlot(const Message &message);
 
 };
 

@@ -21,7 +21,7 @@
 
 #include "message/message-filter-service.h"
 #include "message/message-html-renderer-service.h"
-#include "message/message-manager.h"
+#include "message/message-manager-impl.h"
 #include "message/message-notification-service.h"
 #include "message/message-render-info-factory.h"
 #include "message/message-storage.h"
@@ -32,7 +32,7 @@ MessageModule::MessageModule()
 {
 	add_type<MessageFilterService>();
 	add_type<MessageHtmlRendererService>();
-	add_type<MessageManager>();
+	add_type<MessageManagerImpl>();
 	add_type<MessageNotificationService>();
 	add_type<MessageRenderInfoFactory>();
 	add_type<MessageStorage>();
