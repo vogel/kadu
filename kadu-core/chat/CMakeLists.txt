@@ -11,6 +11,7 @@ set (chat_SRCS
 	chat-module.cpp
 	chat-shared.cpp
 	chat-storage.cpp
+	open-chat-repository.cpp
 	recent-chat-manager.cpp
 
 	model/chat-data-extractor.cpp
@@ -24,5 +25,7 @@ set (chat_SRCS
 	type/chat-type-manager.cpp
 	type/chat-type-room.cpp
 )
+
+kadu_add_test (open-chat-repository)
 
 kadu_subdirectory (chat "${chat_SRCS}" "" "")
