@@ -91,30 +91,12 @@ public:
 signals:
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted just before recent chat is added to manager.
-	 * @param chat added recent chat
-	 *
-	 * Signal is emitted just before recent chat is added to manager.
-	 */
-	void recentChatAboutToBeAdded(Chat chat);
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
 	 * @short Emitted just after recent chat is added to manager.
 	 * @param chat added recent chat
 	 *
 	 * Signal is emitted just after recent chat is added to manager.
 	 */
 	void recentChatAdded(Chat chat);
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted just before recent chat is removed from manager.
-	 * @param chat added recent chat
-	 *
-	 * Signal is emitted just before recent chat is removed from manager.
-	 */
-	void recentChatAboutToBeRemoved(Chat chat);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

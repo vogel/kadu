@@ -181,7 +181,7 @@ const QList<Chat> & RecentChatManager::recentChats()
  * assigned to chat variable, so it can be used to remove chat after configured amount
  * of time.
  *
- * Signals recentChatAboutToBeAdded and recentChatAdded are emitted.
+ * Signal recentChatAdded is emitted.
  * If the chat was on the list on the first position already, signals are NOT emitted.
  */
 void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
@@ -203,7 +203,6 @@ void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 	while (RecentChats.count() >= MAX_RECENT_CHAT_COUNT)
 		removeRecentChat(RecentChats.last());
 
-	emit recentChatAboutToBeAdded(chat);
 	RecentChats.prepend(chat);
 	emit recentChatAdded(chat);
 }
@@ -214,7 +213,7 @@ void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
  *
  * Removes given chat from list.
  *
- * Signals recentChatAboutToBeRemoved and recentChatRemoved are emitted.
+ * Signal recentChatRemoved is emitted.
  */
 void RecentChatManager::removeRecentChat(Chat chat)
 {
@@ -222,7 +221,6 @@ void RecentChatManager::removeRecentChat(Chat chat)
 	if (!RecentChats.contains(chat))
 		return;
 
-	emit recentChatAboutToBeRemoved(chat);
 	chat.removeProperty("recent-chat:fix2626");
 	RecentChats.removeAll(chat);
 	emit recentChatRemoved(chat);
