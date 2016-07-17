@@ -52,7 +52,7 @@
  * created.
  */
 ChatShared::ChatShared(const QUuid &uuid) :
-		Shared(uuid), Details(0), IgnoreAllMessages(false), UnreadMessagesCount(0), Open(false)
+		Shared(uuid), ChatAccount{nullptr}, Details(0), IgnoreAllMessages(false), UnreadMessagesCount(0), Open(false)
 {
 }
 

@@ -56,3 +56,5 @@ size_t OpenChatRepository::size() const
 {
 	return m_chats.size();
 }
+
+#include "open-chat-repository.moc"

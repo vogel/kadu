@@ -152,7 +152,7 @@ function (kadu_add_test name_)
 	qt5_use_modules (${test_name} LINK_PRIVATE Core Gui Network Qml Quick QuickWidgets Test WebKit WebKitWidgets Widgets Xml)
 
 	# Add libkadu after the plugin so that --as-needed won't drop anything
-	target_link_libraries (${test_name} LINK_PRIVATE libkadu)
+	target_link_libraries (${test_name} LINK_PRIVATE libkadu ${ADDITIONAL_LIBRARIES})
 endfunction ()
 
 add_custom_target (all_tests ALL DEPENDS kadu ${COMPILE_PLUGINS} ${UNIT_TEST_TARGETS})
