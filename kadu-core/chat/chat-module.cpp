@@ -24,6 +24,7 @@
 #include "chat/chat-storage.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/recent-chat-manager.h"
+#include "chat/recent-chat-repository.h"
 #include "chat/type/chat-type-buddy.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "chat/type/chat-type-contact.h"
@@ -42,6 +43,7 @@ ChatModule::ChatModule()
 	add_type<ChatTypeManager>();
 	add_type<ChatTypeRoom>();
 	add_type<RecentChatManager>();
+	add_type<RecentChatRepository>();
 }
 
 ChatModule::~ChatModule()
