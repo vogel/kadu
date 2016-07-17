@@ -36,6 +36,7 @@ set (gui_SRCS
 	widgets/chat-widget/chat-widget-message-handler-configuration.cpp
 	widgets/chat-widget/chat-widget-message-handler-configurator.cpp
 	widgets/chat-widget/chat-widget-module.cpp
+	widgets/chat-widget/chat-widget-repository-impl.cpp
 	widgets/chat-widget/chat-widget-repository.cpp
 	widgets/chat-widget/chat-widget-set-title.cpp
 	widgets/chat-widget/chat-widget-state-persistence-service.cpp

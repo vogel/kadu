@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013, 2014, 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,6 @@
 #include "exports.h"
 
 #include <QtCore/QObject>
-#include <injeqt/injeqt.h>
 #include <map>
 #include <memory>
 
@@ -57,24 +56,23 @@ class KADUAPI ChatWidgetRepository : public QObject
 {
 	Q_OBJECT
 
+public:
 	using Storage = std::map<Chat, ChatWidget *>;
 	using WrappedIterator = Storage::iterator;
-
-public:
 	using Iterator = IteratorWrapper<WrappedIterator, ChatWidget *>;
 
-	Q_INVOKABLE explicit ChatWidgetRepository(QObject *parent = nullptr);
+	explicit ChatWidgetRepository(QObject *parent = nullptr);
 	virtual ~ChatWidgetRepository();
 
 	/**
 	 * @short Begin iterator that returns ChatWidget *.
 	 */
-	Iterator begin();
+	virtual Iterator begin() = 0;
 
 	/**
-	 * @short Begin iterator that returns ChatWidget *.
+	 * @short End iterator that returns ChatWidget *.
 	 */
-	Iterator end();
+	virtual Iterator end() = 0;
 
 	/**
 	 * @short Add new chatWidget to repository.
@@ -84,12 +82,12 @@ public:
 	 *
 	 * In case of successfull addition ownership chatWidgetAdded(ChatWidget*) signal is emitted.
 	 */
-	void addChatWidget(ChatWidget *chatWidget);
+	virtual void addChatWidget(ChatWidget *chatWidget) = 0;
 
 	/**
 	 * @short Return true if repository has chat widget for given chat.
 	 */
-	bool hasWidgetForChat(const Chat &chat) const;
+	virtual bool hasWidgetForChat(const Chat &chat) const = 0;
 
 	/**
 	 * @short Return ChatWidget for given chat.
@@ -99,7 +97,7 @@ public:
 	 * If chat is null then nullptr is returned. If repository does contain ChatWidget then
 	 * it is returned. Else nullptr is returned.
 	 */
-	ChatWidget * widgetForChat(const Chat &chat);
+	virtual ChatWidget * widgetForChat(const Chat &chat) = 0;
 
 public slots:
 	/**
@@ -109,7 +107,7 @@ public slots:
 	 * Signal chatWidgetRemoved(ChatWidget*) is emitted after successfull removal.
 	 * ChatWidget instance is not destroyed after removal.
 	 */
-	void removeChatWidget(ChatWidget *chatWidget);
+	virtual void removeChatWidget(ChatWidget *chatWidget) = 0;
 
 	/**
 	 * @short Remove ChatWidget for given chat from repository and destroy it.
@@ -118,7 +116,7 @@ public slots:
 	 * Signal chatWidgetRemoved(ChatWidget*) is emitted after successfull removal.
 	 * ChatWidget instance is not destroyed after removal.
 	 */
-	void removeChatWidget(Chat chat);
+	virtual void removeChatWidget(Chat chat) = 0;
 
 signals:
 	/**
@@ -132,11 +130,6 @@ signals:
 	 * @param chatWidget removed ChatWidget instance
 	 */
 	void chatWidgetRemoved(ChatWidget *chatWidget);
-
-private:
-	static ChatWidget * converter(WrappedIterator iterator);
-
-	Storage m_widgets;
 
 };
 

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013, 2014, 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,13 +19,6 @@
 
 #include "chat-widget-repository.h"
 
-#include "gui/widgets/chat-widget/chat-widget.h"
-
-ChatWidget * ChatWidgetRepository::converter(ChatWidgetRepository::WrappedIterator iterator)
-{
-	return iterator->second;
-}
-
 ChatWidgetRepository::ChatWidgetRepository(QObject *parent) :
 		QObject{parent}
 {
@@ -33,58 +26,6 @@ ChatWidgetRepository::ChatWidgetRepository(QObject *parent) :
 
 ChatWidgetRepository::~ChatWidgetRepository()
 {
-}
-
-ChatWidgetRepository::Iterator ChatWidgetRepository::begin()
-{
-	return Iterator{m_widgets.begin(), converter};
-}
-
-ChatWidgetRepository::Iterator ChatWidgetRepository::end()
-{
-	return Iterator{m_widgets.end(), converter};
-}
-
-void ChatWidgetRepository::addChatWidget(ChatWidget *chatWidget)
-{
-	if (!chatWidget || hasWidgetForChat(chatWidget->chat()))
-		return;
-
-	m_widgets.insert(std::make_pair(chatWidget->chat(), chatWidget));
-	emit chatWidgetAdded(chatWidget);
-
-	connect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(removeChatWidget(ChatWidget*)));
-}
-
-void ChatWidgetRepository::removeChatWidget(ChatWidget *chatWidget)
-{
-	auto chat = chatWidget->chat();
-	if (!chatWidget || (widgetForChat(chat) != chatWidget))
-		return;
-
-	m_widgets.erase(chat);
-	emit chatWidgetRemoved(chatWidget);
-}
-
-void ChatWidgetRepository::removeChatWidget(Chat chat)
-{
-	removeChatWidget(widgetForChat(chat));
-}
-
-bool ChatWidgetRepository::hasWidgetForChat(const Chat &chat) const
-{
-	return m_widgets.end() != m_widgets.find(chat);
-}
-
-ChatWidget * ChatWidgetRepository::widgetForChat(const Chat &chat)
-{
-	if (!chat)
-		return nullptr;
-
-	auto it = m_widgets.find(chat);
-	return it != m_widgets.end()
-			? it->second
-			: nullptr;
 }
 
 #include "moc_chat-widget-repository.cpp"
