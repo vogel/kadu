@@ -27,7 +27,6 @@
 
 #include "chat/chat.h"
 #include "chat/model/chat-data-extractor.h"
-#include "chat/recent-chat-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"

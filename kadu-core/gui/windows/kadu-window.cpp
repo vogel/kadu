@@ -38,7 +38,6 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/model/chat-data-extractor.h"
-#include "chat/recent-chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration.h"

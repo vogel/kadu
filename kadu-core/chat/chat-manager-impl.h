@@ -96,9 +96,7 @@ protected:
 	virtual Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
 	virtual void itemAboutToBeRegistered(Chat item) override;
-	virtual void itemRegistered(Chat item) override;
 	virtual void itemAboutToBeUnregisterd(Chat item) override;
-	virtual void itemUnregistered(Chat item) override;
 
 public:
 	Q_INVOKABLE explicit ChatManagerImpl(QObject *parent = nullptr);

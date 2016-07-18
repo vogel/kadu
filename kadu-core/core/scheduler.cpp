@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,24 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "scheduler.h"
 
-#include "exports.h"
+#include "chat/recent-chat-service.h"
 
-#include <QtCore/QObject>
-#include <injeqt/injeqt.h>
-#include <memory>
-
-class StoragePoint;
-
-class KADUAPI StoragePointFactory : public QObject
+Scheduler::Scheduler(QObject *parent) :
+		QObject{parent}
 {
-	Q_OBJECT
+}
 
-public:
-	explicit StoragePointFactory(QObject *parent = nullptr);
-	virtual ~StoragePointFactory();
+Scheduler::~Scheduler()
+{
+}
 
-	virtual std::unique_ptr<StoragePoint> createStoragePoint(const QString &nodeName, StoragePoint *parent = 0) = 0;
+void Scheduler::setRecentChatService(RecentChatService *recentChatService)
+{
+	m_recentChatService = recentChatService;
+}
 
-};
+void Scheduler::init()
+{
+	connect(&m_everyMinuteAction, &QTimer::timeout, this, &Scheduler::everyMinuteAction);
+	m_everyMinuteAction.setInterval(60 * 1000);
+	m_everyMinuteAction.start();
+}
+
+void Scheduler::everyMinuteAction()
+{
+	m_recentChatService->cleanUp();
+}

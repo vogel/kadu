@@ -31,7 +31,7 @@ class ChatDataExtractor;
 class ChatTypeManager;
 class ChatWidgetRepository;
 class IconsManager;
-class RecentChatManager;
+class RecentChatRepository;
 
 class KADUAPI RecentChatsMenu : public QMenu
 {
@@ -41,6 +41,9 @@ public:
 	explicit RecentChatsMenu(QWidget *parent = nullptr);
 	virtual ~RecentChatsMenu();
 
+public slots:
+	void invalidate();
+
 signals:
 	void chatsListAvailable(bool available);
 
@@ -49,7 +52,7 @@ private:
 	QPointer<ChatTypeManager> m_chatTypeManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<IconsManager> m_iconsManager;
-	QPointer<RecentChatManager> m_recentChatManager;
+	QPointer<RecentChatRepository> m_recentChatRepository;
 
 	bool m_recentChatsMenuNeedsUpdate;
 
@@ -58,10 +61,9 @@ private slots:
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setRecentChatManager(RecentChatManager *recentChatManager);
+	INJEQT_SET void setRecentChatRepository(RecentChatRepository *recentChatRepository);
 	INJEQT_INIT void init();
 
-	void invalidate();
 	void checkIfListAvailable();
 	void update();
 	void iconThemeChanged();

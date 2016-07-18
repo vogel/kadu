@@ -19,14 +19,8 @@
 
 #include "storage-point-factory.h"
 
-#include "configuration/configuration-api.h"
-#include "configuration/configuration.h"
-#include "misc/memory.h"
-#include "storage/storage-point.h"
-
 StoragePointFactory::StoragePointFactory(QObject *parent) :
-		QObject{parent},
-		m_configurationFile{}
+		QObject{parent}
 {
 }
 
@@ -34,21 +28,4 @@ StoragePointFactory::~StoragePointFactory()
 {
 }
 
-void StoragePointFactory::setConfiguration(Configuration *configuration)
-{
-	m_configurationFile = configuration->api();
-}
-
-std::unique_ptr<StoragePoint> StoragePointFactory::createStoragePoint(const QString &nodeName, StoragePoint *parent)
-{
-	if (!m_configurationFile || nodeName.isEmpty())
-		return {};
-
-	if (!parent)
-		return make_unique<StoragePoint>(m_configurationFile, m_configurationFile->getNode(nodeName));
-
-	Q_ASSERT(parent->storage() == m_configurationFile);
-
-	auto node = m_configurationFile->getNode(parent->point(), nodeName);
-	return make_unique<StoragePoint>(m_configurationFile, node);
-}
+#include "storage-point-factory.moc"

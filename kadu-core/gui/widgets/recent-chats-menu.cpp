@@ -20,7 +20,7 @@
  */
 
 #include "chat/model/chat-data-extractor.h"
-#include "chat/recent-chat-manager.h"
+#include "chat/recent-chat-repository.h"
 #include "chat/type/chat-type-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
@@ -60,9 +60,9 @@ void RecentChatsMenu::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void RecentChatsMenu::setRecentChatManager(RecentChatManager *recentChatManager)
+void RecentChatsMenu::setRecentChatRepository(RecentChatRepository *recentChatRepository)
 {
-	m_recentChatManager = recentChatManager;
+	m_recentChatRepository = recentChatRepository;
 }
 
 void RecentChatsMenu::init()
@@ -70,14 +70,14 @@ void RecentChatsMenu::init()
 	setIcon(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")));
 	setTitle(tr("Recent chats"));
 
-	m_recentChatsMenuNeedsUpdate = true;
-
 	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 	connect(m_chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(invalidate()));
 	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(invalidate()));
-	connect(m_recentChatManager, SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidate()));
-	connect(m_recentChatManager, SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidate()));
+	connect(m_recentChatRepository, SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidate()));
+	connect(m_recentChatRepository, SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidate()));
 	connect(this, SIGNAL(aboutToShow()), this, SLOT(update()));
+
+	invalidate();
 }
 
 void RecentChatsMenu::invalidate()
@@ -90,7 +90,7 @@ void RecentChatsMenu::invalidate()
 void RecentChatsMenu::checkIfListAvailable()
 {
 	//check if all recent chats are opened -> disable button
-	foreach (const Chat &chat, m_recentChatManager->recentChats())
+	for (auto const &chat : m_recentChatRepository)
 		if (!m_chatWidgetRepository->widgetForChat(chat))
 		{
 			emit chatsListAvailable(true);
@@ -107,7 +107,7 @@ void RecentChatsMenu::update()
 
 	clear();
 
-	foreach (const Chat &chat, m_recentChatManager->recentChats())
+	for (auto const &chat : m_recentChatRepository)
 		if (!m_chatWidgetRepository->widgetForChat(chat))
 		{
 			ChatType *type = m_chatTypeManager->chatType(chat.type());

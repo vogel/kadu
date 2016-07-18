@@ -168,8 +168,6 @@ void Core::createDefaultConfiguration()
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageMinimized", false);
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ReceiveMessages", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "RecentChatsTimeout", 240);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "RecentChatsClear", false);
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "RememberPosition", true);
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ShowEditWindowLabel", true);
 

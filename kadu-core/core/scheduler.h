@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,22 +19,33 @@
 
 #pragma once
 
-#include "exports.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <QtCore/QTimer>
 #include <injeqt/injeqt.h>
-#include <memory>
 
-class StoragePoint;
+class RecentChatService;
 
-class KADUAPI StoragePointFactory : public QObject
+class Scheduler : public QObject
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	explicit StoragePointFactory(QObject *parent = nullptr);
-	virtual ~StoragePointFactory();
+	Q_INVOKABLE explicit Scheduler(QObject *parent = nullptr);
+	virtual ~Scheduler();
 
-	virtual std::unique_ptr<StoragePoint> createStoragePoint(const QString &nodeName, StoragePoint *parent = 0) = 0;
+private:
+	QPointer<RecentChatService> m_recentChatService;
+
+	QTimer m_everyMinuteAction;
+
+	void everyMinuteAction();
+
+private slots:
+	INJEQT_SET void setRecentChatService(RecentChatService *recentChatService);
+	INJEQT_INIT void init();
 
 };

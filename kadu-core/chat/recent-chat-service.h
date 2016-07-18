@@ -19,38 +19,64 @@
 
 #pragma once
 
+#include "exports.h"
 #include "injeqt-type-roles.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class JumpList;
-
-class ChatWidgetRepository;
+class ChatManager;
 class Chat;
+class MessageManager;
+class Message;
 class RecentChatRepository;
 
-class WindowsJumpListService : public QObject
+/**
+ * @addtogroup Chat
+ * @{
+ */
+
+/**
+ * @class RecentChatService
+ * @short Service to keep RecentChatRepository in sync with configuration and messages.
+ */
+class KADUAPI RecentChatService : public QObject
 {
 	Q_OBJECT
 	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit WindowsJumpListService(QObject *parent = nullptr);
-	virtual ~WindowsJumpListService();
+	static const QString lastMessageDateTime;
+	static const int keepRecentForSeconds { 60 * 60 * 4 };
+
+	Q_INVOKABLE explicit RecentChatService(QObject *parent = nullptr);
+	virtual ~RecentChatService();
+
+	void cleanUp();
 
 private:
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<JumpList> m_jumpList;
+	QPointer<ChatManager> m_chatManager;
+	QPointer<MessageManager> m_messageManager;
 	QPointer<RecentChatRepository> m_recentChatRepository;
 
+	void addIfRecent(Chat chat) const;
+	bool isRecent(Chat chat) const;
+	bool isRecent(QDateTime dateTime) const;
+	bool isAlreadyInRepository(Chat chat) const;
+
 private slots:
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setJumpList(JumpList *jumpList);
-	INJEQT_SET void setRecentChatRepository(RecentChatRepository *recentChatRepository);
+	INJEQT_SET void setChatManager(ChatManager *chatManager);
+	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setOpenChatRepository(RecentChatRepository *recentChatRepository);
 	INJEQT_INIT void init();
 
-	void updateJumpList();
+	void message(const Message &message) const;
+	void chatAdded(Chat chat) const;
+	void chatRemoved(Chat chat) const;
 
 };
+
+/**
+ * @}
+ */

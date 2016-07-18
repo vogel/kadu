@@ -25,6 +25,7 @@
 #include "core/injector-provider.h"
 #include "core/myself.h"
 #include "core/version-service.h"
+#include "core/scheduler.h"
 #include "core/session-service.h"
 #include "dom/dom-processor-service.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -40,7 +41,7 @@
 #include "services/raw-message-transformer-service.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
-#include "storage/storage-point-factory.h"
+#include "storage/storage-point-factory-impl.h"
 #include "url-handlers/url-handler-manager.h"
 #include "attention-service.h"
 #include "languages-manager.h"
@@ -67,10 +68,11 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_ready_object<PathsProvider>(m_pathsProvider.get());
 	add_type<ProtocolsManager>();
 	add_type<RawMessageTransformerService>();
+	add_type<Scheduler>();
 	add_type<SessionService>();
 	add_type<StatusChangerManager>();
 	add_type<StatusContainerManager>();
-	add_type<StoragePointFactory>();
+	add_type<StoragePointFactoryImpl>();
 	add_type<TranslationLoader>();
 	add_type<UrlHandlerManager>();
 	add_type<UrlOpener>();

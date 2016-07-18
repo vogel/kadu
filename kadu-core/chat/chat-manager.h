@@ -106,6 +106,12 @@ public:
 
 	virtual Chat byDisplay(const QString &display) = 0;
 
+protected:
+	virtual void itemAboutToBeRegistered(Chat item) override;
+	virtual void itemRegistered(Chat item) override;
+	virtual void itemAboutToBeUnregisterd(Chat item) override;
+	virtual void itemUnregistered(Chat item) override;
+
 signals:
 	/**
 	 * @author Rafal 'Vogel' Malinowski

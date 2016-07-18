@@ -248,8 +248,6 @@
 					tool-tip="Hitting 'Enter' while typing in chat window sends message" />
 				<check-box caption="Ask before clearing messages in chat window" config-section="Chat" config-item="ConfirmChatClear"
 					tool-tip="Ask for confirmation before clearing chat window" />
-				<check-box caption="Clear recent chats list on exit" config-section="Chat" config-item="RecentChatsClear" id="recentChatsClear"
-					tool-tip="" />
 			</group-box>
 		</tab>
 		<tab name="Status">

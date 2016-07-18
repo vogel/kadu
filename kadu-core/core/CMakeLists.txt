@@ -7,6 +7,7 @@ set (core_SRCS
 	injector-provider.cpp
 	myself.cpp
 	session-service.cpp
+	scheduler.cpp
 	version-service.cpp
 )
 

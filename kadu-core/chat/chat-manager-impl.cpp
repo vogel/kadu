@@ -85,28 +85,18 @@ Chat ChatManagerImpl::loadStubFromStorage(const std::shared_ptr<StoragePoint> &s
 
 void ChatManagerImpl::itemAboutToBeRegistered(Chat item)
 {
+	ChatManager::itemAboutToBeRegistered(item);
+
 	connect(item, SIGNAL(updated()), this, SLOT(chatDataUpdated()));
 	connect(item, SIGNAL(opened()), this, SLOT(chatOpened()));
 	connect(item, SIGNAL(closed()), this, SLOT(chatClosed()));
-
-	emit chatAboutToBeAdded(item);
-}
-
-void ChatManagerImpl::itemRegistered(Chat item)
-{
-	emit chatAdded(item);
 }
 
 void ChatManagerImpl::itemAboutToBeUnregisterd(Chat item)
 {
-	disconnect(item, 0, this, 0);
+	disconnect(item, nullptr, this, nullptr);
 
-	emit chatAboutToBeRemoved(item);
-}
-
-void ChatManagerImpl::itemUnregistered(Chat item)
-{
-	emit chatRemoved(item);
+	ChatManager::itemAboutToBeUnregisterd(item);
 }
 
 QVector<Chat> ChatManagerImpl::chats(const Account &account)

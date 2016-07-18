@@ -33,4 +33,24 @@ ChatManager::~ChatManager()
 {
 }
 
+void ChatManager::itemAboutToBeRegistered(Chat item)
+{
+	emit chatAboutToBeAdded(item);
+}
+
+void ChatManager::itemRegistered(Chat item)
+{
+	emit chatAdded(item);
+}
+
+void ChatManager::itemAboutToBeUnregisterd(Chat item)
+{
+	emit chatAboutToBeRemoved(item);
+}
+
+void ChatManager::itemUnregistered(Chat item)
+{
+	emit chatRemoved(item);
+}
+
 #include "moc_chat-manager.cpp"

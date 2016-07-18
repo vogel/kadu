@@ -59,6 +59,7 @@ void RecentChatsAction::actionInstanceCreated(Action *action)
 	action->setEnabled(false);
 	action->setMenu(m_recentChatsMenu);
 	connect(m_recentChatsMenu, SIGNAL(chatsListAvailable(bool)), action, SLOT(setEnabled(bool)));
+	m_recentChatsMenu->invalidate();
 }
 
 void RecentChatsAction::openRecentChats(QAction *action)

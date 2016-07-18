@@ -19,22 +19,32 @@
 
 #pragma once
 
+#include "storage/storage-point-factory.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 #include <memory>
 
 class StoragePoint;
+class ConfigurationApi;
+class Configuration;
 
-class KADUAPI StoragePointFactory : public QObject
+class KADUAPI StoragePointFactoryImpl : public StoragePointFactory
 {
 	Q_OBJECT
 
 public:
-	explicit StoragePointFactory(QObject *parent = nullptr);
-	virtual ~StoragePointFactory();
+	Q_INVOKABLE explicit StoragePointFactoryImpl(QObject *parent = nullptr);
+	virtual ~StoragePointFactoryImpl();
 
-	virtual std::unique_ptr<StoragePoint> createStoragePoint(const QString &nodeName, StoragePoint *parent = 0) = 0;
+	virtual std::unique_ptr<StoragePoint> createStoragePoint(const QString &nodeName, StoragePoint *parent = 0) override;
+
+private:
+	ConfigurationApi *m_configurationFile;
+
+private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
 
 };

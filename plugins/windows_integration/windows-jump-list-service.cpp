@@ -21,7 +21,7 @@
 
 #include "jump-list.h"
 
-#include "chat/recent-chat-manager.h"
+#include "chat/recent-chat-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 
@@ -44,19 +44,17 @@ void WindowsJumpListService::setJumpList(JumpList *jumpList)
 	m_jumpList = jumpList;
 }
 
-void WindowsJumpListService::setRecentChatManager(RecentChatManager *recentChatManager)
+void WindowsJumpListService::setRecentChatRepository(RecentChatRepository *recentChatRepository)
 {
-	m_recentChatManager = recentChatManager;
+	m_recentChatRepository = recentChatRepository;
 }
 
 void WindowsJumpListService::init()
 {
-	connect(m_recentChatManager, &RecentChatManager::recentChatAdded, this, &WindowsJumpListService::updateJumpList);
-	connect(m_recentChatManager, &RecentChatManager::recentChatRemoved, this, &WindowsJumpListService::updateJumpList);
+	connect(m_recentChatRepository, &RecentChatRepository::recentChatAdded, this, &WindowsJumpListService::updateJumpList);
+	connect(m_recentChatRepository, &RecentChatRepository::recentChatRemoved, this, &WindowsJumpListService::updateJumpList);
 	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetAdded, this, &WindowsJumpListService::updateJumpList);
 	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetRemoved, this, &WindowsJumpListService::updateJumpList);
-
-	m_recentChatManager->recentChats();
 
 	updateJumpList();
 }
@@ -66,7 +64,7 @@ void WindowsJumpListService::updateJumpList()
 	auto needSeparator = false;
 
 	m_jumpList->clear();
-	for (auto const chat : m_recentChatManager->recentChats())
+	for (auto const &chat : m_recentChatRepository)
 	{
 		needSeparator = true;
 		m_jumpList->addChat(chat);

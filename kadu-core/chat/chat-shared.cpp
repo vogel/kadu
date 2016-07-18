@@ -257,7 +257,8 @@ bool ChatShared::shouldStore()
  */
 void ChatShared::aboutToBeRemoved()
 {
-	*ChatAccount = Account::null;
+	if (ChatAccount)
+		*ChatAccount = Account::null;
 	Groups.clear();
 
 	if (Details)
