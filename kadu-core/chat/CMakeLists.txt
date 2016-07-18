@@ -7,6 +7,7 @@ set (chat_SRCS
 	chat-details-room.cpp
 	chat-details.cpp
 	chat-list-mime-data-service.cpp
+	chat-manager-impl.cpp
 	chat-manager.cpp
 	chat-module.cpp
 	chat-shared.cpp

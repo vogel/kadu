@@ -22,6 +22,7 @@
 
 #include "message/message-common.h"
 #include "storage/shared.h"
+#include "exports.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QPointer>
@@ -35,7 +36,7 @@ class FormattedString;
 class FormattedStringFactory;
 class UnreadMessageRepository;
 
-class MessageShared : public Shared
+class KADUAPI MessageShared : public Shared
 {
 	Q_OBJECT
 

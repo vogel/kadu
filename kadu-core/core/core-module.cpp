@@ -19,7 +19,6 @@
 
 #include "core-module.h"
 
-#include "chat/chat-manager.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
@@ -56,7 +55,6 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<AttentionService>();
 	add_type<ChatConfigurationWidgetFactoryRepository>();
 	add_type<ChatImageRequestService>();
-	add_type<ChatManager>();
 	add_type<ChatTopBarWidgetFactoryRepository>();
 	add_type<ClipboardHtmlTransformerService>();
 	add_type<DomProcessorService>();

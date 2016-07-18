@@ -91,53 +91,9 @@ class KADUAPI ChatManager : public Manager<Chat>
 {
 	Q_OBJECT
 
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
-
-private slots:
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
-	void chatDataUpdated();
-	void chatOpened();
-	void chatClosed();
-
-	void unreadMessageAdded(const Message &message);
-	void unreadMessageRemoved(const Message &message);
-
-protected:
-	virtual Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
-
-	virtual void itemAboutToBeRegistered(Chat item) override;
-	virtual void itemRegistered(Chat item) override;
-	virtual void itemAboutToBeUnregisterd(Chat item) override;
-	virtual void itemUnregistered(Chat item) override;
-
 public:
-	Q_INVOKABLE explicit ChatManager(QObject *parent = nullptr);
+	explicit ChatManager(QObject *parent = nullptr);
 	virtual ~ChatManager();
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns node name for storage of all chat data.
-	 * @return node name for storage of all chat data
-	 *
-	 * Returns node name for storage of all chat data - "Chat".
-	 */
-	virtual QString storageNodeName() override { return QStringLiteral("Chats"); }
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns node name for storage of given chat data.
-	 * @return node name for storage of given chat data
-	 *
-	 * Returns node name for storage of given chat data - "Chat".
-	 */
-	virtual QString storageNodeItemName() override { return QStringLiteral("Chat"); }
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -146,9 +102,9 @@ public:
 	 *
 	 * If account is null then this method returns empty vector.
 	 */
-	QVector<Chat> chats(const Account &account);
+	virtual QVector<Chat> chats(const Account &account) = 0;
 
-	Chat byDisplay(const QString &display);
+	virtual Chat byDisplay(const QString &display) = 0;
 
 signals:
 	/**

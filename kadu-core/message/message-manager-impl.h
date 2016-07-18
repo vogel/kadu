@@ -47,8 +47,8 @@ public:
 	virtual bool sendRawMessage(const Chat &chat, const QByteArray &content) override;
 
 protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+	virtual void accountRegistered(Account account) override;
+	virtual void accountUnregistered(Account account) override;
 
 private:
 	QPointer<AccountManager> m_accountManager;
