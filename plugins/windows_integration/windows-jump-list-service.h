@@ -27,8 +27,8 @@
 
 class JumpList;
 
-class ChatWidgetRepository;
 class Chat;
+class OpenChatRepository;
 class RecentChatRepository;
 
 class WindowsJumpListService : public QObject
@@ -41,13 +41,13 @@ public:
 	virtual ~WindowsJumpListService();
 
 private:
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<JumpList> m_jumpList;
+	QPointer<OpenChatRepository> m_openChatRepository;
 	QPointer<RecentChatRepository> m_recentChatRepository;
 
 private slots:
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setJumpList(JumpList *jumpList);
+	INJEQT_SET void setOpenChatRepository(OpenChatRepository *openChatRepository);
 	INJEQT_SET void setRecentChatRepository(RecentChatRepository *recentChatRepository);
 	INJEQT_INIT void init();
 

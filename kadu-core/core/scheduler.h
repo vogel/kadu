@@ -47,5 +47,6 @@ private:
 private slots:
 	INJEQT_SET void setRecentChatService(RecentChatService *recentChatService);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

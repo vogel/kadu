@@ -21,9 +21,8 @@
 
 #include "jump-list.h"
 
+#include "chat/open-chat-repository.h"
 #include "chat/recent-chat-repository.h"
-#include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 
 WindowsJumpListService::WindowsJumpListService(QObject *parent) :
 		QObject{parent}
@@ -34,14 +33,14 @@ WindowsJumpListService::~WindowsJumpListService()
 {
 }
 
-void WindowsJumpListService::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
-{
-	m_chatWidgetRepository = chatWidgetRepository;
-}
-
 void WindowsJumpListService::setJumpList(JumpList *jumpList)
 {
 	m_jumpList = jumpList;
+}
+
+void WindowsJumpListService::setOpenChatRepository(OpenChatRepository *openChatRepository)
+{
+	m_openChatRepository = openChatRepository;
 }
 
 void WindowsJumpListService::setRecentChatRepository(RecentChatRepository *recentChatRepository)
@@ -53,8 +52,8 @@ void WindowsJumpListService::init()
 {
 	connect(m_recentChatRepository, &RecentChatRepository::recentChatAdded, this, &WindowsJumpListService::updateJumpList);
 	connect(m_recentChatRepository, &RecentChatRepository::recentChatRemoved, this, &WindowsJumpListService::updateJumpList);
-	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetAdded, this, &WindowsJumpListService::updateJumpList);
-	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetRemoved, this, &WindowsJumpListService::updateJumpList);
+	connect(m_openChatRepository, &OpenChatRepository::openChatAdded, this, &WindowsJumpListService::updateJumpList);
+	connect(m_openChatRepository, &OpenChatRepository::openChatRemoved, this, &WindowsJumpListService::updateJumpList);
 
 	updateJumpList();
 }
@@ -70,14 +69,14 @@ void WindowsJumpListService::updateJumpList()
 		m_jumpList->addChat(chat);
 	}
 
-	for (auto const chatWidget : m_chatWidgetRepository)
+	for (auto const &chat : m_openChatRepository)
 	{
 		if (needSeparator)
 		{
 			m_jumpList->addSeparator();
 			needSeparator = false;
 		}
-		m_jumpList->addChat(chatWidget->chat());
+		m_jumpList->addChat(chat);
 	}
 }
 

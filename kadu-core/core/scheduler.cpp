@@ -42,6 +42,11 @@ void Scheduler::init()
 	m_everyMinuteAction.start();
 }
 
+void Scheduler::done()
+{
+	m_everyMinuteAction.stop();
+}
+
 void Scheduler::everyMinuteAction()
 {
 	m_recentChatService->cleanUp();
