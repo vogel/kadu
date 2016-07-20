@@ -41,7 +41,7 @@ void RecentChatService::cleanUp()
 		if (!isRecent(chat))
 			oldChats.push_back(chat);
 	for (auto chat : oldChats)
-		m_recentChatRepository->removeRecentChat(chat);
+		remove(chat);
 }
 
 void RecentChatService::setChatManager(ChatManager *chatManager)
@@ -67,15 +67,27 @@ void RecentChatService::init()
 	connect(m_messageManager, &MessageManager::messageSent, this, &RecentChatService::message);
 
 	for (auto const &chat : m_chatManager->items())
-		addIfRecent(chat);
+		update(chat);
 }
 
-void RecentChatService::addIfRecent(Chat chat) const
+void RecentChatService::update(Chat chat) const
 {
-	if (!isRecent(chat) || isAlreadyInRepository(chat))
-		return;
+	if (isRecent(chat) && !isAlreadyInRepository(chat))
+		m_recentChatRepository->addRecentChat(chat);
+	if (!isRecent(chat))
+		remove(chat);
+}
 
-	m_recentChatRepository->addRecentChat(chat);
+void RecentChatService::add(Chat chat) const
+{
+	chat.addProperty(lastMessageDateTime, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
+	update(chat);
+}
+
+void RecentChatService::remove(Chat chat) const
+{
+	chat.removeProperty(lastMessageDateTime);
+	m_recentChatRepository->removeRecentChat(chat);
 }
 
 bool RecentChatService::isRecent(Chat chat) const
@@ -99,19 +111,17 @@ bool RecentChatService::isAlreadyInRepository(Chat chat) const
 
 void RecentChatService::message(const Message &message) const
 {
-	auto chat = message.messageChat();
-	chat.addProperty(lastMessageDateTime, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
-	addIfRecent(chat);
+	add(message.messageChat());
 }
 
 void RecentChatService::chatAdded(Chat chat) const
 {
-	addIfRecent(chat);
+	update(chat);
 }
 
 void RecentChatService::chatRemoved(Chat chat) const
 {
-	m_recentChatRepository->removeRecentChat(chat);
+	remove(chat);
 }
 
 #include "recent-chat-service.moc"

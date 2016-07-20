@@ -60,7 +60,9 @@ private:
 	QPointer<MessageManager> m_messageManager;
 	QPointer<RecentChatRepository> m_recentChatRepository;
 
-	void addIfRecent(Chat chat) const;
+	void add(Chat chat) const;
+	void remove(Chat chat) const;
+	void update(Chat chat) const;
 	bool isRecent(Chat chat) const;
 	bool isRecent(QDateTime dateTime) const;
 	bool isAlreadyInRepository(Chat chat) const;

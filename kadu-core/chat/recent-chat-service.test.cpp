@@ -242,6 +242,7 @@ void RecentChatServiceTest::shouldNotIncludeLoadedChatWithTooOldRecentMessage()
 	chatManager->registerItem(chat);
 	injector.instantiate<RecentChatService>();
 
+	QVERIFY(!chat.hasProperty(RecentChatService::lastMessageDateTime));
 	QCOMPARE(recentChatRepository->size(), size_t{0});
 	QVERIFY(recentChatRepository->begin() == recentChatRepository->end());
 }
@@ -259,6 +260,7 @@ void RecentChatServiceTest::shouldNotIncludeAddedChatWithTooOldRecentMessage()
 	chatManager->addItem(chat);
 	chatManager->registerItem(chat);
 
+	QVERIFY(!chat.hasProperty(RecentChatService::lastMessageDateTime));
 	QCOMPARE(recentChatRepository->size(), size_t{0});
 	QVERIFY(recentChatRepository->begin() == recentChatRepository->end());
 }
@@ -283,6 +285,8 @@ void RecentChatServiceTest::shouldRemoveRemovedChat()
 	chatManager->unregisterItem(chat2);
 	chatManager->removeItem(chat2);
 
+	QVERIFY(chat1.hasProperty(RecentChatService::lastMessageDateTime));
+	QVERIFY(!chat2.hasProperty(RecentChatService::lastMessageDateTime));
 	QCOMPARE(recentChatRepository->size(), size_t{1});
 	QVERIFY(std::find(recentChatRepository->begin(), recentChatRepository->end(), chat1) != recentChatRepository->end());
 	QVERIFY(std::find(recentChatRepository->begin(), recentChatRepository->end(), chat2) == recentChatRepository->end());
@@ -309,6 +313,8 @@ void RecentChatServiceTest::shouldCleanUpOld()
 
 	recentChatService->cleanUp();
 
+	QVERIFY(!chat1.hasProperty(RecentChatService::lastMessageDateTime));
+	QVERIFY(chat2.hasProperty(RecentChatService::lastMessageDateTime));
 	QCOMPARE(recentChatRepository->size(), size_t{1});
 	QVERIFY(std::find(recentChatRepository->begin(), recentChatRepository->end(), chat1) == recentChatRepository->end());
 	QVERIFY(std::find(recentChatRepository->begin(), recentChatRepository->end(), chat2) != recentChatRepository->end());
