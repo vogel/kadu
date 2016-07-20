@@ -47,8 +47,8 @@ class KADUAPI RecentChatService : public QObject
 	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	static const QString lastMessageDateTime;
-	static const int keepRecentForSeconds { 60 * 60 * 4 };
+	static const QString LAST_MESSAGE_DATE_TIME_PROPERTY;
+	static const int KEEP_RECENT_FOR_SECONDS { 60 * 60 * 4 };
 
 	Q_INVOKABLE explicit RecentChatService(QObject *parent = nullptr);
 	virtual ~RecentChatService();

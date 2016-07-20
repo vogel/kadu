@@ -23,7 +23,7 @@
 #include "chat/recent-chat-repository.h"
 #include "message/message-manager.h"
 
-const QString RecentChatService::lastMessageDateTime { "recent:lastMessageDateTime" };
+const QString RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY { "recent:lastMessageDateTime" };
 
 RecentChatService::RecentChatService(QObject *parent) :
 		QObject{parent}
@@ -80,28 +80,28 @@ void RecentChatService::update(Chat chat) const
 
 void RecentChatService::add(Chat chat) const
 {
-	chat.addProperty(lastMessageDateTime, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
+	chat.addProperty(LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
 	update(chat);
 }
 
 void RecentChatService::remove(Chat chat) const
 {
-	chat.removeProperty(lastMessageDateTime);
+	chat.removeProperty(LAST_MESSAGE_DATE_TIME_PROPERTY);
 	m_recentChatRepository->removeRecentChat(chat);
 }
 
 bool RecentChatService::isRecent(Chat chat) const
 {
-	if (!chat.hasProperty(lastMessageDateTime))
+	if (!chat.hasProperty(LAST_MESSAGE_DATE_TIME_PROPERTY))
 		return false;
 
-	auto dateTime = chat.property(lastMessageDateTime, QDateTime{}).toDateTime();
+	auto dateTime = chat.property(LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime{}).toDateTime();
 	return isRecent(dateTime);
 }
 
 bool RecentChatService::isRecent(QDateTime dateTime) const
 {
-	return dateTime.addSecs(keepRecentForSeconds) >= QDateTime::currentDateTimeUtc();
+	return dateTime.addSecs(KEEP_RECENT_FOR_SECONDS) >= QDateTime::currentDateTimeUtc();
 }
 
 bool RecentChatService::isAlreadyInRepository(Chat chat) const

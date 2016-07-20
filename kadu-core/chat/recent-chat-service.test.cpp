@@ -131,6 +131,7 @@ void RecentChatServiceTest::shouldBeEmptyAfterCreation()
 {
 	auto injector = makeInjector();
 	auto recentChatRepository = injector.get<RecentChatRepository>();
+	injector.instantiate<RecentChatService>();
 
 	QCOMPARE(recentChatRepository->size(), size_t{0});
 	QVERIFY(recentChatRepository->begin() == recentChatRepository->end());
@@ -145,11 +146,11 @@ void RecentChatServiceTest::shouldIncludeChatWithSentMessage()
 	auto recentChatRepository = injector.get<RecentChatRepository>();
 	injector.instantiate<RecentChatService>();
 
-	QVERIFY(!chat.hasProperty(RecentChatService::lastMessageDateTime));
+	QVERIFY(!chat.hasProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY));
 
 	messageManager->emulateSent(chat);
 
-	QVERIFY(chat.hasProperty(RecentChatService::lastMessageDateTime));
+	QVERIFY(chat.hasProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY));
 	QCOMPARE(recentChatRepository->size(), size_t{1});
 	QVERIFY(std::find(recentChatRepository->begin(), recentChatRepository->end(), chat) != recentChatRepository->end());
 }
@@ -163,11 +164,11 @@ void RecentChatServiceTest::shouldIncludeChatWithReceivedMessage()
 	auto recentChatRepository = injector.get<RecentChatRepository>();
 	injector.instantiate<RecentChatService>();
 
-	QVERIFY(!chat.hasProperty(RecentChatService::lastMessageDateTime));
+	QVERIFY(!chat.hasProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY));
 
 	messageManager->emulateReceived(chat);
 
-	QVERIFY(chat.hasProperty(RecentChatService::lastMessageDateTime));
+	QVERIFY(chat.hasProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY));
 	QCOMPARE(recentChatRepository->size(), size_t{1});
 	QVERIFY(std::find(recentChatRepository->begin(), recentChatRepository->end(), chat) != recentChatRepository->end());
 }
@@ -191,7 +192,7 @@ void RecentChatServiceTest::shouldIncludeLoadedChatWithRecentMessage()
 {
 	Chat chat1{new ChatShared{}};
 	Chat chat2{new ChatShared{}};
-	chat1.addProperty(RecentChatService::lastMessageDateTime, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
+	chat1.addProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
 
 	auto injector = makeInjector();
 	auto chatManager = injector.get<ChatManager>();
@@ -212,7 +213,7 @@ void RecentChatServiceTest::shouldIncludeAddedChatWithRecentMessage()
 {
 	Chat chat1{new ChatShared{}};
 	Chat chat2{new ChatShared{}};
-	chat1.addProperty(RecentChatService::lastMessageDateTime, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
+	chat1.addProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
 
 	auto injector = makeInjector();
 	auto chatManager = injector.get<ChatManager>();
@@ -232,7 +233,7 @@ void RecentChatServiceTest::shouldIncludeAddedChatWithRecentMessage()
 void RecentChatServiceTest::shouldNotIncludeLoadedChatWithTooOldRecentMessage()
 {
 	Chat chat{new ChatShared{}};
-	chat.addProperty(RecentChatService::lastMessageDateTime, QDateTime::currentDateTimeUtc().addSecs(-1 * RecentChatService::keepRecentForSeconds - 1), CustomProperties::Storable);
+	chat.addProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime::currentDateTimeUtc().addSecs(-1 * RecentChatService::KEEP_RECENT_FOR_SECONDS - 1), CustomProperties::Storable);
 
 	auto injector = makeInjector();
 	auto chatManager = injector.get<ChatManager>();
@@ -242,7 +243,7 @@ void RecentChatServiceTest::shouldNotIncludeLoadedChatWithTooOldRecentMessage()
 	chatManager->registerItem(chat);
 	injector.instantiate<RecentChatService>();
 
-	QVERIFY(!chat.hasProperty(RecentChatService::lastMessageDateTime));
+	QVERIFY(!chat.hasProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY));
 	QCOMPARE(recentChatRepository->size(), size_t{0});
 	QVERIFY(recentChatRepository->begin() == recentChatRepository->end());
 }
@@ -250,7 +251,7 @@ void RecentChatServiceTest::shouldNotIncludeLoadedChatWithTooOldRecentMessage()
 void RecentChatServiceTest::shouldNotIncludeAddedChatWithTooOldRecentMessage()
 {
 	Chat chat{new ChatShared{}};
-	chat.addProperty(RecentChatService::lastMessageDateTime, QDateTime::currentDateTimeUtc().addSecs(-1 * RecentChatService::keepRecentForSeconds - 1), CustomProperties::Storable);
+	chat.addProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime::currentDateTimeUtc().addSecs(-1 * RecentChatService::KEEP_RECENT_FOR_SECONDS - 1), CustomProperties::Storable);
 
 	auto injector = makeInjector();
 	auto chatManager = injector.get<ChatManager>();
@@ -260,7 +261,7 @@ void RecentChatServiceTest::shouldNotIncludeAddedChatWithTooOldRecentMessage()
 	chatManager->addItem(chat);
 	chatManager->registerItem(chat);
 
-	QVERIFY(!chat.hasProperty(RecentChatService::lastMessageDateTime));
+	QVERIFY(!chat.hasProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY));
 	QCOMPARE(recentChatRepository->size(), size_t{0});
 	QVERIFY(recentChatRepository->begin() == recentChatRepository->end());
 }
@@ -269,13 +270,13 @@ void RecentChatServiceTest::shouldRemoveRemovedChat()
 {
 	Chat chat1{new ChatShared{}};
 	Chat chat2{new ChatShared{}};
-	chat1.addProperty(RecentChatService::lastMessageDateTime, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
-	chat2.addProperty(RecentChatService::lastMessageDateTime, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
+	chat1.addProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
+	chat2.addProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
 
 	auto injector = makeInjector();
 	auto chatManager = injector.get<ChatManager>();
 	auto recentChatRepository = injector.get<RecentChatRepository>();
-	auto recentChatService = injector.get<RecentChatService>();
+	injector.instantiate<RecentChatService>();
 
 	chatManager->addItem(chat1);
 	chatManager->addItem(chat2);
@@ -285,8 +286,8 @@ void RecentChatServiceTest::shouldRemoveRemovedChat()
 	chatManager->unregisterItem(chat2);
 	chatManager->removeItem(chat2);
 
-	QVERIFY(chat1.hasProperty(RecentChatService::lastMessageDateTime));
-	QVERIFY(!chat2.hasProperty(RecentChatService::lastMessageDateTime));
+	QVERIFY(chat1.hasProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY));
+	QVERIFY(!chat2.hasProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY));
 	QCOMPARE(recentChatRepository->size(), size_t{1});
 	QVERIFY(std::find(recentChatRepository->begin(), recentChatRepository->end(), chat1) != recentChatRepository->end());
 	QVERIFY(std::find(recentChatRepository->begin(), recentChatRepository->end(), chat2) == recentChatRepository->end());
@@ -296,8 +297,8 @@ void RecentChatServiceTest::shouldCleanUpOld()
 {
 	Chat chat1{new ChatShared{}};
 	Chat chat2{new ChatShared{}};
-	chat1.addProperty(RecentChatService::lastMessageDateTime, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
-	chat2.addProperty(RecentChatService::lastMessageDateTime, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
+	chat1.addProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
+	chat2.addProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime::currentDateTimeUtc(), CustomProperties::Storable);
 
 	auto injector = makeInjector();
 	auto chatManager = injector.get<ChatManager>();
@@ -309,12 +310,12 @@ void RecentChatServiceTest::shouldCleanUpOld()
 	chatManager->registerItem(chat1);
 	chatManager->registerItem(chat2);
 
-	chat1.addProperty(RecentChatService::lastMessageDateTime, QDateTime::currentDateTimeUtc().addSecs(-1 * RecentChatService::keepRecentForSeconds - 1), CustomProperties::Storable);
+	chat1.addProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY, QDateTime::currentDateTimeUtc().addSecs(-1 * RecentChatService::KEEP_RECENT_FOR_SECONDS - 1), CustomProperties::Storable);
 
 	recentChatService->cleanUp();
 
-	QVERIFY(!chat1.hasProperty(RecentChatService::lastMessageDateTime));
-	QVERIFY(chat2.hasProperty(RecentChatService::lastMessageDateTime));
+	QVERIFY(!chat1.hasProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY));
+	QVERIFY(chat2.hasProperty(RecentChatService::LAST_MESSAGE_DATE_TIME_PROPERTY));
 	QCOMPARE(recentChatRepository->size(), size_t{1});
 	QVERIFY(std::find(recentChatRepository->begin(), recentChatRepository->end(), chat1) == recentChatRepository->end());
 	QVERIFY(std::find(recentChatRepository->begin(), recentChatRepository->end(), chat2) != recentChatRepository->end());
