@@ -28,7 +28,6 @@ class ChatWidgetContainerHandlerRepository;
 class MainConfigurationWindowService;
 class PathsProvider;
 class TabsChatWidgetContainerHandler;
-class TabsManager;
 
 class TabsPluginObject : public QObject
 {
@@ -44,14 +43,12 @@ private:
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
 	QPointer<TabsChatWidgetContainerHandler> m_tabsChatWidgetContainerHandler;
-	QPointer<TabsManager> m_tabsManager;
 
 private slots:
 	INJEQT_SET void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_SET void setTabsChatWidgetContainerHandler(TabsChatWidgetContainerHandler *tabsChatWidgetContainerHandler);
-	INJEQT_SET void setTabsManager(TabsManager *tabsManager);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

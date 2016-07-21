@@ -20,7 +20,6 @@
 #include "tabs-plugin-object.h"
 
 #include "tabs-chat-widget-container-handler.h"
-#include "tabs.h"
 
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/windows/main-configuration-window-service.h"
@@ -56,21 +55,14 @@ void TabsPluginObject::setTabsChatWidgetContainerHandler(TabsChatWidgetContainer
 	m_tabsChatWidgetContainerHandler = tabsChatWidgetContainerHandler;
 }
 
-void TabsPluginObject::setTabsManager(TabsManager *tabsManager)
-{
-	m_tabsManager = tabsManager;
-}
-
 void TabsPluginObject::init()
 {
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/tabs.ui"));
 	m_chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_tabsChatWidgetContainerHandler);
-	m_tabsManager->openStoredChatTabs();
 }
 
 void TabsPluginObject::done()
 {
-	m_tabsManager->storeOpenedChatTabs();
 	m_chatWidgetContainerHandlerRepository->unregisterChatWidgetContainerHandler(m_tabsChatWidgetContainerHandler);
 	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/tabs.ui"));
 }

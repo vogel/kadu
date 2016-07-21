@@ -37,6 +37,7 @@
 #include "configuration/gui/configuration-ui-handler.h"
 #include "misc/misc.h"
 #include "storage/storable-object.h"
+#include "injeqt-type-roles.h"
 
 #include "gui/widgets/tab-widget.h"
 
@@ -62,6 +63,7 @@ enum class OpenChatActivation;
 class TabsManager : public StorableObject, ConfigurationAwareObject
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(SERVICE)
 
 	// just for fun, this code is so bad already
 	// that one more friend class wont do a difference

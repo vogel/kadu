@@ -186,12 +186,16 @@ void TabsManager::init()
 	);
 	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 
+	openStoredChatTabs();
+
 	kdebugf2();
 }
 
 void TabsManager::done()
 {
 	kdebugf();
+
+	storeOpenedChatTabs();
 
 	m_menuInventory
 		->menu("buddy-list")
