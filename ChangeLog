@@ -2,6 +2,7 @@
 * gadu: #3072 fixed: always use encryption when available (Vogel)
 * gadu: #2747 implemented: synchronize multi-session statuses (Vogel)
 * sms: #3067 fixed: sending SMS messages to Orange (Vogel)
+* windows: #2966 implemented: add recent conversation to task items of taskbar for Windows (Vogel)
 
 +++ version 4.0-beta1
 * chat: #3081 fixed: properly load conferences from configuration (Vogel)

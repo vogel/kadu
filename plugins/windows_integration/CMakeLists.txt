@@ -27,6 +27,8 @@ kadu_plugin (windows_integration
 	PLUGIN_SOURCES ${SOURCES}
 )
 
+kadu_add_plugin_test (windows_integration windows-jump-list-service)
+
 if (WIN32)
 	qt5_use_modules (windows_integration LINK_PRIVATE WinExtras)
 endif (WIN32)

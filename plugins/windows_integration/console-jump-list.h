@@ -33,5 +33,6 @@ private:
 	virtual void clear();
 	virtual void addChat(Chat chat);
 	virtual void addSeparator();
+    virtual void setVisible(bool visible);
 
 };

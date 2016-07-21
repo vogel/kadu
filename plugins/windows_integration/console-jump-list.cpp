@@ -48,4 +48,9 @@ void ConsoleJumpList::addSeparator()
 	qDebug() << "ConsoleJumpList::addSeparator()";
 }
 
+void ConsoleJumpList::setVisible(bool visible)
+{
+	qDebug() << "ConsoleJumpList::setVisible(" << visible << ")";
+}
+
 #include "console-jump-list.moc"

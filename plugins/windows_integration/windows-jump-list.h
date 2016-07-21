@@ -36,8 +36,9 @@ public:
 private:
 	owned_qptr<QWinJumpList> m_jumpList;
 
-	virtual void clear();
-	virtual void addChat(Chat chat);
-	virtual void addSeparator();
+	virtual void clear() override;
+	virtual void addChat(Chat chat) override;
+	virtual void addSeparator() override;
+	virtual void setVisible(bool visible) override;
 
 };

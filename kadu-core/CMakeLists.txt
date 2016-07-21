@@ -13,37 +13,6 @@ else ()
 	message (STATUS "Fast (re)linking disabled")
 endif ()
 
-# if ((NOT DEFINED NETWORK_IMPLEMENTATION AND NOT Qt5Core_FOUND) OR "${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
-# 	find_package (QNtrack 010)
-# endif ()
-
-if (NOT DEFINED NETWORK_IMPLEMENTATION)
-#	if (QNTRACK_FOUND)
-#		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: ntrack")
-#		set (NETWORK_IMPLEMENTATION "ntrack")
-#	else ()
-		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: Qt")
-		set (NETWORK_IMPLEMENTATION "Qt")
-#	endif ()
-endif ()
-
-set (NETWORK_IMPLEMENTATION "${NETWORK_IMPLEMENTATION}" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
-
-if ("${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
-	list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${QNTRACK_LIBRARIES})
-endif ()
-# The rest of NETWORK_IMPLEMENTATION stuff is handled in network/CMakeLists.txt.
-
-# injeqt
-find_package (PkgConfig)
-pkg_check_modules (INJEQT REQUIRED injeqt>=1.0.101)
-set (INJEQT_DEFINITIONS ${INJEQT_CFLAGS_OTHER})
-include_directories (${INJEQT_INCLUDEDIR})
-link_directories (${INJEQT_LIBRARY_DIRS})
-
-list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${INJEQT_LIBRARIES})
-list (APPEND ADDITIONAL_LIBRARIES ${INJEQT_LIBRARIES})
-
 configure_file (kadu-config.h.in "${CMAKE_CURRENT_BINARY_DIR}/kadu-config.h" ESCAPE_QUOTES)
 include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
 

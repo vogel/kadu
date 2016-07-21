@@ -38,12 +38,10 @@ WindowsJumpList::~WindowsJumpList()
 void WindowsJumpList::clear()
 {
 	m_jumpList->tasks()->clear();
-	m_jumpList->tasks()->setVisible(false);
 }
 
 void WindowsJumpList::addChat(Chat chat)
 {
-	m_jumpList->tasks()->setVisible(true);
 	auto title = chat.display().isEmpty() ? chat.name() : chat.display();
 	m_jumpList->tasks()->addLink(title, QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), QStringList{"--open-uuid", chat.uuid().toString()});
 }
@@ -51,6 +49,11 @@ void WindowsJumpList::addChat(Chat chat)
 void WindowsJumpList::addSeparator()
 {
 	m_jumpList->tasks()->addSeparator();
+}
+
+void WindowsJumpList::setVisible(bool visible)
+{
+	m_jumpList->tasks()->setVisible(visible);
 }
 
 #include "windows-jump-list.moc"

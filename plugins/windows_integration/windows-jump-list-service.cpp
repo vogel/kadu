@@ -61,13 +61,16 @@ void WindowsJumpListService::init()
 void WindowsJumpListService::updateJumpList()
 {
 	auto needSeparator = false;
+	auto any = false;
 
 	m_jumpList->clear();
 	for (auto const &chat : m_recentChatRepository)
-	{
-		needSeparator = true;
-		m_jumpList->addChat(chat);
-	}
+		if (std::find(begin(m_openChatRepository), end(m_openChatRepository), chat) == end(m_openChatRepository))
+		{
+			needSeparator = true;
+			m_jumpList->addChat(chat);
+			any = true;
+		}
 
 	for (auto const &chat : m_openChatRepository)
 	{
@@ -77,7 +80,10 @@ void WindowsJumpListService::updateJumpList()
 			needSeparator = false;
 		}
 		m_jumpList->addChat(chat);
+		any = true;
 	}
+
+	m_jumpList->setVisible(any);
 }
 
 #include "windows-jump-list-service.moc"

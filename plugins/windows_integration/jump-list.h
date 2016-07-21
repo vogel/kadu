@@ -23,7 +23,7 @@
 
 class Chat;
 
-class JumpList : public QObject
+class Q_DECL_EXPORT JumpList : public QObject
 {
 	Q_OBJECT
 
@@ -31,9 +31,10 @@ public:
 	virtual void clear() = 0;
 	virtual void addChat(Chat chat) = 0;
 	virtual void addSeparator() = 0;
+	virtual void setVisible(bool visible) = 0;
 
 protected:
-	explicit JumpList(QObject *parent = nullptr) : QObject{parent} {}
-	virtual ~JumpList() {}
+	explicit JumpList(QObject *parent = nullptr);
+	virtual ~JumpList();
 
 };

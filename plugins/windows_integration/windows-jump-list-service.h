@@ -31,7 +31,7 @@ class Chat;
 class OpenChatRepository;
 class RecentChatRepository;
 
-class WindowsJumpListService : public QObject
+class Q_DECL_EXPORT WindowsJumpListService : public QObject
 {
 	Q_OBJECT
 	INJEQT_TYPE_ROLE(SERVICE)

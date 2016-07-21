@@ -133,9 +133,41 @@ if (NOT KADU_VERSION STREQUAL simple_version)
 	set (KADU_PRERELEASE TRUE)
 endif ()
 
+# if ((NOT DEFINED NETWORK_IMPLEMENTATION AND NOT Qt5Core_FOUND) OR "${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
+# 	find_package (QNtrack 010)
+# endif ()
+
+if (NOT DEFINED NETWORK_IMPLEMENTATION)
+#	if (QNTRACK_FOUND)
+#		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: ntrack")
+#		set (NETWORK_IMPLEMENTATION "ntrack")
+#	else ()
+		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: Qt")
+		set (NETWORK_IMPLEMENTATION "Qt")
+#	endif ()
+endif ()
+
+set (NETWORK_IMPLEMENTATION "${NETWORK_IMPLEMENTATION}" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
+
+if ("${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
+	list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${QNTRACK_LIBRARIES})
+endif ()
+# The rest of NETWORK_IMPLEMENTATION stuff is handled in network/CMakeLists.txt.
+
+# injeqt
+find_package (PkgConfig)
+pkg_check_modules (INJEQT REQUIRED injeqt>=1.0.101)
+set (INJEQT_DEFINITIONS ${INJEQT_CFLAGS_OTHER})
+include_directories (${INJEQT_INCLUDEDIR})
+link_directories (${INJEQT_LIBRARY_DIRS})
+
+list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${INJEQT_LIBRARIES})
+list (APPEND ADDITIONAL_LIBRARIES ${INJEQT_LIBRARIES})
+
 # Tests
 find_package (Qt5Test REQUIRED)
-function (kadu_add_test name_)
+
+function (kadu_add_plugin_test plugin_name name_)
 	set (test_file "${name_}.test")
 	string (REPLACE "/" "-" test_name ${test_file})
 	list (APPEND UNIT_TEST_TARGETS ${test_name} PARENT_SCOPE)
@@ -152,7 +184,11 @@ function (kadu_add_test name_)
 	qt5_use_modules (${test_name} LINK_PRIVATE Core Gui Network Qml Quick QuickWidgets Test WebKit WebKitWidgets Widgets Xml)
 
 	# Add libkadu after the plugin so that --as-needed won't drop anything
-	target_link_libraries (${test_name} LINK_PRIVATE libkadu ${ADDITIONAL_LIBRARIES})
+	target_link_libraries (${test_name} LINK_PRIVATE libkadu ${plugin_name} ${ADDITIONAL_LIBRARIES})
+endfunction ()
+
+function (kadu_add_test name_)
+	kadu_add_plugin_test ("" "${name_}")
 endfunction ()
 
 add_custom_target (all_tests ALL DEPENDS kadu ${COMPILE_PLUGINS} ${UNIT_TEST_TARGETS})
