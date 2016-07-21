@@ -191,14 +191,6 @@ function (kadu_add_test name_)
 	kadu_add_plugin_test ("" "${name_}")
 endfunction ()
 
-add_custom_target (all_tests ALL DEPENDS kadu ${COMPILE_PLUGINS} ${UNIT_TEST_TARGETS})
-add_custom_command (
-	TARGET all_tests
-	COMMENT "Run tests"
-	POST_BUILD COMMAND ctest ARGS --output-on-failure
-	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
-
 # Installation paths.
 
 set (INSTALL_SDK_DIR "" CACHE PATH "SDK installation root")
@@ -340,6 +332,7 @@ add_subdirectory (translations)
 include (Plugins.cmake)
 add_subdirectory (plugins)
 add_subdirectory (kthxbye)
+add_subdirectory (tests)
 
 # Now write KaduConfig for installation.
 if (UNIX)
