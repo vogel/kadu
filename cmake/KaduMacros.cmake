@@ -39,7 +39,7 @@ if (UNIX AND NOT APPLE)
 endif ()
 
 include (FindPkgConfig)
-pkg_check_modules (INJEQT REQUIRED injeqt>=1.0.99)
+pkg_check_modules (INJEQT REQUIRED injeqt>=1.1)
 include_directories (${INJEQT_INCLUDEDIR})
 link_directories (${INJEQT_LIBRARY_DIRS})
 
