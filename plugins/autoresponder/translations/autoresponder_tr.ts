@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="tr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -45,17 +43,17 @@
     </message>
 </context>
 <context>
-    <name>AutoResponder</name>
-    <message>
-        <source>KADU AUTORESPONDER:</source>
-        <translation>KADU OTO-YANITLAYICI:</translation>
-    </message>
-</context>
-<context>
     <name>AutoresponderConfigurator</name>
     <message>
         <source>I am busy.</source>
         <translation>Meşgulüm.</translation>
+    </message>
+</context>
+<context>
+    <name>AutoresponderMessageFilter</name>
+    <message>
+        <source>KADU AUTORESPONDER:</source>
+        <translation>KADU OTO-YANITLAYICI:</translation>
     </message>
 </context>
 </TS>

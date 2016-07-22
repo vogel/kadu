@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -93,83 +91,6 @@
     </message>
 </context>
 <context>
-    <name>Firewall</name>
-    <message>
-        <source>I want something</source>
-        <translation>Něco chci</translation>
-    </message>
-    <message>
-        <source>flooding DoS attack with emoticons!</source>
-        <translation>Útok ksichty hrozící způsobit přetečení, typ DoS!</translation>
-    </message>
-    <message>
-        <source>flooding DoS attack!</source>
-        <translation>Útok typu DoS hrozící způsobit přetečení!</translation>
-    </message>
-    <message>
-        <source>Chat with anonim silently dropped.
-</source>
-        <translation>Hovor s neznámým tiše zahozen.
-</translation>
-    </message>
-    <message>
-        <source>OK, now say hello, and introduce yourself ;-)</source>
-        <translation>OK. A teď si představ sám sebe ;-)</translation>
-    </message>
-    <message>
-        <source>User wrote right answer!
-</source>
-        <translation>Uživatel napsal správnou odpověď!</translation>
-    </message>
-    <message>
-        <source>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</source>
-        <translation>Tato zpráva byla vytvořena AUTOMATICKY!
-
-Jsem velmi zaměstnán a nechci být rušen zatažením do hloupých řečí. Najdi si někoho jiného. Když po mě ale něco budeš chtít, jednoduše napiš &quot;Něco chci&quot; (a je jedno, jestli velkými nebo malými písmeny)</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to send this message?</source>
-        <translation>Opravdu chcete odeslat tuto zprávu?</translation>
-    </message>
-    <message>
-        <source>&amp;Yes</source>
-        <translation>&amp;Ano</translation>
-    </message>
-    <message>
-        <source>Yes and allow until chat closed</source>
-        <translation>Ano a dovoluji to až do skončení hovoru</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation>&amp;Ne</translation>
-    </message>
-    <message>
-        <source>%u writes</source>
-        <translation>%u píše</translation>
-    </message>
-    <message>
-        <source>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
-        <translation>Tato zpráva byla vytvořena AUTOMATICKY!
-
-Jsem velmi zaměstnán a nemám čas na kecání s lidmi, co sami sebe skrývají. Jestli se mnou chceš mluvit, nejprve si změň stav na připojený nebo zaneprázdněný.</translation>
-    </message>
-    <message>
-        <source>Chat with invisible anonim ignored.
-</source>
-        <translation>Hovor s někým neviditelným a neznámým přehlížen.
-</translation>
-    </message>
-    <message>
-        <source>      DATA AND TIME      ::   ID      :: MESSAGE
-</source>
-        <translation>      DATUM A ČAS      ::   ID      :: ZPRÁVA</translation>
-    </message>
-</context>
-<context>
     <name>FirewallConfigurationUiHandler</name>
     <message>
         <source>Move to &apos;Secured&apos;</source>
@@ -205,7 +126,85 @@ Jsem velmi zaměstnán a nemám čas na kecání s lidmi, co sami sebe skrývaj�
     </message>
 </context>
 <context>
-    <name>FirewallNotification</name>
+    <name>FirewallMessageFilter</name>
+    <message>
+        <source>flooding DoS attack with emoticons!</source>
+        <translation>Útok ksichty hrozící způsobit přetečení, typ DoS!</translation>
+    </message>
+    <message>
+        <source>flooding DoS attack!</source>
+        <translation>Útok typu DoS hrozící způsobit přetečení!</translation>
+    </message>
+    <message>
+        <source>Chat with anonim silently dropped.
+</source>
+        <translation>Hovor s neznámým tiše zahozen.
+</translation>
+    </message>
+    <message>
+        <source>This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
+        <translation>Tato zpráva byla vytvořena AUTOMATICKY!
+
+Jsem velmi zaměstnán a nemám čas na kecání s lidmi, co sami sebe skrývají. Jestli se mnou chceš mluvit, nejprve si změň stav na připojený nebo zaneprázdněný.</translation>
+    </message>
+    <message>
+        <source>Chat with invisible anonim ignored.
+</source>
+        <translation>Hovor s někým neviditelným a neznámým přehlížen.
+</translation>
+    </message>
+    <message>
+        <source>User wrote right answer!
+</source>
+        <translation>Uživatel napsal správnou odpověď!</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send this message?</source>
+        <translation>Opravdu chcete odeslat tuto zprávu?</translation>
+    </message>
+    <message>
+        <source>&amp;Yes</source>
+        <translation>&amp;Ano</translation>
+    </message>
+    <message>
+        <source>Yes and allow until chat closed</source>
+        <translation>Ano a dovoluji to až do skončení hovoru</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation>&amp;Ne</translation>
+    </message>
+    <message>
+        <source>      DATA AND TIME      ::   ID      :: MESSAGE
+</source>
+        <translation>      DATUM A ČAS      ::   ID      :: ZPRÁVA
+</translation>
+    </message>
+    <message>
+        <source>OK, now say hello, and introduce yourself ;-)</source>
+        <translation>OK. A teď si představ sám sebe ;-)</translation>
+    </message>
+    <message>
+        <source>This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</source>
+        <translation>Tato zpráva byla vytvořena AUTOMATICKY!
+
+Jsem velmi zaměstnán a nechci být rušen zatažením do hloupých řečí. Najdi si někoho jiného. Když po mě ale něco budeš chtít, jednoduše napiš &quot;Něco chci&quot; (a je jedno, jestli velkými nebo malými písmeny)</translation>
+    </message>
+    <message>
+        <source>I want something</source>
+        <translation>Něco chci</translation>
+    </message>
+    <message>
+        <source>%u writes</source>
+        <translation>%u píše</translation>
+    </message>
+</context>
+<context>
+    <name>FirewallNotificationService</name>
     <message>
         <source>Message was blocked</source>
         <translation>Zpráva byla zablokována</translation>

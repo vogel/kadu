@@ -63,24 +63,27 @@
         <translation>Could not find dictionary for %1 language.</translation>
     </message>
     <message>
+        <source>Details</source>
+        <translation>Details</translation>
+    </message>
+</context>
+<context>
+    <name>SpellcheckerConfigurationUiHandler</name>
+    <message>
         <source>Move to &apos;Checked&apos;</source>
-        <translation>Move to &apos;Checked&apos;</translation>
+        <translation type="unfinished">Move to &apos;Checked&apos;</translation>
     </message>
     <message>
         <source>Available languages</source>
-        <translation>Available languages</translation>
+        <translation type="unfinished">Available languages</translation>
     </message>
     <message>
         <source>Move to &apos;Available languages&apos;</source>
-        <translation>Move to &apos;Available languages&apos;</translation>
+        <translation type="unfinished">Move to &apos;Available languages&apos;</translation>
     </message>
     <message>
         <source>Checked</source>
-        <translation>Checked</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Details</translation>
+        <translation type="unfinished">Checked</translation>
     </message>
 </context>
 </TS>

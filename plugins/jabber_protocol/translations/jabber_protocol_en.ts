@@ -2,29 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
-    <name>@default</name>
-    <message>
-        <source>External address</source>
-        <translation>External address</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>General</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation>Advanced</translation>
-    </message>
-    <message>
-        <source>XMPP/Jabber</source>
-        <translation>XMPP/Jabber</translation>
-    </message>
-    <message>
-        <source>Port for data transfers</source>
-        <translation>Port for data transfers</translation>
-    </message>
-</context>
-<context>
     <name>FacebookDepreceatedMessage</name>
     <message>
         <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
@@ -335,10 +312,6 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Legacy SSL is only available in combination with manual host/port.</source>
-        <translation>Legacy SSL is only available in combination with manual host/port.</translation>
-    </message>
-    <message>
         <source>Remove account</source>
         <translation>Remove account</translation>
     </message>
@@ -619,6 +592,10 @@ Server message: %2</translation>
     <message>
         <source>Unknown error: received stanza type %1</source>
         <translation>Unknown error: received stanza type %1</translation>
+    </message>
+    <message>
+        <source>SSL certificate rejected</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

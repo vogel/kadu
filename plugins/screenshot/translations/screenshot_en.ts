@@ -121,10 +121,6 @@ It should be bigger.</translation>
 <context>
     <name>ScreenshotAction</name>
     <message>
-        <source>ScreenShot</source>
-        <translation>ScreenShot</translation>
-    </message>
-    <message>
         <source>Simple Shot</source>
         <translation>Simple Shot</translation>
     </message>
@@ -138,14 +134,14 @@ It should be bigger.</translation>
     </message>
 </context>
 <context>
-    <name>ScreenshotNotification</name>
+    <name>ScreenshotNotificationService</name>
     <message>
         <source>ScreenShot size limit</source>
-        <translation>ScreenShot size limit</translation>
+        <translation type="unfinished">ScreenShot size limit</translation>
     </message>
     <message>
         <source>Images size limit exceed: %1 KB</source>
-        <translation>Images size limit exceed: %1 KB</translation>
+        <translation type="unfinished">Images size limit exceed: %1 KB</translation>
     </message>
 </context>
 <context>

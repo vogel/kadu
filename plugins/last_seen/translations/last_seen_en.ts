@@ -11,10 +11,6 @@
 <context>
     <name>InfosDialog</name>
     <message>
-        <source>Buddies Information</source>
-        <translation>Buddies Information</translation>
-    </message>
-    <message>
         <source>Buddy</source>
         <translation>Buddy</translation>
     </message>

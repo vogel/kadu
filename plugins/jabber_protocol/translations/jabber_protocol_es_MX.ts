@@ -1,38 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_MX">
-<context>
-    <name>@default</name>
-    <message>
-        <source>External address</source>
-        <translation>Dirección externa</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>General</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation>Avanzado</translation>
-    </message>
-    <message>
-        <source>XMPP/Jabber</source>
-        <translation>XMPP/Jabber</translation>
-    </message>
-    <message>
-        <source>Port for data transfers</source>
-        <translation>Puerto para la transferencia de datos</translation>
-    </message>
-</context>
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
 <context>
     <name>FacebookDepreceatedMessage</name>
     <message>
         <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>El soporte a Facebook XMPP está deshabilitado desde 01.05.2015. Esta significa que Kadu no será capaz de conectar a cuentas de Facebook. Puedes dejar tus cuentas de Facebook configuradas para el historial de conversación o puedes eliminarlas desde Kadu usando el diálogo Sus Cuentas</translation>
     </message>
     <message>
         <source>Kadu - Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu - Facebook</translation>
     </message>
 </context>
 <context>
@@ -335,10 +310,6 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Legacy SSL is only available in combination with manual host/port.</source>
-        <translation>SSL heredado está sólo disponible en combinación con un servidor/puerto manual.</translation>
-    </message>
-    <message>
         <source>Remove account</source>
         <translation>Eliminar cuenta</translation>
     </message>
@@ -619,6 +590,10 @@ Mensaje de servidor: %2</translation>
     <message>
         <source>Unknown error: received stanza type %1</source>
         <translation>Error desconocido: tipo de stanza recibido %1</translation>
+    </message>
+    <message>
+        <source>SSL certificate rejected</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

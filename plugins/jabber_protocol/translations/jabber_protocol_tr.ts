@@ -1,38 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="tr">
-<context>
-    <name>@default</name>
-    <message>
-        <source>External address</source>
-        <translation>Harici adres</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Genel</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation>Gelişmiş</translation>
-    </message>
-    <message>
-        <source>XMPP/Jabber</source>
-        <translation>XMPP/Jabber</translation>
-    </message>
-    <message>
-        <source>Port for data transfers</source>
-        <translation>Veri aktarımları için port:</translation>
-    </message>
-</context>
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
     <name>FacebookDepreceatedMessage</name>
     <message>
         <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Kadu - Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -335,10 +310,6 @@ Girilen şifre alanları (&quot;Şifre&quot; ve &quot;Şifreyi tekrar yazın&quo
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Legacy SSL is only available in combination with manual host/port.</source>
-        <translation>Yerleşik SSL sadece el ile girinlen host/port combinasyonununda mevcut</translation>
-    </message>
-    <message>
         <source>Remove account</source>
         <translation>Hesabı kaldır</translation>
     </message>
@@ -620,6 +591,10 @@ Sunucu mesajı: %2</translation>
     <message>
         <source>Unknown error: received stanza type %1</source>
         <translation>Bilinmeyen hata: alınan dörtlük tipi %1</translation>
+    </message>
+    <message>
+        <source>SSL certificate rejected</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -320,10 +318,6 @@
         <translation>Otwiera okno rozmowy tylko gdy jesteś dostępny</translation>
     </message>
     <message>
-        <source>Clear recent chats list on exit</source>
-        <translation>Wyczyść listę ostatnich rozmów przy wychodzeniu z programu</translation>
-    </message>
-    <message>
         <source>Block chat window when a new message arrives</source>
         <translation>Uniemożliwia zamknięcie okna na pewien czas po otrzymaniu nowej wiadomości</translation>
     </message>
@@ -406,34 +400,6 @@
     <message>
         <source>Multilogon session disconnected</source>
         <translation>Rozłączono sesję multilogowania</translation>
-    </message>
-    <message>
-        <source>User changed status</source>
-        <translation>Użytkownik zmienił status</translation>
-    </message>
-    <message>
-        <source>to free for chat</source>
-        <translation>na chętny do rozmowy</translation>
-    </message>
-    <message>
-        <source>to online</source>
-        <translation>na dostępny</translation>
-    </message>
-    <message>
-        <source>to away</source>
-        <translation>na zaraz wracam</translation>
-    </message>
-    <message>
-        <source>to not available</source>
-        <translation>na niedostępny</translation>
-    </message>
-    <message>
-        <source>to do not disturb</source>
-        <translation>na nie przeszkadzać</translation>
-    </message>
-    <message>
-        <source>to offline</source>
-        <translation>na rozłączony</translation>
     </message>
     <message>
         <source>Blocked</source>
@@ -572,7 +538,7 @@
         <translation>Zmiana statusu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies&apos; status
+        <source>This option will supersede tooltips with buddies' status
 changes upon establishing connection to the server</source>
         <translation>Ta opcja spowoduje nie wyświetlenie dymków o zmianie statusu
 znajomych po połączeniu się z serwerem</translation>
@@ -607,27 +573,15 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n minuta</numerusform>
-            <numerusform>%n minuty</numerusform>
-            <numerusform>%n minut</numerusform>
-        </translation>
+        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Send message</source>
         <translation>Wyślij wiadomość</translation>
-    </message>
-    <message>
-        <source>Show a window with notification</source>
-        <translation>Pokaż okno</translation>
     </message>
     <message>
         <source>Beginning of title</source>
@@ -914,10 +868,6 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Informacja</translation>
     </message>
     <message>
-        <source>Tooltip over buddy</source>
-        <translation>Dymek nad listą znajomych</translation>
-    </message>
-    <message>
         <source>Contact</source>
         <translation>Kontakt</translation>
     </message>
@@ -944,14 +894,6 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>At the buddy&apos;s name</source>
         <translation>Przy nazwie</translation>
-    </message>
-    <message>
-        <source>Buddy list information style</source>
-        <translation>Styl informacji o znajomym</translation>
-    </message>
-    <message>
-        <source>Choose how buddy information is presented when cursor is hovering over buddy list</source>
-        <translation>Wybierz sposób w jaki informacja o znajomym jest wyświetlana na liście</translation>
     </message>
     <message>
         <source>Notify about chat events in chat window</source>
@@ -1216,31 +1158,21 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
-    <name>AccountEventListener</name>
-    <message>
-        <source>Multilogon</source>
-        <translation>Multilogowanie</translation>
-    </message>
-    <message>
-        <source>Multilogon session connected from %1 at %2 with %3 for %4 account</source>
-        <translation>Inny klient połączył się z kontem %4
-IP: %1
-Czas: %2
-Klient: %3</translation>
-    </message>
-    <message>
-        <source>Multilogon session disconnected from %1 at %2 with %3 for %4 account</source>
-        <translation>Inny klient rozłączył się od konta %4
-IP: %1
-Czas: %2
-Klient: %3</translation>
-    </message>
-</context>
-<context>
     <name>AccountManager</name>
     <message>
         <source>Please provide password for %1 (%2) account</source>
         <translation>Wprowadź hasło dla konta %1 (%2)</translation>
+    </message>
+</context>
+<context>
+    <name>AccountNotificationService</name>
+    <message>
+        <source>Connection error</source>
+        <translation>Błąd połączenia</translation>
+    </message>
+    <message>
+        <source>Connection error on account: %1 (%2)</source>
+        <translation>Błąd połączenia konta %1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -1907,37 +1839,6 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
 </context>
 <context>
-    <name>ChatWidget</name>
-    <message>
-        <source>Chat window will be cleared. Continue?</source>
-        <translation>Okno rozmowy zostanie wyczyszczone. Kontynuować?</translation>
-    </message>
-    <message>
-        <source>Cannot send message while being offline.</source>
-        <translation>Nie można wysłać wiadomości nie będąc podłączonym.</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Account:</source>
-        <translation>Konto:</translation>
-    </message>
-    <message>
-        <source>%1 ended the conversation</source>
-        <translation>%1 zakończył rozmowę</translation>
-    </message>
-    <message>
-        <source>Clear chat window</source>
-        <translation>Wyczyść okno rozmowy</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-</context>
-<context>
     <name>ChatWidgetActions</name>
     <message>
         <source>More...</source>
@@ -1989,6 +1890,37 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
 </context>
 <context>
+    <name>ChatWidgetImpl</name>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Chat window will be cleared. Continue?</source>
+        <translation>Okno rozmowy zostanie wyczyszczone. Kontynuować?</translation>
+    </message>
+    <message>
+        <source>Clear chat window</source>
+        <translation>Wyczyść okno rozmowy</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Cannot send message while being offline.</source>
+        <translation>Nie można wysłać wiadomości nie będąc podłączonym.</translation>
+    </message>
+    <message>
+        <source>Account:</source>
+        <translation>Konto:</translation>
+    </message>
+    <message>
+        <source>%1 ended the conversation</source>
+        <translation>%1 zakończył rozmowę</translation>
+    </message>
+</context>
+<context>
     <name>ChatWidgetTitle</name>
     <message>
         <source>Conference [%1]</source>
@@ -2023,13 +1955,6 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
 </context>
 <context>
-    <name>ChooseIdentityWidget</name>
-    <message>
-        <source>Create new description...</source>
-        <translation>Stwórz nowy opis...</translation>
-    </message>
-</context>
-<context>
     <name>CollapseAction</name>
     <message>
         <source>Collapse</source>
@@ -2049,21 +1974,6 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     <message>
         <source>Cancel</source>
         <translation>Anuluj</translation>
-    </message>
-</context>
-<context>
-    <name>ConnectionErrorNotification</name>
-    <message>
-        <source>Connection error</source>
-        <translation>Błąd połączenia</translation>
-    </message>
-    <message>
-        <source>Connection error on account: %1 (%2)</source>
-        <translation>Błąd połączenia konta %1 (%2)</translation>
-    </message>
-    <message>
-        <source>Ignore</source>
-        <translation>Ignoruj</translation>
     </message>
 </context>
 <context>
@@ -2193,6 +2103,25 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     <message>
         <source>Unable to open local file</source>
         <translation>Nie można otworzyć lokalnego pliku</translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferNotificationService</name>
+    <message>
+        <source>Incoming transfer</source>
+        <translation>Transfer przychodzący</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; wants to send you a file %2</source>
+        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce wysłać plik %2</translation>
+    </message>
+    <message>
+        <source>size: &lt;b&gt;%1&lt;/b&gt;, account: &lt;b&gt;%2&lt;/b&gt;</source>
+        <translation>rozmiar: &lt;b&gt;%1&lt;/b&gt;, konto: &lt;b&gt;%2&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>account: &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>konto: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2480,6 +2409,13 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
 </context>
 <context>
+    <name>HintManager</name>
+    <message>
+        <source>&lt;table&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&lt;img style=&quot;max-width:64px; max-height:64px;&quot; src=&quot;{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}&quot;&gt;&lt;/td&gt;&lt;td width=&quot;100%&quot;&gt;&lt;div&gt;[&lt;b&gt;%a&lt;/b&gt;][&amp;nbsp;&lt;b&gt;(%g)&lt;/b&gt;]&lt;/div&gt;[&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;#{statusIconPath}&quot;&gt;&amp;nbsp;&amp;nbsp;%u&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;@{phone:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%m&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;@{mail-message-new:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%e&lt;/div&gt;]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;[&lt;hr&gt;&lt;b&gt;%s&lt;/b&gt;][&lt;b&gt;:&lt;/b&gt;&lt;br&gt;&lt;small&gt;%d&lt;/small&gt;]</source>
+        <translation>&lt;table&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&lt;img style=&quot;max-width:64px; max-height:64px;&quot; src=&quot;{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}&quot;&gt;&lt;/td&gt;&lt;td width=&quot;100%&quot;&gt;&lt;div&gt;[&lt;b&gt;%a&lt;/b&gt;][&amp;nbsp;&lt;b&gt;(%g)&lt;/b&gt;]&lt;/div&gt;[&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;#{statusIconPath}&quot;&gt;&amp;nbsp;&amp;nbsp;%u&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;@{phone:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%m&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;@{mail-message-new:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%e&lt;/div&gt;]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;[&lt;hr&gt;&lt;b&gt;%s&lt;/b&gt;][&lt;b&gt;:&lt;/b&gt;&lt;br&gt;&lt;small&gt;%d&lt;/small&gt;]</translation>
+    </message>
+</context>
+<context>
     <name>IdentitiesComboBox</name>
     <message>
         <source>Create a new identity...</source>
@@ -2591,10 +2527,6 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
 </context>
 <context>
     <name>KaduWindow</name>
-    <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
     <message>
         <source>&amp;Buddies</source>
         <translation>&amp;Znajomi</translation>
@@ -2786,10 +2718,6 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
 <context>
     <name>MainConfigurationWindow</name>
     <message>
-        <source>None</source>
-        <translation>Brak</translation>
-    </message>
-    <message>
         <source>Kadu configuration</source>
         <translation>Konfiguracja Kadu</translation>
     </message>
@@ -2833,22 +2761,22 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
-    <name>MessageNotification</name>
-    <message>
-        <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Rozmowa z &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Nowa wiadomość od &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
+    <name>MessageNotificationService</name>
     <message>
         <source>New chat</source>
         <translation>Nowa rozmowa</translation>
     </message>
     <message>
+        <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>Rozmowa z &lt;b&gt;%1&lt;/b&gt;</translation>
+    </message>
+    <message>
         <source>New message</source>
         <translation>Nowa wiadomość</translation>
+    </message>
+    <message>
+        <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>Nowa wiadomość od &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2867,10 +2795,22 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
-    <name>MultilogonNotification</name>
+    <name>MultilogonNotificationService</name>
     <message>
-        <source>Disconnect session</source>
-        <translation>Rozłącz sesję</translation>
+        <source>Multilogon</source>
+        <translation>Multilogowanie</translation>
+    </message>
+    <message>
+        <source>Multilogon session connected</source>
+        <translation>Podłączono sesję multilogowania</translation>
+    </message>
+    <message>
+        <source>from %1 at %2 with %3 for %4 account</source>
+        <translation>ip: %1, czas: %2, nazwa: %3, konto: %4</translation>
+    </message>
+    <message>
+        <source>Multilogon session disconnected</source>
+        <translation>Rozłączono sesję multilogowania</translation>
     </message>
 </context>
 <context>
@@ -2893,42 +2833,10 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
-    <name>NewFileTransferNotification</name>
+    <name>Myself</name>
     <message>
-        <source>Incoming transfer</source>
-        <translation>Przychodzące połączenie</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
-        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce wysłać Ci plik &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Akceptujesz transfer?</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
-        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce przesłać ci plik &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Jest to prawdopodobnie kolejna część  &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;Co powinienem zrobić?</translation>
-    </message>
-    <message>
-        <source>Accept</source>
-        <translation>Akceptuj</translation>
-    </message>
-    <message>
-        <source>Reject</source>
-        <translation>Odrzuć</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Zapisz</translation>
-    </message>
-    <message>
-        <source>Ignore</source>
-        <translation>Ignoruj</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
-        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce wysłać Ci plik &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt; używając konta &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Zaakceptować transfer?</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;What should I do?</source>
-        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce przesłać ci plik &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;używając konta &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Jest to prawdopodobnie kolejna część  &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;Co powinienem zrobić?</translation>
+        <source>Me</source>
+        <translation>Ja</translation>
     </message>
 </context>
 <context>
@@ -2938,16 +2846,8 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <translation>Powiadom o znajomym</translation>
     </message>
     <message>
-        <source>Silent Mode</source>
-        <translation>Tryb cichy</translation>
-    </message>
-    <message>
         <source>Ignore</source>
         <translation>Ignoruj</translation>
-    </message>
-    <message>
-        <source>Chat</source>
-        <translation>Rozmowa</translation>
     </message>
 </context>
 <context>
@@ -3011,10 +2911,6 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
 </context>
 <context>
     <name>PathListEditWindow</name>
-    <message>
-        <source>Select paths</source>
-        <translation>Wybierz ścieżki</translation>
-    </message>
     <message>
         <source>Add</source>
         <translation>Dodaj</translation>
@@ -3111,10 +3007,10 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
 <context>
     <name>PluginLoader</name>
     <message>
-        <source>Cannot load %1 plugin library:
-%2</source>
-        <translation>Nie można załadować wtyczki %1:
-%2</translation>
+        <source>Creating plugin injector for %1 failed.
+%2: %3</source>
+        <translation>Utworzenie injectora wtyczki dla %1 nie udało się.
+%2: %3</translation>
     </message>
 </context>
 <context>
@@ -3158,19 +3054,6 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <message>
         <source>Misc</source>
         <translation>Różne</translation>
-    </message>
-</context>
-<context>
-    <name>PluginRootComponentHandler</name>
-    <message>
-        <source>Cannot find required object in plugin %1.
-Maybe it&apos;s not Kadu-compatible plugin.</source>
-        <translation>Wtyczka %1 nie zawiera wymaganego obiektu.
-Być może nie jest zgodna z Kadu.</translation>
-    </message>
-    <message>
-        <source>Plugin initialization routine for %1 failed.</source>
-        <translation>Inicjalizacja wtyczki %1 nieudana.</translation>
     </message>
 </context>
 <context>
@@ -3431,10 +3314,6 @@ Być może nie jest zgodna z Kadu.</translation>
         <translation>Wyszukiwanie zakończone</translation>
     </message>
     <message>
-        <source>Search User in Directory</source>
-        <translation>Znajdź kontakt w katalogu</translation>
-    </message>
-    <message>
         <source>Search Criteria</source>
         <translation>Kryteria wyszukiwania</translation>
     </message>
@@ -3600,6 +3479,13 @@ Być może nie jest zgodna z Kadu.</translation>
     <message>
         <source>View File Transfers</source>
         <translation>Zobacz transfery plików</translation>
+    </message>
+</context>
+<context>
+    <name>SilentModeService</name>
+    <message>
+        <source>Silent Mode</source>
+        <translation>Tryb cichy</translation>
     </message>
 </context>
 <context>
@@ -3771,21 +3657,25 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
 </context>
 <context>
-    <name>StatusChangedNotification</name>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; zmienił status na &lt;i&gt;%2&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>Status changed</source>
-        <translation>Zmiana statusu</translation>
-    </message>
-</context>
-<context>
     <name>StatusContainerManager</name>
     <message>
         <source>All</source>
         <translation>Wszystkie</translation>
+    </message>
+</context>
+<context>
+    <name>StatusNotificationService</name>
+    <message>
+        <source>Status changed</source>
+        <translation>Zmiana statusu</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; changed status</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt; zmienił status</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -3859,10 +3749,6 @@ Być może nie jest zgodna z Kadu.</translation>
     <message>
         <source>Ignore</source>
         <translation>Ignoruj</translation>
-    </message>
-    <message>
-        <source>Ask For Sharing Status</source>
-        <translation>Poproś o udostępnienie statusu</translation>
     </message>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to add you to his contact list.</source>
@@ -3978,10 +3864,6 @@ Być może nie jest zgodna z Kadu.</translation>
 <context>
     <name>UpdatesDialog</name>
     <message>
-        <source>New version is available. Please update</source>
-        <translation>Dostępna jest nowa wersja. Proszę zaktualizować</translation>
-    </message>
-    <message>
         <source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
         <translation>Nowa wersja &lt;b&gt;%1&lt;/b&gt; Kadu jest dostępna do pobrania. Proszę &lt;a href=&apos;download&apos;&gt;pobrać&lt;/a&gt; instalator i zaktualizować program albo skorzystać z narzędzi systemowych do aktualizacji pakietów.</translation>
     </message>
@@ -4019,13 +3901,6 @@ Być może nie jest zgodna z Kadu.</translation>
     <message>
         <source>%1 has paused composing</source>
         <translation>%1 przerwał pisanie</translation>
-    </message>
-</context>
-<context>
-    <name>WindowNotifierWindow</name>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
 </context>
 <context>

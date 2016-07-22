@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_MX">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -91,10 +89,6 @@ Los argumentos deberían estar separados. El argumento %k se convierte a numero,
 </context>
 <context>
     <name>SmsDialog</name>
-    <message>
-        <source>Send SMS</source>
-        <translation>Enviar mensaje de texto</translation>
-    </message>
     <message>
         <source>Recipient</source>
         <translation>Destinatario</translation>

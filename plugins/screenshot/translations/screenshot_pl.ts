@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -106,7 +104,7 @@
         <translation>Nie można utworzyć katalogu %1 dla zapisywania zrzutów ekranu!</translation>
     </message>
     <message>
-        <source>Can&apos;t write file %1.
+        <source>Can't write file %1.
 Access denied or other problem!</source>
         <translation>Nie można pisać do pliku %1.
 Brak dostępu lub inny problem!</translation>
@@ -121,10 +119,6 @@ Powinien być większy.</translation>
 <context>
     <name>ScreenshotAction</name>
     <message>
-        <source>ScreenShot</source>
-        <translation>ScreenShot</translation>
-    </message>
-    <message>
         <source>Simple Shot</source>
         <translation>Zwykły zrzut</translation>
     </message>
@@ -138,7 +132,7 @@ Powinien być większy.</translation>
     </message>
 </context>
 <context>
-    <name>ScreenshotNotification</name>
+    <name>ScreenshotNotificationService</name>
     <message>
         <source>ScreenShot size limit</source>
         <translation>Limit rozmiaru zrzutów</translation>

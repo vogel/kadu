@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="tr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -219,16 +217,8 @@
         <translation>Varsayılan sunucuları kullan</translation>
     </message>
     <message>
-        <source>Use encrypted connection</source>
-        <translation>Şifreli bağlantı kullan</translation>
-    </message>
-    <message>
         <source>Remove account</source>
         <translation>Hesabı kaldır</translation>
-    </message>
-    <message>
-        <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation>Şifreli bağlantı yapabilmek için SSL destekli libgadu derlemeniz lazım</translation>
     </message>
     <message>
         <source>Other</source>
@@ -395,6 +385,13 @@ Müsait olduğunuzu bilmelerine izin veriyor musunuz?</translation>
     </message>
 </context>
 <context>
+    <name>GaduPluginObject</name>
+    <message>
+        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
+        <translation>Gadu-Gadu Protocol eklentisi yüklenemiyor. Lütfen libgadu yu zlib ile derleyiniz.</translation>
+    </message>
+</context>
+<context>
     <name>GaduProtocol</name>
     <message>
         <source>Kadu</source>
@@ -406,24 +403,6 @@ Müsait olduğunuzu bilmelerine izin veriyor musunuz?</translation>
     <message>
         <source>Gadu-Gadu number:</source>
         <translation>Gadu-Gadu numarası:</translation>
-    </message>
-</context>
-<context>
-    <name>GaduProtocolPlugin</name>
-    <message>
-        <source>Gadu-Gadu Protocol</source>
-        <translation>Gadu-Gadu Protokolü</translation>
-    </message>
-    <message>
-        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation>Gadu-Gadu Protocol eklentisi yüklenemiyor. Lütfen libgadu yu zlib ile derleyiniz.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduSendGiftAction</name>
-    <message>
-        <source>Send Gift...</source>
-        <translation>Hediye Gönder...</translation>
     </message>
 </context>
 <context>

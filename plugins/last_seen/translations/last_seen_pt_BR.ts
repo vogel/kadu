@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
 <context>
     <name>Infos</name>
     <message>
@@ -10,10 +8,6 @@
 </context>
 <context>
     <name>InfosDialog</name>
-    <message>
-        <source>Buddies Information</source>
-        <translation>Informações de contatos</translation>
-    </message>
     <message>
         <source>Buddy</source>
         <translation>Contato</translation>

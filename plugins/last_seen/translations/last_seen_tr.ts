@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="tr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
     <name>Infos</name>
     <message>
@@ -10,10 +8,6 @@
 </context>
 <context>
     <name>InfosDialog</name>
-    <message>
-        <source>Buddies Information</source>
-        <translation>Arkadaşların Bilgileri</translation>
-    </message>
     <message>
         <source>Buddy</source>
         <translation>Arkadaş</translation>

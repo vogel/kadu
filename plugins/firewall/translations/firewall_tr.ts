@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="tr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -93,85 +91,6 @@
     </message>
 </context>
 <context>
-    <name>Firewall</name>
-    <message>
-        <source>I want something</source>
-        <translation>Ben bir şey istiyorum</translation>
-    </message>
-    <message>
-        <source>flooding DoS attack with emoticons!</source>
-        <translation>ifadelerle DoS saldırısı!</translation>
-    </message>
-    <message>
-        <source>flooding DoS attack!</source>
-        <translation>DoS saldırısı!</translation>
-    </message>
-    <message>
-        <source>Chat with anonim silently dropped.
-</source>
-        <translation>Anonim konuşma sessizce düşürüldü.
-</translation>
-    </message>
-    <message>
-        <source>OK, now say hello, and introduce yourself ;-)</source>
-        <translation>TAMAM, şimdi merhaba diyin. ve kendinizi tanıtın :-)</translation>
-    </message>
-    <message>
-        <source>User wrote right answer!
-</source>
-        <translation>Kullanıcı doğru cevap verdi!
-</translation>
-    </message>
-    <message>
-        <source>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</source>
-        <translation>Bu mesaj OTOMATİK olarak oluşturuldu!
-
-Ben meşgul biriyim ve aptal kouşmalara ayıracak vaktim yok. Konuşacak başka birini bul. Eğer GERÇEKTEN benim için bir şey istiyorsan, basitçe şöyle yaz &quot;Ben bir şey istiyorum&quot; (büyük-küçük önemli değil)</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to send this message?</source>
-        <translation>Bu mesajı göndermek istediğinizden emin misiniz?</translation>
-    </message>
-    <message>
-        <source>&amp;Yes</source>
-        <translation>&amp;Evet</translation>
-    </message>
-    <message>
-        <source>Yes and allow until chat closed</source>
-        <translation>Evet ve konuşma kapanana kadar izin ver</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation>&amp;Hayır</translation>
-    </message>
-    <message>
-        <source>%u writes</source>
-        <translation>%u yazıyor</translation>
-    </message>
-    <message>
-        <source>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
-        <translation>Bu mesaj OTOMATİK olarak oluşturuldu!
-
-Ben meşgul biriyim ve aptal kouşmalara ayıracak vaktim yok. Konuşacak başka birini bul. Eğer GERÇEKTEN benimle konuşmak istiyorsan ilk önce durumunu Çevrimiçi veya Meşgul olarak ayarla.</translation>
-    </message>
-    <message>
-        <source>Chat with invisible anonim ignored.
-</source>
-        <translation>Görünmez anonim konuşması atlandı.
-</translation>
-    </message>
-    <message>
-        <source>      DATA AND TIME      ::   ID      :: MESSAGE
-</source>
-        <translation>      DATA AND TIME      ::   ID      :: MESSAGE
-</translation>
-    </message>
-</context>
-<context>
     <name>FirewallConfigurationUiHandler</name>
     <message>
         <source>Move to &apos;Secured&apos;</source>
@@ -207,7 +126,86 @@ Ben meşgul biriyim ve aptal kouşmalara ayıracak vaktim yok. Konuşacak başka
     </message>
 </context>
 <context>
-    <name>FirewallNotification</name>
+    <name>FirewallMessageFilter</name>
+    <message>
+        <source>flooding DoS attack with emoticons!</source>
+        <translation>ifadelerle DoS saldırısı!</translation>
+    </message>
+    <message>
+        <source>flooding DoS attack!</source>
+        <translation>DoS saldırısı!</translation>
+    </message>
+    <message>
+        <source>Chat with anonim silently dropped.
+</source>
+        <translation>Anonim konuşma sessizce düşürüldü.
+</translation>
+    </message>
+    <message>
+        <source>This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
+        <translation>Bu mesaj OTOMATİK olarak oluşturuldu!
+
+Ben meşgul biriyim ve aptal kouşmalara ayıracak vaktim yok. Konuşacak başka birini bul. Eğer GERÇEKTEN benimle konuşmak istiyorsan ilk önce durumunu Çevrimiçi veya Meşgul olarak ayarla.</translation>
+    </message>
+    <message>
+        <source>Chat with invisible anonim ignored.
+</source>
+        <translation>Görünmez anonim konuşması atlandı.
+</translation>
+    </message>
+    <message>
+        <source>User wrote right answer!
+</source>
+        <translation>Kullanıcı doğru cevap verdi!
+</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send this message?</source>
+        <translation>Bu mesajı göndermek istediğinizden emin misiniz?</translation>
+    </message>
+    <message>
+        <source>&amp;Yes</source>
+        <translation>&amp;Evet</translation>
+    </message>
+    <message>
+        <source>Yes and allow until chat closed</source>
+        <translation>Evet ve konuşma kapanana kadar izin ver</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation>&amp;Hayır</translation>
+    </message>
+    <message>
+        <source>      DATA AND TIME      ::   ID      :: MESSAGE
+</source>
+        <translation>      DATA AND TIME      ::   ID      :: MESSAGE
+</translation>
+    </message>
+    <message>
+        <source>OK, now say hello, and introduce yourself ;-)</source>
+        <translation>TAMAM, şimdi merhaba diyin. ve kendinizi tanıtın :-)</translation>
+    </message>
+    <message>
+        <source>This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</source>
+        <translation>Bu mesaj OTOMATİK olarak oluşturuldu!
+
+Ben meşgul biriyim ve aptal kouşmalara ayıracak vaktim yok. Konuşacak başka birini bul. Eğer GERÇEKTEN benim için bir şey istiyorsan, basitçe şöyle yaz &quot;Ben bir şey istiyorum&quot; (büyük-küçük önemli değil)</translation>
+    </message>
+    <message>
+        <source>I want something</source>
+        <translation>Ben bir şey istiyorum</translation>
+    </message>
+    <message>
+        <source>%u writes</source>
+        <translation>% yazıyor</translation>
+    </message>
+</context>
+<context>
+    <name>FirewallNotificationService</name>
     <message>
         <source>Message was blocked</source>
         <translation>Mesaj engellendi</translation>

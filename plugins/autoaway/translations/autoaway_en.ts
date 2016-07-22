@@ -99,10 +99,10 @@
     </message>
 </context>
 <context>
-    <name>AutoAway</name>
+    <name>AutoawayConfigurationUiHandler</name>
     <message>
         <source>Don&apos;t refresh</source>
-        <translation>Don&apos;t refresh</translation>
+        <translation type="unfinished">Don&apos;t refresh</translation>
     </message>
 </context>
 </TS>

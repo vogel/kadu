@@ -57,20 +57,20 @@
     </message>
 </context>
 <context>
-    <name>Qt4NotifyConfigurationWidget</name>
+    <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
-        <translation>Konfiguruj</translation>
+        <translation type="unfinished">Konfiguruj</translation>
     </message>
     <message>
         <source>Tray icon balloon&apos;s look configuration</source>
-        <translation>Konfiguracja wyglądu balonika nad ikoną w zasobniku</translation>
+        <translation type="unfinished">Konfiguracja wyglądu balonika nad ikoną w zasobniku</translation>
     </message>
     <message>
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation>%&amp;t - tytuł (np. Nowa wiadomość) %&amp;m - treść powiadomienia (np. Wiadomość od Jasia), %&amp;d - szczegóły (np. treść wiadomości),%&amp;i - ikona powiadomienia</translation>
+        <translation type="unfinished">%&amp;t - tytuł (np. Nowa wiadomość) %&amp;m - treść powiadomienia (np. Wiadomość od Jasia), %&amp;d - szczegóły (np. treść wiadomości),%&amp;i - ikona powiadomienia</translation>
     </message>
 </context>
 </TS>

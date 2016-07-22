@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -386,6 +384,13 @@
     <message>
         <source>Verify Identity of %1</source>
         <translation>Zweryfikuj tożsamość %1</translation>
+    </message>
+</context>
+<context>
+    <name>OtrPluginObject</name>
+    <message>
+        <source>OTR encryption library could not be initialized</source>
+        <translation>Biblioteka szyfrująca OTR nie została znaleziona</translation>
     </message>
 </context>
 </TS>

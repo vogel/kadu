@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ja">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ja" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -21,34 +19,34 @@
     </message>
 </context>
 <context>
-    <name>WordFix</name>
+    <name>WordFixConfigurationUiHandler</name>
     <message>
         <source>A word to be replaced</source>
-        <translation>単語を置き換えます</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Value to replace with</source>
-        <translation>置き換えられる単語</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Add</source>
-        <translation>追加</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Change</source>
-        <translation>変更</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
-        <translation>削除</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Word</source>
-        <translation>単語</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Replace with</source>
-        <translation>置き換える単語</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

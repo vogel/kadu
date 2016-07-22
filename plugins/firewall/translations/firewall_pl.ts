@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -93,85 +91,6 @@
     </message>
 </context>
 <context>
-    <name>Firewall</name>
-    <message>
-        <source>I want something</source>
-        <translation>coś chcę</translation>
-    </message>
-    <message>
-        <source>flooding DoS attack with emoticons!</source>
-        <translation>atak DoS z emotikonami!</translation>
-    </message>
-    <message>
-        <source>flooding DoS attack!</source>
-        <translation>atak DoS!</translation>
-    </message>
-    <message>
-        <source>Chat with anonim silently dropped.
-</source>
-        <translation>Rozmowa z anonimem po cichu odrzucona.</translation>
-    </message>
-    <message>
-        <source>OK, now say hello, and introduce yourself ;-)</source>
-        <translation>OK, teraz ładnie się przedstaw ;-)</translation>
-    </message>
-    <message>
-        <source>User wrote right answer!
-</source>
-        <translation>Użytkownik udzielił prawidłowej odpowiedzi
-</translation>
-    </message>
-    <message>
-        <source>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</source>
-        <translation>Ta wiadomość została wygenerowana AUTOMATYCZNIE!
-
-Nie mam cię na mojej liście kontaktów i jeśli chcesz mi coś napisać, to wpisz po prostu &quot;coś chcę&quot; - wszystkie inne wiadomości są kasowane i nie widzę ich treści.
-Jeśli chcesz natomiast &quot;poklikać&quot;, to znajdź sobie do tego inną osobę, a najlepiej zajmij się czymś pożyteczniejszym!</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to send this message?</source>
-        <translation>Czy na pewno chcesz wysłać tę wiadomość?</translation>
-    </message>
-    <message>
-        <source>&amp;Yes</source>
-        <translation>&amp;Tak</translation>
-    </message>
-    <message>
-        <source>Yes and allow until chat closed</source>
-        <translation>Tak i pozwalaj dopóki prowadzisz rozmowę</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation>&amp;Nie</translation>
-    </message>
-    <message>
-        <source>%u writes</source>
-        <translation>Anonim [%u] napisał</translation>
-    </message>
-    <message>
-        <source>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
-        <translation>Ta wiadomość została wygenerowana AUTOMATYCZNIE!
-
-Jestem zajętą osobą i nie mam czasu na rozmowy z ukrywającymi się osobami. Jeśli chcesz ze mną rozmawiać, zmień wcześniej swój status na Dostępny.</translation>
-    </message>
-    <message>
-        <source>Chat with invisible anonim ignored.
-</source>
-        <translation>Rozmowa z niewidocznym anonimem zignorowana.
-</translation>
-    </message>
-    <message>
-        <source>      DATA AND TIME      ::   ID      :: MESSAGE
-</source>
-        <translation>      DATA I CZAS      ::   ID      :: WIADOMOŚĆ
-</translation>
-    </message>
-</context>
-<context>
     <name>FirewallConfigurationUiHandler</name>
     <message>
         <source>Move to &apos;Secured&apos;</source>
@@ -207,14 +126,94 @@ Jestem zajętą osobą i nie mam czasu na rozmowy z ukrywającymi się osobami. 
     </message>
 </context>
 <context>
-    <name>FirewallNotification</name>
+    <name>FirewallMessageFilter</name>
+    <message>
+        <source>flooding DoS attack with emoticons!</source>
+        <translation>atak DoS z emotikonami!</translation>
+    </message>
+    <message>
+        <source>flooding DoS attack!</source>
+        <translation>atak DoS!</translation>
+    </message>
+    <message>
+        <source>Chat with anonim silently dropped.
+</source>
+        <translation>Rozmowa z anonimem odrzucona po cichu.
+</translation>
+    </message>
+    <message>
+        <source>This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
+        <translation>Ta wiadomość została wygenerowana AUTOMATYCZNIE!
+
+Jestem zajętą osobą i nie mam czasu na rozmowy z ukrywającymi się osobami. Jeśli chcesz ze mną rozmawiać, zmień wcześniej swój status na Dostępny.</translation>
+    </message>
+    <message>
+        <source>Chat with invisible anonim ignored.
+</source>
+        <translation>Rozmowa z niewidocznym anonimem zignorowana.
+</translation>
+    </message>
+    <message>
+        <source>User wrote right answer!
+</source>
+        <translation>Użytkownik udzielił prawidłowej odpowiedzi
+</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send this message?</source>
+        <translation>Czy na pewno chcesz wysłać tę wiadomość?</translation>
+    </message>
+    <message>
+        <source>&amp;Yes</source>
+        <translation>&amp;Tak</translation>
+    </message>
+    <message>
+        <source>Yes and allow until chat closed</source>
+        <translation>Tak i pozwalaj dopóki prowadzisz rozmowę</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation>&amp;Nie</translation>
+    </message>
+    <message>
+        <source>      DATA AND TIME      ::   ID      :: MESSAGE
+</source>
+        <translation>      DATA I CZAS      ::   ID      :: WIADOMOŚĆ
+</translation>
+    </message>
+    <message>
+        <source>OK, now say hello, and introduce yourself ;-)</source>
+        <translation>OK, teraz ładnie się przedstaw ;-)</translation>
+    </message>
+    <message>
+        <source>This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</source>
+        <translation>Ta wiadomość została wygenerowana AUTOMATYCZNIE!
+
+Nie mam cię na mojej liście kontaktów i jeśli chcesz mi coś napisać, to wpisz po prostu &quot;coś chcę&quot; - wszystkie inne wiadomości są kasowane i nie widzę ich treści.
+Jeśli chcesz natomiast &quot;poklikać&quot;, to znajdź sobie do tego inną osobę, a najlepiej zajmij się czymś pożyteczniejszym!</translation>
+    </message>
+    <message>
+        <source>I want something</source>
+        <translation>coś chcę</translation>
+    </message>
+    <message>
+        <source>%u writes</source>
+        <translation>%u napisał</translation>
+    </message>
+</context>
+<context>
+    <name>FirewallNotificationService</name>
     <message>
         <source>Message was blocked</source>
         <translation>Wiadomość została zablokowana</translation>
     </message>
     <message>
         <source>%u writes</source>
-        <translation>Anonim [%u] napisał</translation>
+        <translation>%u napisał</translation>
     </message>
 </context>
 </TS>

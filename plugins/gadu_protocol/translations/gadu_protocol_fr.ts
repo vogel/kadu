@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -219,16 +217,8 @@
         <translation>Utiliser les serveurs par défaut</translation>
     </message>
     <message>
-        <source>Use encrypted connection</source>
-        <translation>Utiliser une connexion cryptée</translation>
-    </message>
-    <message>
         <source>Remove account</source>
         <translation>Supprimer un compte</translation>
-    </message>
-    <message>
-        <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation>Vous devez compiler libgadu avec le support du SSL pour être en mesure de crypter la connexion</translation>
     </message>
     <message>
         <source>Other</source>
@@ -395,6 +385,13 @@ Are you sure to allow them to know you are available?</source>
     </message>
 </context>
 <context>
+    <name>GaduPluginObject</name>
+    <message>
+        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
+        <translation>Impossible de charger le module Gadu-Gadu. Veuillez Compiler libgadu avec le support de zlib.</translation>
+    </message>
+</context>
+<context>
     <name>GaduProtocol</name>
     <message>
         <source>Kadu</source>
@@ -406,24 +403,6 @@ Are you sure to allow them to know you are available?</source>
     <message>
         <source>Gadu-Gadu number:</source>
         <translation>Numéro Gadu-Gadu :</translation>
-    </message>
-</context>
-<context>
-    <name>GaduProtocolPlugin</name>
-    <message>
-        <source>Gadu-Gadu Protocol</source>
-        <translation>Protocol Gadu-Gadu</translation>
-    </message>
-    <message>
-        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation>Impossible de charger le module Gadu-Gadu. Veuillez Compiler libgadu avec le support de zlib.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduSendGiftAction</name>
-    <message>
-        <source>Send Gift...</source>
-        <translation>Envoyer Surprise...</translation>
     </message>
 </context>
 <context>

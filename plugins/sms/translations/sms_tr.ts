@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="tr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -91,10 +89,6 @@ Argümanları boşlukla ayırın. %k argümanı numaraya, %m mesaj olarak çevir
 </context>
 <context>
     <name>SmsDialog</name>
-    <message>
-        <source>Send SMS</source>
-        <translation>SMS Gönder</translation>
-    </message>
     <message>
         <source>Recipient</source>
         <translation>Alıcı</translation>

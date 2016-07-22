@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -9,7 +7,7 @@
     </message>
     <message>
         <source>Antistring</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>
@@ -17,7 +15,7 @@
     </message>
     <message>
         <source>Enable Antistring</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Block message</source>
@@ -25,7 +23,7 @@
     </message>
     <message>
         <source>Admonition</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Log</source>
@@ -33,7 +31,7 @@
     </message>
     <message>
         <source>Write log to file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Conditions</source>
@@ -41,15 +39,7 @@
     </message>
     <message>
         <source>Antistring notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Antistring</name>
-    <message>
-        <source>     DATA AND TIME      ::   ID   ::    MESSAGE
-</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -80,14 +70,22 @@
     </message>
 </context>
 <context>
-    <name>AntistringNotification</name>
+    <name>AntistringMessageFilter</name>
+    <message>
+        <source>     DATA AND TIME      ::   ID   ::    MESSAGE
+</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AntistringNotificationService</name>
     <message>
         <source>Antistring</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Your interlocutor send you love letter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

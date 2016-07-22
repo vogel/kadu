@@ -78,14 +78,6 @@
     <message>
         <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
-Control+ Enter/Backspace/Left/Right/Up/Down.</source>
-        <translation>With this option enabled you&apos;ll be able to control
-your MediaPlayer in chat window by keyboard shortcuts:
-Control+ Enter/Backspace/Left/Right/Up/Down.</translation>
-    </message>
-    <message>
-        <source>With this option enabled you&apos;ll be able to control
-your MediaPlayer in chat window by keyboard shortcuts:
 Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:

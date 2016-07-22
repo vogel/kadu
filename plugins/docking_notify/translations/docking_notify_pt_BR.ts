@@ -56,7 +56,7 @@
     </message>
 </context>
 <context>
-    <name>Qt4NotifyConfigurationWidget</name>
+    <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
         <translation type="unfinished"></translation>
@@ -69,7 +69,7 @@
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation>
+        <translation type="unfinished">
 %&amp;t - título (ex. Nova mensagem) %&amp;m - texto de notificação (ex. Mensagem de Carlos), %&amp;d - detalhes (ex. citação de mensagem),
 %&amp;i - ícone de notificação</translation>
     </message>

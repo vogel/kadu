@@ -45,15 +45,6 @@
     </message>
 </context>
 <context>
-    <name>Antistring</name>
-    <message>
-        <source>     DATA AND TIME      ::   ID   ::    MESSAGE
-</source>
-        <translation>     DATA AND TIME      ::   ID   ::    MESSAGE
-</translation>
-    </message>
-</context>
-<context>
     <name>AntistringConfigurationUiHandler</name>
     <message>
         <source>Condition</source>
@@ -81,14 +72,23 @@
     </message>
 </context>
 <context>
-    <name>AntistringNotification</name>
+    <name>AntistringMessageFilter</name>
+    <message>
+        <source>     DATA AND TIME      ::   ID   ::    MESSAGE
+</source>
+        <translation type="unfinished">     DATA AND TIME      ::   ID   ::    MESSAGE
+</translation>
+    </message>
+</context>
+<context>
+    <name>AntistringNotificationService</name>
     <message>
         <source>Antistring</source>
-        <translation>Antistring</translation>
+        <translation type="unfinished">Antistring</translation>
     </message>
     <message>
         <source>Your interlocutor send you love letter</source>
-        <translation>Your interlocutor send you love letter</translation>
+        <translation type="unfinished">Your interlocutor send you love letter</translation>
     </message>
 </context>
 </TS>

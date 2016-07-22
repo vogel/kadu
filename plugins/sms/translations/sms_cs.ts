@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -91,10 +89,6 @@ Argumenty mají být odděleny mezerami. %k argument je převeden na číslo, %m
 </context>
 <context>
     <name>SmsDialog</name>
-    <message>
-        <source>Send SMS</source>
-        <translation>Poslat SMS</translation>
-    </message>
     <message>
         <source>Recipient</source>
         <translation>Příjemce</translation>

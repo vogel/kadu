@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="it">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -45,14 +43,6 @@
     </message>
 </context>
 <context>
-    <name>Antistring</name>
-    <message>
-        <source>     DATA AND TIME      ::   ID   ::    MESSAGE
-</source>
-        <translation>DATA E TEMPO :: ID :: MESSAGGIO</translation>
-    </message>
-</context>
-<context>
     <name>AntistringConfigurationUiHandler</name>
     <message>
         <source>Condition</source>
@@ -80,14 +70,22 @@
     </message>
 </context>
 <context>
-    <name>AntistringNotification</name>
+    <name>AntistringMessageFilter</name>
+    <message>
+        <source>     DATA AND TIME      ::   ID   ::    MESSAGE
+</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AntistringNotificationService</name>
     <message>
         <source>Antistring</source>
-        <translation>Antistring</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Your interlocutor send you love letter</source>
-        <translation>Il tuo interlocutore ti invia una lettera d&apos;amore</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

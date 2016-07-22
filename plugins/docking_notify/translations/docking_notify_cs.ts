@@ -57,20 +57,20 @@
     </message>
 </context>
 <context>
-    <name>Qt4NotifyConfigurationWidget</name>
+    <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
-        <translation>Nastavit</translation>
+        <translation type="unfinished">Nastavit</translation>
     </message>
     <message>
         <source>Tray icon balloon&apos;s look configuration</source>
-        <translation>Nastavení vzhledu bubliny ikony v oznamovací oblasti panelu</translation>
+        <translation type="unfinished">Nastavení vzhledu bubliny ikony v oznamovací oblasti panelu</translation>
     </message>
     <message>
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation>
+        <translation type="unfinished">
 %&amp;t - název (např. Nová zpráva) %&amp;m - text oznámení (např. Zpráva od Jana), %&amp;d - details (např. Citace zprávy),
 %&amp;i - ikona oznámení</translation>
     </message>

@@ -21,34 +21,34 @@
     </message>
 </context>
 <context>
-    <name>WordFix</name>
+    <name>WordFixConfigurationUiHandler</name>
     <message>
         <source>A word to be replaced</source>
-        <translation>A word to be replaced</translation>
+        <translation type="unfinished">A word to be replaced</translation>
     </message>
     <message>
         <source>Value to replace with</source>
-        <translation>Value to replace with</translation>
+        <translation type="unfinished">Value to replace with</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Add</translation>
+        <translation type="unfinished">Add</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation>Change</translation>
+        <translation type="unfinished">Change</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Delete</translation>
+        <translation type="unfinished">Delete</translation>
     </message>
     <message>
         <source>Word</source>
-        <translation>Word</translation>
+        <translation type="unfinished">Word</translation>
     </message>
     <message>
         <source>Replace with</source>
-        <translation>Replace with</translation>
+        <translation type="unfinished">Replace with</translation>
     </message>
 </context>
 </TS>

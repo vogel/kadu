@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -63,6 +61,13 @@
         <translation>Nie można znaleźć słownika dla języka %1.</translation>
     </message>
     <message>
+        <source>Details</source>
+        <translation>Details</translation>
+    </message>
+</context>
+<context>
+    <name>SpellcheckerConfigurationUiHandler</name>
+    <message>
         <source>Move to &apos;Checked&apos;</source>
         <translation>Przenieś do &apos;Sprawdzane&apos;</translation>
     </message>
@@ -77,10 +82,6 @@
     <message>
         <source>Checked</source>
         <translation>Sprawdzane</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Details</translation>
     </message>
 </context>
 </TS>

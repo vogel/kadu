@@ -57,7 +57,7 @@
     </message>
 </context>
 <context>
-    <name>Qt4NotifyConfigurationWidget</name>
+    <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
         <translation type="unfinished"></translation>

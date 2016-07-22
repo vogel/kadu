@@ -1,11 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
         <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
         <translation>Kadu je potřeba spustit znovu, aby se změna v nastavení jazyka mohla projevit.</translation>
+    </message>
+</context>
+<context>
+    <name>ConfigWizardActions</name>
+    <message>
+        <source>Start Configuration Wizard</source>
+        <translation>Spustit průvodce nastavením</translation>
     </message>
 </context>
 <context>
@@ -48,13 +53,6 @@
     <message>
         <source>&lt;p&gt;Confirm your wizard setting to start using Kadu.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Potvrďte svá nastavení v průvodci, abyste mohli začít používat Kadu.&lt;/p&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>ConfigWizardConfigurationUiHandler</name>
-    <message>
-        <source>Start Configuration Wizard</source>
-        <translation>Spustit průvodce nastavením</translation>
     </message>
 </context>
 <context>

@@ -9,6 +9,13 @@
     </message>
 </context>
 <context>
+    <name>ConfigWizardActions</name>
+    <message>
+        <source>Start Configuration Wizard</source>
+        <translation type="unfinished">Start Configuration Wizard</translation>
+    </message>
+</context>
+<context>
     <name>ConfigWizardChooseNetworkPage</name>
     <message>
         <source>&lt;h3&gt;Account Setup&lt;/h3&gt;</source>
@@ -48,13 +55,6 @@
     <message>
         <source>&lt;p&gt;Confirm your wizard setting to start using Kadu.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Confirm your wizard setting to start using Kadu.&lt;/p&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>ConfigWizardConfigurationUiHandler</name>
-    <message>
-        <source>Start Configuration Wizard</source>
-        <translation>Start Configuration Wizard</translation>
     </message>
 </context>
 <context>

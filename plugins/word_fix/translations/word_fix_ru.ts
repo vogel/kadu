@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ru">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -21,34 +19,34 @@
     </message>
 </context>
 <context>
-    <name>WordFix</name>
+    <name>WordFixConfigurationUiHandler</name>
     <message>
         <source>A word to be replaced</source>
-        <translation>Слово для замены</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Value to replace with</source>
-        <translation>Изменяемое значение</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Add</source>
-        <translation>Добавить</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Change</source>
-        <translation>Изменить</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Удалить</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Word</source>
-        <translation>слово</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Replace with</source>
-        <translation>Заменить на</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

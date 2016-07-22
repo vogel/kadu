@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -219,16 +217,8 @@
         <translation>Použít výchozí servery</translation>
     </message>
     <message>
-        <source>Use encrypted connection</source>
-        <translation>Použít šifrované připojení</translation>
-    </message>
-    <message>
         <source>Remove account</source>
         <translation>Odstranit účet</translation>
-    </message>
-    <message>
-        <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation>Musíte libgadu sestavit s podporou pro SSL, abyste mohl povolit zašifrované spojení</translation>
     </message>
     <message>
         <source>Other</source>
@@ -395,6 +385,13 @@ Jste si jistý, že jim chcete umožnit vědět, že jste dostupný?</translatio
     </message>
 </context>
 <context>
+    <name>GaduPluginObject</name>
+    <message>
+        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
+        <translation>Nelze nahrát přídavný modul pro protokol Gadu-Gadu. Sestavte, prosím, libgadu s podporou pro zlib.</translation>
+    </message>
+</context>
+<context>
     <name>GaduProtocol</name>
     <message>
         <source>Kadu</source>
@@ -406,24 +403,6 @@ Jste si jistý, že jim chcete umožnit vědět, že jste dostupný?</translatio
     <message>
         <source>Gadu-Gadu number:</source>
         <translation>Číslo Gadu-Gadu:</translation>
-    </message>
-</context>
-<context>
-    <name>GaduProtocolPlugin</name>
-    <message>
-        <source>Gadu-Gadu Protocol</source>
-        <translation>Protokol Gadu-Gadu</translation>
-    </message>
-    <message>
-        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation>Nelze nahrát přídavný modul pro protokol Gadu-Gadu. Sestavte, prosím, libgadu s podporou pro zlib.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduSendGiftAction</name>
-    <message>
-        <source>Send Gift...</source>
-        <translation>Poslat dárek...</translation>
     </message>
 </context>
 <context>

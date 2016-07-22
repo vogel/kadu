@@ -92,10 +92,6 @@ Arguments should be separated with spaces. %k argument is converted to number, %
 <context>
     <name>SmsDialog</name>
     <message>
-        <source>Send SMS</source>
-        <translation>Send SMS</translation>
-    </message>
-    <message>
         <source>Recipient</source>
         <translation>Recipient</translation>
     </message>

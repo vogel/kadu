@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -320,10 +318,6 @@
         <translation>Otevřít okno pro rozhovor, jen když jsem připojen</translation>
     </message>
     <message>
-        <source>Clear recent chats list on exit</source>
-        <translation>Vyprázdnit seznam s posledními rozhovory při ukončení</translation>
-    </message>
-    <message>
         <source>Block chat window when a new message arrives</source>
         <translation>Bránit okno pro rozhovor, když přijde nová zpráva</translation>
     </message>
@@ -406,34 +400,6 @@
     <message>
         <source>Multilogon session disconnected</source>
         <translation>Sezení více přihlášení odpojeno</translation>
-    </message>
-    <message>
-        <source>User changed status</source>
-        <translation>Uživatel změnil stav</translation>
-    </message>
-    <message>
-        <source>to free for chat</source>
-        <translation>Na mající čas na rozhovor</translation>
-    </message>
-    <message>
-        <source>to online</source>
-        <translation>Na připojený</translation>
-    </message>
-    <message>
-        <source>to away</source>
-        <translation>Na pryč</translation>
-    </message>
-    <message>
-        <source>to not available</source>
-        <translation>Na nedostupný</translation>
-    </message>
-    <message>
-        <source>to do not disturb</source>
-        <translation>Na nerušit</translation>
-    </message>
-    <message>
-        <source>to offline</source>
-        <translation>Na nepřipojený</translation>
     </message>
     <message>
         <source>Blocked</source>
@@ -572,7 +538,7 @@
         <translation>Změna stavu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies&apos; status
+        <source>This option will supersede tooltips with buddies' status
 changes upon establishing connection to the server</source>
         <translation>Tato volba nahradí nástrojové rady změnami změnami ve stavu kamarádů
 ihned po zřízení spojení se serverem</translation>
@@ -607,27 +573,15 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n minuta</numerusform>
-            <numerusform>%n minuty</numerusform>
-            <numerusform>%n minut</numerusform>
-        </translation>
+        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Send message</source>
         <translation>Poslat zprávu</translation>
-    </message>
-    <message>
-        <source>Show a window with notification</source>
-        <translation>Ukázat okno s oznámením</translation>
     </message>
     <message>
         <source>Beginning of title</source>
@@ -918,10 +872,6 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Informace</translation>
     </message>
     <message>
-        <source>Tooltip over buddy</source>
-        <translation>Rada k nástroji nad kamarádem</translation>
-    </message>
-    <message>
         <source>Contact</source>
         <translation>Spojení</translation>
     </message>
@@ -948,14 +898,6 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>At the buddy&apos;s name</source>
         <translation>U kamarádova jména</translation>
-    </message>
-    <message>
-        <source>Buddy list information style</source>
-        <translation>Styl informací v seznamu kamarádů</translation>
-    </message>
-    <message>
-        <source>Choose how buddy information is presented when cursor is hovering over buddy list</source>
-        <translation>Vybrat, jak jsou informace o kamarádech znázorněny, když je ukazovátko nad seznamem kamarádů</translation>
     </message>
     <message>
         <source>Notify about chat events in chat window</source>
@@ -1220,25 +1162,21 @@ ihned po zřízení spojení se serverem</translation>
     </message>
 </context>
 <context>
-    <name>AccountEventListener</name>
-    <message>
-        <source>Multilogon</source>
-        <translation>Více přihlášení</translation>
-    </message>
-    <message>
-        <source>Multilogon session connected from %1 at %2 with %3 for %4 account</source>
-        <translation>Sezení s více přihlášeními spojeno od %1 na %2 s %3 pro %4 účet</translation>
-    </message>
-    <message>
-        <source>Multilogon session disconnected from %1 at %2 with %3 for %4 account</source>
-        <translation>Sezení s více přihlášeními odpojeno od %1 na %2 s %3 pro %4 účet</translation>
-    </message>
-</context>
-<context>
     <name>AccountManager</name>
     <message>
         <source>Please provide password for %1 (%2) account</source>
         <translation>Poskytněte, prosím, heslo pro účet %1 (%2)</translation>
+    </message>
+</context>
+<context>
+    <name>AccountNotificationService</name>
+    <message>
+        <source>Connection error</source>
+        <translation>Chyba připojení</translation>
+    </message>
+    <message>
+        <source>Connection error on account: %1 (%2)</source>
+        <translation>Chyba spojení u účtu: %1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -1905,37 +1843,6 @@ Chcete přesto tento obrázek přijmout?</translation>
     </message>
 </context>
 <context>
-    <name>ChatWidget</name>
-    <message>
-        <source>Chat window will be cleared. Continue?</source>
-        <translation>Okno pro rozhovor bude vyprázdněno. Pokračovat?</translation>
-    </message>
-    <message>
-        <source>Cannot send message while being offline.</source>
-        <translation>Zprávu, když jste nepřipojen, nelze poslat.</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Account:</source>
-        <translation>Účet:</translation>
-    </message>
-    <message>
-        <source>%1 ended the conversation</source>
-        <translation>%1 ukončil hovor</translation>
-    </message>
-    <message>
-        <source>Clear chat window</source>
-        <translation>Vyprázdnit okno pro rozhovor</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Zrušit</translation>
-    </message>
-</context>
-<context>
     <name>ChatWidgetActions</name>
     <message>
         <source>More...</source>
@@ -1987,6 +1894,37 @@ Chcete přesto tento obrázek přijmout?</translation>
     </message>
 </context>
 <context>
+    <name>ChatWidgetImpl</name>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Chat window will be cleared. Continue?</source>
+        <translation>Okno pro rozhovor bude vyprázdněno. Pokračovat?</translation>
+    </message>
+    <message>
+        <source>Clear chat window</source>
+        <translation>Vyprázdnit okno pro rozhovor</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>Cannot send message while being offline.</source>
+        <translation>Zprávu, když jste nepřipojen, nelze poslat.</translation>
+    </message>
+    <message>
+        <source>Account:</source>
+        <translation>Účet:</translation>
+    </message>
+    <message>
+        <source>%1 ended the conversation</source>
+        <translation>%1 ukončil hovor</translation>
+    </message>
+</context>
+<context>
     <name>ChatWidgetTitle</name>
     <message>
         <source>Conference [%1]</source>
@@ -2021,13 +1959,6 @@ Chcete přesto tento obrázek přijmout?</translation>
     </message>
 </context>
 <context>
-    <name>ChooseIdentityWidget</name>
-    <message>
-        <source>Create new description...</source>
-        <translation>Vytvořit nový popis...</translation>
-    </message>
-</context>
-<context>
     <name>CollapseAction</name>
     <message>
         <source>Collapse</source>
@@ -2047,21 +1978,6 @@ Chcete přesto tento obrázek přijmout?</translation>
     <message>
         <source>Cancel</source>
         <translation>Zrušit</translation>
-    </message>
-</context>
-<context>
-    <name>ConnectionErrorNotification</name>
-    <message>
-        <source>Connection error</source>
-        <translation>Chyba spojení</translation>
-    </message>
-    <message>
-        <source>Connection error on account: %1 (%2)</source>
-        <translation>Chyba spojení u účtu: %1 (%2)</translation>
-    </message>
-    <message>
-        <source>Ignore</source>
-        <translation>Přehlížet</translation>
     </message>
 </context>
 <context>
@@ -2191,6 +2107,25 @@ Chcete přesto tento obrázek přijmout?</translation>
     <message>
         <source>Unable to open local file</source>
         <translation>Nelze otevřít místní soubor</translation>
+    </message>
+</context>
+<context>
+    <name>FileTransferNotificationService</name>
+    <message>
+        <source>Incoming transfer</source>
+        <translation>Příchozí přenos</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; wants to send you a file %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>size: &lt;b&gt;%1&lt;/b&gt;, account: &lt;b&gt;%2&lt;/b&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>account: &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2478,6 +2413,13 @@ Chcete přesto tento obrázek přijmout?</translation>
     </message>
 </context>
 <context>
+    <name>HintManager</name>
+    <message>
+        <source>&lt;table&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&lt;img style=&quot;max-width:64px; max-height:64px;&quot; src=&quot;{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}&quot;&gt;&lt;/td&gt;&lt;td width=&quot;100%&quot;&gt;&lt;div&gt;[&lt;b&gt;%a&lt;/b&gt;][&amp;nbsp;&lt;b&gt;(%g)&lt;/b&gt;]&lt;/div&gt;[&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;#{statusIconPath}&quot;&gt;&amp;nbsp;&amp;nbsp;%u&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;@{phone:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%m&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;@{mail-message-new:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%e&lt;/div&gt;]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;[&lt;hr&gt;&lt;b&gt;%s&lt;/b&gt;][&lt;b&gt;:&lt;/b&gt;&lt;br&gt;&lt;small&gt;%d&lt;/small&gt;]</source>
+        <translation>&lt;table&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&lt;img style=&quot;max-width:64px; max-height:64px;&quot; src=&quot;{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}&quot;&gt;&lt;/td&gt;&lt;td width=&quot;100%&quot;&gt;&lt;div&gt;[&lt;b&gt;%a&lt;/b&gt;][&amp;nbsp;&lt;b&gt;(%g)&lt;/b&gt;]&lt;/div&gt;[&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;#{statusIconPath}&quot;&gt;&amp;nbsp;&amp;nbsp;%u&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;@{phone:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%m&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;@{mail-message-new:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%e&lt;/div&gt;]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;[&lt;hr&gt;&lt;b&gt;%s&lt;/b&gt;][&lt;b&gt;:&lt;/b&gt;&lt;br&gt;&lt;small&gt;%d&lt;/small&gt;]</translation>
+    </message>
+</context>
+<context>
     <name>IdentitiesComboBox</name>
     <message>
         <source>Create a new identity...</source>
@@ -2589,10 +2531,6 @@ Chcete přesto tento obrázek přijmout?</translation>
 </context>
 <context>
     <name>KaduWindow</name>
-    <message>
-        <source>General</source>
-        <translation>Obecné</translation>
-    </message>
     <message>
         <source>&amp;Buddies</source>
         <translation>Kama&amp;rádi</translation>
@@ -2786,10 +2724,6 @@ poradu</translation>
 <context>
     <name>MainConfigurationWindow</name>
     <message>
-        <source>None</source>
-        <translation>Žádný</translation>
-    </message>
-    <message>
         <source>Kadu configuration</source>
         <translation>Nastavení Kadu</translation>
     </message>
@@ -2833,22 +2767,22 @@ poradu</translation>
     </message>
 </context>
 <context>
-    <name>MessageNotification</name>
-    <message>
-        <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Rozhovor s &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>Nová zpráva od &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
+    <name>MessageNotificationService</name>
     <message>
         <source>New chat</source>
         <translation>Nový rozhovor</translation>
     </message>
     <message>
+        <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>Rozhovor s &lt;b&gt;%1&lt;/b&gt;</translation>
+    </message>
+    <message>
         <source>New message</source>
-        <translation>Nová zpráva</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
+        <translation>Nová zpráva od &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2867,10 +2801,22 @@ poradu</translation>
     </message>
 </context>
 <context>
-    <name>MultilogonNotification</name>
+    <name>MultilogonNotificationService</name>
     <message>
-        <source>Disconnect session</source>
-        <translation>Odpojit sezení</translation>
+        <source>Multilogon</source>
+        <translation>Více přihlášení</translation>
+    </message>
+    <message>
+        <source>Multilogon session connected</source>
+        <translation>Sezení více přihlášení připojeno</translation>
+    </message>
+    <message>
+        <source>from %1 at %2 with %3 for %4 account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Multilogon session disconnected</source>
+        <translation>Sezení více přihlášení odpojeno</translation>
     </message>
 </context>
 <context>
@@ -2893,42 +2839,10 @@ poradu</translation>
     </message>
 </context>
 <context>
-    <name>NewFileTransferNotification</name>
+    <name>Myself</name>
     <message>
-        <source>Incoming transfer</source>
-        <translation>Příchozí přenos</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
-        <translation>Uživatel &lt;b&gt;%1&lt;/b&gt; vám chce poslat soubor &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;velikosti &lt;b&gt;%3&lt;/b&gt; pomocí účtu &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Přijmout přenos?</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
-        <translation>Uživatel &lt;b&gt;%1&lt;/b&gt; vám chce poslat soubor &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;velikosti &lt;b&gt;%3&lt;/b&gt; pomocí účtu &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Je to pravděpodobně další díl &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;Co mám dělat?</translation>
-    </message>
-    <message>
-        <source>Accept</source>
-        <translation>Přijmout</translation>
-    </message>
-    <message>
-        <source>Reject</source>
-        <translation>Odmítnout</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Uložit</translation>
-    </message>
-    <message>
-        <source>Ignore</source>
-        <translation>Přehlížet</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
-        <translation>Uživatel &lt;b&gt;%1&lt;/b&gt; vám chce poslat soubor &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;pomocí účtu &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Přijmout přenos?</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;using account &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;What should I do?</source>
-        <translation>Uživatel &lt;b&gt;%1&lt;/b&gt; vám chce poslat soubor &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;pomocí účtu &lt;b&gt;%3&lt;/b&gt;.&lt;br/&gt;Je to pravděpodobně další díl &lt;b&gt;%4&lt;/b&gt;&lt;br/&gt;Co se má dělat?</translation>
+        <source>Me</source>
+        <translation>Já</translation>
     </message>
 </context>
 <context>
@@ -2938,16 +2852,8 @@ poradu</translation>
         <translation>Upozornit na kamaráda</translation>
     </message>
     <message>
-        <source>Silent Mode</source>
-        <translation>Tichý režim</translation>
-    </message>
-    <message>
         <source>Ignore</source>
         <translation>Přehlížet</translation>
-    </message>
-    <message>
-        <source>Chat</source>
-        <translation>Rozhovor</translation>
     </message>
 </context>
 <context>
@@ -3011,10 +2917,6 @@ poradu</translation>
 </context>
 <context>
     <name>PathListEditWindow</name>
-    <message>
-        <source>Select paths</source>
-        <translation>Vybrat cesty</translation>
-    </message>
     <message>
         <source>Add</source>
         <translation>Přidat</translation>
@@ -3111,10 +3013,9 @@ poradu</translation>
 <context>
     <name>PluginLoader</name>
     <message>
-        <source>Cannot load %1 plugin library:
-%2</source>
-        <translation>Nelze nahrát %1 knihovnu přídavného modulu:
-%2</translation>
+        <source>Creating plugin injector for %1 failed.
+%2: %3</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3158,19 +3059,6 @@ poradu</translation>
     <message>
         <source>Misc</source>
         <translation>Různé</translation>
-    </message>
-</context>
-<context>
-    <name>PluginRootComponentHandler</name>
-    <message>
-        <source>Cannot find required object in plugin %1.
-Maybe it&apos;s not Kadu-compatible plugin.</source>
-        <translation>Nelze najít požadovaný předmět v přídavném modulu %1.
-Možná to není přídavný modul slučitelný s Kadu.</translation>
-    </message>
-    <message>
-        <source>Plugin initialization routine for %1 failed.</source>
-        <translation>Obslužná procedura pro inicializaci přídavného modulu %1 selhala.</translation>
     </message>
 </context>
 <context>
@@ -3431,10 +3319,6 @@ Možná to není přídavný modul slučitelný s Kadu.</translation>
         <translation>Hledání hotovo</translation>
     </message>
     <message>
-        <source>Search User in Directory</source>
-        <translation>Hledat uživatele v adresáři</translation>
-    </message>
-    <message>
         <source>Search Criteria</source>
         <translation>Vyhledávací hlediska</translation>
     </message>
@@ -3600,6 +3484,13 @@ Možná to není přídavný modul slučitelný s Kadu.</translation>
     <message>
         <source>View File Transfers</source>
         <translation>Zobrazit přenosy souborů</translation>
+    </message>
+</context>
+<context>
+    <name>SilentModeService</name>
+    <message>
+        <source>Silent Mode</source>
+        <translation>Tichý režim</translation>
     </message>
 </context>
 <context>
@@ -3771,21 +3662,25 @@ Možná to není přídavný modul slučitelný s Kadu.</translation>
     </message>
 </context>
 <context>
-    <name>StatusChangedNotification</name>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; změnil stav na &lt;i&gt;%2&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>Status changed</source>
-        <translation>Stav změněn</translation>
-    </message>
-</context>
-<context>
     <name>StatusContainerManager</name>
     <message>
         <source>All</source>
         <translation>Vše</translation>
+    </message>
+</context>
+<context>
+    <name>StatusNotificationService</name>
+    <message>
+        <source>Status changed</source>
+        <translation>Stav změněn</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; changed status</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -3859,10 +3754,6 @@ Možná to není přídavný modul slučitelný s Kadu.</translation>
     <message>
         <source>Ignore</source>
         <translation>Přehlížet</translation>
-    </message>
-    <message>
-        <source>Ask For Sharing Status</source>
-        <translation>Požádat o stav sdílení</translation>
     </message>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to add you to his contact list.</source>
@@ -3978,10 +3869,6 @@ Možná to není přídavný modul slučitelný s Kadu.</translation>
 <context>
     <name>UpdatesDialog</name>
     <message>
-        <source>New version is available. Please update</source>
-        <translation>Je dostupná nová verze. Proveďte, prosím, aktualizaci</translation>
-    </message>
-    <message>
         <source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
         <translation>Nová verze &lt;b&gt;%1&lt;/b&gt; Kadu programu pro okamžitou výměnu zpráv je dostupná pro stažení. &lt;a href=&apos;download&apos;&gt;Stáhněte&lt;/a&gt;, prosím, instalátor a proveďte povýšení verze, nebo pro aktualizaci Kadu použijte svůj systém na správu balíčku.</translation>
     </message>
@@ -4019,13 +3906,6 @@ Možná to není přídavný modul slučitelný s Kadu.</translation>
     <message>
         <source>%1 has paused composing</source>
         <translation>%1 pozastavil skládání</translation>
-    </message>
-</context>
-<context>
-    <name>WindowNotifierWindow</name>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
     </message>
 </context>
 <context>

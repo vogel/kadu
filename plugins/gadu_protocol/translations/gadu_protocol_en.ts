@@ -219,16 +219,8 @@
         <translation>Use default servers</translation>
     </message>
     <message>
-        <source>Use encrypted connection</source>
-        <translation>Use encrypted connection</translation>
-    </message>
-    <message>
         <source>Remove account</source>
         <translation>Remove account</translation>
-    </message>
-    <message>
-        <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation>You have to compile libgadu with SSL support to be able to enable encrypted connection</translation>
     </message>
     <message>
         <source>Other</source>
@@ -395,6 +387,13 @@ Are you sure to allow them to know you are available?</translation>
     </message>
 </context>
 <context>
+    <name>GaduPluginObject</name>
+    <message>
+        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
+        <translation type="unfinished">Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</translation>
+    </message>
+</context>
+<context>
     <name>GaduProtocol</name>
     <message>
         <source>Kadu</source>
@@ -406,24 +405,6 @@ Are you sure to allow them to know you are available?</translation>
     <message>
         <source>Gadu-Gadu number:</source>
         <translation>Gadu-Gadu number:</translation>
-    </message>
-</context>
-<context>
-    <name>GaduProtocolPlugin</name>
-    <message>
-        <source>Gadu-Gadu Protocol</source>
-        <translation>Gadu-Gadu Protocol</translation>
-    </message>
-    <message>
-        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduSendGiftAction</name>
-    <message>
-        <source>Send Gift...</source>
-        <translation>Send Gift...</translation>
     </message>
 </context>
 <context>

@@ -56,20 +56,20 @@
     </message>
 </context>
 <context>
-    <name>Qt4NotifyConfigurationWidget</name>
+    <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
-        <translation>Konfigurieren</translation>
+        <translation type="unfinished">Konfigurieren</translation>
     </message>
     <message>
         <source>Tray icon balloon&apos;s look configuration</source>
-        <translation>Konfiguration der Sprechblase im Systemabschnitt der Kontrollleiste</translation>
+        <translation type="unfinished">Konfiguration der Sprechblase im Systemabschnitt der Kontrollleiste</translation>
     </message>
     <message>
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation>
+        <translation type="unfinished">
 %&amp;t - Titel (z.B. Neue Nachricht) %&amp;m - Nachrichtentext (z.B. Nachricht vom Jim), %&amp;d - Details (z.B. Nachrichteninhalt),
 %&amp;i - Benachrichtigungssymbol</translation>
     </message>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -219,16 +217,8 @@
         <translation>Użyj domyślnych serwerów</translation>
     </message>
     <message>
-        <source>Use encrypted connection</source>
-        <translation>Używaj szyfrowanego połączenia</translation>
-    </message>
-    <message>
         <source>Remove account</source>
         <translation>Usuń konto</translation>
-    </message>
-    <message>
-        <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation>Libgadu skompilowane ze wsparciem dla SSL jest wymagane aby aktywować szyfrowane połączenie</translation>
     </message>
     <message>
         <source>Other</source>
@@ -395,6 +385,13 @@ Czy na pewno chcesz im ujawnić swoją dostępność?</translation>
     </message>
 </context>
 <context>
+    <name>GaduPluginObject</name>
+    <message>
+        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
+        <translation>Nie można załadować wtyczki Gadu-Gadu. Libgadu ze wsparciem dla zlib jest wymagane.</translation>
+    </message>
+</context>
+<context>
     <name>GaduProtocol</name>
     <message>
         <source>Kadu</source>
@@ -406,24 +403,6 @@ Czy na pewno chcesz im ujawnić swoją dostępność?</translation>
     <message>
         <source>Gadu-Gadu number:</source>
         <translation>Numer Gadu-Gadu:</translation>
-    </message>
-</context>
-<context>
-    <name>GaduProtocolPlugin</name>
-    <message>
-        <source>Gadu-Gadu Protocol</source>
-        <translation>Protokół Gadu-Gadu</translation>
-    </message>
-    <message>
-        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation>Nie można załadować wtyczki Gadu-Gadu. Libgadu ze wsparciem dla zlib jest wymagane.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduSendGiftAction</name>
-    <message>
-        <source>Send Gift...</source>
-        <translation>Wyślij prezent...</translation>
     </message>
 </context>
 <context>

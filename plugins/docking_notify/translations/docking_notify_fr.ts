@@ -56,20 +56,20 @@
     </message>
 </context>
 <context>
-    <name>Qt4NotifyConfigurationWidget</name>
+    <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
-        <translation>Configurer</translation>
+        <translation type="unfinished">Configurer</translation>
     </message>
     <message>
         <source>Tray icon balloon&apos;s look configuration</source>
-        <translation>Configurer l&apos;apparence de l&apos;icône de Balloon dans la barre de notification</translation>
+        <translation type="unfinished">Configurer l&apos;apparence de l&apos;icône de Balloon dans la barre de notification</translation>
     </message>
     <message>
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation>
+        <translation type="unfinished">
 %&amp;t - titre (p. ex. Nouveau message) %&amp;m - notification texte (p. ex. Message de Jim), %&amp;d - details (p. ex. message citation),
 %&amp;i - notification icône</translation>
     </message>

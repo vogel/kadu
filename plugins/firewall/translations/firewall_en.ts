@@ -93,85 +93,6 @@
     </message>
 </context>
 <context>
-    <name>Firewall</name>
-    <message>
-        <source>I want something</source>
-        <translation>I want something</translation>
-    </message>
-    <message>
-        <source>flooding DoS attack with emoticons!</source>
-        <translation>flooding DoS attack with emoticons!</translation>
-    </message>
-    <message>
-        <source>flooding DoS attack!</source>
-        <translation>flooding DoS attack!</translation>
-    </message>
-    <message>
-        <source>Chat with anonim silently dropped.
-</source>
-        <translation>Chat with anonim silently dropped.
-</translation>
-    </message>
-    <message>
-        <source>OK, now say hello, and introduce yourself ;-)</source>
-        <translation>OK, now say hello, and introduce yourself ;-)</translation>
-    </message>
-    <message>
-        <source>User wrote right answer!
-</source>
-        <translation>User wrote right answer!
-</translation>
-    </message>
-    <message>
-        <source>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</source>
-        <translation>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to send this message?</source>
-        <translation>Are you sure you want to send this message?</translation>
-    </message>
-    <message>
-        <source>&amp;Yes</source>
-        <translation>&amp;Yes</translation>
-    </message>
-    <message>
-        <source>Yes and allow until chat closed</source>
-        <translation>Yes and allow until chat closed</translation>
-    </message>
-    <message>
-        <source>&amp;No</source>
-        <translation>&amp;No</translation>
-    </message>
-    <message>
-        <source>%u writes</source>
-        <translation>%u writes</translation>
-    </message>
-    <message>
-        <source>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
-        <translation>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</translation>
-    </message>
-    <message>
-        <source>Chat with invisible anonim ignored.
-</source>
-        <translation>Chat with invisible anonim ignored.
-</translation>
-    </message>
-    <message>
-        <source>      DATA AND TIME      ::   ID      :: MESSAGE
-</source>
-        <translation>      DATA AND TIME      ::   ID      :: MESSAGE
-</translation>
-    </message>
-</context>
-<context>
     <name>FirewallConfigurationUiHandler</name>
     <message>
         <source>Move to &apos;Secured&apos;</source>
@@ -207,14 +128,93 @@ I&apos;m a busy person and I don&apos;t have time for stupid chats with the pers
     </message>
 </context>
 <context>
-    <name>FirewallNotification</name>
+    <name>FirewallMessageFilter</name>
     <message>
-        <source>Message was blocked</source>
-        <translation>Message was blocked</translation>
+        <source>flooding DoS attack with emoticons!</source>
+        <translation type="unfinished">flooding DoS attack with emoticons!</translation>
+    </message>
+    <message>
+        <source>flooding DoS attack!</source>
+        <translation type="unfinished">flooding DoS attack!</translation>
+    </message>
+    <message>
+        <source>Chat with anonim silently dropped.
+</source>
+        <translation type="unfinished">Chat with anonim silently dropped.
+</translation>
+    </message>
+    <message>
+        <source>This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</source>
+        <translation type="unfinished">This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.</translation>
+    </message>
+    <message>
+        <source>Chat with invisible anonim ignored.
+</source>
+        <translation type="unfinished">Chat with invisible anonim ignored.
+</translation>
+    </message>
+    <message>
+        <source>User wrote right answer!
+</source>
+        <translation type="unfinished">User wrote right answer!
+</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to send this message?</source>
+        <translation type="unfinished">Are you sure you want to send this message?</translation>
+    </message>
+    <message>
+        <source>&amp;Yes</source>
+        <translation type="unfinished">&amp;Yes</translation>
+    </message>
+    <message>
+        <source>Yes and allow until chat closed</source>
+        <translation type="unfinished">Yes and allow until chat closed</translation>
+    </message>
+    <message>
+        <source>&amp;No</source>
+        <translation type="unfinished">&amp;No</translation>
+    </message>
+    <message>
+        <source>      DATA AND TIME      ::   ID      :: MESSAGE
+</source>
+        <translation type="unfinished">      DATA AND TIME      ::   ID      :: MESSAGE
+</translation>
+    </message>
+    <message>
+        <source>OK, now say hello, and introduce yourself ;-)</source>
+        <translation type="unfinished">OK, now say hello, and introduce yourself ;-)</translation>
+    </message>
+    <message>
+        <source>This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</source>
+        <translation type="unfinished">This message has been generated AUTOMATICALLY!
+
+I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</translation>
+    </message>
+    <message>
+        <source>I want something</source>
+        <translation type="unfinished">I want something</translation>
     </message>
     <message>
         <source>%u writes</source>
-        <translation>%u writes</translation>
+        <translation type="unfinished">%u writes</translation>
+    </message>
+</context>
+<context>
+    <name>FirewallNotificationService</name>
+    <message>
+        <source>Message was blocked</source>
+        <translation type="unfinished">Message was blocked</translation>
+    </message>
+    <message>
+        <source>%u writes</source>
+        <translation type="unfinished">%u writes</translation>
     </message>
 </context>
 </TS>

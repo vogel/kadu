@@ -56,10 +56,10 @@
     </message>
 </context>
 <context>
-    <name>Qt4NotifyConfigurationWidget</name>
+    <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
-        <translation>Configurar</translation>
+        <translation type="unfinished">Configurar</translation>
     </message>
     <message>
         <source>Tray icon balloon&apos;s look configuration</source>

@@ -41,38 +41,22 @@
     </message>
 </context>
 <context>
-    <name>DockingManager</name>
+    <name>DockingMenuHandler</name>
     <message>
         <source>&amp;Restore</source>
-        <translation>&amp;Restore</translation>
+        <translation type="unfinished">&amp;Restore</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
-        <translation>&amp;Minimize</translation>
-    </message>
-    <message>
-        <source>&amp;Exit Kadu</source>
-        <translation>&amp;Exit Kadu</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation>Status</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation>Description</translation>
-    </message>
-    <message>
-        <source>Statuses</source>
-        <translation>Statuses</translation>
-    </message>
-    <message>
-        <source>Descriptions</source>
-        <translation>Descriptions</translation>
+        <translation type="unfinished">&amp;Minimize</translation>
     </message>
     <message>
         <source>Silent mode</source>
-        <translation>Silent mode</translation>
+        <translation type="unfinished">Silent mode</translation>
+    </message>
+    <message>
+        <source>&amp;Exit Kadu</source>
+        <translation type="unfinished">&amp;Exit Kadu</translation>
     </message>
 </context>
 </TS>

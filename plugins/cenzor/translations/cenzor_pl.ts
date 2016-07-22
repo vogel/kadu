@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -37,18 +35,18 @@
     </message>
 </context>
 <context>
-    <name>CenzorNotification</name>
+    <name>CenzorNotificationService</name>
+    <message>
+        <source>Cenzor</source>
+        <translation>Cenzor</translation>
+    </message>
     <message>
         <source>Message was cenzored</source>
         <translation>Wiadomość została ocenzurowana</translation>
     </message>
     <message>
         <source>Your interlocutor used obscene word and became admonished</source>
-        <translation>Twój rozmówca Przeklina i został upomniany</translation>
-    </message>
-    <message>
-        <source>Cenzor</source>
-        <translation>Cenzor</translation>
+        <translation>Twój rozmówca przeklina i został upomniany</translation>
     </message>
 </context>
 <context>

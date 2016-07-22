@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -63,6 +61,13 @@
         <translation>Le dictionnaire pour la langue %1 est introuvable.</translation>
     </message>
     <message>
+        <source>Details</source>
+        <translation>Détails</translation>
+    </message>
+</context>
+<context>
+    <name>SpellcheckerConfigurationUiHandler</name>
+    <message>
         <source>Move to &apos;Checked&apos;</source>
         <translation>Aller à &apos;Vérifié&apos;</translation>
     </message>
@@ -77,10 +82,6 @@
     <message>
         <source>Checked</source>
         <translation>Vérifié</translation>
-    </message>
-    <message>
-        <source>Details</source>
-        <translation>Détails</translation>
     </message>
 </context>
 </TS>

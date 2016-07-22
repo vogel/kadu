@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -41,7 +39,7 @@
     </message>
 </context>
 <context>
-    <name>DockingManager</name>
+    <name>DockingMenuHandler</name>
     <message>
         <source>&amp;Restore</source>
         <translation>P&amp;rzywróć</translation>
@@ -51,28 +49,12 @@
         <translation>&amp;Minimalizuj</translation>
     </message>
     <message>
-        <source>&amp;Exit Kadu</source>
-        <translation>&amp;Zakończ Kadu</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation>Status</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation>Opis</translation>
-    </message>
-    <message>
-        <source>Statuses</source>
-        <translation>Statusy</translation>
-    </message>
-    <message>
-        <source>Descriptions</source>
-        <translation>Opisy</translation>
-    </message>
-    <message>
         <source>Silent mode</source>
         <translation>Tryb cichy</translation>
+    </message>
+    <message>
+        <source>&amp;Exit Kadu</source>
+        <translation>&amp;Zakończ Kadu</translation>
     </message>
 </context>
 </TS>

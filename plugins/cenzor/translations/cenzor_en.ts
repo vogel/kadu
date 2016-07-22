@@ -37,18 +37,18 @@
     </message>
 </context>
 <context>
-    <name>CenzorNotification</name>
+    <name>CenzorNotificationService</name>
+    <message>
+        <source>Cenzor</source>
+        <translation type="unfinished">Cenzor</translation>
+    </message>
     <message>
         <source>Message was cenzored</source>
-        <translation>Message was cenzored</translation>
+        <translation type="unfinished">Message was cenzored</translation>
     </message>
     <message>
         <source>Your interlocutor used obscene word and became admonished</source>
-        <translation>Your interlocutor used obscene word and became admonished</translation>
-    </message>
-    <message>
-        <source>Cenzor</source>
-        <translation>Cenzor</translation>
+        <translation type="unfinished">Your interlocutor used obscene word and became admonished</translation>
     </message>
 </context>
 <context>

@@ -1,38 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
-<context>
-    <name>@default</name>
-    <message>
-        <source>External address</source>
-        <translation>Adres zewnętrzny</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation>Zaawansowane</translation>
-    </message>
-    <message>
-        <source>XMPP/Jabber</source>
-        <translation>XMPP/Jabber</translation>
-    </message>
-    <message>
-        <source>Port for data transfers</source>
-        <translation>Port transferu danych</translation>
-    </message>
-</context>
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>FacebookDepreceatedMessage</name>
     <message>
         <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Od 01.05.2015 Facebook nie wspiera protokołu XMPP. To oznaca, że Kadu nie potrafi się już łączyć z kontami Facebooka. Możesz zostawić swoje konto Facebooka w Kadu albo usunąć je korzystając z okna Twoje Konta.</translation>
     </message>
     <message>
         <source>Kadu - Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu - Facebook</translation>
     </message>
 </context>
 <context>
@@ -335,10 +310,6 @@ Hasło w obu polach (&quot;Nowe Hasło&quot; oraz &quot;Powtórz hasło&quot;) m
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Legacy SSL is only available in combination with manual host/port.</source>
-        <translation>Legacy SSL jest dostępny tylko w połączeniu z ręczną konfiguracją hosta/portu.</translation>
-    </message>
-    <message>
         <source>Remove account</source>
         <translation>Usuń konto</translation>
     </message>
@@ -619,6 +590,10 @@ Komunikat serwera: %2</translation>
     <message>
         <source>Unknown error: received stanza type %1</source>
         <translation>Nieznany błąd: otrzymano wiadomość o typie %1</translation>
+    </message>
+    <message>
+        <source>SSL certificate rejected</source>
+        <translation>Certyfikat SSL odrzucony</translation>
     </message>
 </context>
 <context>

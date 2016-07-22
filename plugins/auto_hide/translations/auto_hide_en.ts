@@ -32,10 +32,10 @@
     </message>
 </context>
 <context>
-    <name>AutoHide</name>
+    <name>AutoHideConfigurationUiHandler</name>
     <message>
         <source>Don&apos;t hide</source>
-        <translation>Don&apos;t hide</translation>
+        <translation type="unfinished">Don&apos;t hide</translation>
     </message>
 </context>
 </TS>

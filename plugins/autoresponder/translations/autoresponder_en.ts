@@ -45,17 +45,17 @@
     </message>
 </context>
 <context>
-    <name>AutoResponder</name>
-    <message>
-        <source>KADU AUTORESPONDER:</source>
-        <translation>KADU AUTORESPONDER:</translation>
-    </message>
-</context>
-<context>
     <name>AutoresponderConfigurator</name>
     <message>
         <source>I am busy.</source>
         <translation>I am busy.</translation>
+    </message>
+</context>
+<context>
+    <name>AutoresponderMessageFilter</name>
+    <message>
+        <source>KADU AUTORESPONDER:</source>
+        <translation type="unfinished">KADU AUTORESPONDER:</translation>
     </message>
 </context>
 </TS>

@@ -27,7 +27,7 @@ if [ -z "$PROCESSONLY" ] || [ "$PROCESSONLY" = "kadu" ] || [ "$PROCESSONLY" = "k
 	SRC_FILES=`find ../kadu-core/ -type f -name *.cpp`
 
 	for ts in *.ts; do
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts $ts  >> $LOG 2>&1 || \
+		$LUPDATE  -qt=5 -locations none -noobsolete -verbose $SRC_FILES -ts $ts  >> $LOG 2>&1 || \
 		( rm $ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES -ts $ts  >> $LOG 2>&1 )
 	done
 
@@ -86,11 +86,11 @@ for PLUGIN in *; do
 	SRC_FILES=`find . -type f -name "*.cpp"`
 
 	for TS in `ls translations/*.ts`; do
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $TS 2>> $LOG || \
+		$LUPDATE  -qt=5 -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $TS 2>> $LOG || \
 		( rm $TS && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $TS 2>> $LOG )
 	done
 	if [ ! -f translations/${PLUGIN}_en.ts ]; then
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${PLUGIN}_en.ts 2>> $LOG || \
+		$LUPDATE  -qt=5 -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${PLUGIN}_en.ts 2>> $LOG || \
 		( rm translations/${PLUGIN}_en.ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${PLUGIN}_en.ts 2>> $LOG )
 	fi
 

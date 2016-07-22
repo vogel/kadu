@@ -388,4 +388,11 @@
         <translation>Verify Identity of %1</translation>
     </message>
 </context>
+<context>
+    <name>OtrPluginObject</name>
+    <message>
+        <source>OTR encryption library could not be initialized</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

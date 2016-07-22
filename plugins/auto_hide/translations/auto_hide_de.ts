@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -9,10 +7,7 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n Sekunde</numerusform>
-            <numerusform>%n Sekunden</numerusform>
-        </translation>
+        <translation><numerusform>%n Sekunde</numerusform><numerusform>%n Sekunden</numerusform></translation>
     </message>
     <message>
         <source>Buddies list</source>
@@ -32,10 +27,10 @@
     </message>
 </context>
 <context>
-    <name>AutoHide</name>
+    <name>AutoHideConfigurationUiHandler</name>
     <message>
         <source>Don&apos;t hide</source>
-        <translation>Nicht ausblenden</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

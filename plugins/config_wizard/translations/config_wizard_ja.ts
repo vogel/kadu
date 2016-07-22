@@ -1,11 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ja">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ja" version="2.1">
 <context>
     <name>@default</name>
     <message>
         <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
         <translation>言語設定を適用するにKaduを再起動する必要があります。</translation>
+    </message>
+</context>
+<context>
+    <name>ConfigWizardActions</name>
+    <message>
+        <source>Start Configuration Wizard</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -48,13 +53,6 @@
     <message>
         <source>&lt;p&gt;Confirm your wizard setting to start using Kadu.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kaduを使用するために設定を完了してください。&lt;/p&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>ConfigWizardConfigurationUiHandler</name>
-    <message>
-        <source>Start Configuration Wizard</source>
-        <translation>設定ウィザード</translation>
     </message>
 </context>
 <context>

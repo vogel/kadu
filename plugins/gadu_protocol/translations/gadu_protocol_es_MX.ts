@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_MX">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_MX" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -219,16 +217,8 @@
         <translation>Usar los servidores predeterminados</translation>
     </message>
     <message>
-        <source>Use encrypted connection</source>
-        <translation>Usar conexión cifrada</translation>
-    </message>
-    <message>
         <source>Remove account</source>
         <translation>Eliminar cuenta</translation>
-    </message>
-    <message>
-        <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation>Usted tiene que compilar libgadu con soporte SSL para poder habilitar la conexión cifrada</translation>
     </message>
     <message>
         <source>Other</source>
@@ -395,6 +385,13 @@ Are you sure to allow them to know you are available?</source>
     </message>
 </context>
 <context>
+    <name>GaduPluginObject</name>
+    <message>
+        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
+        <translation>No se puede cargar el complemento del Protocolo Gadu-Gadu. Por favor compile libgadu con soporte zlib.</translation>
+    </message>
+</context>
+<context>
     <name>GaduProtocol</name>
     <message>
         <source>Kadu</source>
@@ -406,24 +403,6 @@ Are you sure to allow them to know you are available?</source>
     <message>
         <source>Gadu-Gadu number:</source>
         <translation>Numero de Gadu-Gadu:</translation>
-    </message>
-</context>
-<context>
-    <name>GaduProtocolPlugin</name>
-    <message>
-        <source>Gadu-Gadu Protocol</source>
-        <translation>Protocolo de Gadu-Gadu</translation>
-    </message>
-    <message>
-        <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation>No se puede cargar el complemento del Protocolo Gadu-Gadu. Por favor compile libgadu con soporte zlib.</translation>
-    </message>
-</context>
-<context>
-    <name>GaduSendGiftAction</name>
-    <message>
-        <source>Send Gift...</source>
-        <translation>Enviar un regalo...</translation>
     </message>
 </context>
 <context>

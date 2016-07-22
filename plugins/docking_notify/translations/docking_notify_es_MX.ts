@@ -56,20 +56,20 @@
     </message>
 </context>
 <context>
-    <name>Qt4NotifyConfigurationWidget</name>
+    <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
-        <translation>Configurar</translation>
+        <translation type="unfinished">Configurar</translation>
     </message>
     <message>
         <source>Tray icon balloon&apos;s look configuration</source>
-        <translation>Configuración de apariencia del globo de icono de bandeja</translation>
+        <translation type="unfinished">Configuración de apariencia del globo de icono de bandeja</translation>
     </message>
     <message>
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation>
+        <translation type="unfinished">
 %&amp;t - título (ejemplo. Nuevo mensaje) %&amp;m - texto de la notificación (ejemplo. Mensaje de Jim), %&amp;d - detalles (ejemplo. cita del mensaje),
 %&amp;i - icono de la notificación</translation>
     </message>

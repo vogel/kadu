@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -21,14 +19,14 @@
     </message>
 </context>
 <context>
-    <name>WordFix</name>
+    <name>WordFixConfigurationUiHandler</name>
     <message>
         <source>A word to be replaced</source>
-        <translation>Słowo do zastąpienia</translation>
+        <translation>Słowo do zamiany</translation>
     </message>
     <message>
         <source>Value to replace with</source>
-        <translation>Wartość na jaką zmienić</translation>
+        <translation>Zmienione słowo</translation>
     </message>
     <message>
         <source>Add</source>

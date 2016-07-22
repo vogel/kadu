@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -386,6 +384,13 @@
     <message>
         <source>Verify Identity of %1</source>
         <translation>Ověřit totožnost %1</translation>
+    </message>
+</context>
+<context>
+    <name>OtrPluginObject</name>
+    <message>
+        <source>OTR encryption library could not be initialized</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
