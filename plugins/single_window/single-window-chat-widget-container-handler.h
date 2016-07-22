@@ -21,17 +21,20 @@
 #pragma once
 
 #include "gui/widgets/chat-widget/chat-widget-container-handler.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class ChatWidgetContainerHandlerRepository;
 class SingleWindow;
 enum class OpenChatActivation;
 
 class SingleWindowChatWidgetContainerHandler : public ChatWidgetContainerHandler
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
 	Q_INVOKABLE explicit SingleWindowChatWidgetContainerHandler(QObject *parent = nullptr);
@@ -46,9 +49,13 @@ public:
 	virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) override;
 
 private:
+	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
 	QPointer<SingleWindow> m_singleWindow;
 
 private slots:
+	INJEQT_SET void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 	INJEQT_SET void setSingleWindow(SingleWindow *singleWindow);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

@@ -85,6 +85,7 @@ static void disableNewTab(Configuration *configuration, Action *action)
 TabsManager::TabsManager(QObject *parent) :
 		StorableObject(parent), TargetTabs(-1)
 {
+	Title = new ChatWidgetSetTitle{this};
 }
 
 TabsManager::~TabsManager()
@@ -157,7 +158,6 @@ void TabsManager::init()
 	connect(TabDialog, SIGNAL(contextMenu(QWidget *, const QPoint &)),
 			this, SLOT(onContextMenu(QWidget *, const QPoint &)));
 
-	Title = new ChatWidgetSetTitle{this};
 	connect(Title, SIGNAL(titleChanged()), this, SLOT(onTitleChanged()));
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "Chat", "TabWindowsGeometry"), QRect(30, 30, 550, 400), TabDialog);

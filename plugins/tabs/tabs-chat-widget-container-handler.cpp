@@ -22,6 +22,8 @@
 #include "gui/widgets/tab-widget.h"
 #include "tabs.h"
 
+#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
+
 TabsChatWidgetContainerHandler::TabsChatWidgetContainerHandler(QObject *parent) :
 		ChatWidgetContainerHandler{parent}
 {
@@ -29,6 +31,11 @@ TabsChatWidgetContainerHandler::TabsChatWidgetContainerHandler(QObject *parent) 
 
 TabsChatWidgetContainerHandler::~TabsChatWidgetContainerHandler()
 {
+}
+
+void TabsChatWidgetContainerHandler::setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+{
+	m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
 }
 
 void TabsChatWidgetContainerHandler::setTabsManager(TabsManager *tabsManager)
@@ -45,6 +52,13 @@ void TabsChatWidgetContainerHandler::init()
 
 	connect(m_tabsManager->tabWidget(), SIGNAL(chatWidgetActivated(ChatWidget*)),
 			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
+
+	m_chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(this);
+}
+
+void TabsChatWidgetContainerHandler::done()
+{
+	m_chatWidgetContainerHandlerRepository->unregisterChatWidgetContainerHandler(this);
 }
 
 bool TabsChatWidgetContainerHandler::acceptChat(Chat chat) const

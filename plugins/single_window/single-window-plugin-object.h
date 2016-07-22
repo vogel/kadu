@@ -24,10 +24,8 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class ChatWidgetContainerHandlerRepository;
 class MainConfigurationWindowService;
 class PathsProvider;
-class SingleWindowChatWidgetContainerHandler;
 class SingleWindowManager;
 class SingleWindow;
 
@@ -41,20 +39,16 @@ public:
 	virtual ~SingleWindowPluginObject();
 
 private:
-	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<SingleWindowChatWidgetContainerHandler> m_singleWindowChatWidgetContainerHandler;
 	QPointer<SingleWindowManager> m_singleWindowManager;
 	QPointer<SingleWindow> m_singleWindow;
 
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SET void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setSingleWindowChatWidgetContainerHandler(SingleWindowChatWidgetContainerHandler *singleWindowChatWidgetContainerHandler);
 	INJEQT_SET void setSingleWindowManager(SingleWindowManager *singleWindowManager);
 	INJEQT_SET void setSingleWindow(SingleWindow *singleWindow);
 

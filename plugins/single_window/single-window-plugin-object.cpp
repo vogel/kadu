@@ -19,10 +19,8 @@
 
 #include "single-window-plugin-object.h"
 
-#include "single-window-chat-widget-container-handler.h"
 #include "single-window.h"
 
-#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
@@ -36,11 +34,6 @@ SingleWindowPluginObject::~SingleWindowPluginObject()
 {
 }
 
-void SingleWindowPluginObject::setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
-{
-	m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
-}
-
 void SingleWindowPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
 {
 	m_mainConfigurationWindowService = mainConfigurationWindowService;
@@ -49,11 +42,6 @@ void SingleWindowPluginObject::setMainConfigurationWindowService(MainConfigurati
 void SingleWindowPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
-}
-
-void SingleWindowPluginObject::setSingleWindowChatWidgetContainerHandler(SingleWindowChatWidgetContainerHandler *singleWindowChatWidgetContainerHandler)
-{
-	m_singleWindowChatWidgetContainerHandler = singleWindowChatWidgetContainerHandler;
 }
 
 void SingleWindowPluginObject::setSingleWindowManager(SingleWindowManager *singleWindowManager)
@@ -69,12 +57,10 @@ void SingleWindowPluginObject::setSingleWindow(SingleWindow *singleWindow)
 void SingleWindowPluginObject::init()
 {
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/single_window.ui"));
-	m_chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler);
 }
 
 void SingleWindowPluginObject::done()
 {
-	m_chatWidgetContainerHandlerRepository->unregisterChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler);
 	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/single_window.ui"));
 }
 

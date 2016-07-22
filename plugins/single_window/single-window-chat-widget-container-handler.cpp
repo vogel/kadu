@@ -21,6 +21,8 @@
 
 #include "single-window.h"
 
+#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
+
 SingleWindowChatWidgetContainerHandler::SingleWindowChatWidgetContainerHandler(QObject *parent) :
 		ChatWidgetContainerHandler(parent)
 {
@@ -30,12 +32,27 @@ SingleWindowChatWidgetContainerHandler::~SingleWindowChatWidgetContainerHandler(
 {
 }
 
+void SingleWindowChatWidgetContainerHandler::setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+{
+	m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
+}
+
 void SingleWindowChatWidgetContainerHandler::setSingleWindow(SingleWindow *singleWindow)
 {
 	m_singleWindow = singleWindow;
 
 	connect(m_singleWindow.data(), SIGNAL(chatWidgetActivated(ChatWidget*)),
 			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
+}
+
+void SingleWindowChatWidgetContainerHandler::init()
+{
+	m_chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(this);
+}
+
+void SingleWindowChatWidgetContainerHandler::done()
+{
+	m_chatWidgetContainerHandlerRepository->unregisterChatWidgetContainerHandler(this);
 }
 
 bool SingleWindowChatWidgetContainerHandler::acceptChat(Chat chat) const

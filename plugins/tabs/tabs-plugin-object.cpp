@@ -21,7 +21,6 @@
 
 #include "tabs-chat-widget-container-handler.h"
 
-#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
@@ -35,11 +34,6 @@ TabsPluginObject::~TabsPluginObject()
 {
 }
 
-void TabsPluginObject::setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
-{
-	m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
-}
-
 void TabsPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
 {
 	m_mainConfigurationWindowService = mainConfigurationWindowService;
@@ -50,20 +44,13 @@ void TabsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
-void TabsPluginObject::setTabsChatWidgetContainerHandler(TabsChatWidgetContainerHandler *tabsChatWidgetContainerHandler)
-{
-	m_tabsChatWidgetContainerHandler = tabsChatWidgetContainerHandler;
-}
-
 void TabsPluginObject::init()
 {
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/tabs.ui"));
-	m_chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_tabsChatWidgetContainerHandler);
 }
 
 void TabsPluginObject::done()
 {
-	m_chatWidgetContainerHandlerRepository->unregisterChatWidgetContainerHandler(m_tabsChatWidgetContainerHandler);
 	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/tabs.ui"));
 }
 
