@@ -1,5 +1,6 @@
 +++ version 4.0-rc1:
 * tabs: #3046 fixed: crash when switching between tabs and single_window (Vogel)
+* translations: #3069 fixed: issues with menu translations (Vogel)
 
 +++ version 4.0-beta2
 * gadu: #3072 fixed: always use encryption when available (Vogel)

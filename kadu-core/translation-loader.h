@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "injeqt-type-roles.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QTranslator>
@@ -30,6 +32,7 @@ class PathsProvider;
 class TranslationLoader : public QObject
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(STARTUP)
 
 public:
 	Q_INVOKABLE explicit TranslationLoader(QObject *parent = nullptr);

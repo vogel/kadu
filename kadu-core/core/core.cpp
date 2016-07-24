@@ -85,7 +85,6 @@
 #include "activate.h"
 #include "debug.h"
 #include "injeqt-type-roles.h"
-#include "translation-loader.h"
 #include "updates.h"
 
 #ifndef Q_OS_WIN
@@ -107,6 +106,7 @@ Core::Core(injeqt::injector &&injector) :
 	// must be created first
 	// TODO: should be maybe created by factory factory?
 	m_injector.get<InjectorProvider>()->setInjector(&m_injector);
+	m_injector.instantiate_all_with_type_role(STARTUP);
 
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -465,8 +465,6 @@ int Core::executeSingle(const ExecutionArguments &executionArguments)
 
 void Core::execute(const QStringList &openIds, const QString &openUuid)
 {
-	m_injector.instantiate<TranslationLoader>();
-
 	createGui();
 	runGuiServices();
 	activatePlugins();

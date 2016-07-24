@@ -22,3 +22,4 @@
 #define LISTENER "listener"
 #define PLUGIN "plugin"
 #define SERVICE "service"
+#define STARTUP "startup"
