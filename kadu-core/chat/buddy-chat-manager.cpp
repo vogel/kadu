@@ -86,7 +86,7 @@ Chat BuddyChatManager::createAndInsertBuddyChat(const Buddy &buddy)
 	QVector<Chat> chats;
 	foreach (const Contact &contact, buddy.contacts())
 	{
-		const Chat &contactChat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionReturnNull);
+		auto contactChat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 		if (contactChat)
 			chats.append(contactChat);
 	}
