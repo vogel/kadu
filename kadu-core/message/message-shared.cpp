@@ -91,7 +91,7 @@ void MessageShared::load()
 	*MessageChat = m_chatManager->byUuid(loadValue<QString>("Chat"));
 	*MessageSender = m_contactManager->byUuid(loadValue<QString>("Sender"));
 
-	m_formattedStringFactory->fromHtml(loadValue<QString>("Content"));
+	setContent(m_formattedStringFactory->fromHtml(loadValue<QString>("Content")));
 
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");
@@ -163,8 +163,10 @@ void MessageShared::setContent(std::unique_ptr<FormattedString> &&content)
 	}
 }
 
-FormattedString * MessageShared::content() const
+FormattedString * MessageShared::content()
 {
+	ensureLoaded();
+
 	return Content.get();
 }
 

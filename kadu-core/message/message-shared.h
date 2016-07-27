@@ -50,7 +50,7 @@ public:
 	void setStatus(MessageStatus status);
 
 	void setContent(std::unique_ptr<FormattedString> &&content);
-	FormattedString * content() const;
+	FormattedString * content();
 
 	KaduShared_PropertyDeclCRW(Chat, messageChat, MessageChat)
 	KaduShared_PropertyDeclCRW(Contact, messageSender, MessageSender)
