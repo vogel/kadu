@@ -62,7 +62,7 @@ void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock * const fo
 {
 	QString content(replacedNewLine(Qt::escape(formattedStringTextBlock->content()), QStringLiteral("<br/>")));
 
-	if (!formattedStringTextBlock->bold() && !formattedStringTextBlock->italic() && !formattedStringTextBlock->underline() && !formattedStringTextBlock->color().isValid())
+	if (!formattedStringTextBlock->bold() && !formattedStringTextBlock->italic() && !formattedStringTextBlock->underline())
 	{
 		append(content);
 		return;

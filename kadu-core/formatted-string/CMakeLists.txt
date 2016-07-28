@@ -11,8 +11,6 @@ set (formatted-string_SRCS
 	formatted-string-text-block.cpp
 )
 
-set (formatted-string_MOC_SRCS
-	formatted-string-factory.h
-)
+kadu_add_test (formatted-string-factory)
 
-kadu_subdirectory (formatted-string "${formatted-string_SRCS}" "${formatted-string_MOC_SRCS}" "")
+kadu_subdirectory (formatted-string "${formatted-string_SRCS}" "" "")
