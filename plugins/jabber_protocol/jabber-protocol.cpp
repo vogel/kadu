@@ -51,11 +51,11 @@
 #include "buddies/group-manager.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
-#include "core/injected-factory.h"
 #include "core/version-service.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/memory.h"
 #include "os/generic/system-info.h"
+#include "plugin/plugin-injected-factory.h"
 #include "protocols/protocols-manager.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
@@ -101,7 +101,7 @@ void JabberProtocol::init()
 	if (account().id().endsWith(QStringLiteral("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
-	m_presenceService = injectedFactory()->makeInjected<JabberPresenceService>(this);
+	m_presenceService = pluginInjectedFactory()->makeInjected<JabberPresenceService>(this);
 	m_errorService = new JabberErrorService{this};
 
 	m_client = new QXmppClient{this};
@@ -110,7 +110,7 @@ void JabberProtocol::init()
 	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
 	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 
-	injectedFactory()->makeInjected<JabberSslHandler>(m_client,
+	pluginInjectedFactory()->makeInjected<JabberSslHandler>(m_client,
 		[&](){
 			emit stateMachineSslErrorResolved();
 		},
@@ -134,25 +134,25 @@ void JabberProtocol::init()
 	m_changePasswordService = new JabberChangePasswordService{m_registerExtension.get(), this};
 	m_changePasswordService->setErrorService(m_errorService);
 
-	m_resourceService = injectedFactory()->makeInjected<JabberResourceService>(this);
+	m_resourceService = pluginInjectedFactory()->makeInjected<JabberResourceService>(this);
 
-	m_roomChatService = injectedFactory()->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account(), this);
+	m_roomChatService = pluginInjectedFactory()->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account(), this);
 
-	auto chatStateService = injectedFactory()->makeInjected<JabberChatStateService>(m_client, account(), this);
+	auto chatStateService = pluginInjectedFactory()->makeInjected<JabberChatStateService>(m_client, account(), this);
 	chatStateService->setResourceService(m_resourceService);
 
-	m_avatarService = injectedFactory()->makeInjected<JabberAvatarService>(m_client, account(), this);
+	m_avatarService = pluginInjectedFactory()->makeInjected<JabberAvatarService>(m_client, account(), this);
 
-	auto chatService = injectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
+	auto chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
 	chatService->setChatStateService(chatStateService);
 	chatService->setResourceService(m_resourceService);
 	chatService->setRoomChatService(m_roomChatService);
 
-	m_contactPersonalInfoService = injectedFactory()->makeInjected<JabberContactPersonalInfoService>(account(), this);
-	m_personalInfoService = injectedFactory()->makeInjected<JabberPersonalInfoService>(account(), this);
+	m_contactPersonalInfoService = pluginInjectedFactory()->makeInjected<JabberContactPersonalInfoService>(account(), this);
+	m_personalInfoService = pluginInjectedFactory()->makeInjected<JabberPersonalInfoService>(account(), this);
 	m_streamDebugService = new JabberStreamDebugService{m_client, this};
 
-	m_fileTransferService = injectedFactory()->makeInjected<JabberFileTransferService>(m_transferManager.get(), account(), this);
+	m_fileTransferService = pluginInjectedFactory()->makeInjected<JabberFileTransferService>(m_transferManager.get(), account(), this);
 	m_fileTransferService->setResourceService(m_resourceService);
 
 	m_vcardService = new JabberVCardService{&m_client->vCardManager(), this};
@@ -162,7 +162,7 @@ void JabberProtocol::init()
 	m_personalInfoService->setVCardService(m_vcardService);
 
 	auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
-	auto rosterService = injectedFactory()->makeInjected<JabberRosterService>(&m_client->rosterManager(), m_rosterExtension.get(), contacts, this);
+	auto rosterService = pluginInjectedFactory()->makeInjected<JabberRosterService>(&m_client->rosterManager(), m_rosterExtension.get(), contacts, this);
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 
@@ -170,7 +170,7 @@ void JabberProtocol::init()
 	setChatStateService(chatStateService);
 	setRosterService(rosterService);
 
-	m_subscriptionService = injectedFactory()->makeInjected<JabberSubscriptionService>(&m_client->rosterManager(), this);
+	m_subscriptionService = pluginInjectedFactory()->makeInjected<JabberSubscriptionService>(&m_client->rosterManager(), this);
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)

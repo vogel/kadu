@@ -49,10 +49,10 @@ class ContactManager;
 class ContactPersonalInfoService;
 class ContactSet;
 class FileTransferService;
-class InjectedFactory;
 class Message;
 class MultilogonService;
 class PersonalInfoService;
+class PluginInjectedFactory;
 class ProtocolFactory;
 class ProtocolStateMachine;
 class RosterService;
@@ -150,7 +150,7 @@ signals:
 
 protected:
 	ContactManager * contactManager() const;
-	InjectedFactory * injectedFactory() const;
+	PluginInjectedFactory * pluginInjectedFactory() const;
 	StatusTypeManager * statusTypeManager() const;
 
 	Status loginStatus() const;
@@ -183,7 +183,7 @@ private:
 	QPointer<ChatService> m_chatService;
 	QPointer<ChatStateService> m_chatStateService;
 	QPointer<ContactManager> m_contactManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<RosterService> m_rosterService;
 	QPointer<SessionService> m_sessionService;
 	QPointer<StatusTypeManager> m_statusTypeManager;
@@ -203,7 +203,7 @@ private:
 
 private slots:
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setSessionService(SessionService *sessionService);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_INIT void init();

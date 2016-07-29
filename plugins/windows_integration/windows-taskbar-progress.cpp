@@ -58,7 +58,7 @@ void WindowsTaskbarProgress::progressChanged(int progress)
 	}
 	else
 		m_taskbarProgress->setVisible(false);
-#endif Q_OS_WIN
+#endif
 }
 
 #include "moc_windows-taskbar-progress.cpp"

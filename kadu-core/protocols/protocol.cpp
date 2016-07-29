@@ -30,10 +30,10 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/injected-factory.h"
 #include "core/session-service.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "plugin/plugin-injected-factory.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-state-machine.h"
 #include "roster/roster-service.h"
@@ -70,9 +70,9 @@ void Protocol::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
-void Protocol::setInjectedFactory(InjectedFactory *injectedFactory)
+void Protocol::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void Protocol::setSessionService(SessionService *sessionService)
@@ -92,7 +92,7 @@ void Protocol::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 
 void Protocol::init()
 {
-	Machine = m_injectedFactory->makeInjected<ProtocolStateMachine>(this);
+	Machine = m_pluginInjectedFactory->makeInjected<ProtocolStateMachine>(this);
 	/*
 	 * after machine is started we need to re-call changeStatus
 	 * so proper transition can be called
@@ -116,9 +116,9 @@ ContactManager * Protocol::contactManager() const
 	return m_contactManager;
 }
 
-InjectedFactory *Protocol::injectedFactory() const
+PluginInjectedFactory *Protocol::pluginInjectedFactory() const
 {
-	return m_injectedFactory;
+	return m_pluginInjectedFactory;
 }
 
 StatusTypeManager * Protocol::statusTypeManager() const

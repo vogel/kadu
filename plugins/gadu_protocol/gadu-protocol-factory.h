@@ -30,7 +30,7 @@
 
 class GaduListHelper;
 class GaduServersManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 
 class GaduProtocolFactory : public ProtocolFactory
 {
@@ -60,7 +60,7 @@ public:
 private:
 	QPointer<GaduListHelper> m_gaduListHelper;
 	QPointer<GaduServersManager> m_gaduServersManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	QList<StatusType> SupportedStatusTypes;
 
@@ -69,6 +69,6 @@ private:
 private slots:
 	INJEQT_SET void setGaduListHelper(GaduListHelper *gaduListHelper);
 	INJEQT_SET void setGaduServersManager(GaduServersManager *gaduServersManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 
 };

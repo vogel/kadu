@@ -44,6 +44,7 @@
 #include "formatted-string/composite-formatted-string.h"
 #include "gui/windows/message-dialog.h"
 #include "network/proxy/network-proxy-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "qt/long-validator.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
@@ -70,7 +71,6 @@
 #include "gadu-account-details.h"
 
 #include "gadu-protocol.h"
-#include <core/injected-factory.h>
 
 GaduProtocol::GaduProtocol(GaduListHelper *gaduListHelper, GaduServersManager *gaduServersManager, Account account, ProtocolFactory *factory) :
 		Protocol(account, factory),
@@ -129,40 +129,40 @@ void GaduProtocol::init()
 
 	CurrentImTokenService = new GaduIMTokenService{this};
 
-	CurrentFileTransferService = injectedFactory()->makeInjected<GaduFileTransferService>(this);
+	CurrentFileTransferService = pluginInjectedFactory()->makeInjected<GaduFileTransferService>(this);
 	CurrentFileTransferService->setGaduIMTokenService(CurrentImTokenService);
 
-	CurrentChatService = injectedFactory()->makeInjected<GaduChatService>(account(), this);
+	CurrentChatService = pluginInjectedFactory()->makeInjected<GaduChatService>(account(), this);
 	CurrentChatService->setConnection(Connection);
 	CurrentChatService->setGaduChatImageService(CurrentChatImageService);
 	CurrentChatService->setGaduFileTransferService(CurrentFileTransferService);
 	CurrentChatImageService->setGaduChatService(CurrentChatService);
 
-	CurrentContactPersonalInfoService = injectedFactory()->makeInjected<GaduContactPersonalInfoService>(account(), this);
+	CurrentContactPersonalInfoService = pluginInjectedFactory()->makeInjected<GaduContactPersonalInfoService>(account(), this);
 	CurrentContactPersonalInfoService->setConnection(Connection);
 
-	CurrentPersonalInfoService = injectedFactory()->makeInjected<GaduPersonalInfoService>(account(), this);
+	CurrentPersonalInfoService = pluginInjectedFactory()->makeInjected<GaduPersonalInfoService>(account(), this);
 	CurrentPersonalInfoService->setConnection(Connection);
 
-	CurrentSearchService = injectedFactory()->makeInjected<GaduSearchService>(account(), this);
+	CurrentSearchService = pluginInjectedFactory()->makeInjected<GaduSearchService>(account(), this);
 	CurrentSearchService->setConnection(Connection);
 
 	CurrentMultilogonService = new GaduMultilogonService(account(), this);
 	CurrentMultilogonService->setConnection(Connection);
 
-	CurrentChatStateService = injectedFactory()->makeInjected<GaduChatStateService>(account(), this);
+	CurrentChatStateService = pluginInjectedFactory()->makeInjected<GaduChatStateService>(account(), this);
 	CurrentChatStateService->setConnection(Connection);
 
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
-	CurrentDriveService = injectedFactory()->makeInjected<GaduDriveService>(account(), this);
+	CurrentDriveService = pluginInjectedFactory()->makeInjected<GaduDriveService>(account(), this);
 	CurrentDriveService->setGaduIMTokenService(CurrentImTokenService);
 
-	CurrentUserDataService = injectedFactory()->makeInjected<GaduUserDataService>(account(), this);
+	CurrentUserDataService = pluginInjectedFactory()->makeInjected<GaduUserDataService>(account(), this);
 
 	auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
-	auto rosterService = injectedFactory()->makeInjected<GaduRosterService>(m_gaduListHelper, contacts, this);
+	auto rosterService = pluginInjectedFactory()->makeInjected<GaduRosterService>(m_gaduListHelper, contacts, this);
 	rosterService->setConnection(Connection);
 
 	CurrentNotifyService = new GaduNotifyService{Connection, this};

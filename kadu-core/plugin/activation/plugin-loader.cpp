@@ -47,8 +47,6 @@ PluginLoader::PluginLoader(const QString &pluginDirPath, const QString &pluginNa
 		m_pluginLoader{createPluginLoader(pluginDirPath, pluginName)},
 		m_pluginInjector{createPluginInjector(pluginName, pluginInjectorProvider)}
 {
-	m_pluginInjector.instantiate_all_with_type_role(PLUGIN);
-	m_pluginInjector.instantiate_all_with_type_role(SERVICE);
 }
 
 PluginLoader::~PluginLoader() noexcept
@@ -64,6 +62,12 @@ PluginLoader::~PluginLoader() noexcept
 injeqt::injector & PluginLoader::injector() const noexcept
 {
 	return m_pluginInjector;
+}
+
+void PluginLoader::start()
+{
+	m_pluginInjector.instantiate_all_with_type_role(PLUGIN);
+	m_pluginInjector.instantiate_all_with_type_role(SERVICE);
 }
 
 std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginDirPath, const QString &pluginName) const

@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "plugin/plugin-injected-factory.h"
 #include "status/status-type.h"
 
 #include "actions/jabber-protocol-menu-manager.h"
@@ -62,14 +62,14 @@ void JabberProtocolFactory::setFacebookDepreceatedMessage(FacebookDepreceatedMes
 	m_facebookDepreceatedMessage = facebookDepreceatedMessage;
 }
 
-void JabberProtocolFactory::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void JabberProtocolFactory::setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager)
 {
 	m_jabberProtocolMenuManager = jabberProtocolMenuManager;
+}
+
+void JabberProtocolFactory::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
+{
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 KaduIcon JabberProtocolFactory::icon()
@@ -82,17 +82,17 @@ Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 	if (account.id().toLower().endsWith("@chat.facebook.com"))
 		m_facebookDepreceatedMessage->showIfNotSeen();
 
-	return m_injectedFactory->makeInjected<JabberProtocol>(account, this);
+	return m_pluginInjectedFactory->makeInjected<JabberProtocol>(account, this);
 }
 
 AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return m_injectedFactory->makeInjected<JabberAccountDetails>(accountShared);
+	return m_pluginInjectedFactory->makeInjected<JabberAccountDetails>(accountShared);
 }
 
 AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	auto result = m_injectedFactory->makeInjected<JabberAddAccountWidget>(this, showButtons, parent);
+	auto result = m_pluginInjectedFactory->makeInjected<JabberAddAccountWidget>(this, showButtons, parent);
 	result->setJabberServersService(new JabberServersService{result});
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
@@ -100,7 +100,7 @@ AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(bool showButtons, 
 
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
 {
-	auto result = m_injectedFactory->makeInjected<JabberCreateAccountWidget>(showButtons, parent);
+	auto result = m_pluginInjectedFactory->makeInjected<JabberCreateAccountWidget>(showButtons, parent);
 	result->setJabberServersService(new JabberServersService{result});
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
@@ -108,7 +108,7 @@ AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(bool showBut
 
 AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	JabberEditAccountWidget *result = m_injectedFactory->makeInjected<JabberEditAccountWidget>(account, parent);
+	JabberEditAccountWidget *result = m_pluginInjectedFactory->makeInjected<JabberEditAccountWidget>(account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
@@ -147,7 +147,7 @@ QString JabberProtocolFactory::defaultServer()
 
 QWidget * JabberProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
 {
-	return m_injectedFactory->makeInjected<JabberContactPersonalInfoWidget>(contact, parent);
+	return m_pluginInjectedFactory->makeInjected<JabberContactPersonalInfoWidget>(contact, parent);
 }
 
 ProtocolMenuManager * JabberProtocolFactory::protocolMenuManager()

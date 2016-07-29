@@ -25,11 +25,11 @@
 #include "icons/kadu-icon.h"
 #include "status/status-type.h"
 
-#include "core/injected-factory.h"
 #include "gui/widgets/gadu-add-account-widget.h"
 #include "gui/widgets/gadu-contact-personal-info-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "helpers/gadu-list-helper.h"
+#include "plugin/plugin-injected-factory.h"
 #include "gadu-account-details.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol.h"
@@ -67,24 +67,24 @@ void GaduProtocolFactory::setGaduServersManager(GaduServersManager *gaduServersM
 	m_gaduServersManager = gaduServersManager;
 }
 
-void GaduProtocolFactory::setInjectedFactory(InjectedFactory *injectedFactory)
+void GaduProtocolFactory::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 {
-	return m_injectedFactory->makeInjected<GaduProtocol>(m_gaduListHelper, m_gaduServersManager, account, this);
+	return m_pluginInjectedFactory->makeInjected<GaduProtocol>(m_gaduListHelper, m_gaduServersManager, account, this);
 }
 
 AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accountShared)
 {
-	return m_injectedFactory->makeInjected<GaduAccountDetails>(accountShared);
+	return m_pluginInjectedFactory->makeInjected<GaduAccountDetails>(accountShared);
 }
 
 AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	auto result = m_injectedFactory->makeInjected<GaduAddAccountWidget>(showButtons, parent);
+	auto result = m_pluginInjectedFactory->makeInjected<GaduAddAccountWidget>(showButtons, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
@@ -96,7 +96,7 @@ AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool, QWidget 
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	auto result = m_injectedFactory->makeInjected<GaduEditAccountWidget>(m_gaduServersManager, account, parent);
+	auto result = m_pluginInjectedFactory->makeInjected<GaduEditAccountWidget>(m_gaduServersManager, account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
