@@ -27,7 +27,6 @@
 #include "core/version-service.h"
 #include "core/scheduler.h"
 #include "core/session-service.h"
-#include "dom/dom-processor-service.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
@@ -58,7 +57,6 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<ChatImageRequestService>();
 	add_type<ChatTopBarWidgetFactoryRepository>();
 	add_type<ClipboardHtmlTransformerService>();
-	add_type<DomProcessorService>();
 	add_type<FormattedStringFactory>();
 	add_type<ImageStorageService>();
 	add_type<InjectedFactory>();

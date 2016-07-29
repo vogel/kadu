@@ -40,6 +40,7 @@
 #include "core/application.h"
 #include "core/core-module.h"
 #include "core/core.h"
+#include "dom/dom-module.h"
 #include "execution-arguments/execution-arguments-parser.h"
 #include "execution-arguments/execution-arguments.h"
 #include "file-transfer/file-transfer-module.h"
@@ -221,6 +222,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(make_unique<CoreModule>(std::move(profileDirectory)));
 	modules.emplace_back(make_unique<ConfigurationModule>());
 	modules.emplace_back(make_unique<ContactModule>());
+	modules.emplace_back(make_unique<DomModule>());
 	modules.emplace_back(make_unique<FileTransferModule>());
 	modules.emplace_back(make_unique<GuiModule>());
 	modules.emplace_back(make_unique<IconsModule>());
