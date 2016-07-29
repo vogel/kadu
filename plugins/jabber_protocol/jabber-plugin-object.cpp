@@ -26,7 +26,7 @@
 #include "jabber-url-dom-visitor-provider.h"
 #include "jabber-url-handler.h"
 
-#include "dom/dom-processor-service.h"
+#include "dom/dom-visitor-provider-repository.h"
 #include "gui/menu/menu-inventory.h"
 #include "protocols/protocols-manager.h"
 #include "url-handlers/url-handler-manager.h"
@@ -40,9 +40,9 @@ JabberPluginObject::~JabberPluginObject()
 {
 }
 
-void JabberPluginObject::setDomProcessorService(DomProcessorService *domProcessorService)
+void JabberPluginObject::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domProcessorService = domProcessorService;
+	m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
 void JabberPluginObject::setGTalkProtocolFactory(GTalkProtocolFactory *gtalkProtocolFactory)
@@ -96,7 +96,7 @@ void JabberPluginObject::init()
 	m_protocolsManager->registerProtocolFactory(m_gtalkProtocolFactory);
 	m_urlHandlerManager->registerUrlHandler(m_jabberUrlHandler);
 	// install before mail handler
-	m_domProcessorService->registerVisitorProvider(m_jabberUrlDomVisitorProvider, 2000);
+	m_domVisitorProviderRepository->addVisitorProvider(m_jabberUrlDomVisitorProvider, 2000);
 
 	m_menuInventory->registerProtocolMenuManager(m_jabberProtocolMenuManager);
 }
@@ -105,7 +105,7 @@ void JabberPluginObject::done()
 {
 	m_menuInventory->unregisterProtocolMenuManager(m_jabberProtocolMenuManager);
 
-	m_domProcessorService->unregisterVisitorProvider(m_jabberUrlDomVisitorProvider);
+	m_domVisitorProviderRepository->removeVisitorProvider(m_jabberUrlDomVisitorProvider);
 	m_urlHandlerManager->unregisterUrlHandler(m_jabberUrlHandler);
 	m_protocolsManager->registerProtocolFactory(m_gtalkProtocolFactory);
 	m_protocolsManager->unregisterProtocolFactory(m_jabberProtocolFactory);

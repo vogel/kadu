@@ -24,7 +24,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class DomProcessorService;
+class DomVisitorProviderRepository;
 class ImageExpanderDomVisitorProvider;
 class ImageLinkConfigurator;
 class MainConfigurationWindowService;
@@ -41,7 +41,7 @@ public:
 	virtual ~ImageLinkPluginObject();
 
 private:
-	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
 	QPointer<ImageExpanderDomVisitorProvider> m_imageExpanderDomVisitorProvider;
 	QPointer<ImageLinkConfigurator> m_imageLinkConfigurator;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
@@ -49,7 +49,7 @@ private:
 	QPointer<VideoExpanderDomVisitorProvider> m_videoExpanderDomVisitorProvider;
 
 private slots:
-	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
 	INJEQT_SET void setImageExpanderDomVisitorProvider(ImageExpanderDomVisitorProvider *imageExpanderDomVisitorProvider);
 	INJEQT_SET void setImageLinkConfigurator(ImageLinkConfigurator *imageLinkConfigurator);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);

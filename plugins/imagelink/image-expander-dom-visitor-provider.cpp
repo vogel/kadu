@@ -25,6 +25,7 @@
 ImageExpanderDomVisitorProvider::ImageExpanderDomVisitorProvider(QObject *parent) :
 		QObject{parent}
 {
+	// TODO: probably memore leak - check
 	Visitor.reset(new IgnoreLinksDomVisitor(new ImageExpander()));
 }
 

@@ -25,6 +25,7 @@
 VideoExpanderDomVisitorProvider::VideoExpanderDomVisitorProvider(QObject *parent) :
 		QObject{parent}
 {
+	// TODO: possible memory leak
 	Visitor.reset(new IgnoreLinksDomVisitor(new VideoExpander()));
 }
 

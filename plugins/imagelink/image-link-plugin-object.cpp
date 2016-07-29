@@ -23,7 +23,7 @@
 #include "image-expander-dom-visitor-provider.h"
 #include "video-expander-dom-visitor-provider.h"
 
-#include "dom/dom-processor-service.h"
+#include "dom/dom-visitor-provider-repository.h"
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
@@ -37,9 +37,9 @@ ImageLinkPluginObject::~ImageLinkPluginObject()
 {
 }
 
-void ImageLinkPluginObject::setDomProcessorService(DomProcessorService *domProcessorService)
+void ImageLinkPluginObject::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domProcessorService = domProcessorService;
+	m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
 void ImageLinkPluginObject::setImageExpanderDomVisitorProvider(ImageExpanderDomVisitorProvider *imageExpanderDomVisitorProvider)
@@ -70,15 +70,15 @@ void ImageLinkPluginObject::setVideoExpanderDomVisitorProvider(VideoExpanderDomV
 void ImageLinkPluginObject::init()
 {
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/image-link.ui"));
-	m_domProcessorService->registerVisitorProvider(m_imageExpanderDomVisitorProvider, -100);
-	m_domProcessorService->registerVisitorProvider(m_videoExpanderDomVisitorProvider, -50);
+	m_domVisitorProviderRepository->addVisitorProvider(m_imageExpanderDomVisitorProvider, -100);
+	m_domVisitorProviderRepository->addVisitorProvider(m_videoExpanderDomVisitorProvider, -50);
 	m_imageLinkConfigurator->configure();
 }
 
 void ImageLinkPluginObject::done()
 {
-	m_domProcessorService->unregisterVisitorProvider(m_videoExpanderDomVisitorProvider);
-	m_domProcessorService->unregisterVisitorProvider(m_imageExpanderDomVisitorProvider);
+	m_domVisitorProviderRepository->removeVisitorProvider(m_videoExpanderDomVisitorProvider);
+	m_domVisitorProviderRepository->removeVisitorProvider(m_imageExpanderDomVisitorProvider);
 	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/image-link.ui"));
 }
 

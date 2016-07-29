@@ -21,13 +21,14 @@
 #include <QtXml/QDomDocument>
 
 #include "dom/dom-processor.h"
+#include "dom/dom-visitor-provider-repository.h"
 #include "dom/dom-visitor-provider.h"
 #include "dom/dom-visitor.h"
 
 #include "dom-processor-service.h"
 
 DomProcessorService::DomProcessorService(QObject *parent) :
-		QObject(parent), VisitorProvidersDirty(false)
+		QObject(parent)
 {
 }
 
@@ -35,42 +36,14 @@ DomProcessorService::~DomProcessorService()
 {
 }
 
-QList<DomVisitorProvider *> DomProcessorService::getVisitorProviders()
+void DomProcessorService::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	if (!VisitorProvidersDirty)
-		return VisitorProviders;
-
-	VisitorProviders.clear();
-
-	QMultiMap<int, DomVisitorProvider *> inverted;
-	foreach (DomVisitorProvider *visitorProvider, Priorities.keys())
-		inverted.insert(Priorities.value(visitorProvider), visitorProvider);
-
-	foreach (int priority, inverted.keys())
-		VisitorProviders.append(inverted.values(priority));
-
-	return VisitorProviders;
+	m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
-
-void DomProcessorService::registerVisitorProvider(DomVisitorProvider *visitorProvider, int priority)
-{
-	if (Priorities.contains(visitorProvider))
-		return;
-
-	Priorities.insert(visitorProvider, priority);
-	VisitorProvidersDirty = true;
-}
-
-void DomProcessorService::unregisterVisitorProvider(DomVisitorProvider *visitorProvider)
-{
-	if (0 < Priorities.remove(visitorProvider))
-		VisitorProvidersDirty = true;
-}
-
 
 void DomProcessorService::process(QDomDocument &domDocument)
 {
-	QList<DomVisitorProvider *> visitorProviders = getVisitorProviders();
+	QList<DomVisitorProvider *> visitorProviders = m_domVisitorProviderRepository->getVisitorProviders();
 	if (visitorProviders.isEmpty())
 		return;
 

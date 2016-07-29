@@ -27,7 +27,7 @@
 class Actions;
 class ClipboardHtmlTransformerService;
 class ConfigurationUiHandlerRepository;
-class DomProcessorService;
+class DomVisitorProviderRepository;
 class EmoticonClipboardHtmlTransformer;
 class EmoticonConfigurator;
 class EmoticonExpanderDomVisitorProvider;
@@ -49,7 +49,7 @@ private:
 	QPointer<Actions> m_actions;
 	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
 	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
 	QPointer<EmoticonClipboardHtmlTransformer> m_emoticonClipboardHtmlTransformer;
 	QPointer<EmoticonConfigurator> m_emoticonConfigurator;
 	QPointer<EmoticonExpanderDomVisitorProvider> m_emoticonExpanderDomVisitorProvider;
@@ -62,7 +62,7 @@ private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
 	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
 	INJEQT_SET void setEmoticonClipboardHtmlTransformer(EmoticonClipboardHtmlTransformer *emoticonClipboardHtmlTransformer);
 	INJEQT_SET void setEmoticonConfigurator(EmoticonConfigurator *emoticonConfigurator);
 	INJEQT_SET void setEmoticonExpanderDomVisitorProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderDomVisitorProvider);

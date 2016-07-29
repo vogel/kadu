@@ -21,14 +21,15 @@
 #ifndef DOM_PROCESSOR_SERVICE_H
 #define DOM_PROCESSOR_SERVICE_H
 
-#include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 #include "exports.h"
 
 class QDomDocument;
 
-class DomVisitorProvider;
+class DomVisitorProviderRepository;
 
 /**
  * @addtogroup Dom
@@ -51,12 +52,6 @@ class KADUAPI DomProcessorService: public QObject
 {
 	Q_OBJECT
 
-	QMap<DomVisitorProvider *, int> Priorities;
-	QList<DomVisitorProvider *> VisitorProviders;
-	bool VisitorProvidersDirty;
-
-	QList<DomVisitorProvider *> getVisitorProviders();
-
 public:
 	/**
 	 * @short Create new instance of DomProcessorService.
@@ -65,25 +60,6 @@ public:
 	 */
 	Q_INVOKABLE explicit DomProcessorService(QObject *parent = nullptr);
 	virtual ~DomProcessorService();
-
-	/**
-	 * @short Register new DomVisitorProvider with given priority.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param visitorProvider visitor provider to register
-	 * @param priority priority of new provider, smaller priorities are called first
-	 *
-	 * If given DomVisitorProvider is already registered, nothing will happen.
-	 */
-	void registerVisitorProvider(DomVisitorProvider *visitorProvider, int priority);
-
-	/**
-	 * @short Unegister new DomVisitorProvider with given priority.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param visitorProvider visitor provider to unregister
-	 *
-	 * If given DomVisitorProvider is not registered, nothing will happen.
-	 */
-	void unregisterVisitorProvider(DomVisitorProvider *visitorProvider);
 
 	/**
 	 * @short Process domDocument with all available DomVisitor instances.
@@ -108,6 +84,12 @@ public:
 	 * Value of xml must be valid XML. If not, it will be truncated at first invalid character.
 	 */
 	QString process(const QString &xml);
+
+private:
+	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
+
+private slots:
+	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
 
 };
 

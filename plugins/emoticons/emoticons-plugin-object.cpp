@@ -27,7 +27,7 @@
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "gui/actions/actions.h"
-#include "dom/dom-processor-service.h"
+#include "dom/dom-visitor-provider-repository.h"
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/services/clipboard-html-transformer-service.h"
@@ -57,9 +57,9 @@ void EmoticonsPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiH
 	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void EmoticonsPluginObject::setDomProcessorService(DomProcessorService *domProcessorService)
+void EmoticonsPluginObject::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domProcessorService = domProcessorService;
+	m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
 void EmoticonsPluginObject::setEmoticonClipboardHtmlTransformer(EmoticonClipboardHtmlTransformer *emoticonClipboardHtmlTransformer)
@@ -103,13 +103,13 @@ void EmoticonsPluginObject::init()
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/emoticons.ui"));
 	m_clipboardHtmlTransformerService->registerTransformer(m_emoticonClipboardHtmlTransformer);
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_emoticonsConfigurationUiHandler);
-	m_domProcessorService->registerVisitorProvider(m_emoticonExpanderDomVisitorProvider, 2000);
+	m_domVisitorProviderRepository->addVisitorProvider(m_emoticonExpanderDomVisitorProvider, 2000);
 	m_emoticonConfigurator->configure();
 }
 
 void EmoticonsPluginObject::done()
 {
-	m_domProcessorService->unregisterVisitorProvider(m_emoticonExpanderDomVisitorProvider);
+	m_domVisitorProviderRepository->removeVisitorProvider(m_emoticonExpanderDomVisitorProvider);
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_emoticonsConfigurationUiHandler);
 	m_clipboardHtmlTransformerService->unregisterTransformer(m_emoticonClipboardHtmlTransformer);
 	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/emoticons.ui"));

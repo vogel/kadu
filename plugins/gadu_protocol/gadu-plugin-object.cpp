@@ -25,7 +25,7 @@
 #include "gadu-url-handler.h"
 
 #include "accounts/account-manager.h"
-#include "dom/dom-processor-service.h"
+#include "dom/dom-visitor-provider-repository.h"
 #include "misc/memory.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "url-handlers/url-handler-manager.h"
@@ -47,9 +47,9 @@ void GaduPluginObject::setAccountManager(AccountManager *accountManager)
 	m_accountManager = accountManager;
 }
 
-void GaduPluginObject::setDomProcessorService(DomProcessorService *domProcessorService)
+void GaduPluginObject::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domProcessorService = domProcessorService;
+	m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
 void GaduPluginObject::setGaduProtocolFactory(GaduProtocolFactory *gaduProtocolFactory)
@@ -95,12 +95,12 @@ void GaduPluginObject::init()
 
 	m_protocolsManager->registerProtocolFactory(m_gaduProtocolFactory);
 	m_urlHandlerManager->registerUrlHandler(m_gaduUrlHandler);
-	m_domProcessorService->registerVisitorProvider(m_gaduUrlDomVisitorProvider, 1000);
+	m_domVisitorProviderRepository->addVisitorProvider(m_gaduUrlDomVisitorProvider, 1000);
 }
 
 void GaduPluginObject::done()
 {
-	m_domProcessorService->unregisterVisitorProvider(m_gaduUrlDomVisitorProvider);
+	m_domVisitorProviderRepository->removeVisitorProvider(m_gaduUrlDomVisitorProvider);
 	m_urlHandlerManager->unregisterUrlHandler(m_gaduUrlHandler);
 	m_protocolsManager->unregisterProtocolFactory(m_gaduProtocolFactory);
 }

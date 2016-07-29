@@ -22,7 +22,7 @@
 #include <QtXml/QDomDocument>
 
 #include "configuration/configuration.h"
-#include "dom/dom-processor-service.h"
+#include "dom/dom-visitor-provider-repository.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "os/generic/url-opener.h"
 #include "url-handlers/mail-url-dom-visitor-provider.h"
@@ -58,9 +58,9 @@ void UrlHandlerManager::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void UrlHandlerManager::setDomProcessorService(DomProcessorService *domProcessorService)
+void UrlHandlerManager::setDomProcessorService(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domProcessorService = domProcessorService;
+	m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
 void UrlHandlerManager::setUrlOpener(UrlOpener *urlOpener)
@@ -74,10 +74,10 @@ void UrlHandlerManager::init()
 	m_clipboardHtmlTransformerService->registerTransformer(ClipboardTransformer.data());
 
 	StandardUrlVisitorProvider = new StandardUrlDomVisitorProvider(m_configuration);
-	m_domProcessorService->registerVisitorProvider(StandardUrlVisitorProvider, 0);
+	m_domVisitorProviderRepository->addVisitorProvider(StandardUrlVisitorProvider, 0);
 
 	MailUrlVisitorProvider = new MailUrlDomVisitorProvider();
-	m_domProcessorService->registerVisitorProvider(MailUrlVisitorProvider, 500);
+	m_domVisitorProviderRepository->addVisitorProvider(MailUrlVisitorProvider, 500);
 }
 
 void UrlHandlerManager::done()
@@ -85,8 +85,8 @@ void UrlHandlerManager::done()
 	m_clipboardHtmlTransformerService->unregisterTransformer(ClipboardTransformer.data());
 	ClipboardTransformer.reset();
 
-	m_domProcessorService->unregisterVisitorProvider(StandardUrlVisitorProvider);
-	m_domProcessorService->unregisterVisitorProvider(MailUrlVisitorProvider);
+	m_domVisitorProviderRepository->removeVisitorProvider(StandardUrlVisitorProvider);
+	m_domVisitorProviderRepository->removeVisitorProvider(MailUrlVisitorProvider);
 }
 
 void UrlHandlerManager::registerUrlHandler(UrlHandler *handler)

@@ -25,7 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
-class DomProcessorService;
+class DomVisitorProviderRepository;
 class GaduProtocolFactory;
 class GaduUrlDomVisitorProvider;
 class GaduUrlHandler;
@@ -43,7 +43,7 @@ public:
 
 private:
 	QPointer<AccountManager> m_accountManager;
-	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
 	QPointer<GaduProtocolFactory> m_gaduProtocolFactory;
 	QPointer<GaduUrlDomVisitorProvider> m_gaduUrlDomVisitorProvider;
 	QPointer<GaduUrlHandler> m_gaduUrlHandler;
@@ -54,7 +54,7 @@ private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
 	INJEQT_SET void setGaduProtocolFactory(GaduProtocolFactory *gaduProtocolFactory);
 	INJEQT_SET void setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *gaduUrlDomVisitorProvider);
 	INJEQT_SET void setGaduUrlHandler(GaduUrlHandler *gaduUrlHandler);

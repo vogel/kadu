@@ -24,7 +24,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class DomProcessorService;
+class DomVisitorProviderRepository;
 class GTalkProtocolFactory;
 class JabberActions;
 class JabberProtocolFactory;
@@ -45,7 +45,7 @@ public:
 	virtual ~JabberPluginObject();
 
 private:
-	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
 	QPointer<GTalkProtocolFactory> m_gtalkProtocolFactory;
 	QPointer<JabberActions> m_jabberActions;
 	QPointer<JabberProtocolFactory> m_jabberProtocolFactory;
@@ -59,7 +59,7 @@ private:
 private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
 	INJEQT_SET void setGTalkProtocolFactory(GTalkProtocolFactory *gtalkProtocolFactory);
 	INJEQT_SET void setJabberActions(JabberActions *jabberActions);
 	INJEQT_SET void setJabberProtocolFactory(JabberProtocolFactory *jabberProtocolFactory);
