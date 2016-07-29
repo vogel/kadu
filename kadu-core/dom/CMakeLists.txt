@@ -7,4 +7,6 @@ set (dom_SRCS
 	ignore-links-dom-visitor.cpp
 )
 
+kadu_add_test (dom-visitor-provider-repository)
+
 kadu_subdirectory (dom "${dom_SRCS}" "" "")
