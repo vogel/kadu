@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,23 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gadu-module.h"
+#include "gadu-received-html-fixup-service.h"
 
-#include "server/gadu-servers-manager.h"
-#include "services/gadu-received-html-fixup-service.h"
-#include "helpers/gadu-list-helper.h"
-#include "gadu-plugin-object.h"
-#include "gadu-protocol-factory.h"
-#include "gadu-url-dom-visitor-provider.h"
-#include "gadu-url-handler.h"
-
-GaduModule::GaduModule()
+GaduReceivedHtmlFixupService::GaduReceivedHtmlFixupService(QObject *parent) :
+		QObject{parent},
+		m_imageRegExp{R"rx(<img name="([a-z0-9]*)">)rx", QRegularExpression::CaseInsensitiveOption}
 {
-	add_type<GaduListHelper>();
-	add_type<GaduPluginObject>();
-	add_type<GaduProtocolFactory>();
-	add_type<GaduReceivedHtmlFixupService>();
-	add_type<GaduServersManager>();
-	add_type<GaduUrlDomVisitorProvider>();
-	add_type<GaduUrlHandler>();
+}
+
+GaduReceivedHtmlFixupService::~GaduReceivedHtmlFixupService()
+{
+}
+
+QString GaduReceivedHtmlFixupService::htmlFixup(QString html) const
+{
+	return html.replace(m_imageRegExp, R"(<img src="\1" />)");
 }

@@ -51,6 +51,7 @@
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
+#include "services/gadu-received-html-fixup-service.h"
 
 #include "gadu-chat-service.h"
 
@@ -96,6 +97,11 @@ void GaduChatService::setContactManager(ContactManager *contactManager)
 void GaduChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	CurrentFormattedStringFactory = formattedStringFactory;
+}
+
+void GaduChatService::setGaduReceivedHtmlFixupService(GaduReceivedHtmlFixupService *gaduReceivedHtmlFixupService)
+{
+	m_gaduReceivedHtmlFixupService = gaduReceivedHtmlFixupService;
 }
 
 void GaduChatService::setGaduChatImageService(GaduChatImageService *gaduChatImageService)
@@ -307,11 +313,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (rawMessageTransformerService())
 		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
-	auto string = QString::fromUtf8(rawMessage.rawContent());
-	// TODO: this is a hack, we get <img name= from GG servers, but
-	// FormattedStringFactory requires <img src= as it cannot parse name= attribute
-	// this is because of QTextDocument usage, this needs to be fixed in a proper way
-	string.replace(QStringLiteral("<img name="), QStringLiteral("<img src="));
+	auto string = m_gaduReceivedHtmlFixupService->htmlFixup(QString::fromUtf8(rawMessage.rawContent()));
 	auto formattedString = CurrentFormattedStringFactory->fromHtml(string);
 	if (ignoreRichText(sender))
 	{

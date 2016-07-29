@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,23 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gadu-module.h"
+#pragma once
 
-#include "server/gadu-servers-manager.h"
-#include "services/gadu-received-html-fixup-service.h"
-#include "helpers/gadu-list-helper.h"
-#include "gadu-plugin-object.h"
-#include "gadu-protocol-factory.h"
-#include "gadu-url-dom-visitor-provider.h"
-#include "gadu-url-handler.h"
+#include <QtCore/QObject>
+#include <QtCore/QRegularExpression>
 
-GaduModule::GaduModule()
+class Q_DECL_EXPORT GaduReceivedHtmlFixupService : public QObject
 {
-	add_type<GaduListHelper>();
-	add_type<GaduPluginObject>();
-	add_type<GaduProtocolFactory>();
-	add_type<GaduReceivedHtmlFixupService>();
-	add_type<GaduServersManager>();
-	add_type<GaduUrlDomVisitorProvider>();
-	add_type<GaduUrlHandler>();
-}
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit GaduReceivedHtmlFixupService(QObject *parent = nullptr);
+	virtual ~GaduReceivedHtmlFixupService();
+
+	/*
+	 * This is a hack, we get <img name= from GG servers, but FormattedStringFactory requires <img src= as it
+	 * cannot parse name= attribute this is because of QTextDocument usage.
+	 */
+	QString htmlFixup(QString html) const;
+
+private:
+	QRegularExpression m_imageRegExp;
+
+};
