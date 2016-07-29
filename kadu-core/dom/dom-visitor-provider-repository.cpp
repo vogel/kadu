@@ -34,11 +34,32 @@ DomVisitorProviderRepository::~DomVisitorProviderRepository()
 {
 }
 
-QList<DomVisitorProvider *> DomVisitorProviderRepository::getVisitorProviders()
+DomVisitorProviderRepository::Iterator DomVisitorProviderRepository::begin() const
 {
-	if (!VisitorProvidersDirty)
-		return VisitorProviders;
+	if (VisitorProvidersDirty)
+		updateVisitors();
 
+	return VisitorProviders.begin();
+}
+
+DomVisitorProviderRepository::Iterator DomVisitorProviderRepository::end() const
+{
+	if (VisitorProvidersDirty)
+		updateVisitors();
+
+	return VisitorProviders.end();
+}
+
+size_t DomVisitorProviderRepository::size() const
+{
+	if (VisitorProvidersDirty)
+		updateVisitors();
+
+	return VisitorProviders.size();
+}
+
+void DomVisitorProviderRepository::updateVisitors() const
+{
 	VisitorProviders.clear();
 
 	QMultiMap<int, DomVisitorProvider *> inverted;
@@ -48,7 +69,7 @@ QList<DomVisitorProvider *> DomVisitorProviderRepository::getVisitorProviders()
 	foreach (int priority, inverted.keys())
 		VisitorProviders.append(inverted.values(priority));
 
-	return VisitorProviders;
+	VisitorProvidersDirty = false;
 }
 
 void DomVisitorProviderRepository::addVisitorProvider(DomVisitorProvider *visitorProvider, int priority)

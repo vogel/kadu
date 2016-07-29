@@ -30,7 +30,11 @@ class KADUAPI DomVisitorProviderRepository : public QObject
 {
 	Q_OBJECT
 
+	using Storage = QList<DomVisitorProvider *>;
+
 public:
+	using Iterator = Storage::const_iterator;
+
 	Q_INVOKABLE explicit DomVisitorProviderRepository(QObject *parent = nullptr);
 	virtual ~DomVisitorProviderRepository();
 
@@ -53,12 +57,25 @@ public:
 	 */
 	void removeVisitorProvider(DomVisitorProvider *visitorProvider);
 
-	QList<DomVisitorProvider *> getVisitorProviders();
+	Iterator begin() const;
+	Iterator end() const;
+	size_t size() const;
 
 private:
 	QMap<DomVisitorProvider *, int> Priorities;
-	QList<DomVisitorProvider *> VisitorProviders;
-	bool VisitorProvidersDirty;
+	mutable Storage VisitorProviders;
+	mutable bool VisitorProvidersDirty;
 
+	void updateVisitors() const;
 
 };
+
+inline DomVisitorProviderRepository::Iterator begin(DomVisitorProviderRepository *domVisitorProviderRepository)
+{
+	return domVisitorProviderRepository->begin();
+}
+
+inline DomVisitorProviderRepository::Iterator end(DomVisitorProviderRepository *domVisitorProviderRepository)
+{
+	return domVisitorProviderRepository->end();
+}

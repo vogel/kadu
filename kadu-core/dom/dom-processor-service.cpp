@@ -43,14 +43,10 @@ void DomProcessorService::setDomVisitorProviderRepository(DomVisitorProviderRepo
 
 void DomProcessorService::process(QDomDocument &domDocument)
 {
-	QList<DomVisitorProvider *> visitorProviders = m_domVisitorProviderRepository->getVisitorProviders();
-	if (visitorProviders.isEmpty())
-		return;
-
 	DomProcessor domProcessor(domDocument);
-	foreach (DomVisitorProvider *visitorProvider, visitorProviders)
+	for (auto visitorProvider : m_domVisitorProviderRepository)
 	{
-		DomVisitor *visitor = visitorProvider->provide();
+		auto visitor = visitorProvider->provide();
 		if (visitor)
 			domProcessor.accept(visitor);
 	}

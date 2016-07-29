@@ -42,9 +42,8 @@ void DomVisitorProviderRepositoryTest::shouldBeEmptyAfterCreation()
 {
 	DomVisitorProviderRepository domVisitorProviderRepository{};
 
-	auto visitorProviders = domVisitorProviderRepository.getVisitorProviders();
-	QCOMPARE(visitorProviders.size(), int{0});
-	QVERIFY(visitorProviders.begin() == visitorProviders.end());
+	QCOMPARE(domVisitorProviderRepository.size(), size_t{0});
+	QVERIFY(domVisitorProviderRepository.begin() == domVisitorProviderRepository.end());
 }
 
 void DomVisitorProviderRepositoryTest::shouldContainAddedElementsInProperOrder()
@@ -62,14 +61,15 @@ void DomVisitorProviderRepositoryTest::shouldContainAddedElementsInProperOrder()
 	domVisitorProviderRepository.addVisitorProvider(&provider4, -500);
 	domVisitorProviderRepository.addVisitorProvider(&provider5, 500);
 
-	auto visitorProviders = domVisitorProviderRepository.getVisitorProviders();
-	QCOMPARE(visitorProviders.size(), int{5});
-	QVERIFY(visitorProviders.begin() != visitorProviders.end());
-	QCOMPARE(visitorProviders[0], &provider3);
-	QCOMPARE(visitorProviders[1], &provider4);
-	QCOMPARE(visitorProviders[2], &provider1);
-	QCOMPARE(visitorProviders[3], &provider5);
-	QCOMPARE(visitorProviders[4], &provider2);
+	QCOMPARE(domVisitorProviderRepository.size(), size_t{5});
+	QVERIFY(domVisitorProviderRepository.begin() != domVisitorProviderRepository.end());
+
+	auto it = domVisitorProviderRepository.begin();
+	QCOMPARE(*it++, &provider3);
+	QCOMPARE(*it++, &provider4);
+	QCOMPARE(*it++, &provider1);
+	QCOMPARE(*it++, &provider5);
+	QCOMPARE(*it++, &provider2);
 }
 
 void DomVisitorProviderRepositoryTest::shouldNotContainRemovedElements()
@@ -91,11 +91,12 @@ void DomVisitorProviderRepositoryTest::shouldNotContainRemovedElements()
 	domVisitorProviderRepository.removeVisitorProvider(&provider3);
 	domVisitorProviderRepository.removeVisitorProvider(&provider2);
 
-	auto visitorProviders = domVisitorProviderRepository.getVisitorProviders();
-	QCOMPARE(visitorProviders.size(), int{2});
-	QVERIFY(visitorProviders.begin() != visitorProviders.end());
-	QCOMPARE(visitorProviders[0], &provider4);
-	QCOMPARE(visitorProviders[1], &provider5);
+	QCOMPARE(domVisitorProviderRepository.size(), size_t{2});
+	QVERIFY(domVisitorProviderRepository.begin() != domVisitorProviderRepository.end());
+
+	auto it = domVisitorProviderRepository.begin();
+	QCOMPARE(*it++, &provider4);
+	QCOMPARE(*it++, &provider5);
 }
 
 QTEST_APPLESS_MAIN(DomVisitorProviderRepositoryTest)
