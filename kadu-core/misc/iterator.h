@@ -30,18 +30,30 @@ public:
 
 	inline IteratorWrapper(Iterator iterator, Converter converter) : m_iterator{iterator}, m_converter{converter} {}
 
-	inline bool operator != (const IteratorWrapper &compareTo) const
+	friend inline bool operator == (const IteratorWrapper &x, const IteratorWrapper &y)
 	{
-		return m_iterator != compareTo.m_iterator;
+		return x.m_iterator == y.m_iterator;
 	}
 
-	inline IteratorWrapper & operator++()
+	friend inline bool operator != (const IteratorWrapper &x, const IteratorWrapper &y)
+	{
+		return !(x == y);
+	}
+
+	inline IteratorWrapper & operator ++ ()
 	{
 		++m_iterator;
 		return *this;
 	}
 
-	inline Type operator*() const
+	inline IteratorWrapper operator ++ (int)
+	{
+		auto copy = m_iterator;
+		m_iterator++;
+		return IteratorWrapper{copy, m_converter};
+	}
+
+	inline Type operator * () const
 	{
 		return m_converter(m_iterator);
 	}

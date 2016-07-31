@@ -25,8 +25,17 @@
 
 #include <QtXml/QDomDocument>
 
+namespace {
+
+DomVisitorProvider * convert_iterator(DomVisitorProviderRepository::WrappedIterator iterator)
+{
+	return iterator->second;
+}
+
+}
+
 DomVisitorProviderRepository::DomVisitorProviderRepository(QObject *parent) :
-		QObject(parent), VisitorProvidersDirty(false)
+		QObject{parent}
 {
 }
 
@@ -36,55 +45,37 @@ DomVisitorProviderRepository::~DomVisitorProviderRepository()
 
 DomVisitorProviderRepository::Iterator DomVisitorProviderRepository::begin() const
 {
-	if (VisitorProvidersDirty)
-		updateVisitors();
-
-	return VisitorProviders.begin();
+	return Iterator{m_visitorProviders.begin(), convert_iterator};
 }
 
 DomVisitorProviderRepository::Iterator DomVisitorProviderRepository::end() const
 {
-	if (VisitorProvidersDirty)
-		updateVisitors();
-
-	return VisitorProviders.end();
+	return Iterator{m_visitorProviders.end(), convert_iterator};
 }
 
 size_t DomVisitorProviderRepository::size() const
 {
-	if (VisitorProvidersDirty)
-		updateVisitors();
-
-	return VisitorProviders.size();
-}
-
-void DomVisitorProviderRepository::updateVisitors() const
-{
-	VisitorProviders.clear();
-
-	QMultiMap<int, DomVisitorProvider *> inverted;
-	foreach (DomVisitorProvider *visitorProvider, Priorities.keys())
-		inverted.insert(Priorities.value(visitorProvider), visitorProvider);
-
-	foreach (int priority, inverted.keys())
-		VisitorProviders.append(inverted.values(priority));
-
-	VisitorProvidersDirty = false;
+	return m_visitorProviders.size();
 }
 
 void DomVisitorProviderRepository::addVisitorProvider(DomVisitorProvider *visitorProvider, int priority)
 {
-	if (Priorities.contains(visitorProvider))
-		return;
+	auto el = std::make_pair(priority, visitorProvider);
+	auto it = std::lower_bound(std::begin(m_visitorProviders), std::end(m_visitorProviders), el, [](const Item &x, const Item &y){
+		return x.first < y.first;
+	});
 
-	Priorities.insert(visitorProvider, priority);
-	VisitorProvidersDirty = true;
+	m_visitorProviders.insert(it, el);
 }
 
 void DomVisitorProviderRepository::removeVisitorProvider(DomVisitorProvider *visitorProvider)
 {
-	if (0 < Priorities.remove(visitorProvider))
-		VisitorProvidersDirty = true;
+	auto it = std::find_if(std::begin(m_visitorProviders), std::end(m_visitorProviders), [&](const Item &x){
+		return x.second == visitorProvider;
+	});
+
+	if (it != std::end(m_visitorProviders))
+		m_visitorProviders.erase(it);
 }
 
 #include "dom-visitor-provider-repository.moc"

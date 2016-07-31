@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include "misc/iterator.h"
 #include "exports.h"
 
 #include <QtCore/QMap>
@@ -30,10 +31,12 @@ class KADUAPI DomVisitorProviderRepository : public QObject
 {
 	Q_OBJECT
 
-	using Storage = QList<DomVisitorProvider *>;
+	using Item = std::pair<int, DomVisitorProvider *>;
+	using Storage = std::vector<Item>;
 
 public:
-	using Iterator = Storage::const_iterator;
+	using WrappedIterator = Storage::const_iterator;
+	using Iterator = IteratorWrapper<WrappedIterator, DomVisitorProvider *>;
 
 	Q_INVOKABLE explicit DomVisitorProviderRepository(QObject *parent = nullptr);
 	virtual ~DomVisitorProviderRepository();
@@ -59,12 +62,10 @@ public:
 
 	Iterator begin() const;
 	Iterator end() const;
-	size_t size() const;
+	std::size_t size() const;
 
 private:
-	QMap<DomVisitorProvider *, int> Priorities;
-	mutable Storage VisitorProviders;
-	mutable bool VisitorProvidersDirty;
+	Storage m_visitorProviders;
 
 	void updateVisitors() const;
 
