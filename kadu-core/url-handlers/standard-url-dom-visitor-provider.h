@@ -17,28 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STANDARD_URL_DOM_VISITOR_PROVIDER_H
-#define STANDARD_URL_DOM_VISITOR_PROVIDER_H
-
-#include <QtCore/QScopedPointer>
+#pragma once
 
 #include "dom/dom-visitor-provider.h"
-
-class Configuration;
-class IgnoreLinksDomVisitor;
-class StandardUrlExpanderConfigurator;
+#include "dom/ignore-links-dom-visitor.h"
+#include "url-handlers/standard-url-expander-configurator.h"
 
 class StandardUrlDomVisitorProvider : public DomVisitorProvider
 {
-	QScopedPointer<IgnoreLinksDomVisitor> IgnoreLinks;
-	QScopedPointer<StandardUrlExpanderConfigurator> Configurator;
 
 public:
 	explicit StandardUrlDomVisitorProvider(Configuration *configuration);
 	virtual ~StandardUrlDomVisitorProvider();
 
-	virtual DomVisitor * provide() const;
+	virtual const DomVisitor * provide() const;
+
+private:
+	IgnoreLinksDomVisitor m_ignoreLinks;
+	StandardUrlExpanderConfigurator m_configurator;
 
 };
-
-#endif // STANDARD_URL_DOM_VISITOR_PROVIDER_H

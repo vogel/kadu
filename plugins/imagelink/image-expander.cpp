@@ -32,7 +32,7 @@ ImageExpander::~ImageExpander()
 {
 }
 
-QList<QDomNode> ImageExpander::matchToDomNodes(QDomDocument document, QRegExp regExp)
+QList<QDomNode> ImageExpander::matchToDomNodes(QDomDocument document, QRegExp regExp) const
 {
 	QDomElement imageElement = document.createElement("img");
 	imageElement.setAttribute("src", regExp.cap());

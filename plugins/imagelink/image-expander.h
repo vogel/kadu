@@ -29,7 +29,7 @@ public:
 	ImageExpander();
 	virtual ~ImageExpander();
 
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp);
+	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
 
 };
 

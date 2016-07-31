@@ -18,13 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IGNORE_LINKS_DOM_VISITOR
-#define IGNORE_LINKS_DOM_VISITOR
-
-#include <QtCore/QScopedPointer>
+#pragma once
 
 #include "dom/dom-visitor.h"
 #include "exports.h"
+
+#include <QtCore/QScopedPointer>
+#include <memory>
 
 /**
  * @addtogroup Dom
@@ -41,8 +41,6 @@
  */
 class KADUAPI IgnoreLinksDomVisitor : public DomVisitor
 {
-	QScopedPointer<DomVisitor> Visitor;
-	int LinksDepth;
 
 public:
 	/**
@@ -52,19 +50,21 @@ public:
 	 *
 	 * IgnoreLinksDomVisitor takes care of deleting visitor instance when not needed anymore. Do not delete it manually.
 	 */
-	explicit IgnoreLinksDomVisitor(DomVisitor *visitor);
+	explicit IgnoreLinksDomVisitor(std::unique_ptr<DomVisitor> visitor);
 	virtual ~IgnoreLinksDomVisitor();
 
-	DomVisitor * visitor() { return Visitor.data(); }
+	DomVisitor * visitor() const { return m_visitor.get(); }
 
-	virtual QDomNode visit(QDomText textNode);
-	virtual QDomNode beginVisit(QDomElement elementNode);
-	virtual QDomNode endVisit(QDomElement elementNode);
+	virtual QDomNode visit(QDomText textNode) const;
+	virtual QDomNode beginVisit(QDomElement elementNode) const;
+	virtual QDomNode endVisit(QDomElement elementNode) const;
+
+private:
+	std::unique_ptr<DomVisitor> m_visitor;
+	mutable int m_linksDepth;
 
 };
 
 /**
  * @}
  */
-
-#endif // IGNORE_LINKS_DOM_VISITOR

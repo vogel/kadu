@@ -17,26 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gadu-url-dom-visitor-provider.h"
-
 #include "dom/ignore-links-dom-visitor.h"
+#include "misc/memory.h"
 #include "url-handlers/simple-url-expander.h"
 
+#include "gadu-url-dom-visitor-provider.h"
+
 GaduUrlDomVisitorProvider::GaduUrlDomVisitorProvider(QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		m_ignoreLinks{make_unique<SimpleUrlExpander>(QRegExp{"\\bgg:(/){0,3}[0-9]{1,12}\\b"})}
 {
-	// TODO: possible memory leak
-	SimpleUrlExpander *expander = new SimpleUrlExpander(QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b"));
-	IgnoreLinks.reset(new IgnoreLinksDomVisitor(expander));
 }
 
 GaduUrlDomVisitorProvider::~GaduUrlDomVisitorProvider()
 {
 }
 
-DomVisitor * GaduUrlDomVisitorProvider::provide() const
+const DomVisitor * GaduUrlDomVisitorProvider::provide() const
 {
-	return IgnoreLinks.data();
+	return &m_ignoreLinks;
 }
 
 #include "moc_gadu-url-dom-visitor-provider.cpp"

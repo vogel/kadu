@@ -17,25 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "standard-url-dom-visitor-provider.h"
+
 #include "dom/ignore-links-dom-visitor.h"
+#include "misc/memory.h"
 #include "url-handlers/standard-url-expander-configurator.h"
 #include "url-handlers/standard-url-expander.h"
 
-#include "standard-url-dom-visitor-provider.h"
-
-StandardUrlDomVisitorProvider::StandardUrlDomVisitorProvider(Configuration *configuration)
+StandardUrlDomVisitorProvider::StandardUrlDomVisitorProvider(Configuration *configuration) :
+	m_ignoreLinks{make_unique<StandardUrlExpander>(QRegExp{"\\b(http://|https://|www\\.|ftp://)([^\\s]*)"})},
+	m_configurator{configuration}
 {
-	StandardUrlExpander *expander = new StandardUrlExpander(QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)"));
-	IgnoreLinks.reset(new IgnoreLinksDomVisitor(expander));
-	Configurator.reset(new StandardUrlExpanderConfigurator(configuration));
-	Configurator->setStandardUrlExpander(expander);
+	m_configurator.setStandardUrlExpander(static_cast<StandardUrlExpander *>(m_ignoreLinks.visitor()));
 }
 
 StandardUrlDomVisitorProvider::~StandardUrlDomVisitorProvider()
 {
 }
 
-DomVisitor * StandardUrlDomVisitorProvider::provide() const
+const DomVisitor * StandardUrlDomVisitorProvider::provide() const
 {
-	return IgnoreLinks.data();
+	return &m_ignoreLinks;
 }

@@ -50,7 +50,7 @@ public:
 	 *
 	 * This method can change textNode and/or document that this node belongs to. It returns new version of visited node.
 	 */
-	virtual QDomNode visit(QDomText textNode) = 0;
+	virtual QDomNode visit(QDomText textNode) const = 0;
 
 	/**
 	 * @short Visit current element before visiting all its subnodes.
@@ -61,7 +61,7 @@ public:
 	 * This method can change elementNode and/or document that this node belongs to. This method is called
 	 * before subnodes of elementNode are processed. It returns new version of visited node.
 	 */
-	virtual QDomNode beginVisit(QDomElement elementNode) = 0;
+	virtual QDomNode beginVisit(QDomElement elementNode) const = 0;
 
 	/**
 	 * @short Visit current element after visiting all its subnodes.
@@ -72,7 +72,7 @@ public:
 	 * This method can change elementNode and/or document that this node belongs to. This method is called
 	 * after subnodes of elementNode are processed. It returns new version of visited node.
 	 */
-	virtual QDomNode endVisit(QDomElement elementNode) = 0;
+	virtual QDomNode endVisit(QDomElement elementNode) const = 0;
 
 };
 

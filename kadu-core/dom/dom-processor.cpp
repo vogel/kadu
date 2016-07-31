@@ -29,7 +29,7 @@ DomProcessor::DomProcessor(QDomDocument &domDocument) :
 {
 }
 
-QDomNode DomProcessor::acceptNode(DomVisitor *visitor, QDomNode node)
+QDomNode DomProcessor::acceptNode(const DomVisitor *visitor, QDomNode node)
 {
 	switch (node.nodeType())
 	{
@@ -62,7 +62,7 @@ QDomNode DomProcessor::acceptNode(DomVisitor *visitor, QDomNode node)
 	return node;
 }
 
-void DomProcessor::accept(DomVisitor *visitor)
+void DomProcessor::accept(const DomVisitor *visitor)
 {
 	Q_ASSERT(visitor);
 

@@ -35,7 +35,7 @@ private slots:
 
 class MockDomVisitorProvider : public DomVisitorProvider
 {
-	virtual DomVisitor * provide() const override { return {}; };
+	virtual const DomVisitor * provide() const override { return {}; };
 };
 
 void DomVisitorProviderRepositoryTest::shouldBeEmptyAfterCreation()

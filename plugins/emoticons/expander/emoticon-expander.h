@@ -17,14 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_EXPANDER_H
-#define EMOTICON_EXPANDER_H
-
-#include <QtCore/QScopedPointer>
+#pragma once
 
 #include "expander/emoticon-path-provider.h"
 
 #include "dom/dom-visitor.h"
+
+#include <memory>
 
 class EmoticonPrefixTree;
 
@@ -40,8 +39,8 @@ class EmoticonPrefixTree;
  */
 class EmoticonExpander : public DomVisitor
 {
-	EmoticonPrefixTree *Tree;
-	QScopedPointer<EmoticonPathProvider> PathProvider;
+	EmoticonPrefixTree *m_tree;
+	std::unique_ptr<EmoticonPathProvider> m_pathProvider;
 
 	/**
 	 * @short Insertes emoticon img element at index.
@@ -56,7 +55,7 @@ class EmoticonExpander : public DomVisitor
 	 *
 	 * New text node is returned. Searching for emoticons can be started again for this node.
 	 */
-	QDomText insertEmoticon(QDomText textNode, const Emoticon &emoticon, int index);
+	QDomText insertEmoticon(QDomText textNode, const Emoticon &emoticon, int index) const;
 
 	/**
 	 * @short Expands first found emoticon.
@@ -68,10 +67,10 @@ class EmoticonExpander : public DomVisitor
 	 * is returned. If emoticon is found then it is expanded and new text node that contains text after this emoticon
 	 * is returned. Searching for emoticons can be started again for this node.
 	 */
-	QDomText expandFirstEmoticon(QDomText textNode);
+	QDomText expandFirstEmoticon(QDomText textNode) const;
 
-	virtual QDomNode beginVisit(QDomElement elementNode);
-	virtual QDomNode endVisit(QDomElement elementNode);
+	virtual QDomNode beginVisit(QDomElement elementNode) const;
+	virtual QDomNode endVisit(QDomElement elementNode) const;
 
 public:
 	/**
@@ -83,7 +82,7 @@ public:
 	 * New object takes ownership of pathProvider object but not on tree object. Tree object must not be destroyed
 	 * during EmoticonExpander lifetime.
 	 */
-	explicit EmoticonExpander(EmoticonPrefixTree *tree, EmoticonPathProvider *pathProvider);
+	explicit EmoticonExpander(EmoticonPrefixTree *tree, std::unique_ptr<EmoticonPathProvider> pathProvider);
 	virtual ~EmoticonExpander();
 
 	/**
@@ -94,12 +93,10 @@ public:
 	 * This method expands emoticons in given text node. After that new text nodes and elements with img tag names will
 	 * be inserted after given textNode. Also text content of current textNode will be cut to first emoticon occurence.
 	 */
-	virtual QDomNode visit(QDomText textNode);
+	virtual QDomNode visit(QDomText textNode) const;
 
 };
 
 /**
  * @}
  */
-
-#endif // EMOTICON_EXPANDER_H

@@ -18,29 +18,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "image-expander.h"
-
 #include "image-expander-dom-visitor-provider.h"
 
+#include "image-expander.h"
+
+#include "misc/memory.h"
+
 ImageExpanderDomVisitorProvider::ImageExpanderDomVisitorProvider(QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		m_ignoreLinksVisitor{make_unique<ImageExpander>()}
 {
-	// TODO: probably memore leak - check
-	Visitor.reset(new IgnoreLinksDomVisitor(new ImageExpander()));
 }
 
 ImageExpanderDomVisitorProvider::~ImageExpanderDomVisitorProvider()
 {
 }
 
-DomVisitor * ImageExpanderDomVisitorProvider::provide() const
+const DomVisitor * ImageExpanderDomVisitorProvider::provide() const
 {
-	return Configuration.showImages() ? Visitor.data() : 0;
+	return m_configuration.showImages() ? &m_ignoreLinksVisitor : nullptr;
 }
 
 void ImageExpanderDomVisitorProvider::setConfiguration(const ImageLinkConfiguration &configuration)
 {
-	Configuration = configuration;
+	m_configuration = configuration;
 }
 
 #include "moc_image-expander-dom-visitor-provider.cpp"

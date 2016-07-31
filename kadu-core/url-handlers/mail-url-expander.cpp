@@ -31,7 +31,7 @@ MailUrlExpander::~MailUrlExpander()
 {
 }
 
-QList<QDomNode> MailUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp)
+QList<QDomNode> MailUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp) const
 {
 	QDomElement linkElement = document.createElement("a");
 	QString mail = regExp.cap();

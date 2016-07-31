@@ -33,7 +33,7 @@ public:
 	VideoExpander();
 	virtual ~VideoExpander();
 
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp);
+	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
 
 };
 

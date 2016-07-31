@@ -31,7 +31,7 @@ public:
 	explicit SimpleUrlExpander(QRegExp regExp);
 	virtual ~SimpleUrlExpander();
 
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp);
+	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
 
 };
 

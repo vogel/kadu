@@ -31,12 +31,12 @@ StandardUrlExpander::~StandardUrlExpander()
 {
 }
 
-bool StandardUrlExpander::shouldFold(int length)
+bool StandardUrlExpander::shouldFold(int length) const
 {
 	return Configuration.foldLink() && (length > Configuration.foldLinkThreshold());
 }
 
-QString StandardUrlExpander::displayLink(const QString &link)
+QString StandardUrlExpander::displayLink(const QString &link) const
 {
 	int partLength = Configuration.foldLinkThreshold() / 2;
 
@@ -51,7 +51,7 @@ void StandardUrlExpander::setConfiguration(const StandardUrlExpanderConfiguratio
 	Configuration = configuration;
 }
 
-QList<QDomNode> StandardUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp)
+QList<QDomNode> StandardUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp) const
 {
 	QDomElement linkElement = document.createElement("a");
 

@@ -17,34 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jabber-url-dom-visitor-provider.h"
-
 #include "dom/ignore-links-dom-visitor.h"
+#include "misc/memory.h"
 #include "url-handlers/simple-url-expander.h"
 
+#include "jabber-url-dom-visitor-provider.h"
+
 JabberUrlDomVisitorProvider::JabberUrlDomVisitorProvider(QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		m_ignoreLinks{make_unique<SimpleUrlExpander>(
+			QRegExp{"\\b"
+					"xmpp:"
+					"(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
+					"(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?" // path-xmpp
+					"(?:\\?([^&# ]+)"                              // querytype
+					"(&[^# ]+)?)?"                                 // pair, will need to be reparsed, later
+					"(?:#(\\S*))?"                                 // fragment
+					"\\b"}
+		)}
 {
-	auto expander = new SimpleUrlExpander(
-		QRegExp("\\b"
-	            "xmpp:"
-	            "(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
-	            "(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?" // path-xmpp
-	            "(?:\\?([^&# ]+)"                              // querytype
-	            "(&[^# ]+)?)?"                                 // pair, will need to be reparsed, later
-	            "(?:#(\\S*))?"                                 // fragment
-	            "\\b")
-	);
-	m_ignoreLinks.reset(new IgnoreLinksDomVisitor(expander));
 }
 
 JabberUrlDomVisitorProvider::~JabberUrlDomVisitorProvider()
 {
 }
 
-DomVisitor * JabberUrlDomVisitorProvider::provide() const
+const DomVisitor * JabberUrlDomVisitorProvider::provide() const
 {
-	return m_ignoreLinks.data();
+	return &m_ignoreLinks;
 }
 
 #include "moc_jabber-url-dom-visitor-provider.cpp"

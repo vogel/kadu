@@ -20,11 +20,10 @@
 #pragma once
 
 #include "dom/dom-visitor-provider.h"
+#include "dom/ignore-links-dom-visitor.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
-
-class IgnoreLinksDomVisitor;
 
 class JabberUrlDomVisitorProvider : public QObject, public DomVisitorProvider
 {
@@ -34,9 +33,9 @@ public:
 	Q_INVOKABLE explicit JabberUrlDomVisitorProvider(QObject *parent = nullptr);
 	virtual ~JabberUrlDomVisitorProvider();
 
-	virtual DomVisitor * provide() const;
+	virtual const DomVisitor * provide() const;
 
 private:
-	QScopedPointer<IgnoreLinksDomVisitor> m_ignoreLinks;
+	IgnoreLinksDomVisitor m_ignoreLinks;
 
 };

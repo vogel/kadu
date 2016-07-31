@@ -21,40 +21,41 @@
 
 #include "ignore-links-dom-visitor.h"
 
-IgnoreLinksDomVisitor::IgnoreLinksDomVisitor(DomVisitor *visitor) :
-		Visitor(visitor), LinksDepth(0)
+IgnoreLinksDomVisitor::IgnoreLinksDomVisitor(std::unique_ptr<DomVisitor> visitor) :
+		m_visitor{std::move(visitor)},
+		m_linksDepth{0}
 {
-	Q_ASSERT(Visitor);
+	Q_ASSERT(m_visitor);
 }
 
 IgnoreLinksDomVisitor::~IgnoreLinksDomVisitor()
 {
 }
 
-QDomNode IgnoreLinksDomVisitor::visit(QDomText textNode)
+QDomNode IgnoreLinksDomVisitor::visit(QDomText textNode) const
 {
-	if (0 == LinksDepth)
-		return Visitor->visit(textNode);
+	if (0 == m_linksDepth)
+		return m_visitor->visit(textNode);
 
 	return textNode;
 }
 
-QDomNode IgnoreLinksDomVisitor::beginVisit(QDomElement elementNode)
+QDomNode IgnoreLinksDomVisitor::beginVisit(QDomElement elementNode) const
 {
 	if (elementNode.tagName().toLower() == "a")
-		LinksDepth++;
-	else if (0 == LinksDepth)
-		return Visitor->beginVisit(elementNode);
+		m_linksDepth++;
+	else if (0 == m_linksDepth)
+		return m_visitor->beginVisit(elementNode);
 
 	return elementNode;
 }
 
-QDomNode IgnoreLinksDomVisitor::endVisit(QDomElement elementNode)
+QDomNode IgnoreLinksDomVisitor::endVisit(QDomElement elementNode) const
 {
 	if (elementNode.tagName().toLower() == "a")
-		LinksDepth--;
-	else if (0 == LinksDepth)
-		return Visitor->endVisit(elementNode);
+		m_linksDepth--;
+	else if (0 == m_linksDepth)
+		return m_visitor->endVisit(elementNode);
 
 	return elementNode;
 }

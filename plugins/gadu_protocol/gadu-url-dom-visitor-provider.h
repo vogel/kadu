@@ -19,23 +19,22 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
-
 #include "dom/dom-visitor-provider.h"
+#include "dom/ignore-links-dom-visitor.h"
 
-class IgnoreLinksDomVisitor;
+#include <QtCore/QObject>
 
 class GaduUrlDomVisitorProvider : public QObject, public DomVisitorProvider
 {
 	Q_OBJECT
 
-	QScopedPointer<IgnoreLinksDomVisitor> IgnoreLinks;
-
 public:
 	Q_INVOKABLE explicit GaduUrlDomVisitorProvider(QObject *parent = nullptr);
 	virtual ~GaduUrlDomVisitorProvider();
 
-	virtual DomVisitor * provide() const;
+	virtual const DomVisitor * provide() const;
+
+private:
+	IgnoreLinksDomVisitor m_ignoreLinks;
 
 };

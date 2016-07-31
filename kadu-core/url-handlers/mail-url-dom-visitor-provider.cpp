@@ -17,22 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dom/ignore-links-dom-visitor.h"
-#include "url-handlers/mail-url-expander.h"
-
 #include "mail-url-dom-visitor-provider.h"
 
-MailUrlDomVisitorProvider::MailUrlDomVisitorProvider()
+#include "dom/ignore-links-dom-visitor.h"
+#include "misc/memory.h"
+#include "url-handlers/mail-url-expander.h"
+
+MailUrlDomVisitorProvider::MailUrlDomVisitorProvider() :
+	m_ignoreLinks{make_unique<MailUrlExpander>(QRegExp{"\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b"})}
 {
-	MailUrlExpander *expander = new MailUrlExpander(QRegExp("\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b"));
-	IgnoreLinks.reset(new IgnoreLinksDomVisitor(expander));
 }
 
 MailUrlDomVisitorProvider::~MailUrlDomVisitorProvider()
 {
 }
 
-DomVisitor * MailUrlDomVisitorProvider::provide() const
+const DomVisitor * MailUrlDomVisitorProvider::provide() const
 {
-	return IgnoreLinks.data();
+	return &m_ignoreLinks;
 }

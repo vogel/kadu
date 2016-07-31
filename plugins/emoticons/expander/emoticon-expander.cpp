@@ -24,18 +24,19 @@
 
 #include "emoticon-expander.h"
 
-EmoticonExpander::EmoticonExpander(EmoticonPrefixTree *tree, EmoticonPathProvider *pathProvider) :
-		Tree(tree), PathProvider(pathProvider)
+EmoticonExpander::EmoticonExpander(EmoticonPrefixTree *tree, std::unique_ptr<EmoticonPathProvider> pathProvider) :
+		m_tree{tree},
+		m_pathProvider{std::move(pathProvider)}
 {
-	Q_ASSERT(Tree);
-	Q_ASSERT(PathProvider);
+	Q_ASSERT(m_tree);
+	Q_ASSERT(m_pathProvider);
 }
 
 EmoticonExpander::~EmoticonExpander()
 {
 }
 
-QDomText EmoticonExpander::insertEmoticon(QDomText textNode, const Emoticon &emoticon, int index)
+QDomText EmoticonExpander::insertEmoticon(QDomText textNode, const Emoticon &emoticon, int index) const
 {
 	int emoticonLength = emoticon.triggerText().length();
 
@@ -46,13 +47,13 @@ QDomText EmoticonExpander::insertEmoticon(QDomText textNode, const Emoticon &emo
 	emoticonElement.setAttribute("emoticon", emoticon.triggerText());
 	emoticonElement.setAttribute("title", emoticon.triggerText());
 	emoticonElement.setAttribute("alt", emoticon.triggerText());
-	emoticonElement.setAttribute("src", "file:///" + PathProvider->emoticonPath(emoticon));
+	emoticonElement.setAttribute("src", "file:///" + m_pathProvider->emoticonPath(emoticon));
 	textNode.parentNode().insertBefore(emoticonElement, afterEmoticon);
 
 	return afterEmoticon;
 }
 
-QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
+QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode) const
 {
 	QString text = textNode.nodeValue().toLower();
 	int textLength = text.length();
@@ -63,7 +64,7 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 	int currentEmoticonStart = -1;
 	Emoticon currentEmoticon;
 
-	EmoticonWalker walker(Tree);
+	EmoticonWalker walker(m_tree);
 
 	for (int i = 0; i < textLength; i++)
 	{
@@ -89,7 +90,7 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 	return QDomText();
 }
 
-QDomNode EmoticonExpander::visit(QDomText textNode)
+QDomNode EmoticonExpander::visit(QDomText textNode) const
 {
 	QDomText result = textNode;
 	while (!textNode.isNull())
@@ -101,12 +102,12 @@ QDomNode EmoticonExpander::visit(QDomText textNode)
 	return result; // last real node
 }
 
-QDomNode EmoticonExpander::beginVisit(QDomElement elementNode)
+QDomNode EmoticonExpander::beginVisit(QDomElement elementNode) const
 {
 	return elementNode;
 }
 
-QDomNode EmoticonExpander::endVisit(QDomElement elementNode)
+QDomNode EmoticonExpander::endVisit(QDomElement elementNode) const
 {
 	return elementNode;
 }

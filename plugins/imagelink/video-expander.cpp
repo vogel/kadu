@@ -36,7 +36,7 @@ VideoExpander::~VideoExpander()
 {
 }
 
-QList<QDomNode> VideoExpander::matchToDomNodes(QDomDocument document, QRegExp regExp)
+QList<QDomNode> VideoExpander::matchToDomNodes(QDomDocument document, QRegExp regExp) const
 {
 	QDomElement embedElement = document.createElement("embed");
 	embedElement.setAttribute("src", QString("http://www.youtube.com/v/%1&autoplay=0").arg(regExp.cap(1)));

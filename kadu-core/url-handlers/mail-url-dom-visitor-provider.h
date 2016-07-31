@@ -17,27 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAIL_URL_DOM_VISITOR_PROVIDER
-#define MAIL_URL_DOM_VISITOR_PROVIDER
-
-#include <QtCore/QScopedPointer>
+#pragma once
 
 #include "dom/dom-visitor-provider.h"
-
-class IgnoreLinksDomVisitor;
-class MailUrlExpander;
+#include "dom/ignore-links-dom-visitor.h"
 
 class MailUrlDomVisitorProvider : public DomVisitorProvider
 {
-	QScopedPointer<IgnoreLinksDomVisitor> IgnoreLinks;
 
 public:
 	MailUrlDomVisitorProvider();
 	virtual ~MailUrlDomVisitorProvider();
 
-	virtual DomVisitor * provide() const;
+	virtual const DomVisitor * provide() const;
+
+private:
+	IgnoreLinksDomVisitor m_ignoreLinks;
 
 };
-
-
-#endif // MAIL_URL_DOM_VISITOR_PROVIDER

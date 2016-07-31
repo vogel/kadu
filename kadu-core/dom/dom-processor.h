@@ -45,7 +45,7 @@ class KADUAPI DomProcessor
 {
 	QDomDocument &DomDocument;
 
-	QDomNode acceptNode(DomVisitor *visitor, QDomNode node);
+	QDomNode acceptNode(const DomVisitor *visitor, QDomNode node);
 
 public:
 	/**
@@ -62,7 +62,7 @@ public:
 	 *
 	 * Processing is not read-only, so domDocument can be changed after calling this method.
 	 */
-	void accept(DomVisitor *visitor);
+	void accept(const DomVisitor *visitor);
 
 };
 

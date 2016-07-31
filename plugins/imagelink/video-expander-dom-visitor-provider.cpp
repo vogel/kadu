@@ -18,29 +18,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "video-expander.h"
-
 #include "video-expander-dom-visitor-provider.h"
 
+#include "video-expander.h"
+
+#include "misc/memory.h"
+
 VideoExpanderDomVisitorProvider::VideoExpanderDomVisitorProvider(QObject *parent) :
-		QObject{parent}
+		QObject{parent},
+		m_ignoreLinks{make_unique<VideoExpander>()}
 {
-	// TODO: possible memory leak
-	Visitor.reset(new IgnoreLinksDomVisitor(new VideoExpander()));
 }
 
 VideoExpanderDomVisitorProvider::~VideoExpanderDomVisitorProvider()
 {
 }
 
-DomVisitor * VideoExpanderDomVisitorProvider::provide() const
+const DomVisitor * VideoExpanderDomVisitorProvider::provide() const
 {
-	return Configuration.showVideos() ? Visitor.data() : 0;
+	return m_configuration.showVideos() ? &m_ignoreLinks : nullptr;
 }
 
 void VideoExpanderDomVisitorProvider::setConfiguration(const ImageLinkConfiguration &configuration)
 {
-	Configuration = configuration;
+	m_configuration = configuration;
 }
 
 #include "moc_video-expander-dom-visitor-provider.cpp"

@@ -36,7 +36,7 @@ class DomVisitor;
  *
  * Register DomVisitorProvider in DomProcessorService to make them accessible everywhere.
  */
-class DomVisitorProvider : public Provider<DomVisitor *>
+class DomVisitorProvider : public Provider<const DomVisitor *>
 {
 public:
 	virtual ~DomVisitorProvider() {}
@@ -47,7 +47,7 @@ public:
 	 *
 	 * This method can return null value.
 	 */
-	virtual DomVisitor * provide() const = 0;
+	virtual const DomVisitor * provide() const = 0;
 
 };
 

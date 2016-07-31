@@ -31,7 +31,7 @@ SimpleUrlExpander::~SimpleUrlExpander()
 {
 }
 
-QList<QDomNode> SimpleUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp)
+QList<QDomNode> SimpleUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp) const
 {
 	QDomElement linkElement = document.createElement("a");
 	QString link = regExp.cap();

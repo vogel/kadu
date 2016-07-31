@@ -31,7 +31,7 @@ DomTextRegexpVisitor::~DomTextRegexpVisitor()
 {
 }
 
-QDomText DomTextRegexpVisitor::expandFirstMatch(QDomText textNode)
+QDomText DomTextRegexpVisitor::expandFirstMatch(QDomText textNode) const
 {
 	QString text = textNode.nodeValue();
 	int index = RegExp.indexIn(text);
@@ -50,7 +50,7 @@ QDomText DomTextRegexpVisitor::expandFirstMatch(QDomText textNode)
 	return afterMatch;
 }
 
-QDomNode DomTextRegexpVisitor::visit(QDomText textNode)
+QDomNode DomTextRegexpVisitor::visit(QDomText textNode) const
 {
 	QDomText result = textNode;
 	while (!textNode.isNull())
@@ -62,12 +62,12 @@ QDomNode DomTextRegexpVisitor::visit(QDomText textNode)
 	return result;
 }
 
-QDomNode DomTextRegexpVisitor::beginVisit(QDomElement elementNode)
+QDomNode DomTextRegexpVisitor::beginVisit(QDomElement elementNode) const
 {
 	return elementNode;
 }
 
-QDomNode DomTextRegexpVisitor::endVisit(QDomElement elementNode)
+QDomNode DomTextRegexpVisitor::endVisit(QDomElement elementNode) const
 {
 	return elementNode;
 }

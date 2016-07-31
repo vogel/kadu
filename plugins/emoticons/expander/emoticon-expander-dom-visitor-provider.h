@@ -17,18 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
-#define EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
-
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
-
-#include "dom/ignore-links-dom-visitor.h"
+#pragma once
 
 #include "configuration/emoticon-configuration.h"
 #include "walker/emoticon-prefix-tree.h"
 
 #include "dom/dom-visitor-provider.h"
+
+#include <QtCore/QObject>
+#include <memory>
+
+class IgnoreLinksDomVisitor;
 
 /**
  * @addtogroup Emoticons
@@ -44,21 +43,11 @@ class EmoticonExpanderDomVisitorProvider : public QObject, public DomVisitorProv
 {
 	Q_OBJECT
 
-	EmoticonConfiguration Configuration;
-	QScopedPointer<IgnoreLinksDomVisitor> LinksVisitor;
-	QScopedPointer<EmoticonPrefixTree> Tree;
-
-	/**
-	 * @short Create new EmoticonExpander with updated EmoticonConfiguration.
-	 * @author Rafał 'Vogel' Malinowski
-	 */
-	void rebuildExpander();
-
 public:
 	Q_INVOKABLE EmoticonExpanderDomVisitorProvider(QObject *parent = nullptr);
 	virtual ~EmoticonExpanderDomVisitorProvider();
 
-	virtual DomVisitor * provide() const;
+	virtual const DomVisitor * provide() const;
 
 	/**
 	 * @short Update configuration of provided EmoticonExpander.
@@ -67,10 +56,19 @@ public:
 	 */
 	void setConfiguration(const EmoticonConfiguration &configuration);
 
+private:
+	EmoticonConfiguration m_configuration;
+	std::unique_ptr<IgnoreLinksDomVisitor> m_ignoreLinksVisitor;
+	std::unique_ptr<EmoticonPrefixTree> m_tree;
+
+	/**
+	 * @short Create new EmoticonExpander with updated EmoticonConfiguration.
+	 * @author Rafał 'Vogel' Malinowski
+	 */
+	void rebuildExpander();
+
 };
 
 /**
  * @}
  */
-
-#endif // EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER

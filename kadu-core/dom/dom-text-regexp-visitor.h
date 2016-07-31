@@ -48,7 +48,7 @@ class KADUAPI DomTextRegexpVisitor : public DomVisitor
 {
 	QRegExp RegExp;
 
-	QDomText expandFirstMatch(QDomText textNode);
+	QDomText expandFirstMatch(QDomText textNode) const;
 
 public:
 	/**
@@ -59,9 +59,9 @@ public:
 	explicit DomTextRegexpVisitor(QRegExp regExp);
 	virtual ~DomTextRegexpVisitor();
 
-	virtual QDomNode visit(QDomText textNode);
-	virtual QDomNode beginVisit(QDomElement elementNode);
-	virtual QDomNode endVisit(QDomElement elementNode);
+	virtual QDomNode visit(QDomText textNode) const;
+	virtual QDomNode beginVisit(QDomElement elementNode) const;
+	virtual QDomNode endVisit(QDomElement elementNode) const;
 
 	/**
 	 * @short Replace matched regular expression with DOM node.
@@ -69,7 +69,7 @@ public:
 	 * @param regExp object containing match information
 	 * @return DOM nodes replacing matched text
 	 */
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) = 0;
+	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const = 0;
 
 };
 

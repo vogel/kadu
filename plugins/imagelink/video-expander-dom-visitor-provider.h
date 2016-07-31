@@ -19,28 +19,27 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
-
-#include "dom/ignore-links-dom-visitor.h"
-
 #include "configuration/image-link-configuration.h"
 
+#include "dom/ignore-links-dom-visitor.h"
 #include "dom/dom-visitor-provider.h"
+
+#include <QtCore/QObject>
 
 class VideoExpanderDomVisitorProvider : public QObject, public DomVisitorProvider
 {
 	Q_OBJECT
 
-	ImageLinkConfiguration Configuration;
-	QScopedPointer<IgnoreLinksDomVisitor> Visitor;
-
 public:
 	Q_INVOKABLE VideoExpanderDomVisitorProvider(QObject *parent = nullptr);
 	virtual ~VideoExpanderDomVisitorProvider();
 
-	virtual DomVisitor * provide() const;
+	const virtual DomVisitor * provide() const;
 
 	void setConfiguration(const ImageLinkConfiguration &configuration);
+
+private:
+	ImageLinkConfiguration m_configuration;
+	IgnoreLinksDomVisitor m_ignoreLinks;
 
 };
