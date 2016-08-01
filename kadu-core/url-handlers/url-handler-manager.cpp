@@ -58,7 +58,7 @@ void UrlHandlerManager::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void UrlHandlerManager::setDomProcessorService(DomVisitorProviderRepository *domVisitorProviderRepository)
+void UrlHandlerManager::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
 	m_domVisitorProviderRepository = domVisitorProviderRepository;
 }

@@ -82,7 +82,7 @@ private:
 private slots:
 	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setDomProcessorService(DomVisitorProviderRepository *domVisitorProviderRepository);
+	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
