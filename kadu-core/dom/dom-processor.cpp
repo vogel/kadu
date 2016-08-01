@@ -17,15 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QStack>
-#include <QtXml/QDomNode>
+#include "dom-processor.h"
 
 #include "dom/dom-visitor.h"
 
-#include "dom-processor.h"
+#include <QtXml/QDomNode>
 
 DomProcessor::DomProcessor(QDomDocument &domDocument) :
-		DomDocument(domDocument)
+		m_domDocument{domDocument}
 {
 }
 
@@ -66,5 +65,5 @@ void DomProcessor::accept(const DomVisitor *visitor)
 {
 	Q_ASSERT(visitor);
 
-	acceptNode(visitor, DomDocument.documentElement());
+	acceptNode(visitor, m_domDocument.documentElement());
 }

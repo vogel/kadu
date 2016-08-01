@@ -43,13 +43,13 @@ void DomProcessorService::setDomVisitorProviderRepository(DomVisitorProviderRepo
 
 void DomProcessorService::process(QDomDocument &domDocument)
 {
-	DomProcessor domProcessor(domDocument);
+	auto visitors = std::vector<const DomVisitor *>();
 	for (auto visitorProvider : m_domVisitorProviderRepository)
-	{
-		auto visitor = visitorProvider->provide();
-		if (visitor)
-			domProcessor.accept(visitor);
-	}
+		if (auto visitor = visitorProvider->provide())
+			visitors.push_back(visitor);
+
+	auto domProcessor = DomProcessor{domDocument};
+	domProcessor.accept(std::begin(visitors), std::end(visitors));
 }
 
 QString DomProcessorService::process(const QString &xml)

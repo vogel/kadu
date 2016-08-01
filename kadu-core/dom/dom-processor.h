@@ -18,8 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DOM_PROCESSOR_H
-#define DOM_PROCESSOR_H
+#pragma once
 
 #include "exports.h"
 
@@ -43,10 +42,7 @@ class DomVisitor;
  */
 class KADUAPI DomProcessor
 {
-	QDomDocument &DomDocument;
-
-	QDomNode acceptNode(const DomVisitor *visitor, QDomNode node);
-
+	
 public:
 	/**
 	 * @short Create new instance of DomProcessor.
@@ -64,10 +60,26 @@ public:
 	 */
 	void accept(const DomVisitor *visitor);
 
+	/**
+	 * @short Accept set of visitors.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param visitor to accept
+	 *
+	 * Processing is not read-only, so domDocument can be changed after calling this method.
+	 */
+	template<class Iterator>
+	void accept(Iterator begin, Iterator end)
+	{
+		std::for_each(begin, end, [this](const DomVisitor *visitor){ accept(visitor); });
+	}
+
+private:
+	QDomDocument &m_domDocument;
+
+	QDomNode acceptNode(const DomVisitor *visitor, QDomNode node);
+
 };
 
 /**
  * @}
  */
-
-#endif // DOM_PROCESSOR_H
