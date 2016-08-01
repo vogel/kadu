@@ -62,17 +62,6 @@ public:
 	virtual ~DomProcessorService();
 
 	/**
-	 * @short Process domDocument with all available DomVisitor instances.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param domDocument to process
-	 *
-	 * This method will ask all registered DomVisitorProvider for DomVisitor instances. All non-null
-	 * instances will be called in order of increasing priority on given domDocument and will be allowed to
-	 * modify it.
-	 */
-	void process(QDomDocument &domDocument);
-
-	/**
 	 * @short Process xml with all available DomVisitor instances.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param domDocument to process
@@ -87,6 +76,17 @@ public:
 
 private:
 	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
+
+	/**
+	 * @short Process domDocument with all available DomVisitor instances.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param domDocument to process
+	 *
+	 * This method will ask all registered DomVisitorProvider for DomVisitor instances. All non-null
+	 * instances will be called in order of increasing priority on given domDocument and will be allowed to
+	 * modify it.
+	 */
+	void process(QDomDocument &domDocument);
 
 private slots:
 	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);

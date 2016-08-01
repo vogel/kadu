@@ -240,12 +240,7 @@ void BuddyInfoPanel::displayItem(Talkable item)
 		return;
 	}
 
-	QDomDocument domDocument;
-	domDocument.setContent(Template.arg(m_parser->parse(Syntax, item, ParserEscape::HtmlEscape)));
-
-	m_domProcessorService->process(domDocument);
-
-	setHtml(domDocument.toString(0));
+	setHtml(m_domProcessorService->process(Template.arg(m_parser->parse(Syntax, item, ParserEscape::HtmlEscape))));
 }
 
 void BuddyInfoPanel::setVisible(bool visible)
