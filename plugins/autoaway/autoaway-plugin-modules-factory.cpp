@@ -35,7 +35,7 @@ AutoawayPluginModulesFactory::~AutoawayPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> AutoawayPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<AutoawayModule>());
+	modules.emplace_back(std::make_unique<AutoawayModule>());
 
 	return modules;
 }

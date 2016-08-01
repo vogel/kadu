@@ -159,7 +159,7 @@ void SilentModeService::configurationUpdated()
 	m_silentMode = m_configuration->deprecatedApi()->readBoolEntry("Notify", "SilentMode", false);
 	
 	if (m_silentModeWhenFullscreen)
-		m_fullScreenServiceHandler = make_unique<FullScreenServiceHandler>(m_fullScreenService);
+		m_fullScreenServiceHandler = std::make_unique<FullScreenServiceHandler>(m_fullScreenService);
 	else
 		m_fullScreenServiceHandler.reset();
 }

@@ -35,7 +35,7 @@ SmsPluginModulesFactory::~SmsPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> SmsPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<SmsModule>());
+	modules.emplace_back(std::make_unique<SmsModule>());
 
 	return modules;
 }

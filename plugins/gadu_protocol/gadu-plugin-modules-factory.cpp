@@ -35,7 +35,7 @@ GaduPluginModulesFactory::~GaduPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> GaduPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<GaduModule>());
+	modules.emplace_back(std::make_unique<GaduModule>());
 
 	return modules;
 }

@@ -25,7 +25,7 @@
 
 JabberUrlDomVisitorProvider::JabberUrlDomVisitorProvider(QObject *parent) :
 		QObject{parent},
-		m_ignoreLinks{make_unique<SimpleUrlExpander>(
+		m_ignoreLinks{std::make_unique<SimpleUrlExpander>(
 			QRegExp{"\\b"
 					"xmpp:"
 					"(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp

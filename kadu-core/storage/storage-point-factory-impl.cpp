@@ -45,12 +45,12 @@ std::unique_ptr<StoragePoint> StoragePointFactoryImpl::createStoragePoint(const 
 		return {};
 
 	if (!parent)
-		return make_unique<StoragePoint>(m_configurationFile, m_configurationFile->getNode(nodeName));
+		return std::make_unique<StoragePoint>(m_configurationFile, m_configurationFile->getNode(nodeName));
 
 	Q_ASSERT(parent->storage() == m_configurationFile);
 
 	auto node = m_configurationFile->getNode(parent->point(), nodeName);
-	return make_unique<StoragePoint>(m_configurationFile, node);
+	return std::make_unique<StoragePoint>(m_configurationFile, node);
 }
 
 #include "storage-point-factory-impl.moc"

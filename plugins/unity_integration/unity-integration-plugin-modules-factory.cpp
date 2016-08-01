@@ -35,7 +35,7 @@ UnityIntegrationPluginModulesFactory::~UnityIntegrationPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> UnityIntegrationPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<UnityIntegrationModule>());
+	modules.emplace_back(std::make_unique<UnityIntegrationModule>());
 
 	return modules;
 }

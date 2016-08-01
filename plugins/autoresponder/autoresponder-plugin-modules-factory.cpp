@@ -35,7 +35,7 @@ AutoresponderPluginModulesFactory::~AutoresponderPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> AutoresponderPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<AutoresponderModule>());
+	modules.emplace_back(std::make_unique<AutoresponderModule>());
 
 	return modules;
 }

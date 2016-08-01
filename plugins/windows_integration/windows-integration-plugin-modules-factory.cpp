@@ -35,7 +35,7 @@ WindowsIntegrationPluginModulesFactory::~WindowsIntegrationPluginModulesFactory(
 std::vector<std::unique_ptr<injeqt::module>> WindowsIntegrationPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<WindowsIntegrationModule>());
+	modules.emplace_back(std::make_unique<WindowsIntegrationModule>());
 
 	return modules;
 }

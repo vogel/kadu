@@ -35,7 +35,7 @@ ExecNotifyPluginModulesFactory::~ExecNotifyPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> ExecNotifyPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<ExecNotifyModule>());
+	modules.emplace_back(std::make_unique<ExecNotifyModule>());
 
 	return modules;
 }

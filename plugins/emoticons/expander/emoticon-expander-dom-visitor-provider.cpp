@@ -47,8 +47,8 @@ void EmoticonExpanderDomVisitorProvider::rebuildExpander()
 	}
 
 	m_ignoreLinksVisitor = m_configuration.animate() 
-			? make_unique<IgnoreLinksDomVisitor>(make_unique<EmoticonExpander>(m_tree.get(), make_unique<AnimatedEmoticonPathProvider>()))
-			: make_unique<IgnoreLinksDomVisitor>(make_unique<EmoticonExpander>(m_tree.get(), make_unique<StaticEmoticonPathProvider>()));
+			? std::make_unique<IgnoreLinksDomVisitor>(std::make_unique<EmoticonExpander>(m_tree.get(), std::make_unique<AnimatedEmoticonPathProvider>()))
+			: std::make_unique<IgnoreLinksDomVisitor>(std::make_unique<EmoticonExpander>(m_tree.get(), std::make_unique<StaticEmoticonPathProvider>()));
 }
 
 const DomVisitor * EmoticonExpanderDomVisitorProvider::provide() const

@@ -24,7 +24,7 @@
 #include "url-handlers/mail-url-expander.h"
 
 MailUrlDomVisitorProvider::MailUrlDomVisitorProvider() :
-	m_ignoreLinks{make_unique<MailUrlExpander>(QRegExp{"\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b"})}
+	m_ignoreLinks{std::make_unique<MailUrlExpander>(QRegExp{"\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b"})}
 {
 }
 

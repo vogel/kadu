@@ -72,7 +72,7 @@ void PluginLoader::start()
 
 std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginDirPath, const QString &pluginName) const
 {
-	auto result = make_unique<QPluginLoader>(pluginDirPath + "/" + QStringLiteral(SO_PREFIX) + pluginName + QStringLiteral("." SO_EXT));
+	auto result = std::make_unique<QPluginLoader>(pluginDirPath + "/" + QStringLiteral(SO_PREFIX) + pluginName + QStringLiteral("." SO_EXT));
 	result->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 	return result;
 }
@@ -87,7 +87,7 @@ injeqt::injector PluginLoader::createPluginInjector(const QString &pluginName, P
 			auto parentInjector = &pluginInjectorProvider->injector(parentInjectorName);
 			auto pluginModules = pluginModulesFactory->createPluginModules();
 			if (parentInjectorName.isEmpty())
-				pluginModules.emplace_back(make_unique<PluginInjectedFactoryModule>());
+				pluginModules.emplace_back(std::make_unique<PluginInjectedFactoryModule>());
 			auto injector = injeqt::injector{std::vector<injeqt::injector *>{parentInjector}, std::move(pluginModules)};
 			injector.get<PluginInjectedFactory>()->setPluginName(pluginName);
 			return injector;

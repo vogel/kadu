@@ -35,7 +35,7 @@ SpeechPluginModulesFactory::~SpeechPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> SpeechPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<SpeechModule>());
+	modules.emplace_back(std::make_unique<SpeechModule>());
 
 	return modules;
 }

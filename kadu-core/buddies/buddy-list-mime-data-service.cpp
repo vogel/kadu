@@ -52,7 +52,7 @@ std::unique_ptr<QMimeData> BuddyListMimeDataService::toMimeData(const BuddyList 
 	if (buddyList.isEmpty())
 		return nullptr;
 
-	auto mimeData = make_unique<QMimeData>();
+	auto mimeData = std::make_unique<QMimeData>();
 	auto buddyListStrings = QStringList{};
 	for (auto const &buddy : buddyList)
 		buddyListStrings << buddy.uuid().toString();

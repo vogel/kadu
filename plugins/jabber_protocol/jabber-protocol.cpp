@@ -119,10 +119,10 @@ void JabberProtocol::init()
 		}
 	);
 
-	m_registerExtension = make_unique<JabberRegisterExtension>();
-	m_rosterExtension = make_unique<JabberRosterExtension>();
-	m_mucManager = make_unique<QXmppMucManager>();
-	m_transferManager = make_unique<QXmppTransferManager>();
+	m_registerExtension = std::make_unique<JabberRegisterExtension>();
+	m_rosterExtension = std::make_unique<JabberRosterExtension>();
+	m_mucManager = std::make_unique<QXmppMucManager>();
+	m_transferManager = std::make_unique<QXmppTransferManager>();
 
 	m_rosterExtension->setJabberErrorService(m_errorService);
 

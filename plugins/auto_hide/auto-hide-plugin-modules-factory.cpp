@@ -35,7 +35,7 @@ AutoHidePluginModulesFactory::~AutoHidePluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> AutoHidePluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<AutoHideModule>());
+	modules.emplace_back(std::make_unique<AutoHideModule>());
 
 	return modules;
 }

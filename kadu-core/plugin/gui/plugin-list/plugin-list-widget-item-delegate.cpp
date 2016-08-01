@@ -51,8 +51,8 @@
 #define MARGIN 5
 
 PluginListWidgetItemDelegate::PluginListWidgetItemDelegate(PluginListWidget *pluginSelector, QObject *parent) :
-		PluginListWidgetDelegate{pluginSelector->m_listView, parent}, m_checkBox{make_unique<QCheckBox>()},
-		m_pushButton{make_unique<QPushButton>()}, m_pluginSelector{pluginSelector}
+		PluginListWidgetDelegate{pluginSelector->m_listView, parent}, m_checkBox{std::make_unique<QCheckBox>()},
+		m_pushButton{std::make_unique<QPushButton>()}, m_pluginSelector{pluginSelector}
 {
 }
 

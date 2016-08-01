@@ -35,7 +35,7 @@ HintsPluginModulesFactory::~HintsPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> HintsPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<HintsModule>());
+	modules.emplace_back(std::make_unique<HintsModule>());
 
 	return modules;
 }

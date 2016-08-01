@@ -73,7 +73,7 @@ not_owned_qptr<Configuration> ConfigurationFactory::readConfiguration() const
 
 		try
 		{
-			auto configurationApi = make_unique<ConfigurationApi>(content);
+			auto configurationApi = std::make_unique<ConfigurationApi>(content);
 			return make_not_owned<Configuration>(m_versionService->version(), std::move(configurationApi));
 		}
 		catch (ConfigurationReadErrorException &)
@@ -90,7 +90,7 @@ not_owned_qptr<Configuration> ConfigurationFactory::createEmptyConfiguration() c
 	if (!isConfigurationPathUsable())
 		throw ConfigurationUnusableException();
 
-	auto configurationApi = make_unique<ConfigurationApi>();
+	auto configurationApi = std::make_unique<ConfigurationApi>();
 	return make_not_owned<Configuration>(m_versionService->version(), std::move(configurationApi));
 }
 

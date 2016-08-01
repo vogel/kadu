@@ -35,7 +35,7 @@ AntistringPluginModulesFactory::~AntistringPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> AntistringPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<AntistringModule>());
+	modules.emplace_back(std::make_unique<AntistringModule>());
 
 	return modules;
 }

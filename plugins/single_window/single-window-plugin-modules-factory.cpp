@@ -35,7 +35,7 @@ SingleWindowPluginModulesFactory::~SingleWindowPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> SingleWindowPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<SingleWindowModule>());
+	modules.emplace_back(std::make_unique<SingleWindowModule>());
 
 	return modules;
 }

@@ -45,14 +45,14 @@ void FormattedStringFactory::setImageStorageService(ImageStorageService *imageSt
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromPlainText(const QString& plainText)
 {
-	return make_unique<FormattedStringTextBlock>(plainText, false, false, false, QColor{});
+	return std::make_unique<FormattedStringTextBlock>(plainText, false, false, false, QColor{});
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
 {
 	QString replacedNewLine = text;
 	replacedNewLine.replace(QChar::LineSeparator, '\n');
-	return make_unique<FormattedStringTextBlock>(replacedNewLine, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
+	return std::make_unique<FormattedStringTextBlock>(replacedNewLine, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
@@ -63,7 +63,7 @@ std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextImageForma
 	if (CurrentImageStorageService)
 		filePath = CurrentImageStorageService.data()->storeImage(filePath);
 
-	return make_unique<FormattedStringImageBlock>(filePath);
+	return std::make_unique<FormattedStringImageBlock>(filePath);
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
@@ -120,7 +120,7 @@ std::unique_ptr<FormattedString> FormattedStringFactory::fromTextDocument(QTextD
 		firstBlock = false;
 	}
 
-	return make_unique<CompositeFormattedString>(std::move(items));
+	return std::make_unique<CompositeFormattedString>(std::move(items));
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromText(const QString &text)

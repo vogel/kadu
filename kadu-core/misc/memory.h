@@ -23,12 +23,6 @@
 #include <cassert>
 #include <memory>
 
-template<typename T, typename ...Args>
-std::unique_ptr<T> make_unique(Args&& ...args)
-{
-	return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-}
-
 template<typename T>
 struct not_owned_qobject_deleter
 {

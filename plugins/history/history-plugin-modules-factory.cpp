@@ -35,7 +35,7 @@ HistoryPluginModulesFactory::~HistoryPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> HistoryPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<HistoryModule>());
+	modules.emplace_back(std::make_unique<HistoryModule>());
 
 	return modules;
 }

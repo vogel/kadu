@@ -101,7 +101,7 @@ void JabberRegisterAccount::start()
 	}
 */
 
-	m_registerExtension = make_unique<JabberRegisterExtension>();
+	m_registerExtension = std::make_unique<JabberRegisterExtension>();
 	m_client = new QXmppClient{this};
 	m_client->addExtension(m_registerExtension.get());
 

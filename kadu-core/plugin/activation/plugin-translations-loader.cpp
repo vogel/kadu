@@ -29,7 +29,7 @@
 #include <QtCore/QTranslator>
 
 PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginTranslationDir, const QString &language, const QString &pluginName) noexcept :
-		m_translator{make_unique<QTranslator>()}
+		m_translator{std::make_unique<QTranslator>()}
 {
 	
 	if (m_translator->load(pluginName + '_' + language, pluginTranslationDir))

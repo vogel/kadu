@@ -41,7 +41,7 @@ GTalkProtocolFactory::GTalkProtocolFactory(QObject *parent) :
 {
 	Q_UNUSED(parent);
 
-	m_statusAdapter = make_unique<JabberStatusAdapter>();
+	m_statusAdapter = std::make_unique<JabberStatusAdapter>();
 
 	// already sorted
 	m_supportedStatusTypes.append(StatusType::FreeForChat);

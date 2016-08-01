@@ -65,7 +65,7 @@ public:
 	template<typename T, typename ...Args>
 	std::unique_ptr<T> makeUnique(Args&& ...args)
 	{
-		auto result = make_unique<T>(std::forward<Args>(args)...);
+		auto result = std::make_unique<T>(std::forward<Args>(args)...);
 		injectInto(result.get());
 		return result;
 	}

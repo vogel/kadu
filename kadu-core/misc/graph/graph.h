@@ -55,7 +55,7 @@ public:
 		if (contains(m_nodes, payload))
 			return m_nodes.at(payload).get();
 
-		auto node = make_unique<NodeType>(payload);
+		auto node = std::make_unique<NodeType>(payload);
 		auto result = node.get();
 		m_nodes.insert(std::make_pair(payload, std::move(node)));
 		return result;

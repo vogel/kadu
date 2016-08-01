@@ -25,7 +25,7 @@
 #include "url-handlers/standard-url-expander.h"
 
 StandardUrlDomVisitorProvider::StandardUrlDomVisitorProvider(Configuration *configuration) :
-	m_ignoreLinks{make_unique<StandardUrlExpander>(QRegExp{"\\b(http://|https://|www\\.|ftp://)([^\\s]*)"})},
+	m_ignoreLinks{std::make_unique<StandardUrlExpander>(QRegExp{"\\b(http://|https://|www\\.|ftp://)([^\\s]*)"})},
 	m_configurator{configuration}
 {
 	m_configurator.setStandardUrlExpander(static_cast<StandardUrlExpander *>(m_ignoreLinks.visitor()));

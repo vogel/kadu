@@ -68,7 +68,7 @@ private slots:
 
 std::unique_ptr<PluginConflictResolver> PluginConflictResolverTest::createPluginConflictResolver(const QVector<PluginTuple> &plugins)
 {
-	auto result = make_unique<PluginConflictResolver>();
+	auto result = std::make_unique<PluginConflictResolver>();
 	result.get()->setPluginDependencyHandler(createPluginDependencyHandler(plugins, result.get()));
 	return result;
 }

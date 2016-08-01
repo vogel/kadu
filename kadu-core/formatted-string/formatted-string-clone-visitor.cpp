@@ -64,19 +64,19 @@ void FormattedStringCloneVisitor::endVisit(const CompositeFormattedString * cons
 			break;
 	}
 	std::reverse(std::begin(items), std::end(items));
-	ItemsStack.push(make_unique<CompositeFormattedString>(std::move(items)));
+	ItemsStack.push(std::make_unique<CompositeFormattedString>(std::move(items)));
 }
 
 void FormattedStringCloneVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
 {
 	cloned(formattedStringImageBlock->image().isNull()
-			? make_unique<FormattedStringImageBlock>(formattedStringImageBlock->imagePath())
-			: make_unique<FormattedStringImageBlock>(formattedStringImageBlock->image()));
+			? std::make_unique<FormattedStringImageBlock>(formattedStringImageBlock->imagePath())
+			: std::make_unique<FormattedStringImageBlock>(formattedStringImageBlock->image()));
 }
 
 void FormattedStringCloneVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	cloned(make_unique<FormattedStringTextBlock>(
+	cloned(std::make_unique<FormattedStringTextBlock>(
 		formattedStringTextBlock->content(),
 		formattedStringTextBlock->bold(),
 		formattedStringTextBlock->italic(),

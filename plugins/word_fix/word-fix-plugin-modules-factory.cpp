@@ -35,7 +35,7 @@ WordFixPluginModulesFactory::~WordFixPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> WordFixPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<WordFixModule>());
+	modules.emplace_back(std::make_unique<WordFixModule>());
 
 	return modules;
 }

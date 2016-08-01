@@ -25,7 +25,7 @@ if (NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE "${default}" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
 
-# C++11 support, warnings and other flags
+# C++14 support, warnings and other flags
 
 set (DEFINITIONS QT_USE_QSTRINGBUILDER QT_NO_CAST_TO_ASCII QT_DISABLE_DEPRECATED_BEFORE=0x040900)
 list (APPEND DEFINITIONS KADU_EXPORT_TESTS)
@@ -37,17 +37,14 @@ if (MSVC)
 else ()
 	set (COMMON_COMPILE_FLAGS "-Wall -Wextra -Wundef -Wunused -Wuninitialized -Wcast-align -Wpointer-arith -fno-common")
 	set (C_FLAGS "-Wwrite-strings")
-	set (CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -std=c++0x ${CXX_FLAGS}")
-	set (CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+	set (CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -std=c++14 ${CXX_FLAGS}")
+	set (CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
 
 	if (NOT WIN32)
 		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -fvisibility=hidden")
 		set (CXX_FLAGS "${CXX_FLAGS} -fvisibility-inlines-hidden")
 	endif ()
 
-	# Qt 4.8.5 cannot detect Clang's C++11 features, it depends on
-	# detected GCC version, anc Clang mimics GCC 4.2.1. Let's mimic
-	# GCC 4.8.1.
 	if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -U__GNUC_MINOR__ -D__GNUC_MINOR__=8")
 	endif ()

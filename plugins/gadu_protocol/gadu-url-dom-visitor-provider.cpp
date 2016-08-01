@@ -25,7 +25,7 @@
 
 GaduUrlDomVisitorProvider::GaduUrlDomVisitorProvider(QObject *parent) :
 		QObject{parent},
-		m_ignoreLinks{make_unique<SimpleUrlExpander>(QRegExp{"\\bgg:(/){0,3}[0-9]{1,12}\\b"})}
+		m_ignoreLinks{std::make_unique<SimpleUrlExpander>(QRegExp{"\\bgg:(/){0,3}[0-9]{1,12}\\b"})}
 {
 }
 

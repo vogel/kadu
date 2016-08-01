@@ -43,7 +43,7 @@ pkg_check_modules (INJEQT REQUIRED injeqt>=1.1)
 include_directories (${INJEQT_INCLUDEDIR})
 link_directories (${INJEQT_LIBRARY_DIRS})
 
-set (CMAKE_CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -std=c++0x ${CMAKE_CXX_FLAGS}")
+set (CMAKE_CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -std=c++14 ${CMAKE_CXX_FLAGS}")
 
 if (NOT WIN32)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden")

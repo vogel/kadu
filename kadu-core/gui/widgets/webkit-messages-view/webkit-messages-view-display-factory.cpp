@@ -48,13 +48,13 @@ std::unique_ptr<WebkitMessagesViewDisplay> WebkitMessagesViewDisplayFactory::cre
 {
 	if (m_chatStyleManager && m_chatStyleManager->cfgNoHeaderRepeat())
 	{
-		auto result = make_unique<WebkitMessagesViewClearingDisplay>(chatStyleRenderer);
+		auto result = std::make_unique<WebkitMessagesViewClearingDisplay>(chatStyleRenderer);
 		result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
 		return std::move(result);
 	}
 	else
 	{
-		auto result = make_unique<WebkitMessagesViewRemovingDisplay>(chatStyleRenderer);
+		auto result = std::make_unique<WebkitMessagesViewRemovingDisplay>(chatStyleRenderer);
 		result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
 		return std::move(result);
 	}

@@ -42,7 +42,7 @@ GaduProtocolFactory::GaduProtocolFactory(QObject *parent) :
 {
 	Q_UNUSED(parent);
 
-	MyStatusAdapter = make_unique<GaduStatusAdapter>();
+	MyStatusAdapter = std::make_unique<GaduStatusAdapter>();
 
 	// already sorted
 	SupportedStatusTypes.append(StatusType::FreeForChat);

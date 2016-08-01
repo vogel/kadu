@@ -26,7 +26,7 @@
 
 VideoExpanderDomVisitorProvider::VideoExpanderDomVisitorProvider(QObject *parent) :
 		QObject{parent},
-		m_ignoreLinks{make_unique<VideoExpander>()}
+		m_ignoreLinks{std::make_unique<VideoExpander>()}
 {
 }
 

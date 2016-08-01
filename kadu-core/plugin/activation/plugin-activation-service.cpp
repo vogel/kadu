@@ -134,7 +134,7 @@ void PluginActivationService::activatePlugin(const QString &pluginName)
 {
 	if (!contains(m_activePlugins, pluginName))
 	{
-		m_activePlugins.insert(std::make_pair(pluginName, make_unique<ActivePlugin>(
+		m_activePlugins.insert(std::make_pair(pluginName, std::make_unique<ActivePlugin>(
 			m_pathsProvider->pluginsLibPath(),
 			m_pathsProvider->dataPath() + QStringLiteral("plugins/translations"),
 			m_configuration->deprecatedApi()->readEntry("General", "Language"),

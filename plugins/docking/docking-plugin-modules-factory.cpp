@@ -35,7 +35,7 @@ DockingPluginModulesFactory::~DockingPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> DockingPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<DockingModule>());
+	modules.emplace_back(std::make_unique<DockingModule>());
 
 	return modules;
 }

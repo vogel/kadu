@@ -66,7 +66,7 @@ private slots:
 
 std::unique_ptr<PluginDependencyHandler> PluginDependencyHandlerTest::createPluginDependencyHandler(const QVector<QPair<QString, QStringList>> &plugins)
 {
-	auto result = make_unique<PluginDependencyHandler>();
+	auto result = std::make_unique<PluginDependencyHandler>();
 	result.get()->setPluginDependencyGraphBuilder(new PluginDependencyGraphBuilder{result.get()});
 	result.get()->setPluginMetadataProvider(createMetatadataProvider(plugins, result.get()));
 	result.get()->init();

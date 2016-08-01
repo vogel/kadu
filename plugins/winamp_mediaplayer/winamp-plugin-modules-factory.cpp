@@ -35,7 +35,7 @@ WinampPluginModulesFactory::~WinampPluginModulesFactory()
 std::vector<std::unique_ptr<injeqt::module>> WinampPluginModulesFactory::createPluginModules() const
 {
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(make_unique<WinampModule>());
+	modules.emplace_back(std::make_unique<WinampModule>());
 
 	return modules;
 }

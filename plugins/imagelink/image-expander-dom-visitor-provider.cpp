@@ -26,7 +26,7 @@
 
 ImageExpanderDomVisitorProvider::ImageExpanderDomVisitorProvider(QObject *parent) :
 		QObject{parent},
-		m_ignoreLinksVisitor{make_unique<ImageExpander>()}
+		m_ignoreLinksVisitor{std::make_unique<ImageExpander>()}
 {
 }
 
