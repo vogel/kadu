@@ -21,7 +21,7 @@
 #include "message-html-renderer-service.h"
 
 #include "dom/dom-processor-service.h"
-#include "formatted-string/formatted-string-dom-visitor.h"
+#include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "message/message.h"
@@ -42,20 +42,11 @@ void MessageHtmlRendererService::setDomProcessorService(DomProcessorService *dom
 
 QString MessageHtmlRendererService::renderMessage(const Message &message)
 {
-	FormattedStringDomVisitor formattedStringDomVisitor;
-	message.content()->accept(&formattedStringDomVisitor);
+	FormattedStringHtmlVisitor formattedStringHtmlVisitor;
+	message.content()->accept(&formattedStringHtmlVisitor);
 
-	auto domDocument = formattedStringDomVisitor.result();
-	m_domProcessorService->process(domDocument);
-
-	if (domDocument.documentElement().childNodes().isEmpty())
-		return QString{};
-
-	auto result = domDocument.toString(-1).trimmed();
-	// remove <message></message>
-	Q_ASSERT(result.startsWith(QStringLiteral("<message>")));
-	Q_ASSERT(result.endsWith(QStringLiteral("</message>")));
-	return result.mid(static_cast<int>(qstrlen("<message>")), result.length() - static_cast<int>(qstrlen("<message></message>")));
+	auto html = formattedStringHtmlVisitor.result();
+	return m_domProcessorService->process(html);
 }
 
 #include "moc_message-html-renderer-service.cpp"
