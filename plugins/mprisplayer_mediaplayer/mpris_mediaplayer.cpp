@@ -43,7 +43,6 @@ MPRISMediaPlayer::~MPRISMediaPlayer()
 
 void MPRISMediaPlayer::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	printf("set mediaplayer called\n");
 	m_mediaPlayer = mediaPlayer;
 }
 
