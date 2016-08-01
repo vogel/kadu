@@ -58,5 +58,5 @@ owned_qptr<WebkitMessagesView> WebkitMessagesViewFactory::createWebkitMessagesVi
 	connect(m_chatStyleRendererFactoryProvider, SIGNAL(chatStyleRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory>)),
 			result.get(), SLOT(setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory>)));
 
-	return std::move(result);
+	return result;
 }

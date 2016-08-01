@@ -58,6 +58,9 @@ void WindowsTaskbarProgress::progressChanged(int progress)
 	}
 	else
 		m_taskbarProgress->setVisible(false);
+#else
+	Q_UNUSED(progress);
+	Q_UNUSED(m_taskbarProgress);
 #endif
 }
 

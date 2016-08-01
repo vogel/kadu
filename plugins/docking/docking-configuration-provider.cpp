@@ -60,9 +60,9 @@ void DockingConfigurationProvider::configurationUpdated()
 {
 	m_dockingConfiguration = DockingConfiguration
 	{
-		RunDocked: m_configuration->deprecatedApi()->readBoolEntry("General", "RunDocked"),
-		ShowTooltipInTray: m_configuration->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"),
-		NewMessageIcon: static_cast<StatusNotifierItemAttentionMode>(m_configuration->deprecatedApi()->readNumEntry("Look", "NewMessageIcon"))
+		m_configuration->deprecatedApi()->readBoolEntry("General", "RunDocked"),
+		m_configuration->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"),
+		static_cast<StatusNotifierItemAttentionMode>(m_configuration->deprecatedApi()->readNumEntry("Look", "NewMessageIcon"))
 	};
 
 	emit updated();

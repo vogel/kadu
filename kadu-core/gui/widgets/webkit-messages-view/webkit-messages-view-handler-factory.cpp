@@ -56,5 +56,5 @@ owned_qptr<WebkitMessagesViewHandler> WebkitMessagesViewHandlerFactory::createWe
 			? MessageLimitPolicy::None
 			: MessageLimitPolicy::Value);
 
-	return std::move(result);
+	return result;
 }

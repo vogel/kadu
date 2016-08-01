@@ -32,6 +32,6 @@ public:
 	virtual ~MprisPlayerPluginModulesFactory();
 
 	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-	virtual QString parentInjectorName() const;
+	virtual QString parentInjectorName() const override;
 
 };

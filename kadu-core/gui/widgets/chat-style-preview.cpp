@@ -142,7 +142,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	auto result = m_webkitMessagesViewFactory->createWebkitMessagesView(chat, false, this);
 	result->add(sentMessage);
 	result->add(receivedMessage);
-	return std::move(result);
+	return result;
 }
 
 void ChatStylePreview::configurationUpdated()
