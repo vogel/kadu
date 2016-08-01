@@ -42,13 +42,13 @@ OpenChatRepository::Iterator OpenChatRepository::end() const
 
 void OpenChatRepository::addOpenChat(Chat chat)
 {
-	m_chats.push_back(chat);
+	m_chats.insert(chat);
 	emit openChatAdded(chat);
 }
 
 void OpenChatRepository::removeOpenChat(Chat chat)
 {
-	m_chats.erase(std::remove(std::begin(m_chats), std::end(m_chats), chat), std::end(m_chats));
+	m_chats.erase(chat);
 	emit openChatRemoved(chat);
 }
 

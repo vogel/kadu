@@ -24,7 +24,7 @@
 
 #include <QtCore/QObject>
 #include <injeqt/injeqt.h>
-#include <vector>
+#include <set>
 
 /**
  * @addtogroup Chat
@@ -39,7 +39,7 @@ class KADUAPI RecentChatRepository : public QObject
 {
 	Q_OBJECT
 
-	using Storage = std::vector<Chat>;
+	using Storage = std::set<Chat>;
 
 public:
 	using Iterator = Storage::const_iterator;

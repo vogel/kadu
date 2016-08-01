@@ -42,13 +42,13 @@ RecentChatRepository::Iterator RecentChatRepository::end() const
 
 void RecentChatRepository::addRecentChat(Chat chat)
 {
-	m_chats.push_back(chat);
+	m_chats.insert(chat);
 	emit recentChatAdded(chat);
 }
 
 void RecentChatRepository::removeRecentChat(Chat chat)
 {
-	m_chats.erase(std::remove(std::begin(m_chats), std::end(m_chats), chat), std::end(m_chats));
+	m_chats.erase(chat);
 	emit recentChatRemoved(chat);
 }
 

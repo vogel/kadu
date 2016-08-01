@@ -27,7 +27,7 @@ class OpenChatRepositoryTest : public QObject
 
 private slots:
 	void shouldBeEmptyAfterCreation();
-	void shouldContainAddedElements();
+	void shouldContainAddedElementsOnce();
 	void shouldNotContainRemovedElements();
 	void shouldEmitAddedAfterAdding();
 	void shouldEmitRemovedAfterRemoving();
@@ -75,7 +75,7 @@ void OpenChatRepositoryTest::shouldBeEmptyAfterCreation()
 	QVERIFY(openChatRepository.begin() == openChatRepository.end());
 }
 
-void OpenChatRepositoryTest::shouldContainAddedElements()
+void OpenChatRepositoryTest::shouldContainAddedElementsOnce()
 {
 	OpenChatRepository openChatRepository{};
 	auto chat1 = Chat{new ChatShared{}};
@@ -84,6 +84,11 @@ void OpenChatRepositoryTest::shouldContainAddedElements()
 	openChatRepository.addOpenChat(chat1);
 	QCOMPARE(openChatRepository.size(), size_t{1});
 	QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat1) != openChatRepository.end());
+
+	openChatRepository.addOpenChat(chat2);
+	QCOMPARE(openChatRepository.size(), size_t{2});
+	QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat1) != openChatRepository.end());
+	QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat2) != openChatRepository.end());
 
 	openChatRepository.addOpenChat(chat2);
 	QCOMPARE(openChatRepository.size(), size_t{2});
