@@ -2,7 +2,6 @@ set (formatted-string_SRCS
 	composite-formatted-string.cpp
 	formatted-string.cpp
 	formatted-string-clone-visitor.cpp
-	formatted-string-dom-visitor.cpp
 	formatted-string-factory.cpp
 	formatted-string-html-visitor.cpp
 	formatted-string-image-block.cpp
