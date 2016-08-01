@@ -63,7 +63,7 @@ QString DomProcessorService::process(const QString &xml)
 	if (domDocument.documentElement().childNodes().isEmpty())
 		return QString();
 
-	QString result = domDocument.toString(0).trimmed();
+	QString result = domDocument.toString(-1).trimmed();
 	// remove <div></div>
 	Q_ASSERT(result.startsWith(QStringLiteral("<div>")));
 	Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
