@@ -22,6 +22,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class DomProcessorService;
 class Message;
@@ -55,7 +56,7 @@ public:
 	QString renderMessage(const Message &message);
 
 private:
-	QPointer<DomProcessorService> CurrentDomProcessorService;
+	QPointer<DomProcessorService> m_domProcessorService;
 
 private slots:
 	/**

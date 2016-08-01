@@ -18,13 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "message-html-renderer-service.h"
+
 #include "dom/dom-processor-service.h"
 #include "formatted-string/formatted-string-dom-visitor.h"
 #include "formatted-string/formatted-string.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "message/message.h"
-
-#include "message-html-renderer-service.h"
 
 MessageHtmlRendererService::MessageHtmlRendererService(QObject *parent) :
 		QObject(parent)
@@ -37,7 +37,7 @@ MessageHtmlRendererService::~MessageHtmlRendererService()
 
 void MessageHtmlRendererService::setDomProcessorService(DomProcessorService *domProcessorService)
 {
-	CurrentDomProcessorService = domProcessorService;
+	m_domProcessorService = domProcessorService;
 }
 
 QString MessageHtmlRendererService::renderMessage(const Message &message)
@@ -45,15 +45,13 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
 	FormattedStringDomVisitor formattedStringDomVisitor;
 	message.content()->accept(&formattedStringDomVisitor);
 
-	QDomDocument domDocument = formattedStringDomVisitor.result();
-
-	if (CurrentDomProcessorService)
-		CurrentDomProcessorService.data()->process(domDocument);
+	auto domDocument = formattedStringDomVisitor.result();
+	m_domProcessorService->process(domDocument);
 
 	if (domDocument.documentElement().childNodes().isEmpty())
-		return QString();
+		return QString{};
 
-	QString result = domDocument.toString(-1).trimmed();
+	auto result = domDocument.toString(-1).trimmed();
 	// remove <message></message>
 	Q_ASSERT(result.startsWith(QStringLiteral("<message>")));
 	Q_ASSERT(result.endsWith(QStringLiteral("</message>")));
