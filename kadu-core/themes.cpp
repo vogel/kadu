@@ -164,7 +164,7 @@ QStringList Themes::defaultPathsProviderWithThemes() const
 {
 	QStringList result;
 
-	auto path = m_pathsProvider->dataPath() + QStringLiteral("themes/") + Name;
+	auto path = QString{m_pathsProvider->dataPath() + QStringLiteral("themes/") + Name};
 	foreach(const QString &it, getSubDirs(path))
 		result << (path + '/' + it + '/');
 
