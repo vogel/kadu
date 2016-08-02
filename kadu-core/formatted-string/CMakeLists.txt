@@ -9,9 +9,11 @@ set (formatted-string_SRCS
 	formatted-string-is-plain-text-visitor.cpp
 	formatted-string-plain-text-visitor.cpp
 	formatted-string-text-block.cpp
+	text-converter-service.cpp
 )
 
 kadu_add_test (force-nbsp-dom-visitor)
 kadu_add_test (formatted-string-factory)
+kadu_add_test (text-converter-service)
 
 kadu_subdirectory (formatted-string "${formatted-string_SRCS}" "" "")
