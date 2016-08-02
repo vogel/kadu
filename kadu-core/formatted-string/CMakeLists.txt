@@ -7,6 +7,7 @@ set (formatted-string_SRCS
 	formatted-string-html-visitor.cpp
 	formatted-string-image-block.cpp
 	formatted-string-is-plain-text-visitor.cpp
+	formatted-string-module.cpp
 	formatted-string-plain-text-visitor.cpp
 	formatted-string-text-block.cpp
 	text-converter-service.cpp

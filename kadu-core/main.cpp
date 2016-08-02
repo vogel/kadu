@@ -44,6 +44,7 @@
 #include "execution-arguments/execution-arguments-parser.h"
 #include "execution-arguments/execution-arguments.h"
 #include "file-transfer/file-transfer-module.h"
+#include "formatted-string/formatted-string-module.h"
 #include "gui/gui-module.h"
 #include "gui/widgets/chat-widget/chat-widget-module.h"
 #include "gui/windows/chat-window/chat-window-module.h"
@@ -70,6 +71,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
 #include <injeqt/injector.h>
+#include <memory>
 
 #ifndef Q_OS_WIN
 #include <sys/file.h>
@@ -224,6 +226,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(std::make_unique<ContactModule>());
 	modules.emplace_back(std::make_unique<DomModule>());
 	modules.emplace_back(std::make_unique<FileTransferModule>());
+	modules.emplace_back(std::make_unique<FormattedStringModule>());
 	modules.emplace_back(std::make_unique<GuiModule>());
 	modules.emplace_back(std::make_unique<IconsModule>());
 	modules.emplace_back(std::make_unique<IdentityModule>());
