@@ -73,6 +73,8 @@ void AutoresponderConfigurator::configurationUpdated()
 	configuration.setStatusAvailable(m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "StatusAvailable"));
 	configuration.setStatusBusy(m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "StatusBusy"));
 	configuration.setStatusInvisible(m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "StatusInvisible"));
+
+	m_autoresponderMessageFilter->setConfiguration(configuration);
 }
 
 #include "moc_autoresponder-configurator.cpp"
