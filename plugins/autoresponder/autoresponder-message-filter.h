@@ -35,6 +35,7 @@ class ChatWidget;
 class MessageManager;
 class Parser;
 class StatusTypeManager;
+class TextConverterService;
 
 class AutoresponderMessageFilter : public QObject, public MessageFilter
 {
@@ -56,6 +57,7 @@ private:
 	QPointer<MessageManager> m_messageManager;
 	QPointer<Parser> m_parser;
 	QPointer<StatusTypeManager> m_statusTypeManager;
+	QPointer<TextConverterService> m_textConverterService;
 
 	AutoresponderConfiguration Configuration;
 
@@ -66,6 +68,7 @@ private slots:
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+	INJEQT_SET void setTextConverterService(TextConverterService *textConverterService);
 	INJEQT_INIT void init();
 
 };

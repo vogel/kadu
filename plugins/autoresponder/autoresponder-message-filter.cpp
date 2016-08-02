@@ -25,6 +25,7 @@
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "formatted-string/text-converter-service.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -70,6 +71,11 @@ void AutoresponderMessageFilter::setStatusTypeManager(StatusTypeManager *statusT
 	m_statusTypeManager = statusTypeManager;
 }
 
+void AutoresponderMessageFilter::setTextConverterService(TextConverterService *textConverterService)
+{
+	m_textConverterService = textConverterService;
+}
+
 void AutoresponderMessageFilter::init()
 {
 	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)),
@@ -81,7 +87,7 @@ bool AutoresponderMessageFilter::acceptMessage(const Message &message)
 	if (MessageTypeSent == message.type())
 		return true;
 
-	if (message.plainTextContent().left(5) == "KADU ") // ignore other kadu autoresponses
+	if (m_textConverterService->htmlToPlain(message.htmlContent()).left(5) == "KADU ") // ignore other kadu autoresponses
 		return true;
 
 	if (!Configuration.respondConferences() && (message.messageChat().contacts().count() > 1))

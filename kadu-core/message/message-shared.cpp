@@ -25,7 +25,6 @@
 #include "core/injected-factory.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
-#include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "formatted-string/formatted-string.h"
 #include "message/message-manager.h"
 #include "message/message.h"
@@ -147,18 +146,12 @@ void MessageShared::setContent(std::unique_ptr<FormattedString> &&content)
 
 	if (!Content)
 	{
-		PlainTextContent.clear();
 		HtmlContent.clear();
 	}
 	else
 	{
-		FormattedStringPlainTextVisitor plainTextVisitor;
 		FormattedStringHtmlVisitor htmlVisitor;
-
-		Content->accept(&plainTextVisitor);
 		Content->accept(&htmlVisitor);
-
-		PlainTextContent = plainTextVisitor.result();
 		HtmlContent = htmlVisitor.result();
 	}
 }

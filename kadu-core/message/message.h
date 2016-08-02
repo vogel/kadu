@@ -50,7 +50,6 @@ public:
 	KaduSharedBase_PropertyCRW(Contact, messageSender, MessageSender)
 	void setContent(std::unique_ptr<FormattedString> &&content) const;
 	KaduSharedBase_PropertyRead(FormattedString *, content, Content)
-	KaduSharedBase_PropertyRead(QString, plainTextContent, PlainTextContent)
 	KaduSharedBase_PropertyRead(QString, htmlContent, HtmlContent)
 	KaduSharedBase_PropertyCRW(QDateTime, receiveDate, ReceiveDate)
 	KaduSharedBase_PropertyCRW(QDateTime, sendDate, SendDate)

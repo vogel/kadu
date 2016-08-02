@@ -31,6 +31,7 @@ class CenzorNotificationService;
 class Chat;
 class Contact;
 class MessageManager;
+class TextConverterService;
 
 class CenzorMessageFilter : public QObject, public MessageFilter
 {
@@ -47,6 +48,7 @@ private:
 	QPointer<CenzorConfiguration> m_cenzorConfiguration;
 	QPointer<CenzorNotificationService> m_cenzorNotificationService;
 	QPointer<MessageManager> m_messageManager;
+	QPointer<TextConverterService> m_textConverterService;
 
 	bool shouldIgnore(const QString &message);
 	bool isExclusion(const QString &word);
@@ -55,5 +57,6 @@ private slots:
 	INJEQT_SET void setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration);
 	INJEQT_SET void setCenzorNotificationService(CenzorNotificationService *cenzorNotificationService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setTextConverterService(TextConverterService *textConverterService);
 
 };

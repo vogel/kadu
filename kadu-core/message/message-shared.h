@@ -54,7 +54,6 @@ public:
 
 	KaduShared_PropertyDeclCRW(Chat, messageChat, MessageChat)
 	KaduShared_PropertyDeclCRW(Contact, messageSender, MessageSender)
-	KaduShared_PropertyRead(QString, plainTextContent, PlainTextContent)
 	KaduShared_PropertyRead(QString, htmlContent, HtmlContent)
 	KaduShared_Property(const QDateTime &, receiveDate, ReceiveDate)
 	KaduShared_Property(const QDateTime &, sendDate, SendDate)
@@ -87,7 +86,6 @@ private:
 	Chat *MessageChat;
 	Contact *MessageSender;
 	std::unique_ptr<FormattedString> Content;
-	QString PlainTextContent;
 	QString HtmlContent;
 	QDateTime ReceiveDate;
 	QDateTime SendDate;

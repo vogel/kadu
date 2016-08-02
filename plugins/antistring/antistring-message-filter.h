@@ -31,6 +31,7 @@ class AntistringConfiguration;
 class AntistringNotificationService;
 class Contact;
 class MessageManager;
+class TextConverterService;
 
 class AntistringMessageFilter : public QObject, public MessageFilter
 {
@@ -46,6 +47,7 @@ private:
 	QPointer<AntistringConfiguration> m_antistringConfiguration;
 	QPointer<AntistringNotificationService> m_antistringNotificationService;
 	QPointer<MessageManager> m_messageManager;
+	QPointer<TextConverterService> m_textConverterService;
 
 	int points(const QString &message);
 	void writeLog(Contact sender, const QString &message);
@@ -54,5 +56,6 @@ private slots:
 	INJEQT_SET void setAntistringConfiguration(AntistringConfiguration *antistringConfiguration);
 	INJEQT_SET void setAntistringNotificationService(AntistringNotificationService *antistringNotificationService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
+	INJEQT_SET void setTextConverterService(TextConverterService *textConverterService);
 
 };

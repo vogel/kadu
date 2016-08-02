@@ -64,7 +64,6 @@ void Message::setContent(std::unique_ptr<FormattedString> &&content) const
 }
 
 KaduSharedBase_PropertyReadDef(Message, FormattedString *, content, Content, 0)
-KaduSharedBase_PropertyReadDef(Message, QString, plainTextContent, PlainTextContent, QString())
 KaduSharedBase_PropertyReadDef(Message, QString, htmlContent, HtmlContent, QString())
 KaduSharedBase_PropertyDefCRW(Message, QDateTime, receiveDate, ReceiveDate, QDateTime())
 KaduSharedBase_PropertyDefCRW(Message, QDateTime, sendDate, SendDate, QDateTime())

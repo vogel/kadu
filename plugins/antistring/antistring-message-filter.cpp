@@ -25,6 +25,7 @@
 
 #include "chat/chat.h"
 #include "contacts/contact.h"
+#include "formatted-string/text-converter-service.h"
 #include "message/message-manager.h"
 
 #include <QtCore/QFile>
@@ -54,6 +55,11 @@ void AntistringMessageFilter::setMessageManager(MessageManager *messageManager)
 	m_messageManager = messageManager;
 }
 
+void AntistringMessageFilter::setTextConverterService(TextConverterService *textConverterService)
+{
+	m_textConverterService = textConverterService;
+}
+
 bool AntistringMessageFilter::acceptMessage(const Message &message)
 {
 	if (!m_antistringConfiguration->enabled())
@@ -62,7 +68,7 @@ bool AntistringMessageFilter::acceptMessage(const Message &message)
 	if (MessageTypeSent == message.type())
 		return true;
 
-	if (points(message.plainTextContent()) < 3)
+	if (points(m_textConverterService->htmlToPlain(message.htmlContent())) < 3)
 		return true;
 
 	m_antistringNotificationService->notifyStringReceived(message.messageChat());

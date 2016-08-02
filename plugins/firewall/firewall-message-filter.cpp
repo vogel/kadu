@@ -55,6 +55,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "formatted-string/text-converter-service.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -152,6 +153,11 @@ void FirewallMessageFilter::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
+void FirewallMessageFilter::setTextConverterService(TextConverterService *textConverterService)
+{
+	m_textConverterService = textConverterService;
+}
+
 void FirewallMessageFilter::init()
 {
 	pattern.setCaseSensitivity(Qt::CaseSensitive);
@@ -201,6 +207,7 @@ bool FirewallMessageFilter::acceptMessage(const Message &message)
  */
 bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 {
+	auto plainTextContent = m_textConverterService->htmlToPlain(message.htmlContent());
 	bool ignore = false;
 
 // emotikony s� sprawdzane nawet przy ��czeniu
@@ -208,14 +215,14 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 
 	if (CheckFloodingEmoticons)
 	{
-		if ((!EmoticonsAllowKnown || message.messageSender().isAnonymous()) && checkEmoticons(message.plainTextContent()))
+		if ((!EmoticonsAllowKnown || message.messageSender().isAnonymous()) && checkEmoticons(plainTextContent))
 		{
 			ignore = true;
 			if (LastNotify.elapsed() > min_interval_notify)
 			{
 				m_firewallNotificationService->notifyBlockedMessage(message.messageChat(), message.messageSender(), tr("flooding DoS attack with emoticons!"));
 
-				writeLog(message.messageSender(), message.plainTextContent());
+				writeLog(message.messageSender(), plainTextContent);
 
 				LastNotify.restart();
 			}
@@ -232,7 +239,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 		{
 			m_firewallNotificationService->notifyBlockedMessage(message.messageChat(), message.messageSender(), tr("flooding DoS attack!"));
 
-			writeLog(message.messageSender(), message.plainTextContent());
+			writeLog(message.messageSender(), plainTextContent);
 
 			LastNotify.restart();
 		}
@@ -241,7 +248,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 	}
 
 // ochrona przed anonimami
-	if (checkChat(message.messageChat(), message.messageSender(), message.plainTextContent(), ignore))
+	if (checkChat(message.messageChat(), message.messageSender(), plainTextContent, ignore))
 		ignore = true;
 
 // ochrona przed konferencjami
@@ -251,12 +258,12 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 // wiadomosc zatrzymana. zapisz do loga i wyswietl dymek
 	if (ignore)
 	{
-		if (message.plainTextContent().length() > 50)
-			m_firewallNotificationService->notifyBlockedMessage(message.messageChat(), message.messageSender(), message.plainTextContent().left(50).append("..."));
+		if (plainTextContent.length() > 50)
+			m_firewallNotificationService->notifyBlockedMessage(message.messageChat(), message.messageSender(), plainTextContent.left(50).append("..."));
 		else
-			m_firewallNotificationService->notifyBlockedMessage(message.messageChat(), message.messageSender(), message.plainTextContent());
+			m_firewallNotificationService->notifyBlockedMessage(message.messageChat(), message.messageSender(), plainTextContent);
 
-		writeLog(message.messageSender(), message.plainTextContent());
+		writeLog(message.messageSender(), plainTextContent);
 
 		if (WriteInHistory)
 		{
