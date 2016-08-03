@@ -72,7 +72,7 @@ class GaduChatService : public ChatService
 	QPointer<GaduReceivedHtmlFixupService> m_gaduReceivedHtmlFixupService;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<ImageStorageService> CurrentImageStorageService;
-	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<MessageStorage> m_messageStorage;
 
 	QPointer<GaduConnection> Connection;

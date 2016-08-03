@@ -24,6 +24,8 @@
 
 #include <QtCore/QObject>
 
+class FormattedString;
+
 /**
  * @addtogroup Message
  * @{
@@ -48,7 +50,7 @@ public:
 	/**
 	 * @short Send new message to given chat.
 	 * @param chat chat to send message to
-	 * @param content content to be sent, can be HTML or plain text
+	 * @param htmlContent HTML content to be sent
 	 * @param silent if true, no messageSent signal will be emitted
 	 *
 	 * This methods sends a message to given chat. Message is passed as HTML string. Protocols are
@@ -58,22 +60,7 @@ public:
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
 	 */
-	virtual bool sendMessage(const Chat &chat, const QString &content, bool silent = false) = 0;
-
-	/**
-	 * @short Send new message to given chat.
-	 * @param chat chat to send message to
-	 * @param content formatted content to be sent
-	 * @param silent if true, no messageSent signal will be emitted
-	 *
-	 * This methods sends a message to given chat. Message is passed as HTML string. Protocols are
-	 * free to ignore any HTML formatting.
-	 *
-	 * If silent parameter is true, no messageSent signal will be emitted. This is usefull for plugins
-	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
-	 * chat view.
-	 */
-	virtual bool sendMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content, bool silent = false) = 0;
+	virtual bool sendMessage(const Chat &chat, QString htmlContent, bool silent = false) = 0;
 
 	/**
 	 * @short Send new raw message to given chat.

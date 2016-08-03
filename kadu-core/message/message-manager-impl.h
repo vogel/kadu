@@ -29,7 +29,6 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
-class FormattedStringFactory;
 class MessageFilterService;
 class MessageStorage;
 class MessageTransformerService;
@@ -42,8 +41,7 @@ public:
 	Q_INVOKABLE explicit MessageManagerImpl(QObject *parent = nullptr);
 	virtual ~MessageManagerImpl();
 
-	virtual bool sendMessage(const Chat &chat, const QString &content, bool silent = false) override;
-	virtual bool sendMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content, bool silent = false) override;
+	virtual bool sendMessage(const Chat &chat, QString htmlContent, bool silent = false) override;
 	virtual bool sendRawMessage(const Chat &chat, const QByteArray &content) override;
 
 protected:
@@ -55,7 +53,6 @@ private:
 	QPointer<MessageFilterService> m_messageFilterService;
 	QPointer<MessageStorage> m_messageStorage;
 	QPointer<MessageTransformerService> m_messageTransformerService;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
 	/**
 	 * @short Create outoing message for given chat and given content.
@@ -63,7 +60,7 @@ private:
 	 * @param chat chat of outgoing message
 	 * @param content content of outgoing message
 	 */
-	Message createOutgoingMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content);
+	Message createOutgoingMessage(const Chat &chat, QString htmlContent);
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
@@ -82,13 +79,6 @@ private slots:
 	 * @param messageTransformerService message transformer service for this service
 	 */
 	INJEQT_SET void setMessageTransformerService(MessageTransformerService *messageTransformerService);
-
-	/**
-	 * @short Set formatted string factory for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param formattedStringFactory formatted string factory for this service
-	 */
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

@@ -26,7 +26,6 @@
 #include "chat/chat-storage.h"
 #include "contacts/contact-storage.h"
 #include "core/myself.h"
-#include "formatted-string/formatted-string-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
@@ -69,11 +68,6 @@ void ChatStylePreview::setContactStorage(ContactStorage *contactStorage)
 void ChatStylePreview::setBuddyStorage(BuddyStorage *buddyStorage)
 {
 	m_buddyStorage = buddyStorage;
-}
-
-void ChatStylePreview::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	m_formattedStringFactory = formattedStringFactory;
 }
 
 void ChatStylePreview::setMessageStorage(MessageStorage *messageStorage)
@@ -127,7 +121,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	sentMessage.setMessageChat(chat);
 	sentMessage.setType(MessageTypeSent);
 	sentMessage.setMessageSender(contact);
-	sentMessage.setContent(m_formattedStringFactory->fromPlainText(tr("Your message")));
+	sentMessage.setHtmlContent(tr("Your message").toHtmlEscaped());
 	sentMessage.setReceiveDate(QDateTime::currentDateTime());
 	sentMessage.setSendDate(QDateTime::currentDateTime());
 
@@ -135,7 +129,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	receivedMessage.setMessageChat(chat);
 	receivedMessage.setType(MessageTypeReceived);
 	receivedMessage.setMessageSender(m_buddyPreferredManager->preferredContact(example));
-	receivedMessage.setContent(m_formattedStringFactory->fromPlainText(tr("Message from Your friend")));
+	receivedMessage.setHtmlContent(tr("Message from Your friend").toHtmlEscaped());
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
 

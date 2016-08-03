@@ -1108,7 +1108,7 @@ SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		message.setMessageChat(ChatsMapping->chatById(query.value(0).toInt()));
 		message.setType(type);
 		message.setMessageSender(sender);
-		message.setContent(m_formattedStringFactory.data()->fromHtml(stripAllScriptTags(query.value(2).toString())));
+		message.setHtmlContent(stripAllScriptTags(query.value(2).toString()));
 		message.setSendDate(query.value(3).toDateTime());
 		message.setReceiveDate(query.value(4).toDateTime());
 		if (outgoing)
@@ -1141,7 +1141,7 @@ SortedMessages HistorySqlStorage::statusesFromQuery(const Contact &contact, QSql
 				? Qt::escape(typeData.name())
 				: Qt::escape(QString("%1 with description: %2").arg(typeData.name()).arg(description));
 
-		message.setContent(m_formattedStringFactory.data()->fromHtml(htmlContent));
+		message.setHtmlContent(htmlContent);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
 		message.setReceiveDate(query.value(3).toDateTime());
@@ -1165,7 +1165,7 @@ SortedMessages HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());
-		message.setContent(m_formattedStringFactory.data()->fromPlainText(Qt::escape(query.value(0).toString())));
+		message.setHtmlContent(query.value(0).toString().toHtmlEscaped());
 
 		messages.push_back(message);
 	}

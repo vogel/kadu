@@ -27,6 +27,7 @@
 
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "contacts/contact-set.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "formatted-string/formatted-string.h"
 #include "gui/scoped-updates-disabler.h"
@@ -57,6 +58,11 @@ TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
 
 TimelineChatMessagesView::~TimelineChatMessagesView()
 {
+}
+
+void TimelineChatMessagesView::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	m_formattedStringFactory = formattedStringFactory;
 }
 
 void TimelineChatMessagesView::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
@@ -213,8 +219,9 @@ void TimelineChatMessagesView::newMessage(const Message &message)
 			return;
 	}
 
+	auto formattedContent = m_formattedStringFactory->fromHtml(message.htmlContent());
 	FormattedStringPlainTextVisitor plainTextVisitor;
-	message.content()->accept(&plainTextVisitor);
+	formattedContent->accept(&plainTextVisitor);
 
 	auto title = plainTextVisitor.result().replace('\n', ' ').replace('\r', ' ');
 	if (title.length() > DATE_TITLE_LENGTH)

@@ -48,9 +48,7 @@ public:
 
 	KaduSharedBase_PropertyCRW(Chat, messageChat, MessageChat)
 	KaduSharedBase_PropertyCRW(Contact, messageSender, MessageSender)
-	void setContent(std::unique_ptr<FormattedString> &&content) const;
-	KaduSharedBase_PropertyRead(FormattedString *, content, Content)
-	KaduSharedBase_PropertyRead(QString, htmlContent, HtmlContent)
+	KaduSharedBase_PropertyCRW(QString, htmlContent, HtmlContent)
 	KaduSharedBase_PropertyCRW(QDateTime, receiveDate, ReceiveDate)
 	KaduSharedBase_PropertyCRW(QDateTime, sendDate, SendDate)
 	KaduSharedBase_Property(MessageStatus, status, Status)

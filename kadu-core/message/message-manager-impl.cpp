@@ -22,8 +22,6 @@
 #include "message-manager-impl.h"
 
 #include "accounts/account-manager.h"
-#include "formatted-string/composite-formatted-string.h"
-#include "formatted-string/formatted-string-factory.h"
 #include "message/message-filter-service.h"
 #include "message/message-storage.h"
 #include "protocols/protocol.h"
@@ -57,11 +55,6 @@ void MessageManagerImpl::setMessageStorage(MessageStorage *messageStorage)
 void MessageManagerImpl::setMessageTransformerService(MessageTransformerService *messageTransformerService)
 {
 	m_messageTransformerService = messageTransformerService;
-}
-
-void MessageManagerImpl::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	m_formattedStringFactory = formattedStringFactory;
 }
 
 void MessageManagerImpl::init()
@@ -116,34 +109,26 @@ void MessageManagerImpl::messageReceivedSlot(const Message &message)
 	emit messageReceived(transformedMessage);
 }
 
-bool MessageManagerImpl::sendMessage(const Chat &chat, const QString &content, bool silent)
-{
-	if (!m_formattedStringFactory)
-		return false;
-
-	return sendMessage(chat, m_formattedStringFactory.data()->fromText(content), silent);
-}
-
-Message MessageManagerImpl::createOutgoingMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content)
+Message MessageManagerImpl::createOutgoingMessage(const Chat &chat, QString htmlContent)
 {
 	Message message = m_messageStorage->create();
 	message.setMessageChat(chat);
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());
-	message.setContent(std::move(content));
+	message.setHtmlContent(std::move(htmlContent));
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
 	return message;
 }
 
-bool MessageManagerImpl::sendMessage(const Chat &chat, std::unique_ptr<FormattedString> &&content, bool silent)
+bool MessageManagerImpl::sendMessage(const Chat &chat, QString htmlContent, bool silent)
 {
 	Protocol *protocol = chat.chatAccount().protocolHandler();
 	if (!protocol || !protocol->chatService())
 		return false;
 
-	Message message = createOutgoingMessage(chat, std::move(content));
+	Message message = createOutgoingMessage(chat, std::move(htmlContent));
 	if (m_messageFilterService && !m_messageFilterService.data()->acceptMessage(message))
 		return false;
 

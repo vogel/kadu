@@ -21,7 +21,6 @@
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
-#include "formatted-string/formatted-string.h"
 
 #include "message.h"
 
@@ -56,15 +55,7 @@ Message::~Message()
 
 KaduSharedBase_PropertyDefCRW(Message, Chat, messageChat, MessageChat, Chat::null)
 KaduSharedBase_PropertyDefCRW(Message, Contact, messageSender, MessageSender, Contact::null)
-
-void Message::setContent(std::unique_ptr<FormattedString> &&content) const
-{
-	if (!isNull())
-		data()->setContent(std::move(content));
-}
-
-KaduSharedBase_PropertyReadDef(Message, FormattedString *, content, Content, 0)
-KaduSharedBase_PropertyReadDef(Message, QString, htmlContent, HtmlContent, QString())
+KaduSharedBase_PropertyDefCRW(Message, QString, htmlContent, HtmlContent, QString())
 KaduSharedBase_PropertyDefCRW(Message, QDateTime, receiveDate, ReceiveDate, QDateTime())
 KaduSharedBase_PropertyDefCRW(Message, QDateTime, sendDate, SendDate, QDateTime())
 KaduSharedBase_PropertyDef(Message, MessageStatus, status, Status, MessageStatusUnknown)

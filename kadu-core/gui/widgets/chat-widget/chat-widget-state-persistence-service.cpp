@@ -49,13 +49,9 @@ void ChatWidgetStatePersistenceService::setFormattedStringFactory(FormattedStrin
 
 void ChatWidgetStatePersistenceService::storeChatWidgetState(ChatWidget *chatWidget)
 {
-	auto content = chatWidget->edit()->formattedString();
-	if (!content->isEmpty())
-	{
-		FormattedStringHtmlVisitor html{};
-		content->accept(&html);
-		chatWidget->chat().addProperty("chat-widget-state:message", html.result(), CustomProperties::Storable);
-	}
+	auto content = chatWidget->edit()->htmlMessage();
+	if (!content.isEmpty())
+		chatWidget->chat().addProperty("chat-widget-state:message", content, CustomProperties::Storable);
 	else
 		chatWidget->chat().removeProperty("chat-widget-state:message");
 }

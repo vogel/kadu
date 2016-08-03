@@ -23,9 +23,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
-#include "formatted-string/formatted-string-factory.h"
-#include "formatted-string/formatted-string-html-visitor.h"
-#include "formatted-string/formatted-string.h"
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "message/unread-message-repository.h"
@@ -60,11 +57,6 @@ void MessageShared::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
-void MessageShared::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	m_formattedStringFactory = formattedStringFactory;
-}
-
 void MessageShared::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
 	m_unreadMessageRepository = unreadMessageRepository;
@@ -89,9 +81,7 @@ void MessageShared::load()
 
 	*MessageChat = m_chatManager->byUuid(loadValue<QString>("Chat"));
 	*MessageSender = m_contactManager->byUuid(loadValue<QString>("Sender"));
-
-	setContent(m_formattedStringFactory->fromHtml(loadValue<QString>("Content")));
-
+	HtmlContent = loadValue<QString>("Content");
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");
 	Status = (MessageStatus)loadValue<int>("Status");
@@ -138,29 +128,6 @@ void MessageShared::setStatus(MessageStatus status)
 		changeNotifier().notify();
 		emit statusChanged(oldStatus);
 	}
-}
-
-void MessageShared::setContent(std::unique_ptr<FormattedString> &&content)
-{
-	Content = std::move(content);
-
-	if (!Content)
-	{
-		HtmlContent.clear();
-	}
-	else
-	{
-		FormattedStringHtmlVisitor htmlVisitor;
-		Content->accept(&htmlVisitor);
-		HtmlContent = htmlVisitor.result();
-	}
-}
-
-FormattedString * MessageShared::content()
-{
-	ensureLoaded();
-
-	return Content.get();
 }
 
 KaduShared_PropertyPtrDefCRW(MessageShared, Chat, messageChat, MessageChat)

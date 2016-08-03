@@ -77,12 +77,20 @@ void CustomInput::setCustomInputMenuManager(CustomInputMenuManager *customInputM
 
 void CustomInput::setImageStorageService(ImageStorageService *imageStorageService)
 {
-	CurrentImageStorageService = imageStorageService;
+	m_imageStorageService = imageStorageService;
 }
 
 void CustomInput::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	CurrentFormattedStringFactory = formattedStringFactory;
+	m_formattedStringFactory = formattedStringFactory;
+}
+
+QString CustomInput::htmlMessage() const
+{
+	auto formattedString = m_formattedStringFactory->fromHtml(toHtml());
+	FormattedStringHtmlVisitor visitor{};
+	formattedString->accept(&visitor);
+	return visitor.result();
 }
 
 void CustomInput::setFormattedString(const FormattedString &formattedString)
@@ -90,14 +98,6 @@ void CustomInput::setFormattedString(const FormattedString &formattedString)
 	FormattedStringHtmlVisitor html{};
 	formattedString.accept(&html);
 	setHtml(html.result());
-}
-
-std::unique_ptr<FormattedString> CustomInput::formattedString() const
-{
-	if (CurrentFormattedStringFactory)
-		return CurrentFormattedStringFactory->fromTextDocument(document());
-	else
-		return 0;
 }
 
 void CustomInput::showEvent(QShowEvent *e)
@@ -309,8 +309,8 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 	if (source->hasUrls() && !source->urls().isEmpty())
 	{
 		QUrl url = source->urls().first();
-		if (!url.toString().isEmpty() && CurrentImageStorageService)
-			url = CurrentImageStorageService->toFileUrl(url);
+		if (!url.toString().isEmpty() && m_imageStorageService)
+			url = m_imageStorageService->toFileUrl(url);
 
 		if (!url.toString().isEmpty() && url.scheme() == "file")
 		{
@@ -328,8 +328,8 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 		QString ext = QImageReader(&buffer).format().toLower();
 		QString filename = "drop" + QString::number(QDateTime::currentDateTime().toTime_t()) + "." + ext;
 
-		if (CurrentImageStorageService)
-			path = CurrentImageStorageService->fullPath(filename);
+		if (m_imageStorageService)
+			path = m_imageStorageService->fullPath(filename);
 		else
 			path = filename;
 

@@ -69,7 +69,7 @@ void OtrMessageEventService::handleMessageEvent(const Contact &contact, OtrlMess
 	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
 	if (chatWidget)
-		chatWidget->appendSystemMessage(errorMessage);
+		chatWidget->appendSystemMessage(errorMessage.toHtmlEscaped());
 }
 
 QString OtrMessageEventService::messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const

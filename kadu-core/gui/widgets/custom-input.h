@@ -44,8 +44,8 @@ class KADUAPI CustomInput : public QTextEdit
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<Configuration> m_configuration;
 	QPointer<CustomInputMenuManager> m_customInputMenuManager;
-	QPointer<ImageStorageService> CurrentImageStorageService;
-	QPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+	QPointer<ImageStorageService> m_imageStorageService;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
 	Chat CurrentChat;
 
@@ -74,8 +74,9 @@ protected:
 public:
 	explicit CustomInput(Chat chat, QWidget *parent = nullptr);
 
+	QString htmlMessage() const;
+	// TODO: to remove
 	void setFormattedString(const FormattedString &formattedString);
-	std::unique_ptr<FormattedString> formattedString() const;
 
 public slots:
 	void setAutoSend(bool on);

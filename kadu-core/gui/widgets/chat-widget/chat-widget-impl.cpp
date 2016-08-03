@@ -45,7 +45,6 @@
 #include "contacts/model/contact-data-extractor.h"
 #include "contacts/model/contact-list-model.h"
 #include "core/injected-factory.h"
-#include "formatted-string/formatted-string-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
@@ -143,11 +142,6 @@ void ChatWidgetImpl::setChatWidgetActions(ChatWidgetActions *chatWidgetActions)
 void ChatWidgetImpl::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
-}
-
-void ChatWidgetImpl::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	m_formattedStringFactory = formattedStringFactory;
 }
 
 void ChatWidgetImpl::setIconsManager(IconsManager *iconsManager)
@@ -443,17 +437,12 @@ SortedMessages ChatWidgetImpl::messages() const
 	return MessagesView->messages();
 }
 
-void ChatWidgetImpl::appendSystemMessage(const QString &content)
-{
-	appendSystemMessage(m_formattedStringFactory->fromText(content));
-}
-
-void ChatWidgetImpl::appendSystemMessage(std::unique_ptr<FormattedString> &&content)
+void ChatWidgetImpl::appendSystemMessage(QString htmlContent)
 {
 	Message message = m_messageStorage->create();
 	message.setMessageChat(CurrentChat);
 	message.setType(MessageTypeSystem);
-	message.setContent(std::move(content));
+	message.setHtmlContent(htmlContent);
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 
@@ -520,7 +509,7 @@ void ChatWidgetImpl::sendMessage()
 		return;
 	}
 
-	if (!m_messageManager->sendMessage(CurrentChat, InputBox->inputBox()->formattedString()))
+	if (!m_messageManager->sendMessage(CurrentChat, InputBox->inputBox()->htmlMessage()))
 		return;
 
 	resetEditBox();
@@ -768,12 +757,12 @@ void ChatWidgetImpl::contactActivityChanged(const Contact &contact, ChatState st
 
 	if (CurrentContactActivity == ChatState::Gone)
 	{
-		QString msg = "[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]";
+		auto msg = QString{"[ " + tr("%1 ended the conversation").arg(contact.ownerBuddy().display()) + " ]"};
 		Message message = m_messageStorage->create();
 		message.setMessageChat(CurrentChat);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
-		message.setContent(m_formattedStringFactory->fromPlainText(msg));
+		message.setHtmlContent(msg.toHtmlEscaped());
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 

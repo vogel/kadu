@@ -74,8 +74,7 @@ public:
 	Q_INVOKABLE MessageManagerStub() {}
 	~MessageManagerStub() {}
 
-	virtual bool sendMessage(const Chat &, const QString &, bool) override { return {}; }
-	virtual bool sendMessage(const Chat &, std::unique_ptr<FormattedString> &&, bool) override { return {}; }
+	virtual bool sendMessage(const Chat &, QString, bool) override { return {}; }
 	virtual bool sendRawMessage(const Chat &, const QByteArray &) override { return {}; }
 
 	void emulateSent(Chat chat)

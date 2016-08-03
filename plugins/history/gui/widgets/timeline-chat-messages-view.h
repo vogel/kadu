@@ -31,6 +31,7 @@ class QDate;
 class QSplitter;
 class QTreeView;
 
+class FormattedStringFactory;
 class HistoryQueryResult;
 class HistoryQueryResultsModel;
 class HistoryQueryResultsProxyModel;
@@ -61,6 +62,7 @@ class TimelineChatMessagesView : public QWidget
 {
 	Q_OBJECT
 
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
 
@@ -81,6 +83,7 @@ class TimelineChatMessagesView : public QWidget
 	void createGui();
 
 private slots:
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);

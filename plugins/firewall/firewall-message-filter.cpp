@@ -54,7 +54,6 @@ Nowa funkcjonalnosc - Dorregaray
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
-#include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/text-converter-service.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
@@ -116,11 +115,6 @@ void FirewallMessageFilter::setConfiguration(Configuration *configuration)
 void FirewallMessageFilter::setFirewallNotificationService(FirewallNotificationService *firewallNotificationService)
 {
 	m_firewallNotificationService = firewallNotificationService;
-}
-
-void FirewallMessageFilter::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	m_formattedStringFactory = formattedStringFactory;
 }
 
 void FirewallMessageFilter::setHistory(History *history)
@@ -270,7 +264,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 			if (m_history->currentStorage())
 			{
 				Message msg = m_messageStorage->create();
-				msg.setContent(m_formattedStringFactory->fromHtml(message.htmlContent()));
+				msg.setHtmlContent(message.htmlContent());
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::currentDateTime());

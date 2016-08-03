@@ -40,7 +40,7 @@ bool SortedMessages::earlier(const Message &left, const Message &right)
 	if (left.receiveDate() > right.receiveDate())
 		return false;
 
-	return left.content() < right.content();
+	return left.htmlContent() < right.htmlContent();
 }
 
 bool SortedMessages::same(const Message &left, const Message &right)
@@ -63,7 +63,7 @@ bool SortedMessages::same(const Message &left, const Message &right)
 	if (left.messageSender() != right.messageSender())
 		return false;
 
-	if (*left.content() != *right.content())
+	if (left.htmlContent() == right.htmlContent())
 		return false;
 
 	return true;

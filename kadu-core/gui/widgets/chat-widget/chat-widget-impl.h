@@ -50,7 +50,6 @@ class ChatWidgetTitle;
 class Configuration;
 class CustomInput;
 class FilteredTreeView;
-class FormattedStringFactory;
 class IconsManager;
 class InjectedFactory;
 class KaduWindowService;
@@ -75,7 +74,6 @@ class KADUAPI ChatWidgetImpl : public ChatWidget, public ConfigurationAwareObjec
 	QPointer<ChatTypeManager> m_chatTypeManager;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<Configuration> m_configuration;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
@@ -119,7 +117,6 @@ private slots:
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
@@ -153,8 +150,7 @@ public:
 
 	virtual Chat chat() const override { return CurrentChat; }
 
-	virtual void appendSystemMessage(const QString &content) override;
-	virtual void appendSystemMessage(std::unique_ptr<FormattedString> &&content) override;
+	virtual void appendSystemMessage(QString htmlContent) override;
 
 	virtual CustomInput * edit() const override;
 	virtual TalkableProxyModel * talkableProxyModel() const override;

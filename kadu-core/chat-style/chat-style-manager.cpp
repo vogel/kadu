@@ -25,7 +25,6 @@
 #include "chat-style/engine/kadu/kadu-style-engine.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "formatted-string/formatted-string-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-style-preview.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -77,11 +76,6 @@ void ChatStyleManager::setConfiguration(Configuration *configuration)
 void ChatStyleManager::setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider)
 {
 	m_configuredChatStyleRendererFactoryProvider = configuredChatStyleRendererFactoryProvider;
-}
-
-void ChatStyleManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	m_formattedStringFactory = formattedStringFactory;
 }
 
 void ChatStyleManager::setKaduStyleEngine(KaduStyleEngine *kaduStyleEngine)

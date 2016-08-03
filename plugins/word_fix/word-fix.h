@@ -31,6 +31,7 @@
 class ChatWidget;
 class ChatWidgetRepository;
 class Configuration;
+class FormattedStringFactory;
 class PathsProvider;
 class UserGroup;
 
@@ -47,6 +48,7 @@ class WordFix : public QObject
 
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
+	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<PathsProvider> m_pathsProvider;
 
 	/*!
@@ -61,6 +63,7 @@ class WordFix : public QObject
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 

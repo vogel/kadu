@@ -139,9 +139,10 @@ bool JabberChatService::sendMessage(const Message &message)
 		return false;
 
 	auto xmppMessage = QXmppMessage{};
+	auto formattedContent = m_formattedStringFactory->fromHtml(message.htmlContent());
 
 	FormattedStringPlainTextVisitor plainTextVisitor;
-	message.content()->accept(&plainTextVisitor);
+	formattedContent->accept(&plainTextVisitor);
 
 	auto plain = plainTextVisitor.result();
 	if (rawMessageTransformerService())
@@ -207,12 +208,7 @@ void JabberChatService::handleReceivedMessage(const QXmppMessage &xmppMessage)
 	if (rawMessageTransformerService())
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message).rawContent());
 
-	auto htmlBody = replacedNewLine(Qt::escape(body), QStringLiteral("<br/>"));
-	auto formattedString = m_formattedStringFactory.data()->fromHtml(htmlBody);
-	if (!formattedString || formattedString->isEmpty())
-		return;
-
-	message.setContent(std::move(formattedString));
+	message.setHtmlContent(body.toHtmlEscaped());
 
 	auto id = xmppMessage.from();
 	auto resourceIndex = id.indexOf('/');

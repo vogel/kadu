@@ -97,7 +97,7 @@ void OtrNotifier::notify(const Contact &contact, const QString &message)
 	if (!widget)
 		return;
 
-	widget->appendSystemMessage(message);
+	widget->appendSystemMessage(message.toHtmlEscaped());
 }
 
 void OtrNotifier::notifyTryingToStartSession(const Contact &contact)

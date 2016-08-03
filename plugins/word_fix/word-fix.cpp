@@ -37,6 +37,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
@@ -70,6 +71,11 @@ void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 void WordFix::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void WordFix::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	m_formattedStringFactory = formattedStringFactory;
 }
 
 void WordFix::setPathsProvider(PathsProvider *pathsProvider)
@@ -143,7 +149,7 @@ void WordFix::sendRequest(ChatWidget* chat)
 	if (!m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_word_fix", false))
 		return;
 
-	auto formattedString = chat->edit()->formattedString();
+	auto formattedString = m_formattedStringFactory->fromHtml(chat->edit()->htmlMessage());
 	WordFixFormattedStringVisitor fixVisitor(m_wordsList);
 	formattedString->accept(&fixVisitor);
 

@@ -36,7 +36,6 @@ class ChatConfigurationHolder;
 class ChatStyleEngine;
 class Configuration;
 class ConfiguredChatStyleRendererFactoryProvider;
-class FormattedStringFactory;
 class KaduStyleEngine;
 class PathsProvider;
 
@@ -60,7 +59,6 @@ class KADUAPI ChatStyleManager : public QObject, ConfigurationAwareObject
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<Configuration> m_configuration;
 	QPointer<ConfiguredChatStyleRendererFactoryProvider> m_configuredChatStyleRendererFactoryProvider;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<KaduStyleEngine> m_kaduStyleEngine;
 	QPointer<PathsProvider> m_pathsProvider;
 
@@ -90,7 +88,6 @@ private slots:
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider);
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setKaduStyleEngine(KaduStyleEngine *kaduStyleEngine);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();

@@ -21,9 +21,6 @@
 #include "message-html-renderer-service.h"
 
 #include "dom/dom-processor-service.h"
-#include "formatted-string/formatted-string-html-visitor.h"
-#include "formatted-string/formatted-string.h"
-#include "gui/configuration/chat-configuration-holder.h"
 #include "message/message.h"
 
 MessageHtmlRendererService::MessageHtmlRendererService(QObject *parent) :
@@ -42,11 +39,7 @@ void MessageHtmlRendererService::setDomProcessorService(DomProcessorService *dom
 
 QString MessageHtmlRendererService::renderMessage(const Message &message)
 {
-	FormattedStringHtmlVisitor formattedStringHtmlVisitor;
-	message.content()->accept(&formattedStringHtmlVisitor);
-
-	auto html = formattedStringHtmlVisitor.result();
-	return m_domProcessorService->process(html);
+	return m_domProcessorService->process(message.htmlContent());
 }
 
 #include "moc_message-html-renderer-service.cpp"

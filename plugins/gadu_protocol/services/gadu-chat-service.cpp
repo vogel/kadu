@@ -96,7 +96,7 @@ void GaduChatService::setContactManager(ContactManager *contactManager)
 
 void GaduChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	CurrentFormattedStringFactory = formattedStringFactory;
+	m_formattedStringFactory = formattedStringFactory;
 }
 
 void GaduChatService::setGaduReceivedHtmlFixupService(GaduReceivedHtmlFixupService *gaduReceivedHtmlFixupService)
@@ -187,14 +187,16 @@ bool GaduChatService::sendMessage(const Message &message)
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
 
+	auto formattedContent = m_formattedStringFactory->fromHtml(message.htmlContent());
+
 	FormattedStringIsPlainTextVisitor isPlainTextVisitor;
-	message.content()->accept(&isPlainTextVisitor);
+	formattedContent->accept(&isPlainTextVisitor);
 
 	FormattedStringPlainTextVisitor plainTextVisitor;
-	message.content()->accept(&plainTextVisitor);
+	formattedContent->accept(&plainTextVisitor);
 
 	FormattedStringGaduHtmlVisitor htmlVisitor(CurrentGaduChatImageService, CurrentImageStorageService);
-	message.content()->accept(&htmlVisitor);
+	formattedContent->accept(&htmlVisitor);
 
 	auto rawMessage = RawMessage{plainTextVisitor.result().toUtf8(), htmlVisitor.result().toUtf8()};
 	if (rawMessageTransformerService())
@@ -313,22 +315,21 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (rawMessageTransformerService())
 		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
-	auto string = m_gaduReceivedHtmlFixupService->htmlFixup(QString::fromUtf8(rawMessage.rawContent()));
-	auto formattedString = CurrentFormattedStringFactory->fromHtml(string);
+	auto htmlContent = m_gaduReceivedHtmlFixupService->htmlFixup(QString::fromUtf8(rawMessage.rawContent()));
+	auto formattedString = m_formattedStringFactory->fromHtml(htmlContent);
 	if (ignoreRichText(sender))
 	{
 		FormattedStringPlainTextVisitor visitor;
 		formattedString->accept(&visitor);
 
 		// for history and sorted messages we must use html format
-		auto htmlBody = replacedNewLine(Qt::escape(visitor.result()), QStringLiteral("<br/>"));
-		formattedString = CurrentFormattedStringFactory->fromHtml(visitor.result());
+		htmlContent = replacedNewLine(Qt::escape(visitor.result()), QStringLiteral("<br/>"));
 	}
 
-	if (formattedString->isEmpty())
+	if (htmlContent.isEmpty())
 		return;
 
-	message.setContent(std::move(formattedString));
+	message.setHtmlContent(std::move(htmlContent));
 
 	if (MessageTypeReceived == type)
 	{
@@ -338,7 +339,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		connect(&imageKeyReceivedVisitor, SIGNAL(chatImageKeyReceived(QString,ChatImage)),
 		        this, SIGNAL(chatImageKeyReceived(QString,ChatImage)));
 
-		message.content()->accept(&imageKeyReceivedVisitor);
+		formattedString->accept(&imageKeyReceivedVisitor);
 	}
 	else
 		emit messageSent(message);

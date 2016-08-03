@@ -32,8 +32,6 @@ class ChatManager;
 class Chat;
 class ContactManager;
 class Contact;
-class FormattedString;
-class FormattedStringFactory;
 class UnreadMessageRepository;
 
 class KADUAPI MessageShared : public Shared
@@ -49,12 +47,9 @@ public:
 
 	void setStatus(MessageStatus status);
 
-	void setContent(std::unique_ptr<FormattedString> &&content);
-	FormattedString * content();
-
 	KaduShared_PropertyDeclCRW(Chat, messageChat, MessageChat)
 	KaduShared_PropertyDeclCRW(Contact, messageSender, MessageSender)
-	KaduShared_PropertyRead(QString, htmlContent, HtmlContent)
+	KaduShared_Property(const QString &, htmlContent, HtmlContent)
 	KaduShared_Property(const QDateTime &, receiveDate, ReceiveDate)
 	KaduShared_Property(const QDateTime &, sendDate, SendDate)
 	KaduShared_PropertyRead(MessageStatus, status, Status)
@@ -80,12 +75,10 @@ protected:
 private:
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ContactManager> m_contactManager;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 	Chat *MessageChat;
 	Contact *MessageSender;
-	std::unique_ptr<FormattedString> Content;
 	QString HtmlContent;
 	QDateTime ReceiveDate;
 	QDateTime SendDate;
@@ -96,7 +89,6 @@ private:
 private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 };
