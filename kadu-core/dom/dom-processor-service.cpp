@@ -27,6 +27,31 @@
 
 #include "dom-processor-service.h"
 
+namespace {
+
+QDomDocument toDomDocument(const QString &xml)
+{
+	QDomDocument domDocument;
+	// force content to be valid HTML with only one root
+	domDocument.setContent(QString("<div>%1</div>").arg(xml));
+
+	return domDocument;
+}
+
+QString toString(const QDomDocument &domDocument)
+{
+	if (domDocument.documentElement().childNodes().isEmpty())
+		return QString();
+
+	auto result = domDocument.toString(-1).trimmed();
+	// remove <div></div>
+	Q_ASSERT(result.startsWith(QStringLiteral("<div>")));
+	Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
+	return result.mid(static_cast<int>(qstrlen("<div>")), result.length() - static_cast<int>(qstrlen("<div></div>")));
+}
+
+}
+
 DomProcessorService::DomProcessorService(QObject *parent) :
 		QObject(parent)
 {
@@ -54,20 +79,17 @@ void DomProcessorService::process(QDomDocument &domDocument)
 
 QString DomProcessorService::process(const QString &xml)
 {
-	QDomDocument domDocument;
-	// force content to be valid HTML with only one root
-	domDocument.setContent(QString("<div>%1</div>").arg(xml));
-
+	auto domDocument = toDomDocument(xml);
 	process(domDocument);
+	return toString(domDocument);
+}
 
-	if (domDocument.documentElement().childNodes().isEmpty())
-		return QString();
-
-	QString result = domDocument.toString(-1).trimmed();
-	// remove <div></div>
-	Q_ASSERT(result.startsWith(QStringLiteral("<div>")));
-	Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
-	return result.mid(static_cast<int>(qstrlen("<div>")), result.length() - static_cast<int>(qstrlen("<div></div>")));
+QString DomProcessorService::process(const QString &xml, const DomVisitor &domVisitor)
+{
+	auto domDocument = toDomDocument(xml);
+	auto domProcessor = DomProcessor{domDocument};
+	domProcessor.accept(&domVisitor);
+	return toString(domDocument);
 }
 
 #include "moc_dom-processor-service.cpp"

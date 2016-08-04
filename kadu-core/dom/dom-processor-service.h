@@ -30,6 +30,7 @@
 class QDomDocument;
 
 class DomVisitorProviderRepository;
+class DomVisitor;
 
 /**
  * @addtogroup Dom
@@ -73,6 +74,7 @@ public:
 	 * Value of xml must be valid XML. If not, it will be truncated at first invalid character.
 	 */
 	QString process(const QString &xml);
+	QString process(const QString &xml, const DomVisitor &domVisitor);
 
 private:
 	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;

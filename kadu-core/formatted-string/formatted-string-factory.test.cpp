@@ -17,20 +17,62 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "dom/dom-processor-service.h"
+#include "dom/dom-visitor-provider-repository.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
+#include "services/image-storage-service.h"
 
 #include <QtTest/QtTest>
+#include <injeqt/injector.h>
+#include <injeqt/module.h>
 
 class FormattedStringFactoryTest : public QObject
 {
 	Q_OBJECT
+
+private:
+	injeqt::injector makeInjector() const;
 
 private slots:
 	void shouldProperlyParseHtml_data();
 	void shouldProperlyParseHtml();
 
 };
+
+class ImageStorageServiceStub : ImageStorageService
+{
+	Q_OBJECT
+
+public:
+	Q_INVOKABLE ImageStorageServiceStub() {}
+
+	virtual QString storagePath() const override { return {}; }
+	virtual QString fullPath(const QString &) override { return {}; }
+	virtual QString storeImage(const QString &filePath) override { return filePath; }
+	virtual QString storeImage(const QString &, const QByteArray &) override { return {}; }
+	virtual QUrl toFileUrl(const QUrl &) override { return {}; }
+};
+
+injeqt::injector FormattedStringFactoryTest::makeInjector() const
+{
+	class module : public injeqt::module
+	{
+	public:
+		module()
+		{
+			add_type<DomProcessorService>();
+			add_type<DomVisitorProviderRepository>();
+			add_type<FormattedStringFactory>();
+			add_type<ImageStorageServiceStub>();
+		}
+	};
+
+	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+	modules.emplace_back(std::make_unique<module>());
+
+	return injeqt::injector{std::move(modules)};
+}
 
 void FormattedStringFactoryTest::shouldProperlyParseHtml_data()
 {
@@ -77,14 +119,15 @@ void FormattedStringFactoryTest::shouldProperlyParseHtml()
 	QFETCH(QString, html);
 	QFETCH(QString, result);
 
-	FormattedStringFactory formattedStringFactory{};
-	auto formattedString = formattedStringFactory.fromHtml(html);
+	auto injector = makeInjector();
+	auto formattedStringFactory = injector.get<FormattedStringFactory>();
+	auto formattedString = formattedStringFactory->fromHtml(html);
 
 	FormattedStringHtmlVisitor htmlVisitor{};
 	formattedString->accept(&htmlVisitor);
-	auto recreted = htmlVisitor.result();
+	auto recreated = htmlVisitor.result();
 
-	QCOMPARE(recreted, result);
+	QCOMPARE(recreated, result);
 }
 
 QTEST_APPLESS_MAIN(FormattedStringFactoryTest)

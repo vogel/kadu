@@ -28,6 +28,7 @@
 #include <vector>
 #include <injeqt/injeqt.h>
 
+class DomProcessorService;
 class ImageStorageService;
 
 class QTextBlock;
@@ -50,7 +51,8 @@ class KADUAPI FormattedStringFactory : public QObject
 {
 	Q_OBJECT
 
-	QPointer<ImageStorageService> CurrentImageStorageService;
+	QPointer<DomProcessorService> m_domProcessorService;
+	QPointer<ImageStorageService> m_imageStorageService;
 
 	std::unique_ptr<FormattedString> partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
 	std::unique_ptr<FormattedString> partFromQTextImageFormat(const QTextImageFormat &textImageFormat);
@@ -116,6 +118,8 @@ public:
 	bool isHtml(const QString &text) const;
 
 private slots:
+	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+
 	/**
 	 * @short Set ImageStorageService to use by this factory.
 	 * @author Rafał 'Vogel' Malinowski

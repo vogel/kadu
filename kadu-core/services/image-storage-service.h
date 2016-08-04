@@ -50,7 +50,7 @@ class KADUAPI ImageStorageService : public QObject
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ImageStorageService(QObject *parent = nullptr);
+	explicit ImageStorageService(QObject *parent = nullptr);
 	virtual ~ImageStorageService();
 
 	/**
@@ -58,7 +58,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @return full path to image storage directory
 	 */
-	QString storagePath() const;
+	virtual QString storagePath() const = 0;
 
 	/**
 	 * @short Returns full path to given image.
@@ -69,7 +69,7 @@ public:
 	 * If imageFilePath is absolute path then imageFilePath is returned. In other case result is imageFilePath concatenated
 	 * with storagePath() result.
 	 */
-	QString fullPath(const QString &imageFilePath);
+	virtual QString fullPath(const QString &imageFilePath) = 0;
 
 	/**
 	 * @short Store image under given path to image storage and return new file path relative to image storage directory.
@@ -81,7 +81,7 @@ public:
 	 * nothing and returns original imageFilePath value. If storing was done properly then file path relative to image
 	 * storage directory is returned. It can be then passed to fullPath() method to obtain full path.
 	 */
-	QString storeImage(const QString &imageFilePath);
+	virtual QString storeImage(const QString &imageFilePath) = 0;
 
 	/**
 	 * @short Store image under given path to image storage and return new file path relative to image storage directory.
@@ -94,7 +94,7 @@ public:
 	 * nothing and empty QString(). If storing was done properly then file path relative to image storage directory is
 	 * returned. It can be then passed to fullPath() method to obtain full path.
 	 */
-	QString storeImage(const QString &imageFileName, const QByteArray &content);
+	virtual QString storeImage(const QString &imageFileName, const QByteArray &content) = 0;
 
 	/**
 	 * @short Return QUrl with file:// scheme for given kaduimg:// QUrl.
@@ -106,17 +106,7 @@ public:
 	 * expanded to full path and returned as new file:// url. If destination file does not exists then url pointing to
 	 * wait animation is returned.
 	 */
-	QUrl toFileUrl(const QUrl &url);
-
-private:
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PathsProvider> m_pathsProvider;
-	QString m_storagePath;
-
-private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
+	virtual QUrl toFileUrl(const QUrl &url) = 0;
 
 };
 

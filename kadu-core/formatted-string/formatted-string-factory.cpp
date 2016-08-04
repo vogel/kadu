@@ -22,7 +22,7 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
-#include "dom/dom-processor.h"
+#include "dom/dom-processor-service.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/force-nbsp-dom-visitor.h"
 #include "formatted-string/formatted-string-image-block.h"
@@ -33,6 +33,7 @@
 #include "formatted-string-factory.h"
 
 #include <QtXml/QDomDocument>
+#include <memory>
 
 FormattedStringFactory::FormattedStringFactory()
 {
@@ -42,9 +43,14 @@ FormattedStringFactory::~FormattedStringFactory()
 {
 }
 
+void FormattedStringFactory::setDomProcessorService(DomProcessorService *domProcessorService)
+{
+	m_domProcessorService = domProcessorService;
+}
+
 void FormattedStringFactory::setImageStorageService(ImageStorageService *imageStorageService)
 {
-	CurrentImageStorageService = imageStorageService;
+	m_imageStorageService = imageStorageService;
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromPlainText(const QString& plainText)
@@ -65,8 +71,8 @@ std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextImageForma
 	QString filePath = textImageFormat.name();
 	QFileInfo fileInfo(filePath);
 
-	if (CurrentImageStorageService)
-		filePath = CurrentImageStorageService.data()->storeImage(filePath);
+	if (m_imageStorageService)
+		filePath = m_imageStorageService.data()->storeImage(filePath);
 
 	return std::make_unique<FormattedStringImageBlock>(filePath);
 }
@@ -103,25 +109,8 @@ std::vector<std::unique_ptr<FormattedString>> FormattedStringFactory::partsFromQ
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromHtml(const QString &html)
 {
-	QDomDocument domDocument;
-	// force content to be valid HTML with only one root
-	domDocument.setContent(QString{"<div>%1</div>"}.arg(html));
-
-	ForceNbspDomVisitor forceNbspDomVisitor{};
-	auto domProcessor = DomProcessor{domDocument};
-	domProcessor.accept(&forceNbspDomVisitor);
-
-	if (domDocument.documentElement().childNodes().isEmpty())
-		return fromTextDocument(QTextDocument{});
-
-	auto result = domDocument.toString(-1).trimmed();
-	// remove <div></div>
-	Q_ASSERT(result.startsWith(QStringLiteral("<div>")));
-	Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
-	result = result.mid(static_cast<int>(qstrlen("<div>")), result.length() - static_cast<int>(qstrlen("<div></div>")));
-
-	QTextDocument document;
-	document.setHtml(result);
+	QTextDocument document{};
+	document.setHtml(m_domProcessorService->process(html, ForceNbspDomVisitor{}));
 
 	return fromTextDocument(document);
 }

@@ -35,7 +35,7 @@
 #include "os/generic/url-opener.h"
 #include "protocols/protocols-manager.h"
 #include "services/chat-image-request-service.h"
-#include "services/image-storage-service.h"
+#include "services/image-storage-service-impl.h"
 #include "services/raw-message-transformer-service.h"
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
@@ -56,7 +56,7 @@ CoreModule::CoreModule(QString profileDirectory)
 	add_type<ChatImageRequestService>();
 	add_type<ChatTopBarWidgetFactoryRepository>();
 	add_type<ClipboardHtmlTransformerService>();
-	add_type<ImageStorageService>();
+	add_type<ImageStorageServiceImpl>();
 	add_type<InjectedFactory>();
 	add_type<InjectorProvider>();
 	add_type<LanguagesManager>();
