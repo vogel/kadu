@@ -23,7 +23,7 @@
 #include <QtXml/QDomText>
 
 ForceNbspDomVisitor::ForceNbspDomVisitor() :
-		DomTextRegexpVisitor{QRegExp{"  "}}
+		DomTextRegexpVisitor{QRegExp{" "}}
 {
 }
 
@@ -35,7 +35,6 @@ QList<QDomNode> ForceNbspDomVisitor::matchToDomNodes(QDomDocument document, QReg
 {
 	Q_UNUSED(regExp);
 
-	auto spaceNode = document.createTextNode(" ");
-	auto domEntity = document.createEntityReference("nbsp");
-	return QList<QDomNode>{} << spaceNode << domEntity;
+	auto nbspEntity = document.createEntityReference("nbsp");
+	return QList<QDomNode>{} << nbspEntity;
 }

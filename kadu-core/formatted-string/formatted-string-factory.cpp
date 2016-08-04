@@ -22,13 +22,17 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
+#include "dom/dom-processor.h"
 #include "formatted-string/composite-formatted-string.h"
+#include "formatted-string/force-nbsp-dom-visitor.h"
 #include "formatted-string/formatted-string-image-block.h"
 #include "formatted-string/formatted-string-text-block.h"
 #include "misc/memory.h"
 #include "services/image-storage-service.h"
 
 #include "formatted-string-factory.h"
+
+#include <QtXml/QDomDocument>
 
 FormattedStringFactory::FormattedStringFactory()
 {
@@ -51,6 +55,7 @@ std::unique_ptr<FormattedString> FormattedStringFactory::fromPlainText(const QSt
 std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
 {
 	QString replacedNewLine = text;
+	replacedNewLine.replace("\u00A0", " ");
 	replacedNewLine.replace(QChar::LineSeparator, '\n');
 	return std::make_unique<FormattedStringTextBlock>(replacedNewLine, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
 }
@@ -98,18 +103,35 @@ std::vector<std::unique_ptr<FormattedString>> FormattedStringFactory::partsFromQ
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromHtml(const QString &html)
 {
-	QTextDocument document;
-	document.setHtml(html);
+	QDomDocument domDocument;
+	// force content to be valid HTML with only one root
+	domDocument.setContent(QString{"<div>%1</div>"}.arg(html));
 
-	return fromTextDocument(&document);
+	ForceNbspDomVisitor forceNbspDomVisitor{};
+	auto domProcessor = DomProcessor{domDocument};
+	domProcessor.accept(&forceNbspDomVisitor);
+
+	if (domDocument.documentElement().childNodes().isEmpty())
+		return fromTextDocument(QTextDocument{});
+
+	auto result = domDocument.toString(-1).trimmed();
+	// remove <div></div>
+	Q_ASSERT(result.startsWith(QStringLiteral("<div>")));
+	Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
+	result = result.mid(static_cast<int>(qstrlen("<div>")), result.length() - static_cast<int>(qstrlen("<div></div>")));
+
+	QTextDocument document;
+	document.setHtml(result);
+
+	return fromTextDocument(document);
 }
 
-std::unique_ptr<FormattedString> FormattedStringFactory::fromTextDocument(QTextDocument *textDocument)
+std::unique_ptr<FormattedString> FormattedStringFactory::fromTextDocument(const QTextDocument &textDocument)
 {
 	auto firstBlock = true;
 	auto items = std::vector<std::unique_ptr<FormattedString>>{};
 
-	QTextBlock block = textDocument->firstBlock();
+	QTextBlock block = textDocument.firstBlock();
 	while (block.isValid())
 	{
 		auto parts = partsFromQTextBlock(block, firstBlock);
@@ -131,7 +153,7 @@ std::unique_ptr<FormattedString> FormattedStringFactory::fromText(const QString 
 	else
 		document->setPlainText(text);
 
-	return fromTextDocument(document.data());
+	return fromTextDocument(*document.data());
 }
 
 bool FormattedStringFactory::isHtml(const QString &text) const

@@ -94,7 +94,7 @@ public:
 	 *
 	 * This method never returns null.
 	 */
-	std::unique_ptr<FormattedString> fromTextDocument(QTextDocument *textDocument);
+	std::unique_ptr<FormattedString> fromTextDocument(const QTextDocument &textDocument);
 
 	/**
 	 * @short Create FormattedString instance from HTML or plain text.

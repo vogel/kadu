@@ -64,14 +64,12 @@ void FormattedStringFactoryTest::shouldProperlyParseHtml_data()
 	QTest::newRow("with image kaduimg xml")
 		<< "test message with image <img src=\"kaduimg:///1075d4da00000146\" />"
 		<< "test message with image <img class=\"scalable\" src=\"kaduimg:///1075d4da00000146\" name=\"kaduimg:///1075d4da00000146\" />";
-/*
 	QTest::newRow("with indentation simple")
 		<< "  test message<br>    with    indentation"
-		<< "  test message<br>    with    indentation";
+		<< "  test message<br/>    with    indentation";
 	QTest::newRow("with indentation")
 		<< "<span>  test message<br>    with    indentation</span>"
-		<< "  test message<br>    with    indentation";
-*/
+		<< "  test message<br/>    with    indentation";
 }
 
 void FormattedStringFactoryTest::shouldProperlyParseHtml()

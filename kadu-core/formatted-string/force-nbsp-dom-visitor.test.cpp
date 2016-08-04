@@ -41,25 +41,25 @@ void ForceNbspDomVisitorTest::shouldProperlyForceNbsp_data()
 
 	QTest::newRow("simple")
 		<< R"(test message)"
-		<< R"(test message)";
+		<< R"(test&nbsp;message)";
 	QTest::newRow("simple html")
 		<< R"(<span>test message</span>)"
-		<< R"(<span>test message</span>)";
+		<< R"(<span>test&nbsp;message</span>)";
 	QTest::newRow("simple html with two tags")
 		<< R"(<span>test message</span><span>test message 2</span>)"
-		<< R"(<span>test message</span><span>test message 2</span>)";
+		<< R"(<span>test&nbsp;message</span><span>test&nbsp;message&nbsp;2</span>)";
 	QTest::newRow("multiple spaces")
 		<< R"(  test   message  )"
-		<< R"( &nbsp;test &nbsp; message &nbsp;)";
+		<< R"(&nbsp;&nbsp;test&nbsp;&nbsp;&nbsp;message&nbsp;&nbsp;)";
 	QTest::newRow("multiple spaces in simple html")
 		<< R"(<span>  test   message  </span>)"
-		<< R"(<span> &nbsp;test &nbsp; message &nbsp;</span>)";
+		<< R"(<span>&nbsp;&nbsp;test&nbsp;&nbsp;&nbsp;message&nbsp;&nbsp;</span>)";
 	QTest::newRow("multiple spaces in simple html with two tags")
 		<< R"(<span>  test   message  </span><span>  test   message  2</span>)"
-		<< R"(<span> &nbsp;test &nbsp; message &nbsp;</span><span> &nbsp;test &nbsp; message &nbsp;2</span>)";
+		<< R"(<span>&nbsp;&nbsp;test&nbsp;&nbsp;&nbsp;message&nbsp;&nbsp;</span><span>&nbsp;&nbsp;test&nbsp;&nbsp;&nbsp;message&nbsp;&nbsp;2</span>)";
 	QTest::newRow("multiple spaces inside link")
 		<< R"(<a href="http://www.example.com">  link  with     multiple spaces</a>)"
-		<< R"(<a href="http://www.example.com"> &nbsp;link &nbsp;with &nbsp; &nbsp; multiple spaces</a>)";
+		<< R"(<a href="http://www.example.com">&nbsp;&nbsp;link&nbsp;&nbsp;with&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiple&nbsp;spaces</a>)";
 	QTest::newRow("remove multiple spaces inside tag")
 		<< R"(<a  href="http://www.example.com">link</a>)"
 		<< R"(<a href="http://www.example.com">link</a>)";
@@ -77,7 +77,6 @@ void ForceNbspDomVisitorTest::shouldProperlyForceNbsp()
 	auto forceNbspDomVisitor = ForceNbspDomVisitor{};
 	auto domProcessor = DomProcessor{domDocument};
 	domProcessor.accept(&forceNbspDomVisitor);
-
 
 	auto result = domDocument.toString(-1).trimmed();
 	// remove <div></div>

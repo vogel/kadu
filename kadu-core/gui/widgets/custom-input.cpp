@@ -87,7 +87,7 @@ void CustomInput::setFormattedStringFactory(FormattedStringFactory *formattedStr
 
 QString CustomInput::htmlMessage() const
 {
-	auto formattedString = m_formattedStringFactory->fromHtml(toHtml());
+	auto formattedString = m_formattedStringFactory->fromTextDocument(*document());
 	FormattedStringHtmlVisitor visitor{};
 	formattedString->accept(&visitor);
 	return visitor.result();
