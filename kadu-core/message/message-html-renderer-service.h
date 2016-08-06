@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -39,7 +41,7 @@ class Message;
  *
  * This service is used to render Message into HTML fragment.
  */
-class MessageHtmlRendererService : public QObject
+class KADUAPI MessageHtmlRendererService : public QObject
 {
 	Q_OBJECT
 

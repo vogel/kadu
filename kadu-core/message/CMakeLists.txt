@@ -16,4 +16,6 @@ set (message_SRCS
 	unread-message-repository.cpp
 )
 
+kadu_add_test (message-html-renderer-service)
+
 kadu_subdirectory (message "${message_SRCS}" "" "")
