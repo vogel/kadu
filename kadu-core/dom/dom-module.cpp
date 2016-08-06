@@ -19,12 +19,12 @@
 
 #include "dom-module.h"
 
-#include "dom/dom-processor-service.h"
+#include "dom/dom-processor-service-impl.h"
 #include "dom/dom-visitor-provider-repository.h"
 
 DomModule::DomModule()
 {
-	add_type<DomProcessorService>();
+	add_type<DomProcessorServiceImpl>();
 	add_type<DomVisitorProviderRepository>();
 }
 

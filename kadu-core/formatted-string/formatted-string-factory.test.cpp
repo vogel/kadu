@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "dom/dom-processor-service.h"
+#include "dom/dom-processor-service-impl.h"
 #include "dom/dom-visitor-provider-repository.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
@@ -40,7 +40,7 @@ private slots:
 
 };
 
-class ImageStorageServiceStub : ImageStorageService
+class ImageStorageServiceStub : public ImageStorageService
 {
 	Q_OBJECT
 
@@ -61,7 +61,7 @@ injeqt::injector FormattedStringFactoryTest::makeInjector() const
 	public:
 		module()
 		{
-			add_type<DomProcessorService>();
+			add_type<DomProcessorServiceImpl>();
 			add_type<DomVisitorProviderRepository>();
 			add_type<FormattedStringFactory>();
 			add_type<ImageStorageServiceStub>();
@@ -112,6 +112,12 @@ void FormattedStringFactoryTest::shouldProperlyParseHtml_data()
 	QTest::newRow("with indentation")
 		<< "<span>  test message<br>    with    indentation</span>"
 		<< "  test message<br/>    with    indentation";
+	QTest::newRow("remove tab simple")
+		<< "\ttest message with tab"
+		<< "test message with tab";
+	QTest::newRow("remove tab")
+		<< "<span>\ttest <br>message with tab</span>"
+		<< "test <br/>message with tab";
 }
 
 void FormattedStringFactoryTest::shouldProperlyParseHtml()

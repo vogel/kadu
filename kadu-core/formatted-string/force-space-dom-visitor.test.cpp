@@ -17,24 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "formatted-string/force-nbsp-dom-visitor.h"
+#include "formatted-string/force-space-dom-visitor.h"
 
 #include "dom/dom-processor.h"
 
 #include <QtTest/QtTest>
 #include <QtXml/QDomDocument>
 
-class ForceNbspDomVisitorTest : public QObject
+class ForceSpaceDomVisitorTest : public QObject
 {
 	Q_OBJECT
 
 private slots:
-	void shouldProperlyForceNbsp_data();
-	void shouldProperlyForceNbsp();
+	void shouldProperlyForceSpace_data();
+	void shouldProperlyForceSpace();
 
 };
 
-void ForceNbspDomVisitorTest::shouldProperlyForceNbsp_data()
+void ForceSpaceDomVisitorTest::shouldProperlyForceSpace_data()
 {
 	QTest::addColumn<QString>("before");
 	QTest::addColumn<QString>("after");
@@ -60,12 +60,15 @@ void ForceNbspDomVisitorTest::shouldProperlyForceNbsp_data()
 	QTest::newRow("multiple spaces inside link")
 		<< R"(<a href="http://www.example.com">  link  with     multiple spaces</a>)"
 		<< R"(<a href="http://www.example.com">&nbsp;&nbsp;link&nbsp;&nbsp;with&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiple&nbsp;spaces</a>)";
+	QTest::newRow("replace tab")
+		<< "\there is tab"
+		<< "&emsp;here&nbsp;is&nbsp;tab";
 	QTest::newRow("remove multiple spaces inside tag")
 		<< R"(<a  href="http://www.example.com">link</a>)"
 		<< R"(<a href="http://www.example.com">link</a>)";
 }
 
-void ForceNbspDomVisitorTest::shouldProperlyForceNbsp()
+void ForceSpaceDomVisitorTest::shouldProperlyForceSpace()
 {
 	QFETCH(QString, before);
 	QFETCH(QString, after);
@@ -74,7 +77,7 @@ void ForceNbspDomVisitorTest::shouldProperlyForceNbsp()
 	// force content to be valid HTML with only one root
 	domDocument.setContent(QString("<div>%1</div>").arg(before));
 
-	auto forceNbspDomVisitor = ForceNbspDomVisitor{};
+	auto forceNbspDomVisitor = ForceSpaceDomVisitor{};
 	auto domProcessor = DomProcessor{domDocument};
 	domProcessor.accept(&forceNbspDomVisitor);
 
@@ -87,5 +90,5 @@ void ForceNbspDomVisitorTest::shouldProperlyForceNbsp()
 	QCOMPARE(recreted, after);
 }
 
-QTEST_APPLESS_MAIN(ForceNbspDomVisitorTest)
-#include "force-nbsp-dom-visitor.test.moc"
+QTEST_APPLESS_MAIN(ForceSpaceDomVisitorTest)
+#include "force-space-dom-visitor.test.moc"

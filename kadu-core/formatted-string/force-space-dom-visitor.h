@@ -17,24 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "force-nbsp-dom-visitor.h"
+#pragma once
 
-#include <QtXml/QDomElement>
-#include <QtXml/QDomText>
+#include "dom/dom-text-regexp-visitor.h"
+#include "exports.h"
 
-ForceNbspDomVisitor::ForceNbspDomVisitor() :
-		DomTextRegexpVisitor{QRegExp{" "}}
+#include <QtCore/QObject>
+
+/**
+ * @short This DOM Visitor replaces all spaces with &nbsp; and all tabs with &emsp;
+ *
+ * Used to keep multiple spaces in our HTML documents. QTextDocument::setHtml does not care
+ * for that, so we need to.
+ */
+class KADUAPI ForceSpaceDomVisitor : public DomTextRegexpVisitor
 {
-}
 
-ForceNbspDomVisitor::~ForceNbspDomVisitor()
-{
-}
+public:
+	explicit ForceSpaceDomVisitor();
+	virtual ~ForceSpaceDomVisitor();
 
-QList<QDomNode> ForceNbspDomVisitor::matchToDomNodes(QDomDocument document, QRegExp regExp) const
-{
-	Q_UNUSED(regExp);
+	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const override;
 
-	auto nbspEntity = document.createEntityReference("nbsp");
-	return QList<QDomNode>{} << nbspEntity;
-}
+};

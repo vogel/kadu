@@ -17,26 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "force-space-dom-visitor.h"
 
-#include "dom/dom-text-regexp-visitor.h"
-#include "exports.h"
+#include <QtXml/QDomElement>
+#include <QtXml/QDomText>
 
-#include <QtCore/QObject>
-
-/**
- * @short This DOM Visitor replaces all double spaces with pair of space and &nbsp;
- *
- * Used to keep multiple spaces in our HTML documents. QTextDocument::setHtml does not care
- * for that, so we need to.
- */
-class KADUAPI ForceNbspDomVisitor : public DomTextRegexpVisitor
+ForceSpaceDomVisitor::ForceSpaceDomVisitor() :
+		DomTextRegexpVisitor{QRegExp{"( |\t)"}}
 {
+}
 
-public:
-	explicit ForceNbspDomVisitor();
-	virtual ~ForceNbspDomVisitor();
+ForceSpaceDomVisitor::~ForceSpaceDomVisitor()
+{
+}
 
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const override;
-
-};
+QList<QDomNode> ForceSpaceDomVisitor::matchToDomNodes(QDomDocument document, QRegExp regExp) const
+{
+	auto entity = document.createEntityReference(regExp.cap(0) == " "
+		? "nbsp"
+		: "emsp");
+	return QList<QDomNode>{} << entity;
+}

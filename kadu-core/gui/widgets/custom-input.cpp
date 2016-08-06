@@ -298,11 +298,14 @@ bool CustomInput::canInsertFromMimeData(const QMimeData *source) const
 
 void CustomInput::insertFromMimeData(const QMimeData *source)
 {
-	if (!CurrentChat.chatAccount().protocolHandler() || !CurrentChat.chatAccount().protocolHandler()->chatImageService())
+	if (!source->hasUrls())
 	{
-		QTextEdit::insertFromMimeData(source);
+		insertPlainText(source->text().replace("\t", "    "));
 		return;
 	}
+
+	if (!CurrentChat.chatAccount().protocolHandler() || !CurrentChat.chatAccount().protocolHandler()->chatImageService())
+		return;
 
 	QString path;
 
@@ -344,12 +347,7 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 	}
 
 	if (!path.isEmpty())
-	{
 		insertHtml(QString("<img src='%1' />").arg(path));
-		return;
-	}
-
-	QTextEdit::insertFromMimeData(source);
 }
 
 #include "moc_custom-input.cpp"

@@ -31,5 +31,5 @@ GaduReceivedHtmlFixupService::~GaduReceivedHtmlFixupService()
 
 QString GaduReceivedHtmlFixupService::htmlFixup(QString html) const
 {
-	return html.replace(m_imageRegExp, R"(<img src="\1" />)");
+	return html.replace(m_imageRegExp, R"(<img src="\1" />)").replace("<br>", "<br/>");
 }

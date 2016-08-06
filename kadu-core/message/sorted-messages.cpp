@@ -63,7 +63,7 @@ bool SortedMessages::same(const Message &left, const Message &right)
 	if (left.messageSender() != right.messageSender())
 		return false;
 
-	if (left.htmlContent() == right.htmlContent())
+	if (left.htmlContent() != right.htmlContent())
 		return false;
 
 	return true;

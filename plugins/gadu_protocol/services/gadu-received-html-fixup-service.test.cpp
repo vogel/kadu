@@ -26,64 +26,51 @@ class GaduReceivedHtmlFixupServiceTest : public QObject
 	Q_OBJECT
 
 private slots:
-	void shouldKeepEmptyAsEmpty();
-	void shouldKeepSimpleMessage();
-	void shouldKeepFormattedMessage();
-	void shouldFixSimpleImage();
-	void shouldFixTwoImages();
-	void shouldFixFormattedMessageWithTwoImages();
+	void shouldFixBrokenHtml_data();
+	void shouldFixBrokenHtml();
 
 };
 
-void GaduReceivedHtmlFixupServiceTest::shouldKeepEmptyAsEmpty()
+void GaduReceivedHtmlFixupServiceTest::shouldFixBrokenHtml_data()
 {
-	GaduReceivedHtmlFixupService service{};
+	QTest::addColumn<QString>("before");
+	QTest::addColumn<QString>("after");
 
-	QCOMPARE(service.htmlFixup({}), QString{});
+	QTest::newRow("empty")
+		<< ""
+		<< "";
+	QTest::newRow("simple")
+		<< R"(<span>simple message</span>)"
+		<< R"(<span>simple message</span>)";
+	QTest::newRow("formatted")
+		<< R"(fo<span style="font-weight:600;">rm</span><span style="font-weight:600;font-style:italic;">atte</span><span style="font-weight:600;font-style:italic;text-decoration:underline;">d<br/><br/>m</span><span style="font-weight:600;font-style:italic;">es</span><span style="font-weight:600;">s</span>age)"
+		<< R"(fo<span style="font-weight:600;">rm</span><span style="font-weight:600;font-style:italic;">atte</span><span style="font-weight:600;font-style:italic;text-decoration:underline;">d<br/><br/>m</span><span style="font-weight:600;font-style:italic;">es</span><span style="font-weight:600;">s</span>age)";
+	QTest::newRow("simple image")
+		<< R"(<img name="a8a4f03700000432">)"
+		<< R"(<img src="a8a4f03700000432" />)";
+	QTest::newRow("two images")
+		<< R"(message with <img name="77a1a0f10000066c"> two images <img name="6652381000000624"> and text)"
+		<< R"(message with <img src="77a1a0f10000066c" /> two images <img src="6652381000000624" /> and text)";
+	QTest::newRow("formatted message with two images")
+		<< R"(fo<span style="font-weight:600;">rma</span><span style="font-weight:600;font-style:italic;">tted<br/></span><img name="77a1a0f10000066c"><span style="font-weight:600;font-style:italic;"><br/>mes</span><span style="font-weight:600;font-style:italic;text-decoration:underline;">sage w</span><span style="font-weight:600;font-style:italic;">ith<br/></span><img name="9b5725c300000ec7"><span style="font-weight:600;font-style:italic;"><br/>tw</span><span style="font-weight:600;">o messag</span>es)"
+		<< R"(fo<span style="font-weight:600;">rma</span><span style="font-weight:600;font-style:italic;">tted<br/></span><img src="77a1a0f10000066c" /><span style="font-weight:600;font-style:italic;"><br/>mes</span><span style="font-weight:600;font-style:italic;text-decoration:underline;">sage w</span><span style="font-weight:600;font-style:italic;">ith<br/></span><img src="9b5725c300000ec7" /><span style="font-weight:600;font-style:italic;"><br/>tw</span><span style="font-weight:600;">o messag</span>es)";
+	QTest::newRow("multiline string")
+		<< R"(multiline<br>string)"
+		<< R"(multiline<br/>string)";
+	QTest::newRow("multiline fromatted string")
+		<< R"(mul<span style="font-weight:600;">tiline<br>strin</span>g)"
+		<< R"(mul<span style="font-weight:600;">tiline<br/>strin</span>g)";
 }
 
-void GaduReceivedHtmlFixupServiceTest::shouldKeepSimpleMessage()
+void GaduReceivedHtmlFixupServiceTest::shouldFixBrokenHtml()
 {
+	QFETCH(QString, before);
+	QFETCH(QString, after);
+
 	GaduReceivedHtmlFixupService service{};
+	auto fixed = service.htmlFixup(before);
 
-	auto content = QString{R"(<span>simple message</span>)"};
-	QCOMPARE(service.htmlFixup(content), content);
-
-}
-
-void GaduReceivedHtmlFixupServiceTest::shouldKeepFormattedMessage()
-{
-	GaduReceivedHtmlFixupService service{};
-
-	auto content = QString{R"(fo<span style="font-weight:600;">rm</span><span style="font-weight:600;font-style:italic;">atte</span><span style="font-weight:600;font-style:italic;text-decoration:underline;">d<br/><br/>m</span><span style="font-weight:600;font-style:italic;">es</span><span style="font-weight:600;">s</span>age)"};
-	QCOMPARE(service.htmlFixup(content), content);
-}
-
-void GaduReceivedHtmlFixupServiceTest::shouldFixSimpleImage()
-{
-	GaduReceivedHtmlFixupService service{};
-
-	auto contentToFixUp = QString{R"(<img name="a8a4f03700000432">)"};
-	auto contentFixedUp = QString{R"(<img src="a8a4f03700000432" />)"};
-	QCOMPARE(service.htmlFixup(contentToFixUp), contentFixedUp);
-}
-
-void GaduReceivedHtmlFixupServiceTest::shouldFixTwoImages()
-{
-	GaduReceivedHtmlFixupService service{};
-
-	auto contentToFixUp = QString{R"(message with <img name="77a1a0f10000066c"> two images <img name="6652381000000624"> and text)"};
-	auto contentFixedUp = QString{R"(message with <img src="77a1a0f10000066c" /> two images <img src="6652381000000624" /> and text)"};
-	QCOMPARE(service.htmlFixup(contentToFixUp), contentFixedUp);
-}
-
-void GaduReceivedHtmlFixupServiceTest::shouldFixFormattedMessageWithTwoImages()
-{
-	GaduReceivedHtmlFixupService service{};
-
-	auto contentToFixUp = QString{R"(fo<span style="font-weight:600;">rma</span><span style="font-weight:600;font-style:italic;">tted<br/></span><img name="77a1a0f10000066c"><span style="font-weight:600;font-style:italic;"><br/>mes</span><span style="font-weight:600;font-style:italic;text-decoration:underline;">sage w</span><span style="font-weight:600;font-style:italic;">ith<br/></span><img name="9b5725c300000ec7"><span style="font-weight:600;font-style:italic;"><br/>tw</span><span style="font-weight:600;">o messag</span>es)"};
-	auto contentFixedUp = QString{R"(fo<span style="font-weight:600;">rma</span><span style="font-weight:600;font-style:italic;">tted<br/></span><img src="77a1a0f10000066c" /><span style="font-weight:600;font-style:italic;"><br/>mes</span><span style="font-weight:600;font-style:italic;text-decoration:underline;">sage w</span><span style="font-weight:600;font-style:italic;">ith<br/></span><img src="9b5725c300000ec7" /><span style="font-weight:600;font-style:italic;"><br/>tw</span><span style="font-weight:600;">o messag</span>es)"};
-	QCOMPARE(service.htmlFixup(contentToFixUp), contentFixedUp);
+	QCOMPARE(fixed, after);
 }
 
 QTEST_APPLESS_MAIN(GaduReceivedHtmlFixupServiceTest)

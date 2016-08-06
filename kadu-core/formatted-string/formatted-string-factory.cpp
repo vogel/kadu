@@ -24,7 +24,7 @@
 
 #include "dom/dom-processor-service.h"
 #include "formatted-string/composite-formatted-string.h"
-#include "formatted-string/force-nbsp-dom-visitor.h"
+#include "formatted-string/force-space-dom-visitor.h"
 #include "formatted-string/formatted-string-image-block.h"
 #include "formatted-string/formatted-string-text-block.h"
 #include "misc/memory.h"
@@ -60,7 +60,7 @@ std::unique_ptr<FormattedString> FormattedStringFactory::fromPlainText(const QSt
 
 std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
 {
-	QString replacedNewLine = text;
+	auto replacedNewLine = text;
 	replacedNewLine.replace("\u00A0", " ");
 	replacedNewLine.replace(QChar::LineSeparator, '\n');
 	return std::make_unique<FormattedStringTextBlock>(replacedNewLine, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
@@ -110,7 +110,7 @@ std::vector<std::unique_ptr<FormattedString>> FormattedStringFactory::partsFromQ
 std::unique_ptr<FormattedString> FormattedStringFactory::fromHtml(const QString &html)
 {
 	QTextDocument document{};
-	document.setHtml(m_domProcessorService->process(html, ForceNbspDomVisitor{}));
+	document.setHtml(m_domProcessorService->process(html, ForceSpaceDomVisitor{}));
 
 	return fromTextDocument(document);
 }

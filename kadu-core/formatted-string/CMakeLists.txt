@@ -1,6 +1,6 @@
 set (formatted-string_SRCS
 	composite-formatted-string.cpp
-	force-nbsp-dom-visitor.cpp
+	force-space-dom-visitor.cpp
 	formatted-string.cpp
 	formatted-string-clone-visitor.cpp
 	formatted-string-factory.cpp
@@ -13,7 +13,7 @@ set (formatted-string_SRCS
 	text-converter-service.cpp
 )
 
-kadu_add_test (force-nbsp-dom-visitor)
+kadu_add_test (force-space-dom-visitor)
 kadu_add_test (formatted-string-factory)
 kadu_add_test (text-converter-service)
 

@@ -18,12 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DOM_PROCESSOR_SERVICE_H
-#define DOM_PROCESSOR_SERVICE_H
+#pragma once
 
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
 
 #include "exports.h"
 
@@ -49,7 +46,7 @@ class DomVisitor;
  * DomVisitorProvider objects are asked for DomVisitor object in order of increasing priorities - that means
  * DomVisitorProvider with smallest priority will be called first.
  */
-class KADUAPI DomProcessorService: public QObject
+class KADUAPI DomProcessorService : public QObject
 {
 	Q_OBJECT
 
@@ -59,7 +56,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param parent QObject parent of new instance
 	 */
-	Q_INVOKABLE explicit DomProcessorService(QObject *parent = nullptr);
+	explicit DomProcessorService(QObject *parent = nullptr);
 	virtual ~DomProcessorService();
 
 	/**
@@ -73,30 +70,11 @@ public:
 	 *
 	 * Value of xml must be valid XML. If not, it will be truncated at first invalid character.
 	 */
-	QString process(const QString &xml);
-	QString process(const QString &xml, const DomVisitor &domVisitor);
-
-private:
-	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
-
-	/**
-	 * @short Process domDocument with all available DomVisitor instances.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param domDocument to process
-	 *
-	 * This method will ask all registered DomVisitorProvider for DomVisitor instances. All non-null
-	 * instances will be called in order of increasing priority on given domDocument and will be allowed to
-	 * modify it.
-	 */
-	void process(QDomDocument &domDocument);
-
-private slots:
-	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
+	virtual QString process(const QString &xml) = 0;
+	virtual QString process(const QString &xml, const DomVisitor &domVisitor) = 0;
 
 };
 
 /**
  * @}
  */
-
-#endif // DOM_PROCESSOR_SERVICE_H

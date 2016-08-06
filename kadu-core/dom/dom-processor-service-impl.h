@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -18,28 +18,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "message-html-renderer-service.h"
+#pragma once
 
 #include "dom/dom-processor-service.h"
-#include "message/message.h"
+#include "exports.h"
 
-MessageHtmlRendererService::MessageHtmlRendererService(QObject *parent) :
-		QObject(parent)
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class DomVisitorProviderRepository;
+class DomVisitor;
+
+class KADUAPI DomProcessorServiceImpl : public DomProcessorService
 {
-}
+	Q_OBJECT
 
-MessageHtmlRendererService::~MessageHtmlRendererService()
-{
-}
+public:
+	Q_INVOKABLE explicit DomProcessorServiceImpl(QObject *parent = nullptr);
+	virtual ~DomProcessorServiceImpl();
 
-void MessageHtmlRendererService::setDomProcessorService(DomProcessorService *domProcessorService)
-{
-	m_domProcessorService = domProcessorService;
-}
+	QString process(const QString &xml);
+	QString process(const QString &xml, const DomVisitor &domVisitor);
 
-QString MessageHtmlRendererService::renderMessage(const Message &message)
-{
-	return QString{R"(<span style="white-space: pre-wrap;">%1</span>)"}.arg(m_domProcessorService->process(message.htmlContent()));
-}
+private:
+	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
 
-#include "moc_message-html-renderer-service.cpp"
+	void process(QDomDocument &domDocument);
+
+private slots:
+	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
+
+};
