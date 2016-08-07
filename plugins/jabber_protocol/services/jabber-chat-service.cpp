@@ -208,7 +208,7 @@ void JabberChatService::handleReceivedMessage(const QXmppMessage &xmppMessage)
 	if (rawMessageTransformerService())
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message).rawContent());
 
-	message.setHtmlContent(body.toHtmlEscaped());
+	message.setHtmlContent(body.toHtmlEscaped().replace('\n', "<br />"));
 
 	auto id = xmppMessage.from();
 	auto resourceIndex = id.indexOf('/');
