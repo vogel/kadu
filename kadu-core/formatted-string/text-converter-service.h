@@ -32,5 +32,6 @@ public:
 	virtual ~TextConverterService();
 
 	QString htmlToPlain(const QString &html);
+	QString plainToHtml(const QString &plain);
 
 };

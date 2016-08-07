@@ -30,6 +30,9 @@ private slots:
 	void shouldProperlyConvertHtmlToPlainText_data();
 	void shouldProperlyConvertHtmlToPlainText();
 
+	void shouldProperlyConvertPlainTextToHtml_data();
+	void shouldProperlyConvertPlainTextToHtml();
+
 };
 
 void TextConverterServiceTest::shouldProperlyConvertHtmlToPlainText_data()
@@ -60,6 +63,36 @@ void TextConverterServiceTest::shouldProperlyConvertHtmlToPlainText()
 	auto result = textConverterService.htmlToPlain(html);
 
 	QCOMPARE(result, plain);
+}
+
+void TextConverterServiceTest::shouldProperlyConvertPlainTextToHtml_data()
+{
+	QTest::addColumn<QString>("plain");
+	QTest::addColumn<QString>("html");
+
+	QTest::newRow("simple")
+		<< "simple message"
+		<< "simple message";
+	QTest::newRow("with new line")
+		<< "with\nnew line"
+		<< "with<br />new line";
+	QTest::newRow("with less and greater")
+		<< "with < and >"
+		<< "with &lt; and &gt;";
+	QTest::newRow("with amp")
+		<< "with &&"
+		<< "with &amp;&amp;";
+}
+
+void TextConverterServiceTest::shouldProperlyConvertPlainTextToHtml()
+{
+	QFETCH(QString, plain);
+	QFETCH(QString, html);
+
+	TextConverterService textConverterService;
+	auto result = textConverterService.plainToHtml(plain);
+
+	QCOMPARE(result, html);
 }
 
 QTEST_APPLESS_MAIN(TextConverterServiceTest)

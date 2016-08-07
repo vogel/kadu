@@ -36,3 +36,8 @@ QString TextConverterService::htmlToPlain(const QString &html)
 	textDocument.setHtml(html);
 	return textDocument.toPlainText();
 }
+
+QString TextConverterService::plainToHtml(const QString &plain)
+{
+	return plain.toHtmlEscaped().replace('\n', "<br />");
+}

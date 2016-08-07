@@ -42,6 +42,7 @@
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
+#include "formatted-string/text-converter-service.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message-storage.h"
 #include "message/message.h"
@@ -107,6 +108,11 @@ void JabberChatService::setResourceService(JabberResourceService *resourceServic
 void JabberChatService::setRoomChatService(JabberRoomChatService *roomChatService)
 {
 	m_roomChatService = roomChatService;
+}
+
+void JabberChatService::setTextConverterService(TextConverterService *textConverterService)
+{
+	m_textConverterService = textConverterService;
 }
 
 int JabberChatService::maxMessageLength() const
@@ -208,7 +214,7 @@ void JabberChatService::handleReceivedMessage(const QXmppMessage &xmppMessage)
 	if (rawMessageTransformerService())
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message).rawContent());
 
-	message.setHtmlContent(body.toHtmlEscaped().replace('\n', "<br />"));
+	message.setHtmlContent(m_textConverterService->plainToHtml(body));
 
 	auto id = xmppMessage.from();
 	auto resourceIndex = id.indexOf('/');

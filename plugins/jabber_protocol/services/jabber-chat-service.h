@@ -35,6 +35,7 @@ class Chat;
 class ContactManager;
 class FormattedStringFactory;
 class MessageStorage;
+class TextConverterService;
 
 class JabberChatStateService;
 class JabberResourceService;
@@ -83,6 +84,7 @@ private:
 	QPointer<JabberRoomChatService> m_roomChatService;
 	QPointer<MessageStorage> m_messageStorage;
 	QPointer<QXmppClient> m_client;
+	QPointer<TextConverterService> m_textConverterService;
 
 	QMap<QString, QXmppMessage::Type> m_contactMessageTypes;
 
@@ -96,5 +98,6 @@ private slots:
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
+	INJEQT_SET void setTextConverterService(TextConverterService *textConverterService);
 
 };
