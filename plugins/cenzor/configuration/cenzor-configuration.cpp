@@ -22,6 +22,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "misc/paths-provider.h"
 
 #include <QtCore/QFile>
@@ -100,7 +102,7 @@ QList<QRegExp> CenzorConfiguration::loadRegExpList(const QString &itemName, cons
 void CenzorConfiguration::configurationUpdated()
 {
 	Enabled = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_cenzor");
-	Admonition = m_configuration->deprecatedApi()->readEntry("PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>");
+	Admonition = normalizeHtml(HtmlString{m_configuration->deprecatedApi()->readEntry("PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>")});
 	SwearList = loadRegExpList("cenzor swearwords", m_pathsProvider->dataPath() + QStringLiteral("plugins/data/cenzor/cenzor_words.conf"));
 	ExclusionList = loadRegExpList("cenzor exclusions", m_pathsProvider->dataPath() + QStringLiteral("plugins/data/cenzor/cenzor_words_ok.conf"));
 }

@@ -24,6 +24,9 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
+#include "html/normalized-html-string.h"
 
 ChatWidgetStatePersistenceService::ChatWidgetStatePersistenceService()
 {
@@ -50,15 +53,15 @@ void ChatWidgetStatePersistenceService::setFormattedStringFactory(FormattedStrin
 void ChatWidgetStatePersistenceService::storeChatWidgetState(ChatWidget *chatWidget)
 {
 	auto content = chatWidget->edit()->htmlMessage();
-	if (!content.isEmpty())
-		chatWidget->chat().addProperty("chat-widget-state:message", content, CustomProperties::Storable);
+	if (!content.string().isEmpty())
+		chatWidget->chat().addProperty("chat-widget-state:message", content.string(), CustomProperties::Storable);
 	else
 		chatWidget->chat().removeProperty("chat-widget-state:message");
 }
 
 void ChatWidgetStatePersistenceService::restoreChatWidgetState(ChatWidget *chatWidget)
 {
-	auto html = chatWidget->chat().property("chat-widget-state:message", QString{}).toString();
+	auto html = normalizeHtml(HtmlString{chatWidget->chat().property("chat-widget-state:message", QString{}).toString()});
 	auto formattedString = m_formattedStringFactory->fromHtml(html);
 	chatWidget->edit()->setFormattedString(*formattedString);
 

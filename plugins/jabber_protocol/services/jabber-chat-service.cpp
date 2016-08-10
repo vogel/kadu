@@ -42,8 +42,9 @@
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
-#include "formatted-string/text-converter-service.h"
 #include "gui/windows/message-dialog.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "message/message-storage.h"
 #include "message/message.h"
 #include "message/raw-message.h"
@@ -110,11 +111,6 @@ void JabberChatService::setRoomChatService(JabberRoomChatService *roomChatServic
 	m_roomChatService = roomChatService;
 }
 
-void JabberChatService::setTextConverterService(TextConverterService *textConverterService)
-{
-	m_textConverterService = textConverterService;
-}
-
 int JabberChatService::maxMessageLength() const
 {
 	return 60000;
@@ -145,7 +141,7 @@ bool JabberChatService::sendMessage(const Message &message)
 		return false;
 
 	auto xmppMessage = QXmppMessage{};
-	auto formattedContent = m_formattedStringFactory->fromHtml(message.htmlContent());
+	auto formattedContent = m_formattedStringFactory->fromHtml(message.content());
 
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	formattedContent->accept(&plainTextVisitor);
@@ -214,7 +210,7 @@ void JabberChatService::handleReceivedMessage(const QXmppMessage &xmppMessage)
 	if (rawMessageTransformerService())
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message).rawContent());
 
-	message.setHtmlContent(m_textConverterService->plainToHtml(body));
+	message.setContent(normalizeHtml(plainToHtml(body)));
 
 	auto id = xmppMessage.from();
 	auto resourceIndex = id.indexOf('/');

@@ -17,19 +17,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gadu-received-html-fixup-service.h"
+#include "remove-script-dom-visitor.h"
 
-GaduReceivedHtmlFixupService::GaduReceivedHtmlFixupService(QObject *parent) :
-		QObject{parent},
-		m_imageRegExp{R"rx(<img name="([a-z0-9]*)">)rx", QRegularExpression::CaseInsensitiveOption}
+#include <QtXml/QDomElement>
+#include <QtXml/QDomText>
+
+RemoveScriptDomVisitor::RemoveScriptDomVisitor()
 {
 }
 
-GaduReceivedHtmlFixupService::~GaduReceivedHtmlFixupService()
+RemoveScriptDomVisitor::~RemoveScriptDomVisitor()
 {
 }
 
-QString GaduReceivedHtmlFixupService::htmlFixup(QString html) const
+QDomNode RemoveScriptDomVisitor::beginVisit(QDomElement elementNode) const
 {
-	return html.replace(m_imageRegExp, R"(<img src="\1" />)").replace("<br>", "<br/>");
+	return elementNode;
+}
+
+QDomNode RemoveScriptDomVisitor::endVisit(QDomElement elementNode) const
+{
+	auto nextsibling = elementNode.nextSibling();
+	if (elementNode.tagName().toLower() == "script")
+		elementNode.parentNode().removeChild(elementNode);
+	return nextsibling;
+}
+
+QDomNode RemoveScriptDomVisitor::visit(QDomText textNode) const
+{
+	return textNode;
 }

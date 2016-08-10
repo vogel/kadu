@@ -42,12 +42,9 @@ QDomNode DomProcessor::acceptNode(const DomVisitor *visitor, QDomNode node)
 			break;
 	}
 
-	QDomNode childNode = node.firstChild();
+	auto childNode = node.firstChild();
 	while (!childNode.isNull())
-	{
 		childNode = acceptNode(visitor, childNode);
-		childNode = childNode.nextSibling();
-	}
 
 	switch (node.nodeType())
 	{
@@ -55,6 +52,7 @@ QDomNode DomProcessor::acceptNode(const DomVisitor *visitor, QDomNode node)
 			node = visitor->endVisit(node.toElement());
 			break;
 		default:
+			node = node.nextSibling();
 			break;
 	}
 
@@ -66,4 +64,34 @@ void DomProcessor::accept(const DomVisitor *visitor)
 	Q_ASSERT(visitor);
 
 	acceptNode(visitor, m_domDocument.documentElement());
+}
+
+QDomDocument toDomDocument(const QString &xml)
+{
+	auto domDocument = QDomDocument{};
+	// force content to be valid HTML with only one root
+	if (domDocument.setContent(QString("<div>%1</div>").arg(xml)))
+		return domDocument;
+
+	throw invalid_xml{};
+}
+
+QString toString(const QDomDocument &domDocument)
+{
+	if (domDocument.documentElement().childNodes().isEmpty())
+		return QString();
+
+	auto result = domDocument.toString(-1).trimmed();
+	// remove <div></div>
+	Q_ASSERT(result.startsWith(QStringLiteral("<div>")));
+	Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
+	return result.mid(static_cast<int>(qstrlen("<div>")), result.length() - static_cast<int>(qstrlen("<div></div>")));
+}
+
+QString processDom(const QString &xml, const DomVisitor &domVisitor)
+{
+	auto domDocument = toDomDocument(xml);
+	auto domProcessor = DomProcessor{domDocument};
+	domProcessor.accept(&domVisitor);
+	return toString(domDocument);
 }

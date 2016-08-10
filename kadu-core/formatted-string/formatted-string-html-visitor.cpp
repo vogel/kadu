@@ -22,6 +22,7 @@
 
 #include "formatted-string/formatted-string-image-block.h"
 #include "formatted-string/formatted-string-text-block.h"
+#include "html/html-string.h"
 #include "misc/misc.h"
 
 #include "formatted-string-html-visitor.h"
@@ -91,7 +92,7 @@ void FormattedStringHtmlVisitor::append(QString content)
 	m_result.append(std::move(content));
 }
 
-QString FormattedStringHtmlVisitor::result() const
+HtmlString FormattedStringHtmlVisitor::result() const
 {
-	return m_result;
+	return HtmlString{m_result};
 }

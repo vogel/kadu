@@ -80,6 +80,12 @@ private:
 
 };
 
+class invalid_xml : public std::exception {};
+
+KADUAPI QDomDocument toDomDocument(const QString &xml);
+KADUAPI QString toString(const QDomDocument &domDocument);
+KADUAPI QString processDom(const QString &xml, const DomVisitor &domVisitor);
+
 /**
  * @}
  */

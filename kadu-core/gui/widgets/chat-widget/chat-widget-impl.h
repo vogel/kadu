@@ -150,7 +150,7 @@ public:
 
 	virtual Chat chat() const override { return CurrentChat; }
 
-	virtual void appendSystemMessage(QString htmlContent) override;
+	virtual void appendSystemMessage(NormalizedHtmlString content) override;
 
 	virtual CustomInput * edit() const override;
 	virtual TalkableProxyModel * talkableProxyModel() const override;

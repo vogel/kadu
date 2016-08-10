@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include "html/normalized-html-string.h"
 #include "message/message-common.h"
 #include "storage/shared.h"
 #include "exports.h"
@@ -49,7 +50,7 @@ public:
 
 	KaduShared_PropertyDeclCRW(Chat, messageChat, MessageChat)
 	KaduShared_PropertyDeclCRW(Contact, messageSender, MessageSender)
-	KaduShared_Property(const QString &, htmlContent, HtmlContent)
+	KaduShared_Property(const NormalizedHtmlString &, content, Content)
 	KaduShared_Property(const QDateTime &, receiveDate, ReceiveDate)
 	KaduShared_Property(const QDateTime &, sendDate, SendDate)
 	KaduShared_PropertyRead(MessageStatus, status, Status)
@@ -79,7 +80,7 @@ private:
 
 	Chat *MessageChat;
 	Contact *MessageSender;
-	QString HtmlContent;
+	NormalizedHtmlString Content;
 	QDateTime ReceiveDate;
 	QDateTime SendDate;
 	MessageStatus Status;

@@ -24,6 +24,7 @@
 
 #include "hints-configuration.h"
 
+#include "html/html-conversion.h"
 #include "icons/icons-manager.h"
 #include "misc/memory.h"
 #include "notification/notification-callback-repository.h"
@@ -90,7 +91,7 @@ void Hint::createGui()
 
 	auto label = make_owned<QLabel>(this);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
-	label->setText(QString{m_notification.text}.replace('\n', QStringLiteral("<br />")));
+	label->setText(m_notification.text.string());
 
 	auto layout = make_owned<QGridLayout>(this);
 	layout->setSpacing(0);
@@ -134,11 +135,11 @@ void Hint::createGui()
 
 QString Hint::details() const
 {
-	if (!m_hintsConfiguration->showContentMessage() || m_notification.details.isEmpty())
+	if (!m_hintsConfiguration->showContentMessage() || m_notification.details.string().isEmpty())
 		return {};
 
 	auto const citeSign = 50;
-	auto const message = QString{m_notification.details}.replace("<br/>", QStringLiteral(""));
+	auto const message = htmlToPlain(m_notification.details);
 	return message.length() > citeSign
 			? message.left(citeSign) + "..."
 			: message;

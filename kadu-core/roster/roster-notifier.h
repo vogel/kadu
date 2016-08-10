@@ -27,6 +27,7 @@
 #include <injeqt/injeqt.h>
 
 class Account;
+class NormalizedHtmlString;
 class NotificationEvent;
 class NotificationService;
 
@@ -79,7 +80,7 @@ private:
 	NotificationEvent m_exportSucceededNotificationEvent;
 	NotificationEvent m_exportFailedNotificationEvent;
 
-	void notify(const QString &topic, const Account &account, const QString &message);
+	void notify(const QString &topic, const Account &account, const NormalizedHtmlString &message);
 
 private slots:
 	INJEQT_SET void setNotificationService(NotificationService *notificationService);

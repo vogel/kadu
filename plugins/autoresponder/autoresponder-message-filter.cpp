@@ -25,11 +25,12 @@
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "formatted-string/text-converter-service.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/main-configuration-window.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "message/message-filter-service.h"
 #include "message/message-manager.h"
 #include "parser/parser.h"
@@ -71,11 +72,6 @@ void AutoresponderMessageFilter::setStatusTypeManager(StatusTypeManager *statusT
 	m_statusTypeManager = statusTypeManager;
 }
 
-void AutoresponderMessageFilter::setTextConverterService(TextConverterService *textConverterService)
-{
-	m_textConverterService = textConverterService;
-}
-
 void AutoresponderMessageFilter::init()
 {
 	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)),
@@ -87,7 +83,7 @@ bool AutoresponderMessageFilter::acceptMessage(const Message &message)
 	if (MessageTypeSent == message.type())
 		return true;
 
-	if (m_textConverterService->htmlToPlain(message.htmlContent()).left(5) == "KADU ") // ignore other kadu autoresponses
+	if (htmlToPlain(message.content()).left(5) == "KADU ") // ignore other kadu autoresponses
 		return true;
 
 	if (!Configuration.respondConferences() && (message.messageChat().contacts().count() > 1))
@@ -106,8 +102,8 @@ bool AutoresponderMessageFilter::acceptMessage(const Message &message)
 			|| (Configuration.statusInvisible() && group == StatusTypeGroup::Invisible)
 			|| (Configuration.statusBusy() && group == StatusTypeGroup::Away))
 	{
-		m_messageManager->sendMessage(message.messageChat(), tr("KADU AUTORESPONDER:") + '\n'
-				+ m_parser->parse(Configuration.autoRespondText(), Talkable(message.messageSender()), ParserEscape::HtmlEscape), true);
+		m_messageManager->sendMessage(message.messageChat(), normalizeHtml(HtmlString{tr("KADU AUTORESPONDER:") + '\n'
+				+ m_parser->parse(Configuration.autoRespondText(), Talkable(message.messageSender()), ParserEscape::HtmlEscape)}), true);
 
 		RepliedChats.insert(message.messageChat());
 	}

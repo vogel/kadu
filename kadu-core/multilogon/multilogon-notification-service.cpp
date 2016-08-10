@@ -20,6 +20,9 @@
 #include "multilogon-notification-service.h"
 
 #include "accounts/account.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
+#include "html/normalized-html-string.h"
 #include "multilogon/multilogon-session.h"
 #include "notification/notification.h"
 #include "notification/notification-callback-repository.h"
@@ -86,12 +89,12 @@ void MultilogonNotificationService::notifyMultilogonSessionConnected(const Multi
 	auto notification = Notification{};
 	notification.type = m_multilogonConnectedEvent.name();
 	notification.title = tr("Multilogon");
-	notification.text = tr("Multilogon session connected");
-	notification.details = tr("from %1 at %2 with %3 for %4 account").arg(
-			session.remoteAddress.toString(),
-			session.logonTime.toString(),
-			session.name,
-			session.account.id());
+	notification.text = normalizeHtml(plainToHtml(tr("Multilogon session connected")));
+	notification.details = normalizeHtml(HtmlString{tr("from %1 at %2 with %3 for %4 account")}.arg(
+			plainToHtml(session.remoteAddress.toString()),
+			plainToHtml(session.logonTime.toString()),
+			plainToHtml(session.name),
+			plainToHtml(session.account.id())));
 	notification.data = std::move(data);
 	notification.callbacks.append(QStringLiteral("ignore"));
 	notification.callbacks.append(m_mutlilogonDisconnectCallback.name());
@@ -107,12 +110,12 @@ void MultilogonNotificationService::notifyMultilogonSessionDisonnected(const Mul
 	auto notification = Notification{};
 	notification.type = m_multilogonDisconnectedEvent.name();
 	notification.title = tr("Multilogon");
-	notification.text = tr("Multilogon session disconnected");
-	notification.details = tr("from %1 at %2 with %3 for %4 account").arg(
-			session.remoteAddress.toString(),
-			session.logonTime.toString(),
-			session.name,
-			session.account.id());
+	notification.text = normalizeHtml(HtmlString{tr("Multilogon session disconnected")});
+	notification.details = normalizeHtml(HtmlString{tr("from %1 at %2 with %3 for %4 account")}.arg(
+			plainToHtml(session.remoteAddress.toString()),
+			plainToHtml(session.logonTime.toString()),
+			plainToHtml(session.name),
+			plainToHtml(session.account.id())));
 
 	m_notificationService->notify(notification);
 }

@@ -54,13 +54,14 @@ Nowa funkcjonalnosc - Dorregaray
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
-#include "formatted-string/text-converter-service.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "icons/icons-manager.h"
 #include "message/message-filter-service.h"
 #include "message/message-manager.h"
@@ -147,11 +148,6 @@ void FirewallMessageFilter::setPathsProvider(PathsProvider *pathsProvider)
 	m_pathsProvider = pathsProvider;
 }
 
-void FirewallMessageFilter::setTextConverterService(TextConverterService *textConverterService)
-{
-	m_textConverterService = textConverterService;
-}
-
 void FirewallMessageFilter::init()
 {
 	pattern.setCaseSensitivity(Qt::CaseSensitive);
@@ -201,7 +197,7 @@ bool FirewallMessageFilter::acceptMessage(const Message &message)
  */
 bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 {
-	auto plainTextContent = m_textConverterService->htmlToPlain(message.htmlContent());
+	auto plainTextContent = htmlToPlain(message.content());
 	bool ignore = false;
 
 // emotikony s� sprawdzane nawet przy ��czeniu
@@ -264,7 +260,7 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 			if (m_history->currentStorage())
 			{
 				Message msg = m_messageStorage->create();
-				msg.setHtmlContent(message.htmlContent());
+				msg.setContent(message.content());
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::currentDateTime());
@@ -341,7 +337,7 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 					return false;
 				}
 
-				m_messageManager->sendMessage(chat, tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first."), true);
+				m_messageManager->sendMessage(chat, normalizeHtml(HtmlString{tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first.")}), true);
 			}
 
 			writeLog(sender, tr("Chat with invisible anonim ignored.\n") + "----------------------------------------------------\n");
@@ -556,9 +552,9 @@ void FirewallMessageFilter::configurationUpdated()
 	DropAnonymousWhenInvisible = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "drop_anonymous_when_invisible", false);
 	IgnoreInvisible = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "ignore_invisible", false);
 	Confirmation = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "confirmation", true);
-	ConfirmationText = m_configuration->deprecatedApi()->readEntry("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)"));
+	ConfirmationText = normalizeHtml(HtmlString{m_configuration->deprecatedApi()->readEntry("Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)"))});
 	Search = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "search", true);
-	ConfirmationQuestion = m_configuration->deprecatedApi()->readEntry("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)"));
+	ConfirmationQuestion = normalizeHtml(HtmlString{m_configuration->deprecatedApi()->readEntry("Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type \"I want something\" (capital doesn't matter)"))});
 	WriteInHistory = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "write_history", true);
 	DosInterval = m_configuration->deprecatedApi()->readNumEntry("Firewall", "dos_interval", 500);
 	MaxEmoticons = m_configuration->deprecatedApi()->readNumEntry("Firewall", "emoticons_max", 15);

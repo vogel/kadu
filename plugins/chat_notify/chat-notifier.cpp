@@ -25,6 +25,8 @@
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "message/message-manager.h"
 #include "notification/notification.h"
 
@@ -59,9 +61,9 @@ void ChatNotifier::sendNotificationToChatWidget(const Notification &notification
 	if (!m_formattedStringFactory)
 		return;
 
-	auto content = notification.text;
-	if (!notification.details.isEmpty())
-		content += "<br/> <small>" + notification.details + "</small>";
+	auto content = notification.details.string().isEmpty()
+		? notification.text
+		: normalizeHtml(HtmlString{"%1<br/> <small>%2</small>"}).arg(notification.text, notification.details);
 
 	chatWidget->appendSystemMessage(content);
 }

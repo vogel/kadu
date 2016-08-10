@@ -71,7 +71,6 @@ public:
 	 * Value of xml must be valid XML. If not, it will be truncated at first invalid character.
 	 */
 	virtual QString process(const QString &xml) = 0;
-	virtual QString process(const QString &xml, const DomVisitor &domVisitor) = 0;
 
 };
 

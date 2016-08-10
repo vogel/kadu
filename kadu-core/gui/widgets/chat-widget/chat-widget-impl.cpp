@@ -66,6 +66,9 @@
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
+#include "html/normalized-html-string.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
@@ -437,12 +440,12 @@ SortedMessages ChatWidgetImpl::messages() const
 	return MessagesView->messages();
 }
 
-void ChatWidgetImpl::appendSystemMessage(QString htmlContent)
+void ChatWidgetImpl::appendSystemMessage(NormalizedHtmlString htmlContent)
 {
 	Message message = m_messageStorage->create();
 	message.setMessageChat(CurrentChat);
 	message.setType(MessageTypeSystem);
-	message.setHtmlContent(htmlContent);
+	message.setContent(htmlContent);
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 
@@ -762,7 +765,7 @@ void ChatWidgetImpl::contactActivityChanged(const Contact &contact, ChatState st
 		message.setMessageChat(CurrentChat);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
-		message.setHtmlContent(msg.toHtmlEscaped());
+		message.setContent(normalizeHtml(plainToHtml(msg)));
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 

@@ -21,6 +21,7 @@
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
+#include "html/normalized-html-string.h"
 
 #include "message.h"
 
@@ -55,7 +56,7 @@ Message::~Message()
 
 KaduSharedBase_PropertyDefCRW(Message, Chat, messageChat, MessageChat, Chat::null)
 KaduSharedBase_PropertyDefCRW(Message, Contact, messageSender, MessageSender, Contact::null)
-KaduSharedBase_PropertyDefCRW(Message, QString, htmlContent, HtmlContent, QString())
+KaduSharedBase_PropertyDefCRW(Message, NormalizedHtmlString, content, Content, NormalizedHtmlString())
 KaduSharedBase_PropertyDefCRW(Message, QDateTime, receiveDate, ReceiveDate, QDateTime())
 KaduSharedBase_PropertyDefCRW(Message, QDateTime, sendDate, SendDate, QDateTime())
 KaduSharedBase_PropertyDef(Message, MessageStatus, status, Status, MessageStatusUnknown)

@@ -26,6 +26,9 @@
 #include "chat/type/chat-type-contact.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer-type.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
+#include "html/normalized-html-string.h"
 #include "identities/identity.h"
 #include "notification/notification.h"
 #include "notification/notification-callback-repository.h"
@@ -116,7 +119,8 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 	auto notification = Notification{};
 	notification.type = QStringLiteral("FileTransfer/IncomingFile");
 	notification.title = tr("Incoming transfer");
-	notification.text = tr("<b>%1</b> wants to send you a file %2").arg(Qt::escape(fileTransfer.peer().display(true)), Qt::escape(fileTransfer.remoteFileName()));
+	notification.text = normalizeHtml(HtmlString{tr("<b>%1</b> wants to send you a file %2")}
+			.arg(plainToHtml(fileTransfer.peer().display(true)), plainToHtml(fileTransfer.remoteFileName())));
 	notification.details = incomingFileTransferDetails(chat, fileTransfer);
 	notification.data = std::move(data);
 
@@ -138,7 +142,7 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
 	m_notificationService->notify(notification);
 }
 
-QString FileTransferNotificationService::incomingFileTransferDetails(const Chat &chat, const FileTransfer &fileTransfer)
+NormalizedHtmlString FileTransferNotificationService::incomingFileTransferDetails(const Chat &chat, const FileTransfer &fileTransfer)
 {
 	auto textFileSize = QStringLiteral("%1 kB");
 	auto size = static_cast<double>(fileTransfer.fileSize()) / 1024.0;
@@ -150,12 +154,12 @@ QString FileTransferNotificationService::incomingFileTransferDetails(const Chat 
 	}
 
 	if (fileTransfer.fileSize() > 0)
-		return tr("size: <b>%1</b>, account: <b>%2</b>").arg(
-			Qt::escape(textFileSize.arg(size, 0, 'f', 2)),
-			Qt::escape(chat.chatAccount().accountIdentity().name()));
+		return normalizeHtml(HtmlString{tr("size: <b>%1</b>, account: <b>%2</b>")}.arg(
+			plainToHtml(textFileSize.arg(size, 0, 'f', 2)),
+			plainToHtml(chat.chatAccount().accountIdentity().name())));
 	else
-		return tr("account: <b>%1</b>").arg(
-			Qt::escape(chat.chatAccount().accountIdentity().name()));
+		return normalizeHtml(HtmlString{tr("account: <b>%1</b>")}.arg(
+			plainToHtml(chat.chatAccount().accountIdentity().name())));
 }
 
 void FileTransferNotificationService::acceptFileTransfer(const Notification &notification)

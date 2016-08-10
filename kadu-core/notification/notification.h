@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "html/normalized-html-string.h"
 #include "icons/kadu-icon.h"
 #include "parser/parser-data.h"
 #include "exports.h"
@@ -38,8 +39,8 @@ public:
 
 	QString type;
 	QString title;
-	QString text;
-	QString details;
+	NormalizedHtmlString text;
+	NormalizedHtmlString details;
 	KaduIcon icon;
 
 	QList<QString> callbacks;

@@ -23,6 +23,8 @@
 #include "chat/chat.h"
 #include "configuration/configuration-api.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -74,9 +76,9 @@ void FirewallNotificationService::notifyBlockedMessage(const Chat &chat, const C
 	notification.type = m_blockedMessageEvent.name();
 	notification.icon = KaduIcon{"kadu_icons/blocking"};
 	notification.title = tr("Message was blocked");
-	notification.text = m_configuration->deprecatedApi()->readEntry("Firewall", "notification_syntax",
-		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m");
-	notification.details = Qt::escape(message);
+	notification.text = normalizeHtml(plainToHtml(m_configuration->deprecatedApi()->readEntry("Firewall", "notification_syntax",
+		tr("%u writes")).replace("%u", sender.display(true)).remove("%m")));
+	notification.details = normalizeHtml(plainToHtml(message));
 	notification.callbacks.append("chat-open");
 	notification.callbacks.append("ignore");
 	notification.data = std::move(data);

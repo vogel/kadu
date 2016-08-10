@@ -219,7 +219,7 @@ void TimelineChatMessagesView::newMessage(const Message &message)
 			return;
 	}
 
-	auto formattedContent = m_formattedStringFactory->fromHtml(message.htmlContent());
+	auto formattedContent = m_formattedStringFactory->fromHtml(message.content());
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	formattedContent->accept(&plainTextVisitor);
 

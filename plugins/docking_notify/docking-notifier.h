@@ -12,6 +12,7 @@ class ChatWidgetManager;
 class Configuration;
 class Docking;
 class InjectedFactory;
+class NormalizedHtmlString;
 class NotificationConfiguration;
 class Parser;
 
@@ -43,8 +44,7 @@ private:
 	QPointer<Parser> m_parser;
 
 	void createDefaultConfiguration();
-	QString toPlainText(const QString &text);
-	QString parseText(const QString &text, const Notification &notification, const QString &def);
+	QString parseText(const QString &text, const Notification &notification, const NormalizedHtmlString &def);
 	Chat chat;
 
 private slots:

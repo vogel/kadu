@@ -17,15 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "formatted-string-module.h"
+#pragma once
 
-#include "formatted-string/formatted-string-factory.h"
+#include "dom/dom-visitor.h"
+#include "exports.h"
 
-FormattedStringModule::FormattedStringModule()
+#include <QtCore/QObject>
+
+/**
+ * @short This DOM Visitor removes all <script> tags.
+ */
+class KADUAPI RemoveScriptDomVisitor : public DomVisitor
 {
-	add_type<FormattedStringFactory>();
-}
 
-FormattedStringModule::~FormattedStringModule()
-{
-}
+public:
+	explicit RemoveScriptDomVisitor();
+	virtual ~RemoveScriptDomVisitor();
+
+	virtual QDomNode beginVisit(QDomElement elementNode) const override;
+	virtual QDomNode endVisit(QDomElement elementNode) const override;
+	virtual QDomNode visit(QDomText textNode) const override;
+
+};

@@ -38,7 +38,6 @@ public:
 	virtual ~DomProcessorServiceImpl();
 
 	QString process(const QString &xml);
-	QString process(const QString &xml, const DomVisitor &domVisitor);
 
 private:
 	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;

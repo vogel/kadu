@@ -18,8 +18,10 @@
  */
 
 #include "dom/dom-processor-service.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "message/message-html-renderer-service.h"
-#include "message.h"
+#include "message/message.h"
 
 #include <QtTest/QtTest>
 #include <injeqt/injector.h>
@@ -44,7 +46,6 @@ class DomProcessorServiceStub : public DomProcessorService
 public:
 	Q_INVOKABLE DomProcessorServiceStub() {}
 	virtual QString process(const QString &xml) override { return xml; }
-	virtual QString process(const QString &xml, const DomVisitor &) override { return xml; }
 };
 
 injeqt::injector MessageHtmlRendererServiceTest::makeInjector() const
@@ -70,7 +71,7 @@ void MessageHtmlRendererServiceTest::shouldUsePreWrapCssStyle()
 	auto injector = makeInjector();
 	auto messageHtmlRendererService = injector.get<MessageHtmlRendererService>();
 	auto message = Message{new MessageShared{}};
-	message.setHtmlContent("html content");
+	message.setContent(normalizeHtml(plainToHtml("html content")));
 
 	auto renderedMessage = messageHtmlRendererService->renderMessage(message);
 	QVERIFY(renderedMessage.contains(R"(html content)"));

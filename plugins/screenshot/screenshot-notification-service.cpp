@@ -19,6 +19,8 @@
 
 #include "screenshot-notification-service.h"
 
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -60,7 +62,7 @@ void ScreenshotNotificationService::notifySizeLimit(long size)
 	notification.type = m_sizeLimitEvent.name();
 	notification.icon = KaduIcon{"kadu_icons/blocking"};
 	notification.title = tr("ScreenShot size limit");
-	notification.text = tr("Images size limit exceed: %1 KB").arg(size/1024);
+	notification.text = normalizeHtml(HtmlString{tr("Images size limit exceed: %1 KB").arg(size/1024)});
 
 	m_notificationService->notify(notification);
 }

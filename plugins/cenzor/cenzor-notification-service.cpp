@@ -21,6 +21,8 @@
 
 #include "accounts/account.h"
 #include "chat/chat.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -66,8 +68,8 @@ void CenzorNotificationService::notifyCenzored(const Chat &chat)
 	notification.type = m_cenzoredEvent.name();
 	notification.icon = KaduIcon{"kadu_icons/blocking"};
 	notification.title = (tr("Cenzor"));
-	notification.text = tr("Message was cenzored");
-	notification.details = tr("Your interlocutor used obscene word and became admonished");
+	notification.text = normalizeHtml(HtmlString{tr("Message was cenzored")});
+	notification.details = normalizeHtml(HtmlString{tr("Your interlocutor used obscene word and became admonished")});
 	notification.callbacks.append("chat-open");
 	notification.callbacks.append("ignore");
 

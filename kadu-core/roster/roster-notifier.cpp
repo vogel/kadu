@@ -20,6 +20,8 @@
 #include "roster-notifier.h"
 
 #include "accounts/account.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "notification/notification-event.h"
 #include "notification/notification-service.h"
 #include "notification/notification.h"
@@ -64,7 +66,7 @@ QList<NotificationEvent> RosterNotifier::notifyEvents()
 			<< m_exportFailedNotificationEvent;
 }
 
-void RosterNotifier::notify(const QString &topic, const Account &account, const QString &message)
+void RosterNotifier::notify(const QString &topic, const Account &account, const NormalizedHtmlString &message)
 {
 	auto data = QVariantMap{};
 	data.insert("account", qVariantFromValue(account));
@@ -81,25 +83,25 @@ void RosterNotifier::notify(const QString &topic, const Account &account, const 
 void RosterNotifier::notifyImportSucceeded(const Account &account)
 {
 	notify(sm_importSucceededNotifyTopic, account,
-		   tr("%1: roster import succeded").arg(account.id()));
+		   normalizeHtml(HtmlString{tr("%1: roster import succeded")}.arg(plainToHtml(account.id()))));
 }
 
 void RosterNotifier::notifyImportFailed(const Account &account)
 {
 	notify(sm_importFailedNotifyTopic, account,
-		   tr("%1: roster import failed").arg(account.id()));
+		   normalizeHtml(HtmlString{tr("%1: roster import failed")}.arg(plainToHtml(account.id()))));
 }
 
 void RosterNotifier::notifyExportSucceeded(const Account &account)
 {
 	notify(sm_exportSucceededNotifyTopic, account,
-		   tr("%1: roster export succeded").arg(account.id()));
+		   normalizeHtml(HtmlString{tr("%1: roster export succeded")}.arg(plainToHtml(account.id()))));
 }
 
 void RosterNotifier::notifyExportFailed(const Account &account)
 {
 	notify(sm_exportFailedNotifyTopic, account,
-		   tr("%1: roster export failed").arg(account.id()));
+		   normalizeHtml(HtmlString{tr("%1: roster export failed")}.arg(plainToHtml(account.id()))));
 }
 
 #include "moc_roster-notifier.cpp"

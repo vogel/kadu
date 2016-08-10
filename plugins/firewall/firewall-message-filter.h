@@ -53,7 +53,6 @@ class MessageStorage;
 class Message;
 class OutgoingMessageFirewallFilter;
 class PathsProvider;
-class TextConverterService;
 
 class FirewallMessageFilter : public QObject, public MessageFilter, ConfigurationAwareObject, AccountsAwareObject
 {
@@ -82,7 +81,6 @@ private:
 	QPointer<MessageStorage> m_messageStorage;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<TextConverterService> m_textConverterService;
 
 	BuddySet SecuredTemporaryAllowed;
 	ContactSet Passed;
@@ -107,8 +105,8 @@ private:
 	bool SafeSending;
 	int DosInterval;
 	int MaxEmoticons;
-	QString ConfirmationText;
-	QString ConfirmationQuestion;
+	NormalizedHtmlString ConfirmationText;
+	NormalizedHtmlString ConfirmationQuestion;
 	QString LogFilePath;
 
 	bool checkChat(const Chat &chat, const Contact &sender, const QString &message, bool &stop);
@@ -134,7 +132,6 @@ private slots:
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setTextConverterService(TextConverterService *textConverterService);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

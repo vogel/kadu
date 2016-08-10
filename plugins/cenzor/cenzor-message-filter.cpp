@@ -26,7 +26,7 @@
 
 #include "accounts/account.h"
 #include "chat/chat.h"
-#include "formatted-string/text-converter-service.h"
+#include "html/html-conversion.h"
 #include "message/message-manager.h"
 
 CenzorMessageFilter::CenzorMessageFilter(QObject *parent) :
@@ -53,11 +53,6 @@ void CenzorMessageFilter::setMessageManager(MessageManager *messageManager)
 	m_messageManager = messageManager;
 }
 
-void CenzorMessageFilter::setTextConverterService(TextConverterService *textConverterService)
-{
-	m_textConverterService = textConverterService;
-}
-
 bool CenzorMessageFilter::acceptMessage(const Message &message)
 {
 	if (MessageTypeSent == message.type())
@@ -66,7 +61,7 @@ bool CenzorMessageFilter::acceptMessage(const Message &message)
 	if (!m_cenzorConfiguration->enabled())
 		return true;
 
-	if (!shouldIgnore(m_textConverterService->htmlToPlain(message.htmlContent())))
+	if (!shouldIgnore(htmlToPlain(message.content())))
 		return true;
 
 	Account account = message.messageChat().chatAccount();

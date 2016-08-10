@@ -19,6 +19,8 @@
 
 #include "mediaplayer-notification-service.h"
 
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -59,7 +61,7 @@ void MediaplayerNotificationService::notifyPlayingTitle(const QString &title)
 	auto notification = Notification{};
 	notification.type = m_playingTitleEvent.name();
 	notification.icon = KaduIcon{"external_modules/mediaplayer-media-playback-play"};
-	notification.text = Qt::escape(title);
+	notification.text = normalizeHtml(plainToHtml(title));
 
 	m_notificationService->notify(notification);
 }

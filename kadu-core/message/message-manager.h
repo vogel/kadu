@@ -25,6 +25,7 @@
 #include <QtCore/QObject>
 
 class FormattedString;
+class NormalizedHtmlString;
 
 /**
  * @addtogroup Message
@@ -60,7 +61,7 @@ public:
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
 	 */
-	virtual bool sendMessage(const Chat &chat, QString htmlContent, bool silent = false) = 0;
+	virtual bool sendMessage(const Chat &chat, NormalizedHtmlString content, bool silent = false) = 0;
 
 	/**
 	 * @short Send new raw message to given chat.

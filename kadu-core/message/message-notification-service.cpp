@@ -22,6 +22,8 @@
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "message/message.h"
 #include "notification/notification.h"
 #include "notification/notification-callback-repository.h"
@@ -88,8 +90,8 @@ void MessageNotificationService::notifyNewChat(const Message &message)
 	auto notification = Notification{};
 	notification.type = m_newChatEvent.name();
 	notification.title = (tr("New chat"));
-	notification.text = tr("Chat with <b>%1</b>").arg(Qt::escape(message.messageSender().display(true)));
-	notification.details = message.htmlContent();
+	notification.text = normalizeHtml(HtmlString{tr("Chat with <b>%1</b>")}.arg(plainToHtml(message.messageSender().display(true))));
+	notification.details = message.content();
 	notification.data = std::move(data);
 	notification.callbacks.append(m_openChatCallback.name());
 	notification.callbacks.append("ignore");
@@ -106,8 +108,8 @@ void MessageNotificationService::notifyNewMessage(const Message &message)
 	auto notification = Notification{};
 	notification.type = m_newMessageEvent.name();
 	notification.title = (tr("New message"));
-	notification.text = tr("New message from <b>%1</b>").arg(Qt::escape(message.messageSender().display(true)));
-	notification.details = message.htmlContent();
+	notification.text = normalizeHtml(HtmlString{tr("New message from <b>%1</b>")}.arg(plainToHtml(message.messageSender().display(true))));
+	notification.details = message.content();
 	notification.data = std::move(data);
 	notification.callbacks.append(m_openChatCallback.name());
 	notification.callbacks.append("ignore");

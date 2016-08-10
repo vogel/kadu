@@ -20,6 +20,7 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
+#include "html/normalized-html-string.h"
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
@@ -48,7 +49,7 @@ public:
 	bool enabled() const { return Enabled; }
 	bool messageStop() const { return MessageStop; }
 	bool logMessage() const { return LogMessage; }
-	const QString & returnMessage() const { return ReturnMessage; }
+	const NormalizedHtmlString & returnMessage() const { return ReturnMessage; }
 	const QString & logFile() const { return LogFile; }
 
 protected:
@@ -63,7 +64,7 @@ private:
 	bool Enabled;
 	bool MessageStop;
 	bool LogMessage;
-	QString ReturnMessage;
+	NormalizedHtmlString ReturnMessage;
 	QString LogFile;
 
 	void createDefaultConfiguration();

@@ -20,6 +20,7 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
+#include "html/normalized-html-string.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -43,7 +44,7 @@ public:
 	void saveConfiguration();
 
 	bool enabled() { return Enabled; }
-	const QString & admonition() { return Admonition; }
+	const NormalizedHtmlString & admonition() { return Admonition; }
 	const QList<QRegExp> & swearList() { return SwearList; }
 	const QList<QRegExp> & exclusionList() { return ExclusionList; }
 
@@ -58,7 +59,7 @@ private:
 	QPointer<PathsProvider> m_pathsProvider;
 
 	bool Enabled;
-	QString Admonition;
+	NormalizedHtmlString Admonition;
 	QList<QRegExp> SwearList;
 	QList<QRegExp> ExclusionList;
 

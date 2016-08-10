@@ -27,6 +27,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/configuration/chat-configuration-holder.h"
+#include "html/normalized-html-string.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
@@ -320,9 +321,9 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
 		result.replace(textPos, senderColorRegExp.cap(0).length(), Qt::escape(doLight ? lightColorName : nickColor));
 	}
 
-	QString messageText = m_messageHtmlRendererService
+	auto messageText = m_messageHtmlRendererService
 			? m_messageHtmlRendererService.data()->renderMessage(message)
-			: message.htmlContent();
+			: message.content().string();
 
 	if (!message.id().isEmpty())
 		messageText.prepend(QString("<span id=\"message_%1\">").arg(Qt::escape(message.id())));

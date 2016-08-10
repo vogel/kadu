@@ -23,6 +23,8 @@
 #include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "identities/identity.h"
 #include "notification/notification-configuration.h"
 #include "notification/notification-event-repository.h"
@@ -155,11 +157,11 @@ void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldS
 	auto notification = Notification{};
 	notification.type = notificationEventName;
 	notification.icon = icon;
-	notification.title = (tr("Status changed"));
-	notification.text = tr("<b>%1</b> changed status").arg(Qt::escape(contact.display(true)));
+	notification.title = tr("Status changed");
+	notification.text = normalizeHtml(HtmlString{tr("<b>%1</b> changed status")}.arg(plainToHtml(contact.display(true))));
 	notification.details = description.isEmpty()
-			? Qt::escape(statusDisplayName)
-			: tr("%1: %2").arg(Qt::escape(statusDisplayName), Qt::escape(description));
+			? normalizeHtml(plainToHtml(statusDisplayName))
+			: normalizeHtml(HtmlString{tr("%1: %2")}.arg(plainToHtml(statusDisplayName), plainToHtml(description)));
 	notification.data = std::move(data);
 	notification.callbacks.append("chat-open");
 	notification.callbacks.append("ignore");

@@ -37,6 +37,9 @@
 #include "formatted-string/formatted-string-html-visitor.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/hot-key.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
+#include "html/normalized-html-string.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
@@ -85,19 +88,19 @@ void CustomInput::setFormattedStringFactory(FormattedStringFactory *formattedStr
 	m_formattedStringFactory = formattedStringFactory;
 }
 
-QString CustomInput::htmlMessage() const
+NormalizedHtmlString CustomInput::htmlMessage() const
 {
 	auto formattedString = m_formattedStringFactory->fromTextDocument(*document());
 	FormattedStringHtmlVisitor visitor{};
 	formattedString->accept(&visitor);
-	return visitor.result();
+	return normalizeHtml(visitor.result());
 }
 
 void CustomInput::setFormattedString(const FormattedString &formattedString)
 {
 	FormattedStringHtmlVisitor html{};
 	formattedString.accept(&html);
-	setHtml(html.result());
+	setHtml(html.result().string());
 }
 
 void CustomInput::showEvent(QShowEvent *e)

@@ -20,7 +20,6 @@
 #include "gadu-module.h"
 
 #include "server/gadu-servers-manager.h"
-#include "services/gadu-received-html-fixup-service.h"
 #include "helpers/gadu-list-helper.h"
 #include "gadu-plugin-object.h"
 #include "gadu-protocol-factory.h"
@@ -32,7 +31,6 @@ GaduModule::GaduModule()
 	add_type<GaduListHelper>();
 	add_type<GaduPluginObject>();
 	add_type<GaduProtocolFactory>();
-	add_type<GaduReceivedHtmlFixupService>();
 	add_type<GaduServersManager>();
 	add_type<GaduUrlDomVisitorProvider>();
 	add_type<GaduUrlHandler>();

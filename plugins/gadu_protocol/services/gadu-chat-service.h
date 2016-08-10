@@ -40,7 +40,6 @@ class FormattedStringFactory;
 class GaduChatImageService;
 class GaduConnection;
 class GaduFileTransferService;
-class GaduReceivedHtmlFixupService;
 class IconsManager;
 class ImageStorageService;
 class MessageStorage;
@@ -69,7 +68,6 @@ class GaduChatService : public ChatService
 	QPointer<ContactManager> m_contactManager;
 	QPointer<GaduChatImageService> CurrentGaduChatImageService;
 	QPointer<GaduFileTransferService> CurrentFileTransferService;
-	QPointer<GaduReceivedHtmlFixupService> m_gaduReceivedHtmlFixupService;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<ImageStorageService> CurrentImageStorageService;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
@@ -98,7 +96,6 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
-	INJEQT_SET void setGaduReceivedHtmlFixupService(GaduReceivedHtmlFixupService *gaduReceivedHtmlFixupService);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);

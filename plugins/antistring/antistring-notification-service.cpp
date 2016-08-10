@@ -21,6 +21,8 @@
 
 #include "accounts/account.h"
 #include "chat/chat.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
@@ -65,7 +67,7 @@ void AntistringNotificationService::notifyStringReceived(const Chat &chat)
 	auto notification = Notification{};
 	notification.type = m_stringReceivedEvent.name();
 	notification.title = (tr("Antistring"));
-	notification.text = tr("Your interlocutor send you love letter");
+	notification.text = normalizeHtml(HtmlString{tr("Your interlocutor send you love letter")});
 	notification.callbacks.append("chat-open");
 	notification.callbacks.append("ignore");
 

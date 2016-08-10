@@ -184,7 +184,7 @@ void FreedesktopNotifier::notify(const Notification &notification)
 		summary = "Kadu";
 	else
 	{
-		summary = notification.text;
+		summary = notification.text.string();
 		summary.replace(StripBr, QStringLiteral(" "));
 		summary.remove(StripHtml);
 	}
@@ -197,7 +197,7 @@ void FreedesktopNotifier::notify(const Notification &notification)
 	{
 		if (!typeNewMessage || ShowContentMessage)
 		{
-			body = notification.details;
+			body = notification.details.string();
 			body.replace(StripBr, QStringLiteral("\n"));
 			if (ServerSupportsMarkup)
 				body.remove(StripUnsupportedHtml);
@@ -211,10 +211,10 @@ void FreedesktopNotifier::notify(const Notification &notification)
 		if (useKdeStyle)
 		{
 			if (body.isEmpty())
-				body = notification.text;
+				body = notification.text.string();
 			else
 			{
-				body.prepend(notification.text + "\n<small>");
+				body.prepend(notification.text.string() + "\n<small>");
 				body.append("</small>");
 			}
 

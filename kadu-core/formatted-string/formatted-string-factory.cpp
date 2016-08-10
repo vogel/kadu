@@ -22,11 +22,14 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
-#include "dom/dom-processor-service.h"
+#include "dom/dom-processor.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/force-space-dom-visitor.h"
 #include "formatted-string/formatted-string-image-block.h"
 #include "formatted-string/formatted-string-text-block.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
+#include "html/normalized-html-string.h"
 #include "misc/memory.h"
 #include "services/image-storage-service.h"
 
@@ -41,11 +44,6 @@ FormattedStringFactory::FormattedStringFactory()
 
 FormattedStringFactory::~FormattedStringFactory()
 {
-}
-
-void FormattedStringFactory::setDomProcessorService(DomProcessorService *domProcessorService)
-{
-	m_domProcessorService = domProcessorService;
 }
 
 void FormattedStringFactory::setImageStorageService(ImageStorageService *imageStorageService)
@@ -110,9 +108,28 @@ std::vector<std::unique_ptr<FormattedString>> FormattedStringFactory::partsFromQ
 std::unique_ptr<FormattedString> FormattedStringFactory::fromHtml(const QString &html)
 {
 	QTextDocument document{};
-	document.setHtml(m_domProcessorService->process(html, ForceSpaceDomVisitor{}));
+	try
+	{
+		document.setHtml(processDom(html, ForceSpaceDomVisitor{}));
+	}
+	catch (invalid_xml &)
+	{
+		// secure it by applying another html escape
+		// at least it won't break anything in webview
+		document.setHtml(plainToHtml(html).string());
+	}
 
 	return fromTextDocument(document);
+}
+
+std::unique_ptr<FormattedString> FormattedStringFactory::fromHtml(const HtmlString &html)
+{
+	return fromHtml(html.string());
+}
+
+std::unique_ptr<FormattedString> FormattedStringFactory::fromHtml(const NormalizedHtmlString &html)
+{
+	return fromHtml(html.string());
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromTextDocument(const QTextDocument &textDocument)

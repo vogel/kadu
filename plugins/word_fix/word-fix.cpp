@@ -40,6 +40,8 @@
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string.h"
+#include "html/html-string.h"
+#include "html/normalized-html-string.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -157,7 +159,7 @@ void WordFix::sendRequest(ChatWidget* chat)
 	FormattedStringHtmlVisitor htmlVisitor;
 	fixedString->accept(&htmlVisitor);
 
-	chat->edit()->setHtml(htmlVisitor.result());
+	chat->edit()->setHtml(htmlVisitor.result().string());
 }
 
 #include "moc_word-fix.cpp"

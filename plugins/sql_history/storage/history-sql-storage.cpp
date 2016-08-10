@@ -52,6 +52,8 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "icons/icons-manager.h"
 #include "message/message-storage.h"
 #include "message/message.h"
@@ -392,7 +394,7 @@ int HistorySqlStorage::saveMessageContent(const Message& message)
 	QSqlQuery saveMessageQuery = QSqlQuery(Database);
 	saveMessageQuery.prepare("INSERT INTO kadu_message_contents (content) VALUES (:content)");
 
-	saveMessageQuery.bindValue(":content", message.htmlContent());
+	saveMessageQuery.bindValue(":content", message.content().string());
 
 	executeQuery(saveMessageQuery);
 	int contentId = saveMessageQuery.lastInsertId().toInt();
@@ -694,8 +696,8 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 		if (!date.isValid())
 			continue;
 
-		QString message = query.value(2).toString();
-		if (message.isEmpty())
+		auto message = HtmlString{query.value(2).toString()};
+		if (message.string().isEmpty())
 			continue;
 
 		Chat chat = ChatsMapping->chatById(query.value(3).toInt());
@@ -727,7 +729,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 				title = plainTextVisitor.result().replace('\n', ' ').replace('\r', ' ');
 			}
 			else
-				title = message.replace('\n', ' ').replace('\r', ' ');
+				title = QString{message.string()}.replace('\n', ' ').replace('\r', ' ');
 
 			if (title.length() > DATE_TITLE_LENGTH)
 			{
@@ -1067,21 +1069,6 @@ void HistorySqlStorage::executeQuery(QSqlQuery &query)
 */
 }
 
-QString HistorySqlStorage::stripAllScriptTags(const QString &string)
-{
-	QString beforeReplace = string;
-	QString afterReplace = beforeReplace;
-
-	afterReplace.replace("<script", "", Qt::CaseInsensitive);
-	while (beforeReplace != afterReplace)
-	{
-		beforeReplace = afterReplace;
-		afterReplace.replace("<script", "", Qt::CaseInsensitive);
-	}
-
-	return afterReplace;
-}
-
 SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 {
 	if (!m_formattedStringFactory)
@@ -1108,7 +1095,7 @@ SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		message.setMessageChat(ChatsMapping->chatById(query.value(0).toInt()));
 		message.setType(type);
 		message.setMessageSender(sender);
-		message.setHtmlContent(stripAllScriptTags(query.value(2).toString()));
+		message.setContent(normalizeHtml(HtmlString{query.value(2).toString()}));
 		message.setSendDate(query.value(3).toDateTime());
 		message.setReceiveDate(query.value(4).toDateTime());
 		if (outgoing)
@@ -1136,12 +1123,12 @@ SortedMessages HistorySqlStorage::statusesFromQuery(const Contact &contact, QSql
 
 		auto message = m_messageStorage->create();
 
-		const QString description = query.value(2).toString();
-		const QString htmlContent = description.isEmpty()
-				? Qt::escape(typeData.name())
-				: Qt::escape(QString("%1 with description: %2").arg(typeData.name()).arg(description));
+		auto description = query.value(2).toString();
+		auto htmlContent = description.isEmpty()
+				? normalizeHtml(plainToHtml(typeData.name()))
+				: normalizeHtml(plainToHtml(QString("%1 with description: %2").arg(typeData.name()).arg(description)));
 
-		message.setHtmlContent(htmlContent);
+		message.setContent(htmlContent);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
 		message.setReceiveDate(query.value(3).toDateTime());
@@ -1165,7 +1152,7 @@ SortedMessages HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());
-		message.setHtmlContent(query.value(0).toString().toHtmlEscaped());
+		message.setContent(normalizeHtml(plainToHtml(query.value(0).toString())));
 
 		messages.push_back(message);
 	}

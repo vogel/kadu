@@ -23,6 +23,8 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "message/unread-message-repository.h"
@@ -81,7 +83,7 @@ void MessageShared::load()
 
 	*MessageChat = m_chatManager->byUuid(loadValue<QString>("Chat"));
 	*MessageSender = m_contactManager->byUuid(loadValue<QString>("Sender"));
-	HtmlContent = loadValue<QString>("Content");
+	Content = normalizeHtml(HtmlString{loadValue<QString>("Content")});
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");
 	Status = (MessageStatus)loadValue<int>("Status");
@@ -98,7 +100,7 @@ void MessageShared::store()
 
 	storeValue("Chat", MessageChat->uuid().toString());
 	storeValue("Sender", MessageSender->uuid().toString());
-	storeValue("Content", HtmlContent);
+	storeValue("Content", Content.string());
 	storeValue("ReceiveDate", ReceiveDate);
 	storeValue("SendDate", SendDate);
 	storeValue("Status", (int)Status);

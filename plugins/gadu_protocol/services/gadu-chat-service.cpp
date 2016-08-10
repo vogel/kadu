@@ -37,6 +37,8 @@
 #include "formatted-string/formatted-string-is-plain-text-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "icons/icons-manager.h"
 #include "message/message-storage.h"
 #include "message/raw-message.h"
@@ -51,7 +53,6 @@
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
-#include "services/gadu-received-html-fixup-service.h"
 
 #include "gadu-chat-service.h"
 
@@ -97,11 +98,6 @@ void GaduChatService::setContactManager(ContactManager *contactManager)
 void GaduChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	m_formattedStringFactory = formattedStringFactory;
-}
-
-void GaduChatService::setGaduReceivedHtmlFixupService(GaduReceivedHtmlFixupService *gaduReceivedHtmlFixupService)
-{
-	m_gaduReceivedHtmlFixupService = gaduReceivedHtmlFixupService;
 }
 
 void GaduChatService::setGaduChatImageService(GaduChatImageService *gaduChatImageService)
@@ -187,7 +183,7 @@ bool GaduChatService::sendMessage(const Message &message)
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
 
-	auto formattedContent = m_formattedStringFactory->fromHtml(message.htmlContent());
+	auto formattedContent = m_formattedStringFactory->fromHtml(message.content());
 
 	FormattedStringIsPlainTextVisitor isPlainTextVisitor;
 	formattedContent->accept(&isPlainTextVisitor);
@@ -198,7 +194,7 @@ bool GaduChatService::sendMessage(const Message &message)
 	FormattedStringGaduHtmlVisitor htmlVisitor(CurrentGaduChatImageService, CurrentImageStorageService);
 	formattedContent->accept(&htmlVisitor);
 
-	auto rawMessage = RawMessage{plainTextVisitor.result().toUtf8(), htmlVisitor.result().toUtf8()};
+	auto rawMessage = RawMessage{plainTextVisitor.result().toUtf8(), htmlVisitor.result().string().toUtf8()};
 	if (rawMessageTransformerService())
 		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
@@ -315,21 +311,15 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (rawMessageTransformerService())
 		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
-	auto htmlContent = m_gaduReceivedHtmlFixupService->htmlFixup(QString::fromUtf8(rawMessage.rawContent()));
+	auto htmlContent = normalizeHtml(HtmlString{QString::fromUtf8(rawMessage.rawContent())});
 	auto formattedString = m_formattedStringFactory->fromHtml(htmlContent);
 	if (ignoreRichText(sender))
-	{
-		FormattedStringPlainTextVisitor visitor;
-		formattedString->accept(&visitor);
+		htmlContent = normalizeHtml(plainToHtml(htmlToPlain(htmlContent)));
 
-		// for history and sorted messages we must use html format
-		htmlContent = replacedNewLine(Qt::escape(visitor.result()), QStringLiteral("<br/>"));
-	}
-
-	if (htmlContent.isEmpty())
+	if (htmlContent.string().isEmpty())
 		return;
 
-	message.setHtmlContent(std::move(htmlContent));
+	message.setContent(std::move(htmlContent));
 
 	if (MessageTypeReceived == type)
 	{

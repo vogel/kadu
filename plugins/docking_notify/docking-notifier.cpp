@@ -30,6 +30,8 @@
 #include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "notification/notification-configuration.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -90,14 +92,7 @@ void DockingNotifier::init()
 	connect(m_docking, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
 }
 
-QString DockingNotifier::toPlainText(const QString &text)
-{
-	QTextDocument doc;
-	doc.setHtml(text);
-	return doc.toPlainText();
-}
-
-QString DockingNotifier::parseText(const QString &text, const Notification &notification, const QString &def)
+QString DockingNotifier::parseText(const QString &text, const Notification &notification, const NormalizedHtmlString &def)
 {
 	QString ret;
 
@@ -113,15 +108,15 @@ QString DockingNotifier::parseText(const QString &text, const Notification &noti
 		else
 			ret = m_parser->parse(text, &notification, ParserEscape::HtmlEscape);
 
-		ret = ret.replace("%&m", notification.text);
-		ret = ret.replace("%&t", notification.title);
-		ret = ret.replace("%&d", notification.details);
+		ret = ret.replace("%&m", notification.text.string());
+		ret = ret.replace("%&t", plainToHtml(notification.title).string());
+		ret = ret.replace("%&d", notification.details.string());
 	}
 	else
-		ret = def;
+		ret = def.string();
 
 
-	return toPlainText(ret);
+	return htmlToPlain(HtmlString{ret});
 }
 
 void DockingNotifier::notify(const Notification &notification)

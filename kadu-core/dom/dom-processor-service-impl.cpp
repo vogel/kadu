@@ -27,31 +27,6 @@
 
 #include <QtXml/QDomDocument>
 
-namespace {
-
-QDomDocument toDomDocument(const QString &xml)
-{
-	QDomDocument domDocument;
-	// force content to be valid HTML with only one root
-	domDocument.setContent(QString("<div>%1</div>").arg(xml));
-
-	return domDocument;
-}
-
-QString toString(const QDomDocument &domDocument)
-{
-	if (domDocument.documentElement().childNodes().isEmpty())
-		return QString();
-
-	auto result = domDocument.toString(-1).trimmed();
-	// remove <div></div>
-	Q_ASSERT(result.startsWith(QStringLiteral("<div>")));
-	Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
-	return result.mid(static_cast<int>(qstrlen("<div>")), result.length() - static_cast<int>(qstrlen("<div></div>")));
-}
-
-}
-
 DomProcessorServiceImpl::DomProcessorServiceImpl(QObject *parent) :
 		DomProcessorService{parent}
 {
@@ -79,17 +54,15 @@ void DomProcessorServiceImpl::process(QDomDocument &domDocument)
 
 QString DomProcessorServiceImpl::process(const QString &xml)
 {
-	auto domDocument = toDomDocument(xml);
-	process(domDocument);
-	return toString(domDocument);
-}
-
-QString DomProcessorServiceImpl::process(const QString &xml, const DomVisitor &domVisitor)
-{
-	auto domDocument = toDomDocument(xml);
-	auto domProcessor = DomProcessor{domDocument};
-	domProcessor.accept(&domVisitor);
-	return toString(domDocument);
+	try {
+		auto domDocument = toDomDocument(xml);
+		process(domDocument);
+		return toString(domDocument);
+	}
+	catch (invalid_xml &)
+	{
+		return xml;
+	}
 }
 
 #include "dom-processor-service-impl.moc"

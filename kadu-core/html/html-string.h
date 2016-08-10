@@ -17,15 +17,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "formatted-string-module.h"
+#pragma once
 
-#include "formatted-string/formatted-string-factory.h"
+#include "exports.h"
 
-FormattedStringModule::FormattedStringModule()
+#include <QtCore/QString>
+
+class KADUAPI HtmlString
 {
-	add_type<FormattedStringFactory>();
-}
+public:
+	HtmlString() = default;
+	explicit HtmlString(QString string);
 
-FormattedStringModule::~FormattedStringModule()
-{
-}
+	const QString & string() const;
+
+	template<typename ... T>
+	HtmlString arg(const T & ... args)
+	{
+		return HtmlString{m_string.arg(args.string()...)};
+	}
+
+	friend bool operator == (const HtmlString &x, const HtmlString &y)
+	{
+		return x.m_string == y.m_string;
+	}
+
+	friend bool operator != (const HtmlString &x, const HtmlString &y)
+	{
+		return !(x == y);
+	}
+
+	friend bool operator < (const HtmlString &x, const HtmlString &y)
+	{
+		return x.m_string < y.m_string;
+	}
+
+private:
+	QString m_string;
+
+};

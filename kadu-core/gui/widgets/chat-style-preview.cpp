@@ -29,6 +29,9 @@
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
+#include "html/normalized-html-string.h"
 #include "message/message-storage.h"
 
 #include <QtWidgets/QHBoxLayout>
@@ -121,7 +124,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	sentMessage.setMessageChat(chat);
 	sentMessage.setType(MessageTypeSent);
 	sentMessage.setMessageSender(contact);
-	sentMessage.setHtmlContent(tr("Your message").toHtmlEscaped());
+	sentMessage.setContent(normalizeHtml(plainToHtml(tr("Your message"))));
 	sentMessage.setReceiveDate(QDateTime::currentDateTime());
 	sentMessage.setSendDate(QDateTime::currentDateTime());
 
@@ -129,7 +132,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 	receivedMessage.setMessageChat(chat);
 	receivedMessage.setType(MessageTypeReceived);
 	receivedMessage.setMessageSender(m_buddyPreferredManager->preferredContact(example));
-	receivedMessage.setHtmlContent(tr("Message from Your friend").toHtmlEscaped());
+	receivedMessage.setContent(normalizeHtml(plainToHtml(tr("Message from Your friend"))));
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
 

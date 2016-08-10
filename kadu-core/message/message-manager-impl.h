@@ -41,7 +41,7 @@ public:
 	Q_INVOKABLE explicit MessageManagerImpl(QObject *parent = nullptr);
 	virtual ~MessageManagerImpl();
 
-	virtual bool sendMessage(const Chat &chat, QString htmlContent, bool silent = false) override;
+	virtual bool sendMessage(const Chat &chat, NormalizedHtmlString content, bool silent = false) override;
 	virtual bool sendRawMessage(const Chat &chat, const QByteArray &content) override;
 
 protected:
@@ -60,7 +60,7 @@ private:
 	 * @param chat chat of outgoing message
 	 * @param content content of outgoing message
 	 */
-	Message createOutgoingMessage(const Chat &chat, QString htmlContent);
+	Message createOutgoingMessage(const Chat &chat, NormalizedHtmlString content);
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);

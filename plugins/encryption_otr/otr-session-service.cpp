@@ -27,6 +27,8 @@ extern "C" {
 #include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "message/message-manager.h"
 
 #include "otr-app-ops-service.h"
@@ -120,11 +122,10 @@ void OtrSessionService::startSession(const Contact &contact)
 	if (!CurrentMessageManager || !PolicyService || !TrustLevelService)
 		return;
 
-	OtrTrustLevelService::TrustLevel level = TrustLevelService->loadTrustLevelFromContact(contact);
-
-	Account account = contact.contactAccount();
-	OtrPolicy otrPolicy = PolicyService->accountPolicy(account);
-	QString message = QString::fromUtf8(otrl_proto_default_query_msg(qPrintable(account.id()), otrPolicy.toOtrPolicy()));
+	auto level = TrustLevelService->loadTrustLevelFromContact(contact);
+	auto account = contact.contactAccount();
+	auto otrPolicy = PolicyService->accountPolicy(account);
+	auto message = normalizeHtml(HtmlString{QString::fromUtf8(otrl_proto_default_query_msg(qPrintable(account.id()), otrPolicy.toOtrPolicy()))});
 
 	if (level == OtrTrustLevelService::TrustLevelNotPrivate)
 		emit tryingToStartSession(contact);

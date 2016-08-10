@@ -17,27 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "text-converter-service.h"
+#pragma once
 
-#include <QtGui/QTextDocument>
+#include "exports.h"
 
-TextConverterService::TextConverterService(QObject *parent) :
-		QObject{parent}
-{
-}
+class HtmlString;
+class NormalizedHtmlString;
 
-TextConverterService::~TextConverterService()
-{
-}
-
-QString TextConverterService::htmlToPlain(const QString &html)
-{
-	QTextDocument textDocument;
-	textDocument.setHtml(html);
-	return textDocument.toPlainText();
-}
-
-QString TextConverterService::plainToHtml(const QString &plain)
-{
-	return plain.toHtmlEscaped().replace('\n', "<br />");
-}
+KADUAPI QString htmlToPlain(const HtmlString &html);
+KADUAPI QString htmlToPlain(const NormalizedHtmlString &html);
+KADUAPI HtmlString plainToHtml(const QString &plain);
+KADUAPI NormalizedHtmlString normalizeHtml(const HtmlString &html);

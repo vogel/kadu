@@ -76,7 +76,6 @@ set (SOURCES
 	services/gadu-multilogon-service.cpp
 	services/gadu-notify-service.cpp
 	services/gadu-personal-info-service.cpp
-	services/gadu-received-html-fixup-service.cpp
 	services/gadu-roster-service.cpp
 	services/gadu-roster-state-machine.cpp
 	services/gadu-search-service.cpp
@@ -120,8 +119,6 @@ set (LIBRARIES ${LIBGADU_LIBRARIES})
 if (WIN32)
 	list (APPEND LIBRARIES ws2_32)
 endif ()
-
-kadu_add_plugin_test (gadu_protocol services/gadu-received-html-fixup-service)
 
 kadu_plugin (gadu_protocol
 	PLUGIN_SOURCES ${SOURCES}

@@ -21,6 +21,7 @@
 #include "dom/dom-visitor-provider-repository.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
+#include "html/html-string.h"
 #include "services/image-storage-service.h"
 
 #include <QtTest/QtTest>
@@ -89,13 +90,13 @@ void FormattedStringFactoryTest::shouldProperlyParseHtml_data()
 		<< "<span style=\"\">test </span><span style=\"font-weight:600;\">f</span><span style=\"font-weight:600;font-style:italic;\">o</span><span style=\"font-weight:600;font-style:italic;text-decoration:underline;\">rmatt</span><span style=\"font-weight:600;font-style:italic;\">e</span><span style=\"font-weight:600;\">d</span><span style=\"\"> message</span>"
 		<< "test <span style=\"font-weight:600;\">f</span><span style=\"font-weight:600;font-style:italic;\">o</span><span style=\"font-weight:600;font-style:italic;text-decoration:underline;\">rmatt</span><span style=\"font-weight:600;font-style:italic;\">e</span><span style=\"font-weight:600;\">d</span> message";
 	QTest::newRow("with image absolute path")
-		<< "test message with image <img src=\"/image.png\">"
+		<< "test message with image <img src=\"/image.png\" />"
 		<< "test message with image <img class=\"scalable\" src=\"file:///image.png\" name=\"/image.png\" />";
 	QTest::newRow("with image id")
-		<< "test message with image <img src=\"1075d4da00000146\">"
+		<< "test message with image <img src=\"1075d4da00000146\" />"
 		<< "test message with image <img class=\"scalable\" src=\"kaduimg:///1075d4da00000146\" name=\"1075d4da00000146\" />";
 	QTest::newRow("with image kaduimg")
-		<< "test message with image <img src=\"kaduimg:///1075d4da00000146\">"
+		<< "test message with image <img src=\"kaduimg:///1075d4da00000146\" />"
 		<< "test message with image <img class=\"scalable\" src=\"kaduimg:///1075d4da00000146\" name=\"kaduimg:///1075d4da00000146\" />";
 	QTest::newRow("with image absolute path xml")
 		<< "test message with image <img src=\"/image.png\" />"
@@ -107,16 +108,16 @@ void FormattedStringFactoryTest::shouldProperlyParseHtml_data()
 		<< "test message with image <img src=\"kaduimg:///1075d4da00000146\" />"
 		<< "test message with image <img class=\"scalable\" src=\"kaduimg:///1075d4da00000146\" name=\"kaduimg:///1075d4da00000146\" />";
 	QTest::newRow("with indentation simple")
-		<< "  test message<br>    with    indentation"
+		<< "  test message<br/>    with    indentation"
 		<< "  test message<br/>    with    indentation";
 	QTest::newRow("with indentation")
-		<< "<span>  test message<br>    with    indentation</span>"
+		<< "<span>  test message<br/>    with    indentation</span>"
 		<< "  test message<br/>    with    indentation";
 	QTest::newRow("remove tab simple")
 		<< "\ttest message with tab"
 		<< "test message with tab";
 	QTest::newRow("remove tab")
-		<< "<span>\ttest <br>message with tab</span>"
+		<< "<span>\ttest <br/>message with tab</span>"
 		<< "test <br/>message with tab";
 }
 
@@ -127,11 +128,11 @@ void FormattedStringFactoryTest::shouldProperlyParseHtml()
 
 	auto injector = makeInjector();
 	auto formattedStringFactory = injector.get<FormattedStringFactory>();
-	auto formattedString = formattedStringFactory->fromHtml(html);
+	auto formattedString = formattedStringFactory->fromHtml(HtmlString{html});
 
 	FormattedStringHtmlVisitor htmlVisitor{};
 	formattedString->accept(&htmlVisitor);
-	auto recreated = htmlVisitor.result();
+	auto recreated = htmlVisitor.result().string();
 
 	QCOMPARE(recreated, result);
 }

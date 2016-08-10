@@ -75,6 +75,7 @@ set (kadu_SUBDIRS
 	file-transfer
 	formatted-string
 	gui
+	html
 	icons
 	identities
 	message
@@ -265,9 +266,9 @@ kadu_api_directories (kadu-core
 	buddies/model
 	chat
 	chat/model
-	chat/style-engine
 	chat-style/engine/chat-engine-adium
 	chat-style/engine/chat-engine-kadu
+	chat-style/engine
 	chat/type
 	compression
 	configuration
@@ -293,9 +294,9 @@ kadu_api_directories (kadu-core
 	gui/widgets/chat-widget
 	gui/widgets/group-tab-bar
 	gui/widgets/webkit-messages-view
-	chat-style/engine
 	gui/windows
 	gui/windows/open-chat-with
+	html
 	icons
 	identities
 	identities/model

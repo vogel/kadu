@@ -21,12 +21,14 @@
  */
 
 #include <QtCore/QProcess>
-#include <QtGui/QTextDocument>
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
+#include "html/normalized-html-string.h"
 #include "notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -139,7 +141,7 @@ void Speech::notify(const Notification &notification)
 		return;
 	}
 
-	QString text;
+	NormalizedHtmlString text;
 	QString sex = "Male";
 
 	auto chat = notification.data["chat"].value<Chat>();
@@ -156,7 +158,7 @@ void Speech::notify(const Notification &notification)
 		text = notification.text;
 	else
 	{
-		auto details = notification.details;
+		auto details = htmlToPlain(notification.details);
 		if (details.length() > m_configuration->deprecatedApi()->readNumEntry("Speech", "MaxLength"))
 			syntax = m_configuration->deprecatedApi()->readEntry("Speech", "MsgTooLong" + sex);
 
@@ -165,15 +167,13 @@ void Speech::notify(const Notification &notification)
 		if (chat)
 		{
 			Contact contact = *chat.contacts().begin();
-			text = m_parser->parse(syntax, Talkable(contact), &notification, ParserEscape::HtmlEscape);
+			text = normalizeHtml(HtmlString{m_parser->parse(syntax, Talkable(contact), &notification, ParserEscape::HtmlEscape)});
 		}
 		else
-			text= m_parser->parse(syntax, &notification, ParserEscape::HtmlEscape);
+			text = normalizeHtml(HtmlString{m_parser->parse(syntax, &notification, ParserEscape::HtmlEscape)});
 	}
 
-	QTextDocument document;
-	document.setHtml(text);
-	say(document.toPlainText());
+	say(htmlToPlain(text));
 	lastSpeech.restart();
 
 	kdebugf2();

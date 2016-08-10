@@ -57,5 +57,5 @@ QDomNode IgnoreLinksDomVisitor::endVisit(QDomElement elementNode) const
 	else if (0 == m_linksDepth)
 		return m_visitor->endVisit(elementNode);
 
-	return elementNode;
+	return elementNode.nextSibling();
 }

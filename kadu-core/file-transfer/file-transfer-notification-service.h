@@ -33,6 +33,7 @@ class ChatStorage;
 class Chat;
 class FileTransferManager;
 class FileTransfer;
+class NormalizedHtmlString;
 class NotificationCallbackRepository;
 class NotificationEventRepository;
 class NotificationService;
@@ -65,7 +66,7 @@ private:
 	NotificationEvent m_fileTransferEvent;
 	NotificationEvent m_fileTransferIncomingEvent;
 
-	QString incomingFileTransferDetails(const Chat &chat, const FileTransfer &fileTransfer);
+	NormalizedHtmlString incomingFileTransferDetails(const Chat &chat, const FileTransfer &fileTransfer);
 
 	void acceptFileTransfer(const Notification &notification);
 	void rejectFileTransfer(const Notification &notification);

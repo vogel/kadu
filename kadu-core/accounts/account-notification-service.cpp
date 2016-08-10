@@ -20,6 +20,9 @@
 #include "account-notification-service.h"
 
 #include "accounts/account.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
+#include "html/normalized-html-string.h"
 #include "identities/identity.h"
 #include "notification/notification.h"
 #include "notification/notification-callback-repository.h"
@@ -118,9 +121,9 @@ void AccountNotificationService::notifyConnectionError(const Account &account, c
 	auto notification = Notification{};
 	notification.type = m_connectionErrorEvent.name();
 	notification.title = tr("Connection error");
-	notification.text = Qt::escape(tr("Connection error on account: %1 (%2)").arg(account.id(), account.accountIdentity().name()));
+	notification.text = normalizeHtml(plainToHtml(tr("Connection error on account: %1 (%2)").arg(account.id(), account.accountIdentity().name())));
 	notification.data = std::move(data);
-	notification.details = Qt::escape(errorDetails(errorServer, errorMessage));
+	notification.details = normalizeHtml(plainToHtml(errorDetails(errorServer, errorMessage)));
 	notification.callbacks.append(QStringLiteral("connection-ignore-errors"));
 
 	m_notificationService->notify(notification);

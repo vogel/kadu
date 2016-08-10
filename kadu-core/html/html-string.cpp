@@ -17,15 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "formatted-string-module.h"
+#include "html-string.h"
 
-#include "formatted-string/formatted-string-factory.h"
-
-FormattedStringModule::FormattedStringModule()
+HtmlString::HtmlString(QString string) :
+		m_string{std::move(string)}
 {
-	add_type<FormattedStringFactory>();
 }
 
-FormattedStringModule::~FormattedStringModule()
+const QString & HtmlString::string() const
 {
+	return m_string;
 }

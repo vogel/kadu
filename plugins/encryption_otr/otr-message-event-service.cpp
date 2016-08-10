@@ -26,6 +26,8 @@
 #include "chat/type/chat-type-contact.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 
 void OtrMessageEventService::wrapperOtrHandleMessageEvent(void *data, OtrlMessageEvent event, ConnContext *context, const char *message, gcry_error_t error)
 {
@@ -69,7 +71,7 @@ void OtrMessageEventService::handleMessageEvent(const Contact &contact, OtrlMess
 	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
 	if (chatWidget)
-		chatWidget->appendSystemMessage(errorMessage.toHtmlEscaped());
+		chatWidget->appendSystemMessage(normalizeHtml(plainToHtml(errorMessage)));
 }
 
 QString OtrMessageEventService::messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const

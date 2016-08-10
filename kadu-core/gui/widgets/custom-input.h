@@ -36,6 +36,7 @@ class CustomInputMenuManager;
 class FormattedString;
 class FormattedStringFactory;
 class ImageStorageService;
+class NormalizedHtmlString;
 
 class KADUAPI CustomInput : public QTextEdit
 {
@@ -74,7 +75,7 @@ protected:
 public:
 	explicit CustomInput(Chat chat, QWidget *parent = nullptr);
 
-	QString htmlMessage() const;
+	NormalizedHtmlString htmlMessage() const;
 	// TODO: to remove
 	void setFormattedString(const FormattedString &formattedString);
 

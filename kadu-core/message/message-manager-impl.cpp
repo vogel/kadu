@@ -109,20 +109,20 @@ void MessageManagerImpl::messageReceivedSlot(const Message &message)
 	emit messageReceived(transformedMessage);
 }
 
-Message MessageManagerImpl::createOutgoingMessage(const Chat &chat, QString htmlContent)
+Message MessageManagerImpl::createOutgoingMessage(const Chat &chat, NormalizedHtmlString content)
 {
 	Message message = m_messageStorage->create();
 	message.setMessageChat(chat);
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());
-	message.setHtmlContent(std::move(htmlContent));
+	message.setContent(std::move(content));
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
 	return message;
 }
 
-bool MessageManagerImpl::sendMessage(const Chat &chat, QString htmlContent, bool silent)
+bool MessageManagerImpl::sendMessage(const Chat &chat, NormalizedHtmlString htmlContent, bool silent)
 {
 	Protocol *protocol = chat.chatAccount().protocolHandler();
 	if (!protocol || !protocol->chatService())

@@ -109,5 +109,5 @@ QDomNode EmoticonExpander::beginVisit(QDomElement elementNode) const
 
 QDomNode EmoticonExpander::endVisit(QDomElement elementNode) const
 {
-	return elementNode;
+	return elementNode.nextSibling();
 }

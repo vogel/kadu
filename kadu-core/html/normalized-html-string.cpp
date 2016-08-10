@@ -17,21 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "normalized-html-string.h"
 
-#include "exports.h"
-
-#include <QtCore/QObject>
-
-class KADUAPI TextConverterService : public QObject
+NormalizedHtmlString::NormalizedHtmlString(QString string) :
+		m_string{std::move(string)}
 {
-	Q_OBJECT
+}
 
-public:
-	Q_INVOKABLE TextConverterService(QObject *parent = nullptr);
-	virtual ~TextConverterService();
-
-	QString htmlToPlain(const QString &html);
-	QString plainToHtml(const QString &plain);
-
-};
+const QString & NormalizedHtmlString::string() const
+{
+	return m_string;
+}

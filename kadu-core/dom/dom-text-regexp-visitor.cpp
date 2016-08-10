@@ -69,5 +69,5 @@ QDomNode DomTextRegexpVisitor::beginVisit(QDomElement elementNode) const
 
 QDomNode DomTextRegexpVisitor::endVisit(QDomElement elementNode) const
 {
-	return elementNode;
+	return elementNode.nextSibling();
 }

@@ -32,6 +32,7 @@
 class Chat;
 class Contact;
 class MessageShared;
+class NormalizedHtmlString;
 
 class KADUAPI Message : public SharedBase<MessageShared>
 {
@@ -48,7 +49,7 @@ public:
 
 	KaduSharedBase_PropertyCRW(Chat, messageChat, MessageChat)
 	KaduSharedBase_PropertyCRW(Contact, messageSender, MessageSender)
-	KaduSharedBase_PropertyCRW(QString, htmlContent, HtmlContent)
+	KaduSharedBase_PropertyCRW(NormalizedHtmlString, content, Content)
 	KaduSharedBase_PropertyCRW(QDateTime, receiveDate, ReceiveDate)
 	KaduSharedBase_PropertyCRW(QDateTime, sendDate, SendDate)
 	KaduSharedBase_Property(MessageStatus, status, Status)

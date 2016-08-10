@@ -26,6 +26,8 @@
 #include "formatted-string/formatted-string-visitor.h"
 #include "exports.h"
 
+class HtmlString;
+
 /**
  * @addtogroup FormattedString
  * @{
@@ -56,7 +58,7 @@ public:
 	* @author Rafał 'Vogel' Malinowski
 	* @return HTML view of visited FormattedString
 	*/
-	QString result() const;
+	HtmlString result() const;
 
 protected:
 	void append(QString content);

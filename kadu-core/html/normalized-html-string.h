@@ -19,24 +19,44 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QRegularExpression>
+#include "exports.h"
 
-class Q_DECL_EXPORT GaduReceivedHtmlFixupService : public QObject
+#include <QtCore/QString>
+
+class HtmlString;
+
+class KADUAPI NormalizedHtmlString
 {
-	Q_OBJECT
-
 public:
-	Q_INVOKABLE explicit GaduReceivedHtmlFixupService(QObject *parent = nullptr);
-	virtual ~GaduReceivedHtmlFixupService();
+	NormalizedHtmlString() = default;
 
-	/*
-	 * This is a hack, we get <img name= from GG servers, but FormattedStringFactory requires <img src= as it
-	 * cannot parse name= attribute this is because of QTextDocument usage.
-	 */
-	QString htmlFixup(QString html) const;
+	const QString & string() const;
+
+	template<typename ... T>
+	NormalizedHtmlString arg(const T & ... args)
+	{
+		return NormalizedHtmlString{m_string.arg(args.string()...)};
+	}
+
+	friend bool operator == (const NormalizedHtmlString &x, const NormalizedHtmlString &y)
+	{
+		return x.m_string == y.m_string;
+	}
+
+	friend bool operator != (const NormalizedHtmlString &x, const NormalizedHtmlString &y)
+	{
+		return !(x == y);
+	}
+
+	friend bool operator < (const NormalizedHtmlString &x, const NormalizedHtmlString &y)
+	{
+		return x.m_string < y.m_string;
+	}
 
 private:
-	QRegularExpression m_imageRegExp;
+	friend NormalizedHtmlString normalizeHtml(const HtmlString &html);
+
+	explicit NormalizedHtmlString(QString string);
+	QString m_string;
 
 };

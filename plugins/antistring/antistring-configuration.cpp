@@ -23,6 +23,8 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
+#include "html/html-conversion.h"
+#include "html/html-string.h"
 #include "misc/paths-provider.h"
 #include "debug.h"
 
@@ -68,7 +70,7 @@ void AntistringConfiguration::configurationUpdated()
 	Enabled = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_antistring");
 	MessageStop = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "message stop");
 	LogMessage = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "log message");
-	ReturnMessage = m_configuration->deprecatedApi()->readEntry("PowerKadu", "admonish_tresc_config");
+	ReturnMessage = normalizeHtml(HtmlString{m_configuration->deprecatedApi()->readEntry("PowerKadu", "admonish_tresc_config")});
 	LogFile = m_configuration->deprecatedApi()->readEntry("PowerKadu", "log file", m_pathsProvider->profilePath() + QStringLiteral("antistring.log"));
 }
 

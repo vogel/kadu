@@ -30,6 +30,7 @@ class Chat;
 class CustomInput;
 class FormattedString;
 class Message;
+class NormalizedHtmlString;
 class SortedMessages;
 class TalkableProxyModel;
 class WebkitMessagesView;
@@ -49,7 +50,7 @@ public:
 
 	virtual void addMessages(const SortedMessages &messages) = 0;
 	virtual void addMessage(const Message &message) = 0;
-	virtual void appendSystemMessage(QString htmlContent) = 0;
+	virtual void appendSystemMessage(NormalizedHtmlString content) = 0;
 	virtual SortedMessages messages() const = 0;
 
 	virtual const QDateTime & lastReceivedMessageTime() const = 0;

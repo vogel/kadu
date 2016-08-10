@@ -30,6 +30,7 @@ class ChatManager;
 class ChatStorage;
 class ChatWidgetRepository;
 class Contact;
+class NormalizedHtmlString;
 class NotificationService;
 
 class OtrNotifier : public QObject
@@ -49,8 +50,8 @@ class OtrNotifier : public QObject
 	NotificationEvent CreatePrivateKeyStartedNotificationEvent;
 	NotificationEvent CreatePrivateKeyFinishedNotificationEvent;
 
-	void notify(const QString &topic, const Account &account, const QString &message);
-	void notify(const Contact &contact, const QString &message);
+	void notify(const QString &topic, const Account &account, const NormalizedHtmlString &message);
+	void notify(const Contact &contact, const NormalizedHtmlString &message);
 
 public:
 	Q_INVOKABLE OtrNotifier();

@@ -59,7 +59,7 @@ public:
 
 	virtual void addMessages(const SortedMessages &) override { }
 	virtual void addMessage(const Message &) override { }
-	virtual void appendSystemMessage(QString) override { }
+	virtual void appendSystemMessage(NormalizedHtmlString) override { }
 	virtual SortedMessages messages() const override { return {}; }
 
 	virtual const QDateTime & lastReceivedMessageTime() const override { return m_dateTime; }
