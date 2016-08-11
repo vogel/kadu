@@ -18,73 +18,54 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QMimeData>
-#include <QtGui/QIcon>
-#include <QtGui/QKeyEvent>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QInputDialog>
-#include <QtWidgets/QShortcut>
-#include <QtWidgets/QSplitter>
-#include <QtWidgets/QToolBar>
-#include <QtWidgets/QVBoxLayout>
+#include "chat-widget-impl.h"
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
-#include "buddies/buddy-set.h"
-#include "buddies/buddy.h"
-#include "buddies/model/buddy-list-model.h"
-#include "chat-style/engine/chat-style-renderer-factory-provider.h"
-#include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
-#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "contacts/contact.h"
 #include "contacts/model/chat-adapter.h"
-#include "contacts/model/contact-data-extractor.h"
 #include "contacts/model/contact-list-model.h"
 #include "core/injected-factory.h"
-#include "gui/actions/action.h"
 #include "gui/actions/actions.h"
+#include "gui/actions/action.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/hot-key.h"
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-container-widget.h"
-#include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
-#include "gui/widgets/color-selector.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/filtered-tree-view.h"
-#include "gui/widgets/search-bar.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "gui/widgets/search-bar.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/message-dialog.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
-#include "html/normalized-html-string.h"
 #include "icons/icons-manager.h"
-#include "icons/kadu-icon.h"
 #include "message/message-manager.h"
 #include "message/message-storage.h"
 #include "message/sorted-messages.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
-#include "parser/parser.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-state.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
-#include "activate.h"
-#include "debug.h"
 
-#include "chat-widget-impl.h"
+#include <QtCore/QFileInfo>
+#include <QtCore/QMimeData>
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QShortcut>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QVBoxLayout>
 
 ChatWidgetImpl::ChatWidgetImpl(Chat chat, QWidget *parent) :
 		ChatWidget{parent},
@@ -101,7 +82,6 @@ ChatWidgetImpl::ChatWidgetImpl(Chat chat, QWidget *parent) :
 
 ChatWidgetImpl::~ChatWidgetImpl()
 {
-	kdebugf();
 	ComposingTimer.stop();
 
 	kaduStoreGeometry();
@@ -113,8 +93,6 @@ ChatWidgetImpl::~ChatWidgetImpl()
 		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatState::Gone);
 
 	CurrentChat.setOpen(false);
-
-	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }
 
 void ChatWidgetImpl::setActions(Actions *actions)
@@ -179,8 +157,6 @@ void ChatWidgetImpl::setWebkitMessagesViewFactory(WebkitMessagesViewFactory *web
 
 void ChatWidgetImpl::init()
 {
-	kdebugf();
-
 	Title = m_injectedFactory->makeInjected<ChatWidgetTitle>(this);
 
 	setAcceptDrops(true);
@@ -204,8 +180,6 @@ void ChatWidgetImpl::init()
 	connect(CurrentChat, SIGNAL(updated()), this, SLOT(chatUpdated()));
 
 	CurrentChat.setOpen(true);
-
-	kdebugf2();
 }
 
 void ChatWidgetImpl::createGui()
@@ -388,12 +362,10 @@ bool ChatWidgetImpl::keyPressEventHandled(QKeyEvent *e)
 
 void ChatWidgetImpl::keyPressEvent(QKeyEvent *e)
 {
-	kdebugf();
 	if (keyPressEventHandled(e))
 		e->accept();
 	else
 		QWidget::keyPressEvent(e);
-	kdebugf2();
 }
 
 void ChatWidgetImpl::resizeEvent(QResizeEvent *e)
@@ -472,8 +444,6 @@ void ChatWidgetImpl::resetEditBox()
 
 void ChatWidgetImpl::clearChatWindow()
 {
-	kdebugf();
-
 	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), tr("Chat window will be cleared. Continue?"));
 	dialog->addButton(QMessageBox::Yes, tr("Clear chat window"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
@@ -484,19 +454,13 @@ void ChatWidgetImpl::clearChatWindow()
 		MessagesView->setForcePruneDisabled(false);
 		activateWindow();
 	}
-
-	kdebugf2();
 }
 
 /* sends the message typed */
 void ChatWidgetImpl::sendMessage()
 {
-	kdebugf();
 	if (InputBox->inputBox()->toPlainText().isEmpty())
-	{
-		kdebugf2();
 		return;
-	}
 
 	emit messageSendRequested(this);
 
@@ -508,7 +472,6 @@ void ChatWidgetImpl::sendMessage()
 						.arg(tr("Account:"))
 						.arg(chat().chatAccount().id()),
 				QMessageBox::Ok, this);
-		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}
 
@@ -524,13 +487,10 @@ void ChatWidgetImpl::sendMessage()
 		composingStopped();
 
 	emit messageSent(this);
-	kdebugf2();
 }
 
 void ChatWidgetImpl::colorSelectorAboutToClose()
 {
-	kdebugf();
-	kdebugf2();
 }
 
 CustomInput * ChatWidgetImpl::edit() const
