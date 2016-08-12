@@ -107,6 +107,7 @@ set (gui_SRCS
 	widgets/line-edit-clear-button.cpp
 	widgets/line-edit-with-clear-button.cpp
 	widgets/modal-configuration-widget.cpp
+	widgets/paste-acceptor.cpp
 	widgets/path-list-edit.cpp
 	widgets/protocols-combo-box.cpp
 	widgets/proxy-combo-box.cpp
@@ -402,5 +403,7 @@ set (gui_MOC_SRCS
 if (MINGW)
 	set_property (SOURCE windows/open-chat-with/open-chat-with.cpp APPEND_STRING PROPERTY COMPILE_FLAGS " -fno-strict-aliasing")
 endif ()
+
+kadu_add_test (widgets/paste-acceptor)
 
 kadu_subdirectory (gui "${gui_SRCS}" "${gui_MOC_SRCS}" "")

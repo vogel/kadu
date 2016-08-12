@@ -27,7 +27,7 @@
 #include <injeqt/injeqt.h>
 
 #include "chat/chat.h"
-
+#include "gui/widgets/paste-acceptor.h"
 #include "exports.h"
 
 class ChatConfigurationHolder;
@@ -38,7 +38,7 @@ class FormattedStringFactory;
 class ImageStorageService;
 class NormalizedHtmlString;
 
-class KADUAPI CustomInput : public QTextEdit
+class KADUAPI CustomInput : public QTextEdit, PasteAcceptor
 {
 	Q_OBJECT
 
@@ -51,6 +51,10 @@ class KADUAPI CustomInput : public QTextEdit
 	Chat CurrentChat;
 
 	bool CopyPossible;
+
+	virtual void acceptPlainText(QString plainText) override;
+	virtual void acceptFileUrl(QUrl imageUrl) override;
+	virtual void acceptImageData(QByteArray imageData) override;
 
 private slots:
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);

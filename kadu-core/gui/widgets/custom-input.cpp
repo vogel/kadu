@@ -299,58 +299,52 @@ bool CustomInput::canInsertFromMimeData(const QMimeData *source) const
 	return QTextEdit::canInsertFromMimeData(source);
 }
 
-void CustomInput::insertFromMimeData(const QMimeData *source)
+void CustomInput::acceptPlainText(QString plainText)
 {
-	if (!source->hasUrls())
-	{
-		insertPlainText(source->text().replace("\t", "    "));
-		return;
-	}
+	insertPlainText(plainText.replace("\t", "    "));
+}
 
+void CustomInput::acceptFileUrl(QUrl imageUrl)
+{
 	if (!CurrentChat.chatAccount().protocolHandler() || !CurrentChat.chatAccount().protocolHandler()->chatImageService())
 		return;
 
-	QString path;
-
-	if (source->hasUrls() && !source->urls().isEmpty())
+	imageUrl = m_imageStorageService->toFileUrl(imageUrl);
+	if (!imageUrl.toString().isEmpty() && imageUrl.scheme() == "file")
 	{
-		QUrl url = source->urls().first();
-		if (!url.toString().isEmpty() && m_imageStorageService)
-			url = m_imageStorageService->toFileUrl(url);
-
-		if (!url.toString().isEmpty() && url.scheme() == "file")
-		{
-			path = QDir::cleanPath(url.path());
-			if (QImage(path).isNull())
-				path.clear();
-		}
+		auto path = QDir::cleanPath(imageUrl.path());
+		if (QImage(path).isNull())
+			return;
+		insertHtml(QString{"<img src='%1' />"}.arg(path));
 	}
+}
 
-	if (path.isEmpty() && source->hasFormat(QStringLiteral("application/x-qt-image")))
+void CustomInput::acceptImageData(QByteArray imageData)
+{
+	if (!CurrentChat.chatAccount().protocolHandler() || !CurrentChat.chatAccount().protocolHandler()->chatImageService())
+		return;
+
+	QBuffer buffer{&imageData};
+	buffer.open(QIODevice::ReadOnly);
+	auto ext = QString::fromUtf8(QImageReader{&buffer}.format().toLower());
+	auto filename = QString{"drop%1.%2"}.arg(QDateTime::currentDateTime().toTime_t()).arg(ext);
+
+	auto path = m_imageStorageService->fullPath(filename);
+	QFile file(path);
+	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
-		QByteArray imagedata = source->data(QStringLiteral("application/x-qt-image"));
-		QBuffer buffer(&imagedata);
-		buffer.open(QIODevice::ReadOnly);
-		QString ext = QImageReader(&buffer).format().toLower();
-		QString filename = "drop" + QString::number(QDateTime::currentDateTime().toTime_t()) + "." + ext;
+		file.write(imageData);
+		file.close();
 
-		if (m_imageStorageService)
-			path = m_imageStorageService->fullPath(filename);
-		else
-			path = filename;
-
-		QFile file(path);
-		if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
-		{
-			file.write(imagedata);
-			file.close();
-		}
-		else
-			path.clear();
+		insertHtml(QString{"<img src='%1' />"}.arg(path));
 	}
+	else
+		return;
+}
 
-	if (!path.isEmpty())
-		insertHtml(QString("<img src='%1' />").arg(path));
+void CustomInput::insertFromMimeData(const QMimeData *source)
+{
+	acceptPasteData(source, this);
 }
 
 #include "moc_custom-input.cpp"
