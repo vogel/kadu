@@ -190,6 +190,11 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		kdebugf2();
 		return;
 	}
+	else if (e->key() == Qt::Key_Tab)
+	{
+		e->accept();
+		return;
+	}
 
 	bool handled = false;
 	emit keyPressed(e, this, handled);
@@ -210,6 +215,12 @@ void CustomInput::keyReleaseEvent(QKeyEvent *e)
 	emit keyReleased(e, this, handled);
 	if (handled)
 	{
+		e->accept();
+		return;
+	}
+	if (e->key() == Qt::Key_Tab)
+	{
+		insertPlainText("    ");
 		e->accept();
 		return;
 	}
