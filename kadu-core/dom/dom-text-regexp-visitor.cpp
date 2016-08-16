@@ -33,18 +33,18 @@ DomTextRegexpVisitor::~DomTextRegexpVisitor()
 
 QDomText DomTextRegexpVisitor::expandFirstMatch(QDomText textNode) const
 {
-	QString text = textNode.nodeValue();
-	int index = RegExp.indexIn(text);
+	auto text = textNode.nodeValue();
+	auto index = RegExp.indexIn(text);
 	if (index < 0)
 		return QDomText();
 
-	int length = RegExp.matchedLength();
+	auto length = RegExp.matchedLength();
 
-	QDomText afterMatch = textNode.splitText(index + length);
+	auto afterMatch = textNode.splitText(index + length);
 	textNode.setNodeValue(textNode.nodeValue().mid(0, index));
 
-	QList<QDomNode> newNodes = matchToDomNodes(textNode.ownerDocument(), RegExp);
-	foreach (QDomNode newNode, newNodes)
+	auto newNodes = matchToDomNodes(textNode.ownerDocument(), RegExp);
+	for (auto newNode : newNodes)
 		textNode.parentNode().insertBefore(newNode, afterMatch);
 
 	return afterMatch;
@@ -52,7 +52,7 @@ QDomText DomTextRegexpVisitor::expandFirstMatch(QDomText textNode) const
 
 QDomNode DomTextRegexpVisitor::visit(QDomText textNode) const
 {
-	QDomText result = textNode;
+	auto result = textNode;
 	while (!textNode.isNull())
 	{
 		result = textNode;

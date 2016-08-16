@@ -80,8 +80,6 @@ public:
 	explicit CustomInput(Chat chat, QWidget *parent = nullptr);
 
 	NormalizedHtmlString htmlMessage() const;
-	// TODO: to remove
-	void setFormattedString(const FormattedString &formattedString);
 
 public slots:
 	void setAutoSend(bool on);

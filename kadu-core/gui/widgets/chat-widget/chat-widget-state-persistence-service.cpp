@@ -19,8 +19,6 @@
 
 #include "chat-widget-state-persistence-service.h"
 
-#include "formatted-string/formatted-string-factory.h"
-#include "formatted-string/formatted-string-html-visitor.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
@@ -39,15 +37,14 @@ ChatWidgetStatePersistenceService::~ChatWidgetStatePersistenceService()
 void ChatWidgetStatePersistenceService::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
-	connect(m_chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget*)),
-			this, SLOT(restoreChatWidgetState(ChatWidget*)));
-	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget*)),
-			this, SLOT(storeChatWidgetState(ChatWidget*)));
 }
 
-void ChatWidgetStatePersistenceService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+void ChatWidgetStatePersistenceService::init()
 {
-	m_formattedStringFactory = formattedStringFactory;
+	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetAdded,
+			this, &ChatWidgetStatePersistenceService::restoreChatWidgetState);
+	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetRemoved,
+			this, &ChatWidgetStatePersistenceService::storeChatWidgetState);
 }
 
 void ChatWidgetStatePersistenceService::storeChatWidgetState(ChatWidget *chatWidget)
@@ -62,8 +59,7 @@ void ChatWidgetStatePersistenceService::storeChatWidgetState(ChatWidget *chatWid
 void ChatWidgetStatePersistenceService::restoreChatWidgetState(ChatWidget *chatWidget)
 {
 	auto html = normalizeHtml(HtmlString{chatWidget->chat().property("chat-widget-state:message", QString{}).toString()});
-	auto formattedString = m_formattedStringFactory->fromHtml(html);
-	chatWidget->edit()->setFormattedString(*formattedString);
+	chatWidget->edit()->setHtml(QString{R"(<div style="white-space: pre-wrap;">%1</div>)"}.arg(html.string()));
 
 	auto textCursor = chatWidget->edit()->textCursor();
 	textCursor.movePosition(QTextCursor::End);

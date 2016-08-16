@@ -113,6 +113,12 @@ void FormattedStringFactoryTest::shouldProperlyParseHtml_data()
 	QTest::newRow("with indentation")
 		<< "<span>  test message<br/>    with    indentation</span>"
 		<< "  test message<br/>    with    indentation";
+	QTest::newRow("formatted with indentation before span")
+		<< "    <span style=\"\">test </span><span style=\"font-weight:600;\">f</span><span style=\"font-weight:600;font-style:italic;\">o</span><span style=\"font-weight:600;font-style:italic;text-decoration:underline;\">rmatt</span><span style=\"font-weight:600;font-style:italic;\">e</span><span style=\"font-weight:600;\">d</span><span style=\"\"> message</span>"
+		<< "    test <span style=\"font-weight:600;\">f</span><span style=\"font-weight:600;font-style:italic;\">o</span><span style=\"font-weight:600;font-style:italic;text-decoration:underline;\">rmatt</span><span style=\"font-weight:600;font-style:italic;\">e</span><span style=\"font-weight:600;\">d</span> message";
+	QTest::newRow("formatted with indentation after span")
+		<< "<span style=\"\">    test </span><span style=\"font-weight:600;\">f</span><span style=\"font-weight:600;font-style:italic;\">o</span><span style=\"font-weight:600;font-style:italic;text-decoration:underline;\">rmatt</span><span style=\"font-weight:600;font-style:italic;\">e</span><span style=\"font-weight:600;\">d</span><span style=\"\"> message</span>"
+		<< "    test <span style=\"font-weight:600;\">f</span><span style=\"font-weight:600;font-style:italic;\">o</span><span style=\"font-weight:600;font-style:italic;text-decoration:underline;\">rmatt</span><span style=\"font-weight:600;font-style:italic;\">e</span><span style=\"font-weight:600;\">d</span> message";
 	QTest::newRow("remove tab simple")
 		<< "\ttest message with tab"
 		<< "test message with tab";

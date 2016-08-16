@@ -52,7 +52,6 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/widgets/chat-widget/chat-widget-state-persistence-service.h"
 #include "gui/windows/chat-window/chat-window-manager.h"
 #include "gui/windows/chat-window/chat-window-storage-configurator.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
@@ -492,7 +491,6 @@ void Core::runServices()
 	m_injector.instantiate_all_with_type_role(SERVICE);
 
 	m_injector.instantiate<ContactParserTags>();
-	m_injector.instantiate<ChatWidgetStatePersistenceService>();
 
 	auto rosterNotifier = m_injector.get<RosterNotifier>();
 	for (auto &&notifyEvent : rosterNotifier->notifyEvents())

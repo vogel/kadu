@@ -66,8 +66,8 @@ std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextCharFormat
 
 std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
 {
-	QString filePath = textImageFormat.name();
-	QFileInfo fileInfo(filePath);
+	auto filePath = textImageFormat.name();
+	QFileInfo fileInfo{filePath};
 
 	if (m_imageStorageService)
 		filePath = m_imageStorageService.data()->storeImage(filePath);
@@ -77,7 +77,7 @@ std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextImageForma
 
 std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
 {
-	QTextCharFormat format = textFragment.charFormat();
+	auto format = textFragment.charFormat();
 	if (!format.isImageFormat())
 		return partFromQTextCharFormat(format, prependNewLine ? '\n' + textFragment.text() : textFragment.text());
 	else
@@ -87,9 +87,8 @@ std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextFragment(c
 std::vector<std::unique_ptr<FormattedString>> FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
 {
 	auto result = std::vector<std::unique_ptr<FormattedString>>{};
-
-	bool firstFragment = true;
-	for (QTextBlock::iterator it = textBlock.begin(); !it.atEnd(); ++it)
+	auto firstFragment = true;
+	for (auto it = textBlock.begin(); !it.atEnd(); ++it)
 	{
 		if (!it.fragment().isValid())
 			continue;
@@ -137,7 +136,7 @@ std::unique_ptr<FormattedString> FormattedStringFactory::fromTextDocument(const 
 	auto firstBlock = true;
 	auto items = std::vector<std::unique_ptr<FormattedString>>{};
 
-	QTextBlock block = textDocument.firstBlock();
+	auto block = textDocument.firstBlock();
 	while (block.isValid())
 	{
 		auto parts = partsFromQTextBlock(block, firstBlock);
@@ -153,13 +152,13 @@ std::unique_ptr<FormattedString> FormattedStringFactory::fromTextDocument(const 
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromText(const QString &text)
 {
-	QScopedPointer<QTextDocument> document(new QTextDocument());
+	QTextDocument document;
 	if (isHtml(text))
-		document->setHtml(text);
+		document.setHtml(text);
 	else
-		document->setPlainText(text);
+		document.setPlainText(text);
 
-	return fromTextDocument(*document.data());
+	return fromTextDocument(document);
 }
 
 bool FormattedStringFactory::isHtml(const QString &text) const

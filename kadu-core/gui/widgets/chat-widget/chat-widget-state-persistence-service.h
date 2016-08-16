@@ -19,17 +19,19 @@
 
 #pragma once
 
+#include "injeqt-type-roles.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class ChatWidget;
 class ChatWidgetRepository;
-class FormattedStringFactory;
 
 class ChatWidgetStatePersistenceService : public QObject
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(SERVICE)
 
 public:
 	Q_INVOKABLE ChatWidgetStatePersistenceService();
@@ -37,13 +39,12 @@ public:
 
 private slots:
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+	INJEQT_INIT void init();
 
 	void storeChatWidgetState(ChatWidget *chatWidget);
 	void restoreChatWidgetState(ChatWidget *chatWidget);
 
 private:
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
 
 };

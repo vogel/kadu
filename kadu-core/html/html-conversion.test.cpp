@@ -38,6 +38,9 @@ private slots:
 	void shouldProperlyNormalizeHtml_data();
 	void shouldProperlyNormalizeHtml();
 
+	void shouldRemoveScriptTag_data();
+	void shouldRemoveScriptTag();
+
 };
 
 void HtmlConversionTest::shouldProperlyConvertHtmlToPlainText_data()
@@ -114,12 +117,6 @@ void HtmlConversionTest::shouldProperlyNormalizeHtml_data()
 	QTest::newRow("with new line")
 		<< R"(with\nnew line)"
 		<< R"(with\nnew line)";
-	QTest::newRow("with script")
-		<< R"(here is script: <script>window.open("some javascript");</script>)"
-		<< R"(here is script: )";
-	QTest::newRow("with typed script")
-		<< R"(here is script: <script type="javascript">window.open("some javascript");</script>)"
-		<< R"(here is script: )";
 	QTest::newRow("with br")
 		<< R"(with br <br>)"
 		<< R"(with br <br/>)";
@@ -157,6 +154,25 @@ void HtmlConversionTest::shouldProperlyNormalizeHtml()
 	auto result = normalizeHtml(HtmlString{html}).string();
 
 	QCOMPARE(result, normalizedHtml);
+}
+
+void HtmlConversionTest::shouldRemoveScriptTag_data()
+{
+	QTest::addColumn<QString>("html");
+
+	QTest::newRow("with script")
+		<< R"(here is script: <script>window.open("some javascript");</script>)";
+	QTest::newRow("with typed script")
+		<< R"(here is script: <script type="javascript">window.open("some javascript");</script>)";
+}
+
+void HtmlConversionTest::shouldRemoveScriptTag()
+{
+	QFETCH(QString, html);
+
+	auto result = normalizeHtml(HtmlString{html}).string();
+
+	QVERIFY(!result.contains("<script"));
 }
 
 QTEST_APPLESS_MAIN(HtmlConversionTest)

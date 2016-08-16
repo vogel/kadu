@@ -96,13 +96,6 @@ NormalizedHtmlString CustomInput::htmlMessage() const
 	return normalizeHtml(visitor.result());
 }
 
-void CustomInput::setFormattedString(const FormattedString &formattedString)
-{
-	FormattedStringHtmlVisitor html{};
-	formattedString.accept(&html);
-	setHtml(html.result().string());
-}
-
 void CustomInput::showEvent(QShowEvent *e)
 {
 	QTextEdit::showEvent(e);
