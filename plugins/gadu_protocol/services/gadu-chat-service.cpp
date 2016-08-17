@@ -313,7 +313,13 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 
 	auto htmlContent = normalizeHtml(HtmlString{QString::fromUtf8(rawMessage.rawContent())});
 	auto formattedString = m_formattedStringFactory->fromHtml(htmlContent);
-	if (ignoreRichText(sender))
+	if (!ignoreRichText(sender))
+	{
+		FormattedStringHtmlVisitor htmlVisitor;
+		formattedString->accept(&htmlVisitor);
+		htmlContent = normalizeHtml(htmlVisitor.result());
+	}
+	else
 		htmlContent = normalizeHtml(plainToHtml(htmlToPlain(htmlContent)));
 
 	if (htmlContent.string().isEmpty())
