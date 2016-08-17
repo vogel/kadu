@@ -18,11 +18,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_VIEW_NETWORK_ACCESS_MANAGER
-#define CHAT_VIEW_NETWORK_ACCESS_MANAGER
+#pragma once
 
 #include <QtCore/QPointer>
 #include <QtNetwork/QNetworkAccessManager>
+#include <injeqt/injeqt.h>
 
 class ImageStorageService;
 
@@ -38,11 +38,10 @@ public:
 	explicit ChatViewNetworkAccessManager(QNetworkAccessManager *oldManager, QObject *parent = nullptr);
 	virtual ~ChatViewNetworkAccessManager();
 
-	void setImageStorageService(ImageStorageService *imageStorageService);
-
 protected:
-	virtual QNetworkReply * createRequest(Operation operation, const QNetworkRequest &request, QIODevice *device);
+	virtual QNetworkReply * createRequest(Operation operation, const QNetworkRequest &request, QIODevice *device) override;
+
+private slots:
+	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 
 };
-
-#endif // CHAT_VIEW_NETWORK_ACCESS_MANAGER
