@@ -28,7 +28,7 @@ class QFileInfo;
 class QDir;
 class QScriptEngine;
 
-class InjectedFactory;
+class PluginInjectedFactory;
 class NetworkAccessManagerWrapper;
 class PathsProvider;
 
@@ -45,7 +45,7 @@ public:
 	QScriptEngine * engine() { return Engine; }
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<PathsProvider> m_pathsProvider;
 
 	QScriptEngine *Engine;
@@ -56,7 +56,7 @@ private:
 	void loadScripts(const QDir &dir);
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 

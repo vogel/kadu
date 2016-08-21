@@ -46,7 +46,7 @@ class Contact;
 class FirewallNotificationService;
 class History;
 class IncomingMessageFirewallFilter;
-class InjectedFactory;
+class PluginInjectedFactory;
 class KaduWindowService;
 class MessageManager;
 class MessageStorage;
@@ -76,7 +76,7 @@ private:
 	QPointer<Configuration> m_configuration;
 	QPointer<FirewallNotificationService> m_firewallNotificationService;
 	QPointer<History> m_history;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MessageStorage> m_messageStorage;
 	QPointer<MessageManager> m_messageManager;
@@ -127,7 +127,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFirewallNotificationService(FirewallNotificationService *firewallNotificationService);
 	INJEQT_SET void setHistory(History *history);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);

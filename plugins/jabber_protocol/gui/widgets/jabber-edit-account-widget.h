@@ -36,7 +36,7 @@ class AccountManager;
 class ConfigurationManager;
 class IconsManager;
 class IdentityManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class ProxyComboBox;
 
 class QCheckBox;
@@ -61,7 +61,7 @@ private:
 	QPointer<ConfigurationManager> m_configurationManager;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<IdentityManager> m_identityManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	JabberAccountDetails *AccountDetails;
 	JabberPersonalInfoWidget *PersonalInfoWidget;
@@ -118,7 +118,7 @@ private slots:
 	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_INIT void init();
 
 	virtual void removeAccount();

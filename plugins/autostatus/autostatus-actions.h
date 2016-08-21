@@ -27,7 +27,7 @@ class AutostatusService;
 
 class ActionDescription;
 class Actions;
-class InjectedFactory;
+class PluginInjectedFactory;
 class MenuInventory;
 
 class QAction;
@@ -46,7 +46,7 @@ public:
 private:
 	QPointer<Actions> m_actions;
 	QPointer<AutostatusService> m_autostatusService;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 
 	ActionDescription *AutostatusActionDescription;
@@ -54,7 +54,7 @@ private:
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();

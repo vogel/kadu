@@ -23,7 +23,6 @@
 #include <QtWidgets/QMenu>
 
 #include "contacts/contact-set.h"
-#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
@@ -33,6 +32,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
+#include "plugin/plugin-injected-factory.h"
 #include "talkable/talkable-converter.h"
 #include "debug.h"
 
@@ -65,9 +65,9 @@ void SmsActions::setHistory(History *history)
 	m_history = history;
 }
 
-void SmsActions::setInjectedFactory(InjectedFactory *injectedFactory)
+void SmsActions::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SmsActions::setKaduWindowService(KaduWindowService *kaduWindowService)
@@ -110,7 +110,7 @@ void SmsActions::init()
 	connect(m_kaduWindowService->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
 			this, SLOT(talkableActivated(Talkable)));
 
-	sendSmsActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
+	sendSmsActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeGlobal, "sendSmsAction",
 		this, SLOT(sendSmsActionActivated(QAction *)),
 		KaduIcon("phone"), tr("Send SMS...")
@@ -143,7 +143,7 @@ void SmsActions::done()
 
 void SmsActions::newSms(const QString &mobile)
 {
-	auto smsDialog = m_injectedFactory->makeInjected<SmsDialog>(m_history, m_mobileNumberManager, m_smsGatewayManager, m_smsScriptsManager);
+	auto smsDialog = m_pluginInjectedFactory->makeInjected<SmsDialog>(m_history, m_mobileNumberManager, m_smsGatewayManager, m_smsScriptsManager);
 	if (m_smsDialogRepository)
 		m_smsDialogRepository->addDialog(smsDialog);
 

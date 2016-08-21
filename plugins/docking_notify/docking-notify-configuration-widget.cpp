@@ -23,7 +23,6 @@
 #include <QtWidgets/QPushButton>
 
 #include "configuration/configuration.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/notify-group-box.h"
@@ -31,6 +30,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "notification/notifier-configuration-data-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -53,9 +53,9 @@ void DockingNotifyConfigurationWidget::setConfiguration(Configuration *configura
 	m_configuration = configuration;
 }
 
-void DockingNotifyConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+void DockingNotifyConfigurationWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void DockingNotifyConfigurationWidget::setPathsProvider(PathsProvider *pathsProvider)
@@ -76,8 +76,8 @@ void DockingNotifyConfigurationWidget::switchToEvent(const QString &event)
 
 void DockingNotifyConfigurationWidget::showConfigurationWindow()
 {
-	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(m_injectedFactory, currentNotificationEvent);
-	ConfigurationWindow *configWindow = m_injectedFactory->makeInjected<ConfigurationWindow>("Qt4DockingNotificationEventConfiguration", tr("Tray icon balloon's look configuration"), "Qt4DockingNotify", dataManager);
+	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(m_pluginInjectedFactory, currentNotificationEvent);
+	ConfigurationWindow *configWindow = m_pluginInjectedFactory->makeInjected<ConfigurationWindow>("Qt4DockingNotificationEventConfiguration", tr("Tray icon balloon's look configuration"), "Qt4DockingNotify", dataManager);
 
 	dataManager->configurationWindowCreated(configWindow);
 

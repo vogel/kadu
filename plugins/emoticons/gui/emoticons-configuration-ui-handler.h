@@ -32,7 +32,7 @@ class ConfigListWidget;
 class ConfigPathListEdit;
 class ConfigurationWidget;
 class IconsManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class PathsProvider;
 
 /**
@@ -49,7 +49,7 @@ class EmoticonsConfigurationUiHandler : public QObject, public ConfigurationUiHa
 	Q_OBJECT
 
 	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<PathsProvider> m_pathsProvider;
 
 	QScopedPointer<EmoticonThemeManager> ThemeManager;
@@ -58,7 +58,7 @@ class EmoticonsConfigurationUiHandler : public QObject, public ConfigurationUiHa
 
 private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 

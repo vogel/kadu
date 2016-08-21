@@ -32,7 +32,6 @@
 #include "status-notifier-item-attention-mode.h"
 #include "status-notifier-item-configuration.h"
 
-#include "core/injected-factory.h"
 #include "core/session-service.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -42,6 +41,7 @@
 #include "icons/kadu-icon.h"
 #include "message/message.h"
 #include "message/unread-message-repository.h"
+#include "plugin/plugin-injected-factory.h"
 #include "provider/default-provider.h"
 #include "status/status-container-manager.h"
 #include "activate.h"
@@ -84,9 +84,9 @@ void Docking::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void Docking::setInjectedFactory(InjectedFactory *injectedFactory)
+void Docking::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void Docking::setKaduWindowService(KaduWindowService *kaduWindowService)
@@ -116,7 +116,7 @@ void Docking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageR
 
 void Docking::init()
 {
-	auto statusIcon = m_injectedFactory->makeOwned<StatusIcon>(m_statusContainerManager, this);
+	auto statusIcon = m_pluginInjectedFactory->makeOwned<StatusIcon>(m_statusContainerManager, this);
 	connect(statusIcon.get(), SIGNAL(iconUpdated(KaduIcon)), this, SLOT(configurationUpdated()));
 
 	connect(m_statusNotifierItem, SIGNAL(activateRequested()), this, SLOT(activateRequested()));

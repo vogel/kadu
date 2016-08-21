@@ -22,8 +22,8 @@
 #include "gui/sound-select-file.h"
 #include "sound-manager.h"
 
-#include "core/injected-factory.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QLabel>
@@ -42,9 +42,9 @@ SoundBuddyConfigurationWidget::~SoundBuddyConfigurationWidget()
 {
 }
 
-void SoundBuddyConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+void SoundBuddyConfigurationWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundBuddyConfigurationWidget::init()
@@ -59,7 +59,7 @@ void SoundBuddyConfigurationWidget::createGui()
 	auto layout = new QVBoxLayout(this);
 
 	m_useCustomSoundCheckBox = new QCheckBox(tr("Use custom sound"));
-	m_customSoundSelectFile = m_injectedFactory->makeInjected<SoundSelectFile>(m_soundManager, this);
+	m_customSoundSelectFile = m_pluginInjectedFactory->makeInjected<SoundSelectFile>(m_soundManager, this);
 
 	connect(m_useCustomSoundCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
 	connect(m_customSoundSelectFile, SIGNAL(fileChanged()), this, SLOT(updateState()));

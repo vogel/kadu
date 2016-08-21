@@ -28,7 +28,7 @@
 class QLabel;
 
 class Configuration;
-class InjectedFactory;
+class PluginInjectedFactory;
 class SoundManager;
 class SoundSelectFile;
 
@@ -52,7 +52,7 @@ signals:
 
 private:
 	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<SoundManager> m_manager;
 
 	QMap<QString, QString> m_soundFiles;
@@ -62,7 +62,7 @@ private:
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_INIT void init();
 
 };

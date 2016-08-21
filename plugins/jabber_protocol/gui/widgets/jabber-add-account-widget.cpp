@@ -27,11 +27,11 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "protocols/protocols-manager.h"
 
 #include <QtWidgets/QApplication>
@@ -77,9 +77,9 @@ void JabberAddAccountWidget::setIdentityManager(IdentityManager *identityManager
 	m_identityManager = identityManager;
 }
 
-void JabberAddAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+void JabberAddAccountWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void JabberAddAccountWidget::init()
@@ -149,7 +149,7 @@ void JabberAddAccountWidget::createGui(bool showButtons)
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
 	layout->addRow(0, RememberPassword);
 
-	Identity = m_injectedFactory->makeInjected<IdentitiesComboBox>(this);
+	Identity = m_pluginInjectedFactory->makeInjected<IdentitiesComboBox>(this);
 	connect(Identity, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', Identity);
 

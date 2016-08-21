@@ -27,8 +27,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "misc/paths-provider.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include "storage/history-sql-storage.h"
 #include "storage/sql-import.h"
@@ -54,9 +54,9 @@ void SqlInitializer::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void SqlInitializer::setInjectedFactory(InjectedFactory *injectedFactory)
+void SqlInitializer::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SqlInitializer::setPathsProvider(PathsProvider *pathsProvider)
@@ -145,7 +145,7 @@ void SqlInitializer::initDatabase()
 
 		emit progressMessage("dialog-warning", tr("History file is corrupted, performing recovery..."));
 
-		auto sqlRestore = m_injectedFactory->makeUnique<SqlRestore>();
+		auto sqlRestore = m_pluginInjectedFactory->makeUnique<SqlRestore>();
 		SqlRestore::RestoreError error = sqlRestore->performRestore(historyFilePath);
 		if (SqlRestore::ErrorNoError == error)
 			emit progressMessage("dialog-information", tr("Recovery completed."));
@@ -164,7 +164,7 @@ void SqlInitializer::initDatabase()
 		if (anyHistoryFileExists)
 			emit progressMessage("dialog-warning", tr("History file is outdated, performing import..."));
 
-		auto sqlImport = m_injectedFactory->makeUnique<SqlImport>();
+		auto sqlImport = m_pluginInjectedFactory->makeUnique<SqlImport>();
 		sqlImport->performImport(Database);
 
 		if (anyHistoryFileExists)

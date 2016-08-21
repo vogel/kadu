@@ -33,7 +33,7 @@
 #endif
 
 class Configuration;
-class InjectedFactory;
+class PluginInjectedFactory;
 
 class PCSpeakerNotifier : public QObject, public Notifier
 {
@@ -50,7 +50,7 @@ public:
 
 private:
 	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 #if defined(Q_OS_UNIX)
 	Display *xdisplay;
@@ -64,6 +64,6 @@ private:
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 
 };

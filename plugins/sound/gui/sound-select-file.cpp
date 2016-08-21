@@ -23,11 +23,11 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/select-file.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QToolButton>
@@ -48,9 +48,9 @@ void SoundSelectFile::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void SoundSelectFile::setInjectedFactory(InjectedFactory *injectedFactory)
+void SoundSelectFile::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundSelectFile::init()
@@ -61,7 +61,7 @@ void SoundSelectFile::init()
 	testButton->setIconSize(QSize{14, 14});
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
-	m_selectFile = m_injectedFactory->makeInjected<SelectFile>("audio", this);
+	m_selectFile = m_pluginInjectedFactory->makeInjected<SelectFile>("audio", this);
 	connect(m_selectFile, SIGNAL(fileChanged()), this, SIGNAL(fileChanged()));
 
 	auto layout = new QHBoxLayout{this};

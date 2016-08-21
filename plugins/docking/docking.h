@@ -35,7 +35,7 @@ class ChatWidgetManager;
 class Configuration;
 class DockingConfigurationProvider;
 class IconsManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class KaduWindowService;
 class SessionService;
 class StatusContainerManager;
@@ -60,7 +60,7 @@ private:
 	QPointer<Configuration> m_configuration;
 	QPointer<DockingConfigurationProvider> m_dockingConfigurationProvider;
 	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<SessionService> m_sessionService;
 	QPointer<StatusContainerManager> m_statusContainerManager;
@@ -75,7 +75,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setSessionService(SessionService *sessionService);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);

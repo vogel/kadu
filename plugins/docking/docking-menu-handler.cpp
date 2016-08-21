@@ -22,12 +22,12 @@
 #include "docking-menu-action-repository.h"
 #include "status-notifier-item.h"
 
-#include "core/injected-factory.h"
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/icons-manager.h"
 #include "notification/silent-mode-service.h"
+#include "plugin/plugin-injected-factory.h"
 #include "status/status-container-manager.h"
 #include "activate.h"
 
@@ -66,9 +66,9 @@ void DockingMenuHandler::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void DockingMenuHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+void DockingMenuHandler::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void DockingMenuHandler::setKaduWindowService(KaduWindowService *kaduWindowService)
@@ -182,7 +182,7 @@ void DockingMenuHandler::addStatusContainerMenus()
 
 	if (showAllAccountsMenu)
 	{
-		auto allAccountsMenu = m_injectedFactory->makeInjected<StatusMenu>(m_statusContainerManager, multipleMenus, m_menu);
+		auto allAccountsMenu = m_pluginInjectedFactory->makeInjected<StatusMenu>(m_statusContainerManager, multipleMenus, m_menu);
 		connect(allAccountsMenu, SIGNAL(menuRecreated()), this, SLOT(update()));
 	}
 }

@@ -31,7 +31,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/account-configuration-widget-tab-adapter.h"
@@ -42,6 +41,7 @@
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "os/generic/url-opener.h"
+#include "plugin/plugin-injected-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
 
@@ -99,9 +99,9 @@ void GaduEditAccountWidget::setIdentityManager(IdentityManager *identityManager)
 	m_identityManager = identityManager;
 }
 
-void GaduEditAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+void GaduEditAccountWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void GaduEditAccountWidget::setUrlOpener(UrlOpener *urlOpener)
@@ -188,7 +188,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	formLayout->addRow(0, remindPasswordLabel);
 	connect(remindPasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindPassword()));
 
-	Identities = m_injectedFactory->makeInjected<IdentitiesComboBox>(this);
+	Identities = m_pluginInjectedFactory->makeInjected<IdentitiesComboBox>(this);
 	connect(Identities, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Account Identity") + ':', Identities);
 
@@ -198,7 +198,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	formLayout->addRow(0, infoLabel);
 
-	AccountAvatarWidget *avatarWidget = m_injectedFactory->makeInjected<AccountAvatarWidget>(account(), this);
+	AccountAvatarWidget *avatarWidget = m_pluginInjectedFactory->makeInjected<AccountAvatarWidget>(account(), this);
 	layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);
 
 	tabWidget->addTab(generalTab, tr("General"));
@@ -206,7 +206,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 void GaduEditAccountWidget::createPersonalInfoTab(QTabWidget *tabWidget)
 {
-	gpiw = m_injectedFactory->makeInjected<GaduPersonalInfoWidget>(account(), tabWidget);
+	gpiw = m_pluginInjectedFactory->makeInjected<GaduPersonalInfoWidget>(account(), tabWidget);
 	connect(gpiw, SIGNAL(dataChanged()), this, SLOT(dataChanged()));
 	tabWidget->addTab(gpiw, tr("Personal info"));
 }
@@ -216,7 +216,7 @@ void GaduEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
 	auto widget = new QWidget(this);
 	auto layout = new QVBoxLayout(widget);
 
-	auto buddiesWidget = m_injectedFactory->makeInjected<AccountBuddyListWidget>(account(), widget);
+	auto buddiesWidget = m_pluginInjectedFactory->makeInjected<AccountBuddyListWidget>(account(), widget);
 	layout->addWidget(buddiesWidget);
 
 	tabWidget->addTab(widget, tr("Buddies"));
@@ -318,7 +318,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	QFormLayout *connectionLayout = new QFormLayout(connection);
 
 	QLabel *proxyLabel = new QLabel(tr("Proxy configuration") + ':', connection);
-	ProxyCombo = m_injectedFactory->makeInjected<ProxyComboBox>(connection);
+	ProxyCombo = m_pluginInjectedFactory->makeInjected<ProxyComboBox>(connection);
 	ProxyCombo->enableDefaultProxyAction();
 	connect(ProxyCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 

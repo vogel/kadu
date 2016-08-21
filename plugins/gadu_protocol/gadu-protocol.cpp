@@ -39,7 +39,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
-#include "core/injected-factory.h"
 #include "core/version-service.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "gui/windows/message-dialog.h"

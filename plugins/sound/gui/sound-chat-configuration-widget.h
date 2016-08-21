@@ -24,7 +24,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class InjectedFactory;
+class PluginInjectedFactory;
 
 class SoundManager;
 class SoundSelectFile;
@@ -46,7 +46,7 @@ public:
 	virtual void cancel() override;
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<SoundManager> m_soundManager;
 
 	SimpleConfigurationValueStateNotifier *m_stateNotifier;
@@ -58,7 +58,7 @@ private:
 	void loadValues();
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_INIT void init();
 
 	void updateState();

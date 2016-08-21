@@ -27,11 +27,11 @@
 
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -71,9 +71,9 @@ void ScreenShot::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void ScreenShot::setInjectedFactory(InjectedFactory *injectedFactory)
+void ScreenShot::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ScreenShot::setScreenshotNotificationService(ScreenshotNotificationService *screenshotNotificationService)
@@ -83,7 +83,7 @@ void ScreenShot::setScreenshotNotificationService(ScreenshotNotificationService 
 
 void ScreenShot::init()
 {
-	MyScreenshotTaker = m_injectedFactory->makeInjected<ScreenshotTaker>(MyChatWidget);
+	MyScreenshotTaker = m_pluginInjectedFactory->makeInjected<ScreenshotTaker>(MyChatWidget);
 	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap, bool)), this, SLOT(screenshotTaken(QPixmap, bool)));
 	connect(MyScreenshotTaker, SIGNAL(screenshotNotTaken()), this, SLOT(screenshotNotTaken()));
 

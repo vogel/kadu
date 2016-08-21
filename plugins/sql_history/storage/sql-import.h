@@ -27,7 +27,7 @@
 class ChatManager;
 class Configuration;
 class ContactManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 
 class QSqlDatabase;
 
@@ -86,7 +86,7 @@ private:
 	QPointer<ChatManager> m_chatManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<ContactManager> m_contactManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	void initTables(QSqlDatabase &database);
 	void initKaduSchemaTable(QSqlDatabase &database);
@@ -114,7 +114,7 @@ private slots:
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 
 };
 

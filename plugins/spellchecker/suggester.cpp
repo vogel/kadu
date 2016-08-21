@@ -22,13 +22,13 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QTextEdit>
 
-#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/custom-input-menu-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "icons/kadu-icon.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include "configuration/spellchecker-configuration.h"
 #include "spellchecker.h"
@@ -55,9 +55,9 @@ void Suggester::setCustomInputMenuManager(CustomInputMenuManager *customInputMen
 	m_customInputMenuManager = customInputMenuManager;
 }
 
-void Suggester::setInjectedFactory(InjectedFactory *injectedFactory)
+void Suggester::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void Suggester::setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration)
@@ -81,7 +81,7 @@ void Suggester::addWordListToMenu(const QTextCursor &textCursor)
 
 	// Add new actions
 	foreach (const QString &listWord, SuggestionWordList)
-		SuggestActions.append(m_injectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeGlobal,
+		SuggestActions.append(m_pluginInjectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeGlobal,
 					"spellcheckerSuggest#" + listWord, this, SLOT(replaceWithSuggest(QAction *)), KaduIcon(), listWord));
 
 	unsigned int actionPriority = 0;

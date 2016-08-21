@@ -22,10 +22,10 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "core/injected-factory.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner.h"
 #include "misc/misc.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include "gadu-account-details.h"
 
@@ -43,14 +43,14 @@ GaduAccountDetails::~GaduAccountDetails()
 	OpenChatRunner = 0;
 }
 
-void GaduAccountDetails::setInjectedFactory(InjectedFactory *injectedFactory)
+void GaduAccountDetails::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void GaduAccountDetails::init()
 {
-	OpenChatRunner = m_injectedFactory->makeInjected<GaduOpenChatWithRunner>(mainData());
+	OpenChatRunner = m_pluginInjectedFactory->makeInjected<GaduOpenChatWithRunner>(mainData());
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 

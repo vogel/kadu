@@ -21,9 +21,9 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
-#include "core/injected-factory.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "misc/misc.h"
+#include "plugin/plugin-injected-factory.h"
 #include "os/generic/system-info.h"
 
 #include "jabber-protocol.h"
@@ -44,9 +44,9 @@ JabberAccountDetails::~JabberAccountDetails()
 	OpenChatRunner = 0;
 }
 
-void JabberAccountDetails::setInjectedFactory(InjectedFactory *injectedFactory)
+void JabberAccountDetails::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void JabberAccountDetails::setSystemInfo(SystemInfo *systemInfo)
@@ -56,7 +56,7 @@ void JabberAccountDetails::setSystemInfo(SystemInfo *systemInfo)
 
 void JabberAccountDetails::init()
 {
-	OpenChatRunner = m_injectedFactory->makeInjected<JabberOpenChatWithRunner>(mainData());
+	OpenChatRunner = m_pluginInjectedFactory->makeInjected<JabberOpenChatWithRunner>(mainData());
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 

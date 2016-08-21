@@ -26,8 +26,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "notification/notification.h"
+#include "plugin/plugin-injected-factory.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -114,14 +114,14 @@ void PCSpeakerNotifier::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void PCSpeakerNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
+void PCSpeakerNotifier::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 NotifierConfigurationWidget * PCSpeakerNotifier::createConfigurationWidget(QWidget *parent)
 {
-	return m_injectedFactory->makeInjected<PCSpeakerConfigurationWidget>(this, parent);
+	return m_pluginInjectedFactory->makeInjected<PCSpeakerConfigurationWidget>(this, parent);
 }
 
 void PCSpeakerNotifier::notify(const Notification &notification)

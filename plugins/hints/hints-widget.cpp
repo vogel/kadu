@@ -22,8 +22,8 @@
 #include "hints-configuration.h"
 #include "hint.h"
 
-#include "core/injected-factory.h"
 #include "misc/memory.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
@@ -53,14 +53,14 @@ void HintsWidget::setHintsConfiguration(HintsConfiguration *hintsConfiguration)
 	m_hintsConfiguration = hintsConfiguration;
 }
 
-void HintsWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+void HintsWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void HintsWidget::addNotification(const Notification &notification)
 {
-	auto hint = m_injectedFactory->makeOwned<Hint>(notification, m_hintsConfiguration, this);
+	auto hint = m_pluginInjectedFactory->makeOwned<Hint>(notification, m_hintsConfiguration, this);
 	hint->setProperty("expiration-time", QDateTime::currentDateTime().addSecs(10));
 	m_layout->addWidget(hint);
 

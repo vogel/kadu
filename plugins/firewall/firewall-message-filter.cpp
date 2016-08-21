@@ -53,7 +53,6 @@ Nowa funkcjonalnosc - Dorregaray
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -67,6 +66,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "message/message-manager.h"
 #include "message/message-storage.h"
 #include "misc/paths-provider.h"
+#include "plugin/plugin-injected-factory.h"
 #include "status/status-container.h"
 #include "debug.h"
 
@@ -123,9 +123,9 @@ void FirewallMessageFilter::setHistory(History *history)
 	m_history = history;
 }
 
-void FirewallMessageFilter::setInjectedFactory(InjectedFactory *injectedFactory)
+void FirewallMessageFilter::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void FirewallMessageFilter::setKaduWindowService(KaduWindowService *kaduWindowService)
@@ -374,7 +374,7 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 	{
 		if (LastContact != sender && Search)
 		{
-			SearchWindow *sd = m_injectedFactory->makeInjected<SearchWindow>(
+			SearchWindow *sd = m_pluginInjectedFactory->makeInjected<SearchWindow>(
 				m_kaduWindowService->kaduWindow(), m_buddyManager->byContact(sender, ActionCreateAndAdd));
 			sd->show();
 			sd->firstSearch();

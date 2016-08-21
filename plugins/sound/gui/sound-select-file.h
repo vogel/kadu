@@ -26,7 +26,7 @@
 class QLabel;
 
 class IconsManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class SelectFile;
 class SoundManager;
 
@@ -48,14 +48,14 @@ signals:
 
 private:
 	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<SoundManager> m_manager;
 	QPointer<QObject> m_sound;
 	SelectFile *m_selectFile;
 
 private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_INIT void init();
 
 	void test();

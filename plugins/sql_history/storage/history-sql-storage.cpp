@@ -45,7 +45,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact-storage.h"
-#include "core/injected-factory.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
@@ -59,6 +58,7 @@
 #include "message/message.h"
 #include "message/sorted-messages.h"
 #include "misc/misc.h"
+#include "plugin/plugin-injected-factory.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "talkable/talkable-converter.h"
@@ -147,9 +147,9 @@ void HistorySqlStorage::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void HistorySqlStorage::setInjectedFactory(InjectedFactory *injectedFactory)
+void HistorySqlStorage::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void HistorySqlStorage::setMessageStorage(MessageStorage *messageStorage)
@@ -184,7 +184,7 @@ void HistorySqlStorage::init()
 	InitializerThread = new QThread();
 
 	// this object cannot have parent as it will be moved to a new thread
-	auto initializer = m_injectedFactory->makeInjected<SqlInitializer>();
+	auto initializer = m_pluginInjectedFactory->makeInjected<SqlInitializer>();
 	initializer->moveToThread(InitializerThread);
 
 	connect(InitializerThread, SIGNAL(started()), initializer, SLOT(initialize()));
@@ -214,7 +214,7 @@ void HistorySqlStorage::ensureProgressWindowReady()
 	if (ImportProgressWindow)
 		return;
 
-	ImportProgressWindow = m_injectedFactory->makeInjected<ProgressWindow>(tr("Preparing history database..."));
+	ImportProgressWindow = m_pluginInjectedFactory->makeInjected<ProgressWindow>(tr("Preparing history database..."));
 	ImportProgressWindow->setWindowTitle(tr("History"));
 	ImportProgressWindow->show();
 }
@@ -253,9 +253,9 @@ void HistorySqlStorage::databaseReady(bool ok)
 	Database.transaction();
 	initQueries();
 
-	AccountsMapping = m_injectedFactory->makeInjected<SqlAccountsMapping>(Database, this);
-	ContactsMapping = m_injectedFactory->makeInjected<SqlContactsMapping>(Database, AccountsMapping, this);
-	ChatsMapping = m_injectedFactory->makeInjected<SqlChatsMapping>(Database, AccountsMapping, ContactsMapping, this);
+	AccountsMapping = m_pluginInjectedFactory->makeInjected<SqlAccountsMapping>(Database, this);
+	ContactsMapping = m_pluginInjectedFactory->makeInjected<SqlContactsMapping>(Database, AccountsMapping, this);
+	ChatsMapping = m_pluginInjectedFactory->makeInjected<SqlChatsMapping>(Database, AccountsMapping, ContactsMapping, this);
 
 	if (InitializerThread)
 		InitializerThread->quit();

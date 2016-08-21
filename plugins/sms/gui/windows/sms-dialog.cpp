@@ -37,13 +37,13 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "talkable/filter/mobile-talkable-filter.h"
 #include "talkable/talkable-converter.h"
 #include "debug.h"
@@ -91,9 +91,9 @@ void SmsDialog::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void SmsDialog::setInjectedFactory(InjectedFactory *injectedFactory)
+void SmsDialog::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SmsDialog::setTalkableConverter(TalkableConverter *talkableConverter)
@@ -135,11 +135,11 @@ void SmsDialog::createGui()
 
 	recipientLayout->addWidget(RecipientEdit);
 
-	RecipientComboBox = m_injectedFactory->makeInjected<SelectTalkableComboBox>(this);
+	RecipientComboBox = m_pluginInjectedFactory->makeInjected<SelectTalkableComboBox>(this);
 	RecipientComboBox->addBeforeAction(new QAction(tr(" - Select recipient - "), RecipientComboBox));
 
-	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(RecipientComboBox);
-	m_injectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
+	auto buddyListModel = m_pluginInjectedFactory->makeInjected<BuddyListModel>(RecipientComboBox);
+	m_pluginInjectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
 
 	RecipientComboBox->setBaseModel(buddyListModel);
 	RecipientComboBox->addFilter(new MobileTalkableFilter(RecipientComboBox));
@@ -306,7 +306,7 @@ void SmsDialog::sendSms()
 	{
 		int gatewayIndex = ProviderComboBox->currentIndex();
 		QString gatewayId = ProviderComboBox->itemData(gatewayIndex, Qt::UserRole).toString();
-		sender = m_injectedFactory->makeInjected<SmsInternalSender>(m_smsGatewayManager, m_smsScriptsManager, RecipientEdit->text(), m_smsGatewayManager->byId(gatewayId), this);
+		sender = m_pluginInjectedFactory->makeInjected<SmsInternalSender>(m_smsGatewayManager, m_smsScriptsManager, RecipientEdit->text(), m_smsGatewayManager->byId(gatewayId), this);
 	}
 	else
 	{
@@ -317,13 +317,13 @@ void SmsDialog::sendSms()
 			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}
-		sender = m_injectedFactory->makeInjected<SmsExternalSender>(RecipientEdit->text(), this);
+		sender = m_pluginInjectedFactory->makeInjected<SmsExternalSender>(RecipientEdit->text(), this);
 	}
 
 	connect(sender, SIGNAL(gatewayAssigned(QString, QString)), this, SLOT(gatewayAssigned(QString, QString)));
 	sender->setSignature(SignatureEdit->text());
 
-	auto window = m_injectedFactory->makeInjected<ProgressWindow>(tr("Sending SMS..."));
+	auto window = m_pluginInjectedFactory->makeInjected<ProgressWindow>(tr("Sending SMS..."));
 	window->setCancellable(true);
 	window->show();
 

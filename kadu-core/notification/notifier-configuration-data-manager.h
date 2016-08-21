@@ -27,6 +27,7 @@
 class ConfigurationWindow;
 class Configuration;
 class InjectedFactory;
+class PluginInjectedFactory;
 
 class KADUAPI NotifierConfigurationDataManager : public ConfigurationWindowDataManager
 {
@@ -53,7 +54,7 @@ public:
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);
 
-	static NotifierConfigurationDataManager * dataManagerForEvent(InjectedFactory *injectedFactory, const QString &eventName);
+	static NotifierConfigurationDataManager * dataManagerForEvent(PluginInjectedFactory *pluginInjectedFactory, const QString &eventName);
 
 	void configurationWindowCreated(ConfigurationWindow *window);
 };

@@ -30,8 +30,8 @@
 #include <QtScriptTools/QScriptEngineDebugger>
 #endif
 
-#include "core/injected-factory.h"
 #include "misc/paths-provider.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include "scripts/network-access-manager-wrapper.h"
 #include "scripts/sms-translator.h"
@@ -47,9 +47,9 @@ SmsScriptsManager::~SmsScriptsManager()
 {
 }
 
-void SmsScriptsManager::setInjectedFactory(InjectedFactory *injectedFactory)
+void SmsScriptsManager::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SmsScriptsManager::setPathsProvider(PathsProvider *pathsProvider)
@@ -60,7 +60,7 @@ void SmsScriptsManager::setPathsProvider(PathsProvider *pathsProvider)
 void SmsScriptsManager::init()
 {
 	Engine = new QScriptEngine(this);
-	Network = m_injectedFactory->makeInjected<NetworkAccessManagerWrapper>(Engine, this);
+	Network = m_pluginInjectedFactory->makeInjected<NetworkAccessManagerWrapper>(Engine, this);
 
 	Engine->globalObject().setProperty("network", Engine->newQObject(Network));
 	Engine->globalObject().setProperty("translator", Engine->newQObject(new SmsTranslator(this)));

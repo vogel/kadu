@@ -35,7 +35,7 @@ class GaduServersManager;
 class IconsManager;
 class IdentitiesComboBox;
 class IdentityManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class ProxyComboBox;
 class UrlOpener;
 
@@ -66,7 +66,7 @@ private:
 	QPointer<GaduServersManager> m_gaduServersManager;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<IdentityManager> m_identityManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<UrlOpener> m_urlOpener;
 
 	GaduAccountDetails *Details;
@@ -113,7 +113,7 @@ private slots:
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_INIT void init();
 

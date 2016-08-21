@@ -29,6 +29,7 @@
 #include "gui/windows/add-buddy-window.h"
 #include "icons/icons-manager.h"
 #include "model/roles.h"
+#include "plugin/plugin-injected-factory.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
 
@@ -38,9 +39,9 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-void SubscriptionWindow::getSubscription(InjectedFactory *injectedFactory, Contact contact, QObject *receiver, const char *slot)
+void SubscriptionWindow::getSubscription(PluginInjectedFactory *pluginInjectedFactory, Contact contact, QObject *receiver, const char *slot)
 {
-	SubscriptionWindow *window = injectedFactory->makeInjected<SubscriptionWindow>(contact);
+	SubscriptionWindow *window = pluginInjectedFactory->makeInjected<SubscriptionWindow>(contact);
 	connect(window, SIGNAL(requestConsidered(Contact, bool)), receiver, slot);
 
 	window->exec();

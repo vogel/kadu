@@ -29,13 +29,13 @@
 #include <QtCore/QPointer>
 #include <injeqt/injector.h>
 
-class InjectedFactory;
+class PluginInjectedFactory;
 
 class GaduAccountDetails : public AccountDetails
 {
 	Q_OBJECT
 
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	PROPERTY_DEC(bool, ReceiveImagesDuringInvisibility)
 	PROPERTY_DEC(bool, ChatImageSizeWarning)
@@ -47,7 +47,7 @@ class GaduAccountDetails : public AccountDetails
 	GaduOpenChatWithRunner *OpenChatRunner;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_INIT void init();
 
 protected:

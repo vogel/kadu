@@ -20,8 +20,8 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "misc/memory.h"
+#include "plugin/plugin-injected-factory.h"
 #include "themes.h"
 
 #include "sound-theme-manager.h"
@@ -40,14 +40,14 @@ void SoundThemeManager::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void SoundThemeManager::setInjectedFactory(InjectedFactory *injectedFactory)
+void SoundThemeManager::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundThemeManager::init()
 {
-	m_themes = m_injectedFactory->makeUnique<Themes>("sounds", "sound.conf");
+	m_themes = m_pluginInjectedFactory->makeUnique<Themes>("sounds", "sound.conf");
 	m_themes->setPaths(m_configuration->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
 	auto soundThemes = themes()->themes();

@@ -21,6 +21,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
 #include "gui/windows/configuration-window.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include "notifier-configuration-data-manager.h"
 
@@ -57,12 +58,12 @@ QVariant NotifierConfigurationDataManager::readEntry(const QString &section, con
 	return m_configuration->deprecatedApi()->readEntry(section, QString("Event_") + EventName + name);
 }
 
-NotifierConfigurationDataManager * NotifierConfigurationDataManager::dataManagerForEvent(InjectedFactory *injectedFactory, const QString &eventName)
+NotifierConfigurationDataManager * NotifierConfigurationDataManager::dataManagerForEvent(PluginInjectedFactory *pluginInjectedFactory, const QString &eventName)
 {
 	if (DataManagers.contains(eventName))
 		return DataManagers.value(eventName);
 	else
-		return DataManagers[eventName] = injectedFactory->makeInjected<NotifierConfigurationDataManager>(eventName);
+		return DataManagers[eventName] = pluginInjectedFactory->makeInjected<NotifierConfigurationDataManager>(eventName);
 }
 
 void NotifierConfigurationDataManager::dataManagerDestroyed(const QString &eventName)

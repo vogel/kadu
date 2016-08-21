@@ -24,8 +24,8 @@
 #include "services/jabber-error-service.h"
 #include "jid.h"
 
-#include "core/injected-factory.h"
 #include "misc/memory.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppRegisterIq.h>
@@ -53,9 +53,9 @@ void JabberRegisterAccount::setErrorService(JabberErrorService *errorService)
 	m_errorService = errorService;
 }
 
-void JabberRegisterAccount::setInjectedFactory(InjectedFactory *injectedFactory)
+void JabberRegisterAccount::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 Jid JabberRegisterAccount::jid() const
@@ -114,7 +114,7 @@ void JabberRegisterAccount::start()
 		m_state = State::Connecting;
 	};
 
-	m_injectedFactory->makeInjected<JabberSslHandler>(m_client, connectToServer, [&](){ handleError(tr("SSL certificate rejected")); });
+	m_pluginInjectedFactory->makeInjected<JabberSslHandler>(m_client, connectToServer, [&](){ handleError(tr("SSL certificate rejected")); });
 	connectToServer();
 }
 

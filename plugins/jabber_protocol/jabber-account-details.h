@@ -29,7 +29,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class InjectedFactory;
+class PluginInjectedFactory;
 class SystemInfo;
 
 class JabberAccountDetails : public AccountDetails
@@ -55,7 +55,7 @@ public:
 	};
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<SystemInfo> m_systemInfo;
 
 	PROPERTY_DEC(QString, Resource)
@@ -75,7 +75,7 @@ private:
 	PROPERTY_DEC(bool, PublishSystemInfo)
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
 	INJEQT_INIT void init();
 

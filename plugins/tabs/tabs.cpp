@@ -36,7 +36,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/injected-factory.h"
 #include "core/session-service.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
@@ -54,6 +53,7 @@
 #include "icons/kadu-icon.h"
 #include "message/unread-message-repository.h"
 #include "os/generic/window-geometry-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
@@ -127,9 +127,9 @@ void TabsManager::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void TabsManager::setInjectedFactory(InjectedFactory *injectedFactory)
+void TabsManager::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void TabsManager::setMenuInventory(MenuInventory *menuInventory)
@@ -152,7 +152,7 @@ void TabsManager::init()
 
 	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(onDestroyingChat(ChatWidget *)));
 
-	TabDialog = m_injectedFactory->makeInjected<TabWidget>(this);
+	TabDialog = m_pluginInjectedFactory->makeInjected<TabWidget>(this);
 	TabDialog->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TabDialog, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 	connect(TabDialog, SIGNAL(contextMenu(QWidget *, const QPoint &)),
@@ -167,7 +167,7 @@ void TabsManager::init()
 	// pozycja tabów
 	configurationUpdated();
 
-	OpenInNewTabActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
+	OpenInNewTabActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
 		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false,
@@ -179,7 +179,7 @@ void TabsManager::init()
 		->addAction(OpenInNewTabActionDescription, KaduMenu::SectionChat, 20)
 		->update();
 
-	AttachToTabsActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
+	AttachToTabsActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
 		KaduIcon("kadu_icons/tab-detach"), tr("Attach Chat to Tabs"), true
@@ -254,7 +254,7 @@ ChatWidget * TabsManager::addChat(Chat chat, OpenChatActivation activation)
 {
 	kdebugf();
 
-	auto chatWidget = m_injectedFactory->makeInjected<ChatWidgetImpl>(chat, nullptr);
+	auto chatWidget = m_pluginInjectedFactory->makeInjected<ChatWidgetImpl>(chat, nullptr);
 	setConfiguration(chatWidget);
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true))

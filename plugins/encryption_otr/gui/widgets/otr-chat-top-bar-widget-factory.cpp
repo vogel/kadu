@@ -20,7 +20,7 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
-#include "core/injected-factory.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include "gui/widgets/otr-chat-top-bar-widget.h"
 #include "gui/windows/otr-peer-identity-verification-window-repository.h"
@@ -42,9 +42,9 @@ void OtrChatTopBarWidgetFactory::setChatTypeManager(ChatTypeManager *chatTypeMan
 	m_chatTypeManager = chatTypeManager;
 }
 
-void OtrChatTopBarWidgetFactory::setInjectedFactory(InjectedFactory *injectedFactory)
+void OtrChatTopBarWidgetFactory::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void OtrChatTopBarWidgetFactory::setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository)
@@ -68,7 +68,7 @@ QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *pa
 	if (chatType->name() != "Contact")
 		return 0;
 
-	auto result = m_injectedFactory->makeInjected<OtrChatTopBarWidget>(chat.contacts().toContact(), parent);
+	auto result = m_pluginInjectedFactory->makeInjected<OtrChatTopBarWidget>(chat.contacts().toContact(), parent);
 	result->setTrustLevelService(TrustLevelService.data());
 
 	if (SessionService)

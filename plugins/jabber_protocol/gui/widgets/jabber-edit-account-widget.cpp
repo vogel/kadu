@@ -29,7 +29,6 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/account-configuration-widget-tab-adapter.h"
@@ -38,6 +37,7 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "protocols/services/avatar-service.h"
 
 #include <QtWidgets/QApplication>
@@ -81,9 +81,9 @@ void JabberEditAccountWidget::setIdentityManager(IdentityManager *identityManage
 	m_identityManager = identityManager;
 }
 
-void JabberEditAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+void JabberEditAccountWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void JabberEditAccountWidget::init()
@@ -158,7 +158,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	formLayout->addRow(0, changePasswordLabel);
 	connect(changePasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(changePasssword()));
 
-	Identities = m_injectedFactory->makeInjected<IdentitiesComboBox>(this);
+	Identities = m_pluginInjectedFactory->makeInjected<IdentitiesComboBox>(this);
 	connect(Identities, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Account Identity") + ':', Identities);
 
@@ -168,7 +168,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	formLayout->addRow(0, infoLabel);
 
-	AccountAvatarWidget *avatarWidget = m_injectedFactory->makeInjected<AccountAvatarWidget>(account(), this);
+	AccountAvatarWidget *avatarWidget = m_pluginInjectedFactory->makeInjected<AccountAvatarWidget>(account(), this);
 	layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);
 
 	tabWidget->addTab(generalTab, tr("General"));
@@ -176,7 +176,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 void JabberEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
-	PersonalInfoWidget = m_injectedFactory->makeInjected<JabberPersonalInfoWidget>(account(), tabWidget);
+	PersonalInfoWidget = m_pluginInjectedFactory->makeInjected<JabberPersonalInfoWidget>(account(), tabWidget);
 	connect(PersonalInfoWidget, SIGNAL(dataChanged()), this, SLOT(dataChanged()));
 	tabWidget->addTab(PersonalInfoWidget, tr("Personal Information"));
 }
@@ -273,7 +273,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connectionBoxLayout->addWidget(RequireDataTransferProxy);
 
 	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), connection);
-	ProxyCombo = m_injectedFactory->makeInjected<ProxyComboBox>(connection);
+	ProxyCombo = m_pluginInjectedFactory->makeInjected<ProxyComboBox>(connection);
 	ProxyCombo->enableDefaultProxyAction();
 	connect(ProxyCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 
@@ -526,7 +526,7 @@ void JabberEditAccountWidget::changePasssword()
 		return;
 	}
 
-	auto changePasswordWindow = m_injectedFactory->makeInjected<JabberChangePasswordWindow>(protocol->changePasswordService(), account());
+	auto changePasswordWindow = m_pluginInjectedFactory->makeInjected<JabberChangePasswordWindow>(protocol->changePasswordService(), account());
 	connect(changePasswordWindow, SIGNAL(passwordChanged(const QString &)), this, SLOT(passwordChanged(const QString &)));
 	changePasswordWindow->show();
 }

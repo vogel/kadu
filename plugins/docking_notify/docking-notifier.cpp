@@ -27,13 +27,13 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "notification/notification-configuration.h"
 #include "parser/parser.h"
+#include "plugin/plugin-injected-factory.h"
 #include "debug.h"
 
 #include "plugins/docking/docking-plugin-object.h"
@@ -71,9 +71,9 @@ void DockingNotifier::setDocking(Docking *docking)
 	m_docking = docking;
 }
 
-void DockingNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
+void DockingNotifier::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void DockingNotifier::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
@@ -143,7 +143,7 @@ void DockingNotifier::messageClicked()
 
 NotifierConfigurationWidget * DockingNotifier::createConfigurationWidget(QWidget *parent)
 {
-	return m_injectedFactory->makeInjected<DockingNotifyConfigurationWidget>(parent);
+	return m_pluginInjectedFactory->makeInjected<DockingNotifyConfigurationWidget>(parent);
 }
 
 void DockingNotifier::createDefaultConfiguration()

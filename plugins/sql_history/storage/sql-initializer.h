@@ -27,7 +27,7 @@
 #include <injeqt/injeqt.h>
 
 class Configuration;
-class InjectedFactory;
+class PluginInjectedFactory;
 class PathsProvider;
 
 class QSqlError;
@@ -37,7 +37,7 @@ class SqlInitializer : public QObject
 	Q_OBJECT
 
 	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<PathsProvider> m_pathsProvider;
 
 	QSqlDatabase Database;
@@ -51,7 +51,7 @@ class SqlInitializer : public QObject
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 public:

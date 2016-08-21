@@ -41,7 +41,7 @@ class ContactStorage;
 class FormattedStringFactory;
 class HistoryQuery;
 class IconsManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class MessageStorage;
 class ProgressWindow;
 class StatusTypeManager;
@@ -68,7 +68,7 @@ class HistorySqlStorage : public HistoryStorage
 	QPointer<ContactStorage> m_contactStorage;
 	QPointer<FormattedStringFactory> m_formattedStringFactory;
 	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MessageStorage> m_messageStorage;
 	QPointer<StatusTypeManager> m_statusTypeManager;
 	QPointer<TalkableConverter> m_talkableConverter;
@@ -133,7 +133,7 @@ private slots:
 	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);

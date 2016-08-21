@@ -25,12 +25,12 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
+#include "plugin/plugin-injected-factory.h"
 #include "debug.h"
 #include "themes.h"
 
@@ -43,9 +43,9 @@ SoundConfigurationUiHandler::~SoundConfigurationUiHandler()
 {
 }
 
-void SoundConfigurationUiHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+void SoundConfigurationUiHandler::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundConfigurationUiHandler::setSoundManager(SoundManager *soundManager)
@@ -114,7 +114,7 @@ void SoundConfigurationUiHandler::mainConfigurationWindowApplied()
 
 NotifierConfigurationWidget * SoundConfigurationUiHandler::createConfigurationWidget(QWidget *parent)
 {
-	m_configurationWidget = m_injectedFactory->makeInjected<SoundConfigurationWidget>(m_soundManager, parent);
+	m_configurationWidget = m_pluginInjectedFactory->makeInjected<SoundConfigurationWidget>(m_soundManager, parent);
 	connect(m_configurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
 
 	connectWidgets();

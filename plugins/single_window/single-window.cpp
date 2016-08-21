@@ -18,7 +18,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
 #include "core/application.h"
-#include "core/injected-factory.h"
 #include "core/session-service.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/configuration/chat-configuration-holder.h"
@@ -35,6 +34,7 @@
 #include "icons/kadu-icon.h"
 #include "message/unread-message-repository.h"
 #include "os/generic/window-geometry-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "provider/default-provider.h"
 #include "activate.h"
 #include "debug.h"
@@ -148,9 +148,9 @@ void SingleWindow::setFileTransferManager(FileTransferManager *fileTransferManag
 	m_fileTransferManager = fileTransferManager;
 }
 
-void SingleWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+void SingleWindow::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SingleWindow::setKaduWindowService(KaduWindowService *kaduWindowService)
@@ -267,7 +267,7 @@ ChatWidget * SingleWindow::addChat(Chat chat, OpenChatActivation activation)
 	if (!chat)
 		return nullptr;
 
-	auto chatWidget = m_injectedFactory->makeInjected<ChatWidgetImpl>(chat, m_tabs);
+	auto chatWidget = m_pluginInjectedFactory->makeInjected<ChatWidgetImpl>(chat, m_tabs);
 	m_title->addChatWidget(chatWidget);
 	setConfiguration(chatWidget);
 

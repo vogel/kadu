@@ -27,7 +27,7 @@
 
 class ConfigurationWindow;
 class Configuration;
-class InjectedFactory;
+class PluginInjectedFactory;
 class PathsProvider;
 
 class DockingNotifyConfigurationWidget : public NotifierConfigurationWidget
@@ -35,14 +35,14 @@ class DockingNotifyConfigurationWidget : public NotifierConfigurationWidget
 	Q_OBJECT
 
 	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<PathsProvider> m_pathsProvider;
 
 	QString currentNotificationEvent;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 	void showConfigurationWindow();

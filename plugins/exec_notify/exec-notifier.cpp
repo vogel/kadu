@@ -28,11 +28,11 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/injected-factory.h"
 #include "notification/notification-configuration.h"
 #include "notification/notification.h"
 #include "notification/notifier-repository.h"
 #include "parser/parser.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include <QtCore/QProcess>
 
@@ -51,9 +51,9 @@ void ExecNotifier::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void ExecNotifier::setInjectedFactory(InjectedFactory *injectedFactory)
+void ExecNotifier::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ExecNotifier::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
@@ -215,7 +215,7 @@ void ExecNotifier::run(const QStringList &args)
 
 NotifierConfigurationWidget * ExecNotifier::createConfigurationWidget(QWidget *parent)
 {
-	return m_injectedFactory->makeInjected<ExecConfigurationWidget>(parent);
+	return m_pluginInjectedFactory->makeInjected<ExecConfigurationWidget>(parent);
 }
 
 #include "moc_exec-notifier.cpp"

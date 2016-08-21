@@ -24,9 +24,9 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "icons/kadu-icon.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
@@ -46,14 +46,14 @@ void SoundConfigurationWidget::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void SoundConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+void SoundConfigurationWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundConfigurationWidget::init()
 {
-	m_soundSelectFile = m_injectedFactory->makeInjected<SoundSelectFile>(m_manager, this);
+	m_soundSelectFile = m_pluginInjectedFactory->makeInjected<SoundSelectFile>(m_manager, this);
 	connect(m_soundSelectFile, SIGNAL(fileChanged()), this, SIGNAL(soundFileEdited()));
 
 	auto layout = new QHBoxLayout{this};

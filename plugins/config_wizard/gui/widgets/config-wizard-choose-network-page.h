@@ -27,7 +27,7 @@
 
 class QRadioButton;
 
-class InjectedFactory;
+class PluginInjectedFactory;
 class ProtocolFactory;
 class ProtocolsComboBox;
 
@@ -43,7 +43,7 @@ public slots:
 	void protocolChanged();
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	ProtocolFactory *LastProtocol;
 	ProtocolsComboBox *SelectProtocol;
@@ -55,7 +55,7 @@ private:
 	void createGui();
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_INIT void init();
 
 };

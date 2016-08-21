@@ -11,7 +11,7 @@
 class ChatWidgetManager;
 class Configuration;
 class Docking;
-class InjectedFactory;
+class PluginInjectedFactory;
 class NormalizedHtmlString;
 class NotificationConfiguration;
 class Parser;
@@ -39,7 +39,7 @@ private:
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
 	QPointer<Docking> m_docking;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<NotificationConfiguration> m_notificationConfiguration;
 	QPointer<Parser> m_parser;
 
@@ -51,7 +51,7 @@ private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDocking(Docking *docking);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_INIT void init();

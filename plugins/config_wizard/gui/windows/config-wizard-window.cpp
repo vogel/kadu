@@ -20,7 +20,7 @@
 
 #include <QtCore/QVariant>
 
-#include "core/injected-factory.h"
+#include "plugin/plugin-injected-factory.h"
 #include "debug.h"
 
 #include "gui/widgets/config-wizard-choose-network-page.h"
@@ -48,9 +48,9 @@ ConfigWizardWindow::~ConfigWizardWindow()
 	kdebugf2();
 }
 
-void ConfigWizardWindow::setInjectedFactory(InjectedFactory *injectedFactory)
+void ConfigWizardWindow::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ConfigWizardWindow::setProtocolsManager(ProtocolsManager *protocolsManager)
@@ -74,10 +74,10 @@ void ConfigWizardWindow::init()
 	#endif
 	setMinimumSize(500, 500);
 
-	setPage(ProfilePage, m_injectedFactory->makeInjected<ConfigWizardProfilePage>(this));
-	setPage(ChooseNetworkPage, m_injectedFactory->makeInjected<ConfigWizardChooseNetworkPage>(this));
-	setPage(SetUpAccountPage, m_injectedFactory->makeInjected<ConfigWizardSetUpAccountPage>(this));
-	setPage(CompletedPage, m_injectedFactory->makeInjected<ConfigWizardCompletedPage>(this));
+	setPage(ProfilePage, m_pluginInjectedFactory->makeInjected<ConfigWizardProfilePage>(this));
+	setPage(ChooseNetworkPage, m_pluginInjectedFactory->makeInjected<ConfigWizardChooseNetworkPage>(this));
+	setPage(SetUpAccountPage, m_pluginInjectedFactory->makeInjected<ConfigWizardSetUpAccountPage>(this));
+	setPage(CompletedPage, m_pluginInjectedFactory->makeInjected<ConfigWizardCompletedPage>(this));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
 	connect(this, SIGNAL(rejected()), this, SLOT(rejectedSlot()));

@@ -31,7 +31,7 @@ class ActionDescription;
 class Actions;
 class Action;
 class Contact;
-class InjectedFactory;
+class PluginInjectedFactory;
 class Myself;
 class SubscriptionService;
 
@@ -50,7 +50,7 @@ public:
 
 private:
 	QPointer<Actions> m_actions;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<Myself> m_myself;
 
 	ActionDescription *ResendSubscription;
@@ -62,7 +62,7 @@ private:
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_INIT void init();
 

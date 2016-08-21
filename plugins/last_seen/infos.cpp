@@ -27,11 +27,11 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
-#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "misc/paths-provider.h"
+#include "plugin/plugin-injected-factory.h"
 #include "debug.h"
 #include "exports.h"
 
@@ -63,9 +63,9 @@ void Infos::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
-void Infos::setInjectedFactory(InjectedFactory *injectedFactory)
+void Infos::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void Infos::setMenuInventory(MenuInventory *menuInventory)
@@ -129,7 +129,7 @@ void Infos::init()
 	}
 
 	// Main menu entry
-	lastSeenActionDescription = m_injectedFactory->makeInjected<ActionDescription>(
+	lastSeenActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(
 		this, ActionDescription::TypeMainMenu, "lastSeenAction",
 		this, SLOT(onShowInfos()),
 		KaduIcon(), qApp->translate("Infos", "&Show infos about buddies")
@@ -179,7 +179,7 @@ void Infos::onShowInfos()
 {
 	kdebugf();
 	updateTimes();
-	InfosDialog *infosDialog = m_injectedFactory->makeInjected<InfosDialog>(lastSeen);
+	InfosDialog *infosDialog = m_pluginInjectedFactory->makeInjected<InfosDialog>(lastSeen);
 	infosDialog->show();
 	kdebugf2();
 }

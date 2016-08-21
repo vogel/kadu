@@ -37,7 +37,7 @@ class AccountManager;
 class ActionDescription;
 class Actions;
 class ContactManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class MenuInventory;
 class PathsProvider;
 
@@ -52,7 +52,7 @@ class Infos : public QObject, AccountsAwareObject
 	QPointer<AccountManager> m_accountManager;
 	QPointer<Actions> m_actions;
 	QPointer<ContactManager> m_contactManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<PathsProvider> m_pathsProvider;
 
@@ -60,7 +60,7 @@ private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();

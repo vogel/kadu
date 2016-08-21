@@ -23,9 +23,9 @@
 #include "configuration/deprecated-configuration-api.h"
 
 #include "configuration/emoticon-configuration.h"
-#include "core/injected-factory.h"
 #include "expander/emoticon-expander-dom-visitor-provider.h"
 #include "gui/insert-emoticon-action.h"
+#include "plugin/plugin-injected-factory.h"
 #include "theme/emoticon-theme-manager.h"
 #include "theme/gadu-emoticon-theme-loader.h"
 
@@ -45,9 +45,9 @@ void EmoticonConfigurator::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void EmoticonConfigurator::setInjectedFactory(InjectedFactory *injectedFactory)
+void EmoticonConfigurator::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void EmoticonConfigurator::setInsertAction(InsertEmoticonAction *insertAction)
@@ -67,7 +67,7 @@ void EmoticonConfigurator::configure()
 
 void EmoticonConfigurator::init()
 {
-	ThemeManager.reset(m_injectedFactory->makeInjected<EmoticonThemeManager>());
+	ThemeManager.reset(m_pluginInjectedFactory->makeInjected<EmoticonThemeManager>());
 
 	createDefaultConfiguration();
 }

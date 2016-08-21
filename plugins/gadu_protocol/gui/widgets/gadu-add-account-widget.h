@@ -27,7 +27,7 @@ class AccountManager;
 class AccountStorage;
 class IdentitiesComboBox;
 class IdentityManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class UrlOpener;
 
 class QCheckBox;
@@ -51,7 +51,7 @@ private:
 	QPointer<AccountManager> m_accountManager;
 	QPointer<AccountStorage> m_accountStorage;
 	QPointer<IdentityManager> m_identityManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<UrlOpener> m_urlOpener;
 
 	bool m_showButtons;
@@ -68,7 +68,7 @@ private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_INIT void init();
 

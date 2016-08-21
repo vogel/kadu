@@ -35,7 +35,7 @@
 #include <injeqt/injeqt.h>
 #include <qxmpp/QXmppClient.h>
 
-class InjectedFactory;class JabberChangePasswordService;
+class PluginInjectedFactory;class JabberChangePasswordService;
 class JabberErrorService;
 class JabberPresenceService;
 class JabberRegisterExtension;

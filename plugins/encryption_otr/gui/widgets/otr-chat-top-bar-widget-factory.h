@@ -26,7 +26,7 @@
 #include <injeqt/injeqt.h>
 
 class ChatTypeManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class OtrChatTopBarWidget;
 class OtrPeerIdentityVerificationWindowRepository;
 class OtrSessionService;
@@ -44,7 +44,7 @@ public:
 
 private:
 	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
 	QPointer<OtrSessionService> SessionService;
 	QPointer<OtrTrustLevelService> TrustLevelService;
@@ -52,7 +52,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository);
 	INJEQT_SET void setSessionService(OtrSessionService *sessionService);
 	INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);

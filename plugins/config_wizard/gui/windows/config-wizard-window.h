@@ -25,7 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class ConfigWizardPage;
-class InjectedFactory;
+class PluginInjectedFactory;
 class ProtocolsManager;
 
 /**
@@ -36,7 +36,7 @@ class ConfigWizardWindow : public QWizard
 {
 	Q_OBJECT
 
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<ProtocolsManager> m_protocolsManager;
 
 	QList<ConfigWizardPage *> ConfigWizardPages;
@@ -46,7 +46,7 @@ class ConfigWizardWindow : public QWizard
 	bool goToAccountSetUp() const;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
 	INJEQT_INIT void init();
 

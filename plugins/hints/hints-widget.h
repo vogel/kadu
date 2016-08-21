@@ -26,7 +26,7 @@
 
 class HintsConfiguration;
 class Hint;
-class InjectedFactory;
+class PluginInjectedFactory;
 struct Notification;
 
 class QVBoxLayout;
@@ -51,7 +51,7 @@ protected:
 
 private:
 	QPointer<HintsConfiguration> m_hintsConfiguration;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	QTimer m_timer;
 	QPointer<QVBoxLayout> m_layout;
@@ -61,7 +61,7 @@ private:
 	void updateTimer();
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
 
 	void acceptHint(Hint *hint);

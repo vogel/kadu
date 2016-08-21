@@ -26,13 +26,13 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "os/generic/url-opener.h"
+#include "plugin/plugin-injected-factory.h"
 #include "protocols/protocols-manager.h"
 
 #include <QtWidgets/QApplication>
@@ -71,9 +71,9 @@ void GaduAddAccountWidget::setIdentityManager(IdentityManager *identityManager)
 	m_identityManager = identityManager;
 }
 
-void GaduAddAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+void GaduAddAccountWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void GaduAddAccountWidget::setUrlOpener(UrlOpener *urlOpener)
@@ -128,7 +128,7 @@ void GaduAddAccountWidget::createGui(bool showButtons)
 	layout->addRow(0, remindPasswordLabel);
 	connect(remindPasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(remindPassword()));
 
-	Identity = m_injectedFactory->makeInjected<IdentitiesComboBox>(this);
+	Identity = m_pluginInjectedFactory->makeInjected<IdentitiesComboBox>(this);
 	connect(Identity, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', Identity);
 

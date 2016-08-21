@@ -24,7 +24,7 @@
 #include <injeqt/injeqt.h>
 
 class FileTransferManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class MainWindowRepository;
 class StatusContainerManager;
 
@@ -38,13 +38,13 @@ public:
 
 private:
 	QPointer<FileTransferManager> m_fileTransferManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MainWindowRepository> m_mainWindowRepository;
 	QPointer<StatusContainerManager> m_statusContainerManager;
 
 private slots:
 	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMainWindowRepository(MainWindowRepository *mainWindowRepository);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_INIT void init();

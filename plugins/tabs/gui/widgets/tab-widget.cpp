@@ -30,7 +30,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
-#include "core/injected-factory.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -43,6 +42,7 @@
 #include "icons/kadu-icon.h"
 #include "message/unread-message-repository.h"
 #include "misc/misc.h"
+#include "plugin/plugin-injected-factory.h"
 #include "activate.h"
 
 #include "tab-bar.h"
@@ -78,9 +78,9 @@ void TabWidget::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void TabWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+void TabWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void TabWidget::setOpenChatWithService(OpenChatWithService *openChatWithService)
@@ -125,7 +125,7 @@ void TabWidget::init()
 	connect(OpenRecentChatButton, SIGNAL(clicked()), SLOT(openRecentChatsMenu()));
 
 	//menu for recent chats
-	RecentChatsMenuWidget = m_injectedFactory->makeInjected<RecentChatsMenu>(OpenRecentChatButton);
+	RecentChatsMenuWidget = m_pluginInjectedFactory->makeInjected<RecentChatsMenu>(OpenRecentChatButton);
 	connect(RecentChatsMenuWidget, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChat(QAction *)));
 	connect(RecentChatsMenuWidget, SIGNAL(chatsListAvailable(bool)), OpenRecentChatButton, SLOT(setEnabled(bool)));
 

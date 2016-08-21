@@ -29,7 +29,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
@@ -45,6 +44,7 @@
 #include "notification/notification-event-repository.h"
 #include "notification/notification.h"
 #include "notification/notification-event.h"
+#include "plugin/plugin-injected-factory.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
 
@@ -112,9 +112,9 @@ void MediaPlayer::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void MediaPlayer::setInjectedFactory(InjectedFactory *injectedFactory)
+void MediaPlayer::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void MediaPlayer::setMediaplayerNotificationService(MediaplayerNotificationService *mediaplayerNotificationService)
@@ -153,7 +153,7 @@ void MediaPlayer::init()
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
 
-	enableMediaPlayerStatuses = m_injectedFactory->makeInjected<ActionDescription>(
+	enableMediaPlayerStatuses = m_pluginInjectedFactory->makeInjected<ActionDescription>(
 		this, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
 		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Enable MediaPlayer Statuses"), true
@@ -161,32 +161,32 @@ void MediaPlayer::init()
 
 	m_actions->blockSignals();
 
-	mediaPlayerMenu = m_injectedFactory->makeInjected<ActionDescription>(
+	mediaPlayerMenu = m_pluginInjectedFactory->makeInjected<ActionDescription>(
 		this, ActionDescription::TypeChat, "mediaplayer_button",
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
 		KaduIcon("external_modules/mediaplayer"), tr("MediaPlayer"), false
 	);
-	playAction = m_injectedFactory->makeInjected<ActionDescription>(
+	playAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
 		this, ActionDescription::TypeChat, "mediaplayer_play",
 		this, SLOT(playPause()),
 		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Play"), false
 	);
-	stopAction = m_injectedFactory->makeInjected<ActionDescription>(
+	stopAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
 		this, ActionDescription::TypeChat, "mediaplayer_stop",
 		this, SLOT(stop()),
 		KaduIcon("external_modules/mediaplayer-media-playback-stop"), tr("Stop"), false
 	);
-	prevAction = m_injectedFactory->makeInjected<ActionDescription>(
+	prevAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
 		this, ActionDescription::TypeChat, "mediaplayer_prev",
 		this, SLOT(prevTrack()),
 		KaduIcon("external_modules/mediaplayer-media-skip-backward"), tr("Previous Track"), false
 	);
-	nextAction = m_injectedFactory->makeInjected<ActionDescription>(
+	nextAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
 		this, ActionDescription::TypeChat, "mediaplayer_next",
 		this, SLOT(nextTrack()),
 		KaduIcon("external_modules/mediaplayer-media-skip-forward"), tr("Next Track"), false
 	);
-	volUpAction = m_injectedFactory->makeInjected<ActionDescription>(
+	volUpAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
 		this, ActionDescription::TypeChat, "mediaplayer_vol_up",
 		this, SLOT(incrVolume()),
 		KaduIcon("audio-volume-high"), tr("Volume Up"), false
@@ -195,7 +195,7 @@ void MediaPlayer::init()
 	// The last ActionDescription will send actionLoaded() signal.
 	m_actions->unblockSignals();
 
-	volDownAction = m_injectedFactory->makeInjected<ActionDescription>(
+	volDownAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
 		this, ActionDescription::TypeChat, "mediaplayer_vol_down",
 		this, SLOT(decrVolume()),
 		KaduIcon("audio-volume-low"), tr("Volume Down"), false

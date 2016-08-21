@@ -25,7 +25,7 @@
 #include <memory>
 
 class Configuration;
-class InjectedFactory;
+class PluginInjectedFactory;
 class Themes;
 
 class SoundThemeManager : public QObject
@@ -42,13 +42,13 @@ public:
 
 private:
 	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	std::unique_ptr<Themes> m_themes;
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_INIT void init();
 
 };

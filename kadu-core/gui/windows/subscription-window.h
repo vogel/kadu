@@ -36,13 +36,14 @@
 class BuddyManager;
 class ContactManager;
 class InjectedFactory;
+class PluginInjectedFactory;
 
 class KADUAPI SubscriptionWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
 public:
-	static void getSubscription(InjectedFactory *injectedFactory, Contact contact, QObject* receiver, const char* slot);
+	static void getSubscription(PluginInjectedFactory *pluginInjectedFactory, Contact contact, QObject* receiver, const char* slot);
 
 	explicit SubscriptionWindow(Contact contact, QWidget* parent = nullptr);
 	virtual ~SubscriptionWindow();

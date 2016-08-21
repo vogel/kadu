@@ -32,7 +32,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/injected-factory.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include "storage/sql-accounts-mapping.h"
 #include "storage/sql-chats-mapping.h"
@@ -94,9 +94,9 @@ void SqlImport::setContactManager(ContactManager *contactManager)
 	m_contactManager = contactManager;
 }
 
-void SqlImport::setInjectedFactory(InjectedFactory *injectedFactory)
+void SqlImport::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SqlImport::initTables(QSqlDatabase &database)
@@ -314,7 +314,7 @@ void SqlImport::importAccountsToV4(QSqlDatabase &database)
 	// this is enough
 	// SqlAccountsMapping fills database in constructor
 	// maybe this is not best API, but this is how it works
-	auto mapping = m_injectedFactory->makeUnique<SqlAccountsMapping>(database);
+	auto mapping = m_pluginInjectedFactory->makeUnique<SqlAccountsMapping>(database);
 }
 
 void SqlImport::importContactsToV4(QSqlDatabase &database)
@@ -362,8 +362,8 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 	query.setForwardOnly(true);
 	query.exec();
 
-	auto accounsMapping = m_injectedFactory->makeUnique<SqlAccountsMapping>(database); 
-	auto contactsMapping = m_injectedFactory->makeUnique<SqlContactsMapping>(database, accounsMapping.get());
+	auto accounsMapping = m_pluginInjectedFactory->makeUnique<SqlAccountsMapping>(database); 
+	auto contactsMapping = m_pluginInjectedFactory->makeUnique<SqlContactsMapping>(database, accounsMapping.get());
 
 	// force creating contacts table entries for all contacts used in statuses
 	while (query.next())
@@ -381,8 +381,8 @@ void SqlImport::importContactsToV4StatusesTable(QSqlDatabase &database)
 	QSqlQuery query(database);
 	database.transaction();
 
-	auto accounsMapping = m_injectedFactory->makeUnique<SqlAccountsMapping>(database);
-	auto contactsMapping = m_injectedFactory->makeUnique<SqlContactsMapping>(database, accounsMapping.get());
+	auto accounsMapping = m_pluginInjectedFactory->makeUnique<SqlAccountsMapping>(database);
+	auto contactsMapping = m_pluginInjectedFactory->makeUnique<SqlContactsMapping>(database, accounsMapping.get());
 
 	QMap<int, Contact> mapping = contactsMapping->mapping();
 	QMap<int, Contact>::const_iterator i = mapping.constBegin();
@@ -426,9 +426,9 @@ void SqlImport::importChatsToV4(QSqlDatabase &database)
 	query.prepare("UPDATE kadu_chats SET account_id = :account_id, chat = :chat WHERE id = :id");
 	query.setForwardOnly(false);
 
-	auto accountsMapping = m_injectedFactory->makeUnique<SqlAccountsMapping>(database);
-	auto contactsMapping = m_injectedFactory->makeUnique<SqlContactsMapping>(database, accountsMapping.get());
-	auto chatsMapping = m_injectedFactory->makeUnique<SqlChatsMapping>(database, accountsMapping.get(), contactsMapping.get());
+	auto accountsMapping = m_pluginInjectedFactory->makeUnique<SqlAccountsMapping>(database);
+	auto contactsMapping = m_pluginInjectedFactory->makeUnique<SqlContactsMapping>(database, accountsMapping.get());
+	auto chatsMapping = m_pluginInjectedFactory->makeUnique<SqlChatsMapping>(database, accountsMapping.get(), contactsMapping.get());
 
 	QList<int> ids = chats.keys();
 	foreach (int id, ids)

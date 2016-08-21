@@ -22,9 +22,9 @@
 #include "gui/sound-mute-action.h"
 #include "sound-manager.h"
 
-#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
+#include "plugin/plugin-injected-factory.h"
 
 SoundActions::SoundActions(QObject *parent) :
 		QObject{parent}
@@ -40,9 +40,9 @@ void SoundActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
-void SoundActions::setInjectedFactory(InjectedFactory *injectedFactory)
+void SoundActions::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundActions::setMenuInventory(MenuInventory *menuInventory)
@@ -57,7 +57,7 @@ void SoundActions::setSoundManager(SoundManager *soundManager)
 
 void SoundActions::init()
 {
-	m_soundMuteAction = m_injectedFactory->makeInjected<SoundMuteAction>(this);
+	m_soundMuteAction = m_pluginInjectedFactory->makeInjected<SoundMuteAction>(this);
 	m_actions->insert(m_soundMuteAction);
 
 	m_menuInventory

@@ -25,12 +25,12 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
+#include "plugin/plugin-injected-factory.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -56,9 +56,9 @@ void ConfigWizardActions::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void ConfigWizardActions::setInjectedFactory(InjectedFactory *injectedFactory)
+void ConfigWizardActions::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
@@ -68,7 +68,7 @@ void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
 
 void ConfigWizardActions::init()
 {
-	m_showConfigWizardActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeMainMenu,
+	m_showConfigWizardActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeMainMenu,
 			"showConfigWizard", this, SLOT(showConfigWizardSlot()), KaduIcon(),
 			tr("Start Configuration Wizard"));
 }
@@ -97,7 +97,7 @@ void ConfigWizardActions::showConfigWizard()
 		_activateWindow(m_configuration, m_wizard.data());
 	else
 	{
-		m_wizard = m_injectedFactory->makeInjected<ConfigWizardWindow>();
+		m_wizard = m_pluginInjectedFactory->makeInjected<ConfigWizardWindow>();
 		// we have to delay it a bit to show after main window to have focus on startup
 		QMetaObject::invokeMethod(m_wizard.data(), "show", Qt::QueuedConnection);
 	}

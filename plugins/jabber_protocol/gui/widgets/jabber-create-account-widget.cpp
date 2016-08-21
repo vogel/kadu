@@ -33,12 +33,12 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/jabber-wait-for-account-register-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "protocols/protocols-manager.h"
 #include "services/jabber-error-service.h"
 #include "services/jabber-register-account-service.h"
@@ -79,9 +79,9 @@ void JabberCreateAccountWidget::setIdentityManager(IdentityManager *identityMana
 	m_identityManager = identityManager;
 }
 
-void JabberCreateAccountWidget::setInjectedFactory(InjectedFactory *injectedFactory)
+void JabberCreateAccountWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void JabberCreateAccountWidget::init()
@@ -147,7 +147,7 @@ void JabberCreateAccountWidget::createGui(bool showButtons)
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 	layout->addRow(0, infoLabel);
 
-	IdentityCombo = m_injectedFactory->makeInjected<IdentitiesComboBox>(this);
+	IdentityCombo = m_pluginInjectedFactory->makeInjected<IdentitiesComboBox>(this);
 	connect(IdentityCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', IdentityCombo);
 
@@ -216,13 +216,13 @@ void JabberCreateAccountWidget::apply()
 	}
 
 	auto errorService = new JabberErrorService{this};
-	auto registerAccountService = m_injectedFactory->makeInjected<JabberRegisterAccountService>(this);
+	auto registerAccountService = m_pluginInjectedFactory->makeInjected<JabberRegisterAccountService>(this);
 	registerAccountService->setErrorService(errorService);
 
 	auto jid = Jid{Username->text(), Domain->currentText(), QString{}};
 	auto registerAccount = registerAccountService->registerAccount(jid, NewPassword->text(), EMail->text());
 
-	auto window = m_injectedFactory->makeInjected<JabberWaitForAccountRegisterWindow>(registerAccount);
+	auto window = m_pluginInjectedFactory->makeInjected<JabberWaitForAccountRegisterWindow>(registerAccount);
 	connect(window, SIGNAL(jidRegistered(Jid)), this, SLOT(jidRegistered(Jid)));
 	window->exec();
 }

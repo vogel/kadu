@@ -24,7 +24,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class InjectedFactory;
+class PluginInjectedFactory;
 class SoundManager;
 
 class SoundChatConfigurationWidgetFactory : public QObject, public ChatConfigurationWidgetFactory
@@ -38,11 +38,11 @@ public:
 	virtual ChatConfigurationWidget * createWidget(const Chat &chat, QWidget *parent);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<SoundManager> m_soundManager;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setSoundManager(SoundManager *soundManager);
 
 };

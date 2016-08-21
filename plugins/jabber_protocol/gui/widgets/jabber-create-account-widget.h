@@ -37,7 +37,7 @@ class AccountManager;
 class AccountStorage;
 class IconsManager;
 class IdentityManager;
-class InjectedFactory;
+class PluginInjectedFactory;
 class JabberServersService;
 class Jid;
 
@@ -64,7 +64,7 @@ private:
 	QPointer<AccountStorage> m_accountStorage;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<IdentityManager> m_identityManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	bool m_showButtons;
 	QLineEdit *Username;
@@ -84,7 +84,7 @@ private slots:
 	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_INIT void init();
 
 	void dataChanged();

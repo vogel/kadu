@@ -19,8 +19,8 @@
 
 #include "sound-buddy-configuration-widget-factory.h"
 
-#include "core/injected-factory.h"
 #include "gui/sound-buddy-configuration-widget.h"
+#include "plugin/plugin-injected-factory.h"
 #include "sound-manager.h"
 
 SoundBuddyConfigurationWidgetFactory::SoundBuddyConfigurationWidgetFactory(QObject *parent) :
@@ -32,9 +32,9 @@ SoundBuddyConfigurationWidgetFactory::~SoundBuddyConfigurationWidgetFactory()
 {
 }
 
-void SoundBuddyConfigurationWidgetFactory::setInjectedFactory(InjectedFactory *injectedFactory)
+void SoundBuddyConfigurationWidgetFactory::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundBuddyConfigurationWidgetFactory::setSoundManager(SoundManager *soundManager)
@@ -44,5 +44,5 @@ void SoundBuddyConfigurationWidgetFactory::setSoundManager(SoundManager *soundMa
 
 BuddyConfigurationWidget * SoundBuddyConfigurationWidgetFactory::createWidget(const Buddy &buddy, QWidget *parent)
 {
-	return m_injectedFactory->makeInjected<SoundBuddyConfigurationWidget>(buddy, m_soundManager, parent);
+	return m_pluginInjectedFactory->makeInjected<SoundBuddyConfigurationWidget>(buddy, m_soundManager, parent);
 }

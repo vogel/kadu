@@ -24,7 +24,6 @@
 #include <QtWidgets/QFileDialog>
 
 #include "compression/archive-extractor.h"
-#include "core/injected-factory.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-list-widget.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
@@ -33,6 +32,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/paths-provider.h"
+#include "plugin/plugin-injected-factory.h"
 
 #include "theme/emoticon-theme.h"
 #include "theme/gadu-emoticon-theme-loader.h"
@@ -53,9 +53,9 @@ void EmoticonsConfigurationUiHandler::setIconsManager(IconsManager *iconsManager
 	m_iconsManager = iconsManager;
 }
 
-void EmoticonsConfigurationUiHandler::setInjectedFactory(InjectedFactory *injectedFactory)
+void EmoticonsConfigurationUiHandler::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void EmoticonsConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvider)
@@ -65,7 +65,7 @@ void EmoticonsConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvi
 
 void EmoticonsConfigurationUiHandler::init()
 {
-	ThemeManager.reset(m_injectedFactory->makeInjected<EmoticonThemeManager>());
+	ThemeManager.reset(m_pluginInjectedFactory->makeInjected<EmoticonThemeManager>());
 }
 
 void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
