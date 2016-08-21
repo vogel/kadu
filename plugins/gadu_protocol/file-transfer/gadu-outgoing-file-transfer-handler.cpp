@@ -79,20 +79,17 @@ void GaduOutgoingFileTransferHandler::send(QIODevice *source)
 void GaduOutgoingFileTransferHandler::initialStatusUpdateReceived(GaduDriveSendTicket ticket)
 {
 	m_ticket = std::move(ticket);
-	updateStatus(true);
+	updateStatus();
 }
 
 void GaduOutgoingFileTransferHandler::statusUpdateReceived(GaduDriveSendTicket ticket)
 {
 	m_ticket = std::move(ticket);
-	updateStatus(false);
+	updateStatus();
 }
 
-void GaduOutgoingFileTransferHandler::updateStatus(bool initial)
+void GaduOutgoingFileTransferHandler::updateStatus()
 {
-	if (!initial && !m_putTransfer) // transfer was stopped since last time
-		return;
-
 	if (!m_ticket.isValid())
 	{
 		transfer().setError(tr("Valid GG Drive ticket not available"));
@@ -123,7 +120,8 @@ void GaduOutgoingFileTransferHandler::updateStatus(bool initial)
 		transfer().setTransferStatus(FileTransferStatus::Transfer);
 	}
 
-	QTimer::singleShot(1000, this, SLOT(requestSendStatusUpdate()));
+	if (m_putTransfer)
+		QTimer::singleShot(1000, this, SLOT(requestSendStatusUpdate()));
 }
 
 void GaduOutgoingFileTransferHandler::startOutgoingTransferIfNotStarted()
@@ -133,13 +131,11 @@ void GaduOutgoingFileTransferHandler::startOutgoingTransferIfNotStarted()
 
 	auto driveService = m_protocol->driveService();
 	m_putTransfer = driveService->putInOutbox(m_ticket, transfer().remoteFileName(), m_source);
+	connect(m_putTransfer, &GaduDrivePutTransfer::finished, this, &GaduOutgoingFileTransferHandler::requestSendStatusUpdate);
 }
 
 void GaduOutgoingFileTransferHandler::requestSendStatusUpdate()
 {
-	if (!m_putTransfer) // transfer was cancelled
-		return;
-
 	auto driveService = m_protocol->driveService();
 	auto updateSendStatusRequest = driveService->requestSendStatusUpdate(m_ticket.ticketId());
 

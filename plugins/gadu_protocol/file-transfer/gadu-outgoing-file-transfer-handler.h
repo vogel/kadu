@@ -49,7 +49,7 @@ private:
 
 	void clenaup();
 	void startOutgoingTransferIfNotStarted();
-	void updateStatus(bool initial);
+	void updateStatus();
 
 private slots:
 	void initialStatusUpdateReceived(GaduDriveSendTicket);
