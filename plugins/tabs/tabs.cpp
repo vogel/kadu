@@ -212,6 +212,7 @@ void TabsManager::done()
 		for (int i = TabDialog->count() - 1; i >= 0; i--)
 			detachChat(static_cast<ChatWidget *>(TabDialog->widget(i)));
 
+	m_closing = true;
 	delete TabDialog;
 	TabDialog = 0;
 
@@ -303,7 +304,8 @@ ChatWidget * TabsManager::addChat(Chat chat, OpenChatActivation activation)
 
 void TabsManager::removeChat(Chat chat)
 {
-	if (!chat)
+	// TODO: fix this whole thing
+	if (!chat || m_closing)
 		return;
 
 	auto count = TabDialog->count();

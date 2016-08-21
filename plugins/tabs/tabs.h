@@ -87,6 +87,7 @@ class TabsManager : public StorableObject, ConfigurationAwareObject
 	TabWidget *TabDialog;
 	QList<Chat> DetachedChats;
 	QList<Chat> ClosedChats;
+	bool m_closing {false};
 
 	int TargetTabs;
 	void insertTab(ChatWidget *chatWidget);
