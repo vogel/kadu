@@ -24,7 +24,7 @@
 // <img emoticon="EMOTICON_CODE"*>
 EmoticonClipboardHtmlTransformer::EmoticonClipboardHtmlTransformer(QObject *parent) :
 		QObject{parent},
-		EmoticonRegularExpression("<img emoticon=\"([^\"]+)\"[^>]*>")
+		EmoticonRegularExpression(R"tag(<img[^>]*emoticon="([^"]+)"[^>]*>)tag")
 {
 }
 

@@ -377,8 +377,8 @@ void KaduWebView::textCopied() const
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
 void KaduWebView::convertClipboardHtml(QClipboard::Mode mode) const
 {
-	QString html = QApplication::clipboard()->mimeData(mode)->html();
-	m_clipboardHtmlTransformerService->transform(html);
+	auto html = QApplication::clipboard()->mimeData(mode)->html();
+	html = m_clipboardHtmlTransformerService->transform(html);
 
 	QTextDocument document;
 	document.setHtml(html);
