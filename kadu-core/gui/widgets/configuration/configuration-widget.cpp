@@ -360,25 +360,25 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	else if (tagName == "gg-password-edit")
 		widget = m_injectedFactory->makeInjected<ConfigGGPasswordEdit>(configGroupBox, DataManager);
 	else if (tagName == "check-box")
-		widget = new ConfigCheckBox(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigCheckBox>(configGroupBox, DataManager);
 	else if (tagName == "radio-button")
-		widget = new ConfigRadioButton(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigRadioButton>(configGroupBox, DataManager);
 	else if (tagName == "spin-box")
-		widget = new ConfigSpinBox(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigSpinBox>(configGroupBox, DataManager);
 	else if (tagName == "combo-box")
-		widget = new ConfigComboBox(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigComboBox>(configGroupBox, DataManager);
 	else if (tagName == "hot-key-edit")
-		widget = new ConfigHotKeyEdit(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigHotKeyEdit>(configGroupBox, DataManager);
 	else if (tagName == "path-list-edit")
 		widget = m_injectedFactory->makeInjected<ConfigPathListEdit>(configGroupBox, DataManager);
 	else if (tagName == "color-button")
-		widget = new ConfigColorButton(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigColorButton>(configGroupBox, DataManager);
 	else if (tagName == "select-font")
-		widget = new ConfigSelectFont(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigSelectFont>(configGroupBox, DataManager);
 	else if (tagName == "syntax-editor")
 		widget = m_injectedFactory->makeInjected<ConfigSyntaxEditor>(configGroupBox, DataManager);
 	else if (tagName == "action-button")
-		widget = new ConfigActionButton(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigActionButton>(configGroupBox, DataManager);
 	else if (tagName == "select-file")
 		widget = m_injectedFactory->makeInjected<ConfigSelectFile>(configGroupBox, DataManager);
 	else if (tagName == "preview")
@@ -386,13 +386,13 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	else if (tagName == "proxy-combo-box")
 		widget = m_injectedFactory->makeInjected<ConfigPreview>(configGroupBox, DataManager);
 	else if (tagName == "slider")
-		widget = new ConfigSlider(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigSlider>(configGroupBox, DataManager);
 	else if (tagName == "label")
-		widget = new ConfigLabel(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigLabel>(configGroupBox, DataManager);
 	else if (tagName == "list-box")
-		widget = new ConfigListWidget(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigListWidget>(configGroupBox, DataManager);
 	else if (tagName == "line-separator")
-		widget = new ConfigLineSeparator(configGroupBox, DataManager);
+		widget = m_injectedFactory->makeInjected<ConfigLineSeparator>(configGroupBox, DataManager);
 	else
 	{
 		kdebugf2();
