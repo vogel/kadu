@@ -21,7 +21,7 @@
 #include "screenshot-actions.h"
 
 #include "configuration/screen-shot-configuration.h"
-#include "core/injected-factory.h"
+#include "plugin/plugin-injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/screenshot-action.h"
 
@@ -39,9 +39,9 @@ void ScreenshotActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
-void ScreenshotActions::setInjectedFactory(InjectedFactory *injectedFactory)
+void ScreenshotActions::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ScreenshotActions::setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration)
@@ -51,7 +51,7 @@ void ScreenshotActions::setScreenShotConfiguration(ScreenShotConfiguration *scre
 
 void ScreenshotActions::init()
 {
-	m_screenShotActionDescription = m_injectedFactory->makeOwned<ScreenshotAction>(m_screenShotConfiguration, this);
+	m_screenShotActionDescription = m_pluginInjectedFactory->makeOwned<ScreenshotAction>(m_screenShotConfiguration, this);
 	m_actions->insert(m_screenShotActionDescription);
 }
 

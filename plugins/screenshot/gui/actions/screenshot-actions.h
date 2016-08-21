@@ -26,7 +26,7 @@
 #include <injeqt/injeqt.h>
 
 class Actions;
-class InjectedFactory;
+class PluginInjectedFactory;
 class ScreenshotAction;
 class ScreenShotConfiguration;
 
@@ -40,14 +40,14 @@ public:
 
 private:
 	QPointer<Actions> m_actions;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 	
 	owned_qptr<ScreenshotAction> m_screenShotActionDescription;
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
 	INJEQT_INIT void init();
 

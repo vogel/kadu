@@ -26,17 +26,21 @@
 #include "gui/actions/action-description.h"
 
 class ChatWidget;
+class PluginInjectedFactory;
 class ScreenShotConfiguration;
 
 class ScreenshotAction : public ActionDescription
 {
 	Q_OBJECT
 
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
 	ChatWidget * findChatWidget(QObject *obejct);
 
 private slots:
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+
 	void takeStandardShotSlot(ChatWidget *chatWidget = 0);
 	void takeShotWithChatWindowHiddenSlot();
 	void takeWindowShotSlot();

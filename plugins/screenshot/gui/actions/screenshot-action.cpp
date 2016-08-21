@@ -28,6 +28,7 @@
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "plugin/plugin-injected-factory.h"
 #include "protocols/protocol.h"
 
 #include "configuration/screen-shot-configuration.h"
@@ -47,6 +48,11 @@ ScreenshotAction::ScreenshotAction(ScreenShotConfiguration *screenShotConfigurat
 
 ScreenshotAction::~ScreenshotAction()
 {
+}
+
+void ScreenshotAction::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
+{
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ScreenshotAction::actionInstanceCreated(Action *action)
@@ -102,6 +108,7 @@ ChatWidget * ScreenshotAction::findChatWidget(QObject *object)
 	QAction *action = qobject_cast<QAction *>(object);
 	if (!action)
 		return 0;
+
 	return static_cast<ChatWidget *>((void*)(action->data().toLongLong()));
 }
 
@@ -111,21 +118,21 @@ void ScreenshotAction::takeStandardShotSlot(ChatWidget *chatWidget)
 	if (!chatWidget)
 		chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(injectedFactory()->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeStandardShot();
+		(m_pluginInjectedFactory->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeStandardShot();
 }
 
 void ScreenshotAction::takeShotWithChatWindowHiddenSlot()
 {
 	ChatWidget *chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(injectedFactory()->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeShotWithChatWindowHidden();
+		(m_pluginInjectedFactory->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeShotWithChatWindowHidden();
 }
 
 void ScreenshotAction::takeWindowShotSlot()
 {
 	ChatWidget *chatWidget = findChatWidget(sender());
 	if (chatWidget)
-		(injectedFactory()->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeWindowShot();
+		(m_pluginInjectedFactory->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeWindowShot();
 }
 
 #include "moc_screenshot-action.cpp"
