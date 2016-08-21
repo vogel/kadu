@@ -90,8 +90,6 @@ void GaduOutgoingFileTransferHandler::statusUpdateReceived(GaduDriveSendTicket t
 
 void GaduOutgoingFileTransferHandler::updateStatus(bool initial)
 {
-	printf("update status: %d\n", initial);
-
 	if (!initial && !m_putTransfer) // transfer was stopped since last time
 		return;
 
@@ -121,7 +119,6 @@ void GaduOutgoingFileTransferHandler::updateStatus(bool initial)
 	}
 	else
 	{
-		printf("start if not started\n");
 		startOutgoingTransferIfNotStarted();
 		transfer().setTransferStatus(FileTransferStatus::Transfer);
 	}
@@ -136,7 +133,6 @@ void GaduOutgoingFileTransferHandler::startOutgoingTransferIfNotStarted()
 
 	auto driveService = m_protocol->driveService();
 	m_putTransfer = driveService->putInOutbox(m_ticket, transfer().remoteFileName(), m_source);
-	printf("omg started!\n");
 }
 
 void GaduOutgoingFileTransferHandler::requestSendStatusUpdate()

@@ -293,10 +293,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		auto fileTransferMatch = fileTransferRegExp.match(content);
 
 		if (fileTransferMatch.hasMatch())
-		{
 			CurrentFileTransferService->fileTransferReceived(sender, fileTransferMatch.captured(1), fileTransferMatch.captured(2));
-			return;
-		}
 	}
 
 	Message message = m_messageStorage->create();
