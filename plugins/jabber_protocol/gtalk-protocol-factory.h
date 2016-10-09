@@ -52,9 +52,6 @@ public:
 	virtual QString idLabel();
 	virtual QValidator::State validateId(QString id);
 	virtual bool canRegister();
-	virtual bool allowChangeServer();
-	virtual QString defaultServer();
-	virtual QString whatIsMyUsername() { return QString(); }
 
 	virtual QString name() { return "gmail/google talk"; }
 	virtual QString displayName() { return "Gmail/Google Talk"; }

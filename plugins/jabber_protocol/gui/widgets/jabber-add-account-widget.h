@@ -40,7 +40,6 @@ class AccountStorage;
 class IconsManager;
 class IdentityManager;
 class PluginInjectedFactory;
-class JabberProtocolFactory;
 class JabberServersService;
 
 class JabberAddAccountWidget : public AccountAddWidget
@@ -48,7 +47,11 @@ class JabberAddAccountWidget : public AccountAddWidget
 	Q_OBJECT
 
 public:
-	explicit JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent = nullptr);
+	explicit JabberAddAccountWidget(
+		bool isGmail,
+		QString defaultServer,
+		bool showButtons,
+		QWidget *parent = nullptr);
 	virtual ~JabberAddAccountWidget();
 
 	void setJabberServersService(JabberServersService *serversService);
@@ -64,9 +67,10 @@ private:
 	QPointer<IdentityManager> m_identityManager;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
+    bool m_isGmail;
+    QString m_defaultServer;
 	bool m_showButtons;
 
-	JabberProtocolFactory *Factory;
 	QLineEdit *Username;
 	QComboBox *Domain;
 	QLineEdit *AccountPassword;
@@ -87,6 +91,5 @@ private slots:
 	INJEQT_INIT void init();
 
 	void dataChanged();
-	void showWhatIsMyUsername();
 
 };

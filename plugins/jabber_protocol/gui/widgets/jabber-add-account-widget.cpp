@@ -23,7 +23,6 @@
 
 #include "services/jabber-servers-service.h"
 #include "jabber-account-details.h"
-#include "jabber-protocol-factory.h"
 
 #include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
@@ -46,10 +45,15 @@
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QVBoxLayout>
 
-JabberAddAccountWidget::JabberAddAccountWidget(JabberProtocolFactory *factory, bool showButtons, QWidget *parent) :
+JabberAddAccountWidget::JabberAddAccountWidget(
+	bool isGmail,
+	QString defaultServer,
+	bool showButtons,
+	QWidget *parent) :
 		AccountAddWidget{parent},
-		m_showButtons{showButtons},
-		Factory{factory}
+		m_isGmail{isGmail},
+		m_defaultServer{std::move(defaultServer)},
+		m_showButtons{showButtons}
 {
 }
 
@@ -117,26 +121,8 @@ void JabberAddAccountWidget::createGui(bool showButtons)
 
 	Domain = new QComboBox();
 	Domain->setEditable(true);
-	if (!Factory->allowChangeServer())
-	{
-		Domain->setVisible(false);
-		AtLabel->setVisible(false);
-
-		QString toolTip = Factory->whatIsMyUsername();
-		if (!toolTip.isEmpty())
-		{
-			QLabel *whatIsMyUsernameLabel = new QLabel(tr("<a href='#'>What is my username?</a>"), this);
-			whatIsMyUsernameLabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-			jidLayout->addWidget(whatIsMyUsernameLabel, 0, 2, Qt::AlignRight);
-
-			connect(whatIsMyUsernameLabel, SIGNAL(linkActivated(QString)), this, SLOT(showWhatIsMyUsername()));
-		}
-	}
-	else
-	{
-		connect(Domain, SIGNAL(currentIndexChanged(QString)), this, SLOT(dataChanged()));
-		connect(Domain, SIGNAL(editTextChanged(QString)), this, SLOT(dataChanged()));
-	}
+	connect(Domain, SIGNAL(currentIndexChanged(QString)), this, SLOT(dataChanged()));
+	connect(Domain, SIGNAL(editTextChanged(QString)), this, SLOT(dataChanged()));
 	jidLayout->addWidget(Domain, 0, 2);
 
 	layout->addRow(tr("Username") + ':', jidWidget);
@@ -181,7 +167,7 @@ void JabberAddAccountWidget::setJabberServersService(JabberServersService* serve
 {
 	for (auto &&server : serversService->knownServers())
 		Domain->addItem(server);
-	Domain->setCurrentText(Factory->defaultServer());
+	Domain->setCurrentText(m_defaultServer);
 }
 
 void JabberAddAccountWidget::dataChanged()
@@ -197,7 +183,7 @@ void JabberAddAccountWidget::dataChanged()
 	if (Username->text().isEmpty()
 			&& AccountPassword->text().isEmpty()
 			&& RememberPassword->isChecked()
-			&& Domain->currentText() == Factory->defaultServer()
+			&& Domain->currentText() == m_defaultServer
 			&& 0 == Identity->currentIndex())
 		simpleStateNotifier()->setState(StateNotChanged);
 	else
@@ -224,7 +210,7 @@ void JabberAddAccountWidget::apply()
 		details->setResource("Kadu");
 		details->setPriority(5);
 
-		bool isGoogleAppsAccount = Factory->name() == "gmail/google talk" && !Domain->currentText().contains("gmail");
+		bool isGoogleAppsAccount = m_isGmail && !Domain->currentText().contains("gmail");
 		// Google Apps account sometimes needs custom host/port settings to work
 		if (isGoogleAppsAccount)
 		{
@@ -248,18 +234,13 @@ void JabberAddAccountWidget::resetGui()
 {
 	AccountPassword->clear();
 	Username->clear();
-	Domain->setEditText(Factory->defaultServer());
+	Domain->setEditText(m_defaultServer);
 	RememberPassword->setChecked(true);
 	m_identityManager->removeUnused();
 	Identity->setCurrentIndex(0);
 	AddAccountButton->setDisabled(true);
 
 	simpleStateNotifier()->setState(StateNotChanged);
-}
-
-void JabberAddAccountWidget::showWhatIsMyUsername()
-{
-	MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), Factory->displayName(), Factory->whatIsMyUsername());
 }
 
 #include "moc_jabber-add-account-widget.cpp"

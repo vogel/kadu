@@ -91,18 +91,18 @@ AccountDetails * GTalkProtocolFactory::createAccountDetails(AccountShared *accou
 
 AccountAddWidget * GTalkProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	Q_UNUSED(showButtons);
-	Q_UNUSED(parent);
-
-	return nullptr;
+    auto result = m_pluginInjectedFactory->makeInjected<JabberAddAccountWidget>(false, "gmail.com", showButtons, parent);
+    result->setJabberServersService(new JabberServersService{result});
+    connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+    return result;
 }
 
 AccountCreateWidget * GTalkProtocolFactory::newCreateAccountWidget(bool showButtons, QWidget *parent)
 {
-	auto result = m_pluginInjectedFactory->makeInjected<JabberCreateAccountWidget>(showButtons, parent);
-	result->setJabberServersService(new JabberServersService{result});
-	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
-	return result;
+    Q_UNUSED(showButtons);
+    Q_UNUSED(parent);
+
+    return nullptr;
 }
 
 AccountEditWidget * GTalkProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
@@ -132,16 +132,6 @@ QValidator::State GTalkProtocolFactory::validateId(QString id)
 bool GTalkProtocolFactory::canRegister()
 {
 	return false;
-}
-
-bool GTalkProtocolFactory::allowChangeServer()
-{
-	return true;
-}
-
-QString GTalkProtocolFactory::defaultServer()
-{
-    return QStringLiteral("gmail.com");
 }
 
 QWidget * GTalkProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
