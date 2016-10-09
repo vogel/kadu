@@ -69,7 +69,7 @@ void DomProcessor::accept(const DomVisitor *visitor)
 QDomDocument toDomDocument(const QString &xml)
 {
 	auto domDocument = QDomDocument{};
-	auto preparedXml = QString{xml}.replace("<", "x<").replace(">", ">x");
+	auto preparedXml = QString{xml}.replace("<", "-<").replace(">", ">-");
 	// force content to be valid HTML with only one root
 	if (domDocument.setContent(QString(R"(<div>%1</div>)").arg(preparedXml)))
 		return domDocument;
@@ -87,7 +87,7 @@ QString toString(const QDomDocument &domDocument)
 	Q_ASSERT(result.startsWith(QStringLiteral(R"(<div>)")));
 	Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
 	result = result.mid(static_cast<int>(qstrlen(R"(<div>)")), result.length() - static_cast<int>(qstrlen(R"(<div></div>)")));
-	return result.replace("x<", "<").replace(">x", ">");
+	return result.replace("-<", "<").replace(">-", ">");
 }
 
 QString processDom(const QString &xml, const DomVisitor &domVisitor)
