@@ -55,16 +55,20 @@ public:
 	Q_INVOKABLE JumpListStub() {}
 	~JumpListStub() {}
 
-	std::vector<Chat> chats() const { return m_chats; }
+	std::set<Chat> chats1() const { return m_chats1; }
+	std::set<Chat> chats2() const { return m_chats2; }
 	bool visible() const { return m_visible; }
+	bool hasSeparator() const { return m_hasSeparator; }
 
 private:
-	std::vector<Chat> m_chats;
+	std::set<Chat> m_chats1;
+	std::set<Chat> m_chats2;
 	bool m_visible {false};
+	bool m_hasSeparator {false};
 
-	virtual void clear() override { m_chats.clear(); }
-	virtual void addChat(Chat chat) override { m_chats.push_back(chat); }
-	virtual void addSeparator() override { m_chats.push_back(Chat::null); }
+	virtual void clear() override { m_chats1.clear(); m_chats2.clear(); m_hasSeparator = false; }
+	virtual void addChat(Chat chat) override { m_hasSeparator ? m_chats2.insert(chat) : m_chats1.insert(chat); }
+	virtual void addSeparator() override { m_hasSeparator = true; }
 	virtual void setVisible(bool visible) override { m_visible = visible; }
 
 };
@@ -95,7 +99,9 @@ void WindowsJumpListServiceTest::shouldBeEmptyAfterCreation()
 	auto jumpList = injector.get<JumpListStub>();
 	injector.instantiate<WindowsJumpListService>();
 
-	QVERIFY(jumpList->chats().empty());
+	QVERIFY(jumpList->chats1().empty());
+	QVERIFY(jumpList->chats2().empty());
+	QVERIFY(!jumpList->hasSeparator());
 	QVERIFY(!jumpList->visible());
 }
 
@@ -110,11 +116,15 @@ void WindowsJumpListServiceTest::shouldShowRecentChats()
 	auto recentChatRepository = injector.get<RecentChatRepository>();
 
 	recentChatRepository->addRecentChat(chat1);
-	QCOMPARE(jumpList->chats(), std::vector<Chat>{ chat1 });
+	QCOMPARE(jumpList->chats1(), std::set<Chat>{ chat1 });
+	QCOMPARE(jumpList->chats2(), std::set<Chat>{});
+	QVERIFY(!jumpList->hasSeparator());
 	QVERIFY(jumpList->visible());
 
 	recentChatRepository->addRecentChat(chat2);
-	QCOMPARE(jumpList->chats(), (std::vector<Chat>{ chat1, chat2 }));
+	QCOMPARE(jumpList->chats1(), (std::set<Chat>{ chat1, chat2 }));
+	QCOMPARE(jumpList->chats2(), std::set<Chat>{});
+	QVERIFY(!jumpList->hasSeparator());
 	QVERIFY(jumpList->visible());
 }
 
@@ -132,12 +142,16 @@ void WindowsJumpListServiceTest::shouldHideWhenAllRecentChatClose()
 	recentChatRepository->addRecentChat(chat2);
 	recentChatRepository->removeRecentChat(chat1);
 
-	QCOMPARE(jumpList->chats(), std::vector<Chat>{ chat2 });
+	QCOMPARE(jumpList->chats1(), std::set<Chat>{ chat2 });
+	QCOMPARE(jumpList->chats2(), std::set<Chat>{});
+	QVERIFY(!jumpList->hasSeparator());
 	QVERIFY(jumpList->visible());
 
 	recentChatRepository->removeRecentChat(chat2);
 
-	QVERIFY(jumpList->chats().empty());
+	QVERIFY(jumpList->chats1().empty());
+	QVERIFY(jumpList->chats2().empty());
+	QVERIFY(!jumpList->hasSeparator());
 	QVERIFY(!jumpList->visible());
 }
 
@@ -152,11 +166,15 @@ void WindowsJumpListServiceTest::shouldShowOpenChats()
 	auto openChatRepository = injector.get<OpenChatRepository>();
 
 	openChatRepository->addOpenChat(chat1);
-	QCOMPARE(jumpList->chats(), std::vector<Chat>{ chat1 });
+	QCOMPARE(jumpList->chats1(), std::set<Chat>{ chat1 });
+	QCOMPARE(jumpList->chats2(), std::set<Chat>{});
+	QVERIFY(!jumpList->hasSeparator());
 	QVERIFY(jumpList->visible());
 
 	openChatRepository->addOpenChat(chat2);
-	QCOMPARE(jumpList->chats(), (std::vector<Chat>{ chat1, chat2 }));
+	QCOMPARE(jumpList->chats1(), (std::set<Chat>{ chat1, chat2 }));
+	QCOMPARE(jumpList->chats2(), (std::set<Chat>{}));
+	QVERIFY(!jumpList->hasSeparator());
 	QVERIFY(jumpList->visible());
 }
 
@@ -174,12 +192,16 @@ void WindowsJumpListServiceTest::shouldHideWhenAllOpenChatClose()
 	openChatRepository->addOpenChat(chat2);
 	openChatRepository->removeOpenChat(chat1);
 
-	QCOMPARE(jumpList->chats(), std::vector<Chat>{ chat2 });
+	QCOMPARE(jumpList->chats1(), std::set<Chat>{ chat2 });
+	QCOMPARE(jumpList->chats2(), std::set<Chat>{});
+	QVERIFY(!jumpList->hasSeparator());
 	QVERIFY(jumpList->visible());
 
 	openChatRepository->removeOpenChat(chat2);
 
-	QVERIFY(jumpList->chats().empty());
+	QVERIFY(jumpList->chats1().empty());
+	QVERIFY(jumpList->chats2().empty());
+	QVERIFY(!jumpList->hasSeparator());
 	QVERIFY(!jumpList->visible());
 }
 
@@ -197,7 +219,9 @@ void WindowsJumpListServiceTest::shouldShowSeparatorBetweenRecentAndOpen()
 	recentChatRepository->addRecentChat(chat1);
 	openChatRepository->addOpenChat(chat2);
 
-	QCOMPARE(jumpList->chats(), (std::vector<Chat>{ chat1, Chat::null, chat2 }));
+	QCOMPARE(jumpList->chats1(), (std::set<Chat>{ chat1 }));
+	QCOMPARE(jumpList->chats2(), (std::set<Chat>{ chat2 }));
+	QVERIFY(jumpList->hasSeparator());
 	QVERIFY(jumpList->visible());
 }
 
@@ -216,7 +240,9 @@ void WindowsJumpListServiceTest::shouldIgnoreOpenChatsInRemote()
 	recentChatRepository->addRecentChat(chat2);
 	openChatRepository->addOpenChat(chat1);
 
-	QCOMPARE(jumpList->chats(), (std::vector<Chat>{ chat2, Chat::null, chat1 }));
+	QCOMPARE(jumpList->chats1(), std::set<Chat>{ chat2 });
+	QCOMPARE(jumpList->chats2(), std::set<Chat>{ chat1 });
+	QVERIFY(jumpList->hasSeparator());
 	QVERIFY(jumpList->visible());
 }
 
