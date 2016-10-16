@@ -227,6 +227,9 @@ Section -section_qt
 
 	SetOutPath "$INSTDIR\qt-plugins"
 	File /r "${BIN_DIR}\qt-plugins\*"
+
+	SetOutPath "$INSTDIR\QtQuick.2"
+	File /r "${BIN_DIR}\QtQuick.2\*"
 SectionEnd
 
 Section !$(section_kadu) SectionKadu
@@ -552,6 +555,7 @@ Section Uninstall
 	RMDir /r "$INSTDIR\plugins"
 	RMDir /r "$INSTDIR\qml"
 	RMDir /r "$INSTDIR\qt-plugins"
+	RMDir /r "$INSTDIR\QtQuick.2"
 	RMDir /r "$INSTDIR\scripts"
 	RMDir /r "$INSTDIR\share"
 	RMDir /r "$INSTDIR\syntax"
