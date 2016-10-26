@@ -46,6 +46,7 @@ HintsWidget::HintsWidget(QWidget *parent) :
 
 HintsWidget::~HintsWidget()
 {
+    m_layout = nullptr;
 }
 
 void HintsWidget::setHintsConfiguration(HintsConfiguration *hintsConfiguration)
