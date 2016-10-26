@@ -359,7 +359,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 {
 	if (!lookChatAdvanced)
 	{
-		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", dataManager());
+		lookChatAdvanced = injectedFactory()->makeInjected<ConfigurationWindow>("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", dataManager());
 		lookChatAdvanced.data()->widget()->appendUiFile(m_pathsProvider->dataPath() + QStringLiteral("configuration/dialog-look-chat-advanced.ui"));
 	}
 
