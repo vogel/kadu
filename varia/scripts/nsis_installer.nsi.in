@@ -216,6 +216,7 @@ Section -section_generic_libraries
 	File "${BIN_DIR}\qxmpp0.dll"
 	File "${BIN_DIR}\libharfbuzz-0.dll"
 	File "${BIN_DIR}\libharfbuzz-icu-0.dll"
+	File "${BIN_DIR}\d3dcompiler_47.dll"
 SectionEnd
 
 Section -section_qt
