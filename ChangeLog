@@ -1,6 +1,7 @@
 +++ version 4.1:
 * pcspeaker: #3111 fixed: usage of __useconds_t type removed (Vogel)
 * gui: #3109 fixed: crash in confiuguration window when selecting advanced chat options (Vogel)
+* chat: #3108 fixed: invisible messasge when using Kadu chat renderer (Vogel)
 
 +++ version 4.0:
 * jabber: #3106 fixed: adding existing gtalk account results in crash (Vogel)

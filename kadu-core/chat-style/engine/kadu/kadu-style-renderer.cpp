@@ -52,7 +52,7 @@ void KaduStyleRenderer::setParser(Parser *parser)
 
 void KaduStyleRenderer::init()
 {
-	auto top = m_parser->parse(m_style->top(), Talkable(this->configuration().chat().contacts().toContact()), ParserEscape::HtmlEscape);
+	auto top = m_parser->parse(m_style->top(), Talkable(configuration().chat().contacts().toContact()), ParserEscape::HtmlEscape);
 	auto html = QString{
 		"<html>"
 		"	<head>"
@@ -69,13 +69,13 @@ void KaduStyleRenderer::init()
 		"</html>"
 	};
 
-	this->configuration().webFrame().setHtml(html
+	configuration().webFrame().setHtml(html
 		.arg(Qt::escape(m_chatStyleManager->mainStyle()))
-		.arg(this->configuration().javaScript())
+		.arg(configuration().javaScript())
 		.arg(top)
 	);
 
-	connect(&this->configuration().webFrame(), SIGNAL(loadFinished(bool)), this, SLOT(setReady()));
+	setReady();
 }
 
 void KaduStyleRenderer::clearMessages()
