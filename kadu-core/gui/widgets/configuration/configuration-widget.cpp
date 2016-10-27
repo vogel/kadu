@@ -237,7 +237,7 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 	QString iconPath = sectionElement.attribute("icon");
 	// Additional slash is needed so that QUrl would treat the rest as _path_, which is desired here.
 	if (iconPath.startsWith("datapath:///"))
-		iconPath = m_pathsProvider->dataPath() + iconPath.midRef(static_cast<int>(qstrlen("datapath:///")));
+		iconPath = m_pathsProvider->dataPath() + iconPath.mid(static_cast<int>(qstrlen("datapath:///")));
 	configSection(KaduIcon(iconPath), QCoreApplication::translate("@default", sectionName.toUtf8().constData()), true);
 
 	const QDomNodeList children = sectionElement.childNodes();

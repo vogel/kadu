@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QtCore/QMetaType>
+#include <QtCore/QString>
 
 #include "exports.h"
 
