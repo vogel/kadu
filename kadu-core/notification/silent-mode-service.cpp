@@ -137,7 +137,7 @@ void SilentModeService::setSilent(bool silent)
 		return;
 
 	m_silentMode = silent;
-	m_configuration->deprecatedApi()->addVariable("Notify", "SilentMode", m_silentMode);
+	m_configuration->deprecatedApi()->writeEntry("Notify", "SilentMode", m_silentMode);
 
 	for (auto action : m_silentModeActionDescription->actions())
 		action->setChecked(m_silentMode);
