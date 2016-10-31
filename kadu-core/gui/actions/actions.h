@@ -118,7 +118,7 @@ signals:
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Registers m_injectedFactory->makeInjected<ActionDescription> class.
+	 * @short Registers ActionDescription class.
 	 * @param action registered action
 	 *
 	 * This method can only by called from ActionDescription instances when they are ready to be registered.

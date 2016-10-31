@@ -38,6 +38,7 @@ class EditTalkableAction;
 class InjectedFactory;
 class LeaveChatAction;
 class MenuInventory;
+class MoreActionsAction;
 class Myself;
 class OpenChatWithService;
 
@@ -51,10 +52,10 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
+	QPointer<MoreActionsAction> m_moreActionsAction;
 	QPointer<Myself> m_myself;
 	QPointer<OpenChatWithService> m_openChatWithService;
 
-	ActionDescription *MoreActions;
 	ActionDescription *AutoSend;
 	ActionDescription *ClearChat;
 	ActionDescription *InsertImage;
@@ -80,6 +81,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setMoreActionsAction(MoreActionsAction *moreActionsAction);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setOpenChatWithService(OpenChatWithService *openChatWithService);
 	INJEQT_INIT void init();
@@ -89,7 +91,6 @@ private slots:
 	void clearChatActionCreated(Action *action);
 	void sendActionCreated(Action *action);
 
-	void moreActionsActionActivated(QAction *sender, bool toggled);
 	void autoSendActionActivated(QAction *sender, bool toggled);
 	void clearActionActivated(QAction *sender, bool toggled);
 	void insertImageActionActivated(QAction *sender, bool toggled);

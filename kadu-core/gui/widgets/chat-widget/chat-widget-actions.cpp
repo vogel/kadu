@@ -38,6 +38,7 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/widgets/chat-widget/more-actions-action.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
@@ -178,6 +179,11 @@ void ChatWidgetActions::setMenuInventory(MenuInventory *menuInventory)
 	m_menuInventory = menuInventory;
 }
 
+void ChatWidgetActions::setMoreActionsAction(MoreActionsAction *moreActionsAction)
+{
+	m_moreActionsAction = moreActionsAction;
+}
+
 void ChatWidgetActions::setMyself(Myself *myself)
 {
 	m_myself = myself;
@@ -191,12 +197,6 @@ void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWith
 void ChatWidgetActions::init()
 {
 	m_actions->blockSignals();
-
-	MoreActions = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeChat, "moreActionsAction",
-		this, SLOT(moreActionsActionActivated(QAction *, bool)),
-		KaduIcon(), tr("More..."), false
-	);
 
 	AutoSend = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "autoSendAction",
@@ -292,7 +292,6 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete MoreActions;
 	delete AutoSend;
 	delete ClearChat;
 	delete InsertImage;
@@ -360,52 +359,6 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 	autoSendActionCheck();
 
 	m_chatConfigurationHolder->configurationUpdated();
-}
-
-void ChatWidgetActions::moreActionsActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (!chatWidget)
-		return;
-
-	QList<QWidget *> widgets = sender->associatedWidgets();
-	if (widgets.isEmpty())
-		return;
-
-	QWidget *widget = widgets.at(widgets.size() - 1);
-
-	QWidget *parent = widget->parentWidget();
-	while (0 != parent && 0 == qobject_cast<ToolBar *>(parent))
-		parent = parent->parentWidget();
-	ToolBar *toolbar = qobject_cast<ToolBar *>(parent);
-
-	QMenu menu;
-	QMenu *subMenu = new QMenu(tr("More"), &menu);
-
-	foreach (const QString &actionName, m_actions->keys())
-	{
-		if (toolbar && toolbar->windowHasAction(actionName, false))
-			continue;
-
-		ActionDescription *actionDescription = m_actions->value(actionName);
-		if (ActionDescription::TypeChat == actionDescription->type())
-			menu.addAction(m_actions->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
-		else if (ActionDescription::TypeUser == actionDescription->type())
-			subMenu->addAction(m_actions->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
-	}
-
-	menu.addSeparator();
-	menu.addMenu(subMenu);
-	menu.exec(widget->mapToGlobal(QPoint(0, widget->height())));
 }
 
 void ChatWidgetActions::clearActionActivated(QAction *sender, bool toggled)
