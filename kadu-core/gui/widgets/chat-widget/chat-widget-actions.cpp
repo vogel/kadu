@@ -36,6 +36,7 @@
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget/auto-send-action.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/more-actions-action.h"
@@ -154,6 +155,11 @@ void ChatWidgetActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void ChatWidgetActions::setAutoSendAction(AutoSendAction *autoSendAction)
+{
+	m_autoSendAction = autoSendAction;
+}
+
 void ChatWidgetActions::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
 	m_chatConfigurationHolder = chatConfigurationHolder;
@@ -197,13 +203,6 @@ void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWith
 void ChatWidgetActions::init()
 {
 	m_actions->blockSignals();
-
-	AutoSend = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeChat, "autoSendAction",
-		this, SLOT(autoSendActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/enter"), tr("Return Sends Message"), true
-	);
-	connect(AutoSend, SIGNAL(actionCreated(Action *)), this, SLOT(autoSendActionCreated(Action *)));
 
 	ClearChat = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "clearChatAction",
@@ -292,7 +291,6 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete AutoSend;
 	delete ClearChat;
 	delete InsertImage;
 	delete Bold;
@@ -304,16 +302,6 @@ void ChatWidgetActions::done()
 	delete OpenWith;
 	delete EditTalkable;
 	delete LeaveChat;
-}
-
-void ChatWidgetActions::configurationUpdated()
-{
-	autoSendActionCheck();
-}
-
-void ChatWidgetActions::autoSendActionCreated(Action *action)
-{
-	action->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Chat", "AutoSend"));
 }
 
 void ChatWidgetActions::clearChatActionCreated(Action *action)
@@ -338,27 +326,6 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
 		return;
-}
-
-void ChatWidgetActions::autoSendActionCheck()
-{
- 	bool check = m_configuration->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
- 	foreach (Action *action, AutoSend->actions())
- 		action->setChecked(check);
-}
-
-void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	m_configuration->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
-	autoSendActionCheck();
-
-	m_chatConfigurationHolder->configurationUpdated();
 }
 
 void ChatWidgetActions::clearActionActivated(QAction *sender, bool toggled)

@@ -30,6 +30,7 @@ class QAction;
 class ActionDescription;
 class Actions;
 class Action;
+class AutoSendAction;
 class Buddy;
 class ChatConfigurationHolder;
 class ChatWidgetManager;
@@ -42,11 +43,12 @@ class MoreActionsAction;
 class Myself;
 class OpenChatWithService;
 
-class ChatWidgetActions : public QObject, ConfigurationAwareObject
+class ChatWidgetActions : public QObject
 {
 	Q_OBJECT
 
 	QPointer<Actions> m_actions;
+	QPointer<AutoSendAction> m_autoSendAction;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<Configuration> m_configuration;
@@ -56,7 +58,6 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	QPointer<Myself> m_myself;
 	QPointer<OpenChatWithService> m_openChatWithService;
 
-	ActionDescription *AutoSend;
 	ActionDescription *ClearChat;
 	ActionDescription *InsertImage;
 	ActionDescription *Bold;
@@ -76,6 +77,7 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setAutoSendAction(AutoSendAction *autoSendAction);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
@@ -87,11 +89,9 @@ private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void autoSendActionCreated(Action *action);
 	void clearChatActionCreated(Action *action);
 	void sendActionCreated(Action *action);
 
-	void autoSendActionActivated(QAction *sender, bool toggled);
 	void clearActionActivated(QAction *sender, bool toggled);
 	void insertImageActionActivated(QAction *sender, bool toggled);
 	void boldActionActivated(QAction *sender, bool toggled);
@@ -102,9 +102,6 @@ private slots:
 	void openChatActionActivated(QAction *sender, bool toggled);
 	void openChatWithActionActivated(QAction *sender, bool toggled);
 	void colorSelectorActionActivated(QAction *sender, bool toogled);
-
-protected:
-	virtual void configurationUpdated();
 
 public:
 	Q_INVOKABLE explicit ChatWidgetActions(QObject *parent = nullptr);

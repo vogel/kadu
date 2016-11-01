@@ -25,6 +25,7 @@ set (gui_SRCS
 
 	services/clipboard-html-transformer-service.cpp
 
+	widgets/chat-widget/auto-send-action.cpp
 	widgets/chat-widget/chat-widget-actions.cpp
 	widgets/chat-widget/chat-widget-activation-service.cpp
 	widgets/chat-widget/chat-widget-container-handler.cpp

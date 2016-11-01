@@ -19,6 +19,7 @@
 
 #include "chat-widget-module.h"
 
+#include "gui/widgets/chat-widget/auto-send-action.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
@@ -31,6 +32,7 @@
 
 ChatWidgetModule::ChatWidgetModule()
 {
+	add_type<AutoSendAction>();
 	add_type<ChatWidgetActivationService>();
 	add_type<ChatWidgetContainerHandlerMapper>();
 	add_type<ChatWidgetContainerHandlerRepository>();
