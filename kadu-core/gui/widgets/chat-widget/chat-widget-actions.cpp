@@ -40,6 +40,7 @@
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/clear-chat-action.h"
+#include "gui/widgets/chat-widget/insert-image-action.h"
 #include "gui/widgets/chat-widget/more-actions-action.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/toolbar.h"
@@ -63,25 +64,6 @@ static void disableEmptyTextBoxOrNotConnected(Action *action)
 	}
 
 	action->setEnabled(chatEditBox->chatWidget()->chat().isConnected() && !chatEditBox->inputBox()->toPlainText().isEmpty());
-}
-
-static void disableNoChatImageService(Action *action)
-{
-	action->setEnabled(false);
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox)
-		return;
-
-	Account account = action->context()->chat().chatAccount();
-	if (!account)
-		return;
-
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	action->setEnabled(protocol->chatImageService());
 }
 
 static void checkBlocking(Myself *myself, Action *action)
@@ -174,6 +156,11 @@ void ChatWidgetActions::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void ChatWidgetActions::setInsertImageAction(InsertImageAction *insertImageAction)
+{
+	m_insertImageAction = insertImageAction;
+}
+
 void ChatWidgetActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -197,13 +184,6 @@ void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWith
 void ChatWidgetActions::init()
 {
 	m_actions->blockSignals();
-
-	InsertImage = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeChat, "insertImageAction",
-		this, SLOT(insertImageActionActivated(QAction *, bool)),
-		KaduIcon("insert-image"), tr("Insert Image"), false,
-		disableNoChatImageService
-	);
 
 	Bold = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "boldAction",
@@ -277,7 +257,6 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete InsertImage;
 	delete Bold;
 	delete Italic;
 	delete Underline;
@@ -302,19 +281,6 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
 		return;
-}
-
-void ChatWidgetActions::insertImageActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	chatEditBox->openInsertImageDialog();
 }
 
 void ChatWidgetActions::boldActionActivated(QAction *sender, bool toggled)

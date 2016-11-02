@@ -38,6 +38,7 @@ class ClearChatAction;
 class Configuration;
 class EditTalkableAction;
 class InjectedFactory;
+class InsertImageAction;
 class LeaveChatAction;
 class MenuInventory;
 class MoreActionsAction;
@@ -55,12 +56,12 @@ class ChatWidgetActions : public QObject
 	QPointer<ClearChatAction> m_clearChatAction;
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<InsertImageAction> m_insertImageAction;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MoreActionsAction> m_moreActionsAction;
 	QPointer<Myself> m_myself;
 	QPointer<OpenChatWithService> m_openChatWithService;
 
-	ActionDescription *InsertImage;
 	ActionDescription *Bold;
 	ActionDescription *Italic;
 	ActionDescription *Underline;
@@ -83,6 +84,7 @@ private slots:
 	INJEQT_SET void setClearChatAction(ClearChatAction *clearChatAction);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setInsertImageAction(InsertImageAction *insertImageAction);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMoreActionsAction(MoreActionsAction *moreActionsAction);
 	INJEQT_SET void setMyself(Myself *myself);
@@ -92,7 +94,6 @@ private slots:
 
 	void sendActionCreated(Action *action);
 
-	void insertImageActionActivated(QAction *sender, bool toggled);
 	void boldActionActivated(QAction *sender, bool toggled);
 	void italicActionActivated(QAction *sender, bool toggled);
 	void underlineActionActivated(QAction *sender, bool toggled);
