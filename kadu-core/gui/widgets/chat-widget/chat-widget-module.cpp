@@ -28,6 +28,7 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository-impl.h"
 #include "gui/widgets/chat-widget/chat-widget-state-persistence-service.h"
+#include "gui/widgets/chat-widget/clear-chat-action.h"
 #include "gui/widgets/chat-widget/more-actions-action.h"
 
 ChatWidgetModule::ChatWidgetModule()
@@ -41,6 +42,7 @@ ChatWidgetModule::ChatWidgetModule()
 	add_type<ChatWidgetMessageHandler>();
 	add_type<ChatWidgetRepositoryImpl>();
 	add_type<ChatWidgetStatePersistenceService>();
+	add_type<ClearChatAction>();
 	add_type<MoreActionsAction>();
 }
 

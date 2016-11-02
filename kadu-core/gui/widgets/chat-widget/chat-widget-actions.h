@@ -34,6 +34,7 @@ class AutoSendAction;
 class Buddy;
 class ChatConfigurationHolder;
 class ChatWidgetManager;
+class ClearChatAction;
 class Configuration;
 class EditTalkableAction;
 class InjectedFactory;
@@ -51,6 +52,7 @@ class ChatWidgetActions : public QObject
 	QPointer<AutoSendAction> m_autoSendAction;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<ClearChatAction> m_clearChatAction;
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
@@ -58,7 +60,6 @@ class ChatWidgetActions : public QObject
 	QPointer<Myself> m_myself;
 	QPointer<OpenChatWithService> m_openChatWithService;
 
-	ActionDescription *ClearChat;
 	ActionDescription *InsertImage;
 	ActionDescription *Bold;
 	ActionDescription *Italic;
@@ -67,7 +68,6 @@ class ChatWidgetActions : public QObject
 	ActionDescription *BlockUser;
 	ActionDescription *OpenChat;
 	ActionDescription *OpenWith;
-// 	ActionDescription *ColorSelector;
 
 	EditTalkableAction *EditTalkable;
 	LeaveChatAction *LeaveChat;
@@ -80,6 +80,7 @@ private slots:
 	INJEQT_SET void setAutoSendAction(AutoSendAction *autoSendAction);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setClearChatAction(ClearChatAction *clearChatAction);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
@@ -89,10 +90,8 @@ private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void clearChatActionCreated(Action *action);
 	void sendActionCreated(Action *action);
 
-	void clearActionActivated(QAction *sender, bool toggled);
 	void insertImageActionActivated(QAction *sender, bool toggled);
 	void boldActionActivated(QAction *sender, bool toggled);
 	void italicActionActivated(QAction *sender, bool toggled);

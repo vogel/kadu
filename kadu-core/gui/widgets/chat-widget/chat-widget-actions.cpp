@@ -39,6 +39,7 @@
 #include "gui/widgets/chat-widget/auto-send-action.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/widgets/chat-widget/clear-chat-action.h"
 #include "gui/widgets/chat-widget/more-actions-action.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/toolbar.h"
@@ -62,18 +63,6 @@ static void disableEmptyTextBoxOrNotConnected(Action *action)
 	}
 
 	action->setEnabled(chatEditBox->chatWidget()->chat().isConnected() && !chatEditBox->inputBox()->toPlainText().isEmpty());
-}
-
-static void disableEmptyMessages(Action *action)
-{
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(0 != chatEditBox->chatWidget()->chatMessagesView()->countMessages());
 }
 
 static void disableNoChatImageService(Action *action)
@@ -170,6 +159,11 @@ void ChatWidgetActions::setChatWidgetManager(ChatWidgetManager *chatWidgetManage
 	m_chatWidgetManager = chatWidgetManager;
 }
 
+void ChatWidgetActions::setClearChatAction(ClearChatAction *clearChatAction)
+{
+	m_clearChatAction = clearChatAction;
+}
+
 void ChatWidgetActions::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
@@ -203,14 +197,6 @@ void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWith
 void ChatWidgetActions::init()
 {
 	m_actions->blockSignals();
-
-	ClearChat = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeChat, "clearChatAction",
-		this, SLOT(clearActionActivated(QAction *, bool)),
-		KaduIcon("edit-clear"), tr("Clear Messages in Chat Window"), false,
-		disableEmptyMessages
-	);
-	connect(ClearChat, SIGNAL(actionCreated(Action *)), this, SLOT(clearChatActionCreated(Action *)));
 
 	InsertImage = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "insertImageAction",
@@ -291,7 +277,6 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete ClearChat;
 	delete InsertImage;
 	delete Bold;
 	delete Italic;
@@ -302,15 +287,6 @@ void ChatWidgetActions::done()
 	delete OpenWith;
 	delete EditTalkable;
 	delete LeaveChat;
-}
-
-void ChatWidgetActions::clearChatActionCreated(Action *action)
-{
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox)
-		return;
-
-	connect(chatEditBox->chatWidget()->chatMessagesView(), SIGNAL(messagesUpdated()), action, SLOT(checkState()));
 }
 
 void ChatWidgetActions::sendActionCreated(Action *action)
@@ -326,23 +302,6 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
 		return;
-}
-
-void ChatWidgetActions::clearActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-		chatWidget->clearChatWindow();
-
-	kdebugf2();
 }
 
 void ChatWidgetActions::insertImageActionActivated(QAction *sender, bool toggled)

@@ -43,6 +43,7 @@ set (gui_SRCS
 	widgets/chat-widget/chat-widget-state-persistence-service.cpp
 	widgets/chat-widget/chat-widget-title.cpp
 	widgets/chat-widget/chat-widget.cpp
+	widgets/chat-widget/clear-chat-action.cpp
 	widgets/chat-widget/more-actions-action.cpp
 
 	widgets/group-tab-bar/group-filter-tab-data.cpp
