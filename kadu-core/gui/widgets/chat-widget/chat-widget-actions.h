@@ -40,6 +40,7 @@ class Configuration;
 class EditTalkableAction;
 class InjectedFactory;
 class InsertImageAction;
+class ItalicAction;
 class LeaveChatAction;
 class MenuInventory;
 class MoreActionsAction;
@@ -59,12 +60,12 @@ class ChatWidgetActions : public QObject
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<InsertImageAction> m_insertImageAction;
+	QPointer<ItalicAction> m_italicAction;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MoreActionsAction> m_moreActionsAction;
 	QPointer<Myself> m_myself;
 	QPointer<OpenChatWithService> m_openChatWithService;
 
-	ActionDescription *Italic;
 	ActionDescription *Underline;
 	ActionDescription *Send;
 	ActionDescription *BlockUser;
@@ -87,6 +88,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setInsertImageAction(InsertImageAction *insertImageAction);
+	INJEQT_SET void setItalicAction(ItalicAction *italicAction);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMoreActionsAction(MoreActionsAction *moreActionsAction);
 	INJEQT_SET void setMyself(Myself *myself);
@@ -96,7 +98,6 @@ private slots:
 
 	void sendActionCreated(Action *action);
 
-	void italicActionActivated(QAction *sender, bool toggled);
 	void underlineActionActivated(QAction *sender, bool toggled);
 	void sendActionActivated(QAction *sender, bool toggled);
 	void blockUserActionActivated(QAction *sender, bool toggled);
@@ -109,7 +110,7 @@ public:
 	virtual ~ChatWidgetActions();
 
 	ActionDescription * bold() const;
-	ActionDescription * italic() const { return Italic; }
+	ActionDescription * italic() const;
 	ActionDescription * underline() const { return Underline; }
 	ActionDescription * send() const { return Send; }
 	ActionDescription * blockUser() const { return BlockUser; }

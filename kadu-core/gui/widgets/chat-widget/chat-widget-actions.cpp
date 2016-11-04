@@ -42,6 +42,7 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/clear-chat-action.h"
 #include "gui/widgets/chat-widget/insert-image-action.h"
+#include "gui/widgets/chat-widget/italic-action.h"
 #include "gui/widgets/chat-widget/more-actions-action.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/toolbar.h"
@@ -167,6 +168,11 @@ void ChatWidgetActions::setInsertImageAction(InsertImageAction *insertImageActio
 	m_insertImageAction = insertImageAction;
 }
 
+void ChatWidgetActions::setItalicAction(ItalicAction *italicAction)
+{
+	m_italicAction = italicAction;
+}
+
 void ChatWidgetActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -190,13 +196,6 @@ void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWith
 void ChatWidgetActions::init()
 {
 	m_actions->blockSignals();
-
-	Italic = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeChat, "italicAction",
-		this, SLOT(italicActionActivated(QAction *, bool)),
-		KaduIcon("format-text-italic"), tr("Italic"), true,
-		disableNoGadu
-	);
 
 	Underline = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "underlineAction",
@@ -256,7 +255,6 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete Italic;
 	delete Underline;
 	delete Send;
 	delete BlockUser;
@@ -279,21 +277,6 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
 		return;
-}
-
-void ChatWidgetActions::italicActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	chatEditBox->inputBox()->setFontItalic(toggled);
-
-	kdebugf2();
 }
 
 void ChatWidgetActions::underlineActionActivated(QAction *sender, bool toggled)
@@ -422,6 +405,11 @@ void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggl
 ActionDescription * ChatWidgetActions::bold() const
 {
 	return m_boldAction;
+}
+
+ActionDescription * ChatWidgetActions::italic() const
+{
+	return m_italicAction;
 }
 
 #include "moc_chat-widget-actions.cpp"
