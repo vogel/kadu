@@ -45,6 +45,7 @@
 #include "gui/widgets/chat-widget/italic-action.h"
 #include "gui/widgets/chat-widget/more-actions-action.h"
 #include "gui/widgets/chat-widget/underline-action.h"
+#include "gui/widgets/chat-widget/send-action.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
@@ -56,18 +57,6 @@
 #include "debug.h"
 
 #include "chat-widget-actions.h"
-
-static void disableEmptyTextBoxOrNotConnected(Action *action)
-{
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(chatEditBox->chatWidget()->chat().isConnected() && !chatEditBox->inputBox()->toPlainText().isEmpty());
-}
 
 static void checkBlocking(Myself *myself, Action *action)
 {
@@ -175,6 +164,11 @@ void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWith
 	m_openChatWithService = openChatWithService;
 }
 
+void ChatWidgetActions::setSendAction(SendAction *sendAction)
+{
+	m_sendAction = sendAction;
+}
+
 void ChatWidgetActions::setUnderlineAction(UnderlineAction *underlineAction)
 {
 	m_underlineAction = underlineAction;
@@ -183,14 +177,6 @@ void ChatWidgetActions::setUnderlineAction(UnderlineAction *underlineAction)
 void ChatWidgetActions::init()
 {
 	m_actions->blockSignals();
-
-	Send = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeChat, "sendAction",
-		this, SLOT(sendActionActivated(QAction *, bool)),
-		KaduIcon("go-next"), tr("&Send"), false,
-		disableEmptyTextBoxOrNotConnected
-	);
-	connect(Send, SIGNAL(actionCreated(Action *)), this, SLOT(sendActionCreated(Action *)));
 
 	BlockUser = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeUser, "blockUserAction",
@@ -235,44 +221,11 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete Send;
 	delete BlockUser;
 	delete OpenChat;
 	delete OpenWith;
 	delete EditTalkable;
 	delete LeaveChat;
-}
-
-void ChatWidgetActions::sendActionCreated(Action *action)
-{
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox)
-		return;
-
-	connect(chatEditBox->inputBox(), SIGNAL(textChanged()), action, SLOT(checkState()));
-	connect(chatEditBox->chatWidget()->chat(), SIGNAL(connected()), action, SLOT(checkState()));
-	connect(chatEditBox->chatWidget()->chat(), SIGNAL(disconnected()), action, SLOT(checkState()));
-
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (!chatWidget)
-		return;
-}
-
-void ChatWidgetActions::sendActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-		chatWidget->sendMessage();
-
-	kdebugf2();
 }
 
 void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
