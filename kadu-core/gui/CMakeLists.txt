@@ -49,6 +49,7 @@ set (gui_SRCS
 	widgets/chat-widget/insert-image-action.cpp
 	widgets/chat-widget/italic-action.cpp
 	widgets/chat-widget/more-actions-action.cpp
+	widgets/chat-widget/open-chat-action.cpp
 	widgets/chat-widget/send-action.cpp
 	widgets/chat-widget/underline-action.cpp
 

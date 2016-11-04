@@ -46,6 +46,7 @@ class LeaveChatAction;
 class MenuInventory;
 class MoreActionsAction;
 class Myself;
+class OpenChatAction;
 class OpenChatWithService;
 class UnderlineAction;
 class SendAction;
@@ -68,11 +69,11 @@ class ChatWidgetActions : public QObject
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MoreActionsAction> m_moreActionsAction;
 	QPointer<Myself> m_myself;
+	QPointer<OpenChatAction> m_openChatAction;
 	QPointer<OpenChatWithService> m_openChatWithService;
 	QPointer<SendAction> m_sendAction;
 	QPointer<UnderlineAction> m_underlineAction;
 
-	ActionDescription *OpenChat;
 	ActionDescription *OpenWith;
 
 	EditTalkableAction *EditTalkable;
@@ -96,13 +97,13 @@ private slots:
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMoreActionsAction(MoreActionsAction *moreActionsAction);
 	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setOpenChatAction(OpenChatAction *openChatAction);
 	INJEQT_SET void setOpenChatWithService(OpenChatWithService *openChatWithService);
 	INJEQT_SET void setSendAction(SendAction *sendAction);
 	INJEQT_SET void setUnderlineAction(UnderlineAction *underlineAction);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void openChatActionActivated(QAction *sender, bool toggled);
 	void openChatWithActionActivated(QAction *sender, bool toggled);
 	void colorSelectorActionActivated(QAction *sender, bool toogled);
 

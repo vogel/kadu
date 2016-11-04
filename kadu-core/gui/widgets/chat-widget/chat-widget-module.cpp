@@ -34,6 +34,7 @@
 #include "gui/widgets/chat-widget/insert-image-action.h"
 #include "gui/widgets/chat-widget/italic-action.h"
 #include "gui/widgets/chat-widget/more-actions-action.h"
+#include "gui/widgets/chat-widget/open-chat-action.h"
 #include "gui/widgets/chat-widget/send-action.h"
 #include "gui/widgets/chat-widget/underline-action.h"
 
@@ -54,6 +55,7 @@ ChatWidgetModule::ChatWidgetModule()
 	add_type<InsertImageAction>();
 	add_type<ItalicAction>();
 	add_type<MoreActionsAction>();
+	add_type<OpenChatAction>();
 	add_type<SendAction>();
 	add_type<UnderlineAction>();
 }

@@ -45,6 +45,7 @@
 #include "gui/widgets/chat-widget/insert-image-action.h"
 #include "gui/widgets/chat-widget/italic-action.h"
 #include "gui/widgets/chat-widget/more-actions-action.h"
+#include "gui/widgets/chat-widget/open-chat-action.h"
 #include "gui/widgets/chat-widget/underline-action.h"
 #include "gui/widgets/chat-widget/send-action.h"
 #include "gui/widgets/custom-input.h"
@@ -137,6 +138,11 @@ void ChatWidgetActions::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
+void ChatWidgetActions::setOpenChatAction(OpenChatAction *openChatAction)
+{
+	m_openChatAction = openChatAction;
+}
+
 void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWithService)
 {
 	m_openChatWithService = openChatWithService;
@@ -154,16 +160,9 @@ void ChatWidgetActions::setUnderlineAction(UnderlineAction *underlineAction)
 
 void ChatWidgetActions::init()
 {
-	OpenChat = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeUser, "chatAction",
-		this, SLOT(openChatActionActivated(QAction *, bool)),
-		KaduIcon("internet-group-chat"), tr("&Chat"), false,
-		disableNoChat
-	);
-
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(OpenChat, KaduMenu::SectionChat, 1000);
+		->addAction(m_openChatAction, KaduMenu::SectionChat, 1000);
 
 	OpenWith = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeGlobal, "openChatWithAction",
@@ -187,25 +186,9 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete OpenChat;
 	delete OpenWith;
 	delete EditTalkable;
 	delete LeaveChat;
-}
-
-void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	m_chatWidgetManager->openChat(action->context()->chat(), OpenChatActivation::Activate);
-
-	kdebugf2();
 }
 
 void ChatWidgetActions::openChatWithActionActivated(QAction *sender, bool toggled)
