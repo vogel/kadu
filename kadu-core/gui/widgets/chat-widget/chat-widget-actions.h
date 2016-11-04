@@ -31,6 +31,7 @@ class ActionDescription;
 class Actions;
 class Action;
 class AutoSendAction;
+class BoldAction;
 class Buddy;
 class ChatConfigurationHolder;
 class ChatWidgetManager;
@@ -51,6 +52,7 @@ class ChatWidgetActions : public QObject
 
 	QPointer<Actions> m_actions;
 	QPointer<AutoSendAction> m_autoSendAction;
+	QPointer<BoldAction> m_boldAction;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ClearChatAction> m_clearChatAction;
@@ -62,7 +64,6 @@ class ChatWidgetActions : public QObject
 	QPointer<Myself> m_myself;
 	QPointer<OpenChatWithService> m_openChatWithService;
 
-	ActionDescription *Bold;
 	ActionDescription *Italic;
 	ActionDescription *Underline;
 	ActionDescription *Send;
@@ -79,6 +80,7 @@ class ChatWidgetActions : public QObject
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setAutoSendAction(AutoSendAction *autoSendAction);
+	INJEQT_SET void setBoldAction(BoldAction *boldAction);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setClearChatAction(ClearChatAction *clearChatAction);
@@ -94,7 +96,6 @@ private slots:
 
 	void sendActionCreated(Action *action);
 
-	void boldActionActivated(QAction *sender, bool toggled);
 	void italicActionActivated(QAction *sender, bool toggled);
 	void underlineActionActivated(QAction *sender, bool toggled);
 	void sendActionActivated(QAction *sender, bool toggled);
@@ -107,7 +108,7 @@ public:
 	Q_INVOKABLE explicit ChatWidgetActions(QObject *parent = nullptr);
 	virtual ~ChatWidgetActions();
 
-	ActionDescription * bold() const { return Bold; }
+	ActionDescription * bold() const;
 	ActionDescription * italic() const { return Italic; }
 	ActionDescription * underline() const { return Underline; }
 	ActionDescription * send() const { return Send; }

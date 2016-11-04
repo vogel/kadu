@@ -37,6 +37,7 @@
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/auto-send-action.h"
+#include "gui/widgets/chat-widget/bold-action.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/clear-chat-action.h"
@@ -131,6 +132,11 @@ void ChatWidgetActions::setAutoSendAction(AutoSendAction *autoSendAction)
 	m_autoSendAction = autoSendAction;
 }
 
+void ChatWidgetActions::setBoldAction(BoldAction *boldAction)
+{
+    m_boldAction = boldAction;
+}
+
 void ChatWidgetActions::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
 	m_chatConfigurationHolder = chatConfigurationHolder;
@@ -184,13 +190,6 @@ void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWith
 void ChatWidgetActions::init()
 {
 	m_actions->blockSignals();
-
-	Bold = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeChat, "boldAction",
-		this, SLOT(boldActionActivated(QAction *, bool)),
-		KaduIcon("format-text-bold"), tr("Bold"), true,
-		disableNoGadu
-	);
 
 	Italic = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "italicAction",
@@ -257,7 +256,6 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete Bold;
 	delete Italic;
 	delete Underline;
 	delete Send;
@@ -281,21 +279,6 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
 		return;
-}
-
-void ChatWidgetActions::boldActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	chatEditBox->inputBox()->setFontWeight(toggled ? QFont::Bold : QFont::Normal);
-
-	kdebugf2();
 }
 
 void ChatWidgetActions::italicActionActivated(QAction *sender, bool toggled)
@@ -434,6 +417,11 @@ void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggl
 		return;
 
 	chatEditBox->openColorSelector(widgets.at(widgets.size() - 1));
+}
+
+ActionDescription * ChatWidgetActions::bold() const
+{
+	return m_boldAction;
 }
 
 #include "moc_chat-widget-actions.cpp"
