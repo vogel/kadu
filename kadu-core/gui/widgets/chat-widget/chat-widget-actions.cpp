@@ -44,6 +44,7 @@
 #include "gui/widgets/chat-widget/insert-image-action.h"
 #include "gui/widgets/chat-widget/italic-action.h"
 #include "gui/widgets/chat-widget/more-actions-action.h"
+#include "gui/widgets/chat-widget/underline-action.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
@@ -94,25 +95,6 @@ static void checkBlocking(Myself *myself, Action *action)
 			break;
 		}
 	action->setChecked(on);
-}
-
-// TODO: quickhack
-static void disableNoGadu(Action *action)
-{
-	action->setEnabled(false);
-
-	Chat chat = action->context()->chat();
-	if (!chat)
-		return;
-
-	Protocol *protocol = chat.chatAccount().protocolHandler();
-	if (!protocol)
-		return;
-
-	if (!protocol->protocolFactory())
-		return;
-
-	action->setEnabled(protocol->protocolFactory()->name() == "gadu");
 }
 
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
@@ -193,16 +175,14 @@ void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWith
 	m_openChatWithService = openChatWithService;
 }
 
+void ChatWidgetActions::setUnderlineAction(UnderlineAction *underlineAction)
+{
+	m_underlineAction = underlineAction;
+}
+
 void ChatWidgetActions::init()
 {
 	m_actions->blockSignals();
-
-	Underline = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeChat, "underlineAction",
-		this, SLOT(underlineActionActivated(QAction *, bool)),
-		KaduIcon("format-text-underline"), tr("Underline"), true,
-		disableNoGadu
-	);
 
 	Send = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "sendAction",
@@ -255,7 +235,6 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete Underline;
 	delete Send;
 	delete BlockUser;
 	delete OpenChat;
@@ -277,21 +256,6 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
 		return;
-}
-
-void ChatWidgetActions::underlineActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	chatEditBox->inputBox()->setFontUnderline(toggled);
-
-	kdebugf2();
 }
 
 void ChatWidgetActions::sendActionActivated(QAction *sender, bool toggled)
@@ -410,6 +374,11 @@ ActionDescription * ChatWidgetActions::bold() const
 ActionDescription * ChatWidgetActions::italic() const
 {
 	return m_italicAction;
+}
+
+ActionDescription * ChatWidgetActions::underline() const
+{
+	return m_underlineAction;
 }
 
 #include "moc_chat-widget-actions.cpp"

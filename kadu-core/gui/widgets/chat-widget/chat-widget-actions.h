@@ -46,6 +46,7 @@ class MenuInventory;
 class MoreActionsAction;
 class Myself;
 class OpenChatWithService;
+class UnderlineAction;
 
 class ChatWidgetActions : public QObject
 {
@@ -65,8 +66,8 @@ class ChatWidgetActions : public QObject
 	QPointer<MoreActionsAction> m_moreActionsAction;
 	QPointer<Myself> m_myself;
 	QPointer<OpenChatWithService> m_openChatWithService;
+	QPointer<UnderlineAction> m_underlineAction;
 
-	ActionDescription *Underline;
 	ActionDescription *Send;
 	ActionDescription *BlockUser;
 	ActionDescription *OpenChat;
@@ -93,12 +94,12 @@ private slots:
 	INJEQT_SET void setMoreActionsAction(MoreActionsAction *moreActionsAction);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setOpenChatWithService(OpenChatWithService *openChatWithService);
+	INJEQT_SET void setUnderlineAction(UnderlineAction *underlineAction);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
 	void sendActionCreated(Action *action);
 
-	void underlineActionActivated(QAction *sender, bool toggled);
 	void sendActionActivated(QAction *sender, bool toggled);
 	void blockUserActionActivated(QAction *sender, bool toggled);
 	void openChatActionActivated(QAction *sender, bool toggled);
@@ -111,7 +112,7 @@ public:
 
 	ActionDescription * bold() const;
 	ActionDescription * italic() const;
-	ActionDescription * underline() const { return Underline; }
+	ActionDescription * underline() const;
 	ActionDescription * send() const { return Send; }
 	ActionDescription * blockUser() const { return BlockUser; }
 	ActionDescription * openChatWith() const { return OpenWith; }
