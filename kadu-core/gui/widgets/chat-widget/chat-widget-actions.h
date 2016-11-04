@@ -47,6 +47,7 @@ class MenuInventory;
 class MoreActionsAction;
 class Myself;
 class OpenChatAction;
+class OpenChatWithAction;
 class OpenChatWithService;
 class UnderlineAction;
 class SendAction;
@@ -70,11 +71,9 @@ class ChatWidgetActions : public QObject
 	QPointer<MoreActionsAction> m_moreActionsAction;
 	QPointer<Myself> m_myself;
 	QPointer<OpenChatAction> m_openChatAction;
-	QPointer<OpenChatWithService> m_openChatWithService;
+	QPointer<OpenChatWithAction> m_openChatWithAction;
 	QPointer<SendAction> m_sendAction;
 	QPointer<UnderlineAction> m_underlineAction;
-
-	ActionDescription *OpenWith;
 
 	EditTalkableAction *EditTalkable;
 	LeaveChatAction *LeaveChat;
@@ -98,13 +97,12 @@ private slots:
 	INJEQT_SET void setMoreActionsAction(MoreActionsAction *moreActionsAction);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setOpenChatAction(OpenChatAction *openChatAction);
-	INJEQT_SET void setOpenChatWithService(OpenChatWithService *openChatWithService);
+	INJEQT_SET void setOpenChatWithAction(OpenChatWithAction *openChatWithAction);
 	INJEQT_SET void setSendAction(SendAction *sendAction);
 	INJEQT_SET void setUnderlineAction(UnderlineAction *underlineAction);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void openChatWithActionActivated(QAction *sender, bool toggled);
 	void colorSelectorActionActivated(QAction *sender, bool toogled);
 
 public:
@@ -116,7 +114,7 @@ public:
 	ActionDescription * underline() const;
 	ActionDescription * send() const;
 	ActionDescription * blockUser() const;
-	ActionDescription * openChatWith() const { return OpenWith; }
+	ActionDescription * openChatWith() const;
 // 	ActionDescription * colorSelector() { return ColorSelector; }
 
 };

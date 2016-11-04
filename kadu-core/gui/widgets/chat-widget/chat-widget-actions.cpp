@@ -46,6 +46,7 @@
 #include "gui/widgets/chat-widget/italic-action.h"
 #include "gui/widgets/chat-widget/more-actions-action.h"
 #include "gui/widgets/chat-widget/open-chat-action.h"
+#include "gui/widgets/chat-widget/open-chat-with-action.h"
 #include "gui/widgets/chat-widget/underline-action.h"
 #include "gui/widgets/chat-widget/send-action.h"
 #include "gui/widgets/custom-input.h"
@@ -143,9 +144,9 @@ void ChatWidgetActions::setOpenChatAction(OpenChatAction *openChatAction)
 	m_openChatAction = openChatAction;
 }
 
-void ChatWidgetActions::setOpenChatWithService(OpenChatWithService *openChatWithService)
+void ChatWidgetActions::setOpenChatWithAction(OpenChatWithAction *openChatWithAction)
 {
-	m_openChatWithService = openChatWithService;
+	m_openChatWithAction = openChatWithAction;
 }
 
 void ChatWidgetActions::setSendAction(SendAction *sendAction)
@@ -164,12 +165,7 @@ void ChatWidgetActions::init()
 		->menu("buddy-list")
 		->addAction(m_openChatAction, KaduMenu::SectionChat, 1000);
 
-	OpenWith = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeGlobal, "openChatWithAction",
-		this, SLOT(openChatWithActionActivated(QAction *, bool)),
-		KaduIcon("internet-group-chat"), tr("Open Chat with...")
-	);
-	OpenWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
+	m_openChatWithAction->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 /*
 	ColorSelector = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeChat, "colorAction",
@@ -186,24 +182,8 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete OpenWith;
 	delete EditTalkable;
 	delete LeaveChat;
-}
-
-void ChatWidgetActions::openChatWithActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	m_openChatWithService->show();
-
-	kdebugf2();
 }
 
 void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggled)
@@ -239,6 +219,11 @@ ActionDescription * ChatWidgetActions::underline() const
 ActionDescription * ChatWidgetActions::blockUser() const
 {
 	return m_blockUserAction;
+}
+
+ActionDescription * ChatWidgetActions::openChatWith() const
+{
+	return m_openChatWithAction;
 }
 
 #include "moc_chat-widget-actions.cpp"
