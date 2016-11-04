@@ -20,6 +20,7 @@
 #include "chat-widget-module.h"
 
 #include "gui/widgets/chat-widget/auto-send-action.h"
+#include "gui/widgets/chat-widget/block-user-action.h"
 #include "gui/widgets/chat-widget/bold-action.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
@@ -39,6 +40,7 @@
 ChatWidgetModule::ChatWidgetModule()
 {
 	add_type<AutoSendAction>();
+	add_type<BlockUserAction>();
 	add_type<BoldAction>();
 	add_type<ChatWidgetActivationService>();
 	add_type<ChatWidgetContainerHandlerMapper>();

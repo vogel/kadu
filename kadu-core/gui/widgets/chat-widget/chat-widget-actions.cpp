@@ -37,6 +37,7 @@
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/auto-send-action.h"
+#include "gui/widgets/chat-widget/block-user-action.h"
 #include "gui/widgets/chat-widget/bold-action.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -58,34 +59,6 @@
 
 #include "chat-widget-actions.h"
 
-static void checkBlocking(Myself *myself, Action *action)
-{
-	BuddySet buddies = action->context()->buddies();
-
-	if (!buddies.count() || buddies.contains(myself->buddy()))
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (action->context()->buddies().isAnyTemporary())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(!action->context()->roles().contains(ContactRole));
-
-	bool on = false;
-	foreach (const Buddy &buddy, buddies)
-		if (buddy.isBlocked())
-		{
-			on = true;
-			break;
-		}
-	action->setChecked(on);
-}
-
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 {
 }
@@ -102,6 +75,11 @@ void ChatWidgetActions::setActions(Actions *actions)
 void ChatWidgetActions::setAutoSendAction(AutoSendAction *autoSendAction)
 {
 	m_autoSendAction = autoSendAction;
+}
+
+void ChatWidgetActions::setBlockUserAction(BlockUserAction *blockUserAction)
+{
+	m_blockUserAction = blockUserAction;
 }
 
 void ChatWidgetActions::setBoldAction(BoldAction *boldAction)
@@ -176,18 +154,6 @@ void ChatWidgetActions::setUnderlineAction(UnderlineAction *underlineAction)
 
 void ChatWidgetActions::init()
 {
-	m_actions->blockSignals();
-
-	BlockUser = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeUser, "blockUserAction",
-		this, SLOT(blockUserActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/block-buddy"), tr("Block Buddy"), true,
-		[this](Action *action){ return checkBlocking(m_myself, action); }
-	);
-
-	// The last ActionDescription of each type will send actionLoaded() signal.
-	m_actions->unblockSignals();
-
 	OpenChat = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(openChatActionActivated(QAction *, bool)),
@@ -221,57 +187,10 @@ void ChatWidgetActions::init()
 
 void ChatWidgetActions::done()
 {
-	delete BlockUser;
 	delete OpenChat;
 	delete OpenWith;
 	delete EditTalkable;
 	delete LeaveChat;
-}
-
-void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	BuddySet buddies = action->context()->buddies();
-	if (buddies.isEmpty())
-		return;
-
-	bool on = false;
-
-	foreach (const Buddy &buddy, buddies)
-		if (!buddy.isBlocked())
-		{
-			on = true;
-			break;
-		}
-
-	foreach (Buddy buddy, buddies)
-	{
-		buddy.setBlocked(on);
-		// update actions
-		updateBlockingActions(buddy);
-	}
-
-	kdebugf2();
-}
-
-void ChatWidgetActions::updateBlockingActions(Buddy buddy)
-{
-	QList<Contact> buddyContacts = buddy.contacts();
-
-	foreach (Action *action, BlockUser->actions())
-	{
-		Contact contact = action->context()->contacts().toContact();
-		if (contact)
-			if (buddyContacts.contains(contact))
-				action->setChecked(buddy.isBlocked());
-	}
 }
 
 void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
@@ -332,6 +251,11 @@ ActionDescription * ChatWidgetActions::italic() const
 ActionDescription * ChatWidgetActions::underline() const
 {
 	return m_underlineAction;
+}
+
+ActionDescription * ChatWidgetActions::blockUser() const
+{
+	return m_blockUserAction;
 }
 
 #include "moc_chat-widget-actions.cpp"

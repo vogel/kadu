@@ -31,6 +31,7 @@ class ActionDescription;
 class Actions;
 class Action;
 class AutoSendAction;
+class BlockUserAction;
 class BoldAction;
 class Buddy;
 class ChatConfigurationHolder;
@@ -55,6 +56,7 @@ class ChatWidgetActions : public QObject
 
 	QPointer<Actions> m_actions;
 	QPointer<AutoSendAction> m_autoSendAction;
+	QPointer<BlockUserAction> m_blockUserAction;
 	QPointer<BoldAction> m_boldAction;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
@@ -70,7 +72,6 @@ class ChatWidgetActions : public QObject
 	QPointer<SendAction> m_sendAction;
 	QPointer<UnderlineAction> m_underlineAction;
 
-	ActionDescription *BlockUser;
 	ActionDescription *OpenChat;
 	ActionDescription *OpenWith;
 
@@ -83,6 +84,7 @@ class ChatWidgetActions : public QObject
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setAutoSendAction(AutoSendAction *autoSendAction);
+	INJEQT_SET void setBlockUserAction(BlockUserAction *blockUserAction);
 	INJEQT_SET void setBoldAction(BoldAction *boldAction);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
@@ -100,7 +102,6 @@ private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void blockUserActionActivated(QAction *sender, bool toggled);
 	void openChatActionActivated(QAction *sender, bool toggled);
 	void openChatWithActionActivated(QAction *sender, bool toggled);
 	void colorSelectorActionActivated(QAction *sender, bool toogled);
@@ -113,7 +114,7 @@ public:
 	ActionDescription * italic() const;
 	ActionDescription * underline() const;
 	ActionDescription * send() const;
-	ActionDescription * blockUser() const { return BlockUser; }
+	ActionDescription * blockUser() const;
 	ActionDescription * openChatWith() const { return OpenWith; }
 // 	ActionDescription * colorSelector() { return ColorSelector; }
 
