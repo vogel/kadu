@@ -20,11 +20,13 @@
 #include "actions-module.h"
 
 #include "actions/show-configuration-window-action.h"
+#include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
 
 ActionsModule::ActionsModule()
 {
 	add_type<ShowConfigurationWindowAction>();
+	add_type<ShowMultilogonsAction>();
 	add_type<ShowYourAccountsAction>();
 }
 

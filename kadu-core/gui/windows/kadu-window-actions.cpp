@@ -34,6 +34,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "actions/show-configuration-window-action.h"
+#include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
@@ -92,19 +93,6 @@
 #include "debug.h"
 
 #include "kadu-window-actions.h"
-
-void hideNoMultilogonAccounts(AccountManager *accountManager, Action *action)
-{
-	auto hasMultilogonAccount = false;
-	for (auto const &account : accountManager->items())
-		if (account.protocolHandler() && account.protocolHandler()->multilogonService())
-		{
-			hasMultilogonAccount = true;
-			break;
-		}
-
-	action->setVisible(hasMultilogonAccount);
-}
 
 void hideNoSearchServiceAccounts(AccountManager *accountManager, Action *action)
 {
@@ -253,6 +241,11 @@ void KaduWindowActions::setShowConfigurationWindowAction(ShowConfigurationWindow
 	m_showConfigurationWindowAction = showConfigurationWindowAction;
 }
 
+void KaduWindowActions::setShowMultilogonsAction(ShowMultilogonsAction *showMultilogonsAction)
+{
+	m_showMultilogonsAction = showMultilogonsAction;
+}
+
 void KaduWindowActions::setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction)
 {
 	m_showYourAccountsAction = showYourAccountsAction;
@@ -281,14 +274,6 @@ void KaduWindowActions::init()
 
 	RecentChats = m_injectedFactory->makeInjected<RecentChatsAction>(this);
 	m_actions->insert(RecentChats);
-
-	ShowMultilogons = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeMainMenu, "showMultilogonsAction",
-		this, SLOT(showMultilogonsActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/multilogon"), tr("Multilogons"), false,
-		[this](Action *action){ return hideNoMultilogonAccounts(m_accountManager, action); }
-	);
-	connect(ShowMultilogons, SIGNAL(actionCreated(Action *)), this, SLOT(showMultilogonsActionCreated(Action *)));
 
 	ExitKadu = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "exitKaduAction",
@@ -511,12 +496,6 @@ void KaduWindowActions::init()
 	m_actions->insert(DefaultProxy);
 }
 
-void KaduWindowActions::showMultilogonsActionCreated(Action *action)
-{
-	connect(m_accountManager, SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
-	connect(m_accountManager, SIGNAL(accountUnregistered(Account)), action, SLOT(checkState()));
-}
-
 void KaduWindowActions::openSearchActionCreated(Action *action)
 {
 	connect(m_accountManager, SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
@@ -628,14 +607,6 @@ void KaduWindowActions::writeEmailActionCreated(Action *action)
 	const Buddy &buddy = action->context()->buddies().toBuddy();
 	if (buddy)
 		connect(buddy, SIGNAL(updated()), action, SLOT(checkState()));
-}
-
-void KaduWindowActions::showMultilogonsActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	m_multilogonWindowService->show();
 }
 
 void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)

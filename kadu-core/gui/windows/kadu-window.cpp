@@ -37,6 +37,7 @@
 
 #include "accounts/account-manager.h"
 #include "actions/show-configuration-window-action.h"
+#include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
 #include "buddies/buddy-set.h"
 #include "chat/model/chat-data-extractor.h"
@@ -271,7 +272,7 @@ void KaduWindow::createToolsMenu()
 
 	m_menuInventory->menu("tools")->attachToMenu(ToolsMenu);
 	m_menuInventory->menu("tools")
-		->addAction(Actions->ShowMultilogons, KaduMenu::SectionTools, 1)
+		->addAction(Actions->m_showMultilogonsAction, KaduMenu::SectionTools, 1)
 		->update();
 
 	menuBar()->addMenu(ToolsMenu);
