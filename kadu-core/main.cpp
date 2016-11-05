@@ -29,6 +29,7 @@
  */
 
 #include "accounts/account-module.h"
+#include "actions/actions-module.h"
 #include "avatars/avatar-module.h"
 #include "buddies/buddy-module.h"
 #include "chat-style/chat-style-module.h"
@@ -216,6 +217,7 @@ int main(int argc, char *argv[]) try
 
 	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
 	modules.emplace_back(std::make_unique<AccountModule>());
+	modules.emplace_back(std::make_unique<ActionsModule>());
 	modules.emplace_back(std::make_unique<AvatarModule>());
 	modules.emplace_back(std::make_unique<BuddyModule>());
 	modules.emplace_back(std::make_unique<ChatModule>());

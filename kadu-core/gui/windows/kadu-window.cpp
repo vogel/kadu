@@ -36,6 +36,7 @@
 #endif
 
 #include "accounts/account-manager.h"
+#include "actions/show-configuration-window-action.h"
 #include "buddies/buddy-set.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/type/chat-type-manager.h"
@@ -229,7 +230,7 @@ void KaduWindow::createKaduMenu()
 	KaduMenu = new QMenu(this);
 	m_menuInventory->menu("main")->attachToMenu(KaduMenu);
 	m_menuInventory->menu("main")
-		->addAction(Actions->ShowConfigurationWindow, KaduMenu::SectionConfig, 30)
+		->addAction(Actions->m_showConfigurationWindowAction, KaduMenu::SectionConfig, 30)
 		->addAction(Actions->ShowYourAccounts, KaduMenu::SectionConfig, 29)
 		->addAction(Actions->RecentChats, KaduMenu::SectionRecentChats, 28)
 		->addAction(Actions->ExitKadu, KaduMenu::SectionQuit)

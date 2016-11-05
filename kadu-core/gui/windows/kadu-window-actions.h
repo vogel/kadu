@@ -55,6 +55,7 @@ class MultilogonWindowService;
 class Myself;
 class Parser;
 class RecentChatsAction;
+class ShowConfigurationWindowAction;
 class StatusContainer;
 class UrlHandlerManager;
 class UrlOpener;
@@ -76,12 +77,12 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<MultilogonWindowService> m_multilogonWindowService;
 	QPointer<Myself> m_myself;
 	QPointer<Parser> m_parser;
+	QPointer<ShowConfigurationWindowAction> m_showConfigurationWindowAction;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 	QPointer<UrlOpener> m_urlOpener;
 	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
 	friend class KaduWindow;
-	ActionDescription *ShowConfigurationWindow;
 	ActionDescription *ShowYourAccounts;
 	ActionDescription *ShowMultilogons;
 	RecentChatsAction *RecentChats;
@@ -130,6 +131,7 @@ private slots:
 	INJEQT_SET void setMultilogonWindowService(MultilogonWindowService *multilogonWindowService);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setParser(Parser *parser);
+	INJEQT_SET void setShowConfigurationWindowAction(ShowConfigurationWindowAction *showConfigurationWindowAction);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
@@ -146,7 +148,6 @@ private slots:
 	void showMyselfActionCreated(Action *action);
 	void writeEmailActionCreated(Action *action);
 
-	void configurationActionActivated(QAction *sender, bool toggled);
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
 	void showMultilogonsActionActivated(QAction *sender, bool toggled);
 	void exitKaduActionActivated(QAction *sender, bool toggled);

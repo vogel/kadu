@@ -61,6 +61,7 @@ set (kadu_MOC_SRCS
 
 set (kadu_SUBDIRS
 	accounts
+	actions
 	avatars
 	buddies
 	chat
