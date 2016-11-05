@@ -122,12 +122,6 @@ void ChatWidgetActions::init()
 		->addAction(m_openChatAction, KaduMenu::SectionChat, 1000);
 
 	m_openChatWithAction->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
-/*
-	ColorSelector = m_injectedFactory->makeInjected<ActionDescription>(nullptr,
-		ActionDescription::TypeChat, "colorAction",
-		this, SLOT(colorSelectorActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/change-color"), tr("Change Color")
-	);*/
 
 	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(this);
 	m_actions->insert(EditTalkable);
