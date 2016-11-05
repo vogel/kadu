@@ -34,6 +34,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "actions/show-configuration-window-action.h"
+#include "actions/show-your-accounts-action.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -252,6 +253,11 @@ void KaduWindowActions::setShowConfigurationWindowAction(ShowConfigurationWindow
 	m_showConfigurationWindowAction = showConfigurationWindowAction;
 }
 
+void KaduWindowActions::setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction)
+{
+	m_showYourAccountsAction = showYourAccountsAction;
+}
+
 void KaduWindowActions::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
 {
 	m_urlHandlerManager = urlHandlerManager;
@@ -272,12 +278,6 @@ void KaduWindowActions::init()
 	m_actions->blockSignals();
 
 	m_showConfigurationWindowAction->setShortcut("kadu_configure", Qt::ApplicationShortcut);
-
-	ShowYourAccounts = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeMainMenu, "yourAccountsAction",
-		this, SLOT(yourAccountsActionActivated(QAction *, bool)),
-		KaduIcon("x-office-address-book"), tr("Your Accounts")
-	);
 
 	RecentChats = m_injectedFactory->makeInjected<RecentChatsAction>(this);
 	m_actions->insert(RecentChats);
@@ -628,14 +628,6 @@ void KaduWindowActions::writeEmailActionCreated(Action *action)
 	const Buddy &buddy = action->context()->buddies().toBuddy();
 	if (buddy)
 		connect(buddy, SIGNAL(updated()), action, SLOT(checkState()));
-}
-
-void KaduWindowActions::yourAccountsActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	m_yourAccountsWindowService->show();
 }
 
 void KaduWindowActions::showMultilogonsActionActivated(QAction *sender, bool toggled)

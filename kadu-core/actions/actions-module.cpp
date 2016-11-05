@@ -20,10 +20,12 @@
 #include "actions-module.h"
 
 #include "actions/show-configuration-window-action.h"
+#include "actions/show-your-accounts-action.h"
 
 ActionsModule::ActionsModule()
 {
 	add_type<ShowConfigurationWindowAction>();
+	add_type<ShowYourAccountsAction>();
 }
 
 ActionsModule::~ActionsModule()
