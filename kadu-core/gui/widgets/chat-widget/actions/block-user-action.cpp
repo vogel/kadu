@@ -20,19 +20,12 @@
 #include "block-user-action.h"
 
 #include "buddies/buddy-set.h"
-#include "configuration/deprecated-configuration-api.h"
 #include "core/myself.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
-#include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-edit-widget.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
-#include "gui/widgets/toolbar.h"
-#include "misc/memory.h"
-
-#include <QtWidgets/QMenu>
 
 BlockUserAction::BlockUserAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

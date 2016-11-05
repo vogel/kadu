@@ -19,16 +19,10 @@
 
 #include "auto-send-action.h"
 
+#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/configuration/chat-configuration-holder.h"
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-edit-widget.h"
-#include "gui/widgets/toolbar.h"
-#include "misc/memory.h"
-
-#include <QtWidgets/QMenu>
 
 AutoSendAction::AutoSendAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
@@ -45,7 +39,7 @@ AutoSendAction::~AutoSendAction()
 {
 }
 
-void AutoSendAction::setChatConfigurationHolder(ChatConfigurationHolder* chatConfigurationHolder)
+void AutoSendAction::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
 	m_chatConfigurationHolder = chatConfigurationHolder;
 }

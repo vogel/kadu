@@ -18,24 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QMenu>
+#include "chat-widget-actions.h"
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
-#include "chat/chat-manager.h"
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "contacts/contact-set.h"
-#include "contacts/contact.h"
-#include "core/myself.h"
 #include "core/injected-factory.h"
-#include "gui/actions/action.h"
 #include "gui/actions/actions.h"
-#include "gui/actions/chat/leave-chat-action.h"
 #include "gui/actions/edit-talkable-action.h"
-#include "gui/configuration/chat-configuration-holder.h"
+#include "gui/actions/chat/leave-chat-action.h"
 #include "gui/menu/menu-inventory.h"
-#include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/actions/auto-send-action.h"
 #include "gui/widgets/chat-widget/actions/block-user-action.h"
 #include "gui/widgets/chat-widget/actions/bold-action.h"
@@ -47,19 +36,6 @@
 #include "gui/widgets/chat-widget/actions/open-chat-with-action.h"
 #include "gui/widgets/chat-widget/actions/underline-action.h"
 #include "gui/widgets/chat-widget/actions/send-action.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/widgets/custom-input.h"
-#include "gui/widgets/toolbar.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
-#include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/message-dialog.h"
-#include "gui/windows/open-chat-with/open-chat-with-service.h"
-#include "gui/windows/open-chat-with/open-chat-with.h"
-#include "model/roles.h"
-#include "debug.h"
-
-#include "chat-widget-actions.h"
 
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 {
@@ -89,24 +65,9 @@ void ChatWidgetActions::setBoldAction(BoldAction *boldAction)
     m_boldAction = boldAction;
 }
 
-void ChatWidgetActions::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
-{
-	m_chatConfigurationHolder = chatConfigurationHolder;
-}
-
-void ChatWidgetActions::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
-{
-	m_chatWidgetManager = chatWidgetManager;
-}
-
 void ChatWidgetActions::setClearChatAction(ClearChatAction *clearChatAction)
 {
 	m_clearChatAction = clearChatAction;
-}
-
-void ChatWidgetActions::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
 }
 
 void ChatWidgetActions::setInjectedFactory(InjectedFactory *injectedFactory)
@@ -132,11 +93,6 @@ void ChatWidgetActions::setMenuInventory(MenuInventory *menuInventory)
 void ChatWidgetActions::setMoreActionsAction(MoreActionsAction *moreActionsAction)
 {
 	m_moreActionsAction = moreActionsAction;
-}
-
-void ChatWidgetActions::setMyself(Myself *myself)
-{
-	m_myself = myself;
 }
 
 void ChatWidgetActions::setOpenChatAction(OpenChatAction *openChatAction)

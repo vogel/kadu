@@ -19,7 +19,6 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "exports.h"
 
 #include <injeqt/module.h>
