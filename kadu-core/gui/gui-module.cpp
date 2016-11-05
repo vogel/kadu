@@ -20,6 +20,8 @@
 #include "gui-module.h"
 
 #include "gui/actions/actions.h"
+#include "gui/actions/chat/leave-chat-action.h"
+#include "gui/actions/edit-talkable-action.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
@@ -50,6 +52,8 @@ GuiModule::GuiModule()
 	add_type<ChatEditBoxSizeManager>();
 	add_type<ChatWidgetActions>();
 	add_type<CustomInputMenuManager>();
+	add_type<EditTalkableAction>();
+	add_type<LeaveChatAction>();
 	add_type<KaduWindowService>();
 	add_type<MainConfigurationWindowService>();
 	add_type<MainWindowRepository>();

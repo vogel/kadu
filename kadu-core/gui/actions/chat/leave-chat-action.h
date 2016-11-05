@@ -32,7 +32,7 @@ class LeaveChatAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit LeaveChatAction(QObject *parent);
+	Q_INVOKABLE explicit LeaveChatAction(QObject *parent = nullptr);
 	virtual ~LeaveChatAction();
 
 protected:

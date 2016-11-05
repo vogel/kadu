@@ -30,7 +30,6 @@ class BlockUserAction;
 class BoldAction;
 class ClearChatAction;
 class EditTalkableAction;
-class InjectedFactory;
 class InsertImageAction;
 class ItalicAction;
 class LeaveChatAction;
@@ -61,9 +60,10 @@ private:
 	QPointer<BlockUserAction> m_blockUserAction;
 	QPointer<BoldAction> m_boldAction;
 	QPointer<ClearChatAction> m_clearChatAction;
-	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<EditTalkableAction> m_editTalkableAction;
 	QPointer<InsertImageAction> m_insertImageAction;
 	QPointer<ItalicAction> m_italicAction;
+	QPointer<LeaveChatAction> m_leaveChatAction;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MoreActionsAction> m_moreActionsAction;
 	QPointer<OpenChatAction> m_openChatAction;
@@ -71,18 +71,16 @@ private:
 	QPointer<SendAction> m_sendAction;
 	QPointer<UnderlineAction> m_underlineAction;
 
-	EditTalkableAction *EditTalkable;
-	LeaveChatAction *LeaveChat;
-
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setAutoSendAction(AutoSendAction *autoSendAction);
 	INJEQT_SET void setBlockUserAction(BlockUserAction *blockUserAction);
 	INJEQT_SET void setBoldAction(BoldAction *boldAction);
 	INJEQT_SET void setClearChatAction(ClearChatAction *clearChatAction);
+	INJEQT_SET void setEditTalkableAction(EditTalkableAction *editTalkableAction);
 	INJEQT_SET void setInsertImageAction(InsertImageAction *insertImageAction);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setItalicAction(ItalicAction *italicAction);
+	INJEQT_SET void setLeaveChatAction(LeaveChatAction *leaveChatAction);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMoreActionsAction(MoreActionsAction *moreActionsAction);
 	INJEQT_SET void setOpenChatAction(OpenChatAction *openChatAction);

@@ -20,7 +20,6 @@
 
 #include "chat-widget-actions.h"
 
-#include "core/injected-factory.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/edit-talkable-action.h"
 #include "gui/actions/chat/leave-chat-action.h"
@@ -70,9 +69,9 @@ void ChatWidgetActions::setClearChatAction(ClearChatAction *clearChatAction)
 	m_clearChatAction = clearChatAction;
 }
 
-void ChatWidgetActions::setInjectedFactory(InjectedFactory *injectedFactory)
+void ChatWidgetActions::setEditTalkableAction(EditTalkableAction *editTalkableAction)
 {
-	m_injectedFactory = injectedFactory;
+	m_editTalkableAction = editTalkableAction;
 }
 
 void ChatWidgetActions::setInsertImageAction(InsertImageAction *insertImageAction)
@@ -83,6 +82,11 @@ void ChatWidgetActions::setInsertImageAction(InsertImageAction *insertImageActio
 void ChatWidgetActions::setItalicAction(ItalicAction *italicAction)
 {
 	m_italicAction = italicAction;
+}
+
+void ChatWidgetActions::setLeaveChatAction(LeaveChatAction *leaveChatAction)
+{
+	m_leaveChatAction = leaveChatAction;
 }
 
 void ChatWidgetActions::setMenuInventory(MenuInventory *menuInventory)
@@ -123,17 +127,14 @@ void ChatWidgetActions::init()
 
 	m_openChatWithAction->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 
-	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(this);
-	m_actions->insert(EditTalkable);
-
-	LeaveChat = m_injectedFactory->makeInjected<LeaveChatAction>(this);
-	m_actions->insert(LeaveChat);
+	m_actions->insert(m_editTalkableAction);
+	m_actions->insert(m_leaveChatAction);
 }
 
 void ChatWidgetActions::done()
 {
-	delete EditTalkable;
-	delete LeaveChat;
+	m_actions->remove(m_leaveChatAction);
+	m_actions->remove(m_editTalkableAction);
 }
 
 ActionDescription * ChatWidgetActions::bold() const
