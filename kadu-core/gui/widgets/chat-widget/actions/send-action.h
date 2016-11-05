@@ -21,11 +21,7 @@
 
 #include "gui/actions/action-description.h"
 
-#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
-
-class ChatConfigurationHolder;
-class Configuration;
 
 class SendAction : public ActionDescription
 {
@@ -40,15 +36,7 @@ protected:
 	virtual void actionTriggered(QAction *sender, bool toggled) override;
 	virtual void updateActionState(Action *action) override;
 
-private:
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<Configuration> m_configuration;
-
-	void autoSendActionCheck();
-
 private slots:
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_INIT void init();
 
 };

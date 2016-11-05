@@ -19,18 +19,11 @@
 
 #include "send-action.h"
 
-#include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action.h"
-#include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-edit-widget.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
-#include "gui/widgets/toolbar.h"
-#include "misc/memory.h"
-
-#include <QtWidgets/QMenu>
 
 SendAction::SendAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
@@ -44,16 +37,6 @@ SendAction::SendAction(QObject *parent) :
 
 SendAction::~SendAction()
 {
-}
-
-void SendAction::setChatConfigurationHolder(ChatConfigurationHolder* chatConfigurationHolder)
-{
-	m_chatConfigurationHolder = chatConfigurationHolder;
-}
-
-void SendAction::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
 }
 
 void SendAction::init()

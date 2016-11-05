@@ -21,11 +21,7 @@
 
 #include "gui/actions/action-description.h"
 
-#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
-
-class ChatConfigurationHolder;
-class Configuration;
 
 class InsertImageAction : public ActionDescription
 {

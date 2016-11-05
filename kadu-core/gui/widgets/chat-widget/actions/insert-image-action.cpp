@@ -19,16 +19,9 @@
 
 #include "insert-image-action.h"
 
-#include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action.h"
-#include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-edit-widget.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/widgets/toolbar.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
-#include "misc/memory.h"
 #include "protocols/protocol.h"
 
 #include <QtWidgets/QMenu>

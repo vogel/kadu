@@ -24,7 +24,6 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-edit-widget.h"
 #include "gui/widgets/toolbar.h"
-#include "misc/memory.h"
 
 #include <QtWidgets/QMenu>
 

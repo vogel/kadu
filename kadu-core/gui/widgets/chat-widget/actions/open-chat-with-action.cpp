@@ -19,23 +19,9 @@
 
 #include "open-chat-with-action.h"
 
-#include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action.h"
-#include "gui/configuration/chat-configuration-holder.h"
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-edit-widget.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/widgets/custom-input.h"
-#include "gui/widgets/toolbar.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
 #include "gui/windows/open-chat-with/open-chat-with-service.h"
-#include "misc/memory.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocol.h"
-
-#include <QtWidgets/QMenu>
 
 OpenChatWithAction::OpenChatWithAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
