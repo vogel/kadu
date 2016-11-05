@@ -36,6 +36,7 @@
 #endif
 
 #include "accounts/account-manager.h"
+#include "actions/exit-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
@@ -235,7 +236,7 @@ void KaduWindow::createKaduMenu()
 		->addAction(Actions->m_showConfigurationWindowAction, KaduMenu::SectionConfig, 30)
 		->addAction(Actions->m_showYourAccountsAction, KaduMenu::SectionConfig, 29)
 		->addAction(Actions->RecentChats, KaduMenu::SectionRecentChats, 28)
-		->addAction(Actions->ExitKadu, KaduMenu::SectionQuit)
+		->addAction(Actions->m_exitAction, KaduMenu::SectionQuit)
 		->update();
 
 	KaduMenu->setTitle("&Kadu");

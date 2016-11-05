@@ -33,6 +33,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "actions/exit-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
@@ -201,6 +202,11 @@ void KaduWindowActions::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
+void KaduWindowActions::setExitAction(ExitAction *exitAction)
+{
+	m_exitAction = exitAction;
+}
+
 void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
@@ -275,12 +281,7 @@ void KaduWindowActions::init()
 	RecentChats = m_injectedFactory->makeInjected<RecentChatsAction>(this);
 	m_actions->insert(RecentChats);
 
-	ExitKadu = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeMainMenu, "exitKaduAction",
-		this, SLOT(exitKaduActionActivated(QAction *, bool)),
-		KaduIcon("application-exit"), tr("&Quit")
-	);
-	ExitKadu->setShortcut("kadu_exit", Qt::ApplicationShortcut);
+	m_exitAction->setShortcut("kadu_exit", Qt::ApplicationShortcut);
 
 	AddUser = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeGlobal, "addUserAction",
@@ -607,16 +608,6 @@ void KaduWindowActions::writeEmailActionCreated(Action *action)
 	const Buddy &buddy = action->context()->buddies().toBuddy();
 	if (buddy)
 		connect(buddy, SIGNAL(updated()), action, SLOT(checkState()));
-}
-
-void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	m_application->quit();
 }
 
 void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)

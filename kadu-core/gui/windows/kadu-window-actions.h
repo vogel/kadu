@@ -46,6 +46,7 @@ class Configuration;
 class DeleteTalkableAction;
 class DefaultProxyAction;
 class EditTalkableAction;
+class ExitAction;
 class InjectedFactory;
 class KaduWindowService;
 class MainConfigurationWindowService;
@@ -72,6 +73,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<Application> m_application;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<Configuration> m_configuration;
+	QPointer<ExitAction> m_exitAction;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
@@ -88,7 +90,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 
 	friend class KaduWindow;
 	RecentChatsAction *RecentChats;
-	ActionDescription *ExitKadu;
 	ActionDescription *AddUser;
 	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
@@ -126,6 +127,7 @@ private slots:
 	INJEQT_SET void setApplication(Application *application);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setExitAction(ExitAction *exitAction);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
@@ -151,7 +153,6 @@ private slots:
 	void showMyselfActionCreated(Action *action);
 	void writeEmailActionCreated(Action *action);
 
-	void exitKaduActionActivated(QAction *sender, bool toggled);
 	void addUserActionActivated(QAction *sender, bool toggled);
 	void mergeContactActionActivated(QAction *sender, bool toggled);
 	void addGroupActionActivated(QAction *sender, bool toggled);

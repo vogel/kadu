@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014, 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,21 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "actions-module.h"
+#pragma once
 
-#include "actions/exit-action.h"
-#include "actions/show-configuration-window-action.h"
-#include "actions/show-multilogons-action.h"
-#include "actions/show-your-accounts-action.h"
+#include "gui/actions/action-description.h"
 
-ActionsModule::ActionsModule()
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Application;
+
+class ExitAction : public ActionDescription
 {
-	add_type<ExitAction>();
-	add_type<ShowConfigurationWindowAction>();
-	add_type<ShowMultilogonsAction>();
-	add_type<ShowYourAccountsAction>();
-}
+	Q_OBJECT
 
-ActionsModule::~ActionsModule()
-{
-}
+public:
+	Q_INVOKABLE explicit ExitAction(QObject *parent = nullptr);
+	virtual ~ExitAction();
+
+protected:
+	virtual void actionTriggered(QAction *sender, bool toggled) override;
+
+private:
+	QPointer<Application> m_application;
+
+private slots:
+	INJEQT_SET void setApplication(Application *application);
+	INJEQT_INIT void init();
+
+};
