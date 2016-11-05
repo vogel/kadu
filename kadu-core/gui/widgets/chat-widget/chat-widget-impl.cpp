@@ -34,7 +34,7 @@
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-container-widget.h"
-#include "gui/widgets/chat-widget/chat-widget-actions.h"
+#include "gui/widgets/chat-widget/actions/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/filtered-tree-view.h"

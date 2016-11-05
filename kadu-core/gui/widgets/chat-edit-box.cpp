@@ -43,7 +43,7 @@
 #include "gui/actions/base-action-context.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
-#include "gui/widgets/chat-widget/chat-widget-actions.h"
+#include "gui/widgets/chat-widget/actions/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/talkable-tree-view.h"

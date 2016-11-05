@@ -46,6 +46,7 @@
 #include "file-transfer/file-transfer-module.h"
 #include "formatted-string/formatted-string-module.h"
 #include "gui/gui-module.h"
+#include "gui/widgets/chat-widget/actions/chat-widget-actions-module.h"
 #include "gui/widgets/chat-widget/chat-widget-module.h"
 #include "gui/windows/chat-window/chat-window-module.h"
 #include "icons/icons-module.h"
@@ -219,6 +220,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(std::make_unique<BuddyModule>());
 	modules.emplace_back(std::make_unique<ChatModule>());
 	modules.emplace_back(std::make_unique<ChatStyleModule>());
+	modules.emplace_back(std::make_unique<ChatWidgetActionsModule>());
 	modules.emplace_back(std::make_unique<ChatWidgetModule>());
 	modules.emplace_back(std::make_unique<ChatWindowModule>());
 	modules.emplace_back(std::make_unique<CoreModule>(std::move(profileDirectory)));

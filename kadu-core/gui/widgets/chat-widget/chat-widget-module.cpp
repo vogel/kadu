@@ -19,9 +19,6 @@
 
 #include "chat-widget-module.h"
 
-#include "gui/widgets/chat-widget/auto-send-action.h"
-#include "gui/widgets/chat-widget/block-user-action.h"
-#include "gui/widgets/chat-widget/bold-action.h"
 #include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
@@ -30,20 +27,9 @@
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository-impl.h"
 #include "gui/widgets/chat-widget/chat-widget-state-persistence-service.h"
-#include "gui/widgets/chat-widget/clear-chat-action.h"
-#include "gui/widgets/chat-widget/insert-image-action.h"
-#include "gui/widgets/chat-widget/italic-action.h"
-#include "gui/widgets/chat-widget/more-actions-action.h"
-#include "gui/widgets/chat-widget/open-chat-action.h"
-#include "gui/widgets/chat-widget/open-chat-with-action.h"
-#include "gui/widgets/chat-widget/send-action.h"
-#include "gui/widgets/chat-widget/underline-action.h"
 
 ChatWidgetModule::ChatWidgetModule()
 {
-	add_type<AutoSendAction>();
-	add_type<BlockUserAction>();
-	add_type<BoldAction>();
 	add_type<ChatWidgetActivationService>();
 	add_type<ChatWidgetContainerHandlerMapper>();
 	add_type<ChatWidgetContainerHandlerRepository>();
@@ -52,14 +38,6 @@ ChatWidgetModule::ChatWidgetModule()
 	add_type<ChatWidgetMessageHandler>();
 	add_type<ChatWidgetRepositoryImpl>();
 	add_type<ChatWidgetStatePersistenceService>();
-	add_type<ClearChatAction>();
-	add_type<InsertImageAction>();
-	add_type<ItalicAction>();
-	add_type<MoreActionsAction>();
-	add_type<OpenChatAction>();
-	add_type<OpenChatWithAction>();
-	add_type<SendAction>();
-	add_type<UnderlineAction>();
 }
 
 ChatWidgetModule::~ChatWidgetModule()

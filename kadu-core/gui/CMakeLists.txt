@@ -25,10 +25,20 @@ set (gui_SRCS
 
 	services/clipboard-html-transformer-service.cpp
 
-	widgets/chat-widget/auto-send-action.cpp
-	widgets/chat-widget/block-user-action.cpp
-	widgets/chat-widget/bold-action.cpp
-	widgets/chat-widget/chat-widget-actions.cpp
+	widgets/chat-widget/actions/auto-send-action.cpp
+	widgets/chat-widget/actions/block-user-action.cpp
+	widgets/chat-widget/actions/bold-action.cpp
+	widgets/chat-widget/actions/chat-widget-actions-module.cpp
+	widgets/chat-widget/actions/chat-widget-actions.cpp
+	widgets/chat-widget/actions/clear-chat-action.cpp
+	widgets/chat-widget/actions/insert-image-action.cpp
+	widgets/chat-widget/actions/italic-action.cpp
+	widgets/chat-widget/actions/more-actions-action.cpp
+	widgets/chat-widget/actions/open-chat-action.cpp
+	widgets/chat-widget/actions/open-chat-with-action.cpp
+	widgets/chat-widget/actions/send-action.cpp
+	widgets/chat-widget/actions/underline-action.cpp
+
 	widgets/chat-widget/chat-widget-activation-service.cpp
 	widgets/chat-widget/chat-widget-container-handler.cpp
 	widgets/chat-widget/chat-widget-container-handler-mapper.cpp
@@ -45,14 +55,6 @@ set (gui_SRCS
 	widgets/chat-widget/chat-widget-state-persistence-service.cpp
 	widgets/chat-widget/chat-widget-title.cpp
 	widgets/chat-widget/chat-widget.cpp
-	widgets/chat-widget/clear-chat-action.cpp
-	widgets/chat-widget/insert-image-action.cpp
-	widgets/chat-widget/italic-action.cpp
-	widgets/chat-widget/more-actions-action.cpp
-	widgets/chat-widget/open-chat-action.cpp
-	widgets/chat-widget/open-chat-with-action.cpp
-	widgets/chat-widget/send-action.cpp
-	widgets/chat-widget/underline-action.cpp
 
 	widgets/group-tab-bar/group-filter-tab-data.cpp
 	widgets/group-tab-bar/group-tab-bar.cpp

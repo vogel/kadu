@@ -23,7 +23,7 @@
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
-#include "gui/widgets/chat-widget/chat-widget-actions.h"
+#include "gui/widgets/chat-widget/actions/chat-widget-actions.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"

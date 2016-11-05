@@ -54,7 +54,7 @@
 #include "gui/menu/menu-inventory.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/buddy-info-panel.h"
-#include "gui/widgets/chat-widget/chat-widget-actions.h"
+#include "gui/widgets/chat-widget/actions/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/dialog/merge-buddies-dialog-widget.h"
 #include "gui/widgets/status-menu.h"
