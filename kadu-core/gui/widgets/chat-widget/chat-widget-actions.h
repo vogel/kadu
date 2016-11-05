@@ -103,8 +103,6 @@ private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void colorSelectorActionActivated(QAction *sender, bool toogled);
-
 public:
 	Q_INVOKABLE explicit ChatWidgetActions(QObject *parent = nullptr);
 	virtual ~ChatWidgetActions();
@@ -115,6 +113,5 @@ public:
 	ActionDescription * send() const;
 	ActionDescription * blockUser() const;
 	ActionDescription * openChatWith() const;
-// 	ActionDescription * colorSelector() { return ColorSelector; }
 
 };

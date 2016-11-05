@@ -186,21 +186,6 @@ void ChatWidgetActions::done()
 	delete LeaveChat;
 }
 
-void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	QList<QWidget *> widgets = sender->associatedWidgets();
-	if (widgets.isEmpty())
-		return;
-
-	chatEditBox->openColorSelector(widgets.at(widgets.size() - 1));
-}
-
 ActionDescription * ChatWidgetActions::bold() const
 {
 	return m_boldAction;

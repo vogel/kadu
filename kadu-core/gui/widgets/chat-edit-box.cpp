@@ -45,7 +45,6 @@
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/widgets/color-selector.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/toolbar.h"
@@ -241,14 +240,6 @@ void ChatEditBox::createDefaultToolbars(Configuration *configuration, QDomElemen
 	addToolButton(configuration, toolbarConfig, "editUserAction");
 	addToolButton(configuration, toolbarConfig, "__spacer1", Qt::ToolButtonTextBesideIcon);
 	addToolButton(configuration, toolbarConfig, "sendAction", Qt::ToolButtonTextBesideIcon);
-}
-
-void ChatEditBox::openColorSelector(const QWidget *activatingWidget)
-{
-	//sytuacja podobna jak w przypadku emoticon_selectora
-	ColorSelector *colorSelector = new ColorSelector(InputBox->palette().foreground().color(), activatingWidget, this);
-	connect(colorSelector, SIGNAL(colorSelect(const QColor &)), this, SLOT(changeColor(const QColor &)));
-	colorSelector->show();
 }
 
 void ChatEditBox::openInsertImageDialog()

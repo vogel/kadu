@@ -89,7 +89,6 @@ public:
 
 	ChatWidget * chatWidget();
 
-	void openColorSelector(const QWidget *activatingWidget);
 	void openInsertImageDialog();
 
 	void setAutoSend(bool autoSend);

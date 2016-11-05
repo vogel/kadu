@@ -99,7 +99,6 @@ set (gui_SRCS
 	widgets/chat-top-bar-widget-factory-repository.cpp
 	widgets/chat-view-network-access-manager.cpp
 	widgets/color-button.cpp
-	widgets/color-selector.cpp
 	widgets/composite-configuration-value-state-notifier.cpp
 	widgets/configuration-value-state-notifier.cpp
 	widgets/contact-avatar-display.cpp
@@ -299,7 +298,6 @@ set (gui_MOC_SRCS
 	widgets/chat-room-edit-widget.h
 	widgets/chat-view-network-access-manager.h
 	widgets/color-button.h
-	widgets/color-selector.h
 	widgets/composite-configuration-value-state-notifier.h
 	widgets/configuration-value-state-notifier.h
 	widgets/custom-input.h
