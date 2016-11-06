@@ -33,6 +33,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "actions/add-user-action.h"
 #include "actions/exit-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-multilogons-action.h"
@@ -187,6 +188,11 @@ void KaduWindowActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void KaduWindowActions::setAddUserAction(AddUserAction *addUserAction)
+{
+	m_addUserAction = addUserAction;
+}
+
 void KaduWindowActions::setApplication(Application *application)
 {
 	m_application = application;
@@ -282,13 +288,7 @@ void KaduWindowActions::init()
 	m_actions->insert(RecentChats);
 
 	m_exitAction->setShortcut("kadu_exit", Qt::ApplicationShortcut);
-
-	AddUser = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeGlobal, "addUserAction",
-		this, SLOT(addUserActionActivated(QAction *, bool)),
-		KaduIcon("contact-new"), tr("Add Buddy...")
-	);
-	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
+	m_addUserAction->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
 	AddConference = m_injectedFactory->makeInjected<AddConferenceAction>(this);
 	m_actions->insert(AddConference);
@@ -608,26 +608,6 @@ void KaduWindowActions::writeEmailActionCreated(Action *action)
 	const Buddy &buddy = action->context()->buddies().toBuddy();
 	if (buddy)
 		connect(buddy, SIGNAL(updated()), action, SLOT(checkState()));
-}
-
-void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	const Buddy &buddy = action->context()->buddies().toBuddy();
-
-	if (buddy.isAnonymous())
-		(m_injectedFactory->makeInjected<AddBuddyWindow>(action->parentWidget(), buddy, true))->show();
-	else
-		(m_injectedFactory->makeInjected<AddBuddyWindow>(action->parentWidget()))->show();
-
-	kdebugf2();
 }
 
 void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggled)

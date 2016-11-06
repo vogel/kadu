@@ -38,6 +38,7 @@ class ActionDescription;
 class Actions;
 class Action;
 class AddConferenceAction;
+class AddUserAction;
 class AddRoomChatAction;
 class Application;
 class ChangeStatusAction;
@@ -70,6 +71,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 
 	QPointer<AccountManager> m_accountManager;
 	QPointer<Actions> m_actions;
+	QPointer<AddUserAction> m_addUserAction;
 	QPointer<Application> m_application;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<Configuration> m_configuration;
@@ -90,7 +92,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 
 	friend class KaduWindow;
 	RecentChatsAction *RecentChats;
-	ActionDescription *AddUser;
 	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
@@ -124,6 +125,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setAddUserAction(AddUserAction *addUserAction);
 	INJEQT_SET void setApplication(Application *application);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
@@ -153,7 +155,6 @@ private slots:
 	void showMyselfActionCreated(Action *action);
 	void writeEmailActionCreated(Action *action);
 
-	void addUserActionActivated(QAction *sender, bool toggled);
 	void mergeContactActionActivated(QAction *sender, bool toggled);
 	void addGroupActionActivated(QAction *sender, bool toggled);
 	void openSearchActionActivated(QAction *sender, bool toggled);

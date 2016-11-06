@@ -36,6 +36,7 @@
 #endif
 
 #include "accounts/account-manager.h"
+#include "actions/add-user-action.h"
 #include "actions/exit-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-multilogons-action.h"
@@ -251,7 +252,7 @@ void KaduWindow::createContactsMenu()
 
 	m_menuInventory->menu("buddy")->attachToMenu(ContactsMenu);
 	m_menuInventory->menu("buddy")
-		->addAction(Actions->AddUser, KaduMenu::SectionBuddies, 50)
+		->addAction(Actions->m_addUserAction, KaduMenu::SectionBuddies, 50)
 		->addAction(Actions->addConference(), KaduMenu::SectionBuddies, 40)
 		->addAction(Actions->addRoomChat(), KaduMenu::SectionBuddies, 30)
 		->addAction(Actions->AddGroup, KaduMenu::SectionBuddies, 20)
