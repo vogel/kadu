@@ -33,6 +33,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "actions/add-group-action.h"
 #include "actions/add-user-action.h"
 #include "actions/exit-action.h"
 #include "actions/show-configuration-window-action.h"
@@ -188,6 +189,11 @@ void KaduWindowActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void KaduWindowActions::setAddGroupAction(AddGroupAction *addGroupAction)
+{
+	m_addGroupAction = addGroupAction;
+}
+
 void KaduWindowActions::setAddUserAction(AddUserAction *addUserAction)
 {
 	m_addUserAction = addUserAction;
@@ -295,12 +301,6 @@ void KaduWindowActions::init()
 
 	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
 	m_actions->insert(AddRoomChat);
-
-	AddGroup = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeGlobal, "addGroupAction",
-		this, SLOT(addGroupActionActivated(QAction *, bool)),
-		KaduIcon("group-new"), tr("Add Group...")
-	);
 
 	OpenSearch = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeGlobal, "openSearchAction",
@@ -632,14 +632,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	window->exec();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	auto window = m_injectedFactory->makeInjected<GroupEditWindow>(Group::null, sender->parentWidget());
-	window->show();
 }
 
 void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)

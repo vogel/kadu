@@ -1,5 +1,6 @@
 set (actions_SRCS
 	actions-module.cpp
+	add-group-action.cpp
 	add-user-action.cpp
 	exit-action.cpp
 	show-configuration-window-action.cpp
