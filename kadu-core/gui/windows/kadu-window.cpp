@@ -39,6 +39,7 @@
 #include "actions/add-group-action.h"
 #include "actions/add-user-action.h"
 #include "actions/exit-action.h"
+#include "actions/open-search-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
@@ -257,7 +258,7 @@ void KaduWindow::createContactsMenu()
 		->addAction(Actions->addConference(), KaduMenu::SectionBuddies, 40)
 		->addAction(Actions->addRoomChat(), KaduMenu::SectionBuddies, 30)
 		->addAction(Actions->m_addGroupAction, KaduMenu::SectionBuddies, 20)
-		->addAction(Actions->OpenSearch, KaduMenu::SectionBuddies, 10)
+		->addAction(Actions->m_openSearchAction, KaduMenu::SectionBuddies, 10)
 		->addAction(m_chatWidgetActions->openChatWith(), KaduMenu::SectionOpenChat)
 		->addAction(Actions->InactiveUsers, KaduMenu::SectionBuddyListFilters, 4)
 		->addAction(Actions->ShowBlockedBuddies, KaduMenu::SectionBuddyListFilters, 3)

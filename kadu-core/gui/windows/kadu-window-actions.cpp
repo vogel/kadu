@@ -36,6 +36,7 @@
 #include "actions/add-group-action.h"
 #include "actions/add-user-action.h"
 #include "actions/exit-action.h"
+#include "actions/open-search-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
@@ -96,19 +97,6 @@
 #include "debug.h"
 
 #include "kadu-window-actions.h"
-
-void hideNoSearchServiceAccounts(AccountManager *accountManager, Action *action)
-{
-	auto hasSearchServiceAccount = false;
-	for (auto const &account : accountManager->items())
-		if (account.protocolHandler() && account.protocolHandler()->searchService())
-		{
-			hasSearchServiceAccount = true;
-			break;
-		}
-
-	action->setVisible(hasSearchServiceAccount);
-}
 
 void disableNoSearchService(Action *action)
 {
@@ -249,6 +237,11 @@ void KaduWindowActions::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
+void KaduWindowActions::setOpenSearchAction(OpenSearchAction *openSearchAction)
+{
+	m_openSearchAction = openSearchAction;
+}
+
 void KaduWindowActions::setParser(Parser *parser)
 {
 	m_parser = parser;
@@ -301,14 +294,6 @@ void KaduWindowActions::init()
 
 	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
 	m_actions->insert(AddRoomChat);
-
-	OpenSearch = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeGlobal, "openSearchAction",
-		this, SLOT(openSearchActionActivated(QAction *, bool)),
-		KaduIcon("edit-find"), tr("Search for Buddy..."), false,
-		[this](Action *action){ return hideNoSearchServiceAccounts(m_accountManager, action); }
-	);
-	connect(OpenSearch, SIGNAL(actionCreated(Action*)), this, SLOT(openSearchActionCreated(Action*)));
 
 	Forum = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "forumAction",
@@ -497,12 +482,6 @@ void KaduWindowActions::init()
 	m_actions->insert(DefaultProxy);
 }
 
-void KaduWindowActions::openSearchActionCreated(Action *action)
-{
-	connect(m_accountManager, SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
-	connect(m_accountManager, SIGNAL(accountUnregistered(Account)), action, SLOT(checkState()));
-}
-
 void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 {
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
@@ -632,13 +611,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	window->exec();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	(m_injectedFactory->makeInjected<SearchWindow>(sender->parentWidget()))->show();
 }
 
 void KaduWindowActions::forumActionActivated(QAction *sender, bool toggled)
