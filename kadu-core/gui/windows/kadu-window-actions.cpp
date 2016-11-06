@@ -43,6 +43,7 @@
 #include "actions/open-translate-action.h"
 #include "actions/show-about-window-action.h"
 #include "actions/show-configuration-window-action.h"
+#include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
 #include "buddies/buddy-manager.h"
@@ -282,6 +283,11 @@ void KaduWindowActions::setShowConfigurationWindowAction(ShowConfigurationWindow
 	m_showConfigurationWindowAction = showConfigurationWindowAction;
 }
 
+void KaduWindowActions::setShowInfoPanelAction(ShowInfoPanelAction *showInfoPanelAction)
+{
+	m_showInfoPanelAction = showInfoPanelAction;
+}
+
 void KaduWindowActions::setShowMultilogonsAction(ShowMultilogonsAction *showMultilogonsAction)
 {
 	m_showMultilogonsAction = showMultilogonsAction;
@@ -324,13 +330,6 @@ void KaduWindowActions::init()
 
 	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
 	m_actions->insert(AddRoomChat);
-
-	ShowInfoPanel = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeMainMenu, "showInfoPanelAction",
-		this, SLOT(showInfoPanelActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/show-information-panel"), tr("Show Information Panel"), true
-	);
-	connect(ShowInfoPanel, SIGNAL(actionCreated(Action *)), this, SLOT(showInfoPanelActionCreated(Action *)));
 
 	ShowBlockedBuddies = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "showIgnoredAction",
@@ -542,11 +541,6 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	window->talkableProxyModel()->addFilter(filter);
 }
 
-void KaduWindowActions::showInfoPanelActionCreated(Action *action)
-{
-	action->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"));
-}
-
 void KaduWindowActions::showBlockedActionCreated(Action *action)
 {
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
@@ -611,16 +605,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	window->exec();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	m_kaduWindowService->kaduWindow()->infoPanel()->setVisible(toggled);
-
-	m_configuration->deprecatedApi()->writeEntry("Look", "ShowInfoPanel", toggled);
 }
 
 void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled)
@@ -819,9 +803,6 @@ void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool 
 void KaduWindowActions::configurationUpdated()
 {
 	ActionContext *context = m_kaduWindowService->kaduWindow()->actionContext();
-
-	if (ShowInfoPanel->action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
-		ShowInfoPanel->action(context)->trigger();
 
 	if (InactiveUsers->action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
 		InactiveUsers->action(context)->trigger();

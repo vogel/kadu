@@ -29,6 +29,7 @@
 #include "actions/open-translate-action.h"
 #include "actions/show-about-window-action.h"
 #include "actions/show-configuration-window-action.h"
+#include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
 
@@ -44,6 +45,7 @@ ActionsModule::ActionsModule()
 	add_type<OpenTranslateAction>();
 	add_type<ShowAboutWindowAction>();
 	add_type<ShowConfigurationWindowAction>();
+	add_type<ShowInfoPanelAction>();
 	add_type<ShowMultilogonsAction>();
 	add_type<ShowYourAccountsAction>();
 }

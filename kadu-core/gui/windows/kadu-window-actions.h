@@ -65,6 +65,7 @@ class Parser;
 class RecentChatsAction;
 class ShowAboutWindowAction;
 class ShowConfigurationWindowAction;
+class ShowInfoPanelAction;
 class ShowMultilogonsAction;
 class ShowYourAccountsAction;
 class StatusContainer;
@@ -98,6 +99,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<Parser> m_parser;
 	QPointer<ShowAboutWindowAction> m_showAboutWindowAction;
 	QPointer<ShowConfigurationWindowAction> m_showConfigurationWindowAction;
+	QPointer<ShowInfoPanelAction> m_showInfoPanelAction;
 	QPointer<ShowMultilogonsAction> m_showMultilogonsAction;
 	QPointer<ShowYourAccountsAction> m_showYourAccountsAction;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
@@ -109,7 +111,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
-	ActionDescription *ShowInfoPanel;
 	ActionDescription *ShowBlockedBuddies;
 	ActionDescription *ShowMyself;
 
@@ -152,6 +153,7 @@ private slots:
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setShowAboutWindowAction(ShowAboutWindowAction *showAboutWindowAction);
 	INJEQT_SET void setShowConfigurationWindowAction(ShowConfigurationWindowAction *showConfigurationWindowAction);
+	INJEQT_SET void setShowInfoPanelAction(ShowInfoPanelAction *showInfoPanelAction);
 	INJEQT_SET void setShowMultilogonsAction(ShowMultilogonsAction *showMultilogonsAction);
 	INJEQT_SET void setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
@@ -163,13 +165,11 @@ private slots:
 	void descriptionUsersActionCreated(Action *action);
 	void showDescriptionsActionCreated(Action *action);
 	void onlineAndDescUsersActionCreated(Action *action);
-	void showInfoPanelActionCreated(Action *action);
 	void showBlockedActionCreated(Action *action);
 	void showMyselfActionCreated(Action *action);
 	void writeEmailActionCreated(Action *action);
 
 	void mergeContactActionActivated(QAction *sender, bool toggled);
-	void showInfoPanelActionActivated(QAction *sender, bool toggled);
 	void showBlockedActionActivated(QAction *sender, bool toggled);
 	void showMyselfActionActivated(QAction *sender, bool toggled);
 

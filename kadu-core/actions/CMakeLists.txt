@@ -10,6 +10,7 @@ set (actions_SRCS
 	open-translate-action.cpp
 	show-about-window-action.cpp
 	show-configuration-window-action.cpp
+	show-info-panel-action.cpp
 	show-multilogons-action.cpp
 	show-your-accounts-action.cpp
 )

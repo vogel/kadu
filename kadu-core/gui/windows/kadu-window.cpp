@@ -46,6 +46,7 @@
 #include "actions/open-translate-action.h"
 #include "actions/show-about-window-action.h"
 #include "actions/show-configuration-window-action.h"
+#include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
 #include "buddies/buddy-set.h"
@@ -268,7 +269,7 @@ void KaduWindow::createContactsMenu()
 		->addAction(Actions->InactiveUsers, KaduMenu::SectionBuddyListFilters, 4)
 		->addAction(Actions->ShowBlockedBuddies, KaduMenu::SectionBuddyListFilters, 3)
 		->addAction(Actions->ShowMyself, KaduMenu::SectionBuddyListFilters, 2)
-		->addAction(Actions->ShowInfoPanel, KaduMenu::SectionBuddyListFilters, 1)
+		->addAction(Actions->m_showInfoPanelAction, KaduMenu::SectionBuddyListFilters, 1)
 		->update();
 
 	menuBar()->addMenu(ContactsMenu);
