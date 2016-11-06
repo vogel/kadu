@@ -3,6 +3,7 @@ set (actions_SRCS
 	add-group-action.cpp
 	add-user-action.cpp
 	exit-action.cpp
+	open-forum-action.cpp
 	open-search-action.cpp
 	show-configuration-window-action.cpp
 	show-multilogons-action.cpp

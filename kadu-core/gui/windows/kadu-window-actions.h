@@ -56,6 +56,7 @@ class MainWindow;
 class MenuInventory;
 class MultilogonWindowService;
 class Myself;
+class OpenForumAction;
 class OpenSearchAction;
 class Parser;
 class RecentChatsAction;
@@ -85,6 +86,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MultilogonWindowService> m_multilogonWindowService;
 	QPointer<Myself> m_myself;
+	QPointer<OpenForumAction> m_openForumAction;
 	QPointer<OpenSearchAction> m_openSearchAction;
 	QPointer<Parser> m_parser;
 	QPointer<ShowConfigurationWindowAction> m_showConfigurationWindowAction;
@@ -99,7 +101,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
-	ActionDescription *Forum;
 	ActionDescription *Bugs;
 	ActionDescription *GetInvolved;
 	ActionDescription *About;
@@ -139,6 +140,7 @@ private slots:
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMultilogonWindowService(MultilogonWindowService *multilogonWindowService);
 	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setOpenForumAction(OpenForumAction *openForumAction);
 	INJEQT_SET void setOpenSearchAction(OpenSearchAction *openSearchAction);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setShowConfigurationWindowAction(ShowConfigurationWindowAction *showConfigurationWindowAction);
@@ -159,7 +161,6 @@ private slots:
 	void writeEmailActionCreated(Action *action);
 
 	void mergeContactActionActivated(QAction *sender, bool toggled);
-	void forumActionActivated(QAction *sender, bool toggled);
 	void bugsActionActivated(QAction *sender, bool toggled);
 	void getInvolvedActionActivated(QAction *sender, bool toggled);
 	void aboutActionActivated(QAction *sender, bool toggled);

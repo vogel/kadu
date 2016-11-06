@@ -36,6 +36,7 @@
 #include "actions/add-group-action.h"
 #include "actions/add-user-action.h"
 #include "actions/exit-action.h"
+#include "actions/open-forum-action.h"
 #include "actions/open-search-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-multilogons-action.h"
@@ -237,6 +238,11 @@ void KaduWindowActions::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
+void KaduWindowActions::setOpenForumAction(OpenForumAction *openForumAction)
+{
+	m_openForumAction = openForumAction;
+}
+
 void KaduWindowActions::setOpenSearchAction(OpenSearchAction *openSearchAction)
 {
 	m_openSearchAction = openSearchAction;
@@ -294,12 +300,6 @@ void KaduWindowActions::init()
 
 	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
 	m_actions->insert(AddRoomChat);
-
-	Forum = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeMainMenu, "forumAction",
-		this, SLOT(forumActionActivated(QAction *, bool)),
-		KaduIcon{}, tr("Forum")
-	);
 
 	Bugs = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "bugsAction",
@@ -611,17 +611,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	window->exec();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::forumActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
-		m_urlOpener->openUrl("http://www.kadu.im/forum/");
-	else
-		m_urlOpener->openUrl("http://www.kadu.im/forum/viewforum.php?f=12");
 }
 
 void KaduWindowActions::bugsActionActivated(QAction *sender, bool toggled)
