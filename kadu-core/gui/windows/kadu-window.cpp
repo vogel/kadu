@@ -40,6 +40,7 @@
 #include "actions/add-user-action.h"
 #include "actions/exit-action.h"
 #include "actions/open-forum-action.h"
+#include "actions/open-get-involved-action.h"
 #include "actions/open-redmine-action.h"
 #include "actions/open-search-action.h"
 #include "actions/show-configuration-window-action.h"
@@ -293,7 +294,7 @@ void KaduWindow::createHelpMenu()
 	m_menuInventory->menu("help")
 		->addAction(Actions->m_openForumAction, KaduMenu::SectionHelp, 2)
 		->addAction(Actions->m_openRedmineAction, KaduMenu::SectionHelp, 1)
-		->addAction(Actions->GetInvolved, KaduMenu::SectionGetInvolved, 2)
+		->addAction(Actions->m_openGetInvolvedAction, KaduMenu::SectionGetInvolved, 2)
 		->addAction(Actions->Translate, KaduMenu::SectionGetInvolved, 1)
 		->addAction(Actions->About, KaduMenu::SectionAbout, 1)
 		->update();

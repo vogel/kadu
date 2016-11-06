@@ -37,6 +37,7 @@
 #include "actions/add-user-action.h"
 #include "actions/exit-action.h"
 #include "actions/open-forum-action.h"
+#include "actions/open-get-involved-action.h"
 #include "actions/open-redmine-action.h"
 #include "actions/open-search-action.h"
 #include "actions/show-configuration-window-action.h"
@@ -244,6 +245,11 @@ void KaduWindowActions::setOpenForumAction(OpenForumAction *openForumAction)
 	m_openForumAction = openForumAction;
 }
 
+void KaduWindowActions::setOpenGetInvolvedAction(OpenGetInvolvedAction *openGetInvolvedAction)
+{
+	m_openGetInvolvedAction = openGetInvolvedAction;
+}
+
 void KaduWindowActions::setOpenRedmineAction(OpenRedmineAction *openRedmineAction)
 {
 	m_openRedmineAction = openRedmineAction;
@@ -306,12 +312,6 @@ void KaduWindowActions::init()
 
 	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
 	m_actions->insert(AddRoomChat);
-
-	GetInvolved = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeMainMenu, "getInvolvedAction",
-		this, SLOT(getInvolvedActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/get-involved"), tr("Get Involved")
-	);
 
 	Translate = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "translateAction",
@@ -611,17 +611,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	window->exec();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::getInvolvedActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
-		m_urlOpener->openUrl("http://www.kadu.im/w/Do%C5%82%C4%85cz");
-	else
-		m_urlOpener->openUrl("http://www.kadu.im/w/English:GetInvolved");
 }
 
 void KaduWindowActions::aboutActionActivated(QAction *sender, bool toggled)

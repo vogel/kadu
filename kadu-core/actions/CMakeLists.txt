@@ -4,6 +4,7 @@ set (actions_SRCS
 	add-user-action.cpp
 	exit-action.cpp
 	open-forum-action.cpp
+	open-get-involved-action.cpp
 	open-redmine-action.cpp
 	open-search-action.cpp
 	show-configuration-window-action.cpp

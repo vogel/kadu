@@ -23,6 +23,7 @@
 #include "actions/add-user-action.h"
 #include "actions/exit-action.h"
 #include "actions/open-forum-action.h"
+#include "actions/open-get-involved-action.h"
 #include "actions/open-redmine-action.h"
 #include "actions/open-search-action.h"
 #include "actions/show-configuration-window-action.h"
@@ -35,6 +36,7 @@ ActionsModule::ActionsModule()
 	add_type<AddUserAction>();
 	add_type<ExitAction>();
 	add_type<OpenForumAction>();
+	add_type<OpenGetInvolvedAction>();
 	add_type<OpenRedmineAction>();
 	add_type<OpenSearchAction>();
 	add_type<ShowConfigurationWindowAction>();
