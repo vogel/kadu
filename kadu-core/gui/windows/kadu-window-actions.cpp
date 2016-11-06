@@ -40,6 +40,7 @@
 #include "actions/open-get-involved-action.h"
 #include "actions/open-redmine-action.h"
 #include "actions/open-search-action.h"
+#include "actions/open-translate-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
@@ -260,6 +261,11 @@ void KaduWindowActions::setOpenSearchAction(OpenSearchAction *openSearchAction)
 	m_openSearchAction = openSearchAction;
 }
 
+void KaduWindowActions::setOpenTranslateAction(OpenTranslateAction *openTranslateAction)
+{
+	m_openTranslateAction = openTranslateAction;
+}
+
 void KaduWindowActions::setParser(Parser *parser)
 {
 	m_parser = parser;
@@ -312,12 +318,6 @@ void KaduWindowActions::init()
 
 	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
 	m_actions->insert(AddRoomChat);
-
-	Translate = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeMainMenu, "translateAction",
-		this, SLOT(translateActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/translate-kadu"), tr("Translate Kadu")
-	);
 
 	About = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "aboutAction",
@@ -619,14 +619,6 @@ void KaduWindowActions::aboutActionActivated(QAction *sender, bool toggled)
 	Q_UNUSED(toggled)
 
 	m_injectedFactory->makeInjected<::About>(m_kaduWindowService->kaduWindow())->show();
-}
-
-void KaduWindowActions::translateActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	m_urlOpener->openUrl("http://www.transifex.net/projects/p/kadu/");
 }
 
 void KaduWindowActions::showInfoPanelActionActivated(QAction *sender, bool toggled)

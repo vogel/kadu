@@ -60,6 +60,7 @@ class OpenForumAction;
 class OpenGetInvolvedAction;
 class OpenRedmineAction;
 class OpenSearchAction;
+class OpenTranslateAction;
 class Parser;
 class RecentChatsAction;
 class ShowConfigurationWindowAction;
@@ -92,6 +93,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<OpenGetInvolvedAction> m_openGetInvolvedAction;
 	QPointer<OpenRedmineAction> m_openRedmineAction;
 	QPointer<OpenSearchAction> m_openSearchAction;
+	QPointer<OpenTranslateAction> m_openTranslateAction;
 	QPointer<Parser> m_parser;
 	QPointer<ShowConfigurationWindowAction> m_showConfigurationWindowAction;
 	QPointer<ShowMultilogonsAction> m_showMultilogonsAction;
@@ -106,7 +108,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
 	ActionDescription *About;
-	ActionDescription *Translate;
 	ActionDescription *ShowInfoPanel;
 	ActionDescription *ShowBlockedBuddies;
 	ActionDescription *ShowMyself;
@@ -145,6 +146,7 @@ private slots:
 	INJEQT_SET void setOpenForumAction(OpenForumAction *openForumAction);
 	INJEQT_SET void setOpenGetInvolvedAction(OpenGetInvolvedAction *openGetInvolvedAction);
 	INJEQT_SET void setOpenRedmineAction(OpenRedmineAction *openRedmineAction);
+	INJEQT_SET void setOpenTranslateAction(OpenTranslateAction *openTranslateAction);
 	INJEQT_SET void setOpenSearchAction(OpenSearchAction *openSearchAction);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setShowConfigurationWindowAction(ShowConfigurationWindowAction *showConfigurationWindowAction);
@@ -166,7 +168,6 @@ private slots:
 
 	void mergeContactActionActivated(QAction *sender, bool toggled);
 	void aboutActionActivated(QAction *sender, bool toggled);
-	void translateActionActivated(QAction *sender, bool toggled);
 	void showInfoPanelActionActivated(QAction *sender, bool toggled);
 	void showBlockedActionActivated(QAction *sender, bool toggled);
 	void showMyselfActionActivated(QAction *sender, bool toggled);

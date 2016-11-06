@@ -7,6 +7,7 @@ set (actions_SRCS
 	open-get-involved-action.cpp
 	open-redmine-action.cpp
 	open-search-action.cpp
+	open-translate-action.cpp
 	show-configuration-window-action.cpp
 	show-multilogons-action.cpp
 	show-your-accounts-action.cpp

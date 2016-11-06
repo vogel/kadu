@@ -26,6 +26,7 @@
 #include "actions/open-get-involved-action.h"
 #include "actions/open-redmine-action.h"
 #include "actions/open-search-action.h"
+#include "actions/open-translate-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
@@ -39,6 +40,7 @@ ActionsModule::ActionsModule()
 	add_type<OpenGetInvolvedAction>();
 	add_type<OpenRedmineAction>();
 	add_type<OpenSearchAction>();
+	add_type<OpenTranslateAction>();
 	add_type<ShowConfigurationWindowAction>();
 	add_type<ShowMultilogonsAction>();
 	add_type<ShowYourAccountsAction>();

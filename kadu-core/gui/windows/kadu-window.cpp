@@ -43,6 +43,7 @@
 #include "actions/open-get-involved-action.h"
 #include "actions/open-redmine-action.h"
 #include "actions/open-search-action.h"
+#include "actions/open-translate-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-your-accounts-action.h"
@@ -295,7 +296,7 @@ void KaduWindow::createHelpMenu()
 		->addAction(Actions->m_openForumAction, KaduMenu::SectionHelp, 2)
 		->addAction(Actions->m_openRedmineAction, KaduMenu::SectionHelp, 1)
 		->addAction(Actions->m_openGetInvolvedAction, KaduMenu::SectionGetInvolved, 2)
-		->addAction(Actions->Translate, KaduMenu::SectionGetInvolved, 1)
+		->addAction(Actions->m_openTranslateAction, KaduMenu::SectionGetInvolved, 1)
 		->addAction(Actions->About, KaduMenu::SectionAbout, 1)
 		->update();
 
