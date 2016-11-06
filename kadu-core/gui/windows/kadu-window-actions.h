@@ -63,6 +63,7 @@ class OpenSearchAction;
 class OpenTranslateAction;
 class Parser;
 class RecentChatsAction;
+class ShowAboutWindowAction;
 class ShowConfigurationWindowAction;
 class ShowMultilogonsAction;
 class ShowYourAccountsAction;
@@ -95,6 +96,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<OpenSearchAction> m_openSearchAction;
 	QPointer<OpenTranslateAction> m_openTranslateAction;
 	QPointer<Parser> m_parser;
+	QPointer<ShowAboutWindowAction> m_showAboutWindowAction;
 	QPointer<ShowConfigurationWindowAction> m_showConfigurationWindowAction;
 	QPointer<ShowMultilogonsAction> m_showMultilogonsAction;
 	QPointer<ShowYourAccountsAction> m_showYourAccountsAction;
@@ -107,7 +109,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
-	ActionDescription *About;
 	ActionDescription *ShowInfoPanel;
 	ActionDescription *ShowBlockedBuddies;
 	ActionDescription *ShowMyself;
@@ -149,6 +150,7 @@ private slots:
 	INJEQT_SET void setOpenTranslateAction(OpenTranslateAction *openTranslateAction);
 	INJEQT_SET void setOpenSearchAction(OpenSearchAction *openSearchAction);
 	INJEQT_SET void setParser(Parser *parser);
+	INJEQT_SET void setShowAboutWindowAction(ShowAboutWindowAction *showAboutWindowAction);
 	INJEQT_SET void setShowConfigurationWindowAction(ShowConfigurationWindowAction *showConfigurationWindowAction);
 	INJEQT_SET void setShowMultilogonsAction(ShowMultilogonsAction *showMultilogonsAction);
 	INJEQT_SET void setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction);
@@ -167,7 +169,6 @@ private slots:
 	void writeEmailActionCreated(Action *action);
 
 	void mergeContactActionActivated(QAction *sender, bool toggled);
-	void aboutActionActivated(QAction *sender, bool toggled);
 	void showInfoPanelActionActivated(QAction *sender, bool toggled);
 	void showBlockedActionActivated(QAction *sender, bool toggled);
 	void showMyselfActionActivated(QAction *sender, bool toggled);

@@ -8,6 +8,7 @@ set (actions_SRCS
 	open-redmine-action.cpp
 	open-search-action.cpp
 	open-translate-action.cpp
+	show-about-window-action.cpp
 	show-configuration-window-action.cpp
 	show-multilogons-action.cpp
 	show-your-accounts-action.cpp
