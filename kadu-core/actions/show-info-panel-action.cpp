@@ -23,7 +23,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/buddy-info-panel.h"
-#include "gui/windows/about.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
 

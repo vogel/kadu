@@ -9,6 +9,7 @@ set (actions_SRCS
 	open-search-action.cpp
 	open-translate-action.cpp
 	show-about-window-action.cpp
+	show-blocked-buddies-action.cpp
 	show-configuration-window-action.cpp
 	show-info-panel-action.cpp
 	show-multilogons-action.cpp

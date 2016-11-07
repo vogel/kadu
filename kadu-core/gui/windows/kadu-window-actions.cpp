@@ -42,6 +42,7 @@
 #include "actions/open-search-action.h"
 #include "actions/open-translate-action.h"
 #include "actions/show-about-window-action.h"
+#include "actions/show-blocked-buddies-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
@@ -278,6 +279,11 @@ void KaduWindowActions::setShowAboutWindowAction(ShowAboutWindowAction *showAbou
 	m_showAboutWindowAction = showAboutWindowAction;
 }
 
+void KaduWindowActions::setShowBlockedBuddiesAction(ShowBlockedBuddiesAction *showBlockedBuddiesAction)
+{
+	m_showBlockedBuddiesAction = showBlockedBuddiesAction;
+}
+
 void KaduWindowActions::setShowConfigurationWindowAction(ShowConfigurationWindowAction *showConfigurationWindowAction)
 {
 	m_showConfigurationWindowAction = showConfigurationWindowAction;
@@ -330,13 +336,6 @@ void KaduWindowActions::init()
 
 	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
 	m_actions->insert(AddRoomChat);
-
-	ShowBlockedBuddies = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeMainMenu, "showIgnoredAction",
-		this, SLOT(showBlockedActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/show-blocked-buddies"), tr("Show Blocked Buddies"), true
-	);
-	connect(ShowBlockedBuddies, SIGNAL(actionCreated(Action *)), this, SLOT(showBlockedActionCreated(Action *)));
 
 	ShowMyself = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeMainMenu, "showMyselfAction",
@@ -541,24 +540,6 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	window->talkableProxyModel()->addFilter(filter);
 }
 
-void KaduWindowActions::showBlockedActionCreated(Action *action)
-{
-	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
-
-	bool enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowBlocked");
-	BlockedTalkableFilter *blockedTalkableFilter = new BlockedTalkableFilter(action);
-	blockedTalkableFilter->setEnabled(!enabled);
-
-	action->setData(QVariant::fromValue(blockedTalkableFilter));
-	action->setChecked(enabled);
-
-	window->talkableProxyModel()->addFilter(blockedTalkableFilter);
-}
-
 void KaduWindowActions::showMyselfActionCreated(Action *action)
 {
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
@@ -605,17 +586,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	window->exec();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::showBlockedActionActivated(QAction *sender, bool toggled)
-{
-	QVariant v = sender->data();
-	if (v.canConvert<BlockedTalkableFilter *>())
-	{
-		BlockedTalkableFilter *blockedTalkableFilter = v.value<BlockedTalkableFilter *>();
-		blockedTalkableFilter->setEnabled(!toggled);
-		m_configuration->deprecatedApi()->writeEntry("General", "ShowBlocked", toggled);
-	}
 }
 
 void KaduWindowActions::showMyselfActionActivated(QAction *sender, bool toggled)
@@ -806,9 +776,6 @@ void KaduWindowActions::configurationUpdated()
 
 	if (InactiveUsers->action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
 		InactiveUsers->action(context)->trigger();
-
-	if (ShowBlockedBuddies->action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowBlocked"))
-		ShowBlockedBuddies->action(context)->trigger();
 
 	if (ShowMyself->action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself"))
 		ShowMyself->action(context)->trigger();

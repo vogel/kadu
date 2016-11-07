@@ -45,6 +45,7 @@
 #include "actions/open-search-action.h"
 #include "actions/open-translate-action.h"
 #include "actions/show-about-window-action.h"
+#include "actions/show-blocked-buddies-action.h"
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
@@ -267,7 +268,7 @@ void KaduWindow::createContactsMenu()
 		->addAction(Actions->m_openSearchAction, KaduMenu::SectionBuddies, 10)
 		->addAction(m_chatWidgetActions->openChatWith(), KaduMenu::SectionOpenChat)
 		->addAction(Actions->InactiveUsers, KaduMenu::SectionBuddyListFilters, 4)
-		->addAction(Actions->ShowBlockedBuddies, KaduMenu::SectionBuddyListFilters, 3)
+		->addAction(Actions->m_showBlockedBuddiesAction, KaduMenu::SectionBuddyListFilters, 3)
 		->addAction(Actions->ShowMyself, KaduMenu::SectionBuddyListFilters, 2)
 		->addAction(Actions->m_showInfoPanelAction, KaduMenu::SectionBuddyListFilters, 1)
 		->update();

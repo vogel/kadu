@@ -64,6 +64,7 @@ class OpenTranslateAction;
 class Parser;
 class RecentChatsAction;
 class ShowAboutWindowAction;
+class ShowBlockedBuddiesAction;
 class ShowConfigurationWindowAction;
 class ShowInfoPanelAction;
 class ShowMultilogonsAction;
@@ -98,6 +99,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<OpenTranslateAction> m_openTranslateAction;
 	QPointer<Parser> m_parser;
 	QPointer<ShowAboutWindowAction> m_showAboutWindowAction;
+	QPointer<ShowBlockedBuddiesAction> m_showBlockedBuddiesAction;
 	QPointer<ShowConfigurationWindowAction> m_showConfigurationWindowAction;
 	QPointer<ShowInfoPanelAction> m_showInfoPanelAction;
 	QPointer<ShowMultilogonsAction> m_showMultilogonsAction;
@@ -111,7 +113,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
-	ActionDescription *ShowBlockedBuddies;
 	ActionDescription *ShowMyself;
 
 	ActionDescription *WriteEmail;
@@ -152,6 +153,7 @@ private slots:
 	INJEQT_SET void setOpenSearchAction(OpenSearchAction *openSearchAction);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setShowAboutWindowAction(ShowAboutWindowAction *showAboutWindowAction);
+	INJEQT_SET void setShowBlockedBuddiesAction(ShowBlockedBuddiesAction *showBlockedBuddiesAction);
 	INJEQT_SET void setShowConfigurationWindowAction(ShowConfigurationWindowAction *showConfigurationWindowAction);
 	INJEQT_SET void setShowInfoPanelAction(ShowInfoPanelAction *showInfoPanelAction);
 	INJEQT_SET void setShowMultilogonsAction(ShowMultilogonsAction *showMultilogonsAction);
@@ -165,12 +167,10 @@ private slots:
 	void descriptionUsersActionCreated(Action *action);
 	void showDescriptionsActionCreated(Action *action);
 	void onlineAndDescUsersActionCreated(Action *action);
-	void showBlockedActionCreated(Action *action);
 	void showMyselfActionCreated(Action *action);
 	void writeEmailActionCreated(Action *action);
 
 	void mergeContactActionActivated(QAction *sender, bool toggled);
-	void showBlockedActionActivated(QAction *sender, bool toggled);
 	void showMyselfActionActivated(QAction *sender, bool toggled);
 
 	void writeEmailActionActivated(QAction *sender, bool toggled);
