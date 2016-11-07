@@ -45,6 +45,7 @@ class Application;
 class ChangeStatusAction;
 class ChatWidgetActions;
 class Configuration;
+class CopyDescriptionAction;
 class DeleteTalkableAction;
 class DefaultProxyAction;
 class EditTalkableAction;
@@ -86,6 +87,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<Application> m_application;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<Configuration> m_configuration;
+	QPointer<CopyDescriptionAction> m_copyDescriptionAction;
 	QPointer<ExitAction> m_exitAction;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
@@ -117,7 +119,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	ActionDescription *MergeContact;
 
 	ActionDescription *WriteEmail;
-	ActionDescription *CopyDescription;
 	ActionDescription *OpenDescriptionLink;
 	ActionDescription *CopyPersonalInfo;
 	ActionDescription *LookupUserInfo;
@@ -140,6 +141,7 @@ private slots:
 	INJEQT_SET void setApplication(Application *application);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setCopyDescriptionAction(CopyDescriptionAction *copyDescriptionAction);
 	INJEQT_SET void setExitAction(ExitAction *exitAction);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
@@ -174,7 +176,6 @@ private slots:
 	void mergeContactActionActivated(QAction *sender, bool toggled);
 
 	void writeEmailActionActivated(QAction *sender, bool toggled);
-	void copyDescriptionActionActivated(QAction *sender, bool toggled);
 	void openDescriptionLinkActionActivated(QAction *sender, bool toggled);
 	void copyPersonalInfoActionActivated(QAction *sender, bool toggled);
 	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);

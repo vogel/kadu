@@ -2,6 +2,7 @@ set (actions_SRCS
 	actions-module.cpp
 	add-group-action.cpp
 	add-user-action.cpp
+	copy-description-action.cpp
 	exit-action.cpp
 	open-forum-action.cpp
 	open-get-involved-action.cpp

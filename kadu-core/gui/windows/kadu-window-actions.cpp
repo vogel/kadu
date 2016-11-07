@@ -35,6 +35,7 @@
 #include "accounts/account.h"
 #include "actions/add-group-action.h"
 #include "actions/add-user-action.h"
+#include "actions/copy-description-action.h"
 #include "actions/exit-action.h"
 #include "actions/open-forum-action.h"
 #include "actions/open-get-involved-action.h"
@@ -117,11 +118,6 @@ void disableNoSearchService(Action *action)
 void disableNoContact(Action *action)
 {
 	action->setEnabled(action->context()->contacts().toContact());
-}
-
-void disableNoDescription(Action *action)
-{
-	action->setEnabled(!action->context()->contacts().toContact().currentStatus().description().isEmpty());
 }
 
 void disableNoDescriptionUrl(UrlHandlerManager *urlHandlerManager, Action *action)
@@ -208,6 +204,11 @@ void KaduWindowActions::setChatWidgetActions(ChatWidgetActions *chatWidgetAction
 void KaduWindowActions::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
+}
+
+void KaduWindowActions::setCopyDescriptionAction(CopyDescriptionAction *copyDescriptionAction)
+{
+	m_copyDescriptionAction = copyDescriptionAction;
 }
 
 void KaduWindowActions::setExitAction(ExitAction *exitAction)
@@ -356,15 +357,9 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(collapseAction, KaduMenu::SectionActionsGui, 1);
 
-	CopyDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUser, "copyDescriptionAction",
-		this, SLOT(copyDescriptionActionActivated(QAction *, bool)),
-		KaduIcon("edit-copy"), tr("Copy Description"), false,
-		disableNoDescription
-	);
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(CopyDescription, KaduMenu::SectionActions, 10);
+		->addAction(m_copyDescriptionAction, KaduMenu::SectionActions, 10);
 
 	CopyPersonalInfo = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "copyPersonalInfoAction",
@@ -586,30 +581,6 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 
 	if (!buddy.email().isEmpty())
 		m_urlOpener->openEmail(buddy.email().toUtf8());
-
-	kdebugf2();
-}
-
-void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	const Contact &contact = action->context()->contacts().toContact();
-	if (!contact)
-		return;
-
-	const QString &description = contact.currentStatus().description();
-	if (description.isEmpty())
-		return;
-
-	QApplication::clipboard()->setText(description, QClipboard::Selection);
-	QApplication::clipboard()->setText(description, QClipboard::Clipboard);
 
 	kdebugf2();
 }
