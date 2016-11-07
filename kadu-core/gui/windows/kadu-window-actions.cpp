@@ -46,6 +46,7 @@
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
+#include "actions/show-myself-action.h"
 #include "actions/show-your-accounts-action.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
@@ -299,6 +300,11 @@ void KaduWindowActions::setShowMultilogonsAction(ShowMultilogonsAction *showMult
 	m_showMultilogonsAction = showMultilogonsAction;
 }
 
+void KaduWindowActions::setShowMyselfAction(ShowMyselfAction *showMyselfAction)
+{
+	m_showMyselfAction = showMyselfAction;
+}
+
 void KaduWindowActions::setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction)
 {
 	m_showYourAccountsAction = showYourAccountsAction;
@@ -336,13 +342,6 @@ void KaduWindowActions::init()
 
 	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
 	m_actions->insert(AddRoomChat);
-
-	ShowMyself = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeMainMenu, "showMyselfAction",
-		this, SLOT(showMyselfActionActivated(QAction *, bool)),
-		KaduIcon(), tr("Show Myself Buddy"), true
-	);
-	connect(ShowMyself, SIGNAL(actionCreated(Action *)), this, SLOT(showMyselfActionCreated(Action *)));
 
 	auto expandAction = m_injectedFactory->makeInjected<ExpandAction>(this);
 	m_actions->insert(expandAction);
@@ -540,23 +539,6 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	window->talkableProxyModel()->addFilter(filter);
 }
 
-void KaduWindowActions::showMyselfActionCreated(Action *action)
-{
-	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
-
-	auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself", false);
-	auto model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
-	if (model)
-	{
-		model->setIncludeMyself(enabled);
-		action->setChecked(enabled);
-	}
-}
-
 void KaduWindowActions::writeEmailActionCreated(Action *action)
 {
 	const Buddy &buddy = action->context()->buddies().toBuddy();
@@ -586,22 +568,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	window->exec();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::showMyselfActionActivated(QAction *sender, bool toggled)
-{
-	auto window = qobject_cast<MainWindow *>(sender->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
-
-	auto model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
-	if (model)
-	{
-		model->setIncludeMyself(toggled);
-		m_configuration->deprecatedApi()->writeEntry("General", "ShowMyself", toggled);
-	}
 }
 
 void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
@@ -776,9 +742,6 @@ void KaduWindowActions::configurationUpdated()
 
 	if (InactiveUsers->action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
 		InactiveUsers->action(context)->trigger();
-
-	if (ShowMyself->action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself"))
-		ShowMyself->action(context)->trigger();
 }
 
 #include "moc_kadu-window-actions.cpp"

@@ -13,6 +13,7 @@ set (actions_SRCS
 	show-configuration-window-action.cpp
 	show-info-panel-action.cpp
 	show-multilogons-action.cpp
+	show-myself-action.cpp
 	show-your-accounts-action.cpp
 )
 

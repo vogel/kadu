@@ -68,6 +68,7 @@ class ShowBlockedBuddiesAction;
 class ShowConfigurationWindowAction;
 class ShowInfoPanelAction;
 class ShowMultilogonsAction;
+class ShowMyselfAction;
 class ShowYourAccountsAction;
 class StatusContainer;
 class UrlHandlerManager;
@@ -103,6 +104,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<ShowConfigurationWindowAction> m_showConfigurationWindowAction;
 	QPointer<ShowInfoPanelAction> m_showInfoPanelAction;
 	QPointer<ShowMultilogonsAction> m_showMultilogonsAction;
+	QPointer<ShowMyselfAction> m_showMyselfAction;
 	QPointer<ShowYourAccountsAction> m_showYourAccountsAction;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 	QPointer<UrlOpener> m_urlOpener;
@@ -113,7 +115,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
-	ActionDescription *ShowMyself;
 
 	ActionDescription *WriteEmail;
 	ActionDescription *CopyDescription;
@@ -157,6 +158,7 @@ private slots:
 	INJEQT_SET void setShowConfigurationWindowAction(ShowConfigurationWindowAction *showConfigurationWindowAction);
 	INJEQT_SET void setShowInfoPanelAction(ShowInfoPanelAction *showInfoPanelAction);
 	INJEQT_SET void setShowMultilogonsAction(ShowMultilogonsAction *showMultilogonsAction);
+	INJEQT_SET void setShowMyselfAction(ShowMyselfAction *showMyselfAction);
 	INJEQT_SET void setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
@@ -167,11 +169,9 @@ private slots:
 	void descriptionUsersActionCreated(Action *action);
 	void showDescriptionsActionCreated(Action *action);
 	void onlineAndDescUsersActionCreated(Action *action);
-	void showMyselfActionCreated(Action *action);
 	void writeEmailActionCreated(Action *action);
 
 	void mergeContactActionActivated(QAction *sender, bool toggled);
-	void showMyselfActionActivated(QAction *sender, bool toggled);
 
 	void writeEmailActionActivated(QAction *sender, bool toggled);
 	void copyDescriptionActionActivated(QAction *sender, bool toggled);

@@ -32,6 +32,7 @@
 #include "actions/show-configuration-window-action.h"
 #include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
+#include "actions/show-myself-action.h"
 #include "actions/show-your-accounts-action.h"
 
 ActionsModule::ActionsModule()
@@ -49,6 +50,7 @@ ActionsModule::ActionsModule()
 	add_type<ShowConfigurationWindowAction>();
 	add_type<ShowInfoPanelAction>();
 	add_type<ShowMultilogonsAction>();
+	add_type<ShowMyselfAction>();
 	add_type<ShowYourAccountsAction>();
 }
 
