@@ -38,6 +38,7 @@
 #include "actions/copy-description-action.h"
 #include "actions/copy-personal-info-action.h"
 #include "actions/exit-action.h"
+#include "actions/open-buddy-email-action.h"
 #include "actions/open-description-link-action.h"
 #include "actions/open-forum-action.h"
 #include "actions/open-get-involved-action.h"
@@ -120,14 +121,6 @@ void disableNoSearchService(Action *action)
 void disableNoContact(Action *action)
 {
 	action->setEnabled(action->context()->contacts().toContact());
-}
-
-void disableNoEMail(UrlHandlerManager *urlHandlerManager, Action *action)
-{
-	const Buddy &buddy = action->context()->buddies().toBuddy();
-	bool hasMail = !buddy.email().isEmpty() && buddy.email().indexOf(urlHandlerManager->mailRegExp()) == 0;
-
-	action->setEnabled(hasMail);
 }
 
 void disableIfContactSelected(Myself *myself, Action *action)
@@ -246,6 +239,11 @@ void KaduWindowActions::setMultilogonWindowService(MultilogonWindowService *mult
 void KaduWindowActions::setMyself(Myself *myself)
 {
 	m_myself = myself;
+}
+
+void KaduWindowActions::setOpenBuddyEmailAction(OpenBuddyEmailAction *openBuddyEmailAction)
+{
+	m_openBuddyEmailAction = openBuddyEmailAction;
 }
 
 void KaduWindowActions::setOpenDescriptionLinkAction(OpenDescriptionLinkAction *openDescriptionLinkAction)
@@ -376,17 +374,9 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(m_openDescriptionLinkAction, KaduMenu::SectionActions, 30);
 
-	WriteEmail = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUser, "writeEmailAction",
-		this, SLOT(writeEmailActionActivated(QAction *, bool)),
-		KaduIcon("mail-message-new"), tr("Send E-Mail"), false,
-		[this](Action *action){ return disableNoEMail(m_urlHandlerManager, action); }
-	);
-	connect(WriteEmail, SIGNAL(actionCreated(Action *)), this, SLOT(writeEmailActionCreated(Action *)));
-
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(WriteEmail, KaduMenu::SectionSend, 200);
+		->addAction(m_openBuddyEmailAction, KaduMenu::SectionSend, 200);
 
 	LookupUserInfo = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "lookupUserInfoAction",
@@ -530,13 +520,6 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 	window->talkableProxyModel()->addFilter(filter);
 }
 
-void KaduWindowActions::writeEmailActionCreated(Action *action)
-{
-	const Buddy &buddy = action->context()->buddies().toBuddy();
-	if (buddy)
-		connect(buddy, SIGNAL(updated()), action, SLOT(checkState()));
-}
-
 void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
@@ -557,26 +540,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	KaduDialog *window = new KaduDialog(mergeWidget, sender->parentWidget());
 	window->setAcceptButtonText(tr("Merge"));
 	window->exec();
-
-	kdebugf2();
-}
-
-void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	const Buddy &buddy = action->context()->buddies().toBuddy();
-	if (!buddy)
-		return;
-
-	if (!buddy.email().isEmpty())
-		m_urlOpener->openEmail(buddy.email().toUtf8());
 
 	kdebugf2();
 }
