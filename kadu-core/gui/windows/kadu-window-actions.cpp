@@ -36,6 +36,7 @@
 #include "actions/add-group-action.h"
 #include "actions/add-user-action.h"
 #include "actions/copy-description-action.h"
+#include "actions/copy-personal-info-action.h"
 #include "actions/exit-action.h"
 #include "actions/open-forum-action.h"
 #include "actions/open-get-involved-action.h"
@@ -211,6 +212,11 @@ void KaduWindowActions::setCopyDescriptionAction(CopyDescriptionAction *copyDesc
 	m_copyDescriptionAction = copyDescriptionAction;
 }
 
+void KaduWindowActions::setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPersonalInfoAction)
+{
+	m_copyPersonalInfoAction = copyPersonalInfoAction;
+}
+
 void KaduWindowActions::setExitAction(ExitAction *exitAction)
 {
 	m_exitAction = exitAction;
@@ -361,14 +367,9 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(m_copyDescriptionAction, KaduMenu::SectionActions, 10);
 
-	CopyPersonalInfo = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUser, "copyPersonalInfoAction",
-		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/copy-personal-info"), tr("Copy Personal Info")
-	);
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(CopyPersonalInfo, KaduMenu::SectionActions, 20);
+		->addAction(m_copyPersonalInfoAction, KaduMenu::SectionActions, 20);
 
 	OpenDescriptionLink = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
@@ -607,37 +608,6 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	int idx_start = url.indexIn(description);
 	if (idx_start >= 0)
 		m_urlOpener->openUrl(description.mid(idx_start, url.matchedLength()).toUtf8());
-
-	kdebugf2();
-}
-
-void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	ContactSet contacts = action->context()->contacts();
-
-	QStringList infoList;
-	QString defaultSyntax = m_parser->escape(tr("Contact:")) + " %a[ (%u)]\n["
-			+ m_parser->escape(tr("First name:")) + " %f\n]["
-			+ m_parser->escape(tr("Last name:")) + " %r\n]["
-			+ m_parser->escape(tr("Mobile:")) + " %m\n]";
-	QString copyPersonalDataSyntax = m_configuration->deprecatedApi()->readEntry("General", "CopyPersonalDataSyntax", defaultSyntax);
-	foreach (Contact contact, contacts)
-		infoList.append(m_parser->parse(copyPersonalDataSyntax, Talkable(contact), ParserEscape::NoEscape));
-
-	QString info = infoList.join("\n");
-	if (info.isEmpty())
-		return;
-
-	QApplication::clipboard()->setText(info, QClipboard::Selection);
-	QApplication::clipboard()->setText(info, QClipboard::Clipboard);
 
 	kdebugf2();
 }

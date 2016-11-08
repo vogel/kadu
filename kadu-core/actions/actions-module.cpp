@@ -22,6 +22,7 @@
 #include "actions/add-group-action.h"
 #include "actions/add-user-action.h"
 #include "actions/copy-description-action.h"
+#include "actions/copy-personal-info-action.h"
 #include "actions/exit-action.h"
 #include "actions/open-forum-action.h"
 #include "actions/open-get-involved-action.h"
@@ -41,6 +42,7 @@ ActionsModule::ActionsModule()
 	add_type<AddGroupAction>();
 	add_type<AddUserAction>();
 	add_type<CopyDescriptionAction>();
+	add_type<CopyPersonalInfoAction>();
 	add_type<ExitAction>();
 	add_type<OpenForumAction>();
 	add_type<OpenGetInvolvedAction>();
