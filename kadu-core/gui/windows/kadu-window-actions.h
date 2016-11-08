@@ -58,6 +58,7 @@ class MainWindow;
 class MenuInventory;
 class MultilogonWindowService;
 class Myself;
+class OpenDescriptionLinkAction;
 class OpenForumAction;
 class OpenGetInvolvedAction;
 class OpenRedmineAction;
@@ -97,6 +98,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MultilogonWindowService> m_multilogonWindowService;
 	QPointer<Myself> m_myself;
+	QPointer<OpenDescriptionLinkAction> m_openDescriptionLinkAction;
 	QPointer<OpenForumAction> m_openForumAction;
 	QPointer<OpenGetInvolvedAction> m_openGetInvolvedAction;
 	QPointer<OpenRedmineAction> m_openRedmineAction;
@@ -121,7 +123,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	ActionDescription *MergeContact;
 
 	ActionDescription *WriteEmail;
-	ActionDescription *OpenDescriptionLink;
 	ActionDescription *LookupUserInfo;
 	DeleteTalkableAction *DeleteTalkable;
 
@@ -151,6 +152,7 @@ private slots:
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMultilogonWindowService(MultilogonWindowService *multilogonWindowService);
 	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setOpenDescriptionLinkAction(OpenDescriptionLinkAction *openDescriptionLinkAction);
 	INJEQT_SET void setOpenForumAction(OpenForumAction *openForumAction);
 	INJEQT_SET void setOpenGetInvolvedAction(OpenGetInvolvedAction *openGetInvolvedAction);
 	INJEQT_SET void setOpenRedmineAction(OpenRedmineAction *openRedmineAction);
@@ -178,7 +180,6 @@ private slots:
 	void mergeContactActionActivated(QAction *sender, bool toggled);
 
 	void writeEmailActionActivated(QAction *sender, bool toggled);
-	void openDescriptionLinkActionActivated(QAction *sender, bool toggled);
 	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
 
 	void inactiveUsersActionActivated(QAction *sender, bool toggled);

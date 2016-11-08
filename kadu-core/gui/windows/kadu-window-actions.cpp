@@ -38,6 +38,7 @@
 #include "actions/copy-description-action.h"
 #include "actions/copy-personal-info-action.h"
 #include "actions/exit-action.h"
+#include "actions/open-description-link-action.h"
 #include "actions/open-forum-action.h"
 #include "actions/open-get-involved-action.h"
 #include "actions/open-redmine-action.h"
@@ -119,11 +120,6 @@ void disableNoSearchService(Action *action)
 void disableNoContact(Action *action)
 {
 	action->setEnabled(action->context()->contacts().toContact());
-}
-
-void disableNoDescriptionUrl(UrlHandlerManager *urlHandlerManager, Action *action)
-{
-	action->setEnabled(action->context()->contacts().toContact().currentStatus().description().indexOf(urlHandlerManager->urlRegExp()) >= 0);
 }
 
 void disableNoEMail(UrlHandlerManager *urlHandlerManager, Action *action)
@@ -252,6 +248,11 @@ void KaduWindowActions::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
+void KaduWindowActions::setOpenDescriptionLinkAction(OpenDescriptionLinkAction *openDescriptionLinkAction)
+{
+	m_openDescriptionLinkAction = openDescriptionLinkAction;
+}
+
 void KaduWindowActions::setOpenForumAction(OpenForumAction *openForumAction)
 {
 	m_openForumAction = openForumAction;
@@ -371,15 +372,9 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(m_copyPersonalInfoAction, KaduMenu::SectionActions, 20);
 
-	OpenDescriptionLink = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUser, "openDescriptionLinkAction",
-		this, SLOT(openDescriptionLinkActionActivated(QAction *, bool)),
-		KaduIcon("go-jump"), tr("Open Description Link in Browser"), false,
-		[this](Action *action){ return disableNoDescriptionUrl(m_urlHandlerManager, action); }
-	);
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(OpenDescriptionLink, KaduMenu::SectionActions, 30);
+		->addAction(m_openDescriptionLinkAction, KaduMenu::SectionActions, 30);
 
 	WriteEmail = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUser, "writeEmailAction",
@@ -582,32 +577,6 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 
 	if (!buddy.email().isEmpty())
 		m_urlOpener->openEmail(buddy.email().toUtf8());
-
-	kdebugf2();
-}
-
-void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	const Contact &contact = action->context()->contacts().toContact();
-	if (!contact)
-		return;
-
-	const QString &description = contact.currentStatus().description();
-	if (description.isEmpty())
-		return;
-
-	QRegExp url = m_urlHandlerManager->urlRegExp();
-	int idx_start = url.indexIn(description);
-	if (idx_start >= 0)
-		m_urlOpener->openUrl(description.mid(idx_start, url.matchedLength()).toUtf8());
 
 	kdebugf2();
 }
