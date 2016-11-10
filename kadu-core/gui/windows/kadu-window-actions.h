@@ -69,6 +69,7 @@ class RecentChatsAction;
 class ShowAboutWindowAction;
 class ShowBlockedBuddiesAction;
 class ShowConfigurationWindowAction;
+class ShowDescriptionsAction;
 class ShowInfoPanelAction;
 class ShowMultilogonsAction;
 class ShowMyselfAction;
@@ -112,6 +113,7 @@ class KaduWindowActions : public QObject
 	QPointer<ShowAboutWindowAction> m_showAboutWindowAction;
 	QPointer<ShowBlockedBuddiesAction> m_showBlockedBuddiesAction;
 	QPointer<ShowConfigurationWindowAction> m_showConfigurationWindowAction;
+	QPointer<ShowDescriptionsAction> m_showDescriptionsAction;
 	QPointer<ShowInfoPanelAction> m_showInfoPanelAction;
 	QPointer<ShowMultilogonsAction> m_showMultilogonsAction;
 	QPointer<ShowMyselfAction> m_showMyselfAction;
@@ -127,10 +129,8 @@ class KaduWindowActions : public QObject
 	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
-
 	DeleteTalkableAction *DeleteTalkable;
 
-	ActionDescription *ShowDescriptions;
 	ActionDescription *OnlineAndDescriptionUsers;
 
 	EditTalkableAction *EditTalkable;
@@ -166,6 +166,7 @@ private slots:
 	INJEQT_SET void setShowAboutWindowAction(ShowAboutWindowAction *showAboutWindowAction);
 	INJEQT_SET void setShowBlockedBuddiesAction(ShowBlockedBuddiesAction *showBlockedBuddiesAction);
 	INJEQT_SET void setShowConfigurationWindowAction(ShowConfigurationWindowAction *showConfigurationWindowAction);
+	INJEQT_SET void setShowDescriptionsAction(ShowDescriptionsAction *showDescriptionsAction);
 	INJEQT_SET void setShowInfoPanelAction(ShowInfoPanelAction *showInfoPanelAction);
 	INJEQT_SET void setShowMultilogonsAction(ShowMultilogonsAction *showMultilogonsAction);
 	INJEQT_SET void setShowMyselfAction(ShowMyselfAction *showMyselfAction);
@@ -177,12 +178,10 @@ private slots:
 	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 	INJEQT_INIT void init();
 
-	void showDescriptionsActionCreated(Action *action);
 	void onlineAndDescUsersActionCreated(Action *action);
 
 	void mergeContactActionActivated(QAction *sender, bool toggled);
 
-	void showDescriptionsActionActivated(QAction *sender, bool toggled);
 	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
 
 public:

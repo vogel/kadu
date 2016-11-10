@@ -16,6 +16,7 @@ set (actions_SRCS
 	show-about-window-action.cpp
 	show-blocked-buddies-action.cpp
 	show-configuration-window-action.cpp
+	show-descriptions-action.cpp
 	show-info-panel-action.cpp
 	show-multilogons-action.cpp
 	show-myself-action.cpp

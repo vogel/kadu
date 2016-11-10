@@ -35,6 +35,7 @@
 #include "actions/show-about-window-action.h"
 #include "actions/show-blocked-buddies-action.h"
 #include "actions/show-configuration-window-action.h"
+#include "actions/show-descriptions-action.h"
 #include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-myself-action.h"
@@ -60,6 +61,7 @@ ActionsModule::ActionsModule()
 	add_type<ShowAboutWindowAction>();
 	add_type<ShowBlockedBuddiesAction>();
 	add_type<ShowConfigurationWindowAction>();
+	add_type<ShowDescriptionsAction>();
 	add_type<ShowInfoPanelAction>();
 	add_type<ShowMultilogonsAction>();
 	add_type<ShowMyselfAction>();

@@ -49,6 +49,7 @@
 #include "actions/show-about-window-action.h"
 #include "actions/show-blocked-buddies-action.h"
 #include "actions/show-configuration-window-action.h"
+#include "actions/show-descriptions-action.h"
 #include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-myself-action.h"
@@ -199,6 +200,11 @@ void KaduWindowActions::setCopyDescriptionAction(CopyDescriptionAction *copyDesc
 void KaduWindowActions::setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPersonalInfoAction)
 {
 	m_copyPersonalInfoAction = copyPersonalInfoAction;
+}
+
+void KaduWindowActions::setShowDescriptionsAction(ShowDescriptionsAction *showDescriptionsAction)
+{
+	m_showDescriptionsAction = showDescriptionsAction;
 }
 
 void KaduWindowActions::setExitAction(ExitAction *exitAction)
@@ -391,14 +397,6 @@ void KaduWindowActions::init()
 	m_showOfflineBuddiesAction->setShortcut("kadu_showoffline");
 	m_showOnlyBuddiesWithDescriptionAction->setShortcut("kadu_showonlydesc");
 
-	ShowDescriptions = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUserList, "descriptionsAction",
-		this, SLOT(showDescriptionsActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/show-descriptions"), tr("Show Descriptions"),
-		true
-	);
-	connect(ShowDescriptions, SIGNAL(actionCreated(Action *)), this, SLOT(showDescriptionsActionCreated(Action *)));
-
 	OnlineAndDescriptionUsers = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
 		this, SLOT(onlineAndDescUsersActionActivated(QAction *, bool)),
@@ -448,12 +446,6 @@ void KaduWindowActions::init()
 	m_actions->insert(DefaultProxy);
 }
 
-void KaduWindowActions::showDescriptionsActionCreated(Action *action)
-{
-	bool enabled = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
-	action->setChecked(enabled);
-}
-
 void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 {
 	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
@@ -494,14 +486,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	window->exec();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::showDescriptionsActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-
-	m_configuration->deprecatedApi()->writeEntry("Look", "ShowDesc", toggled);
-	ConfigurationAwareObject::notifyAll();
 }
 
 void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
