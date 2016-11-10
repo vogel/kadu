@@ -52,6 +52,8 @@ void RecentChatsAction::init()
 {
 	m_recentChatsMenu = injectedFactory()->makeNotOwned<RecentChatsMenu>();
 	connect(m_recentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
+
+	registerAction(actionsRegistry());
 }
 
 void RecentChatsAction::actionInstanceCreated(Action *action)

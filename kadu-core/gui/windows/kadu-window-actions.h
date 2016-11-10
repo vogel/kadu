@@ -113,6 +113,7 @@ class KaduWindowActions : public QObject
 	QPointer<OpenSearchAction> m_openSearchAction;
 	QPointer<OpenTranslateAction> m_openTranslateAction;
 	QPointer<Parser> m_parser;
+	QPointer<RecentChatsAction> m_recentChatsAction;
 	QPointer<ShowAboutWindowAction> m_showAboutWindowAction;
 	QPointer<ShowBlockedBuddiesAction> m_showBlockedBuddiesAction;
 	QPointer<ShowConfigurationWindowAction> m_showConfigurationWindowAction;
@@ -129,7 +130,6 @@ class KaduWindowActions : public QObject
 	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
 	friend class KaduWindow;
-	RecentChatsAction *RecentChats;
 	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
 	DeleteTalkableAction *DeleteTalkable;
@@ -165,6 +165,7 @@ private slots:
 	INJEQT_SET void setOpenTranslateAction(OpenTranslateAction *openTranslateAction);
 	INJEQT_SET void setOpenSearchAction(OpenSearchAction *openSearchAction);
 	INJEQT_SET void setParser(Parser *parser);
+	INJEQT_SET void setRecentChatsAction(RecentChatsAction *recentChatsAction);
 	INJEQT_SET void setShowAboutWindowAction(ShowAboutWindowAction *showAboutWindowAction);
 	INJEQT_SET void setShowBlockedBuddiesAction(ShowBlockedBuddiesAction *showBlockedBuddiesAction);
 	INJEQT_SET void setShowConfigurationWindowAction(ShowConfigurationWindowAction *showConfigurationWindowAction);

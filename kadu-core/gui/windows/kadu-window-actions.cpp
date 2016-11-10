@@ -277,6 +277,11 @@ void KaduWindowActions::setParser(Parser *parser)
 	m_parser = parser;
 }
 
+void KaduWindowActions::setRecentChatsAction(RecentChatsAction *recentChatsAction)
+{
+	m_recentChatsAction = recentChatsAction;
+}
+
 void KaduWindowActions::setShowAboutWindowAction(ShowAboutWindowAction *showAboutWindowAction)
 {
 	m_showAboutWindowAction = showAboutWindowAction;
@@ -347,10 +352,6 @@ void KaduWindowActions::init()
 	m_actions->blockSignals();
 
 	m_showConfigurationWindowAction->setShortcut("kadu_configure", Qt::ApplicationShortcut);
-
-	RecentChats = m_injectedFactory->makeInjected<RecentChatsAction>(this);
-	m_actions->insert(RecentChats);
-
 	m_exitAction->setShortcut("kadu_exit", Qt::ApplicationShortcut);
 	m_addUserAction->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 

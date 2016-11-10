@@ -44,6 +44,7 @@
 #include "actions/show-only-buddies-with-description-action.h"
 #include "actions/show-only-buddies-with-description-or-online-action.h"
 #include "actions/show-your-accounts-action.h"
+#include "gui/actions/recent-chats-action.h"
 
 ActionsModule::ActionsModule()
 {
@@ -61,6 +62,7 @@ ActionsModule::ActionsModule()
 	add_type<OpenRedmineAction>();
 	add_type<OpenSearchAction>();
 	add_type<OpenTranslateAction>();
+	add_type<RecentChatsAction>();
 	add_type<ShowAboutWindowAction>();
 	add_type<ShowBlockedBuddiesAction>();
 	add_type<ShowConfigurationWindowAction>();

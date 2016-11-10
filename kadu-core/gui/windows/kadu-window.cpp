@@ -251,7 +251,7 @@ void KaduWindow::createKaduMenu()
 	m_menuInventory->menu("main")
 		->addAction(m_kaduWindowActions->m_showConfigurationWindowAction, KaduMenu::SectionConfig, 30)
 		->addAction(m_kaduWindowActions->m_showYourAccountsAction, KaduMenu::SectionConfig, 29)
-		->addAction(m_kaduWindowActions->RecentChats, KaduMenu::SectionRecentChats, 28)
+		->addAction(m_kaduWindowActions->m_recentChatsAction, KaduMenu::SectionRecentChats, 28)
 		->addAction(m_kaduWindowActions->m_exitAction, KaduMenu::SectionQuit)
 		->update();
 

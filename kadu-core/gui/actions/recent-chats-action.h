@@ -33,12 +33,12 @@ class RecentChatsAction : public ActionDescription
 {
 	Q_OBJECT
 
+public:
+	Q_INVOKABLE explicit RecentChatsAction(QObject *parent = nullptr);
+	virtual ~RecentChatsAction();
+
 protected:
 	virtual void actionInstanceCreated(Action *action);
-
-public:
-	explicit RecentChatsAction(QObject *parent);
-	virtual ~RecentChatsAction();
 
 private:
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
