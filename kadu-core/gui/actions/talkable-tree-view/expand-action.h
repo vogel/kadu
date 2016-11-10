@@ -25,12 +25,15 @@ class ExpandAction : public ActionDescription
 {
 	Q_OBJECT
 
+public:
+	Q_INVOKABLE explicit ExpandAction(QObject *parent = nullptr);
+	virtual ~ExpandAction();
+
 protected:
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
-    virtual void updateActionState(Action *action);
+	virtual void updateActionState(Action *action);
 
-public:
-	explicit ExpandAction(QObject *parent);
-	virtual ~ExpandAction();
+private slots:
+	INJEQT_INIT void init();
 
 };

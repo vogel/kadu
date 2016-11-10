@@ -37,6 +37,11 @@ ExpandAction::~ExpandAction()
 {
 }
 
+void ExpandAction::init()
+{
+	registerAction(actionsRegistry());
+}
+
 void ExpandAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
 	Q_UNUSED(widget)

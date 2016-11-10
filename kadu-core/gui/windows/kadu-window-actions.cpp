@@ -197,9 +197,9 @@ void KaduWindowActions::setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPe
 	m_copyPersonalInfoAction = copyPersonalInfoAction;
 }
 
-void KaduWindowActions::setShowDescriptionsAction(ShowDescriptionsAction *showDescriptionsAction)
+void KaduWindowActions::setExpandAction(ExpandAction *expandAction)
 {
-	m_showDescriptionsAction = showDescriptionsAction;
+	m_expandAction = expandAction;
 }
 
 void KaduWindowActions::setExitAction(ExitAction *exitAction)
@@ -307,6 +307,11 @@ void KaduWindowActions::setShowConfigurationWindowAction(ShowConfigurationWindow
 	m_showConfigurationWindowAction = showConfigurationWindowAction;
 }
 
+void KaduWindowActions::setShowDescriptionsAction(ShowDescriptionsAction *showDescriptionsAction)
+{
+	m_showDescriptionsAction = showDescriptionsAction;
+}
+
 void KaduWindowActions::setShowInfoPanelAction(ShowInfoPanelAction *showInfoPanelAction)
 {
 	m_showInfoPanelAction = showInfoPanelAction;
@@ -365,15 +370,12 @@ void KaduWindowActions::init()
 	m_exitAction->setShortcut("kadu_exit", Qt::ApplicationShortcut);
 	m_addUserAction->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
-	auto expandAction = m_injectedFactory->makeInjected<ExpandAction>(this);
-	m_actions->insert(expandAction);
-
 	auto collapseAction = m_injectedFactory->makeInjected<CollapseAction>(this);
 	m_actions->insert(collapseAction);
 
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(expandAction, KaduMenu::SectionActionsGui, 2);
+		->addAction(m_expandAction, KaduMenu::SectionActionsGui, 2);
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(collapseAction, KaduMenu::SectionActionsGui, 1);

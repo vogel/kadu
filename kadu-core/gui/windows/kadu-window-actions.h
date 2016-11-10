@@ -48,6 +48,7 @@ class CopyPersonalInfoAction;
 class DeleteTalkableAction;
 class DefaultProxyAction;
 class EditTalkableAction;
+class ExpandAction;
 class ExitAction;
 class InjectedFactory;
 class KaduWindowService;
@@ -98,6 +99,7 @@ class KaduWindowActions : public QObject
 	QPointer<Configuration> m_configuration;
 	QPointer<CopyDescriptionAction> m_copyDescriptionAction;
 	QPointer<CopyPersonalInfoAction> m_copyPersonalInfoAction;
+	QPointer<ExpandAction> m_expandAction;
 	QPointer<ExitAction> m_exitAction;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
@@ -150,6 +152,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setCopyDescriptionAction(CopyDescriptionAction *copyDescriptionAction);
 	INJEQT_SET void setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPersonalInfoAction);
+	INJEQT_SET void setExpandAction(ExpandAction *expandAction);
 	INJEQT_SET void setExitAction(ExitAction *exitAction);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
