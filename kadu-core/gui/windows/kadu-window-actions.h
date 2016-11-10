@@ -89,6 +89,7 @@ class KaduWindowActions : public QObject
 
 	QPointer<AccountManager> m_accountManager;
 	QPointer<Actions> m_actions;
+	QPointer<AddConferenceAction> m_addConferenceAction;
 	QPointer<AddGroupAction> m_addGroupAction;
 	QPointer<AddUserAction> m_addUserAction;
 	QPointer<Application> m_application;
@@ -130,7 +131,6 @@ class KaduWindowActions : public QObject
 	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
 	friend class KaduWindow;
-	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
 	DeleteTalkableAction *DeleteTalkable;
 
@@ -141,6 +141,7 @@ class KaduWindowActions : public QObject
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setAddConferenceAction(AddConferenceAction *addConferenceAction);
 	INJEQT_SET void setAddGroupAction(AddGroupAction *addGroupAction);
 	INJEQT_SET void setAddUserAction(AddUserAction *addUserAction);
 	INJEQT_SET void setApplication(Application *application);
@@ -186,7 +187,6 @@ public:
 	Q_INVOKABLE KaduWindowActions(QObject *parent = nullptr);
 	virtual ~KaduWindowActions();
 
-	AddConferenceAction * addConference() { return AddConference; }
 	AddRoomChatAction * addRoomChat() { return AddRoomChat; }
 	EditTalkableAction * editTalkable() { return EditTalkable; }
 	DeleteTalkableAction * deleteTalkable() { return DeleteTalkable; }

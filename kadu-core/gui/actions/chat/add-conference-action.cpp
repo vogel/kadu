@@ -31,6 +31,9 @@
 AddConferenceAction::AddConferenceAction(QObject *parent) :
 		ActionDescription(parent)
 {
+	setType(ActionDescription::TypeGlobal);
+	setName("addConferenceAction");
+	setText(tr("Add Conference..."));
 }
 
 AddConferenceAction::~AddConferenceAction()
@@ -44,16 +47,13 @@ void AddConferenceAction::setAccountManager(AccountManager *accountManager)
 
 void AddConferenceAction::init()
 {
-	setType(ActionDescription::TypeGlobal);
-	setName("addConferenceAction");
-	setText(tr("Add Conference..."));
-
 	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
 	        this, SLOT(updateAddChatMenuItem()));
 	connect(m_accountManager, SIGNAL(accountUnregistered(Account)),
 	        this, SLOT(updateAddChatMenuItem()));
 
 	updateAddChatMenuItem();
+	registerAction(actionsRegistry());
 }
 
 void AddConferenceAction::triggered(QWidget *widget, ActionContext *context, bool toggled)

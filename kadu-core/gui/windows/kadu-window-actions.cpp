@@ -152,6 +152,11 @@ void KaduWindowActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void KaduWindowActions::setAddConferenceAction(AddConferenceAction *addConferenceAction)
+{
+	m_addConferenceAction = addConferenceAction;
+}
+
 void KaduWindowActions::setAddGroupAction(AddGroupAction *addGroupAction)
 {
 	m_addGroupAction = addGroupAction;
@@ -354,9 +359,6 @@ void KaduWindowActions::init()
 	m_showConfigurationWindowAction->setShortcut("kadu_configure", Qt::ApplicationShortcut);
 	m_exitAction->setShortcut("kadu_exit", Qt::ApplicationShortcut);
 	m_addUserAction->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
-
-	AddConference = m_injectedFactory->makeInjected<AddConferenceAction>(this);
-	m_actions->insert(AddConference);
 
 	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
 	m_actions->insert(AddRoomChat);

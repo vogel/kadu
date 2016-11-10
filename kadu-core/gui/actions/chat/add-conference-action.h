@@ -34,7 +34,7 @@ class AddConferenceAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit AddConferenceAction(QObject *parent);
+	Q_INVOKABLE explicit AddConferenceAction(QObject *parent = nullptr);
 	virtual ~AddConferenceAction();
 
 protected:

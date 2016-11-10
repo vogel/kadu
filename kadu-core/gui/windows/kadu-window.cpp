@@ -268,7 +268,7 @@ void KaduWindow::createContactsMenu()
 	m_menuInventory->menu("buddy")->attachToMenu(ContactsMenu);
 	m_menuInventory->menu("buddy")
 		->addAction(m_kaduWindowActions->m_addUserAction, KaduMenu::SectionBuddies, 50)
-		->addAction(m_kaduWindowActions->addConference(), KaduMenu::SectionBuddies, 40)
+		->addAction(m_kaduWindowActions->m_addConferenceAction, KaduMenu::SectionBuddies, 40)
 		->addAction(m_kaduWindowActions->addRoomChat(), KaduMenu::SectionBuddies, 30)
 		->addAction(m_kaduWindowActions->m_addGroupAction, KaduMenu::SectionBuddies, 20)
 		->addAction(m_kaduWindowActions->m_openSearchAction, KaduMenu::SectionBuddies, 10)
