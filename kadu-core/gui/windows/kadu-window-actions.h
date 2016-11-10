@@ -75,6 +75,7 @@ class ShowMultilogonsAction;
 class ShowMyselfAction;
 class ShowOfflineBuddiesAction;
 class ShowOnlyBuddiesWithDescriptionAction;
+class ShowOnlyBuddiesWithDescriptionOrOnlineAction;
 class ShowYourAccountsAction;
 class StatusContainer;
 class UrlHandlerManager;
@@ -119,6 +120,7 @@ class KaduWindowActions : public QObject
 	QPointer<ShowMyselfAction> m_showMyselfAction;
 	QPointer<ShowOfflineBuddiesAction> m_showOfflineBuddiesAction;
 	QPointer<ShowOnlyBuddiesWithDescriptionAction> m_showOnlyBuddiesWithDescriptionAction;
+	QPointer<ShowOnlyBuddiesWithDescriptionOrOnlineAction> m_showOnlyBuddiesWithDescriptionOrOnlineAction;
 	QPointer<ShowYourAccountsAction> m_showYourAccountsAction;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 	QPointer<UrlOpener> m_urlOpener;
@@ -130,8 +132,6 @@ class KaduWindowActions : public QObject
 	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
 	DeleteTalkableAction *DeleteTalkable;
-
-	ActionDescription *OnlineAndDescriptionUsers;
 
 	EditTalkableAction *EditTalkable;
 	ChangeStatusAction *ChangeStatus;
@@ -172,17 +172,14 @@ private slots:
 	INJEQT_SET void setShowMyselfAction(ShowMyselfAction *showMyselfAction);
 	INJEQT_SET void setShowOfflineBuddiesAction(ShowOfflineBuddiesAction *showOfflineBuddiesAction);
 	INJEQT_SET void setShowOnlyBuddiesWithDescriptionAction(ShowOnlyBuddiesWithDescriptionAction *showOnlyBuddiesWithDescriptionAction);
+	INJEQT_SET void setShowOnlyBuddiesWithDescriptionOrOnlineAction(ShowOnlyBuddiesWithDescriptionOrOnlineAction *showOnlyBuddiesWithDescriptionOrOnlineAction);
 	INJEQT_SET void setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 	INJEQT_INIT void init();
 
-	void onlineAndDescUsersActionCreated(Action *action);
-
 	void mergeContactActionActivated(QAction *sender, bool toggled);
-
-	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
 
 public:
 	Q_INVOKABLE KaduWindowActions(QObject *parent = nullptr);

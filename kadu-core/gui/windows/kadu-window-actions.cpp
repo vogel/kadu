@@ -55,6 +55,7 @@
 #include "actions/show-myself-action.h"
 #include "actions/show-offline-buddies-action.h"
 #include "actions/show-only-buddies-with-description-action.h"
+#include "actions/show-only-buddies-with-description-or-online-action.h"
 #include "actions/show-your-accounts-action.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
@@ -327,6 +328,11 @@ void KaduWindowActions::setShowOnlyBuddiesWithDescriptionAction(ShowOnlyBuddiesW
 	m_showOnlyBuddiesWithDescriptionAction = showOnlyBuddiesWithDescriptionAction;
 }
 
+void KaduWindowActions::setShowOnlyBuddiesWithDescriptionOrOnlineAction(ShowOnlyBuddiesWithDescriptionOrOnlineAction *showOnlyBuddiesWithDescriptionOrOnlineAction)
+{
+	m_showOnlyBuddiesWithDescriptionOrOnlineAction = showOnlyBuddiesWithDescriptionOrOnlineAction;
+}
+
 void KaduWindowActions::setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction)
 {
 	m_showYourAccountsAction = showYourAccountsAction;
@@ -397,14 +403,6 @@ void KaduWindowActions::init()
 	m_showOfflineBuddiesAction->setShortcut("kadu_showoffline");
 	m_showOnlyBuddiesWithDescriptionAction->setShortcut("kadu_showonlydesc");
 
-	OnlineAndDescriptionUsers = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
-		this, SLOT(onlineAndDescUsersActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/only-show-online-and-with-description"), tr("Only Show Online Buddies and Buddies with Description"),
-		true
-	);
-	connect(OnlineAndDescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(onlineAndDescUsersActionCreated(Action *)));
-
 	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(this);
 	m_actions->insert(EditTalkable);
 
@@ -446,24 +444,6 @@ void KaduWindowActions::init()
 	m_actions->insert(DefaultProxy);
 }
 
-void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
-{
-	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
-
-	bool enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOnlineAndDescription");
-	auto filter = m_injectedFactory->makeInjected<HideOfflineWithoutDescriptionTalkableFilter>(action);
-	filter->setEnabled(enabled);
-
-	action->setData(QVariant::fromValue(filter));
-	action->setChecked(enabled);
-
-	window->talkableProxyModel()->addFilter(filter);
-}
-
 void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
@@ -486,18 +466,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	window->exec();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
-{
-	m_configuration->deprecatedApi()->writeEntry("General", "ShowOnlineAndDescription", toggled);
-
-	QVariant v = sender->data();
-	if (v.canConvert<HideOfflineWithoutDescriptionTalkableFilter *>())
-	{
-		auto filter = v.value<HideOfflineWithoutDescriptionTalkableFilter *>();
-		filter->setEnabled(toggled);
-	}
 }
 
 #include "moc_kadu-window-actions.cpp"

@@ -22,6 +22,7 @@ set (actions_SRCS
 	show-myself-action.cpp
 	show-offline-buddies-action.cpp
 	show-only-buddies-with-description-action.cpp
+	show-only-buddies-with-description-or-online-action.cpp
 	show-your-accounts-action.cpp
 )
 
