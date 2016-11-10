@@ -42,6 +42,7 @@ class AddRoomChatAction;
 class Application;
 class ChangeStatusAction;
 class ChatWidgetActions;
+class CollapseAction;
 class Configuration;
 class CopyDescriptionAction;
 class CopyPersonalInfoAction;
@@ -97,6 +98,7 @@ class KaduWindowActions : public QObject
 	QPointer<Application> m_application;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<Configuration> m_configuration;
+	QPointer<CollapseAction> m_collapseAction;
 	QPointer<CopyDescriptionAction> m_copyDescriptionAction;
 	QPointer<CopyPersonalInfoAction> m_copyPersonalInfoAction;
 	QPointer<ExpandAction> m_expandAction;
@@ -149,6 +151,7 @@ private slots:
 	INJEQT_SET void setAddUserAction(AddUserAction *addUserAction);
 	INJEQT_SET void setApplication(Application *application);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
+	INJEQT_SET void setCollapseAction(CollapseAction *collapseAction);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setCopyDescriptionAction(CopyDescriptionAction *copyDescriptionAction);
 	INJEQT_SET void setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPersonalInfoAction);

@@ -182,6 +182,11 @@ void KaduWindowActions::setChatWidgetActions(ChatWidgetActions *chatWidgetAction
 	m_chatWidgetActions = chatWidgetActions;
 }
 
+void KaduWindowActions::setCollapseAction(CollapseAction *collapseAction)
+{
+	m_collapseAction = collapseAction;
+}
+
 void KaduWindowActions::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
@@ -370,15 +375,12 @@ void KaduWindowActions::init()
 	m_exitAction->setShortcut("kadu_exit", Qt::ApplicationShortcut);
 	m_addUserAction->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
-	auto collapseAction = m_injectedFactory->makeInjected<CollapseAction>(this);
-	m_actions->insert(collapseAction);
-
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_expandAction, KaduMenu::SectionActionsGui, 2);
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(collapseAction, KaduMenu::SectionActionsGui, 1);
+		->addAction(m_collapseAction, KaduMenu::SectionActionsGui, 1);
 
 	m_menuInventory
 		->menu("buddy-list")

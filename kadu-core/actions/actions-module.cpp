@@ -47,6 +47,7 @@
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
 #include "gui/actions/recent-chats-action.h"
+#include "gui/actions/talkable-tree-view/collapse-action.h"
 #include "gui/actions/talkable-tree-view/expand-action.h"
 
 ActionsModule::ActionsModule()
@@ -55,6 +56,7 @@ ActionsModule::ActionsModule()
 	add_type<AddGroupAction>();
 	add_type<AddRoomChatAction>();
 	add_type<AddUserAction>();
+	add_type<CollapseAction>();
 	add_type<CopyDescriptionAction>();
 	add_type<CopyPersonalInfoAction>();
 	add_type<ExitAction>();

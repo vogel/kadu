@@ -37,6 +37,11 @@ CollapseAction::~CollapseAction()
 {
 }
 
+void CollapseAction::init()
+{
+	registerAction(actionsRegistry());
+}
+
 void CollapseAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
 	Q_UNUSED(widget)
