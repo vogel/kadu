@@ -25,14 +25,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QLocale>
-#include <QtGui/QClipboard>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QInputDialog>
-#include <QtWidgets/QMenu>
+#include "kadu-window-actions.h"
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
 #include "actions/add-group-action.h"
 #include "actions/add-user-action.h"
 #include "actions/copy-description-action.h"
@@ -58,15 +52,6 @@
 #include "actions/show-only-buddies-with-description-action.h"
 #include "actions/show-only-buddies-with-description-or-online-action.h"
 #include "actions/show-your-accounts-action.h"
-#include "buddies/buddy-manager.h"
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "contacts/contact.h"
-#include "core/application.h"
-#include "core/injected-factory.h"
-#include "core/myself.h"
-#include "gui/actions/action.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
@@ -77,62 +62,7 @@
 #include "gui/actions/talkable-tree-view/collapse-action.h"
 #include "gui/actions/talkable-tree-view/expand-action.h"
 #include "gui/menu/menu-inventory.h"
-#include "gui/status-icon.h"
-#include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget/actions/chat-widget-actions.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/dialog/merge-buddies-dialog-widget.h"
-#include "gui/widgets/status-menu.h"
-#include "gui/widgets/talkable-delegate-configuration.h"
-#include "gui/widgets/talkable-tree-view.h"
-#include "gui/windows/add-buddy-window.h"
-#include "gui/windows/buddy-delete-window.h"
-#include "gui/windows/kadu-dialog.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/kadu-window.h"
-#include "gui/windows/group-edit-window.h"
-#include "gui/windows/main-configuration-window-service.h"
-#include "gui/windows/message-dialog.h"
-#include "gui/windows/multilogon-window-service.h"
-#include "gui/windows/search-window.h"
-#include "gui/windows/your-accounts-window-service.h"
-#include "icons/kadu-icon.h"
-#include "misc/misc.h"
-#include "model/roles.h"
-#include "os/generic/url-opener.h"
-#include "parser/parser.h"
-#include "protocols/protocol.h"
-#include "status/status-container-manager.h"
-#include "talkable/filter/blocked-talkable-filter.h"
-#include "talkable/filter/hide-offline-talkable-filter.h"
-#include "talkable/filter/hide-offline-without-description-talkable-filter.h"
-#include "talkable/filter/hide-without-description-talkable-filter.h"
-#include "talkable/model/talkable-model.h"
-#include "talkable/model/talkable-proxy-model.h"
-#include "url-handlers/url-handler-manager.h"
-
-#include "about.h"
-#include "debug.h"
-
-#include "kadu-window-actions.h"
-
-void disableNoContact(Action *action)
-{
-	action->setEnabled(action->context()->contacts().toContact());
-}
-
-void disableIfContactSelected(Myself *myself, Action *action)
-{
-	if (!action || action->context())
-		return;
-
-	action->setEnabled(!action->context()->roles().contains(ContactRole) && !action->context()->buddies().isEmpty());
-
-	if (action->context()->buddies().contains(myself->buddy()))
-		action->setEnabled(false);
-	else
-		action->setEnabled(true);
-}
 
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 {
@@ -140,16 +70,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 KaduWindowActions::~KaduWindowActions()
 {
-}
-
-void KaduWindowActions::setAccountManager(AccountManager *accountManager)
-{
-	m_accountManager = accountManager;
-}
-
-void KaduWindowActions::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void KaduWindowActions::setAddConferenceAction(AddConferenceAction *addConferenceAction)
@@ -172,11 +92,6 @@ void KaduWindowActions::setAddUserAction(AddUserAction *addUserAction)
 	m_addUserAction = addUserAction;
 }
 
-void KaduWindowActions::setApplication(Application *application)
-{
-	m_application = application;
-}
-
 void KaduWindowActions::setChatWidgetActions(ChatWidgetActions *chatWidgetActions)
 {
 	m_chatWidgetActions = chatWidgetActions;
@@ -190,11 +105,6 @@ void KaduWindowActions::setChangeStatusAction(ChangeStatusAction *changeStatusAc
 void KaduWindowActions::setCollapseAction(CollapseAction *collapseAction)
 {
 	m_collapseAction = collapseAction;
-}
-
-void KaduWindowActions::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
 }
 
 void KaduWindowActions::setCopyDescriptionAction(CopyDescriptionAction *copyDescriptionAction)
@@ -232,24 +142,9 @@ void KaduWindowActions::setExitAction(ExitAction *exitAction)
 	m_exitAction = exitAction;
 }
 
-void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
-void KaduWindowActions::setKaduWindowService(KaduWindowService *kaduWindowService)
-{
-	m_kaduWindowService = kaduWindowService;
-}
-
 void KaduWindowActions::setLookupBuddyInfoAction(LookupBuddyInfoAction *lookupBuddyInfoAction)
 {
 	m_lookupBuddyInfoAction = lookupBuddyInfoAction;
-}
-
-void KaduWindowActions::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
-{
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void KaduWindowActions::setMenuInventory(MenuInventory *menuInventory)
@@ -260,16 +155,6 @@ void KaduWindowActions::setMenuInventory(MenuInventory *menuInventory)
 void KaduWindowActions::setMergeBuddiesAction(MergeBuddiesAction *mergeBuddiesAction)
 {
 	m_mergeBuddiesAction = mergeBuddiesAction;
-}
-
-void KaduWindowActions::setMultilogonWindowService(MultilogonWindowService *multilogonWindowService)
-{
-	m_multilogonWindowService = multilogonWindowService;
-}
-
-void KaduWindowActions::setMyself(Myself *myself)
-{
-	m_myself = myself;
 }
 
 void KaduWindowActions::setOpenBuddyEmailAction(OpenBuddyEmailAction *openBuddyEmailAction)
@@ -305,11 +190,6 @@ void KaduWindowActions::setOpenSearchAction(OpenSearchAction *openSearchAction)
 void KaduWindowActions::setOpenTranslateAction(OpenTranslateAction *openTranslateAction)
 {
 	m_openTranslateAction = openTranslateAction;
-}
-
-void KaduWindowActions::setParser(Parser *parser)
-{
-	m_parser = parser;
 }
 
 void KaduWindowActions::setRecentChatsAction(RecentChatsAction *recentChatsAction)
@@ -370,21 +250,6 @@ void KaduWindowActions::setShowOnlyBuddiesWithDescriptionOrOnlineAction(ShowOnly
 void KaduWindowActions::setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction)
 {
 	m_showYourAccountsAction = showYourAccountsAction;
-}
-
-void KaduWindowActions::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
-{
-	m_urlHandlerManager = urlHandlerManager;
-}
-
-void KaduWindowActions::setUrlOpener(UrlOpener *urlOpener)
-{
-	m_urlOpener = urlOpener;
-}
-
-void KaduWindowActions::setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService)
-{
-	m_yourAccountsWindowService = yourAccountsWindowService;
 }
 
 void KaduWindowActions::init()
