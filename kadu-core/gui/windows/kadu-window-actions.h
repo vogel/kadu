@@ -101,6 +101,7 @@ class KaduWindowActions : public QObject
 	QPointer<CollapseAction> m_collapseAction;
 	QPointer<CopyDescriptionAction> m_copyDescriptionAction;
 	QPointer<CopyPersonalInfoAction> m_copyPersonalInfoAction;
+	QPointer<EditTalkableAction> m_editTalkableAction;
 	QPointer<ExpandAction> m_expandAction;
 	QPointer<ExitAction> m_exitAction;
 	QPointer<InjectedFactory> m_injectedFactory;
@@ -136,9 +137,9 @@ class KaduWindowActions : public QObject
 	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
 	friend class KaduWindow;
+	friend class TalkableTreeView;
 	DeleteTalkableAction *DeleteTalkable;
 
-	EditTalkableAction *EditTalkable;
 	ChangeStatusAction *ChangeStatus;
 	DefaultProxyAction *DefaultProxy;
 
@@ -155,6 +156,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setCopyDescriptionAction(CopyDescriptionAction *copyDescriptionAction);
 	INJEQT_SET void setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPersonalInfoAction);
+	INJEQT_SET void setEditTalkableAction(EditTalkableAction *editTalkableAction);
 	INJEQT_SET void setExpandAction(ExpandAction *expandAction);
 	INJEQT_SET void setExitAction(ExitAction *exitAction);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
@@ -194,7 +196,6 @@ public:
 	Q_INVOKABLE KaduWindowActions(QObject *parent = nullptr);
 	virtual ~KaduWindowActions();
 
-	EditTalkableAction * editTalkable() { return EditTalkable; }
 	DeleteTalkableAction * deleteTalkable() { return DeleteTalkable; }
 
 };

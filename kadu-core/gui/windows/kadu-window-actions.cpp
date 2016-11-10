@@ -202,6 +202,11 @@ void KaduWindowActions::setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPe
 	m_copyPersonalInfoAction = copyPersonalInfoAction;
 }
 
+void KaduWindowActions::setEditTalkableAction(EditTalkableAction *editTalkableAction)
+{
+	m_editTalkableAction = editTalkableAction;
+}
+
 void KaduWindowActions::setExpandAction(ExpandAction *expandAction)
 {
 	m_expandAction = expandAction;
@@ -401,12 +406,9 @@ void KaduWindowActions::init()
 	m_showOfflineBuddiesAction->setShortcut("kadu_showoffline");
 	m_showOnlyBuddiesWithDescriptionAction->setShortcut("kadu_showonlydesc");
 
-	EditTalkable = m_injectedFactory->makeInjected<EditTalkableAction>(this);
-	m_actions->insert(EditTalkable);
-
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(EditTalkable, KaduMenu::SectionView);
+		->addAction(m_editTalkableAction, KaduMenu::SectionView);
 
 	m_menuInventory
 		->menu("buddy-list")

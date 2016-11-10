@@ -213,7 +213,7 @@ void TalkableTreeView::keyPressEvent(QKeyEvent *event)
 	if (HotKey::shortCut(configuration(), event, "ShortCuts", "kadu_deleteuser"))
 		m_kaduWindowService->kaduWindow()->kaduWindowActions()->deleteTalkable()->trigger(Context);
 	else if (HotKey::shortCut(configuration(), event, "ShortCuts", "kadu_persinfo"))
-		m_kaduWindowService->kaduWindow()->kaduWindowActions()->editTalkable()->trigger(Context);
+		m_kaduWindowService->kaduWindow()->kaduWindowActions()->m_editTalkableAction->trigger(Context);
 	else
 	{
 		switch (event->key())
