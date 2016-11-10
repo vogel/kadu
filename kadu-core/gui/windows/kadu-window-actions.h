@@ -53,6 +53,7 @@ class EditTalkableAction;
 class ExitAction;
 class InjectedFactory;
 class KaduWindowService;
+class LookupBuddyInfoAction;
 class MainConfigurationWindowService;
 class MainWindow;
 class MenuInventory;
@@ -95,6 +96,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<ExitAction> m_exitAction;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
+	QPointer<LookupBuddyInfoAction> m_lookupBuddyInfoAction;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<MultilogonWindowService> m_multilogonWindowService;
@@ -124,7 +126,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
 
-	ActionDescription *LookupUserInfo;
 	DeleteTalkableAction *DeleteTalkable;
 
 	ActionDescription *InactiveUsers;
@@ -149,6 +150,7 @@ private slots:
 	INJEQT_SET void setExitAction(ExitAction *exitAction);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+	INJEQT_SET void setLookupBuddyInfoAction(LookupBuddyInfoAction *lookupBuddyInfoAction);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMultilogonWindowService(MultilogonWindowService *multilogonWindowService);
@@ -179,8 +181,6 @@ private slots:
 	void onlineAndDescUsersActionCreated(Action *action);
 
 	void mergeContactActionActivated(QAction *sender, bool toggled);
-
-	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
 
 	void inactiveUsersActionActivated(QAction *sender, bool toggled);
 	void descriptionUsersActionActivated(QAction *sender, bool toggled);

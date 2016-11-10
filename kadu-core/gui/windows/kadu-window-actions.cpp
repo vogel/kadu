@@ -38,6 +38,7 @@
 #include "actions/copy-description-action.h"
 #include "actions/copy-personal-info-action.h"
 #include "actions/exit-action.h"
+#include "actions/lookup-buddy-info-action.h"
 #include "actions/open-buddy-email-action.h"
 #include "actions/open-description-link-action.h"
 #include "actions/open-forum-action.h"
@@ -109,14 +110,6 @@
 #include "debug.h"
 
 #include "kadu-window-actions.h"
-
-void disableNoSearchService(Action *action)
-{
-	const Contact &contact = action->context()->contacts().toContact();
-	action->setEnabled(contact
-			&& contact.contactAccount().protocolHandler()
-			&& contact.contactAccount().protocolHandler()->searchService());
-}
 
 void disableNoContact(Action *action)
 {
@@ -219,6 +212,11 @@ void KaduWindowActions::setInjectedFactory(InjectedFactory *injectedFactory)
 void KaduWindowActions::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
 	m_kaduWindowService = kaduWindowService;
+}
+
+void KaduWindowActions::setLookupBuddyInfoAction(LookupBuddyInfoAction *lookupBuddyInfoAction)
+{
+	m_lookupBuddyInfoAction = lookupBuddyInfoAction;
 }
 
 void KaduWindowActions::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
@@ -378,13 +376,6 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(m_openBuddyEmailAction, KaduMenu::SectionSend, 200);
 
-	LookupUserInfo = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUser, "lookupUserInfoAction",
-		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
-		KaduIcon("edit-find"), tr("Search in Directory"), false,
-		disableNoSearchService
-	);
-
 	InactiveUsers = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
 		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
@@ -540,30 +531,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	KaduDialog *window = new KaduDialog(mergeWidget, sender->parentWidget());
 	window->setAcceptButtonText(tr("Merge"));
 	window->exec();
-
-	kdebugf2();
-}
-
-void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	const Buddy &buddy = action->context()->buddies().toBuddy();
-	if (!buddy)
-	{
-		(m_injectedFactory->makeInjected<SearchWindow>(m_kaduWindowService->kaduWindow()))->show();
-		return;
-	}
-
-	auto sd = m_injectedFactory->makeInjected<SearchWindow>(m_kaduWindowService->kaduWindow(), buddy);
-	sd->show();
-	sd->firstSearch();
 
 	kdebugf2();
 }
