@@ -26,8 +26,6 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-#include "configuration/configuration-aware-object.h"
-
 #include "status/status.h"
 
 class QAction;
@@ -74,13 +72,14 @@ class ShowConfigurationWindowAction;
 class ShowInfoPanelAction;
 class ShowMultilogonsAction;
 class ShowMyselfAction;
+class ShowOfflineBuddiesAction;
 class ShowYourAccountsAction;
 class StatusContainer;
 class UrlHandlerManager;
 class UrlOpener;
 class YourAccountsWindowService;
 
-class KaduWindowActions : public QObject, ConfigurationAwareObject
+class KaduWindowActions : public QObject
 {
 	Q_OBJECT
 
@@ -115,6 +114,7 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 	QPointer<ShowInfoPanelAction> m_showInfoPanelAction;
 	QPointer<ShowMultilogonsAction> m_showMultilogonsAction;
 	QPointer<ShowMyselfAction> m_showMyselfAction;
+	QPointer<ShowOfflineBuddiesAction> m_showOfflineBuddiesAction;
 	QPointer<ShowYourAccountsAction> m_showYourAccountsAction;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 	QPointer<UrlOpener> m_urlOpener;
@@ -128,7 +128,6 @@ class KaduWindowActions : public QObject, ConfigurationAwareObject
 
 	DeleteTalkableAction *DeleteTalkable;
 
-	ActionDescription *InactiveUsers;
 	ActionDescription *DescriptionUsers;
 	ActionDescription *ShowDescriptions;
 	ActionDescription *OnlineAndDescriptionUsers;
@@ -169,29 +168,25 @@ private slots:
 	INJEQT_SET void setShowInfoPanelAction(ShowInfoPanelAction *showInfoPanelAction);
 	INJEQT_SET void setShowMultilogonsAction(ShowMultilogonsAction *showMultilogonsAction);
 	INJEQT_SET void setShowMyselfAction(ShowMyselfAction *showMyselfAction);
+	INJEQT_SET void setShowOfflineBuddiesAction(ShowOfflineBuddiesAction *showOfflineBuddiesAction);
 	INJEQT_SET void setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 	INJEQT_INIT void init();
 
-	void inactiveUsersActionCreated(Action *action);
 	void descriptionUsersActionCreated(Action *action);
 	void showDescriptionsActionCreated(Action *action);
 	void onlineAndDescUsersActionCreated(Action *action);
 
 	void mergeContactActionActivated(QAction *sender, bool toggled);
 
-	void inactiveUsersActionActivated(QAction *sender, bool toggled);
 	void descriptionUsersActionActivated(QAction *sender, bool toggled);
 	void showDescriptionsActionActivated(QAction *sender, bool toggled);
 	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
 
-protected:
-	virtual void configurationUpdated();
-
 public:
-	explicit KaduWindowActions(QObject *parent);
+	Q_INVOKABLE KaduWindowActions(QObject *parent = nullptr);
 	virtual ~KaduWindowActions();
 
 	AddConferenceAction * addConference() { return AddConference; }

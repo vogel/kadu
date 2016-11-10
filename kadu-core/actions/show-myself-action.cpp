@@ -92,7 +92,7 @@ void ShowMyselfAction::actionTriggered(QAction *action, bool toggled)
 void ShowMyselfAction::configurationUpdated()
 {
 	auto context = m_kaduWindowService->kaduWindow()->actionContext();
-	if (action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself"))
+	if (action(context) &&action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself"))
 		action(context)->trigger();
 }
 

@@ -83,6 +83,7 @@ private:
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<FileTransferManager> m_fileTransferManager;
+	QPointer<KaduWindowActions> m_kaduWindowActions;
 	QPointer<MainWindowRepository> m_mainWindowRepository;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<Myself> m_myself;
@@ -93,8 +94,6 @@ private:
 
 	bool Docked; // TODO: 0.11.0 it is a hack
 	QSplitter *Split;
-
-	KaduWindowActions *Actions;
 
 	BuddyInfoPanel *InfoPanel;
 	QMenu *KaduMenu;
@@ -138,6 +137,7 @@ private slots:
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+	INJEQT_SET void setKaduWindowActions(KaduWindowActions *kaduWindowActions);
 	INJEQT_SET void setMainWindowRepository(MainWindowRepository *mainWindowRepository);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setMyself(Myself *myself);
@@ -172,7 +172,7 @@ public:
 	virtual TalkableTreeView * talkableTreeView();
 	virtual TalkableProxyModel * talkableProxyModel();
 
-	KaduWindowActions * kaduWindowActions() const { return Actions; }
+	KaduWindowActions * kaduWindowActions() const;
 
 	void setDocked(bool);
 	bool docked() { return Docked; }

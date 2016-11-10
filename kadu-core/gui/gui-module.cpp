@@ -31,6 +31,7 @@
 #include "gui/widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
+#include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/main-configuration-window-service.h"
 #include "gui/windows/main-window-repository.h"
@@ -54,6 +55,7 @@ GuiModule::GuiModule()
 	add_type<CustomInputMenuManager>();
 	add_type<EditTalkableAction>();
 	add_type<LeaveChatAction>();
+	add_type<KaduWindowActions>();
 	add_type<KaduWindowService>();
 	add_type<MainConfigurationWindowService>();
 	add_type<MainWindowRepository>();

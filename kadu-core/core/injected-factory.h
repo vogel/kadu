@@ -69,10 +69,10 @@ public:
 		return result;
 	}
 
+	void injectInto(QObject *object);
+
 private:
 	QPointer<InjectorProvider> m_injectorProvider;
-
-	void injectInto(QObject *object);
 
 private slots:
 	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);

@@ -70,7 +70,7 @@ void ShowInfoPanelAction::actionTriggered(QAction *, bool toggled)
 void ShowInfoPanelAction::configurationUpdated()
 {
 	auto context = m_kaduWindowService->kaduWindow()->actionContext();
-	if (action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+	if (action(context) &&action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
 		action(context)->trigger();
 }
 

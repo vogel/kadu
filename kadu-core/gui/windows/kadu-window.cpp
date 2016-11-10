@@ -50,6 +50,7 @@
 #include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-myself-action.h"
+#include "actions/show-offline-buddies-action.h"
 #include "actions/show-your-accounts-action.h"
 #include "buddies/buddy-set.h"
 #include "chat/model/chat-data-extractor.h"
@@ -123,6 +124,11 @@ void KaduWindow::setFileTransferManager(FileTransferManager *fileTransferManager
 	m_fileTransferManager = fileTransferManager;
 }
 
+void KaduWindow::setKaduWindowActions(KaduWindowActions *kaduWindowActions)
+{
+	m_kaduWindowActions = kaduWindowActions;
+}
+
 void KaduWindow::setMainWindowRepository(MainWindowRepository *mainWindowRepository)
 {
 	m_mainWindowRepository = mainWindowRepository;
@@ -178,7 +184,6 @@ void KaduWindow::init()
 	Context = static_cast<ProxyActionContext *>(actionContext());
 	Context->setForwardActionContext(Roster->actionContext());
 
-	Actions = injectedFactory()->makeInjected<KaduWindowActions>(this);
 	loadToolBarsFromConfig();
 	createMenu();
 
@@ -244,10 +249,10 @@ void KaduWindow::createKaduMenu()
 	KaduMenu = new QMenu(this);
 	m_menuInventory->menu("main")->attachToMenu(KaduMenu);
 	m_menuInventory->menu("main")
-		->addAction(Actions->m_showConfigurationWindowAction, KaduMenu::SectionConfig, 30)
-		->addAction(Actions->m_showYourAccountsAction, KaduMenu::SectionConfig, 29)
-		->addAction(Actions->RecentChats, KaduMenu::SectionRecentChats, 28)
-		->addAction(Actions->m_exitAction, KaduMenu::SectionQuit)
+		->addAction(m_kaduWindowActions->m_showConfigurationWindowAction, KaduMenu::SectionConfig, 30)
+		->addAction(m_kaduWindowActions->m_showYourAccountsAction, KaduMenu::SectionConfig, 29)
+		->addAction(m_kaduWindowActions->RecentChats, KaduMenu::SectionRecentChats, 28)
+		->addAction(m_kaduWindowActions->m_exitAction, KaduMenu::SectionQuit)
 		->update();
 
 	KaduMenu->setTitle("&Kadu");
@@ -262,16 +267,16 @@ void KaduWindow::createContactsMenu()
 
 	m_menuInventory->menu("buddy")->attachToMenu(ContactsMenu);
 	m_menuInventory->menu("buddy")
-		->addAction(Actions->m_addUserAction, KaduMenu::SectionBuddies, 50)
-		->addAction(Actions->addConference(), KaduMenu::SectionBuddies, 40)
-		->addAction(Actions->addRoomChat(), KaduMenu::SectionBuddies, 30)
-		->addAction(Actions->m_addGroupAction, KaduMenu::SectionBuddies, 20)
-		->addAction(Actions->m_openSearchAction, KaduMenu::SectionBuddies, 10)
+		->addAction(m_kaduWindowActions->m_addUserAction, KaduMenu::SectionBuddies, 50)
+		->addAction(m_kaduWindowActions->addConference(), KaduMenu::SectionBuddies, 40)
+		->addAction(m_kaduWindowActions->addRoomChat(), KaduMenu::SectionBuddies, 30)
+		->addAction(m_kaduWindowActions->m_addGroupAction, KaduMenu::SectionBuddies, 20)
+		->addAction(m_kaduWindowActions->m_openSearchAction, KaduMenu::SectionBuddies, 10)
 		->addAction(m_chatWidgetActions->openChatWith(), KaduMenu::SectionOpenChat)
-		->addAction(Actions->InactiveUsers, KaduMenu::SectionBuddyListFilters, 4)
-		->addAction(Actions->m_showBlockedBuddiesAction, KaduMenu::SectionBuddyListFilters, 3)
-		->addAction(Actions->m_showMyselfAction, KaduMenu::SectionBuddyListFilters, 2)
-		->addAction(Actions->m_showInfoPanelAction, KaduMenu::SectionBuddyListFilters, 1)
+		->addAction(m_kaduWindowActions->m_showOfflineBuddiesAction, KaduMenu::SectionBuddyListFilters, 4)
+		->addAction(m_kaduWindowActions->m_showBlockedBuddiesAction, KaduMenu::SectionBuddyListFilters, 3)
+		->addAction(m_kaduWindowActions->m_showMyselfAction, KaduMenu::SectionBuddyListFilters, 2)
+		->addAction(m_kaduWindowActions->m_showInfoPanelAction, KaduMenu::SectionBuddyListFilters, 1)
 		->update();
 
 	menuBar()->addMenu(ContactsMenu);
@@ -284,7 +289,7 @@ void KaduWindow::createToolsMenu()
 
 	m_menuInventory->menu("tools")->attachToMenu(ToolsMenu);
 	m_menuInventory->menu("tools")
-		->addAction(Actions->m_showMultilogonsAction, KaduMenu::SectionTools, 1)
+		->addAction(m_kaduWindowActions->m_showMultilogonsAction, KaduMenu::SectionTools, 1)
 		->update();
 
 	menuBar()->addMenu(ToolsMenu);
@@ -297,11 +302,11 @@ void KaduWindow::createHelpMenu()
 
 	m_menuInventory->menu("help")->attachToMenu(HelpMenu);
 	m_menuInventory->menu("help")
-		->addAction(Actions->m_openForumAction, KaduMenu::SectionHelp, 2)
-		->addAction(Actions->m_openRedmineAction, KaduMenu::SectionHelp, 1)
-		->addAction(Actions->m_openGetInvolvedAction, KaduMenu::SectionGetInvolved, 2)
-		->addAction(Actions->m_openTranslateAction, KaduMenu::SectionGetInvolved, 1)
-		->addAction(Actions->m_showAboutWindowAction, KaduMenu::SectionAbout, 1)
+		->addAction(m_kaduWindowActions->m_openForumAction, KaduMenu::SectionHelp, 2)
+		->addAction(m_kaduWindowActions->m_openRedmineAction, KaduMenu::SectionHelp, 1)
+		->addAction(m_kaduWindowActions->m_openGetInvolvedAction, KaduMenu::SectionGetInvolved, 2)
+		->addAction(m_kaduWindowActions->m_openTranslateAction, KaduMenu::SectionGetInvolved, 1)
+		->addAction(m_kaduWindowActions->m_showAboutWindowAction, KaduMenu::SectionAbout, 1)
 		->update();
 
 	menuBar()->addMenu(HelpMenu);
@@ -550,6 +555,11 @@ void KaduWindow::createDefaultToolbars(Configuration *configuration, QDomElement
 void KaduWindow::setDocked(bool docked)
 {
 	Docked = docked;
+}
+
+KaduWindowActions * KaduWindow::kaduWindowActions() const
+{
+	return m_kaduWindowActions;
 }
 
 #include "moc_kadu-window.cpp"

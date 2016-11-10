@@ -54,7 +54,8 @@ void KaduWindowService::done()
 
 void KaduWindowService::createWindow()
 {
-	m_kaduWindow = m_injectedFactory->makeInjected<KaduWindow>();
+	m_kaduWindow = new KaduWindow{};
+	m_injectedFactory->injectInto(m_kaduWindow);
 	connect(m_kaduWindow, SIGNAL(destroyed()), this, SLOT(kaduWindowDestroyed()));
 	m_kaduWindowProvider->provideValue(m_kaduWindow);
 }

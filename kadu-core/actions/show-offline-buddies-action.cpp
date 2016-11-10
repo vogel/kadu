@@ -17,47 +17,48 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "show-blocked-buddies-action.h"
+#include "show-offline-buddies-action.h"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "core/injected-factory.h"
 #include "gui/actions/action.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
-#include "talkable/filter/blocked-talkable-filter.h"
+#include "talkable/filter/hide-offline-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
-ShowBlockedBuddiesAction::ShowBlockedBuddiesAction(QObject *parent) :
+ShowOfflineBuddiesAction::ShowOfflineBuddiesAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
 		ActionDescription(parent)
 {
 	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/show-blocked-buddies"});
-	setName(QStringLiteral("showIgnoredAction"));
-	setText(tr("Show Blocked Buddies"));
-	setType(ActionDescription::TypeMainMenu);
+	setIcon(KaduIcon{"kadu_icons/show-offline-buddies"});
+	setName(QStringLiteral("inactiveUsersAction"));
+	setText(tr("Show Offline Buddies"));
+	setType(ActionDescription::TypeUserList);
 }
 
-ShowBlockedBuddiesAction::~ShowBlockedBuddiesAction()
+ShowOfflineBuddiesAction::~ShowOfflineBuddiesAction()
 {
 }
 
-void ShowBlockedBuddiesAction::setConfiguration(Configuration *configuration)
+void ShowOfflineBuddiesAction::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
 }
 
-void ShowBlockedBuddiesAction::setKaduWindowService(KaduWindowService *kaduWindowService)
+void ShowOfflineBuddiesAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
 	m_kaduWindowService = kaduWindowService;
 }
 
-void ShowBlockedBuddiesAction::init()
+void ShowOfflineBuddiesAction::init()
 {
 	registerAction(actionsRegistry());
 }
 
-void ShowBlockedBuddiesAction::actionInstanceCreated(Action *action)
+void ShowOfflineBuddiesAction::actionInstanceCreated(Action *action)
 {
 	auto window = qobject_cast<MainWindow *>(action->parentWidget());
 	if (!window)
@@ -65,32 +66,32 @@ void ShowBlockedBuddiesAction::actionInstanceCreated(Action *action)
 	if (!window->talkableProxyModel())
 		return;
 
-	auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowBlocked");
-	auto blockedTalkableFilter = new BlockedTalkableFilter{action};
-	blockedTalkableFilter->setEnabled(!enabled);
+	auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline");
+	auto filter = injectedFactory()->makeInjected<HideOfflineTalkableFilter>(action);
+	filter->setEnabled(!enabled);
 
-	action->setData(QVariant::fromValue(blockedTalkableFilter));
+	action->setData(QVariant::fromValue(filter));
 	action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(blockedTalkableFilter);
+	window->talkableProxyModel()->addFilter(filter);
 }
 
-void ShowBlockedBuddiesAction::actionTriggered(QAction *action, bool toggled)
+void ShowOfflineBuddiesAction::actionTriggered(QAction *action, bool toggled)
 {
 	auto v = action->data();
-	if (v.canConvert<BlockedTalkableFilter *>())
+	if (v.canConvert<HideOfflineTalkableFilter *>())
 	{
-		auto blockedTalkableFilter = v.value<BlockedTalkableFilter *>();
-		blockedTalkableFilter->setEnabled(!toggled);
-		m_configuration->deprecatedApi()->writeEntry("General", "ShowBlocked", toggled);
+		auto filter = v.value<HideOfflineTalkableFilter *>();
+		filter->setEnabled(!toggled);
+		m_configuration->deprecatedApi()->writeEntry("General", "ShowOffline", toggled);
 	}
 }
 
-void ShowBlockedBuddiesAction::configurationUpdated()
+void ShowOfflineBuddiesAction::configurationUpdated()
 {
 	auto context = m_kaduWindowService->kaduWindow()->actionContext();
-	if (action(context) &&action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowBlocked"))
+	if (action(context) && action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
 		action(context)->trigger();
 }
 
-#include "moc_show-blocked-buddies-action.cpp"
+#include "moc_show-offline-buddies-action.cpp"

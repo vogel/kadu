@@ -19,6 +19,7 @@ set (actions_SRCS
 	show-info-panel-action.cpp
 	show-multilogons-action.cpp
 	show-myself-action.cpp
+	show-offline-buddies-action.cpp
 	show-your-accounts-action.cpp
 )
 

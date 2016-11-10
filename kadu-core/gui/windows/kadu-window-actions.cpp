@@ -52,6 +52,7 @@
 #include "actions/show-info-panel-action.h"
 #include "actions/show-multilogons-action.h"
 #include "actions/show-myself-action.h"
+#include "actions/show-offline-buddies-action.h"
 #include "actions/show-your-accounts-action.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
@@ -309,6 +310,11 @@ void KaduWindowActions::setShowMyselfAction(ShowMyselfAction *showMyselfAction)
 	m_showMyselfAction = showMyselfAction;
 }
 
+void KaduWindowActions::setShowOfflineBuddiesAction(ShowOfflineBuddiesAction *showOfflineBuddiesAction)
+{
+	m_showOfflineBuddiesAction = showOfflineBuddiesAction;
+}
+
 void KaduWindowActions::setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction)
 {
 	m_showYourAccountsAction = showYourAccountsAction;
@@ -376,14 +382,7 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(m_openBuddyEmailAction, KaduMenu::SectionSend, 200);
 
-	InactiveUsers = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUserList, "inactiveUsersAction",
-		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/show-offline-buddies"), tr("Show Offline Buddies"),
-		true
-	);
-	connect(InactiveUsers, SIGNAL(actionCreated(Action *)), this, SLOT(inactiveUsersActionCreated(Action *)));
-	InactiveUsers->setShortcut("kadu_showoffline");
+	m_showOfflineBuddiesAction->setShortcut("kadu_showoffline");
 
 	DescriptionUsers = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUserList, "descriptionUsersAction",
@@ -449,24 +448,6 @@ void KaduWindowActions::init()
 
 	DefaultProxy = m_injectedFactory->makeInjected<DefaultProxyAction>(this);
 	m_actions->insert(DefaultProxy);
-}
-
-void KaduWindowActions::inactiveUsersActionCreated(Action *action)
-{
-	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
-
-	bool enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline");
-	auto filter = m_injectedFactory->makeInjected<HideOfflineTalkableFilter>(action);
-	filter->setEnabled(!enabled);
-
-	action->setData(QVariant::fromValue(filter));
-	action->setChecked(enabled);
-
-	window->talkableProxyModel()->addFilter(filter);
 }
 
 void KaduWindowActions::descriptionUsersActionCreated(Action *action)
@@ -535,17 +516,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	kdebugf2();
 }
 
-void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggled)
-{
-	QVariant v = sender->data();
-	if (v.canConvert<HideOfflineTalkableFilter *>())
-	{
-		HideOfflineTalkableFilter *filter = v.value<HideOfflineTalkableFilter *>();
-		filter->setEnabled(!toggled);
-		m_configuration->deprecatedApi()->writeEntry("General", "ShowOffline", toggled);
-	}
-}
-
 void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool toggled)
 {
 	QVariant v = sender->data();
@@ -574,14 +544,6 @@ void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool 
 		auto filter = v.value<HideOfflineWithoutDescriptionTalkableFilter *>();
 		filter->setEnabled(toggled);
 	}
-}
-
-void KaduWindowActions::configurationUpdated()
-{
-	ActionContext *context = m_kaduWindowService->kaduWindow()->actionContext();
-
-	if (InactiveUsers->action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
-		InactiveUsers->action(context)->trigger();
 }
 
 #include "moc_kadu-window-actions.cpp"
