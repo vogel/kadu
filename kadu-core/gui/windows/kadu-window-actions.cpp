@@ -202,6 +202,11 @@ void KaduWindowActions::setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPe
 	m_copyPersonalInfoAction = copyPersonalInfoAction;
 }
 
+void KaduWindowActions::setDeleteTalkableAction(DeleteTalkableAction *deleteTalkableAction)
+{
+	m_deleteTalkableAction = deleteTalkableAction;
+}
+
 void KaduWindowActions::setEditTalkableAction(EditTalkableAction *editTalkableAction)
 {
 	m_editTalkableAction = editTalkableAction;
@@ -418,12 +423,9 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(m_chatWidgetActions->blockUser(), KaduMenu::SectionManagement, 500);
 
-	DeleteTalkable = m_injectedFactory->makeInjected<DeleteTalkableAction>(this);
-	m_actions->insert(DeleteTalkable);
-
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(DeleteTalkable, KaduMenu::SectionManagement, 1000);
+		->addAction(m_deleteTalkableAction, KaduMenu::SectionManagement, 1000);
 
 	// The last ActionDescription will send actionLoaded() signal.
 	// TODO It will not reflect all action types (see MainWindow::actionLoadedOrUnloaded() method)

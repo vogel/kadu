@@ -46,6 +46,7 @@
 #include "actions/show-your-accounts-action.h"
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
+#include "gui/actions/delete-talkable-action.h"
 #include "gui/actions/recent-chats-action.h"
 #include "gui/actions/talkable-tree-view/collapse-action.h"
 #include "gui/actions/talkable-tree-view/expand-action.h"
@@ -59,6 +60,7 @@ ActionsModule::ActionsModule()
 	add_type<CollapseAction>();
 	add_type<CopyDescriptionAction>();
 	add_type<CopyPersonalInfoAction>();
+	add_type<DeleteTalkableAction>();
 	add_type<ExitAction>();
 	add_type<ExpandAction>();
 	add_type<LookupBuddyInfoAction>();
