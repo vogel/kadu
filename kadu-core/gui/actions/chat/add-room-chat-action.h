@@ -34,7 +34,7 @@ class AddRoomChatAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit AddRoomChatAction(QObject *parent);
+	Q_INVOKABLE explicit AddRoomChatAction(QObject *parent = nullptr);
 	virtual ~AddRoomChatAction();
 
 protected:

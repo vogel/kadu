@@ -162,6 +162,11 @@ void KaduWindowActions::setAddGroupAction(AddGroupAction *addGroupAction)
 	m_addGroupAction = addGroupAction;
 }
 
+void KaduWindowActions::setAddRoomChatAction(AddRoomChatAction *addRoomChatAction)
+{
+	m_addRoomChatAction = addRoomChatAction;
+}
+
 void KaduWindowActions::setAddUserAction(AddUserAction *addUserAction)
 {
 	m_addUserAction = addUserAction;
@@ -359,9 +364,6 @@ void KaduWindowActions::init()
 	m_showConfigurationWindowAction->setShortcut("kadu_configure", Qt::ApplicationShortcut);
 	m_exitAction->setShortcut("kadu_exit", Qt::ApplicationShortcut);
 	m_addUserAction->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
-
-	AddRoomChat = m_injectedFactory->makeInjected<AddRoomChatAction>(this);
-	m_actions->insert(AddRoomChat);
 
 	auto expandAction = m_injectedFactory->makeInjected<ExpandAction>(this);
 	m_actions->insert(expandAction);

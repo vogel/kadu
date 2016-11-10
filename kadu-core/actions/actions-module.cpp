@@ -45,12 +45,14 @@
 #include "actions/show-only-buddies-with-description-or-online-action.h"
 #include "actions/show-your-accounts-action.h"
 #include "gui/actions/chat/add-conference-action.h"
+#include "gui/actions/chat/add-room-chat-action.h"
 #include "gui/actions/recent-chats-action.h"
 
 ActionsModule::ActionsModule()
 {
 	add_type<AddConferenceAction>();
 	add_type<AddGroupAction>();
+	add_type<AddRoomChatAction>();
 	add_type<AddUserAction>();
 	add_type<CopyDescriptionAction>();
 	add_type<CopyPersonalInfoAction>();

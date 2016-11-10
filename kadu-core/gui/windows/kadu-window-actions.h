@@ -91,6 +91,7 @@ class KaduWindowActions : public QObject
 	QPointer<Actions> m_actions;
 	QPointer<AddConferenceAction> m_addConferenceAction;
 	QPointer<AddGroupAction> m_addGroupAction;
+	QPointer<AddRoomChatAction> m_addRoomChatAction;
 	QPointer<AddUserAction> m_addUserAction;
 	QPointer<Application> m_application;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
@@ -131,7 +132,6 @@ class KaduWindowActions : public QObject
 	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
 	friend class KaduWindow;
-	AddRoomChatAction *AddRoomChat;
 	DeleteTalkableAction *DeleteTalkable;
 
 	EditTalkableAction *EditTalkable;
@@ -143,6 +143,7 @@ private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setAddConferenceAction(AddConferenceAction *addConferenceAction);
 	INJEQT_SET void setAddGroupAction(AddGroupAction *addGroupAction);
+	INJEQT_SET void setAddRoomChatAction(AddRoomChatAction *addRoomChatAction);
 	INJEQT_SET void setAddUserAction(AddUserAction *addUserAction);
 	INJEQT_SET void setApplication(Application *application);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
@@ -187,7 +188,6 @@ public:
 	Q_INVOKABLE KaduWindowActions(QObject *parent = nullptr);
 	virtual ~KaduWindowActions();
 
-	AddRoomChatAction * addRoomChat() { return AddRoomChat; }
 	EditTalkableAction * editTalkable() { return EditTalkable; }
 	DeleteTalkableAction * deleteTalkable() { return DeleteTalkable; }
 

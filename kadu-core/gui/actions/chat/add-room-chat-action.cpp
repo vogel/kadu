@@ -51,6 +51,8 @@ void AddRoomChatAction::init()
 	connect(m_accountManager, SIGNAL(accountUnregistered(Account)), this, SLOT(updateAddChatMenuItem()));
 
 	updateAddChatMenuItem();
+
+	registerAction(actionsRegistry());
 }
 
 void AddRoomChatAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
