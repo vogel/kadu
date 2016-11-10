@@ -53,6 +53,7 @@
 #include "actions/show-multilogons-action.h"
 #include "actions/show-myself-action.h"
 #include "actions/show-offline-buddies-action.h"
+#include "actions/show-only-buddies-with-description-action.h"
 #include "actions/show-your-accounts-action.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
@@ -315,6 +316,11 @@ void KaduWindowActions::setShowOfflineBuddiesAction(ShowOfflineBuddiesAction *sh
 	m_showOfflineBuddiesAction = showOfflineBuddiesAction;
 }
 
+void KaduWindowActions::setShowOnlyBuddiesWithDescriptionAction(ShowOnlyBuddiesWithDescriptionAction *showOnlyBuddiesWithDescriptionAction)
+{
+	m_showOnlyBuddiesWithDescriptionAction = showOnlyBuddiesWithDescriptionAction;
+}
+
 void KaduWindowActions::setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction)
 {
 	m_showYourAccountsAction = showYourAccountsAction;
@@ -383,15 +389,7 @@ void KaduWindowActions::init()
 		->addAction(m_openBuddyEmailAction, KaduMenu::SectionSend, 200);
 
 	m_showOfflineBuddiesAction->setShortcut("kadu_showoffline");
-
-	DescriptionUsers = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUserList, "descriptionUsersAction",
-		this, SLOT(descriptionUsersActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/only-show-with-description"), tr("Only Show Buddies with Description"),
-		true
-	);
-	connect(DescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(descriptionUsersActionCreated(Action *)));
-	DescriptionUsers->setShortcut("kadu_showonlydesc");
+	m_showOnlyBuddiesWithDescriptionAction->setShortcut("kadu_showonlydesc");
 
 	ShowDescriptions = m_injectedFactory->makeInjected<ActionDescription>(this,
 		ActionDescription::TypeUserList, "descriptionsAction",
@@ -450,24 +448,6 @@ void KaduWindowActions::init()
 	m_actions->insert(DefaultProxy);
 }
 
-void KaduWindowActions::descriptionUsersActionCreated(Action *action)
-{
-	MainWindow *window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
-
-	bool enabled = !m_configuration->deprecatedApi()->readBoolEntry("General", "ShowWithoutDescription");
-	auto filter = m_injectedFactory->makeInjected<HideWithoutDescriptionTalkableFilter>(action);
-	filter->setEnabled(enabled);
-
-	action->setData(QVariant::fromValue(filter));
-	action->setChecked(enabled);
-
-	window->talkableProxyModel()->addFilter(filter);
-}
-
 void KaduWindowActions::showDescriptionsActionCreated(Action *action)
 {
 	bool enabled = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
@@ -514,16 +494,6 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	window->exec();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool toggled)
-{
-	QVariant v = sender->data();
-	if (v.canConvert<HideWithoutDescriptionTalkableFilter *>())
-	{
-		auto filter = v.value<HideWithoutDescriptionTalkableFilter *>();
-		filter->setEnabled(toggled);
-	}
 }
 
 void KaduWindowActions::showDescriptionsActionActivated(QAction *sender, bool toggled)

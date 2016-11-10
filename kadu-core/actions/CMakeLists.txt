@@ -20,6 +20,7 @@ set (actions_SRCS
 	show-multilogons-action.cpp
 	show-myself-action.cpp
 	show-offline-buddies-action.cpp
+	show-only-buddies-with-description-action.cpp
 	show-your-accounts-action.cpp
 )
 

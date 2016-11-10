@@ -39,6 +39,7 @@
 #include "actions/show-multilogons-action.h"
 #include "actions/show-myself-action.h"
 #include "actions/show-offline-buddies-action.h"
+#include "actions/show-only-buddies-with-description-action.h"
 #include "actions/show-your-accounts-action.h"
 
 ActionsModule::ActionsModule()
@@ -63,6 +64,7 @@ ActionsModule::ActionsModule()
 	add_type<ShowMultilogonsAction>();
 	add_type<ShowMyselfAction>();
 	add_type<ShowOfflineBuddiesAction>();
+	add_type<ShowOnlyBuddiesWithDescriptionAction>();
 	add_type<ShowYourAccountsAction>();
 }
 

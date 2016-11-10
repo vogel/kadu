@@ -73,6 +73,7 @@ class ShowInfoPanelAction;
 class ShowMultilogonsAction;
 class ShowMyselfAction;
 class ShowOfflineBuddiesAction;
+class ShowOnlyBuddiesWithDescriptionAction;
 class ShowYourAccountsAction;
 class StatusContainer;
 class UrlHandlerManager;
@@ -115,6 +116,7 @@ class KaduWindowActions : public QObject
 	QPointer<ShowMultilogonsAction> m_showMultilogonsAction;
 	QPointer<ShowMyselfAction> m_showMyselfAction;
 	QPointer<ShowOfflineBuddiesAction> m_showOfflineBuddiesAction;
+	QPointer<ShowOnlyBuddiesWithDescriptionAction> m_showOnlyBuddiesWithDescriptionAction;
 	QPointer<ShowYourAccountsAction> m_showYourAccountsAction;
 	QPointer<UrlHandlerManager> m_urlHandlerManager;
 	QPointer<UrlOpener> m_urlOpener;
@@ -128,7 +130,6 @@ class KaduWindowActions : public QObject
 
 	DeleteTalkableAction *DeleteTalkable;
 
-	ActionDescription *DescriptionUsers;
 	ActionDescription *ShowDescriptions;
 	ActionDescription *OnlineAndDescriptionUsers;
 
@@ -169,19 +170,18 @@ private slots:
 	INJEQT_SET void setShowMultilogonsAction(ShowMultilogonsAction *showMultilogonsAction);
 	INJEQT_SET void setShowMyselfAction(ShowMyselfAction *showMyselfAction);
 	INJEQT_SET void setShowOfflineBuddiesAction(ShowOfflineBuddiesAction *showOfflineBuddiesAction);
+	INJEQT_SET void setShowOnlyBuddiesWithDescriptionAction(ShowOnlyBuddiesWithDescriptionAction *showOnlyBuddiesWithDescriptionAction);
 	INJEQT_SET void setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction);
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 	INJEQT_INIT void init();
 
-	void descriptionUsersActionCreated(Action *action);
 	void showDescriptionsActionCreated(Action *action);
 	void onlineAndDescUsersActionCreated(Action *action);
 
 	void mergeContactActionActivated(QAction *sender, bool toggled);
 
-	void descriptionUsersActionActivated(QAction *sender, bool toggled);
 	void showDescriptionsActionActivated(QAction *sender, bool toggled);
 	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
 
