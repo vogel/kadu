@@ -55,6 +55,7 @@ class LookupBuddyInfoAction;
 class MainConfigurationWindowService;
 class MainWindow;
 class MenuInventory;
+class MergeBuddiesAction;
 class MultilogonWindowService;
 class Myself;
 class OpenBuddyEmailAction;
@@ -101,6 +102,7 @@ class KaduWindowActions : public QObject
 	QPointer<LookupBuddyInfoAction> m_lookupBuddyInfoAction;
 	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 	QPointer<MenuInventory> m_menuInventory;
+	QPointer<MergeBuddiesAction> m_mergeBuddiesAction;
 	QPointer<MultilogonWindowService> m_multilogonWindowService;
 	QPointer<Myself> m_myself;
 	QPointer<OpenBuddyEmailAction> m_openBuddyEmailAction;
@@ -130,7 +132,6 @@ class KaduWindowActions : public QObject
 	RecentChatsAction *RecentChats;
 	AddConferenceAction *AddConference;
 	AddRoomChatAction *AddRoomChat;
-	ActionDescription *MergeContact;
 	DeleteTalkableAction *DeleteTalkable;
 
 	EditTalkableAction *EditTalkable;
@@ -153,6 +154,7 @@ private slots:
 	INJEQT_SET void setLookupBuddyInfoAction(LookupBuddyInfoAction *lookupBuddyInfoAction);
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setMergeBuddiesAction(MergeBuddiesAction *mergeBuddiesAction);
 	INJEQT_SET void setMultilogonWindowService(MultilogonWindowService *multilogonWindowService);
 	INJEQT_SET void setMyself(Myself *myself);
 	INJEQT_SET void setOpenBuddyEmailAction(OpenBuddyEmailAction *openBuddyEmailAction);
@@ -178,8 +180,6 @@ private slots:
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 	INJEQT_INIT void init();
-
-	void mergeContactActionActivated(QAction *sender, bool toggled);
 
 public:
 	Q_INVOKABLE KaduWindowActions(QObject *parent = nullptr);

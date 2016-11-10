@@ -25,6 +25,7 @@
 #include "actions/copy-personal-info-action.h"
 #include "actions/exit-action.h"
 #include "actions/lookup-buddy-info-action.h"
+#include "actions/merge-buddies-action.h"
 #include "actions/open-buddy-email-action.h"
 #include "actions/open-description-link-action.h"
 #include "actions/open-forum-action.h"
@@ -52,6 +53,7 @@ ActionsModule::ActionsModule()
 	add_type<CopyPersonalInfoAction>();
 	add_type<ExitAction>();
 	add_type<LookupBuddyInfoAction>();
+	add_type<MergeBuddiesAction>();
 	add_type<OpenBuddyEmailAction>();
 	add_type<OpenDescriptionLinkAction>();
 	add_type<OpenForumAction>();

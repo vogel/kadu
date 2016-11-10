@@ -39,6 +39,7 @@
 #include "actions/copy-personal-info-action.h"
 #include "actions/exit-action.h"
 #include "actions/lookup-buddy-info-action.h"
+#include "actions/merge-buddies-action.h"
 #include "actions/open-buddy-email-action.h"
 #include "actions/open-description-link-action.h"
 #include "actions/open-forum-action.h"
@@ -133,23 +134,6 @@ void disableIfContactSelected(Myself *myself, Action *action)
 		action->setEnabled(true);
 }
 
-void disableMerge(Myself *myself, Action *action)
-{
-	if (action->context()->buddies().isAnyTemporary())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (action->context()->buddies().contains(myself->buddy()))
-		action->setEnabled(false);
-	else
-		action->setEnabled(true);
-
-	if (1 != action->context()->buddies().size())
-		action->setEnabled(false);
-}
-
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 {
 }
@@ -236,6 +220,11 @@ void KaduWindowActions::setMainConfigurationWindowService(MainConfigurationWindo
 void KaduWindowActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
+}
+
+void KaduWindowActions::setMergeBuddiesAction(MergeBuddiesAction *mergeBuddiesAction)
+{
+	m_mergeBuddiesAction = mergeBuddiesAction;
 }
 
 void KaduWindowActions::setMultilogonWindowService(MultilogonWindowService *multilogonWindowService)
@@ -410,16 +399,9 @@ void KaduWindowActions::init()
 		->menu("buddy-list")
 		->addAction(EditTalkable, KaduMenu::SectionView);
 
-	MergeContact = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUser, "mergeContactAction",
-		this, SLOT(mergeContactActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/merge-buddies"), tr("Merge Buddies..."), false,
-		[this](Action *action){ return disableMerge(m_myself, action); }
-	);
-
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(MergeContact, KaduMenu::SectionManagement, 100);
+		->addAction(m_mergeBuddiesAction, KaduMenu::SectionManagement, 100);
 
 	m_menuInventory
 		->menu("buddy-list")
@@ -442,30 +424,6 @@ void KaduWindowActions::init()
 
 	DefaultProxy = m_injectedFactory->makeInjected<DefaultProxyAction>(this);
 	m_actions->insert(DefaultProxy);
-}
-
-void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	const Buddy &buddy = action->context()->buddies().toBuddy();
-	if (!buddy)
-		return;
-
-	MergeBuddiesDialogWidget *mergeWidget = m_injectedFactory->makeInjected<MergeBuddiesDialogWidget>(buddy,
-			tr("Choose which buddy would you like to merge with <i>%1</i>")
-			.arg(buddy.display()), sender->parentWidget());
-	KaduDialog *window = new KaduDialog(mergeWidget, sender->parentWidget());
-	window->setAcceptButtonText(tr("Merge"));
-	window->exec();
-
-	kdebugf2();
 }
 
 #include "moc_kadu-window-actions.cpp"
