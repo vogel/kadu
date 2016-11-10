@@ -42,6 +42,11 @@ ChangeStatusAction::~ChangeStatusAction()
 {
 }
 
+void ChangeStatusAction::init()
+{
+	registerAction(actionsRegistry());
+}
+
 QMenu * ChangeStatusAction::menuForAction(Action *action)
 {
 	StatusContainer *container = action->context()->statusContainer();

@@ -23,13 +23,14 @@
 #include "gui/actions/action-description.h"
 
 #include <QtWidgets/QAction>
+#include <injeqt/injeqt.h>
 
 class ChangeStatusAction : public ActionDescription
 {
 	Q_OBJECT
 
 public:
-	explicit ChangeStatusAction(QObject *parent);
+	Q_INVOKABLE explicit ChangeStatusAction(QObject *parent = nullptr);
 	virtual ~ChangeStatusAction();
 
 	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const
@@ -40,5 +41,8 @@ public:
 protected:
 	virtual QMenu * menuForAction(Action *action);
 	virtual void actionInstanceCreated(Action *action);
+
+private slots:
+	INJEQT_INIT void init();
 
 };

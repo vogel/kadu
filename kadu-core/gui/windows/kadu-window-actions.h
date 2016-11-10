@@ -97,6 +97,7 @@ class KaduWindowActions : public QObject
 	QPointer<AddUserAction> m_addUserAction;
 	QPointer<Application> m_application;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
+	QPointer<ChangeStatusAction> m_changeStatusAction;
 	QPointer<Configuration> m_configuration;
 	QPointer<CollapseAction> m_collapseAction;
 	QPointer<CopyDescriptionAction> m_copyDescriptionAction;
@@ -140,7 +141,6 @@ class KaduWindowActions : public QObject
 	friend class KaduWindow;
 	friend class TalkableTreeView;
 
-	ChangeStatusAction *ChangeStatus;
 	DefaultProxyAction *DefaultProxy;
 
 private slots:
@@ -151,6 +151,7 @@ private slots:
 	INJEQT_SET void setAddRoomChatAction(AddRoomChatAction *addRoomChatAction);
 	INJEQT_SET void setAddUserAction(AddUserAction *addUserAction);
 	INJEQT_SET void setApplication(Application *application);
+	INJEQT_SET void setChangeStatusAction(ChangeStatusAction *changeStatusAction);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setCollapseAction(CollapseAction *collapseAction);
 	INJEQT_SET void setConfiguration(Configuration *configuration);

@@ -182,6 +182,11 @@ void KaduWindowActions::setChatWidgetActions(ChatWidgetActions *chatWidgetAction
 	m_chatWidgetActions = chatWidgetActions;
 }
 
+void KaduWindowActions::setChangeStatusAction(ChangeStatusAction *changeStatusAction)
+{
+	m_changeStatusAction = changeStatusAction;
+}
+
 void KaduWindowActions::setCollapseAction(CollapseAction *collapseAction)
 {
 	m_collapseAction = collapseAction;
@@ -431,9 +436,6 @@ void KaduWindowActions::init()
 	// TODO It will not reflect all action types (see MainWindow::actionLoadedOrUnloaded() method)
 	// but will work good since KaduActions is created very early. Of course we still need a better mechanism for that.
 	m_actions->unblockSignals();
-
-	ChangeStatus = m_injectedFactory->makeInjected<ChangeStatusAction>(this);
-	m_actions->insert(ChangeStatus);
 
 	DefaultProxy = m_injectedFactory->makeInjected<DefaultProxyAction>(this);
 	m_actions->insert(DefaultProxy);
