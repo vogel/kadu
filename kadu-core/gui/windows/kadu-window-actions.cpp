@@ -207,6 +207,11 @@ void KaduWindowActions::setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPe
 	m_copyPersonalInfoAction = copyPersonalInfoAction;
 }
 
+void KaduWindowActions::setDefaultProxyAction(DefaultProxyAction *defaultProxyAction)
+{
+	m_defaultProxyAction = defaultProxyAction;
+}
+
 void KaduWindowActions::setDeleteTalkableAction(DeleteTalkableAction *deleteTalkableAction)
 {
 	m_deleteTalkableAction = deleteTalkableAction;
@@ -384,8 +389,6 @@ void KaduWindowActions::setYourAccountsWindowService(YourAccountsWindowService *
 
 void KaduWindowActions::init()
 {
-	m_actions->blockSignals();
-
 	m_showConfigurationWindowAction->setShortcut("kadu_configure", Qt::ApplicationShortcut);
 	m_exitAction->setShortcut("kadu_exit", Qt::ApplicationShortcut);
 	m_addUserAction->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
@@ -431,14 +434,6 @@ void KaduWindowActions::init()
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_deleteTalkableAction, KaduMenu::SectionManagement, 1000);
-
-	// The last ActionDescription will send actionLoaded() signal.
-	// TODO It will not reflect all action types (see MainWindow::actionLoadedOrUnloaded() method)
-	// but will work good since KaduActions is created very early. Of course we still need a better mechanism for that.
-	m_actions->unblockSignals();
-
-	DefaultProxy = m_injectedFactory->makeInjected<DefaultProxyAction>(this);
-	m_actions->insert(DefaultProxy);
 }
 
 #include "moc_kadu-window-actions.cpp"

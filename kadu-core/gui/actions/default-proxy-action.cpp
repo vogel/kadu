@@ -54,6 +54,11 @@ void DefaultProxyAction::setProxyEditWindowService(ProxyEditWindowService *proxy
 	m_proxyEditWindowService = proxyEditWindowService;
 }
 
+void DefaultProxyAction::init()
+{
+	registerAction(actionsRegistry());
+}
+
 QMenu * DefaultProxyAction::menuForAction(Action *action)
 {
 	Q_UNUSED(action)

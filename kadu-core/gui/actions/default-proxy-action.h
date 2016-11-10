@@ -36,7 +36,7 @@ class DefaultProxyAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit DefaultProxyAction(QObject *parent = nullptr);
+	Q_INVOKABLE explicit DefaultProxyAction(QObject *parent = nullptr);
 	virtual ~DefaultProxyAction();
 
 	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const
@@ -56,6 +56,7 @@ private:
 private slots:
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
 	INJEQT_SET void setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService);
+	INJEQT_INIT void init();
 
 	void prepareMenu();
 	void selectProxyActionTriggered(QAction *action);
