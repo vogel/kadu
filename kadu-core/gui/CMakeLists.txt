@@ -223,7 +223,6 @@ set (gui_SRCS
 	windows/proxy-edit-window-service.cpp
 	windows/proxy-edit-window.cpp
 	windows/search-window.cpp
-	windows/search-window-actions.cpp
 	windows/status-window-description-proxy-model.cpp
 	windows/status-window-service.cpp
 	windows/status-window.cpp
@@ -393,7 +392,6 @@ set (gui_MOC_SRCS
 	windows/proxy-action-context.h
 	windows/proxy-edit-window.h
 	windows/search-window.h
-	windows/search-window-actions.h
 	windows/status-window.h
 	windows/status-window-description-proxy-model.h
 	windows/subscription-window.h

@@ -34,18 +34,23 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class AddFoundBuddyAction;
 class BaseActionContext;
 class BuddyManager;
 class BuddyPreferredManager;
+class ChatFoundAction;
 class ChatManager;
 class ChatStorage;
 class ChatWidgetManager;
+class ClearResultsAction;
 class ContactManager;
+class FirstSearchAction;
 class IconsManager;
 class InjectedFactory;
 class KaduWindowService;
+class NextResultsAction;
 class SearchService;
-class SearchWindowActions;
+class StopSearchAction;
 
 class QCheckBox;
 class QComboBox;
@@ -82,19 +87,29 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 private:
-	friend class SearchWindowActions;
+	friend class AddFoundBuddyAction;
+	friend class ChatFoundAction;
+	friend class ClearResultsAction;
+	friend class FirstSearchAction;
+	friend class NextResultsAction;
+	friend class StopSearchAction;
 
 	QPointer<AccountManager> m_accountManager;
+	QPointer<AddFoundBuddyAction> m_addFoundBuddyAction;
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+	QPointer<ChatFoundAction> m_chatFoundAction;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatStorage> m_chatStorage;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
+	QPointer<ClearResultsAction> m_clearResultsAction;
 	QPointer<ContactManager> m_contactManager;
+	QPointer<FirstSearchAction> m_firstSearchAction;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
-	QPointer<SearchWindowActions> m_searchWindowActions;
+	QPointer<NextResultsAction> m_nextResultsAction;
+	QPointer<StopSearchAction> m_stopSearchAction;
 
 	Buddy m_buddy;
 	Account CurrentAccount;
@@ -129,16 +144,21 @@ private:
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setAddFoundBuddyAction(AddFoundBuddyAction *addFoundBuddyAction);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+	INJEQT_SET void setChatFoundAction(ChatFoundAction *chatFoundAction);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+	INJEQT_SET void setClearResultsAction(ClearResultsAction *clearResultsAction);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
+	INJEQT_SET void setFirstSearchAction(FirstSearchAction *firstSearchAction);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setSearchWindowActions(SearchWindowActions *searchWindowActions);
+	INJEQT_SET void setNextResultsAction(NextResultsAction *nextResultsAction);
+	INJEQT_SET void setStopSearchAction(StopSearchAction *stopSearchAction);
 	INJEQT_INIT void init();
 
 	void uinTyped();

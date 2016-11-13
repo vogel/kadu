@@ -38,7 +38,6 @@
 #include "gui/windows/multilogon-window-service.h"
 #include "gui/windows/open-chat-with/open-chat-with-service.h"
 #include "gui/windows/proxy-edit-window-service.h"
-#include "gui/windows/search-window-actions.h"
 #include "gui/windows/your-accounts-window-service.h"
 #include "gui/widgets/custom-input-menu-manager.h"
 #include "gui/widgets/tool-tip-manager.h"
@@ -63,7 +62,6 @@ GuiModule::GuiModule()
 	add_type<MultilogonWindowService>();
 	add_type<OpenChatWithService>();
 	add_type<ProxyEditWindowService>();
-	add_type<SearchWindowActions>();
 	add_type<ToolTipManager>();
 	add_type<WebkitMessagesViewDisplayFactory>();
 	add_type<WebkitMessagesViewFactory>();

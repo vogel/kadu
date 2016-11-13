@@ -91,6 +91,7 @@ set (kadu_SUBDIRS
 	protocols
 	qt
 	roster
+	search
 	services
 	ssl
 	status
@@ -328,6 +329,8 @@ kadu_api_directories (kadu-core
 	provider
 	roster
 	qt
+	search
+	search/actions
 	services
 	ssl
 	ssl/gui

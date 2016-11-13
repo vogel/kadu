@@ -63,6 +63,7 @@
 #include "parser/parser-module.h"
 #include "plugin/plugin-module.h"
 #include "roster/roster-module.h"
+#include "search/actions/search-actions-module.h"
 #include "ssl/ssl-module.h"
 #include "status/status-module.h"
 #include "talkable/talkable-module.h"
@@ -242,6 +243,7 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(std::make_unique<ParserModule>());
 	modules.emplace_back(std::make_unique<PluginModule>());
 	modules.emplace_back(std::make_unique<RosterModule>());
+	modules.emplace_back(std::make_unique<SearchActionsModule>());
 	modules.emplace_back(std::make_unique<SslModule>());
 	modules.emplace_back(std::make_unique<StatusModule>());
 	modules.emplace_back(std::make_unique<TalkableModule>());

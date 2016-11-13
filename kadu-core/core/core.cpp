@@ -58,7 +58,6 @@
 #include "gui/windows/chat-window/window-chat-widget-container-handler.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/search-window-actions.h"
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
 #include "message/message-html-renderer-service.h"
@@ -343,7 +342,6 @@ void Core::init()
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	// TODO: add some life-cycle management
-	m_injector.instantiate<SearchWindowActions>(); // temporary, during full-injection-port
 	m_injector.instantiate<AvatarManager>();
 }
 
