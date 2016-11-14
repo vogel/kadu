@@ -7,6 +7,7 @@ set (actions_SRCS
 	exit-action.cpp
 	lookup-buddy-info-action.cpp
 	merge-buddies-action.cpp
+	notify-about-buddy-action.cpp
 	open-buddy-email-action.cpp
 	open-description-link-action.cpp
 	open-forum-action.cpp

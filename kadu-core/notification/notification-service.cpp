@@ -19,14 +19,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "actions/notify-about-buddy-action.h"
 #include "buddies/buddy-set.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/injected-factory.h"
-#include "gui/actions/action-context.h"
-#include "gui/actions/action-description.h"
-#include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "notification/notification-callback.h"
@@ -83,6 +81,11 @@ void NotificationService::setNotificationDispatcher(NotificationDispatcher *noti
 	m_notificationDispatcher = notificationDispatcher;
 }
 
+void NotificationService::setNotifyAboutBuddyAction(NotifyAboutBuddyAction *notifyAboutBuddyAction)
+{
+	m_notifyAboutBuddyAction = notifyAboutBuddyAction;
+}
+
 void NotificationService::setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler)
 {
 	m_notifyConfigurationUiHandler = notifyConfigurationUiHandler;
@@ -121,46 +124,13 @@ void NotificationService::done()
 	Notification::unregisterParserTags(m_parser);
 
 	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_notifyConfigurationUiHandler);
-
-	delete m_notifyAboutUserActionDescription;
 }
 
 void NotificationService::createActionDescriptions()
 {
-	m_notifyAboutUserActionDescription = m_injectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUser, "notifyAboutUserAction",
-		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/notify-about-buddy"), tr("Notify About Buddy"), true,
-		checkNotify
-	);
-
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(m_notifyAboutUserActionDescription, KaduMenu::SectionActions);
-}
-
-void NotificationService::notifyAboutUserActionActivated(QAction *sender, bool toggled)
-{
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	const BuddySet &buddies = action->context()->buddies();
-
-	foreach (const Buddy &buddy, buddies)
-	{
-		if (buddy.isNull() || buddy.isAnonymous())
-			continue;
-
-		if (toggled)
-			buddy.removeProperty("notify:Notify");
-		else
-			buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
-	}
-
-	foreach (Action *action, m_notifyAboutUserActionDescription->actions())
-		if (action->context()->contacts().toBuddySet() == buddies)
-			action->setChecked(toggled);
+		->addAction(m_notifyAboutBuddyAction, KaduMenu::SectionActions);
 }
 
 void NotificationService::createDefaultConfiguration()
@@ -192,24 +162,6 @@ void NotificationService::discardNotification(const Notification &notification)
 {
 	if (!notification.discardCallback.isEmpty())
 		m_notificationCallbackRepository->callback(notification.discardCallback).call(notification);
-}
-
-void checkNotify(Action *action)
-{
-	action->setEnabled(!action->context()->buddies().isEmpty());
-
-	bool notifyAll = true;
-	foreach (const Buddy &buddy, action->context()->contacts().toBuddySet())
-		if (buddy.data())
-		{
-			if (!buddy.data()->customProperties()->property("notify:Notify", true).toBool())
-			{
-				notifyAll = false;
-				break;
-			}
-		}
-
-	action->setChecked(notifyAll);
 }
 
 #undef Bool

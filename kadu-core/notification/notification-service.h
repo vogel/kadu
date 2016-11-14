@@ -29,8 +29,6 @@
 
 class QAction;
 
-class ActionDescription;
-class Action;
 class ChatWidgetManager;
 class ConfigurationUiHandlerRepository;
 class Configuration;
@@ -39,6 +37,7 @@ class MenuInventory;
 class NotificationCallbackRepository;
 class NotificationDispatcher;
 struct Notification;
+class NotifyAboutBuddyAction;
 class NotifyConfigurationUiHandler;
 class Parser;
 class SilentModeService;
@@ -55,11 +54,10 @@ class KADUAPI NotificationService : public QObject
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
 	QPointer<NotificationDispatcher> m_notificationDispatcher;
+	QPointer<NotifyAboutBuddyAction> m_notifyAboutBuddyAction;
 	QPointer<NotifyConfigurationUiHandler> m_notifyConfigurationUiHandler;
 	QPointer<Parser> m_parser;
 	QPointer<SilentModeService> m_silentModeService;
-
-	ActionDescription *m_notifyAboutUserActionDescription;
 
 	void createDefaultConfiguration();
 	void createActionDescriptions();
@@ -83,14 +81,11 @@ private slots:
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
 	INJEQT_SET void setNotificationDispatcher(NotificationDispatcher *notificationDispatcher);
+	INJEQT_SET void setNotifyAboutBuddyAction(NotifyAboutBuddyAction *notifyAboutBuddyAction);
 	INJEQT_SET void setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler);
 	INJEQT_SET void setParser(Parser *parser);
 	INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
-
 };
-
-void checkNotify(Action *);
