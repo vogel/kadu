@@ -20,7 +20,6 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
-#include "misc/memory.h"
 #include "exports.h"
 #include "injeqt-type-roles.h"
 
@@ -29,14 +28,12 @@
 #include <injeqt/injeqt.h>
 #include <memory>
 
-class ActionDescription;
-class Action;
 class Configuration;
 class FullScreenServiceHandler;
 class FullScreenService;
-class InjectedFactory;
 class MenuInventory;
 class StatusContainerManager;
+class ToggleSilentModeAction;
 
 class QAction;
 
@@ -62,12 +59,11 @@ protected:
 private:
 	QPointer<Configuration> m_configuration;
 	QPointer<FullScreenService> m_fullScreenService;
-	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<StatusContainerManager> m_statusContainerManager;
+	QPointer<ToggleSilentModeAction> m_toggleSilentModeAction;
 
 	std::unique_ptr<FullScreenServiceHandler> m_fullScreenServiceHandler;
-	not_owned_qptr<ActionDescription> m_silentModeActionDescription;
 
 	bool m_silentModeWhenDnD;
 	bool m_silentModeWhenFullscreen;
@@ -80,13 +76,10 @@ private:
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setFullScreenService(FullScreenService *fullScreenService);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setToggleSilentModeAction(ToggleSilentModeAction *toggleSilentModeAction);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
-
-	void silentModeActionCreated(Action *action);
-	void silentModeActionActivated(QAction *sender, bool toggled);
 
 };

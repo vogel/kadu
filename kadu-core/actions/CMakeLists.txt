@@ -26,6 +26,7 @@ set (actions_SRCS
 	show-only-buddies-with-description-action.cpp
 	show-only-buddies-with-description-or-online-action.cpp
 	show-your-accounts-action.cpp
+	toggle-silent-mode-action.cpp
 )
 
 kadu_subdirectory (actions "${actions_SRCS}" "" "")

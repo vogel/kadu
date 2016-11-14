@@ -19,9 +19,9 @@
 
 #include "silent-mode-service.h"
 
+#include "actions/toggle-silent-mode-action.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "core/injected-factory.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
@@ -51,11 +51,6 @@ void SilentModeService::setFullScreenService(FullScreenService *fullScreenServic
 	m_fullScreenService = fullScreenService;
 }
 
-void SilentModeService::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void SilentModeService::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -64,6 +59,11 @@ void SilentModeService::setMenuInventory(MenuInventory *menuInventory)
 void SilentModeService::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
 	m_statusContainerManager = statusContainerManager;
+}
+
+void SilentModeService::setToggleSilentModeAction(ToggleSilentModeAction *toggleSilentModeAction)
+{
+	m_toggleSilentModeAction = toggleSilentModeAction;
 }
 
 void SilentModeService::init()
@@ -80,38 +80,16 @@ void SilentModeService::done()
 
 void SilentModeService::createActionDescriptions()
 {
-	m_silentModeActionDescription = m_injectedFactory->makeNotOwned<ActionDescription>(nullptr,
-		ActionDescription::TypeGlobal, "silentModeAction",
-		this, SLOT(silentModeActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/enable-notifications"), tr("Silent Mode"), true
-	);
-
-	connect(m_silentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
-
 	m_menuInventory
 		->menu("main")
-		->addAction(m_silentModeActionDescription, KaduMenu::SectionMiscTools, 5);
+		->addAction(m_toggleSilentModeAction, KaduMenu::SectionMiscTools, 5);
 }
 
 void SilentModeService::destroyActionDescriptions()
 {
 	m_menuInventory
 		->menu("main")
-		->removeAction(m_silentModeActionDescription);
-
-	m_silentModeActionDescription.reset();
-}
-
-void SilentModeService::silentModeActionCreated(Action *action)
-{
-	action->setChecked(isSilent());
-}
-
-void SilentModeService::silentModeActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-
-	setSilent(toggled);
+		->removeAction(m_toggleSilentModeAction);
 }
 
 bool SilentModeService::isSilentOrAutoSilent() const
@@ -139,7 +117,7 @@ void SilentModeService::setSilent(bool silent)
 	m_silentMode = silent;
 	m_configuration->deprecatedApi()->writeEntry("Notify", "SilentMode", m_silentMode);
 
-	for (auto action : m_silentModeActionDescription->actions())
+	for (auto action : m_toggleSilentModeAction->actions())
 		action->setChecked(m_silentMode);
 
 	emit silentModeToggled(isSilentOrAutoSilent());
@@ -157,7 +135,7 @@ void SilentModeService::configurationUpdated()
 	m_silentModeWhenDnD = m_configuration->deprecatedApi()->readBoolEntry("Notify", "AwaySilentMode", false);
 	m_silentModeWhenFullscreen = m_configuration->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false);
 	m_silentMode = m_configuration->deprecatedApi()->readBoolEntry("Notify", "SilentMode", false);
-	
+
 	if (m_silentModeWhenFullscreen)
 		m_fullScreenServiceHandler = std::make_unique<FullScreenServiceHandler>(m_fullScreenService);
 	else

@@ -45,6 +45,7 @@
 #include "actions/show-only-buddies-with-description-action.h"
 #include "actions/show-only-buddies-with-description-or-online-action.h"
 #include "actions/show-your-accounts-action.h"
+#include "actions/toggle-silent-mode-action.h"
 #include "gui/actions/change-status-action.h"
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
@@ -90,6 +91,7 @@ ActionsModule::ActionsModule()
 	add_type<ShowOnlyBuddiesWithDescriptionAction>();
 	add_type<ShowOnlyBuddiesWithDescriptionOrOnlineAction>();
 	add_type<ShowYourAccountsAction>();
+	add_type<ToggleSilentModeAction>();
 }
 
 ActionsModule::~ActionsModule()
