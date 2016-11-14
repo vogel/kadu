@@ -24,6 +24,7 @@
 #include "autostatus-plugin-object.h"
 #include "autostatus-service.h"
 #include "autostatus-status-changer.h"
+#include "toggle-autostatus-action.h"
 
 AutostatusModule::AutostatusModule()
 {
@@ -32,4 +33,5 @@ AutostatusModule::AutostatusModule()
 	add_type<AutostatusPluginObject>();
 	add_type<AutostatusService>();
 	add_type<AutostatusStatusChanger>();
+	add_type<ToggleAutostatusAction>();
 }

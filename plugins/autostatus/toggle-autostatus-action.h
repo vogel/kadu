@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,33 +19,29 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include "gui/actions/action-description.h"
+
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class ToggleAutostatusAction;
+class AutostatusService;
 
-class MenuInventory;
-
-class AutostatusActions : public QObject
+class ToggleAutostatusAction : public ActionDescription
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutostatusActions(QObject *parent = nullptr);
-	virtual ~AutostatusActions();
+	Q_INVOKABLE explicit ToggleAutostatusAction(QObject *parent = nullptr);
+	virtual ~ToggleAutostatusAction();
 
-	void registerActions();
-	void unregisterActions();
+protected:
+	virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<ToggleAutostatusAction> m_toggleAutostatusAction;
+	QPointer<AutostatusService> m_autostatusService;
 
 private slots:
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setToggleAutostatusAction(ToggleAutostatusAction *toggleAutostatusAction);
+	INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
 	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 
 };

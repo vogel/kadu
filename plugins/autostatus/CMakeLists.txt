@@ -13,6 +13,7 @@ set (SOURCES
 	autostatus-plugin-object.cpp
 	autostatus-service.cpp
 	autostatus-status-changer.cpp
+	toggle-autostatus-action.cpp
 )
 
 set (CONFIGURATION_FILES

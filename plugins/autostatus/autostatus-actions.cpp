@@ -19,20 +19,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWidgets/QAction>
-
-#include "gui/actions/actions.h"
-#include "gui/menu/menu-inventory.h"
-#include "gui/windows/kadu-window.h"
-#include "plugin/plugin-injected-factory.h"
-
-#include "autostatus-service.h"
-
 #include "autostatus-actions.h"
 
+#include "autostatus-service.h"
+#include "toggle-autostatus-action.h"
+
+#include "gui/menu/menu-inventory.h"
+
 AutostatusActions::AutostatusActions(QObject *parent) :
-		QObject{parent},
-		AutostatusActionDescription{}
+		QObject{parent}
 {
 }
 
@@ -40,24 +35,14 @@ AutostatusActions::~AutostatusActions()
 {
 }
 
-void AutostatusActions::setActions(Actions *actions)
-{
-	m_actions = actions;
-}
-
-void AutostatusActions::setAutostatusService(AutostatusService *autostatusService)
-{
-	m_autostatusService = autostatusService;
-}
-
-void AutostatusActions::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
-{
-	m_pluginInjectedFactory = pluginInjectedFactory;
-}
-
 void AutostatusActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
+}
+
+void AutostatusActions::setToggleAutostatusAction(ToggleAutostatusAction *toggleAutostatusAction)
+{
+	m_toggleAutostatusAction = toggleAutostatusAction;
 }
 
 void AutostatusActions::init()
@@ -72,15 +57,9 @@ void AutostatusActions::done()
 
 void AutostatusActions::registerActions()
 {
-	AutostatusActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeMainMenu, "autostatusAction",
-		this, SLOT(autostatusActionActivated(QAction *, bool)),
-		KaduIcon(), tr("&Autostatus"), true
-	);
-
 	m_menuInventory
 		->menu("main")
-		->addAction(AutostatusActionDescription, KaduMenu::SectionMiscTools, 2)
+		->addAction(m_toggleAutostatusAction, KaduMenu::SectionMiscTools, 2)
 		->update();
 }
 
@@ -88,18 +67,8 @@ void AutostatusActions::unregisterActions()
 {
 	m_menuInventory
 		->menu("main")
-		->removeAction(AutostatusActionDescription)
+		->removeAction(m_toggleAutostatusAction)
 		->update();
-
-	delete AutostatusActionDescription;
-	AutostatusActionDescription = 0;
-}
-
-void AutostatusActions::autostatusActionActivated(QAction *action, bool toggled)
-{
-	Q_UNUSED(action)
-
-	m_autostatusService->toggle(toggled);
 }
 
 #include "moc_autostatus-actions.cpp"
