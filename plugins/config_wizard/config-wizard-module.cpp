@@ -21,9 +21,11 @@
 
 #include "config-wizard-actions.h"
 #include "config-wizard-plugin-object.h"
+#include "show-config-wizard-action.h"
 
 ConfigWizardModule::ConfigWizardModule()
 {
 	add_type<ConfigWizardActions>();
 	add_type<ConfigWizardPluginObject>();
+	add_type<ShowConfigWizardAction>();
 }

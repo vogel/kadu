@@ -20,6 +20,7 @@
 #include "config-wizard-plugin-object.h"
 
 #include "config-wizard-actions.h"
+#include "show-config-wizard-action.h"
 
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state.h"
@@ -43,12 +44,17 @@ void ConfigWizardPluginObject::setPluginStateService(PluginStateService *pluginS
 	m_pluginStateService = pluginStateService;
 }
 
+void ConfigWizardPluginObject::setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction)
+{
+	m_showConfigWizardAction = showConfigWizardAction;
+}
+
 void ConfigWizardPluginObject::init()
 {
 	m_configWizardActions->registerActions();
 
 	if (m_pluginStateService->pluginState("config_wizard") == PluginState::New)
-		m_configWizardActions->showConfigWizard();
+		m_showConfigWizardAction->showConfigWindow();
 }
 
 void ConfigWizardPluginObject::done()

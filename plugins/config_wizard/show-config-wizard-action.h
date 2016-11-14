@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,34 +19,36 @@
 
 #pragma once
 
-#include "injeqt-type-roles.h"
+#include "gui/actions/action-description.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class ConfigWizardActions;
-class PluginStateService;
-class ShowConfigWizardAction;
+class Configuration;
+class ConfigWizardWindow;
+class PluginInjectedFactory;
 
-class ConfigWizardPluginObject : public QObject
+class ShowConfigWizardAction : public ActionDescription
 {
 	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit ConfigWizardPluginObject(QObject *parent = nullptr);
-	virtual ~ConfigWizardPluginObject();
+	Q_INVOKABLE explicit ShowConfigWizardAction(QObject *parent = nullptr);
+	virtual ~ShowConfigWizardAction();
+
+	void showConfigWindow();
+
+protected:
+	virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<ConfigWizardActions> m_configWizardActions;
-	QPointer<PluginStateService> m_pluginStateService;
-	QPointer<ShowConfigWizardAction> m_showConfigWizardAction;
+	QPointer<Configuration> m_configuration;
+	QPointer<ConfigWizardWindow> m_wizard;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 private slots:
+	INJEQT_SET void setConfiguration(Configuration *configuration);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setConfigWizardActions(ConfigWizardActions *configWizardActions);
-	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
-	INJEQT_SET void setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction);
 
 };

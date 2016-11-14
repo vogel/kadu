@@ -16,6 +16,7 @@ set (SOURCES
 	config-wizard-module.cpp
 	config-wizard-plugin-modules-factory.cpp
 	config-wizard-plugin-object.cpp
+	show-config-wizard-action.cpp
 )
 
 set (CONFIGURATION_FILES

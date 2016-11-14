@@ -21,17 +21,13 @@
 
 #include "config-wizard-actions.h"
 
-#include "gui/windows/config-wizard-window.h"
+#include "show-config-wizard-action.h"
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
-#include "plugin/plugin-injected-factory.h"
-#include "activate.h"
 #include "debug.h"
 
 #include <QtWidgets/QAction>
@@ -43,22 +39,6 @@ ConfigWizardActions::ConfigWizardActions(QObject *parent) :
 
 ConfigWizardActions::~ConfigWizardActions()
 {
-	delete m_wizard.data();
-}
-
-void ConfigWizardActions::setActions(Actions *actions)
-{
-	m_actions = actions;
-}
-
-void ConfigWizardActions::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
-}
-
-void ConfigWizardActions::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
-{
-	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
@@ -66,18 +46,20 @@ void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
 	m_menuInventory = menuInventory;
 }
 
+void ConfigWizardActions::setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction)
+{
+	m_showConfigWizardAction = showConfigWizardAction;
+}
+
 void ConfigWizardActions::init()
 {
-	m_showConfigWizardActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeMainMenu,
-			"showConfigWizard", this, SLOT(showConfigWizardSlot()), KaduIcon(),
-			tr("Start Configuration Wizard"));
 }
 
 void ConfigWizardActions::registerActions()
 {
 	m_menuInventory
 		->menu("tools")
-		->addAction(m_showConfigWizardActionDescription, KaduMenu::SectionTools)
+		->addAction(m_showConfigWizardAction, KaduMenu::SectionTools)
 		->update();
 }
 
@@ -85,27 +67,8 @@ void ConfigWizardActions::unregisterActions()
 {
 	m_menuInventory
 		->menu("tools")
-		->removeAction(m_showConfigWizardActionDescription)
+		->removeAction(m_showConfigWizardAction)
 		->update();
-}
-
-void ConfigWizardActions::showConfigWizard()
-{
-	kdebugf();
-
-	if (m_wizard)
-		_activateWindow(m_configuration, m_wizard.data());
-	else
-	{
-		m_wizard = m_pluginInjectedFactory->makeInjected<ConfigWizardWindow>();
-		// we have to delay it a bit to show after main window to have focus on startup
-		QMetaObject::invokeMethod(m_wizard.data(), "show", Qt::QueuedConnection);
-	}
-}
-
-void ConfigWizardActions::showConfigWizardSlot()
-{
-	showConfigWizard();
 }
 
 #include "moc_config-wizard-actions.cpp"

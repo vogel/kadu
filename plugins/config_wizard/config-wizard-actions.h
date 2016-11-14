@@ -24,12 +24,8 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class ConfigWizardWindow;
+class ShowConfigWizardAction;
 
-class ActionDescription;
-class Actions;
-class Configuration;
-class PluginInjectedFactory;
 class MenuInventory;
 
 class QAction;
@@ -45,25 +41,13 @@ public:
 	void registerActions();
 	void unregisterActions();
 
-	void showConfigWizard();
-
-public slots:
-	void showConfigWizardSlot();
-
 private:
-	QPointer<Actions> m_actions;
-	QPointer<Configuration> m_configuration;
-	QPointer<ConfigWizardWindow> m_wizard;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
-
-	ActionDescription *m_showConfigWizardActionDescription;
+	QPointer<ShowConfigWizardAction> m_showConfigWizardAction;
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction);
 	INJEQT_INIT void init();
 
 };
