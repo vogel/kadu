@@ -21,6 +21,7 @@
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
+#include "actions/show-xml-console-action.h"
 #include "facebook-depreceated-message.h"
 #include "gtalk-protocol-factory.h"
 #include "jabber-plugin-object.h"
@@ -38,4 +39,5 @@ JabberModule::JabberModule()
 	add_type<JabberProtocolMenuManager>();
 	add_type<JabberUrlDomVisitorProvider>();
 	add_type<JabberUrlHandler>();
+    add_type<ShowXmlConsoleAction>();
 }

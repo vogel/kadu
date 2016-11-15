@@ -33,6 +33,7 @@ class Action;
 class Contact;
 class PluginInjectedFactory;
 class Myself;
+class ShowXmlConsoleAction;
 class SubscriptionService;
 
 // TODO: this class can be moved to core and just check for SubscriptionService
@@ -52,6 +53,7 @@ private:
 	QPointer<Actions> m_actions;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<Myself> m_myself;
+	QPointer<ShowXmlConsoleAction> m_showXmlConsoleAction;
 
 	ActionDescription *ResendSubscription;
 	ActionDescription *RemoveSubscription;
@@ -64,6 +66,7 @@ private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMyself(Myself *myself);
+	INJEQT_SET void setShowXmlConsoleAction(ShowXmlConsoleAction *showXmlConsoleAction);
 	INJEQT_INIT void init();
 
 	void resendSubscriptionActionActivated(QAction *sender);

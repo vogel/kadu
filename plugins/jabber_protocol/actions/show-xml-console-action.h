@@ -28,17 +28,17 @@
 class AccountManager;
 class MenuInventory;
 
-class ShowXmlConsoleActionDescription : public ActionDescription
+class ShowXmlConsoleAction : public ActionDescription
 {
 	Q_OBJECT
+
+public:
+	Q_INVOKABLE explicit ShowXmlConsoleAction(QObject *parent = nullptr);
+	virtual ~ShowXmlConsoleAction();
 
 protected:
 	virtual void actionInstanceCreated(Action *action);
 	virtual void actionTriggered(QAction *sender, bool toggled);
-
-public:
-	explicit ShowXmlConsoleActionDescription(QObject *parent);
-	virtual ~ShowXmlConsoleActionDescription();
 
 private:
 	QPointer<Actions> m_actions;

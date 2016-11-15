@@ -19,8 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QTimer>
-#include <QtWidgets/QMenu>
+#include "show-xml-console-action.h"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -30,9 +29,10 @@
 #include "gui/windows/xml-console.h"
 #include "identities/identity.h"
 
-#include "show-xml-console-action-description.h"
+#include <QtCore/QTimer>
+#include <QtWidgets/QMenu>
 
-ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent) :
+ShowXmlConsoleAction::ShowXmlConsoleAction(QObject *parent) :
 		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeMainMenu);
@@ -40,7 +40,7 @@ ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent
 	setText(tr("Show XML Console"));
 }
 
-ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
+ShowXmlConsoleAction::~ShowXmlConsoleAction()
 {
 	// actions will delete their menus
 	m_menuInventory
@@ -49,17 +49,17 @@ ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
 		->update();
 }
 
-void ShowXmlConsoleActionDescription::setAccountManager(AccountManager *accountManager)
+void ShowXmlConsoleAction::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
 }
 
-void ShowXmlConsoleActionDescription::setMenuInventory(MenuInventory *menuInventory)
+void ShowXmlConsoleAction::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
 }
 
-void ShowXmlConsoleActionDescription::init()
+void ShowXmlConsoleAction::init()
 {
 	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
 			this, SLOT(updateShowXmlConsoleMenu()));
@@ -71,7 +71,7 @@ void ShowXmlConsoleActionDescription::init()
 	QTimer::singleShot(0, this, SLOT(insertMenuActionDescription()));
 }
 
-void ShowXmlConsoleActionDescription::insertMenuActionDescription()
+void ShowXmlConsoleAction::insertMenuActionDescription()
 {
 	m_menuInventory
 		->menu("tools")
@@ -79,7 +79,7 @@ void ShowXmlConsoleActionDescription::insertMenuActionDescription()
 		->update();
 }
 
-void ShowXmlConsoleActionDescription::actionInstanceCreated(Action *action)
+void ShowXmlConsoleAction::actionInstanceCreated(Action *action)
 {
 	Q_UNUSED(action)
 
@@ -88,14 +88,14 @@ void ShowXmlConsoleActionDescription::actionInstanceCreated(Action *action)
 	updateShowXmlConsoleMenu();
 }
 
-void ShowXmlConsoleActionDescription::actionTriggered(QAction *sender, bool toggled)
+void ShowXmlConsoleAction::actionTriggered(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
 	menuActionTriggered(sender);
 }
 
-void ShowXmlConsoleActionDescription::updateShowXmlConsoleMenu()
+void ShowXmlConsoleAction::updateShowXmlConsoleMenu()
 {
 	QVector<Account> jabberAccounts = m_accountManager->byProtocolName("jabber");
 
@@ -142,7 +142,7 @@ void ShowXmlConsoleActionDescription::updateShowXmlConsoleMenu()
 	}
 }
 
-void ShowXmlConsoleActionDescription::menuActionTriggered(QAction *action)
+void ShowXmlConsoleAction::menuActionTriggered(QAction *action)
 {
 	Account account = action->data().value<Account>();
 	if (!account)
@@ -151,4 +151,4 @@ void ShowXmlConsoleActionDescription::menuActionTriggered(QAction *action)
 	(new XmlConsole(account))->show();
 }
 
-#include "moc_show-xml-console-action-description.cpp"
+#include "moc_show-xml-console-action.cpp"

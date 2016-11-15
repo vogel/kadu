@@ -29,7 +29,7 @@
 #include "plugin/plugin-injected-factory.h"
 #include "protocols/protocol.h"
 
-#include "actions/show-xml-console-action-description.h"
+#include "actions/show-xml-console-action.h"
 #include "jabber-protocol.h"
 
 #include "jabber-actions.h"
@@ -82,11 +82,13 @@ void JabberActions::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
+void JabberActions::setShowXmlConsoleAction(ShowXmlConsoleAction *showXmlConsoleAction)
+{
+	m_showXmlConsoleAction = showXmlConsoleAction;
+}
+
 void JabberActions::init()
 {
-	auto showXmlConsoleAction = m_pluginInjectedFactory->makeInjected<ShowXmlConsoleActionDescription>(this);
-	m_actions->insert(showXmlConsoleAction);
-
 	m_actions->blockSignals();
 
 	ResendSubscription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeUser, "rosterResendSubscription",
