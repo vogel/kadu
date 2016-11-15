@@ -38,7 +38,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "core/myself.h"
 #include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -54,36 +53,14 @@
 #include "protocols/services/chat-service.h"
 #include "debug.h"
 
-#include "actions/show-history-action-description.h"
+#include "actions/clear-history-action.h"
+#include "actions/show-history-action.h"
 #include "gui/windows/history-window.h"
 #include "history-messages-prepender.h"
 #include "history-query.h"
 #include "history-save-thread.h"
 
 #include "history.h"
-
-void disableNonHistoryContacts(Myself *myself, Action *action)
-{
-	kdebugf();
-	action->setEnabled(false);
-	const ContactSet &contacts = action->context()->contacts();
-
-	if (contacts.isEmpty())
-		return;
-
-	foreach (const Contact &contact, contacts)
-	{
-		if (myself->buddy() == contact.ownerBuddy())
-			return;
-
-		Account account = contact.contactAccount();
-		if (!account.protocolHandler() || !account.protocolHandler()->chatService())
-			return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
-}
 
 History::History(QObject *parent) :
 		QObject{parent},
@@ -115,6 +92,11 @@ void History::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 	m_chatWidgetRepository = chatWidgetRepository;
 }
 
+void History::setClearHistoryAction(ClearHistoryAction *clearHistoryAction)
+{
+	m_clearHistoryAction = clearHistoryAction;
+}
+
 void History::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
@@ -136,14 +118,9 @@ void History::setMessageManager(MessageManager* messageManager)
 	connect(messageManager, SIGNAL(messageSent(Message)), this, SLOT(enqueueMessage(Message)));
 }
 
-void History::setMyself(Myself *myself)
+void History::setShowHistoryAction(ShowHistoryAction *showHistoryAction)
 {
-	m_myself = myself;
-}
-
-void History::setShowHistoryActionDescription(ShowHistoryActionDescription *showHistoryActionDescription)
-{
-	m_showHistoryActionDescription = showHistoryActionDescription;
+	m_showHistoryAction = showHistoryAction;
 }
 
 void History::init()
@@ -166,26 +143,19 @@ void History::done()
 void History::createActionDescriptions()
 {
 	m_actions->blockSignals();
-	m_actions->insert(m_showHistoryActionDescription);
+	m_actions->insert(m_showHistoryAction);
 
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(m_showHistoryActionDescription, KaduMenu::SectionView, 100)
+		->addAction(m_showHistoryAction, KaduMenu::SectionView, 100)
 		->update();
 	m_menuInventory
 		->menu("main")
-		->addAction(m_showHistoryActionDescription, KaduMenu::SectionRecentChats)
+		->addAction(m_showHistoryAction, KaduMenu::SectionRecentChats)
 		->update();
 
 	// The last ActionDescription will send actionLoaded() signal.
 	m_actions->unblockSignals();
-
-	ClearHistoryActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUser, "clearHistoryAction",
-		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/clear-history"), tr("Clear History"), false,
-		[this](Action *action){ return disableNonHistoryContacts(m_myself, action); }
-	);
 
 }
 
@@ -193,27 +163,12 @@ void History::deleteActionDescriptions()
 {
 	m_menuInventory
 		->menu("buddy-list")
-		->removeAction(m_showHistoryActionDescription)
+		->removeAction(m_showHistoryAction)
 		->update();
 	m_menuInventory
 		->menu("main")
-		->removeAction(m_showHistoryActionDescription)
+		->removeAction(m_showHistoryAction)
 		->update();
-}
-
-void History::clearHistoryActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	if (!CurrentStorage)
-		return;
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	if (action->context()->chat())
-		CurrentStorage->clearChatHistory(action->context()->chat());
 }
 
 void History::chatWidgetAdded(ChatWidget *chatWidget)
