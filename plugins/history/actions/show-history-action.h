@@ -32,7 +32,7 @@ class BuddyChatManager;
 class HistoryWindowService;
 class History;
 
-class HISTORYAPI ShowHistoryActionDescription : public ActionDescription
+class HISTORYAPI ShowHistoryAction : public ActionDescription
 {
 	Q_OBJECT
 
@@ -63,7 +63,7 @@ protected:
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
-	Q_INVOKABLE explicit ShowHistoryActionDescription(QObject *parent = nullptr);
-	virtual ~ShowHistoryActionDescription();
+	Q_INVOKABLE explicit ShowHistoryAction(QObject *parent = nullptr);
+	virtual ~ShowHistoryAction();
 
 };

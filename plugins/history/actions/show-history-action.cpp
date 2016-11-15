@@ -40,33 +40,33 @@
 #include "history-query.h"
 #include "history.h"
 
-#include "show-history-action-description.h"
+#include "show-history-action.h"
 
-ShowHistoryActionDescription::ShowHistoryActionDescription(QObject *parent) :
+ShowHistoryAction::ShowHistoryAction(QObject *parent) :
 		ActionDescription(parent)
 {
 }
 
-ShowHistoryActionDescription::~ShowHistoryActionDescription()
+ShowHistoryAction::~ShowHistoryAction()
 {
 }
 
-void ShowHistoryActionDescription::setBuddyChatManager(BuddyChatManager *buddyChatManager)
+void ShowHistoryAction::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 {
 	m_buddyChatManager = buddyChatManager;
 }
 
-void ShowHistoryActionDescription::setHistoryWindowService(HistoryWindowService *historyWindowService)
+void ShowHistoryAction::setHistoryWindowService(HistoryWindowService *historyWindowService)
 {
 	m_historyWindowService = historyWindowService;
 }
 
-void ShowHistoryActionDescription::setHistory(History *history)
+void ShowHistoryAction::setHistory(History *history)
 {
 	m_history = history;
 }
 
-void ShowHistoryActionDescription::init()
+void ShowHistoryAction::init()
 {
 	setType(ActionDescription::TypeUser);
 	setName("showHistoryAction");
@@ -77,14 +77,14 @@ void ShowHistoryActionDescription::init()
 	configurationUpdated();
 }
 
-void ShowHistoryActionDescription::configurationUpdated()
+void ShowHistoryAction::configurationUpdated()
 {
 	ActionDescription::configurationUpdated();
 
 	ChatHistoryQuotationTime = configuration()->deprecatedApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
 }
 
-void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
+void ShowHistoryAction::actionInstanceCreated(Action *action)
 {
 	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox || !chatEditBox->chatWidget())
@@ -115,39 +115,39 @@ void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 	action->setMenu(menu);
 }
 
-void ShowHistoryActionDescription::actionTriggered(QAction *sender, bool toggled)
+void ShowHistoryAction::actionTriggered(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
 	showDaysMessages(sender, -1);
 }
 
-void ShowHistoryActionDescription::showPruneMessages()
+void ShowHistoryAction::showPruneMessages()
 {
 	showDaysMessages(qobject_cast<QAction *>(sender()), 0);
 }
 
-void ShowHistoryActionDescription::showOneDayMessages()
+void ShowHistoryAction::showOneDayMessages()
 {
 	showDaysMessages(qobject_cast<QAction *>(sender()), 1);
 }
 
-void ShowHistoryActionDescription::show7DaysMessages()
+void ShowHistoryAction::show7DaysMessages()
 {
 	showDaysMessages(qobject_cast<QAction *>(sender()), 7);
 }
 
-void ShowHistoryActionDescription::show30DaysMessages()
+void ShowHistoryAction::show30DaysMessages()
 {
 	showDaysMessages(qobject_cast<QAction *>(sender()), 30);
 }
 
-void ShowHistoryActionDescription::showAllMessages()
+void ShowHistoryAction::showAllMessages()
 {
 	showDaysMessages(qobject_cast<QAction *>(sender()), -1);
 }
 
-void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
+void ShowHistoryAction::showDaysMessages(QAction *action, int days)
 {
 	Action *act = qobject_cast<Action *>(action);
 	Chat actionChat = act ? act->context()->chat() : Chat::null;
@@ -192,4 +192,4 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	new HistoryMessagesPrepender(historyStorage->messages(query), chatMessagesView);
 }
 
-#include "moc_show-history-action-description.cpp"
+#include "moc_show-history-action.cpp"

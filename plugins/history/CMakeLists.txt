@@ -16,7 +16,7 @@ kadu_api_directories (plugins/history
 )
 
 set (SOURCES
-	actions/show-history-action-description.cpp
+	actions/show-history-action.cpp
 
 	gui/widgets/chat-history-tab.cpp
 	gui/widgets/history-buddy-configuration-widget.cpp
