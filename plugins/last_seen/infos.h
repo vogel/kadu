@@ -34,12 +34,11 @@
 typedef QMap<QPair<QString, QString>, QString> LastSeen;
 
 class AccountManager;
-class ActionDescription;
-class Actions;
 class ContactManager;
 class PluginInjectedFactory;
 class MenuInventory;
 class PathsProvider;
+class ShowInfosWindowAction;
 
 /*!
  * This class handles the "Last seen" time for InfosDialog class.
@@ -50,19 +49,19 @@ class Infos : public QObject, AccountsAwareObject
 	Q_OBJECT
 
 	QPointer<AccountManager> m_accountManager;
-	QPointer<Actions> m_actions;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<PathsProvider> m_pathsProvider;
+	QPointer<ShowInfosWindowAction> m_showInfosWindowAction;
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+	INJEQT_SET void setShowInfosWindowAction(ShowInfosWindowAction *showInfosWindowAction);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
@@ -90,8 +89,6 @@ protected:
 
 	//! Holds the "&Show infos about contacts" menu entry ID.
 	int menuID;
-
-	ActionDescription* lastSeenActionDescription;
 
 public:
 	/*!

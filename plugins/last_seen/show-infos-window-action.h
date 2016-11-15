@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,19 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "last-seen-module.h"
+#pragma once
 
-#include "infos.h"
-#include "last-seen-plugin-object.h"
-#include "show-infos-window-action.h"
+#include "gui/actions/action-description.h"
 
-LastSeenModule::LastSeenModule()
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class Infos;
+
+class ShowInfosWindowAction : public ActionDescription
 {
-	add_type<Infos>();
-	add_type<LastSeenPluginObject>();
-	add_type<ShowInfosWindowAction>();
-}
+	Q_OBJECT
 
-LastSeenModule::~LastSeenModule()
-{
-}
+public:
+	Q_INVOKABLE explicit ShowInfosWindowAction(QObject *parent = nullptr);
+	virtual ~ShowInfosWindowAction();
+
+protected:
+	virtual void actionTriggered(QAction *sender, bool toggled) override;
+
+private:
+	QPointer<Infos> m_infos;
+
+private slots:
+	INJEQT_SET void setInfos(Infos *infos);
+	INJEQT_INIT void init();
+
+};

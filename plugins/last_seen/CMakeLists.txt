@@ -10,6 +10,7 @@ set (SOURCES
 	last-seen-module.cpp
 	last-seen-plugin-modules-factory.cpp
 	last-seen-plugin-object.cpp
+	show-infos-window-action.cpp
 )
 
 kadu_plugin (last_seen

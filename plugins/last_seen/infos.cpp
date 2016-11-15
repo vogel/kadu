@@ -27,8 +27,6 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
-#include "gui/actions/actions.h"
-#include "gui/actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "misc/paths-provider.h"
 #include "plugin/plugin-injected-factory.h"
@@ -37,6 +35,7 @@
 
 #include "infos.h"
 #include "infos_dialog.h"
+#include "show-infos-window-action.h"
 
 Infos::Infos(QObject *parent) :
 		QObject{parent},
@@ -51,11 +50,6 @@ Infos::~Infos()
 void Infos::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
-}
-
-void Infos::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void Infos::setContactManager(ContactManager *contactManager)
@@ -76,6 +70,11 @@ void Infos::setMenuInventory(MenuInventory *menuInventory)
 void Infos::setPathsProvider(PathsProvider *pathsProvider)
 {
 	m_pathsProvider = pathsProvider;
+}
+
+void Infos::setShowInfosWindowAction(ShowInfosWindowAction *showInfosWindowAction)
+{
+	m_showInfosWindowAction = showInfosWindowAction;
 }
 
 void Infos::init()
@@ -129,15 +128,9 @@ void Infos::init()
 	}
 
 	// Main menu entry
-	lastSeenActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(
-		this, ActionDescription::TypeMainMenu, "lastSeenAction",
-		this, SLOT(onShowInfos()),
-		KaduIcon(), qApp->translate("Infos", "&Show infos about buddies")
-	);
-
 	m_menuInventory
 		->menu("tools")
-		->addAction(lastSeenActionDescription, KaduMenu::SectionTools, 3)
+		->addAction(m_showInfosWindowAction, KaduMenu::SectionTools, 3)
 		->update();
 
 	kdebugf2();
@@ -169,7 +162,7 @@ void Infos::done()
 
 	m_menuInventory
 		->menu("tools")
-		->removeAction(lastSeenActionDescription)
+		->removeAction(m_showInfosWindowAction)
 		->update();
 
 	kdebugf2();
