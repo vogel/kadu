@@ -6,9 +6,18 @@ find_package (Kadu REQUIRED CONFIG)
 
 kadu_api_directories (plugins/mediaplayer
 	.
+	actions/
 )
 
 set (SOURCES
+	actions/mediaplayer-menu-action.cpp
+	actions/next-action.cpp
+	actions/play-action.cpp
+	actions/prev-action.cpp
+	actions/stop-action.cpp
+	actions/toggle-mediaplayer-statuses-action.cpp
+	actions/volume-down-action.cpp
+	actions/volume-up-action.cpp
 	media-player-status-changer.cpp
 	mediaplayer-configuration-ui-handler.cpp
 	mediaplayer-module.cpp

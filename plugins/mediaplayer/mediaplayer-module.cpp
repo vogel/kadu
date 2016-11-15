@@ -19,6 +19,14 @@
 
 #include "mediaplayer-module.h"
 
+#include "actions/mediaplayer-menu-action.h"
+#include "actions/next-action.h"
+#include "actions/play-action.h"
+#include "actions/prev-action.h"
+#include "actions/stop-action.h"
+#include "actions/toggle-mediaplayer-statuses-action.h"
+#include "actions/volume-down-action.h"
+#include "actions/volume-up-action.h"
 #include "mediaplayer-configuration-ui-handler.h"
 #include "mediaplayer-notification-service.h"
 #include "mediaplayer-plugin-object.h"
@@ -28,8 +36,16 @@ MediaplayerModule::MediaplayerModule()
 {
 	add_type<MediaplayerConfigurationUiHandler>();
 	add_type<MediaplayerNotificationService>();
+	add_type<MediaplayerMenuAction>();
 	add_type<MediaplayerPluginObject>();
 	add_type<MediaPlayer>();
+	add_type<NextAction>();
+	add_type<PlayAction>();
+	add_type<PrevAction>();
+	add_type<StopAction>();
+	add_type<ToggleMediaplayerStatusesAction>();
+	add_type<VolumeDownAction>();
+	add_type<VolumeUpAction>();
 }
 
 MediaplayerModule::~MediaplayerModule()

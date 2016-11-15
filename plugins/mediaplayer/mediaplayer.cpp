@@ -51,6 +51,14 @@
 #include "plugins/docking/docking.h"
 #include "plugins/docking/docking-menu-action-repository.h"
 
+#include "actions/mediaplayer-menu-action.h"
+#include "actions/next-action.h"
+#include "actions/play-action.h"
+#include "actions/prev-action.h"
+#include "actions/stop-action.h"
+#include "actions/toggle-mediaplayer-statuses-action.h"
+#include "actions/volume-down-action.h"
+#include "actions/volume-up-action.h"
 #include "mediaplayer-notification-service.h"
 #include "media-player-status-changer.h"
 #include "player-commands.h"
@@ -75,11 +83,6 @@ MediaPlayer::MediaPlayer(QObject *parent) :
 
 MediaPlayer::~MediaPlayer()
 {
-}
-
-void MediaPlayer::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void MediaPlayer::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -112,9 +115,9 @@ void MediaPlayer::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void MediaPlayer::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
+void MediaPlayer::setMediaplayerMenuAction(MediaplayerMenuAction *mediaplayerMenuAction)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+	m_mediaplayerMenuAction = mediaplayerMenuAction;
 }
 
 void MediaPlayer::setMediaplayerNotificationService(MediaplayerNotificationService *mediaplayerNotificationService)
@@ -127,9 +130,49 @@ void MediaPlayer::setMenuInventory(MenuInventory *menuInventory)
 	m_menuInventory = menuInventory;
 }
 
+void MediaPlayer::setNextAction(NextAction *nextAction)
+{
+	m_nextAction = nextAction;
+}
+
+void MediaPlayer::setPlayAction(PlayAction *playAction)
+{
+	m_playAction = playAction;
+}
+
+void MediaPlayer::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
+{
+	m_pluginInjectedFactory = pluginInjectedFactory;
+}
+
+void MediaPlayer::setPrevAction(PrevAction *prevAction)
+{
+	m_prevAction = prevAction;
+}
+
 void MediaPlayer::setStatusChangerManager(StatusChangerManager *statusChangerManager)
 {
 	m_statusChangerManager = statusChangerManager;
+}
+
+void MediaPlayer::setStopAction(StopAction *stopAction)
+{
+	m_stopAction = stopAction;
+}
+
+void MediaPlayer::setVolumeDownAction(VolumeDownAction *volumeDownAction)
+{
+	m_volumeDownAction = volumeDownAction;
+}
+
+void MediaPlayer::setVolumeUpAction(VolumeUpAction *volumeUpAction)
+{
+	m_volumeUpAction = volumeUpAction;
+}
+
+void MediaPlayer::setToggleMediaplayerStatusesAction(ToggleMediaplayerStatusesAction *toggleMediaplayerStatusesAction)
+{
+	m_toggleMediaplayerStatusesAction = toggleMediaplayerStatusesAction;
 }
 
 void MediaPlayer::init()
@@ -142,64 +185,16 @@ void MediaPlayer::init()
 	statusInterval = CHECK_STATUS_INTERVAL;
 
 	// MediaPlayer menus in chats
-	menu = new QMenu();
-	popups[0] = menu->addAction(tr("Put formated string"), this, SLOT(insertFormattedSong()));
-	popups[1] = menu->addAction(tr("Put song title"), this, SLOT(insertSongTitle()));
-	popups[2] = menu->addAction(tr("Put song file name"), this, SLOT(insertSongFilename()));
-	popups[3] = menu->addAction(tr("Send all playlist titles"), this, SLOT(insertPlaylistTitles()));
-	popups[4] = menu->addAction(tr("Send all playlist files"), this, SLOT(insertPlaylistFilenames()));
+	m_menu = new QMenu();
+	popups[0] = m_menu->addAction(tr("Put formated string"), this, SLOT(insertFormattedSong()));
+	popups[1] = m_menu->addAction(tr("Put song title"), this, SLOT(insertSongTitle()));
+	popups[2] = m_menu->addAction(tr("Put song file name"), this, SLOT(insertSongFilename()));
+	popups[3] = m_menu->addAction(tr("Send all playlist titles"), this, SLOT(insertPlaylistTitles()));
+	popups[4] = m_menu->addAction(tr("Send all playlist files"), this, SLOT(insertPlaylistFilenames()));
 
 	// Title checking timer
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
-
-	enableMediaPlayerStatuses = m_pluginInjectedFactory->makeInjected<ActionDescription>(
-		this, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
-		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Enable MediaPlayer Statuses"), true
-	);
-
-	m_actions->blockSignals();
-
-	mediaPlayerMenu = m_pluginInjectedFactory->makeInjected<ActionDescription>(
-		this, ActionDescription::TypeChat, "mediaplayer_button",
-		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
-		KaduIcon("external_modules/mediaplayer"), tr("MediaPlayer"), false
-	);
-	playAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
-		this, ActionDescription::TypeChat, "mediaplayer_play",
-		this, SLOT(playPause()),
-		KaduIcon("external_modules/mediaplayer-media-playback-play"), tr("Play"), false
-	);
-	stopAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
-		this, ActionDescription::TypeChat, "mediaplayer_stop",
-		this, SLOT(stop()),
-		KaduIcon("external_modules/mediaplayer-media-playback-stop"), tr("Stop"), false
-	);
-	prevAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
-		this, ActionDescription::TypeChat, "mediaplayer_prev",
-		this, SLOT(prevTrack()),
-		KaduIcon("external_modules/mediaplayer-media-skip-backward"), tr("Previous Track"), false
-	);
-	nextAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
-		this, ActionDescription::TypeChat, "mediaplayer_next",
-		this, SLOT(nextTrack()),
-		KaduIcon("external_modules/mediaplayer-media-skip-forward"), tr("Next Track"), false
-	);
-	volUpAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
-		this, ActionDescription::TypeChat, "mediaplayer_vol_up",
-		this, SLOT(incrVolume()),
-		KaduIcon("audio-volume-high"), tr("Volume Up"), false
-	);
-
-	// The last ActionDescription will send actionLoaded() signal.
-	m_actions->unblockSignals();
-
-	volDownAction = m_pluginInjectedFactory->makeInjected<ActionDescription>(
-		this, ActionDescription::TypeChat, "mediaplayer_vol_down",
-		this, SLOT(decrVolume()),
-		KaduIcon("audio-volume-low"), tr("Volume Down"), false
-	);
 
 	DockedMediaplayerStatus = 0;
 
@@ -238,11 +233,11 @@ void MediaPlayer::done()
 			chatWidgetRemoved(chatWidget);
 	}
 
-	delete menu;
+	delete m_menu;
 
 	m_menuInventory
 		->menu("main")
-		->removeAction(enableMediaPlayerStatuses)
+		->removeAction(m_toggleMediaplayerStatusesAction)
 		->update();
 }
 
@@ -253,26 +248,6 @@ void MediaPlayer::setControlsEnabled(bool enabled)
 	popups[2]->setEnabled(enabled);
 	popups[3]->setEnabled(enabled);
 	popups[4]->setEnabled(enabled);
-}
-
-void MediaPlayer::mediaPlayerMenuActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-	{
-		QList<QWidget *> widgets = sender->associatedWidgets();
-		if (widgets.isEmpty())
-			return;
-
-		QWidget *widget = widgets[widgets.size() - 1];
-		menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
-	}
 }
 
 void MediaPlayer::chatWidgetAdded(ChatWidget *chat)
@@ -673,15 +648,6 @@ ChatWidget *MediaPlayer::getCurrentChat()
 	return 0;
 }
 
-void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-
-	kdebugf();
-
-	toggleStatuses(toggled);
-}
-
 void MediaPlayer::statusAboutToBeChanged()
 {
 	if (Changer->changeDescriptionTo() == MediaPlayerStatusChanger::DescriptionReplace)
@@ -692,7 +658,7 @@ void MediaPlayer::toggleStatuses(bool toggled)
 {
 	if (!isActive() && toggled)
 	{
-		for (auto &&action : enableMediaPlayerStatuses->actions())
+		for (auto &&action : m_toggleMediaplayerStatusesAction->actions())
 			action->setChecked(false);
 
 		if (!getPlayerName().isEmpty())
@@ -703,7 +669,7 @@ void MediaPlayer::toggleStatuses(bool toggled)
 		return;
 	}
 
-	for (auto &&action : enableMediaPlayerStatuses->actions())
+	for (auto &&action : m_toggleMediaplayerStatusesAction->actions())
 		action->setChecked(toggled);
 
 	Changer->setDisable(!toggled);
@@ -758,7 +724,7 @@ void MediaPlayer::configurationUpdated()
 	{
 		m_menuInventory
 			->menu("main")
-			->removeAction(enableMediaPlayerStatuses)
+			->removeAction(m_toggleMediaplayerStatusesAction)
 			->update();
 
 		if (!DockedMediaplayerStatus)
@@ -775,7 +741,7 @@ void MediaPlayer::configurationUpdated()
 	{
 		m_menuInventory
 			->menu("main")
-			->addAction(enableMediaPlayerStatuses, KaduMenu::SectionMiscTools, 7)
+			->addAction(m_toggleMediaplayerStatusesAction, KaduMenu::SectionMiscTools, 7)
 			->update();
 
 		if (DockedMediaplayerStatus)
@@ -845,7 +811,7 @@ void MediaPlayer::playPause()
 	{
 		play();
 		isPaused = false;
-		foreach(Action *action, playAction->actions())
+		foreach(Action *action, m_playAction->actions())
 		{
 			action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-pause"));
 			action->setText(tr("Pause"));
@@ -856,7 +822,7 @@ void MediaPlayer::playPause()
 	{
 		pause();
 		isPaused = true;
-		foreach(Action *action, playAction->actions())
+		foreach(Action *action, m_playAction->actions())
 		{
 			action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play"));
 			action->setText(tr("Play"));
@@ -870,7 +836,7 @@ void MediaPlayer::play()
 		playerCommands->play();
 
 	isPaused = false;
-	foreach(Action *action, playAction->actions())
+	foreach(Action *action, m_playAction->actions())
 		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play"));
 }
 
@@ -880,7 +846,7 @@ void MediaPlayer::stop()
 		playerCommands->stop();
 
 	isPaused = true;
-	foreach(Action *action, playAction->actions())
+	foreach(Action *action, m_playAction->actions())
 		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play"));
 }
 
@@ -890,7 +856,7 @@ void MediaPlayer::pause()
 		playerCommands->pause();
 
 	isPaused = true;
-	foreach(Action *action, playAction->actions())
+	foreach(Action *action, m_playAction->actions())
 		action->setIcon(KaduIcon("external_modules/mediaplayer-media-playback-play"));
 }
 

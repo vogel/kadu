@@ -15,54 +15,63 @@ class QMenu;
 class QPushButton;
 class QTimer;
 
-class ActionDescription;
-class Actions;
 class ChatWidget;
 class ChatWidgetRepository;
 class Configuration;
 class CustomInput;
 class DockingMenuActionRepository;
 class IconsManager;
-class PluginInjectedFactory;
 class MediaplayerNotificationService;
 class MenuInventory;
+class NextAction;
+class PluginInjectedFactory;
+class PrevAction;
+class PlayAction;
 class PlayerCommands;
 class PlayerInfo;
 class StatusChangerManager;
+class StopAction;
+class ToggleMediaplayerStatusesAction;
 class ToolBar;
 class ToolButton;
 class UserGroup;
+class VolumeDownAction;
+class VolumeUpAction;
 
+class MediaplayerMenuAction;
 class MediaPlayerStatusChanger;
 
 class MEDIAPLAYERAPI MediaPlayer : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QPointer<Actions> m_actions;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
 	QPointer<DockingMenuActionRepository> m_dockingMenuActionRepository;
 	QPointer<IconsManager> m_iconsManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+	QPointer<MediaplayerMenuAction> m_mediaplayerMenuAction;
 	QPointer<MediaplayerNotificationService> m_mediaplayerNotificationService;
 	QPointer<MenuInventory> m_menuInventory;
+	QPointer<NextAction> m_nextAction;
+	QPointer<PlayAction> m_playAction;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+	QPointer<PrevAction> m_prevAction;
 	QPointer<StatusChangerManager> m_statusChangerManager;
+	QPointer<StopAction> m_stopAction;
+	QPointer<ToggleMediaplayerStatusesAction> m_toggleMediaplayerStatusesAction;
+	QPointer<VolumeDownAction> m_volumeDownAction;
+	QPointer<VolumeUpAction> m_volumeUpAction;
 
 	MediaPlayerStatusChanger *Changer;
 	PlayerInfo *playerInfo;
 	PlayerCommands *playerCommands;
-
-	ActionDescription *enableMediaPlayerStatuses;
-	ActionDescription *mediaPlayerMenu;
-	ActionDescription *playAction, *stopAction, *prevAction, *nextAction, *volUpAction, *volDownAction;
 
 	QAction *DockedMediaplayerStatus;
 
 	QTimer *timer;
 	int statusInterval;
 	QString currentTitle;
-	QMenu *menu;
+	QMenu *m_menu;
 	QAction *popups[6];
 	bool winKeyPressed; // TODO: this is lame, make it good ;)
 	QMap<ChatWidget *, QPushButton *> chatButtons;
@@ -93,28 +102,25 @@ class MEDIAPLAYERAPI MediaPlayer : public QObject, ConfigurationAwareObject
 	void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+	INJEQT_SET void setMediaplayerMenuAction(MediaplayerMenuAction *mediaplayerMenuAction);
 	INJEQT_SET void setMediaplayerNotificationService(MediaplayerNotificationService *mediaplayerNotificationService);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setNextAction(NextAction *nextAction);
+	INJEQT_SET void setPlayAction(PlayAction *playAction);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+	INJEQT_SET void setPrevAction(PrevAction *prevAction);
 	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
+	INJEQT_SET void setStopAction(StopAction *stopAction);
+	INJEQT_SET void setToggleMediaplayerStatusesAction(ToggleMediaplayerStatusesAction *toggleMediaplayerStatusesAction);
+	INJEQT_SET void setVolumeDownAction(VolumeDownAction *volumeDownAction);
+	INJEQT_SET void setVolumeUpAction(VolumeUpAction *volumeUpAction);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	// Proxy methods for 3rd party modules
-	void nextTrack();
-	void prevTrack();
-	void play();
-	void stop();
-	void pause();
-	void setVolume(int vol);
-	void incrVolume();
-	void decrVolume();
-	void playPause();
 	QString getPlayerName();
 	QString getPlayerVersion();
 	QString getTitle();
@@ -154,10 +160,7 @@ private slots:
 	void chatKeyPressed(QKeyEvent *, CustomInput *, bool &);
 	void chatKeyReleased(QKeyEvent *, CustomInput *, bool &);
 
-	void mediaPlayerStatusChangerActivated(QAction *sender, bool toggled);
-	void mediaPlayerMenuActivated(QAction *sender, bool toggled);
 	void statusAboutToBeChanged();
-	void toggleStatuses(bool toggled);
 
 protected:
 	void configurationUpdated();
@@ -221,6 +224,20 @@ public:
 		Puts whole playlist into current chat edit field.
 	*/
 	void putPlayList(int);
+
+	// Proxy methods for 3rd party plugins
+	void nextTrack();
+	void prevTrack();
+	void play();
+	void stop();
+	void pause();
+	void setVolume(int vol);
+	void incrVolume();
+	void decrVolume();
+	void playPause();
+
+	void toggleStatuses(bool toggled);
+	QMenu * menu() const { return m_menu; }
 
 public slots:
 	/**
