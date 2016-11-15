@@ -20,7 +20,10 @@
 
 #include "jabber-protocol-menu-manager.h"
 
+#include "actions/ask-for-subscription-action.h"
 #include "actions/jabber-actions.h"
+#include "actions/remove-subscription-action.h"
+#include "actions/resend-subscription-action.h"
 
 JabberProtocolMenuManager::JabberProtocolMenuManager(QObject *parent) :
 		QObject{parent}
@@ -32,18 +35,33 @@ JabberProtocolMenuManager::~JabberProtocolMenuManager()
 	m_rosterActions.clear();
 }
 
+void JabberProtocolMenuManager::setAskForSubscriptionAction(AskForSubscriptionAction *askForSubscriptionAction)
+{
+	m_askForSubscriptionAction = askForSubscriptionAction;
+}
+
 void JabberProtocolMenuManager::setJabberActions(JabberActions *jabberActions)
 {
 	m_jabberActions = jabberActions;
+}
+
+void JabberProtocolMenuManager::setRemoveSubscriptionAction(RemoveSubscriptionAction *removeSubscriptionAction)
+{
+	m_removeSubscriptionAction = removeSubscriptionAction;
+}
+
+void JabberProtocolMenuManager::setResendSubscriptionAction(ResendSubscriptionAction *resendSubscriptionAction)
+{
+	m_resendSubscriptionAction = resendSubscriptionAction;
 }
 
 const QList<ActionDescription *> & JabberProtocolMenuManager::protocolActions() const
 {
 	if (m_rosterActions.empty())
 	{
-		m_rosterActions.append(m_jabberActions->resendSubscription());
-		m_rosterActions.append(m_jabberActions->removeSubscription());
-		m_rosterActions.append(m_jabberActions->askForSubscription());
+		m_rosterActions.append(m_resendSubscriptionAction);
+		m_rosterActions.append(m_removeSubscriptionAction);
+		m_rosterActions.append(m_askForSubscriptionAction);
 	}
 
 	return m_rosterActions;

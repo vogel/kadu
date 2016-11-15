@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2011 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,25 +19,35 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include "gui/actions/action-description.h"
+
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class ShowXmlConsoleAction;
+class Contact;
+class Myself;
+class SubscriptionService;
 
-// TODO: this class can be moved to core and just check for SubscriptionService
-class JabberActions : public QObject
+class SubscriptionAction : public ActionDescription
 {
 	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit JabberActions(QObject *parent = nullptr);
-	virtual ~JabberActions();
+	explicit SubscriptionAction(QObject *parent = nullptr);
+	virtual ~SubscriptionAction();
+
+protected:
+	virtual void actionTriggered(QAction *sender, bool toggled) override;
+	virtual void updateActionState(Action *action) override;
+	virtual void execute(SubscriptionService *subscriptionService, const Contact &contact) = 0;
+
+	Contact contactFromAction(QAction *action);
+	SubscriptionService * subscriptionServiceFromContact(const Contact &contact);
 
 private:
-	QPointer<ShowXmlConsoleAction> m_showXmlConsoleAction;
+	QPointer<Myself> m_myself;
 
 private slots:
-	INJEQT_SET void setShowXmlConsoleAction(ShowXmlConsoleAction *showXmlConsoleAction);
+	INJEQT_SET void setMyself(Myself *myself);
 
 };

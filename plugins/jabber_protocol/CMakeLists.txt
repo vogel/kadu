@@ -26,9 +26,13 @@ kadu_api_directories (plugins/jabber_protocol
 )
 
 set (SOURCES
+	actions/ask-for-subscription-action.cpp
 	actions/jabber-actions.cpp
 	actions/jabber-protocol-menu-manager.cpp
+	actions/remove-subscription-action.cpp
+	actions/resend-subscription-action.cpp
 	actions/show-xml-console-action.cpp
+	actions/subscription-action.cpp
 
 	file-transfer/jabber-outgoing-file-transfer-handler.cpp
 	file-transfer/jabber-stream-incoming-file-transfer-handler.cpp

@@ -19,8 +19,11 @@
 
 #include "jabber-module.h"
 
+#include "actions/ask-for-subscription-action.h"
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
+#include "actions/remove-subscription-action.h"
+#include "actions/resend-subscription-action.h"
 #include "actions/show-xml-console-action.h"
 #include "facebook-depreceated-message.h"
 #include "gtalk-protocol-factory.h"
@@ -31,6 +34,7 @@
 
 JabberModule::JabberModule()
 {
+	add_type<AskForSubscriptionAction>();
 	add_type<FacebookDepreceatedMessage>();
 	add_type<GTalkProtocolFactory>();
 	add_type<JabberActions>();
@@ -39,5 +43,7 @@ JabberModule::JabberModule()
 	add_type<JabberProtocolMenuManager>();
 	add_type<JabberUrlDomVisitorProvider>();
 	add_type<JabberUrlHandler>();
-    add_type<ShowXmlConsoleAction>();
+	add_type<RemoveSubscriptionAction>();
+	add_type<ResendSubscriptionAction>();
+	add_type<ShowXmlConsoleAction>();
 }
