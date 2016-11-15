@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,29 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sms-module.h"
+#pragma once
 
-#include "gui/windows/sms-dialog-repository.h"
-#include "scripts/sms-script-manager.h"
-#include "mobile-number-manager.h"
-#include "send-sms-action.h"
-#include "sms-actions.h"
-#include "sms-configuration-ui-handler.h"
-#include "sms-gateway-manager.h"
-#include "sms-plugin-object.h"
+#include "gui/actions/action-description.h"
 
-SmsModule::SmsModule()
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class SmsActions;
+
+class SendSmsAction : public ActionDescription
 {
-	add_type<MobileNumberManager>();
-	add_type<SendSmsAction>();
-	add_type<SmsActions>();
-	add_type<SmsConfigurationUiHandler>();
-	add_type<SmsDialogRepository>();
-	add_type<SmsGatewayManager>();
-	add_type<SmsPluginObject>();
-	add_type<SmsScriptsManager>();
-}
+	Q_OBJECT
 
-SmsModule::~SmsModule()
-{
-}
+public:
+	Q_INVOKABLE explicit SendSmsAction(QObject *parent = nullptr);
+	virtual ~SendSmsAction();
+
+protected:
+	virtual void actionTriggered(QAction *sender, bool toggled) override;
+
+private:
+	QPointer<SmsActions> m_smsActions;
+
+private slots:
+	INJEQT_SET void setSmsActions(SmsActions *smsActions);
+	INJEQT_INIT void init();
+
+};

@@ -14,6 +14,7 @@ set (SOURCES
 
 	mobile-number-manager.cpp
 	mobile-number.cpp
+	send-sms-action.cpp
 	sms-actions.cpp
 	sms-configuration-ui-handler.cpp
 	sms-external-sender.cpp

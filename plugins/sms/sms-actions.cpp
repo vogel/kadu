@@ -40,8 +40,9 @@
 
 #include "gui/windows/sms-dialog-repository.h"
 #include "gui/windows/sms-dialog.h"
-#include "mobile-number-manager.h"
 #include "scripts/sms-script-manager.h"
+#include "mobile-number-manager.h"
+#include "send-sms-action.h"
 #include "sms-gateway-manager.h"
 
 #include "sms-actions.h"
@@ -53,11 +54,6 @@ SmsActions::SmsActions(QObject *parent) :
 
 SmsActions::~SmsActions()
 {
-}
-
-void SmsActions::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void SmsActions::setHistory(History *history)
@@ -85,6 +81,11 @@ void SmsActions::setMobileNumberManager(MobileNumberManager *mobileNumberManager
 	m_mobileNumberManager = mobileNumberManager;
 }
 
+void SmsActions::setSendSmsAction(SendSmsAction *sendSmsAction)
+{
+	m_sendSmsAction = sendSmsAction;
+}
+
 void SmsActions::setSmsDialogRepository(SmsDialogRepository *smsDialogRepository)
 {
 	m_smsDialogRepository = smsDialogRepository;
@@ -110,20 +111,13 @@ void SmsActions::init()
 	connect(m_kaduWindowService->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
 			this, SLOT(talkableActivated(Talkable)));
 
-	sendSmsActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeGlobal, "sendSmsAction",
-		this, SLOT(sendSmsActionActivated(QAction *)),
-		KaduIcon("phone"), tr("Send SMS...")
-	);
-	sendSmsActionDescription->setShortcut("kadu_sendsms");
-
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(sendSmsActionDescription, KaduMenu::SectionSend, 10)
+		->addAction(m_sendSmsAction, KaduMenu::SectionSend, 10)
 		->update();
 	m_menuInventory
 		->menu("buddy")
-		->addAction(sendSmsActionDescription, KaduMenu::SectionBuddies, 5)
+		->addAction(m_sendSmsAction, KaduMenu::SectionBuddies, 5)
 		->update();
 }
 
@@ -133,11 +127,11 @@ void SmsActions::done()
 
 	m_menuInventory
 		->menu("buddy-list")
-		->removeAction(sendSmsActionDescription)
+		->removeAction(m_sendSmsAction)
 		->update();
 	m_menuInventory
 		->menu("buddy")
-		->removeAction(sendSmsActionDescription)
+		->removeAction(m_sendSmsAction)
 		->update();
 }
 
@@ -156,15 +150,6 @@ void SmsActions::talkableActivated(const Talkable &talkable)
 	const Buddy &buddy = m_talkableConverter->toBuddy(talkable);
 	if (buddy.contacts().isEmpty() && !buddy.mobile().isEmpty())
 		newSms(buddy.mobile());
-}
-
-void SmsActions::sendSmsActionActivated(QAction *sender)
-{
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	newSms(action->context()->buddies().toBuddy().mobile());
 }
 
 #include "moc_sms-actions.cpp"
