@@ -32,6 +32,7 @@
 
 #include "configuration/spellchecker-configuration.h"
 #include "spellchecker.h"
+#include "suggest-action.h"
 
 #include "suggester.h"
 
@@ -80,12 +81,11 @@ void Suggester::addWordListToMenu(const QTextCursor &textCursor)
 	CurrentTextSelection = textCursor;
 
 	// Add new actions
-	foreach (const QString &listWord, SuggestionWordList)
-		SuggestActions.append(m_pluginInjectedFactory->makeInjected<ActionDescription>(this, ActionDescription::TypeGlobal,
-					"spellcheckerSuggest#" + listWord, this, SLOT(replaceWithSuggest(QAction *)), KaduIcon(), listWord));
+	for (auto const &listWord : SuggestionWordList)
+		SuggestActions.append(m_pluginInjectedFactory->makeInjected<SuggestAction>(listWord, this));
 
 	unsigned int actionPriority = 0;
-	foreach (ActionDescription *action, SuggestActions)
+	for (auto action : SuggestActions)
 		m_customInputMenuManager->addActionDescription(action, CustomInputMenuItem::MenuCategorySuggestion, actionPriority++);
 }
 
@@ -138,18 +138,12 @@ bool Suggester::eventFilter(QObject *object, QEvent *event)
 	return QObject::eventFilter(object, event);
 }
 
-void Suggester::replaceWithSuggest(QAction *sender)
+void Suggester::replaceWith(QString word)
 {
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+	if (word.indexOf(" (") != -1)
+		word.truncate(word.indexOf(" ("));
 
-	QString replaceText = action->text();
-
-	if (replaceText.indexOf(" (") != -1)
-		replaceText.truncate(replaceText.indexOf(" ("));
-
-	CurrentTextSelection.insertText(replaceText);
+	CurrentTextSelection.insertText(word);
 }
 
 #include "moc_suggester.cpp"

@@ -12,6 +12,7 @@ set (SOURCES
 	spellchecker-plugin-modules-factory.cpp
 	spellchecker-plugin-object.cpp
 	spellchecker.cpp
+	suggest-action.cpp
 	suggester.cpp
 )
 

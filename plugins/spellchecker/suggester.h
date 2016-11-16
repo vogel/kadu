@@ -69,6 +69,6 @@ public:
 	void clearWordMenu();
 
 public slots:
-	void replaceWithSuggest(QAction *sender);
+	void replaceWith(QString word);
 
 };
