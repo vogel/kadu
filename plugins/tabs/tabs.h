@@ -44,9 +44,7 @@
 class QAction;
 class QMenu;
 
-class Actions;
-class ActionDescription;
-class Action;
+class AttachTabAction;
 class ChatConfigurationHolder;
 class ChatManager;
 class ChatWidgetManager;
@@ -54,8 +52,9 @@ class ChatWidgetRepository;
 class ChatWidgetSetTitle;
 class ChatWidget;
 class IconsManager;
-class PluginInjectedFactory;
 class MenuInventory;
+class OpenInNewTabAction;
+class PluginInjectedFactory;
 class SessionService;
 
 enum class OpenChatActivation;
@@ -69,21 +68,20 @@ class TabsManager : public StorableObject, ConfigurationAwareObject
 	// that one more friend class wont do a difference
 	friend class TabWidget;
 
-	QPointer<Actions> m_actions;
+	QPointer<AttachTabAction> m_attachTabAction;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatManager> m_chatManager;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
+	QPointer<OpenInNewTabAction> m_openInNewTabAction;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<SessionService> m_sessionService;
 
 	void createDefaultConfiguration();
 
-	ActionDescription *OpenInNewTabActionDescription;
-	ActionDescription *AttachToTabsActionDescription;
 	TabWidget *TabDialog;
 	QList<Chat> DetachedChats;
 	QList<Chat> ClosedChats;
@@ -111,15 +109,16 @@ class TabsManager : public StorableObject, ConfigurationAwareObject
 	void setConfiguration(ChatWidget *chatWidget);
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setAttachTabAction(AttachTabAction *attachTabAction);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatManager(ChatManager *chatManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setOpenInNewTabAction(OpenInNewTabAction *openInNewTabAction);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setSessionService(SessionService *sessionService);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
@@ -147,6 +146,7 @@ public:
 	void openStoredChatTabs();
 	void storeOpenedChatTabs();
 
+	void attachChat(ChatWidget *chatWidget);
 	void detachChat(ChatWidget *chatWidget);
 
 	virtual StorableObject * storageParent() { return 0; }
@@ -162,12 +162,6 @@ public slots:
 	void onTitleChanged();
 
 	void onTabChange(int index);
-
-	void onNewTab(QAction *sender, bool toggled);
-
-	void onTabAttach(QAction *sender, bool toggled);
-
-	void attachToTabsActionCreated(Action *action);
 
 	void closeChat();
 

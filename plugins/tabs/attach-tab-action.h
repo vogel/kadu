@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,23 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tabs-module.h"
+#pragma once
 
-#include "attach-tab-action.h"
-#include "open-in-new-tab-action.h"
-#include "tabs-chat-widget-container-handler.h"
-#include "tabs-plugin-object.h"
-#include "tabs.h"
+#include "gui/actions/action-description.h"
 
-TabsModule::TabsModule()
+#include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
+
+class TabsManager;
+
+class AttachTabAction : public ActionDescription
 {
-	add_type<AttachTabAction>();
-	add_type<OpenInNewTabAction>();
-	add_type<TabsChatWidgetContainerHandler>();
-	add_type<TabsManager>();
-	add_type<TabsPluginObject>();
-}
+	Q_OBJECT
 
-TabsModule::~TabsModule()
-{
-}
+public:
+	Q_INVOKABLE explicit AttachTabAction(QObject *parent = nullptr);
+	virtual ~AttachTabAction();
+
+protected:
+	virtual void actionInstanceCreated(Action *action) override;
+	virtual void actionTriggered(QAction *sender, bool toggled) override;
+
+private:
+	QPointer<TabsManager> m_tabsManager;
+
+private slots:
+	INJEQT_SET void setTabsManager(TabsManager *tabsManager);
+	INJEQT_INIT void init();
+
+};

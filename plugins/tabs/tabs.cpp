@@ -57,30 +57,14 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
-
 #include "core/core.h"
 #include "activate.h"
 #include "debug.h"
 
+#include "attach-tab-action.h"
+#include "open-in-new-tab-action.h"
+
 #include "tabs.h"
-
-static void disableNewTab(Configuration *configuration, Action *action)
-{
-	if (action->context()->buddies().isAnyTemporary())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(action->context()->chat());
-
-	if (configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
-		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Window"));
-	else
-		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Tab"));
-
-	kdebugf2();
-}
 
 TabsManager::TabsManager(QObject *parent) :
 		StorableObject(parent), TargetTabs(-1)
@@ -92,9 +76,9 @@ TabsManager::~TabsManager()
 {
 }
 
-void TabsManager::setActions(Actions *actions)
+void TabsManager::setAttachTabAction(AttachTabAction *attachTabAction)
 {
-	m_actions = actions;
+	m_attachTabAction = attachTabAction;
 }
 
 void TabsManager::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
@@ -127,14 +111,19 @@ void TabsManager::setIconsManager(IconsManager *iconsManager)
 	m_iconsManager = iconsManager;
 }
 
-void TabsManager::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
-{
-	m_pluginInjectedFactory = pluginInjectedFactory;
-}
-
 void TabsManager::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
+}
+
+void TabsManager::setOpenInNewTabAction(OpenInNewTabAction *openInNewTabAction)
+{
+	m_openInNewTabAction = openInNewTabAction;
+}
+
+void TabsManager::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
+{
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void TabsManager::setSessionService(SessionService *sessionService)
@@ -167,24 +156,10 @@ void TabsManager::init()
 	// pozycja tabów
 	configurationUpdated();
 
-	OpenInNewTabActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeUser, "openInNewTabAction",
-		this, SLOT(onNewTab(QAction *, bool)),
-		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false,
-		[this](Action *action){ return disableNewTab(m_configuration, action); }
-	);
-
 	m_menuInventory
 		->menu("buddy-list")
-		->addAction(OpenInNewTabActionDescription, KaduMenu::SectionChat, 20)
+		->addAction(m_openInNewTabAction, KaduMenu::SectionChat, 20)
 		->update();
-
-	AttachToTabsActionDescription = m_pluginInjectedFactory->makeInjected<ActionDescription>(this,
-		ActionDescription::TypeChat, "attachToTabsAction",
-		this, SLOT(onTabAttach(QAction *, bool)),
-		KaduIcon("kadu_icons/tab-detach"), tr("Attach Chat to Tabs"), true
-	);
-	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 
 	openStoredChatTabs();
 
@@ -199,7 +174,7 @@ void TabsManager::done()
 
 	m_menuInventory
 		->menu("buddy-list")
-		->removeAction(OpenInNewTabActionDescription)
+		->removeAction(m_openInNewTabAction)
 		->update();
 
 	disconnect(m_chatWidgetManager, 0, this, 0);
@@ -383,41 +358,6 @@ void TabsManager::onTabChange(int index)
 	chatWidget->edit()->setFocus();
 }
 
-void TabsManager::onNewTab(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	Chat chat = action->context()->chat();
-	if (!chat)
-		return;
-
-	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
-	if (!chatWidget)
-	{
-		if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
-		{
-			chat.addProperty("tabs:tmp-detached", true, CustomProperties::NonStorable);
-		}
-		else
-		{
-			chat.addProperty("tabs:tmp-attached", true, CustomProperties::NonStorable);
-		}
-	}
-
-	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
-
-	chat.removeProperty("tabs:tmp-attached");
-	chat.removeProperty("tabs:tmp-detached");
-
-	kdebugf2();
-}
-
 void TabsManager::insertTab(ChatWidget *chatWidget)
 {
 	kdebugf();
@@ -437,7 +377,7 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 
 	DetachedChats.removeAll(chatWidget->chat());
 
-	for (Action *action : AttachToTabsActionDescription->actions())
+	for (Action *action : m_attachTabAction->actions())
 	{
 		if (action->context()->contacts() == contacts)
 			action->setChecked(true);
@@ -465,27 +405,6 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 		emit chatWidgetActivated(chatWidget);
 
 	kdebugf2();
-}
-
-void TabsManager::onTabAttach(QAction *sender, bool toggled)
-{
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parentWidget());
-	if (!chatEditBox)
-		return;
-
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (!chatWidget)
-		return;
-
-	if (!toggled)
-		detachChat(chatWidget);
-	else
-	{
-		auto chat = chatWidget->chat();
-		chat.removeProperty("tabs:detached");
-		chat.addProperty("tabs:attached", true, CustomProperties::Storable);
-		emit chatAcceptanceChanged(chat);
-	}
 }
 
 void TabsManager::onContextMenu(QWidget *w, const QPoint &pos)
@@ -551,17 +470,13 @@ void TabsManager::onMenuActionCloseAllButActive()
 	}
 }
 
-void TabsManager::attachToTabsActionCreated(Action *action)
+void TabsManager::attachChat(ChatWidget *chatWidget)
 {
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parentWidget());
-	if (!chatEditBox)
-		return;
+	auto chat = chatWidget->chat();
+	chat.removeProperty("tabs:detached");
+	chat.addProperty("tabs:attached", true, CustomProperties::Storable);
 
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (!chatWidget)
-		return;
-
-	action->setChecked(TabDialog->indexOf(chatWidget) != -1);
+	emit chatAcceptanceChanged(chat);
 }
 
 void TabsManager::detachChat(ChatWidget *chatWidget)
