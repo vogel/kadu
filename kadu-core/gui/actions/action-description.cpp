@@ -34,7 +34,7 @@
 ActionDescription::ActionDescription( QObject *parent) :
 		QObject(parent),
 		Type(TypeAll), Object(0), Slot(0),
-		Checkable(false), EnableCallback(0), ShortcutContext(Qt::WidgetShortcut)
+		Checkable(false), ShortcutContext(Qt::WidgetShortcut)
 {
 	Deleting = false;
 }
@@ -129,11 +129,6 @@ void ActionDescription::setCheckable(bool checkable)
 	Checkable = checkable;
 }
 
-void ActionDescription::setActionCallback(ActionBoolCallback enableCallback)
-{
-	EnableCallback = enableCallback;
-}
-
 void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext context)
 {
 	ShortcutItem = configItem;
@@ -163,12 +158,6 @@ void ActionDescription::actionInstanceCreated(Action *action)
 	QMenu *menu = menuForAction(action);
 	if (menu)
 		action->setMenu(menu);
-}
-
-void ActionDescription::updateActionState(Action *action)
-{
-	if (EnableCallback)
-		EnableCallback(action);
 }
 
 void ActionDescription::updateActionStates()

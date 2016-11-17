@@ -42,8 +42,6 @@ class Action;
 class Configuration;
 class InjectedFactory;
 
-using ActionBoolCallback = std::function<void(Action *)>;
-
 /**
  * @addtogroup Actions
  * @{
@@ -111,7 +109,6 @@ private:
 	KaduIcon Icon;
 	QString Text;
 	bool Checkable;
-	ActionBoolCallback EnableCallback;
 	QString ShortcutItem;
 	Qt::ShortcutContext ShortcutContext;
 
@@ -222,9 +219,10 @@ protected:
 	 * @param action action to update state for
 	 *
 	 * This method is called by by Action class when it requies to update its own state (like disabled/enable).
-	 * By defult this method calls EnableCallback callback for this action.
 	 */
-	virtual void updateActionState(Action *action);
+	virtual void updateActionState(Action *)
+	{
+	}
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -282,7 +280,6 @@ public:
 	void setIcon(const KaduIcon &icon);
 	void setText(const QString &text);
 	void setCheckable(bool checkable);
-	void setActionCallback(ActionBoolCallback enableCallback);
 
 	ActionType type() const { return Type; }
 	const QString & name() const { return Name; }

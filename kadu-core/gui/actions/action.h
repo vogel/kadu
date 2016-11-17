@@ -90,10 +90,9 @@ public:
 public slots:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Calls EnableCallback method from ActionDescription to check if this action should be enabled or not.
+	 * @short Calls updateActionState method from ActionDescription to check if this action should be enabled or not.
 	 *
-	 * Calls EnableCallback method from ActionDescription to check if this action should be enabled or not. If
-	 * EnableCallback from ActionDescription is not available, this action will remain enabled.
+	 * Calls updateActionState method from ActionDescription to check if this action should be enabled or not.
 	 */
 	void checkState();
 
