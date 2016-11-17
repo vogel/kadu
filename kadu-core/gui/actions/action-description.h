@@ -69,11 +69,7 @@ using ActionBoolCallback = std::function<void(Action *)>;
  * menuForAction method. Each menuForAction must return different instance of menu, as this method is called
  * only once for each Action and menu will be destroyed when Action is destroyed.
  *
- * ActionDescription has two constructors. One of them is public and has a lot ofparameters. This
- * is depreceated and will be removed in 0.11.0 or 0.12.0 release. This constructor registers action
- * automatically.
- *
- * Second constructor is protected and had only one parameter - parent. This one should be called
+ * Constructor is protected and had only one parameter - parent. This one should be called
  * by subclasses. Then all setXXX methods should be called to set up proper values of ActionDescription
  * properties. After setting all values registerAction method must be called so action can be used
  * on toolbars in menus. Do not call registerAction before setting all properties.
@@ -104,7 +100,6 @@ private:
 	QPointer<Actions> m_actions;
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
-	bool m_selfRegister;
 
 	QMap<ActionContext *, Action *> MappedActions;
 	bool Deleting;
@@ -124,7 +119,6 @@ private slots:
 	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
 
 	void actionAboutToBeDestroyed(Action *action);
 	void actionTriggeredSlot(QAction *sender, bool toggled);
@@ -250,14 +244,6 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Depreceated contructor.
-	 *
-	 * Depreceated contructor.
-	 */
-	ActionDescription(QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
-			const KaduIcon &icon, const QString &text, bool checkable = false, ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 
 	/**

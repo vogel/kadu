@@ -31,23 +31,12 @@
 #include <QtCore/QLatin1String>
 #include <QtCore/QMetaMethod>
 
-ActionDescription::ActionDescription(QObject *parent, ActionType type, const QString &name, QObject *object, const char *slot,
-		const KaduIcon &icon, const QString &text, bool checkable, ActionBoolCallback enableCallback) :
-		QObject(parent),
-		Type(type), Name(name), Object(object), Slot(slot), Icon(icon), Text(text),
-		Checkable(checkable), EnableCallback(enableCallback), ShortcutContext(Qt::WidgetShortcut)
-{
-	Deleting = false;
-	m_selfRegister = true;
-}
-
 ActionDescription::ActionDescription( QObject *parent) :
 		QObject(parent),
 		Type(TypeAll), Object(0), Slot(0),
 		Checkable(false), EnableCallback(0), ShortcutContext(Qt::WidgetShortcut)
 {
 	Deleting = false;
-	m_selfRegister = false;
 }
 
 ActionDescription::~ActionDescription()
@@ -73,12 +62,6 @@ void ActionDescription::setConfiguration(Configuration *configuration)
 void ActionDescription::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
-}
-
-void ActionDescription::init()
-{
-	if (m_selfRegister)
-		registerAction(m_actions);
 }
 
 Configuration * ActionDescription::configuration() const
