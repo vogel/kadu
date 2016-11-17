@@ -104,8 +104,6 @@ private:
 
 	ActionType Type;
 	QString Name;
-	QObject *Object;
-	const char *Slot;
 	KaduIcon Icon;
 	QString Text;
 	bool Checkable;
@@ -135,6 +133,11 @@ protected:
 	ActionDescription(QObject *parent);
 
 	Actions * actionsRegistry() const;
+
+	void setType(ActionType type);
+	void setName(const QString &name);
+	void setCheckable(bool checkable);
+	void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -274,20 +277,14 @@ public:
 	 */
 	Action * action(ActionContext *context);
 
-	void setType(ActionType type);
-	void setName(const QString &name);
-	void setConnection(QObject *object, const char *slot);
 	void setIcon(const KaduIcon &icon);
 	void setText(const QString &text);
-	void setCheckable(bool checkable);
 
 	ActionType type() const { return Type; }
 	const QString & name() const { return Name; }
 	const KaduIcon & icon() const { return Icon; }
 	const QString & text() const { return Text; }
 	bool isCheckable() const { return Checkable; }
-
-	void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

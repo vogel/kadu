@@ -89,6 +89,11 @@ void ShowOnlyBuddiesWithDescriptionOrOnlineAction::actionTriggered(QAction *acti
 
 void ShowOnlyBuddiesWithDescriptionOrOnlineAction::configurationUpdated()
 {
+	if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
+		return;
+
+	ActionDescription::configurationUpdated();
+
 	auto context = m_kaduWindowService->kaduWindow()->actionContext();
 	if (action(context) && action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOnlineAndDescription"))
 		action(context)->trigger();

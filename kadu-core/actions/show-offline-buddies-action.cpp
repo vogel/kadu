@@ -35,6 +35,7 @@ ShowOfflineBuddiesAction::ShowOfflineBuddiesAction(QObject *parent) :
 	setCheckable(true);
 	setIcon(KaduIcon{"kadu_icons/show-offline-buddies"});
 	setName(QStringLiteral("inactiveUsersAction"));
+	setShortcut("kadu_showoffline");
 	setText(tr("Show Offline Buddies"));
 	setType(ActionDescription::TypeUserList);
 }
@@ -89,6 +90,11 @@ void ShowOfflineBuddiesAction::actionTriggered(QAction *action, bool toggled)
 
 void ShowOfflineBuddiesAction::configurationUpdated()
 {
+	if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
+		return;
+
+	ActionDescription::configurationUpdated();
+
 	auto context = m_kaduWindowService->kaduWindow()->actionContext();
 	if (action(context) && action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
 		action(context)->trigger();

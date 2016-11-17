@@ -28,6 +28,7 @@ ShowConfigurationWindowAction::ShowConfigurationWindowAction(QObject *parent) :
 {
 	setIcon(KaduIcon{"preferences-other"});
 	setName(QStringLiteral("configurationAction"));
+	setShortcut("kadu_configure", Qt::ApplicationShortcut);
 	setText(tr("Preferences"));
 	setType(ActionDescription::TypeGlobal);
 }

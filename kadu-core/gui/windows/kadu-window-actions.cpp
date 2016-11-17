@@ -254,10 +254,6 @@ void KaduWindowActions::setShowYourAccountsAction(ShowYourAccountsAction *showYo
 
 void KaduWindowActions::init()
 {
-	m_showConfigurationWindowAction->setShortcut("kadu_configure", Qt::ApplicationShortcut);
-	m_exitAction->setShortcut("kadu_exit", Qt::ApplicationShortcut);
-	m_addUserAction->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
-
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_expandAction, KaduMenu::SectionActionsGui, 2);
@@ -280,9 +276,6 @@ void KaduWindowActions::init()
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_openBuddyEmailAction, KaduMenu::SectionSend, 200);
-
-	m_showOfflineBuddiesAction->setShortcut("kadu_showoffline");
-	m_showOnlyBuddiesWithDescriptionAction->setShortcut("kadu_showonlydesc");
 
 	m_menuInventory
 		->menu("buddy-list")

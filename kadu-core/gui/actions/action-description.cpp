@@ -33,8 +33,7 @@
 
 ActionDescription::ActionDescription( QObject *parent) :
 		QObject(parent),
-		Type(TypeAll), Object(0), Slot(0),
-		Checkable(false), ShortcutContext(Qt::WidgetShortcut)
+		Type(TypeAll), Checkable(false), ShortcutContext(Qt::WidgetShortcut)
 {
 	Deleting = false;
 }
@@ -106,12 +105,6 @@ void ActionDescription::setType(ActionType type)
 void ActionDescription::setName(const QString &name)
 {
 	Name = name;
-}
-
-void ActionDescription::setConnection(QObject *object, const char *slot)
-{
-	Object = object;
-	Slot = slot;
 }
 
 void ActionDescription::setIcon(const KaduIcon &icon)
@@ -196,8 +189,6 @@ Action * ActionDescription::createAction(ActionContext *context, QObject *parent
 
 	connect(result, SIGNAL(triggered(QAction *, bool)), this, SLOT(actionTriggeredSlot(QAction *, bool)));
 	connect(result, SIGNAL(aboutToBeDestroyed(Action *)), this, SLOT(actionAboutToBeDestroyed(Action *)));
-	if (Object && Slot)
-		connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
 
 	return result;
 }

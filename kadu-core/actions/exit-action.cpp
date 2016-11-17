@@ -28,6 +28,7 @@ ExitAction::ExitAction(QObject *parent) :
 {
 	setIcon(KaduIcon{"application-exit"});
 	setName(QStringLiteral("exitKaduAction"));
+	setShortcut("kadu_exit", Qt::ApplicationShortcut);
 	setText(tr("&Quit"));
 	setType(ActionDescription::TypeMainMenu);
 }

@@ -32,6 +32,7 @@ AddUserAction::AddUserAction(QObject *parent) :
 {
 	setIcon(KaduIcon{"contact-new"});
 	setName(QStringLiteral("addUserAction"));
+	setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 	setText(tr("Add Buddy..."));
 	setType(ActionDescription::TypeGlobal);
 }

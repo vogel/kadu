@@ -88,6 +88,11 @@ void ShowBlockedBuddiesAction::actionTriggered(QAction *action, bool toggled)
 
 void ShowBlockedBuddiesAction::configurationUpdated()
 {
+	if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
+		return;
+
+	ActionDescription::configurationUpdated();
+
 	auto context = m_kaduWindowService->kaduWindow()->actionContext();
 	if (action(context) &&action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowBlocked"))
 		action(context)->trigger();

@@ -29,6 +29,7 @@ OpenChatWithAction::OpenChatWithAction(QObject *parent) :
 {
 	setIcon(KaduIcon{"internet-group-chat"});
 	setName(QStringLiteral("openChatWithAction"));
+	setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 	setText(tr("Open Chat with..."));
 	setType(ActionDescription::TypeUser);
 }

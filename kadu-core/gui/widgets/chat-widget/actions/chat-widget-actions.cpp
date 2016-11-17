@@ -125,8 +125,6 @@ void ChatWidgetActions::init()
 		->menu("buddy-list")
 		->addAction(m_openChatAction, KaduMenu::SectionChat, 1000);
 
-	m_openChatWithAction->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
-
 	m_actions->insert(m_editTalkableAction);
 	m_actions->insert(m_leaveChatAction);
 }

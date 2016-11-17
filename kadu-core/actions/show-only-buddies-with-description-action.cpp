@@ -35,6 +35,7 @@ ShowOnlyBuddiesWithDescriptionAction::ShowOnlyBuddiesWithDescriptionAction(QObje
 	setCheckable(true);
 	setIcon(KaduIcon{"kadu_icons/only-show-with-description"});
 	setName(QStringLiteral("descriptionUsersAction"));
+	setShortcut("kadu_showonlydesc");
 	setText(tr("Only Show Buddies with Description"));
 	setType(ActionDescription::TypeUserList);
 }
@@ -89,6 +90,11 @@ void ShowOnlyBuddiesWithDescriptionAction::actionTriggered(QAction *action, bool
 
 void ShowOnlyBuddiesWithDescriptionAction::configurationUpdated()
 {
+	if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
+		return;
+
+	ActionDescription::configurationUpdated();
+
 	auto context = m_kaduWindowService->kaduWindow()->actionContext();
 	if (action(context) && action(context)->isChecked() == m_configuration->deprecatedApi()->readBoolEntry("General", "ShowWithoutDescription"))
 		action(context)->trigger();
