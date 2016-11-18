@@ -21,7 +21,6 @@
 
 #include "buddies/buddy-set.h"
 #include "core/injected-factory.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "gui/windows/kadu-window-service.h"
@@ -51,11 +50,6 @@ void LookupBuddyInfoAction::setInjectedFactory(InjectedFactory *injectedFactory)
 void LookupBuddyInfoAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
 	m_kaduWindowService = kaduWindowService;
-}
-
-void LookupBuddyInfoAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void LookupBuddyInfoAction::actionTriggered(QAction *sender, bool)

@@ -21,7 +21,6 @@
 #include "default-proxy-action.h"
 
 #include "core/injected-factory.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/windows/proxy-edit-window-service.h"
 #include "model/roles.h"
@@ -52,11 +51,6 @@ void DefaultProxyAction::setNetworkProxyManager(NetworkProxyManager *networkProx
 void DefaultProxyAction::setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService)
 {
 	m_proxyEditWindowService = proxyEditWindowService;
-}
-
-void DefaultProxyAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 QMenu * DefaultProxyAction::menuForAction(Action *action)

@@ -50,6 +50,5 @@ private:
 private slots:
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
 
 };

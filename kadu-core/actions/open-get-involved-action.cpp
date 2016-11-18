@@ -47,11 +47,6 @@ void OpenGetInvolvedAction::setUrlOpener(UrlOpener *urlOpener)
 	m_urlOpener = urlOpener;
 }
 
-void OpenGetInvolvedAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void OpenGetInvolvedAction::actionTriggered(QAction *, bool)
 {
 	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")

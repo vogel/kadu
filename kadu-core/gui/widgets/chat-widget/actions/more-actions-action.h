@@ -24,6 +24,8 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Actions;
+
 class MoreActionsAction : public ActionDescription
 {
 	Q_OBJECT
@@ -40,6 +42,5 @@ private:
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_INIT void init();
 
 };

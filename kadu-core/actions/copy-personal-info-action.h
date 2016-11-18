@@ -45,6 +45,5 @@ private:
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_INIT void init();
 
 };

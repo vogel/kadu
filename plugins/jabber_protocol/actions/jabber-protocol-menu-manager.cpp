@@ -25,6 +25,8 @@
 #include "actions/remove-subscription-action.h"
 #include "actions/resend-subscription-action.h"
 
+#include "gui/actions/actions.h"
+
 JabberProtocolMenuManager::JabberProtocolMenuManager(QObject *parent) :
 		QObject{parent}
 {
@@ -33,6 +35,11 @@ JabberProtocolMenuManager::JabberProtocolMenuManager(QObject *parent) :
 JabberProtocolMenuManager::~JabberProtocolMenuManager()
 {
 	m_rosterActions.clear();
+}
+
+void JabberProtocolMenuManager::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void JabberProtocolMenuManager::setAskForSubscriptionAction(AskForSubscriptionAction *askForSubscriptionAction)
@@ -53,6 +60,20 @@ void JabberProtocolMenuManager::setRemoveSubscriptionAction(RemoveSubscriptionAc
 void JabberProtocolMenuManager::setResendSubscriptionAction(ResendSubscriptionAction *resendSubscriptionAction)
 {
 	m_resendSubscriptionAction = resendSubscriptionAction;
+}
+
+void JabberProtocolMenuManager::init()
+{
+	m_actions->insert(m_askForSubscriptionAction);
+	m_actions->insert(m_removeSubscriptionAction);
+	m_actions->insert(m_resendSubscriptionAction);
+}
+
+void JabberProtocolMenuManager::done()
+{
+	m_actions->remove(m_askForSubscriptionAction);
+	m_actions->remove(m_removeSubscriptionAction);
+	m_actions->remove(m_resendSubscriptionAction);
 }
 
 const QList<ActionDescription *> & JabberProtocolMenuManager::protocolActions() const

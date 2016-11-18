@@ -28,6 +28,7 @@
 
 #include "status/status.h"
 
+class Actions;
 class AddConferenceAction;
 class AddGroupAction;
 class AddUserAction;
@@ -70,6 +71,7 @@ class KaduWindowActions : public QObject
 {
 	Q_OBJECT
 
+	QPointer<Actions> m_actions;
 	QPointer<AddConferenceAction> m_addConferenceAction;
 	QPointer<AddGroupAction> m_addGroupAction;
 	QPointer<AddRoomChatAction> m_addRoomChatAction;
@@ -111,6 +113,7 @@ class KaduWindowActions : public QObject
 	friend class TalkableTreeView;
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setAddConferenceAction(AddConferenceAction *addConferenceAction);
 	INJEQT_SET void setAddGroupAction(AddGroupAction *addGroupAction);
 	INJEQT_SET void setAddRoomChatAction(AddRoomChatAction *addRoomChatAction);
@@ -148,6 +151,7 @@ private slots:
 	INJEQT_SET void setShowOnlyBuddiesWithDescriptionOrOnlineAction(ShowOnlyBuddiesWithDescriptionOrOnlineAction *showOnlyBuddiesWithDescriptionOrOnlineAction);
 	INJEQT_SET void setShowYourAccountsAction(ShowYourAccountsAction *showYourAccountsAction);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 public:
 	Q_INVOKABLE KaduWindowActions(QObject *parent = nullptr);

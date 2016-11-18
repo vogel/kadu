@@ -27,7 +27,6 @@
 #include <injeqt/injeqt.h>
 
 class ChatWidgetManager;
-class RecentChatsMenu;
 
 class RecentChatsAction : public ActionDescription
 {
@@ -43,11 +42,8 @@ protected:
 private:
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
 
-	not_owned_qptr<RecentChatsMenu> m_recentChatsMenu;
-
 private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_INIT void init();
 
 	void openRecentChats(QAction *action);
 

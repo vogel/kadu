@@ -43,6 +43,5 @@ private:
 
 private slots:
 	INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
-	INJEQT_INIT void init();
 
 };

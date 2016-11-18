@@ -19,7 +19,6 @@
 
 #include "italic-action.h"
 
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/custom-input.h"
@@ -39,11 +38,6 @@ ItalicAction::ItalicAction(QObject *parent) :
 
 ItalicAction::~ItalicAction()
 {
-}
-
-void ItalicAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ItalicAction::actionTriggered(QAction *sender, bool toggled)

@@ -37,11 +37,6 @@ NextResultsAction::~NextResultsAction()
 {
 }
 
-void NextResultsAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void NextResultsAction::actionInstanceCreated(Action* action)
 {
 	auto search = qobject_cast<SearchWindow *>(action->parentWidget());

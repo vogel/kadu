@@ -35,7 +35,4 @@ protected:
 	virtual void actionInstanceCreated(Action *action) override;
 	virtual void actionTriggered(QAction *sender, bool toggled) override;
 
-private slots:
-	INJEQT_INIT void init();
-
 };

@@ -42,6 +42,5 @@ private:
 
 private slots:
 	INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
-	INJEQT_INIT void init();
 
 };

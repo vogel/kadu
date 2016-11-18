@@ -66,11 +66,6 @@ void SendFileAction::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
-void SendFileAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void SendFileAction::actionInstanceCreated(Action *action)
 {
 	auto account = action->context()->chat().chatAccount();

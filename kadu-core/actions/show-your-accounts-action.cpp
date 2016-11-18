@@ -19,7 +19,6 @@
 
 #include "show-your-accounts-action.h"
 
-#include "gui/actions/actions.h"
 #include "gui/windows/your-accounts-window-service.h"
 
 ShowYourAccountsAction::ShowYourAccountsAction(QObject *parent) :
@@ -39,11 +38,6 @@ ShowYourAccountsAction::~ShowYourAccountsAction()
 void ShowYourAccountsAction::setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService)
 {
 	m_yourAccountsWindowService = yourAccountsWindowService;
-}
-
-void ShowYourAccountsAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ShowYourAccountsAction::actionTriggered(QAction *, bool)

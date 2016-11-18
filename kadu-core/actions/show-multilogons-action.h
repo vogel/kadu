@@ -47,6 +47,5 @@ private:
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
 	INJEQT_SET void setMultilogonWindowService(MultilogonWindowService *multilogonWindowService);
-	INJEQT_INIT void init();
 
 };

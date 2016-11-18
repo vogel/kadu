@@ -42,6 +42,5 @@ private:
 
 private slots:
 	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_INIT void init();
 
 };

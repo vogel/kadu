@@ -20,7 +20,6 @@
 #include "exit-action.h"
 
 #include "core/application.h"
-#include "gui/actions/actions.h"
 
 ExitAction::ExitAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
@@ -40,11 +39,6 @@ ExitAction::~ExitAction()
 void ExitAction::setApplication(Application *application)
 {
 	m_application = application;
-}
-
-void ExitAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ExitAction::actionTriggered(QAction *, bool)

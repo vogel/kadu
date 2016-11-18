@@ -22,7 +22,6 @@
 #include "sms-actions.h"
 
 #include "buddies/buddy-set.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 
@@ -44,11 +43,6 @@ SendSmsAction::~SendSmsAction()
 void SendSmsAction::setSmsActions(SmsActions *smsActions)
 {
 	m_smsActions = smsActions;
-}
-
-void SendSmsAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void SendSmsAction::actionTriggered(QAction *sender, bool)

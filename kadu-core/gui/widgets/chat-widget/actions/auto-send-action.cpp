@@ -49,11 +49,6 @@ void AutoSendAction::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void AutoSendAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void AutoSendAction::actionInstanceCreated(Action *action)
 {
 	action->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Chat", "AutoSend"));

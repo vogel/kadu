@@ -42,11 +42,6 @@ void PlayAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 	m_mediaPlayer = mediaPlayer;
 }
 
-void PlayAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void PlayAction::actionTriggered(QAction *, bool)
 {
 	m_mediaPlayer->playPause();

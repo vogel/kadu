@@ -41,6 +41,11 @@ ConfigWizardActions::~ConfigWizardActions()
 {
 }
 
+void ConfigWizardActions::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
 void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -51,12 +56,9 @@ void ConfigWizardActions::setShowConfigWizardAction(ShowConfigWizardAction *show
 	m_showConfigWizardAction = showConfigWizardAction;
 }
 
-void ConfigWizardActions::init()
-{
-}
-
 void ConfigWizardActions::registerActions()
 {
+	m_actions->insert(m_showConfigWizardAction);
 	m_menuInventory
 		->menu("tools")
 		->addAction(m_showConfigWizardAction, KaduMenu::SectionTools)
@@ -69,6 +71,7 @@ void ConfigWizardActions::unregisterActions()
 		->menu("tools")
 		->removeAction(m_showConfigWizardAction)
 		->update();
+	m_actions->remove(m_showConfigWizardAction);
 }
 
 #include "moc_config-wizard-actions.cpp"

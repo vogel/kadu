@@ -37,7 +37,6 @@ class QAction;
 class QMenu;
 
 class ActionContext;
-class Actions;
 class Action;
 class Configuration;
 class InjectedFactory;
@@ -95,7 +94,6 @@ public:
 private:
 	friend class Action;
 
-	QPointer<Actions> m_actions;
 	QPointer<Configuration> m_configuration;
 	QPointer<InjectedFactory> m_injectedFactory;
 
@@ -111,7 +109,6 @@ private:
 	Qt::ShortcutContext ShortcutContext;
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
@@ -132,31 +129,10 @@ protected:
 	 */
 	ActionDescription(QObject *parent);
 
-	Actions * actionsRegistry() const;
-
 	void setType(ActionType type);
 	void setName(const QString &name);
 	void setCheckable(bool checkable);
 	void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Registers this action in global action list.
-	 *
-	 * Registers this action in global action list. Called automatically by depreceated public
-	 * constructor. In new implementation this should be called from subclasses after all apprioprate
-	 * setters were called.
-	 */
-	void registerAction(Actions *actions);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Unregisters this action from global action list.
-	 *
-	 * Registers this action from global action list. Called automatically by destructor. No need to call
-	 * this manually.
-	 */
-	void unregisterAction(Actions *actions);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

@@ -42,11 +42,6 @@ void VolumeDownAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 	m_mediaPlayer = mediaPlayer;
 }
 
-void VolumeDownAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void VolumeDownAction::actionTriggered(QAction *, bool)
 {
 	m_mediaPlayer->decrVolume();

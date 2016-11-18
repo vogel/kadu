@@ -34,6 +34,7 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class Actions;
 class AddFoundBuddyAction;
 class BaseActionContext;
 class BuddyManager;
@@ -95,6 +96,7 @@ private:
 	friend class StopSearchAction;
 
 	QPointer<AccountManager> m_accountManager;
+	QPointer<Actions> m_actions;
 	QPointer<AddFoundBuddyAction> m_addFoundBuddyAction;
 	QPointer<BuddyManager> m_buddyManager;
 	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
@@ -144,6 +146,7 @@ private:
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setAddFoundBuddyAction(AddFoundBuddyAction *addFoundBuddyAction);
 	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
@@ -160,6 +163,7 @@ private slots:
 	INJEQT_SET void setNextResultsAction(NextResultsAction *nextResultsAction);
 	INJEQT_SET void setStopSearchAction(StopSearchAction *stopSearchAction);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 	void uinTyped();
 	void personalDataTyped();

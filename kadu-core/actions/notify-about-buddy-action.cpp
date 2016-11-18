@@ -20,7 +20,6 @@
 #include "notify-about-buddy-action.h"
 
 #include "buddies/buddy-set.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 
@@ -37,11 +36,6 @@ NotifyAboutBuddyAction::NotifyAboutBuddyAction(QObject *parent) :
 
 NotifyAboutBuddyAction::~NotifyAboutBuddyAction()
 {
-}
-
-void NotifyAboutBuddyAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void NotifyAboutBuddyAction::actionTriggered(QAction *sender, bool toggled)

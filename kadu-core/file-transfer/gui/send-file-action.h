@@ -34,7 +34,7 @@ class SendFileAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit SendFileAction(QObject *parent = nullptr);
+	Q_INVOKABLE explicit SendFileAction(QObject *parent = nullptr);
 	virtual ~SendFileAction();
 
 protected:
@@ -54,6 +54,5 @@ private slots:
 	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
 	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_INIT void init();
 
 };

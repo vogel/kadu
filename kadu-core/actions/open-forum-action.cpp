@@ -46,11 +46,6 @@ void OpenForumAction::setUrlOpener(UrlOpener *urlOpener)
 	m_urlOpener = urlOpener;
 }
 
-void OpenForumAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void OpenForumAction::actionTriggered(QAction *, bool)
 {
 	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")

@@ -37,11 +37,6 @@ ChatFoundAction::~ChatFoundAction()
 {
 }
 
-void ChatFoundAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ChatFoundAction::actionInstanceCreated(Action* action)
 {
 	auto search = qobject_cast<SearchWindow *>(action->parentWidget());

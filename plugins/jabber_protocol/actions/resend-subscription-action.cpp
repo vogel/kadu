@@ -33,11 +33,6 @@ ResendSubscriptionAction::~ResendSubscriptionAction()
 {
 }
 
-void ResendSubscriptionAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ResendSubscriptionAction::execute(SubscriptionService *subscriptionService, const Contact &contact)
 {
 	subscriptionService->resendSubscription(contact);

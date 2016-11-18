@@ -26,6 +26,7 @@
 
 class ShowConfigWizardAction;
 
+class Actions;
 class MenuInventory;
 
 class QAction;
@@ -42,12 +43,13 @@ public:
 	void unregisterActions();
 
 private:
+	QPointer<Actions> m_actions;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<ShowConfigWizardAction> m_showConfigWizardAction;
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction);
-	INJEQT_INIT void init();
 
 };

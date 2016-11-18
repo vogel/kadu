@@ -33,7 +33,4 @@ protected:
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 	virtual void updateActionState(Action *action);
 
-private slots:
-	INJEQT_INIT void init();
-
 };

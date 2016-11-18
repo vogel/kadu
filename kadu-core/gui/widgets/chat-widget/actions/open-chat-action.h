@@ -43,6 +43,5 @@ private:
 
 private slots:
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_INIT void init();
 
 };

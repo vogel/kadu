@@ -37,11 +37,6 @@ AddFoundBuddyAction::~AddFoundBuddyAction()
 {
 }
 
-void AddFoundBuddyAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void AddFoundBuddyAction::actionInstanceCreated(Action* action)
 {
 	auto search = qobject_cast<SearchWindow *>(action->parentWidget());

@@ -35,11 +35,6 @@ StopSearchAction::~StopSearchAction()
 {
 }
 
-void StopSearchAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void StopSearchAction::actionInstanceCreated(Action* action)
 {
 	auto search = qobject_cast<SearchWindow *>(action->parentWidget());

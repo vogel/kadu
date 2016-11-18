@@ -42,7 +42,4 @@ protected:
 	virtual QMenu * menuForAction(Action *action);
 	virtual void actionInstanceCreated(Action *action);
 
-private slots:
-	INJEQT_INIT void init();
-
 };

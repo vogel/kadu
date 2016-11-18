@@ -33,11 +33,6 @@ RemoveSubscriptionAction::~RemoveSubscriptionAction()
 {
 }
 
-void RemoveSubscriptionAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void RemoveSubscriptionAction::execute(SubscriptionService *subscriptionService, const Contact &contact)
 {
 	subscriptionService->removeSubscription(contact);

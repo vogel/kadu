@@ -21,7 +21,6 @@
 
 #include "buddies/buddy-set.h"
 #include "core/injected-factory.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "gui/windows/add-buddy-window.h"
@@ -44,11 +43,6 @@ AddUserAction::~AddUserAction()
 void AddUserAction::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
-}
-
-void AddUserAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void AddUserAction::actionTriggered(QAction *sender, bool)

@@ -46,11 +46,6 @@ void MergeBuddiesAction::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
-void MergeBuddiesAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void MergeBuddiesAction::actionTriggered(QAction *sender, bool)
 {
 	auto action = qobject_cast<Action *>(sender);

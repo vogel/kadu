@@ -26,6 +26,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Actions;
 class AskForSubscriptionAction;
 class JabberActions;
 class RemoveSubscriptionAction;
@@ -43,6 +44,7 @@ public:
 	virtual const QString protocolName() const { return "jabber"; }
 
 private:
+	QPointer<Actions> m_actions;
 	QPointer<AskForSubscriptionAction> m_askForSubscriptionAction;
 	QPointer<JabberActions> m_jabberActions;
 	QPointer<RemoveSubscriptionAction> m_removeSubscriptionAction;
@@ -51,9 +53,12 @@ private:
 	mutable QList<ActionDescription *> m_rosterActions;
 
 private slots:
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setAskForSubscriptionAction(AskForSubscriptionAction *askForSubscriptionAction);
 	INJEQT_SET void setJabberActions(JabberActions *jabberActions);
 	INJEQT_SET void setRemoveSubscriptionAction(RemoveSubscriptionAction *removeSubscriptionAction);
 	INJEQT_SET void setResendSubscriptionAction(ResendSubscriptionAction *resendSubscriptionAction);
+	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

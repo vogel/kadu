@@ -39,23 +39,25 @@ void FileTransferActions::setActions(Actions *actions)
 	m_actions = actions;
 }
 
-void FileTransferActions::setInjectedFactory(InjectedFactory *injectedFactory)
-{
-	m_injectedFactory = injectedFactory;
-}
-
 void FileTransferActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
 }
 
+void FileTransferActions::setSendFileAction(SendFileAction *sendFileAction)
+{
+	m_sendFileAction = sendFileAction;
+}
+
+void FileTransferActions::setShowFileTransferWindowAction(ShowFileTransferWindowAction *showFileTransferWindowAction)
+{
+	m_showFileTransferWindowAction = showFileTransferWindowAction;
+}
+
 void FileTransferActions::init()
 {
-	m_sendFileAction = m_injectedFactory->makeOwned<SendFileAction>(this);
 	m_actions->insert(m_sendFileAction);
-
-	m_showFileTransferWindow = m_injectedFactory->makeOwned<ShowFileTransferWindowAction>(this);
-	m_actions->insert(m_showFileTransferWindow);
+	m_actions->insert(m_showFileTransferWindowAction);
 
 	m_menuInventory
 		->menu("buddy-list")
@@ -63,7 +65,7 @@ void FileTransferActions::init()
 
 	m_menuInventory
 		->menu("tools")
-		->addAction(m_showFileTransferWindow, KaduMenu::SectionTools, 5);
+		->addAction(m_showFileTransferWindowAction, KaduMenu::SectionTools, 5);
 }
 
 void FileTransferActions::done()
@@ -74,7 +76,10 @@ void FileTransferActions::done()
 
 	m_menuInventory
 		->menu("tools")
-		->removeAction(m_showFileTransferWindow);
+		->removeAction(m_showFileTransferWindowAction);
+
+	m_actions->remove(m_sendFileAction);
+	m_actions->remove(m_showFileTransferWindowAction);
 }
 
 #include "moc_file-transfer-actions.cpp"

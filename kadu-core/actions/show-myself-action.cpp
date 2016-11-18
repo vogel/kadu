@@ -51,11 +51,6 @@ void ShowMyselfAction::setKaduWindowService(KaduWindowService *kaduWindowService
 	m_kaduWindowService = kaduWindowService;
 }
 
-void ShowMyselfAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ShowMyselfAction::actionInstanceCreated(Action *action)
 {
 	auto window = qobject_cast<MainWindow *>(action->parentWidget());

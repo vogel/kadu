@@ -45,11 +45,6 @@ void AddGroupAction::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
-void AddGroupAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void AddGroupAction::actionTriggered(QAction *sender, bool)
 {
 	auto window = m_injectedFactory->makeInjected<GroupEditWindow>(Group::null, sender->parentWidget());

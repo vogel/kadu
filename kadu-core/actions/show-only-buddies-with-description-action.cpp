@@ -54,11 +54,6 @@ void ShowOnlyBuddiesWithDescriptionAction::setKaduWindowService(KaduWindowServic
 	m_kaduWindowService = kaduWindowService;
 }
 
-void ShowOnlyBuddiesWithDescriptionAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ShowOnlyBuddiesWithDescriptionAction::actionInstanceCreated(Action *action)
 {
 	auto window = qobject_cast<MainWindow *>(action->parentWidget());

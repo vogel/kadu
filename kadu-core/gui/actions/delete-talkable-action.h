@@ -70,6 +70,5 @@ private slots:
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_INIT void init();
 
 };

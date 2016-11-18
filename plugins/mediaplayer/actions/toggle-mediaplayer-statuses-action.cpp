@@ -43,11 +43,6 @@ void ToggleMediaplayerStatusesAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 	m_mediaPlayer = mediaPlayer;
 }
 
-void ToggleMediaplayerStatusesAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ToggleMediaplayerStatusesAction::actionTriggered(QAction *, bool toggled)
 {
 	m_mediaPlayer->toggleStatuses(toggled);

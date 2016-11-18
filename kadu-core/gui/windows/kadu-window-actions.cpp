@@ -52,6 +52,7 @@
 #include "actions/show-only-buddies-with-description-action.h"
 #include "actions/show-only-buddies-with-description-or-online-action.h"
 #include "actions/show-your-accounts-action.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
@@ -70,6 +71,11 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 KaduWindowActions::~KaduWindowActions()
 {
+}
+
+void KaduWindowActions::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void KaduWindowActions::setAddConferenceAction(AddConferenceAction *addConferenceAction)
@@ -254,6 +260,41 @@ void KaduWindowActions::setShowYourAccountsAction(ShowYourAccountsAction *showYo
 
 void KaduWindowActions::init()
 {
+	m_actions->insert(m_addConferenceAction);
+	m_actions->insert(m_addGroupAction);
+	m_actions->insert(m_addRoomChatAction);
+	m_actions->insert(m_addUserAction);
+	m_actions->insert(m_changeStatusAction);
+	m_actions->insert(m_collapseAction);
+	m_actions->insert(m_copyDescriptionAction);
+	m_actions->insert(m_copyPersonalInfoAction);
+	m_actions->insert(m_defaultProxyAction);
+	m_actions->insert(m_deleteTalkableAction);
+	m_actions->insert(m_editTalkableAction);
+	m_actions->insert(m_expandAction);
+	m_actions->insert(m_exitAction);
+	m_actions->insert(m_lookupBuddyInfoAction);
+	m_actions->insert(m_mergeBuddiesAction);
+	m_actions->insert(m_openBuddyEmailAction);
+	m_actions->insert(m_openDescriptionLinkAction);
+	m_actions->insert(m_openForumAction);
+	m_actions->insert(m_openGetInvolvedAction);
+	m_actions->insert(m_openRedmineAction);
+	m_actions->insert(m_openSearchAction);
+	m_actions->insert(m_openTranslateAction);
+	m_actions->insert(m_recentChatsAction);
+	m_actions->insert(m_showAboutWindowAction);
+	m_actions->insert(m_showBlockedBuddiesAction);
+	m_actions->insert(m_showConfigurationWindowAction);
+	m_actions->insert(m_showDescriptionsAction);
+	m_actions->insert(m_showInfoPanelAction);
+	m_actions->insert(m_showMultilogonsAction);
+	m_actions->insert(m_showMyselfAction);
+	m_actions->insert(m_showOfflineBuddiesAction);
+	m_actions->insert(m_showOnlyBuddiesWithDescriptionAction);
+	m_actions->insert(m_showOnlyBuddiesWithDescriptionOrOnlineAction);
+	m_actions->insert(m_showYourAccountsAction);
+
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_expandAction, KaduMenu::SectionActionsGui, 2);
@@ -292,6 +333,45 @@ void KaduWindowActions::init()
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_deleteTalkableAction, KaduMenu::SectionManagement, 1000);
+}
+
+
+void KaduWindowActions::done()
+{
+	m_actions->remove(m_addConferenceAction);
+	m_actions->remove(m_addGroupAction);
+	m_actions->remove(m_addRoomChatAction);
+	m_actions->remove(m_addUserAction);
+	m_actions->remove(m_changeStatusAction);
+	m_actions->remove(m_collapseAction);
+	m_actions->remove(m_copyDescriptionAction);
+	m_actions->remove(m_copyPersonalInfoAction);
+	m_actions->remove(m_defaultProxyAction);
+	m_actions->remove(m_deleteTalkableAction);
+	m_actions->remove(m_editTalkableAction);
+	m_actions->remove(m_expandAction);
+	m_actions->remove(m_exitAction);
+	m_actions->remove(m_lookupBuddyInfoAction);
+	m_actions->remove(m_mergeBuddiesAction);
+	m_actions->remove(m_openBuddyEmailAction);
+	m_actions->remove(m_openDescriptionLinkAction);
+	m_actions->remove(m_openForumAction);
+	m_actions->remove(m_openGetInvolvedAction);
+	m_actions->remove(m_openRedmineAction);
+	m_actions->remove(m_openSearchAction);
+	m_actions->remove(m_openTranslateAction);
+	m_actions->remove(m_recentChatsAction);
+	m_actions->remove(m_showAboutWindowAction);
+	m_actions->remove(m_showBlockedBuddiesAction);
+	m_actions->remove(m_showConfigurationWindowAction);
+	m_actions->remove(m_showDescriptionsAction);
+	m_actions->remove(m_showInfoPanelAction);
+	m_actions->remove(m_showMultilogonsAction);
+	m_actions->remove(m_showMyselfAction);
+	m_actions->remove(m_showOfflineBuddiesAction);
+	m_actions->remove(m_showOnlyBuddiesWithDescriptionAction);
+	m_actions->remove(m_showOnlyBuddiesWithDescriptionOrOnlineAction);
+	m_actions->remove(m_showYourAccountsAction);
 }
 
 #include "moc_kadu-window-actions.cpp"

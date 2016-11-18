@@ -54,11 +54,6 @@ void ShowOfflineBuddiesAction::setKaduWindowService(KaduWindowService *kaduWindo
 	m_kaduWindowService = kaduWindowService;
 }
 
-void ShowOfflineBuddiesAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ShowOfflineBuddiesAction::actionInstanceCreated(Action *action)
 {
 	auto window = qobject_cast<MainWindow *>(action->parentWidget());

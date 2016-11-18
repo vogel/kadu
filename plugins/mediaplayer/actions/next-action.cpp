@@ -21,8 +21,6 @@
 
 #include "mediaplayer.h"
 
-#include "gui/actions/actions.h"
-
 NextAction::NextAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
 		ActionDescription(parent)
@@ -40,11 +38,6 @@ NextAction::~NextAction()
 void NextAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
 	m_mediaPlayer = mediaPlayer;
-}
-
-void NextAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void NextAction::actionTriggered(QAction *, bool)

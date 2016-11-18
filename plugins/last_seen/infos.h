@@ -34,6 +34,7 @@
 typedef QMap<QPair<QString, QString>, QString> LastSeen;
 
 class AccountManager;
+class Actions;
 class ContactManager;
 class PluginInjectedFactory;
 class MenuInventory;
@@ -49,6 +50,7 @@ class Infos : public QObject, AccountsAwareObject
 	Q_OBJECT
 
 	QPointer<AccountManager> m_accountManager;
+	QPointer<Actions> m_actions;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
@@ -57,6 +59,7 @@ class Infos : public QObject, AccountsAwareObject
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setContactManager(ContactManager *contactManager);
 	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);

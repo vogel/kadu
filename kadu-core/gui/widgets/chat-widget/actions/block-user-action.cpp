@@ -47,11 +47,6 @@ void BlockUserAction::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
-void BlockUserAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void BlockUserAction::actionInstanceCreated(Action *action)
 {
 	auto chatEditBox = qobject_cast<ChatEditBox *>(action->parent());

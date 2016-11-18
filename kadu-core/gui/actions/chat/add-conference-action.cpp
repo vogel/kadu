@@ -53,7 +53,6 @@ void AddConferenceAction::init()
 	        this, SLOT(updateAddChatMenuItem()));
 
 	updateAddChatMenuItem();
-	registerAction(actionsRegistry());
 }
 
 void AddConferenceAction::triggered(QWidget *widget, ActionContext *context, bool toggled)

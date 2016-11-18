@@ -85,6 +85,11 @@ MediaPlayer::~MediaPlayer()
 {
 }
 
+void MediaPlayer::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
 void MediaPlayer::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
@@ -179,6 +184,15 @@ void MediaPlayer::init()
 {
 	kdebugf();
 
+	m_actions->insert(m_mediaplayerMenuAction);
+	m_actions->insert(m_nextAction);
+	m_actions->insert(m_playAction);
+	m_actions->insert(m_prevAction);
+	m_actions->insert(m_stopAction);
+	m_actions->insert(m_toggleMediaplayerStatusesAction);
+	m_actions->insert(m_volumeDownAction);
+	m_actions->insert(m_volumeUpAction);
+
 	// Initialization
 	playerInfo = 0;
 	playerCommands = 0;
@@ -216,6 +230,15 @@ void MediaPlayer::init()
 
 void MediaPlayer::done()
 {
+	m_actions->remove(m_mediaplayerMenuAction);
+	m_actions->remove(m_nextAction);
+	m_actions->remove(m_playAction);
+	m_actions->remove(m_prevAction);
+	m_actions->remove(m_stopAction);
+	m_actions->remove(m_toggleMediaplayerStatusesAction);
+	m_actions->remove(m_volumeDownAction);
+	m_actions->remove(m_volumeUpAction);
+
 	if (DockedMediaplayerStatus)
 		m_dockingMenuActionRepository->removeAction(DockedMediaplayerStatus);
 

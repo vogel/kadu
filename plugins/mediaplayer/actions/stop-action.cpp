@@ -42,11 +42,6 @@ void StopAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 	m_mediaPlayer = mediaPlayer;
 }
 
-void StopAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void StopAction::actionTriggered(QAction *, bool)
 {
 	m_mediaPlayer->stop();

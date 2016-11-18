@@ -52,11 +52,6 @@ void ShowBlockedBuddiesAction::setKaduWindowService(KaduWindowService *kaduWindo
 	m_kaduWindowService = kaduWindowService;
 }
 
-void ShowBlockedBuddiesAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ShowBlockedBuddiesAction::actionInstanceCreated(Action *action)
 {
 	auto window = qobject_cast<MainWindow *>(action->parentWidget());

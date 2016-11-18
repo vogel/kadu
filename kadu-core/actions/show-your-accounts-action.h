@@ -42,6 +42,5 @@ private:
 
 private slots:
 	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
-	INJEQT_INIT void init();
 
 };

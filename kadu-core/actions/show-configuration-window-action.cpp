@@ -19,7 +19,6 @@
 
 #include "show-configuration-window-action.h"
 
-#include "gui/actions/actions.h"
 #include "gui/windows/main-configuration-window-service.h"
 
 ShowConfigurationWindowAction::ShowConfigurationWindowAction(QObject *parent) :
@@ -40,11 +39,6 @@ ShowConfigurationWindowAction::~ShowConfigurationWindowAction()
 void ShowConfigurationWindowAction::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
 {
 	m_mainConfigurationWindowService = mainConfigurationWindowService;
-}
-
-void ShowConfigurationWindowAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ShowConfigurationWindowAction::actionTriggered(QAction *, bool)

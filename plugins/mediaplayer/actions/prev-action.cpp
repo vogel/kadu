@@ -42,11 +42,6 @@ void PrevAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 	m_mediaPlayer = mediaPlayer;
 }
 
-void PrevAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void PrevAction::actionTriggered(QAction *, bool)
 {
 	m_mediaPlayer->prevTrack();

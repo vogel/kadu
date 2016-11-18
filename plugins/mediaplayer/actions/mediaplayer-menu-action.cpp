@@ -21,7 +21,6 @@
 
 #include "mediaplayer.h"
 
-#include "gui/actions/actions.h"
 #include "gui/widgets/chat-edit-box.h"
 
 #include <QtWidgets/QAction>
@@ -44,11 +43,6 @@ MediaplayerMenuAction::~MediaplayerMenuAction()
 void MediaplayerMenuAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
 	m_mediaPlayer = mediaPlayer;
-}
-
-void MediaplayerMenuAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void MediaplayerMenuAction::actionTriggered(QAction *sender, bool)

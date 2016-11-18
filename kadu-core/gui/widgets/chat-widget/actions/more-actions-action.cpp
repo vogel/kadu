@@ -45,11 +45,6 @@ void MoreActionsAction::setActions(Actions *actions)
 	m_actions = actions;
 }
 
-void MoreActionsAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void MoreActionsAction::actionTriggered(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)

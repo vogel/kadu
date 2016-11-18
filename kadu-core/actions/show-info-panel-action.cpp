@@ -51,11 +51,6 @@ void ShowInfoPanelAction::setKaduWindowService(KaduWindowService *kaduWindowServ
 	m_kaduWindowService = kaduWindowService;
 }
 
-void ShowInfoPanelAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ShowInfoPanelAction::actionInstanceCreated(Action *action)
 {
 	action->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"));

@@ -76,6 +76,11 @@ TabsManager::~TabsManager()
 {
 }
 
+void TabsManager::setActions(Actions *actions)
+{
+	m_actions = actions;
+}
+
 void TabsManager::setAttachTabAction(AttachTabAction *attachTabAction)
 {
 	m_attachTabAction = attachTabAction;
@@ -156,6 +161,8 @@ void TabsManager::init()
 	// pozycja tabów
 	configurationUpdated();
 
+	m_actions->insert(m_attachTabAction);
+	m_actions->insert(m_openInNewTabAction);
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_openInNewTabAction, KaduMenu::SectionChat, 20)
@@ -176,6 +183,8 @@ void TabsManager::done()
 		->menu("buddy-list")
 		->removeAction(m_openInNewTabAction)
 		->update();
+	m_actions->remove(m_attachTabAction);
+	m_actions->remove(m_openInNewTabAction);
 
 	disconnect(m_chatWidgetManager, 0, this, 0);
 

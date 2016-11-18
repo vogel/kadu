@@ -23,7 +23,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "plugin/plugin-injected-factory.h"
 #include "activate.h"
@@ -50,11 +49,6 @@ void ShowConfigWizardAction::setConfiguration(Configuration *configuration)
 void ShowConfigWizardAction::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
 	m_pluginInjectedFactory = pluginInjectedFactory;
-}
-
-void ShowConfigWizardAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ShowConfigWizardAction::showConfigWindow()

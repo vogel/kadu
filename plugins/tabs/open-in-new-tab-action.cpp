@@ -23,7 +23,6 @@
 #include "chat/chat.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -59,11 +58,6 @@ void OpenInNewTabAction::setChatWidgetRepository(ChatWidgetRepository *chatWidge
 void OpenInNewTabAction::setConfiguration(Configuration *configuration)
 {
 	m_configuration = configuration;
-}
-
-void OpenInNewTabAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void OpenInNewTabAction::actionTriggered(QAction *sender, bool)

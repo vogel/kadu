@@ -37,11 +37,6 @@ ClearResultsAction::~ClearResultsAction()
 {
 }
 
-void ClearResultsAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ClearResultsAction::actionInstanceCreated(Action* action)
 {
 	auto search = qobject_cast<SearchWindow *>(action->parentWidget());

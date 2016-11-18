@@ -56,7 +56,6 @@ private:
 private slots:
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
 	INJEQT_SET void setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService);
-	INJEQT_INIT void init();
 
 	void prepareMenu();
 	void selectProxyActionTriggered(QAction *action);

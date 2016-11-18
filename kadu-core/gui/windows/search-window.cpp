@@ -39,6 +39,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
+#include "gui/actions/actions.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/toolbar.h"
@@ -109,6 +110,11 @@ SearchWindow::~SearchWindow()
 void SearchWindow::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
+}
+
+void SearchWindow::setActions(Actions *actions)
+{
+	m_actions = actions;
 }
 
 void SearchWindow::setAddFoundBuddyAction(AddFoundBuddyAction *addFoundBuddyAction)
@@ -188,6 +194,13 @@ void SearchWindow::setStopSearchAction(StopSearchAction *stopSearchAction)
 
 void SearchWindow::init()
 {
+	m_actions->insert(m_addFoundBuddyAction);
+	m_actions->insert(m_chatFoundAction);
+	m_actions->insert(m_clearResultsAction);
+	m_actions->insert(m_firstSearchAction);
+	m_actions->insert(m_nextResultsAction);
+	m_actions->insert(m_stopSearchAction);
+
 	RoleSet roles;
 	roles.insert(ContactRole);
 	static_cast<BaseActionContext *>(actionContext())->setRoles(roles);
@@ -241,6 +254,17 @@ void SearchWindow::init()
 		personalDataTyped();
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper(configuration(), "General", "SearchWindowGeometry"), QRect(0, 50, 800, 350), this);
+}
+
+void SearchWindow::done()
+{
+	// TODO: move to SearchWindowActions
+	m_actions->remove(m_addFoundBuddyAction);
+	m_actions->remove(m_chatFoundAction);
+	m_actions->remove(m_clearResultsAction);
+	m_actions->remove(m_firstSearchAction);
+	m_actions->remove(m_nextResultsAction);
+	m_actions->remove(m_stopSearchAction);
 }
 
 void SearchWindow::createGui()

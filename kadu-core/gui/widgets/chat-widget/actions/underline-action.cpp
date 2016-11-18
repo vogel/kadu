@@ -20,7 +20,6 @@
 #include "underline-action.h"
 
 #include "accounts/account.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/custom-input.h"
@@ -40,11 +39,6 @@ UnderlineAction::UnderlineAction(QObject *parent) :
 
 UnderlineAction::~UnderlineAction()
 {
-}
-
-void UnderlineAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void UnderlineAction::actionTriggered(QAction *sender, bool toggled)

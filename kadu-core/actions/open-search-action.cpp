@@ -21,8 +21,6 @@
 
 #include "accounts/account-manager.h"
 #include "core/injected-factory.h"
-#include "gui/actions/actions.h"
-#include "gui/actions/action.h"
 #include "gui/windows/search-window.h"
 
 OpenSearchAction::OpenSearchAction(QObject *parent) :
@@ -47,11 +45,6 @@ void OpenSearchAction::setAccountManager(AccountManager *accountManager)
 void OpenSearchAction::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
-}
-
-void OpenSearchAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void OpenSearchAction::actionInstanceCreated(Action *action)

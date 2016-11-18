@@ -20,7 +20,6 @@
 #include "open-description-link-action.h"
 
 #include "contacts/contact-set.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "os/generic/url-opener.h"
@@ -48,11 +47,6 @@ void OpenDescriptionLinkAction::setUrlHandlerManager(UrlHandlerManager *urlHandl
 void OpenDescriptionLinkAction::setUrlOpener(UrlOpener *urlOpener)
 {
 	m_urlOpener = urlOpener;
-}
-
-void OpenDescriptionLinkAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void OpenDescriptionLinkAction::actionTriggered(QAction *sender, bool)

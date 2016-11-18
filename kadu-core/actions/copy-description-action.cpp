@@ -20,7 +20,6 @@
 #include "copy-description-action.h"
 
 #include "contacts/contact-set.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 
@@ -39,11 +38,6 @@ CopyDescriptionAction::CopyDescriptionAction(QObject *parent) :
 
 CopyDescriptionAction::~CopyDescriptionAction()
 {
-}
-
-void CopyDescriptionAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void CopyDescriptionAction::actionTriggered(QAction *sender, bool)

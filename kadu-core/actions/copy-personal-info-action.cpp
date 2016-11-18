@@ -22,7 +22,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "parser/parser.h"
@@ -52,11 +51,6 @@ void CopyPersonalInfoAction::setConfiguration(Configuration *configuration)
 void CopyPersonalInfoAction::setParser(Parser *parser)
 {
 	m_parser = parser;
-}
-
-void CopyPersonalInfoAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void CopyPersonalInfoAction::actionTriggered(QAction *sender, bool)

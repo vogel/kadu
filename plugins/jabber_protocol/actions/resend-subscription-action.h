@@ -21,8 +21,6 @@
 
 #include "actions/subscription-action.h"
 
-#include <injeqt/injeqt.h>
-
 class ResendSubscriptionAction : public SubscriptionAction
 {
 	Q_OBJECT
@@ -33,8 +31,5 @@ public:
 
 protected:
 	virtual void execute(SubscriptionService *subscriptionService, const Contact &contact) override;
-
-private slots:
-	INJEQT_INIT void init();
 
 };

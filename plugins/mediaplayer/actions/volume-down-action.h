@@ -42,6 +42,5 @@ private:
 
 private slots:
 	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
-	INJEQT_INIT void init();
 
 };

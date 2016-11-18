@@ -43,6 +43,5 @@ private:
 
 private slots:
 	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_INIT void init();
 
 };

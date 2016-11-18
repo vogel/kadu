@@ -46,6 +46,5 @@ private:
 private slots:
 	INJEQT_SET void setHistory(History *history);
 	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_INIT void init();
 
 };

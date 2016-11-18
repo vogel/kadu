@@ -24,7 +24,6 @@
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
 #include "core/myself.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "talkable/talkable.h"
@@ -51,11 +50,6 @@ void ClearHistoryAction::setHistory(History *history)
 void ClearHistoryAction::setMyself(Myself *myself)
 {
 	m_myself = myself;
-}
-
-void ClearHistoryAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ClearHistoryAction::actionTriggered(QAction *sender, bool)

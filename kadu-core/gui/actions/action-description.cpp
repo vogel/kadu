@@ -24,7 +24,6 @@
 #include "core/injected-factory.h"
 #include "configuration/configuration.h"
 #include "gui/actions/action.h"
-#include "gui/actions/actions.h"
 #include "gui/hot-key.h"
 #include "gui/windows/main-window.h"
 
@@ -44,13 +43,6 @@ ActionDescription::~ActionDescription()
 
 	qDeleteAll(MappedActions);
 	MappedActions.clear();
-
-	unregisterAction(m_actions);
-}
-
-void ActionDescription::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void ActionDescription::setConfiguration(Configuration *configuration)
@@ -71,21 +63,6 @@ Configuration * ActionDescription::configuration() const
 InjectedFactory * ActionDescription::injectedFactory() const
 {
 	return m_injectedFactory;
-}
-
-Actions * ActionDescription::actionsRegistry() const
-{
-	return m_actions;
-}
-
-void ActionDescription::registerAction(Actions *actions)
-{
-	actions->insert(this);
-}
-
-void ActionDescription::unregisterAction(Actions *actions)
-{
-	actions->remove(this);
 }
 
 void ActionDescription::actionAboutToBeDestroyed(Action *action)

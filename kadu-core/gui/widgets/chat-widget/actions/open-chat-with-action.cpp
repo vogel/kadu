@@ -19,7 +19,6 @@
 
 #include "open-chat-with-action.h"
 
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/windows/open-chat-with/open-chat-with-service.h"
 
@@ -41,11 +40,6 @@ OpenChatWithAction::~OpenChatWithAction()
 void OpenChatWithAction::setOpenChatWithService(OpenChatWithService *openChatWithService)
 {
 	m_openChatWithService = openChatWithService;
-}
-
-void OpenChatWithAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void OpenChatWithAction::actionTriggered(QAction *sender, bool)

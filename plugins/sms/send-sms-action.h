@@ -42,6 +42,5 @@ private:
 
 private slots:
 	INJEQT_SET void setSmsActions(SmsActions *smsActions);
-	INJEQT_INIT void init();
 
 };

@@ -32,7 +32,7 @@ class ShowFileTransferWindowAction : public ActionDescription
 	Q_OBJECT
 
 public:
-	explicit ShowFileTransferWindowAction(QObject *parent = nullptr);
+	Q_INVOKABLE explicit ShowFileTransferWindowAction(QObject *parent = nullptr);
 	virtual ~ShowFileTransferWindowAction();
 
 protected:

@@ -143,6 +143,7 @@ void History::done()
 void History::createActionDescriptions()
 {
 	m_actions->blockSignals();
+	m_actions->insert(m_clearHistoryAction);
 	m_actions->insert(m_showHistoryAction);
 
 	m_menuInventory
@@ -169,6 +170,8 @@ void History::deleteActionDescriptions()
 		->menu("main")
 		->removeAction(m_showHistoryAction)
 		->update();
+	m_actions->remove(m_clearHistoryAction);
+	m_actions->remove(m_showHistoryAction);
 }
 
 void History::chatWidgetAdded(ChatWidget *chatWidget)

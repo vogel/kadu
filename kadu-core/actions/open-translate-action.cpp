@@ -40,11 +40,6 @@ void OpenTranslateAction::setUrlOpener(UrlOpener *urlOpener)
 	m_urlOpener = urlOpener;
 }
 
-void OpenTranslateAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void OpenTranslateAction::actionTriggered(QAction *, bool)
 {
 	m_urlOpener->openUrl("http://www.transifex.net/projects/p/kadu/");

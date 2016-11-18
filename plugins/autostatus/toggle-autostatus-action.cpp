@@ -21,7 +21,6 @@
 
 #include "autostatus-service.h"
 
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 
 ToggleAutostatusAction::ToggleAutostatusAction(QObject *parent) :
@@ -42,11 +41,6 @@ ToggleAutostatusAction::~ToggleAutostatusAction()
 void ToggleAutostatusAction::setAutostatusService(AutostatusService *autostatusService)
 {
 	m_autostatusService = autostatusService;
-}
-
-void ToggleAutostatusAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ToggleAutostatusAction::actionTriggered(QAction *, bool toggled)

@@ -24,6 +24,8 @@
 #include "file-transfer/file-transfer-notification-service.h"
 #include "file-transfer/file-transfer-storage.h"
 #include "file-transfer/gui/file-transfer-actions.h"
+#include "file-transfer/gui/send-file-action.h"
+#include "file-transfer/gui/show-file-transfer-window-action.h"
 
 FileTransferModule::FileTransferModule()
 {
@@ -32,6 +34,8 @@ FileTransferModule::FileTransferModule()
 	add_type<FileTransferManager>();
 	add_type<FileTransferNotificationService>();
 	add_type<FileTransferStorage>();
+	add_type<SendFileAction>();
+	add_type<ShowFileTransferWindowAction>();
 }
 
 FileTransferModule::~FileTransferModule()

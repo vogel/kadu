@@ -21,8 +21,6 @@
 
 #include "infos.h"
 
-#include "gui/actions/actions.h"
-
 ShowInfosWindowAction::ShowInfosWindowAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate
 		ActionDescription(parent)
@@ -39,11 +37,6 @@ ShowInfosWindowAction::~ShowInfosWindowAction()
 void ShowInfosWindowAction::setInfos(Infos *infos)
 {
 	m_infos = infos;
-}
-
-void ShowInfosWindowAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ShowInfosWindowAction::actionTriggered(QAction *, bool)

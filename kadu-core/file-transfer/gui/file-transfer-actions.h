@@ -19,14 +19,11 @@
 
 #pragma once
 
-#include "misc/memory.h"
-
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class Actions;
-class InjectedFactory;
 class MenuInventory;
 class SendFileAction;
 class ShowFileTransferWindowAction;
@@ -41,16 +38,15 @@ public:
 
 private:
 	QPointer<Actions> m_actions;
-	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
-
-	owned_qptr<SendFileAction> m_sendFileAction;
-	owned_qptr<ShowFileTransferWindowAction> m_showFileTransferWindow;
+	QPointer<SendFileAction> m_sendFileAction;
+	QPointer<ShowFileTransferWindowAction> m_showFileTransferWindowAction;
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+	INJEQT_SET void setSendFileAction(SendFileAction *sendFileAction);
+	INJEQT_SET void setShowFileTransferWindowAction(ShowFileTransferWindowAction *showFileTransferWindowAction);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

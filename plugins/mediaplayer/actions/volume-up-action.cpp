@@ -42,11 +42,6 @@ void VolumeUpAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 	m_mediaPlayer = mediaPlayer;
 }
 
-void VolumeUpAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void VolumeUpAction::actionTriggered(QAction *, bool)
 {
 	m_mediaPlayer->incrVolume();

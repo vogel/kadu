@@ -40,11 +40,6 @@ void OpenRedmineAction::setUrlOpener(UrlOpener *urlOpener)
 	m_urlOpener = urlOpener;
 }
 
-void OpenRedmineAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void OpenRedmineAction::actionTriggered(QAction *, bool)
 {
 	m_urlOpener->openUrl("http://www.kadu.im/redmine/projects/kadu");

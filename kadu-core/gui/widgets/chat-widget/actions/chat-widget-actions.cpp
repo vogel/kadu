@@ -125,14 +125,36 @@ void ChatWidgetActions::init()
 		->menu("buddy-list")
 		->addAction(m_openChatAction, KaduMenu::SectionChat, 1000);
 
+	m_actions->insert(m_autoSendAction);
+	m_actions->insert(m_blockUserAction);
+	m_actions->insert(m_boldAction);
+	m_actions->insert(m_clearChatAction);
 	m_actions->insert(m_editTalkableAction);
+	m_actions->insert(m_insertImageAction);
+	m_actions->insert(m_italicAction);
 	m_actions->insert(m_leaveChatAction);
+	m_actions->insert(m_moreActionsAction);
+	m_actions->insert(m_openChatAction);
+	m_actions->insert(m_openChatWithAction);
+	m_actions->insert(m_sendAction);
+	m_actions->insert(m_underlineAction);
 }
 
 void ChatWidgetActions::done()
 {
-	m_actions->remove(m_leaveChatAction);
+	m_actions->remove(m_autoSendAction);
+	m_actions->remove(m_blockUserAction);
+	m_actions->remove(m_boldAction);
+	m_actions->remove(m_clearChatAction);
 	m_actions->remove(m_editTalkableAction);
+	m_actions->remove(m_insertImageAction);
+	m_actions->remove(m_italicAction);
+	m_actions->remove(m_leaveChatAction);
+	m_actions->remove(m_moreActionsAction);
+	m_actions->remove(m_openChatAction);
+	m_actions->remove(m_openChatWithAction);
+	m_actions->remove(m_sendAction);
+	m_actions->remove(m_underlineAction);
 }
 
 ActionDescription * ChatWidgetActions::bold() const

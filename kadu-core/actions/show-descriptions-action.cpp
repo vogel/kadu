@@ -43,11 +43,6 @@ void ShowDescriptionsAction::setConfiguration(Configuration *configuration)
 	m_configuration = configuration;
 }
 
-void ShowDescriptionsAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ShowDescriptionsAction::actionInstanceCreated(Action *action)
 {
 	auto enabled = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowDesc");

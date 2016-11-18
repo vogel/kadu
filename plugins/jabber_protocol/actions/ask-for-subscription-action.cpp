@@ -33,11 +33,6 @@ AskForSubscriptionAction::~AskForSubscriptionAction()
 {
 }
 
-void AskForSubscriptionAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void AskForSubscriptionAction::execute(SubscriptionService *subscriptionService, const Contact &contact)
 {
 	subscriptionService->requestSubscription(contact);

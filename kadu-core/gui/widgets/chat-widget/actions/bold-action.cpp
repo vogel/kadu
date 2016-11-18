@@ -41,11 +41,6 @@ BoldAction::~BoldAction()
 {
 }
 
-void BoldAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void BoldAction::actionTriggered(QAction *sender, bool toggled)
 {
 	auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());

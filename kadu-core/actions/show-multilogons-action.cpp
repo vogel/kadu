@@ -20,7 +20,6 @@
 #include "show-multilogons-action.h"
 
 #include "accounts/account-manager.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/windows/multilogon-window-service.h"
 
@@ -46,11 +45,6 @@ void ShowMultilogonsAction::setAccountManager(AccountManager *accountManager)
 void ShowMultilogonsAction::setMultilogonWindowService(MultilogonWindowService *multilogonWindowService)
 {
 	m_multilogonWindowService = multilogonWindowService;
-}
-
-void ShowMultilogonsAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ShowMultilogonsAction::actionInstanceCreated(Action *action)

@@ -65,11 +65,6 @@ void DeleteTalkableAction::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
-void DeleteTalkableAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 int DeleteTalkableAction::actionRole(ActionContext *context) const
 {
 	if (context->roles().contains(ContactRole)) // we wont allow deleting contacts

@@ -41,7 +41,6 @@ protected:
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
 private:
-	QPointer<Actions> m_actions;
 	QPointer<AccountManager> m_accountManager;
 	QPointer<MenuInventory> m_menuInventory;
 

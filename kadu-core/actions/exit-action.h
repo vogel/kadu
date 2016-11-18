@@ -42,6 +42,5 @@ private:
 
 private slots:
 	INJEQT_SET void setApplication(Application *application);
-	INJEQT_INIT void init();
 
 };

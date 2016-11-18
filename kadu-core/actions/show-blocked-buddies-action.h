@@ -48,6 +48,5 @@ private:
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_INIT void init();
 
 };

@@ -48,11 +48,6 @@ void ShowAboutWindowAction::setKaduWindowService(KaduWindowService *kaduWindowSe
 	m_kaduWindowService = kaduWindowService;
 }
 
-void ShowAboutWindowAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void ShowAboutWindowAction::actionTriggered(QAction *, bool)
 {
 	m_injectedFactory->makeInjected<About>(m_kaduWindowService->kaduWindow())->show();

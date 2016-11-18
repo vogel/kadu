@@ -76,11 +76,6 @@ void EditTalkableAction::setMyself(Myself *myself)
 	m_myself = myself;
 }
 
-void EditTalkableAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 int EditTalkableAction::actionRole(ActionContext *context) const
 {
 	if (context->roles().contains(ChatRole))

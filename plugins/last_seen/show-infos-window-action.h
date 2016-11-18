@@ -42,6 +42,5 @@ private:
 
 private slots:
 	INJEQT_SET void setInfos(Infos *infos);
-	INJEQT_INIT void init();
 
 };

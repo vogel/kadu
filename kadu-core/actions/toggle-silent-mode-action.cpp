@@ -19,7 +19,6 @@
 
 #include "toggle-silent-mode-action.h"
 
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "notification/silent-mode-service.h"
 
@@ -41,11 +40,6 @@ ToggleSilentModeAction::~ToggleSilentModeAction()
 void ToggleSilentModeAction::setSilentModeService(SilentModeService *silentModeService)
 {
 	m_silentModeService = silentModeService;
-}
-
-void ToggleSilentModeAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ToggleSilentModeAction::actionInstanceCreated(Action* action)

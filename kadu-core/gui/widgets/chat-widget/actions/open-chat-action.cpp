@@ -20,7 +20,6 @@
 #include "open-chat-action.h"
 
 #include "chat/chat.h"
-#include "gui/actions/actions.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -42,11 +41,6 @@ OpenChatAction::~OpenChatAction()
 void OpenChatAction::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
 	m_chatWidgetManager = chatWidgetManager;
-}
-
-void OpenChatAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void OpenChatAction::actionTriggered(QAction *sender, bool)

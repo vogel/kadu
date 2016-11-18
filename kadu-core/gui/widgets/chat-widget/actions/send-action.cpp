@@ -19,7 +19,6 @@
 
 #include "send-action.h"
 
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -37,11 +36,6 @@ SendAction::SendAction(QObject *parent) :
 
 SendAction::~SendAction()
 {
-}
-
-void SendAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void SendAction::actionInstanceCreated(Action *action)

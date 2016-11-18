@@ -46,6 +46,5 @@ private:
 private slots:
 	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
-	INJEQT_INIT void init();
 
 };

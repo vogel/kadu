@@ -19,7 +19,6 @@
 
 #include "insert-image-action.h"
 
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "protocols/protocol.h"
@@ -38,11 +37,6 @@ InsertImageAction::InsertImageAction(QObject *parent) :
 
 InsertImageAction::~InsertImageAction()
 {
-}
-
-void InsertImageAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void InsertImageAction::actionTriggered(QAction *sender, bool)

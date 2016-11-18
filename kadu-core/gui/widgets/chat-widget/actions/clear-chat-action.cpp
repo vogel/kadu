@@ -19,7 +19,6 @@
 
 #include "clear-chat-action.h"
 
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-edit-widget.h"
@@ -38,11 +37,6 @@ ClearChatAction::ClearChatAction(QObject *parent) :
 
 ClearChatAction::~ClearChatAction()
 {
-}
-
-void ClearChatAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void ClearChatAction::actionInstanceCreated(Action *action)

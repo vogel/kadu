@@ -64,7 +64,6 @@ private slots:
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_INIT void init();
 
 protected:
 	virtual void actionInstanceCreated(Action *action);

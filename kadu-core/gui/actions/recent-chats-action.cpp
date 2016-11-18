@@ -48,20 +48,15 @@ void RecentChatsAction::setChatWidgetManager(ChatWidgetManager *chatWidgetManage
 	m_chatWidgetManager = chatWidgetManager;
 }
 
-void RecentChatsAction::init()
-{
-	m_recentChatsMenu = injectedFactory()->makeNotOwned<RecentChatsMenu>();
-	connect(m_recentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
-
-	registerAction(actionsRegistry());
-}
-
 void RecentChatsAction::actionInstanceCreated(Action *action)
 {
+	auto recentChatsMenu = injectedFactory()->makeOwned<RecentChatsMenu>(action->parentWidget());
+	connect(recentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
+
 	action->setEnabled(false);
-	action->setMenu(m_recentChatsMenu);
-	connect(m_recentChatsMenu, SIGNAL(chatsListAvailable(bool)), action, SLOT(setEnabled(bool)));
-	m_recentChatsMenu->invalidate();
+	action->setMenu(recentChatsMenu);
+	connect(recentChatsMenu, SIGNAL(chatsListAvailable(bool)), action, SLOT(setEnabled(bool)));
+	recentChatsMenu->invalidate();
 }
 
 void RecentChatsAction::openRecentChats(QAction *action)

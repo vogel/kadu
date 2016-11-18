@@ -38,11 +38,6 @@ FirstSearchAction::~FirstSearchAction()
 {
 }
 
-void FirstSearchAction::init()
-{
-	registerAction(actionsRegistry());
-}
-
 void FirstSearchAction::actionInstanceCreated(Action* action)
 {
 	auto search = qobject_cast<SearchWindow *>(action->parentWidget());

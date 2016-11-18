@@ -21,7 +21,6 @@
 
 #include "tabs.h"
 
-#include "gui/actions/actions.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -44,11 +43,6 @@ AttachTabAction::~AttachTabAction()
 void AttachTabAction::setTabsManager(TabsManager *tabsManager)
 {
 	m_tabsManager = tabsManager;
-}
-
-void AttachTabAction::init()
-{
-	registerAction(actionsRegistry());
 }
 
 void AttachTabAction::actionInstanceCreated(Action *action)
