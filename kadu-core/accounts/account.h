@@ -26,10 +26,10 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
+#include "accounts/account-details.h"
 #include "accounts/account-shared.h"
 #include "storage/shared-base.h"
 
-class AccountDetails;
 class Contact;
 class Identity;
 class NetworkProxy;

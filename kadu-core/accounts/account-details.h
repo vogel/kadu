@@ -25,18 +25,12 @@
 
 #include <QtCore/QObject>
 
-#include "accounts/account-shared.h"
 #include "storage/details.h"
 
 #include "exports.h"
 
-class KADUAPI AccountDetails : public Details<AccountShared>
-{
+class AccountShared;
 
-public:
-	explicit AccountDetails(AccountShared *mainData, QObject *parent = nullptr);
-	virtual ~AccountDetails();
-
-};
+using AccountDetails = Details<AccountShared>;
 
 #endif // ACCOUNT_DETAILS_H

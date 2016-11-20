@@ -1,6 +1,5 @@
 set (accounts_SRCS
 	account.cpp
-	account-details.cpp
 	account-manager.cpp
 	account-module.cpp
 	account-notification-service.cpp

@@ -29,11 +29,11 @@
 #include <QtGui/QValidator>
 #include <QtWidgets/QDialog>
 
+#include "accounts/account-details.h"
 #include "status/status-adapter.h"
 #include "exports.h"
 
 class Account;
-class AccountDetails;
 class AccountAddWidget;
 class AccountCreateWidget;
 class AccountEditWidget;

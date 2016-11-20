@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include "accounts/account-details.h"
 #include "network/proxy/network-proxy.h"
 #include "status/status.h"
 #include "storage/shared.h"
@@ -31,7 +32,6 @@
 #include <QtNetwork/QHostAddress>
 #include <injeqt/injeqt.h>
 
-class AccountDetails;
 class AccountManager;
 class AccountStatusContainer;
 class Account;
