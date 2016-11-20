@@ -21,28 +21,28 @@
 
 #include "status-container-aware-object.h"
 
-KADU_AWARE_CLASS(StatusContainerAwareObject)
+QList<StatusContainerAwareObject *> StatusContainerAwareObject::Objects;
 
 void StatusContainerAwareObject::notifyStatusContainerRegistered(StatusContainer *statusContainer)
 {
-	foreach (StatusContainerAwareObject *object, Objects)
+	for (auto object : Objects)
 		object->statusContainerRegistered(statusContainer);
 }
 
 void StatusContainerAwareObject::notifyStatusContainerUnregistered(StatusContainer *statusContainer)
 {
-	foreach (StatusContainerAwareObject *object, Objects)
+	for (auto object : Objects)
 		object->statusContainerUnregistered(statusContainer);
 }
 
 void StatusContainerAwareObject::triggerAllStatusContainerRegistered(StatusContainerManager *statusContainerManager)
 {
-	foreach (StatusContainer *statusContainer, statusContainerManager->statusContainers())
+	for (auto statusContainer : statusContainerManager->statusContainers())
 		statusContainerRegistered(statusContainer);
 }
 
 void StatusContainerAwareObject::triggerAllStatusContainerUnregistered(StatusContainerManager *statusContainerManager)
 {
-	foreach (StatusContainer *statusContainer, statusContainerManager->statusContainers())
+	for (auto statusContainer : statusContainerManager->statusContainers())
 		statusContainerUnregistered(statusContainer);
 }

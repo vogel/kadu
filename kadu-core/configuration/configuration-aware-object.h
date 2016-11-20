@@ -23,11 +23,11 @@
 #ifndef CONFIGURATION_AWARE_OBJECT
 #define CONFIGURATION_AWARE_OBJECT
 
+#include "exports.h"
+
 #include <QtCore/QList>
 
-#include "aware-object.h"
-
-class KADUAPI ConfigurationAwareObject : public AwareObject<ConfigurationAwareObject>
+class KADUAPI ConfigurationAwareObject
 {
 
 public:
@@ -37,6 +37,9 @@ public:
 	virtual ~ConfigurationAwareObject();
 
 	virtual void configurationUpdated() = 0;
+
+private:
+	static QList<ConfigurationAwareObject *> Objects;
 
 };
 

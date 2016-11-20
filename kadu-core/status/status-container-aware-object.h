@@ -23,9 +23,9 @@
 #ifndef STATUS_CONTAINER_AWARE_OBJECT
 #define STATUS_CONTAINER_AWARE_OBJECT
 
-#include <QtCore/QList>
+#include "exports.h"
 
-#include "aware-object.h"
+#include <QtCore/QList>
 
 class StatusContainerManager;
 class StatusContainer;
@@ -45,8 +45,9 @@ class StatusContainer;
  * All objects of classes dervered from StatusContainerAwareObject are notified about status containers registered and
  * unregistered in StatusContainerManager.
  */
-class KADUAPI StatusContainerAwareObject : public AwareObject<StatusContainerAwareObject>
+class KADUAPI StatusContainerAwareObject
 {
+	static QList<StatusContainerAwareObject *> Objects;
 
 protected:
 	/**

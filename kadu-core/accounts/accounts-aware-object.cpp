@@ -22,7 +22,7 @@
 
 #include "accounts-aware-object.h"
 
-KADU_AWARE_CLASS(AccountsAwareObject)
+QList<AccountsAwareObject *> AccountsAwareObject::Objects;
 
 void AccountsAwareObject::accountAdded(Account account)
 {
@@ -42,6 +42,16 @@ void AccountsAwareObject::accountRegistered(Account account)
 void AccountsAwareObject::accountUnregistered(Account account)
 {
 	Q_UNUSED(account)
+}
+
+AccountsAwareObject::AccountsAwareObject()
+{
+	Objects.append(this);
+}
+
+AccountsAwareObject::~AccountsAwareObject()
+{
+	Objects.removeAll(this);
 }
 
 void AccountsAwareObject::notifyAccountAdded(Account account)

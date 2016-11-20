@@ -26,15 +26,21 @@
 
 #include "desktop-aware-object.h"
 
-KADU_AWARE_CLASS(DesktopAwareObject)
+QList<DesktopAwareObject *> DesktopAwareObject::Objects;
 
 DesktopAwareObjectHelper *DesktopAwareObject::Helper = 0;
 
 DesktopAwareObject::DesktopAwareObject(QWidget *widget) :
-		AwareObject<DesktopAwareObject>(), Widget(widget)
+		Widget(widget)
 {
+	Objects.append(this);
 	if (!Helper)
 		Helper = new DesktopAwareObjectHelper();
+}
+
+DesktopAwareObject::~DesktopAwareObject()
+{
+	Objects.removeAll(this);
 }
 
 /**

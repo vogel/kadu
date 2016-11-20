@@ -19,10 +19,20 @@
 
 #include "crash-aware-object.h"
 
-KADU_AWARE_CLASS(CrashAwareObject)
+QList<CrashAwareObject *> CrashAwareObject::Objects;
 
 void CrashAwareObject::notifyCrash()
 {
 	foreach (CrashAwareObject *object, Objects)
 		object->crash();
+}
+
+CrashAwareObject::CrashAwareObject()
+{
+	Objects.append(this);
+}
+
+CrashAwareObject::~CrashAwareObject()
+{
+	Objects.removeAll(this);
 }

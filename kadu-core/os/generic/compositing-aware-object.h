@@ -23,13 +23,14 @@
 #ifndef COMPOSITING_AWARE_OBJECT
 #define COMPOSITING_AWARE_OBJECT
 
+#include "exports.h"
+
 #include <QtCore/QList>
 
-#include "aware-object.h"
-
-class KADUAPI CompositingAwareObject : public AwareObject<CompositingAwareObject>
+class KADUAPI CompositingAwareObject
 {
 	static bool CompositingEnabled;
+	static QList<CompositingAwareObject *> Objects;
 
 protected:
 	virtual void compositingEnabled() = 0;
@@ -37,6 +38,9 @@ protected:
 
 public:
 	static void compositingStateChanged();
+
+	CompositingAwareObject();
+	virtual ~CompositingAwareObject();
 
 	void triggerCompositingStateChanged();
 

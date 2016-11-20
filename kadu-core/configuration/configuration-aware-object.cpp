@@ -24,7 +24,7 @@
 
 #include "configuration-aware-object.h"
 
-KADU_AWARE_CLASS(ConfigurationAwareObject)
+QList<ConfigurationAwareObject *> ConfigurationAwareObject::Objects;
 
 void ConfigurationAwareObject::notifyAll()
 {
@@ -36,8 +36,10 @@ void ConfigurationAwareObject::notifyAll()
 
 ConfigurationAwareObject::ConfigurationAwareObject()
 {
+	Objects.append(this);
 }
 
 ConfigurationAwareObject::~ConfigurationAwareObject()
 {
+	Objects.removeAll(this);
 }

@@ -22,14 +22,14 @@
 
 #pragma once
 
-#include "aware-object.h"
+#include "exports.h"
 
 #include <QtCore/QList>
 
 class IdentityManager;
 class Identity;
 
-class KADUAPI IdentitiesAwareObject : public AwareObject<IdentitiesAwareObject>
+class KADUAPI IdentitiesAwareObject
 {
 
 protected:
@@ -40,7 +40,13 @@ public:
 	static void notifyIdentityAdded(Identity identity);
 	static void notifyIdentityRemoved(Identity identity);
 
+	IdentitiesAwareObject();
+	virtual ~IdentitiesAwareObject();
+
 	void triggerAllIdentitiesAdded(IdentityManager *identityManager);
 	void triggerAllIdentitiesRemoved(IdentityManager *identityManager);
+
+private:
+	static QList<IdentitiesAwareObject *> Objects;
 
 };

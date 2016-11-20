@@ -22,7 +22,7 @@
 
 #include "identity-manager.h"
 
-KADU_AWARE_CLASS(IdentitiesAwareObject)
+QList<IdentitiesAwareObject *> IdentitiesAwareObject::Objects;
 
 void IdentitiesAwareObject::notifyIdentityAdded(Identity identity)
 {
@@ -34,6 +34,16 @@ void IdentitiesAwareObject::notifyIdentityRemoved(Identity identity)
 {
 	for (IdentitiesAwareObject *object : Objects)
 		object->identityRemoved(identity);
+}
+
+IdentitiesAwareObject::IdentitiesAwareObject()
+{
+	Objects.append(this);
+}
+
+IdentitiesAwareObject::~IdentitiesAwareObject()
+{
+	Objects.removeAll(this);
 }
 
 void IdentitiesAwareObject::triggerAllIdentitiesAdded(IdentityManager *identityManager)

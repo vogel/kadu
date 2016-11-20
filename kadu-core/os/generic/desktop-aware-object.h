@@ -22,7 +22,6 @@
 #ifndef DESKTOP_AWARE_OBJECT
 #define DESKTOP_AWARE_OBJECT
 
-#include "aware-object.h"
 #include "exports.h"
 
 class QWidget;
@@ -36,15 +35,18 @@ class DesktopAwareObjectHelper;
  *
  * Each class that inherits from DesktopAwareObject has to implement method
  * resolutionChanged that is called automatically when the resolution changes.
- * 
+ *
  * The default implementation checks if the current object is a toplevel QWidget
  * and, if so, moves it so that it is fully visible on one of the remaining screens.
  */
-class KADUAPI DesktopAwareObject : public AwareObject<DesktopAwareObject>
+class KADUAPI DesktopAwareObject
 {
 	static DesktopAwareObjectHelper *Helper;
 
 	QWidget *Widget;
+
+private:
+	static QList<DesktopAwareObject *> Objects;
 
 protected:
 	/**
@@ -58,6 +60,8 @@ protected:
 
 public:
 	DesktopAwareObject(QWidget *widget);
+	virtual ~DesktopAwareObject();
+
 	static void notifyDesktopModified();
 
 };

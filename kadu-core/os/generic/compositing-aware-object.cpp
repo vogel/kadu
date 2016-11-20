@@ -22,7 +22,7 @@
 
 #include "compositing-aware-object.h"
 
-KADU_AWARE_CLASS(CompositingAwareObject)
+QList<CompositingAwareObject *> CompositingAwareObject::Objects;
 
 bool CompositingAwareObject::CompositingEnabled = false;
 
@@ -48,6 +48,16 @@ void CompositingAwareObject::triggerCompositingStateChanged()
 		compositingEnabled();
 	else
 		compositingDisabled();
+}
+
+CompositingAwareObject::CompositingAwareObject()
+{
+	Objects.append(this);
+}
+
+CompositingAwareObject::~CompositingAwareObject()
+{
+	Objects.removeAll(this);
 }
 
 bool CompositingAwareObject::isCompositingEnabled() const

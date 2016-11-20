@@ -22,21 +22,15 @@
 
 #pragma once
 
-#include "aware-object.h"
+#include "exports.h"
 
 #include <QtCore/QList>
 
 class AccountManager;
 class Account;
 
-class KADUAPI AccountsAwareObject : public AwareObject<AccountsAwareObject>
+class KADUAPI AccountsAwareObject
 {
-
-protected:
-	virtual void accountAdded(Account account);
-	virtual void accountRemoved(Account account);
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
 
 public:
 	static void notifyAccountAdded(Account account);
@@ -44,9 +38,21 @@ public:
 	static void notifyAccountRegistered(Account account);
 	static void notifyAccountUnregistered(Account account);
 
+	AccountsAwareObject();
+	virtual ~AccountsAwareObject();
+
 	void triggerAllAccountsAdded(AccountManager *accountManager);
 	void triggerAllAccountsRemoved(AccountManager *accountManager);
 	void triggerAllAccountsRegistered(AccountManager *accountManager);
 	void triggerAllAccountsUnregistered(AccountManager *accountManager);
+
+protected:
+	virtual void accountAdded(Account account);
+	virtual void accountRemoved(Account account);
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
+
+private:
+	static QList<AccountsAwareObject *> Objects;
 
 };

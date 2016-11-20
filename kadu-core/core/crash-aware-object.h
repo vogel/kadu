@@ -23,18 +23,22 @@
 #ifndef CRASH_AWARE_OBJECT_H
 #define CRASH_AWARE_OBJECT_H
 
+#include "exports.h"
+
 #include <QtCore/QList>
 
-#include "aware-object.h"
-
-class KADUAPI CrashAwareObject : public AwareObject<CrashAwareObject>
+class KADUAPI CrashAwareObject
 {
+	static QList<CrashAwareObject *> Objects;
 
 protected:
 	virtual void crash() = 0;
 
 public:
 	static void notifyCrash();
+
+	CrashAwareObject();
+	virtual ~CrashAwareObject();
 
 };
 
