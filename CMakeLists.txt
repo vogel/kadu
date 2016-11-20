@@ -32,34 +32,34 @@ list (APPEND DEFINITIONS KADU_EXPORT_TESTS)
 set (DEFINITIONS_DEBUG DEBUG_ENABLED DEBUG_OUTPUT_ENABLED)
 
 if (MSVC)
-	set (COMMON_COMPILE_FLAGS "/MP /Zc:wchar_t-")
+	set (CXX_FLAGS "${CXX_FLAGS} /MP /Zc:wchar_t-")
 	list (APPEND DEFINITIONS _CRT_SECURE_NO_WARNINGS=1)
 else ()
-	set (COMMON_COMPILE_FLAGS "-Wall -Wextra -Wundef -Wunused -Wuninitialized -Wcast-align -Wpointer-arith -fno-common")
+	set (CXX_FLAGS "${CXX_FLAGS} -Wall -Wextra -Wundef -Wunused -Wuninitialized -Wcast-align -Wpointer-arith -fno-common")
 	set (C_FLAGS "-Wwrite-strings")
 	set (CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -std=c++14 ${CXX_FLAGS}")
 	set (CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
 
 	if (NOT WIN32)
-		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -fvisibility=hidden")
+		set (CXX_FLAGS "${CXX_FLAGS} -fvisibility=hidden")
 		set (CXX_FLAGS "${CXX_FLAGS} -fvisibility-inlines-hidden")
 	endif ()
 
-	if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -U__GNUC_MINOR__ -D__GNUC_MINOR__=8")
+	if (CMAKE_CXX_COMPILER MATCHES "Clang")
+		set (CXX_FLAGS "${CXX_FLAGS} -U__GNUC_MINOR__ -D__GNUC_MINOR__=8")
 	endif ()
 
 	if (ENABLE_DEVELOPER_BUILD)
 		# -pipe can speed up the build
 		# -ftrapv generates trap on signed integer overflow, which is undefined by C/C++
 		# -fno-omit-frame-pointer gives potentially better stack traces at the cost of negligible performance drop
-		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -Werror -Wno-deprecated -pipe -ftrapv -fno-omit-frame-pointer")
+		set (CXX_FLAGS "${CXX_FLAGS} -Werror -Wno-deprecated -pipe -ftrapv -fno-omit-frame-pointer")
 
-		if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-			set (SANITIZE_OPTIONS "-fsanitize=integer -fsanitize=undefined-trap -fsanitize=unsigned-integer-overflow")
-			set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} ${SANITIZE_OPTIONS} -fsanitize-blacklist=${CMAKE_SOURCE_DIR}/sanitize-blacklist.txt")
+		if (CMAKE_CXX_COMPILER MATCHES "clang")
+			set (SANITIZE_OPTIONS "-fsanitize=undefined -fsanitize=integer -fsanitize=undefined-trap -fsanitize=unsigned-integer-overflow")
+			set (CXX_FLAGS "${CXX_FLAGS} ${SANITIZE_OPTIONS} -fsanitize-blacklist=${CMAKE_SOURCE_DIR}/sanitize-blacklist.txt")
 			set (LINK_FLAGS "${LINK_FLAGS} ${SANITIZE_OPTIONS}")
-			# Clang is links its sanitizer libraries only to executables,
+			# Clang links its sanitizer libraries only to executables,
 			# even though they are actually needed all over the code. :-(
 			set (ALLOW_UNDEFINED ON)
 		endif ()
