@@ -56,7 +56,7 @@ void KaduMenu::setMenuInventory(MenuInventory *menuInventory)
 
 void KaduMenu::menuDestroyed(QObject *object)
 {
-	Menus.removeAll(static_cast<QMenu *>(object));
+	Menus.removeAll(object);
 }
 
 void KaduMenu::attachToMenu(QMenu *menu)
@@ -212,8 +212,12 @@ void KaduMenu::updateGuiMenuLater()
 
 void KaduMenu::updateGuiMenuSlot()
 {
-	foreach (QMenu *menu, Menus)
-		applyTo(menu);
+	for (auto menu : Menus)
+	{
+		auto m = qobject_cast<QMenu *>(menu);
+		if (m)
+			applyTo(m);
+	}
 }
 
 ActionContext * KaduMenu::getActionContext()

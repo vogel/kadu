@@ -81,7 +81,7 @@ public:
 	QList<MenuItem *> Items;
 	bool IsSorted;
 
-	QList<QMenu *> Menus;
+	QList<QObject *> Menus;
 
 	void sort();
 	ActionContext * getActionContext();
