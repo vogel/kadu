@@ -1,0 +1,9 @@
+# injeqt
+find_package (PkgConfig)
+pkg_check_modules (INJEQT REQUIRED injeqt>=1.1)
+set (INJEQT_DEFINITIONS ${INJEQT_CFLAGS_OTHER})
+include_directories (${INJEQT_INCLUDEDIR})
+link_directories (${INJEQT_LIBRARY_DIRS})
+
+list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${INJEQT_LIBRARIES})
+list (APPEND ADDITIONAL_LIBRARIES ${INJEQT_LIBRARIES})

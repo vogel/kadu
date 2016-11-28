@@ -2,11 +2,7 @@ project (Kadu)
 
 cmake_minimum_required (VERSION 2.8.11)
 
-# Options (some of them)
-
-option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)
-option (INSTALL_SDK "Install SDK (API headers, CMake modules, MSVC program libraries)" ON)
-option (WINDOWS_ARCHITECTURE "Architecture for Windows binaries." "x86")
+include (cmake/options.cmake)
 
 # Global CMake variables
 
@@ -75,12 +71,7 @@ else ()
 	endif ()
 endif ()
 
-## CCache is cool stuff to improve compilation time
-find_program (CCACHE_FOUND ccache)
-if (CCACHE_FOUND)
-	set_property (GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
-	set_property (GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
-endif (CCACHE_FOUND)
+include (cmake/ccache.cmake)
 
 # Look above, DEBUG_ENABLED is always enabled in Debug configuration.
 # Enable it in all configurations when ENABLE_DEVELOPER_BUILD is on.
@@ -95,40 +86,7 @@ if (ENABLE_DEVELOPER_BUILD OR WIN32)
 	list (APPEND DEFINITIONS DEBUG_OUTPUT_ENABLED)
 endif ()
 
-# Version information
-
-file (STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" KADU_VERSION LIMIT_COUNT 1)
-
-find_package (Git QUIET)
-if (GIT_FOUND)
-	execute_process (COMMAND "${GIT_EXECUTABLE}" describe --tags --exact-match HEAD
-		WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-		RESULT_VARIABLE result
-		OUTPUT_VARIABLE git_tag
-		ERROR_QUIET
-		OUTPUT_STRIP_TRAILING_WHITESPACE
-	)
-
-	if (NOT (result STREQUAL 0) OR NOT (git_tag STREQUAL KADU_VERSION))
-		execute_process (COMMAND "${GIT_EXECUTABLE}" rev-parse --short --verify HEAD
-			WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-			RESULT_VARIABLE result
-			OUTPUT_VARIABLE git_commit
-			ERROR_QUIET
-			OUTPUT_STRIP_TRAILING_WHITESPACE
-		)
-
-		if (result STREQUAL 0)
-			set (KADU_VERSION "${KADU_VERSION}-g${git_commit}")
-		endif ()
-	endif ()
-endif ()
-
-string (REGEX REPLACE "-.*" "" simple_version ${KADU_VERSION})
-
-if (NOT KADU_VERSION STREQUAL simple_version)
-	set (KADU_PRERELEASE TRUE)
-endif ()
+include (cmake/version.cmake)
 
 # if ((NOT DEFINED NETWORK_IMPLEMENTATION AND NOT Qt5Core_FOUND) OR "${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
 # 	find_package (QNtrack 010)
@@ -151,160 +109,10 @@ if ("${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
 endif ()
 # The rest of NETWORK_IMPLEMENTATION stuff is handled in network/CMakeLists.txt.
 
-# injeqt
-find_package (PkgConfig)
-pkg_check_modules (INJEQT REQUIRED injeqt>=1.1)
-set (INJEQT_DEFINITIONS ${INJEQT_CFLAGS_OTHER})
-include_directories (${INJEQT_INCLUDEDIR})
-link_directories (${INJEQT_LIBRARY_DIRS})
-
-list (APPEND ADDITIONAL_LIBKADU_LIBRARIES ${INJEQT_LIBRARIES})
-list (APPEND ADDITIONAL_LIBRARIES ${INJEQT_LIBRARIES})
-
-# Tests
-find_package (Qt5Test REQUIRED)
-
-function (kadu_add_plugin_test plugin_name name_)
-	set (test_file "${name_}.test")
-	string (REPLACE "/" "-" test_name ${test_file})
-	list (APPEND UNIT_TEST_TARGETS ${test_name} PARENT_SCOPE)
-
-	add_executable (${test_name} "${test_file}.cpp")
-	kadu_set_flags (${test_name})
-	if (NOT MSVC)
-		set_property (TARGET ${test_name} APPEND_STRING PROPERTY COMPILE_FLAGS " -Wno-error")
-	endif ()
-	add_test (
-		NAME ${test_name}
-		COMMAND ${test_name})
-
-	qt5_use_modules (${test_name} LINK_PRIVATE Core Gui Network Qml Quick QuickWidgets Test WebKit WebKitWidgets Widgets Xml)
-
-	# Add libkadu after the plugin so that --as-needed won't drop anything
-	target_link_libraries (${test_name} LINK_PRIVATE libkadu ${plugin_name} ${ADDITIONAL_LIBRARIES})
-endfunction ()
-
-function (kadu_add_test name_)
-	kadu_add_plugin_test ("" "${name_}")
-endfunction ()
-
-# Installation paths.
-
-set (INSTALL_SDK_DIR "" CACHE PATH "SDK installation root")
-mark_as_advanced (INSTALL_SDK_DIR)
-if (NOT INSTALL_SDK_DIR)
-	set (INSTALL_SDK_DIR "${CMAKE_INSTALL_PREFIX}/sdk")
-	set (install_sdk_dir_set_to_default TRUE)
-endif ()
-
-include (GNUInstallDirs)
-
-set (INSTALL_BIN_DIR "${CMAKE_INSTALL_FULL_BINDIR}")
-set (INSTALL_LIB_DIR "${CMAKE_INSTALL_FULL_LIBDIR}")
-set (INSTALL_DATA_DIR "${CMAKE_INSTALL_FULL_DATADIR}/kadu")
-set (INSTALL_PLUGINS_DATA_DIR "${INSTALL_DATA_DIR}/plugins")
-set (INSTALL_PLUGINS_LIB_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/kadu/plugins")
-set (INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_FULL_INCLUDEDIR}/kadu")
-set (INSTALL_CMAKE_DIR "${CMAKE_INSTALL_FULL_DATADIR}/cmake/Kadu")
-
-if (install_sdk_dir_set_to_default)
-	set (INSTALL_SDK_DIR "${INSTALL_DATA_DIR}/sdk")
-endif ()
-
-if (WIN32)
-	set (KADU_DATADIR_RELATIVE_TO_BIN "./")
-	set (KADU_PLUGINS_LIBDIR_RELATIVE_TO_BIN "./plugins/")
-else ()
-	file (RELATIVE_PATH KADU_DATADIR_RELATIVE_TO_BIN "${INSTALL_BIN_DIR}" "${INSTALL_DATA_DIR}")
-	file (RELATIVE_PATH KADU_PLUGINS_LIBDIR_RELATIVE_TO_BIN "${INSTALL_BIN_DIR}" "${INSTALL_PLUGINS_LIB_DIR}")
-endif ()
-
-if (UNIX AND NOT APPLE)
-	set (DESKTOP_FILE_DIR "${CMAKE_INSTALL_FULL_DATADIR}/applications")
-	set (DESKTOP_FILE_NAME kadu.desktop)
-
-	file (RELATIVE_PATH KADU_DESKTOP_FILE_DIR_RELATIVE_TO_BIN "${INSTALL_BIN_DIR}" "${DESKTOP_FILE_DIR}")
-endif ()
-
-set (install_vars
-	INSTALL_SDK_DIR INSTALL_BIN_DIR INSTALL_LIB_DIR INSTALL_DATA_DIR INSTALL_PLUGINS_DATA_DIR
-	INSTALL_PLUGINS_LIB_DIR INSTALL_INCLUDE_DIR INSTALL_CMAKE_DIR
-)
-foreach (install_var ${install_vars})
-	if (NOT DEFINED ${install_var})
-		message (FATAL_ERROR "Variable ${install_var} does not exist")
-	else ()
-		if (IS_ABSOLUTE "${${install_var}}")
-			file (TO_CMAKE_PATH "${CMAKE_INSTALL_PREFIX}" sane_install_prefix)
-			file (TO_CMAKE_PATH "${${install_var}}" sane_install_path)
-			if (sane_install_path STREQUAL sane_install_prefix)
-				set (RELATIVE_${install_var} "")
-			else ()
-				string (REPLACE "${sane_install_prefix}/" "" RELATIVE_${install_var} "${sane_install_path}")
-			endif ()
-			if (RELATIVE_${install_var} STREQUAL "")
-				set (RELATIVE_${install_var} ".")
-			endif ()
-
-			if (IS_ABSOLUTE "${RELATIVE_${install_var}}")
-				message (FATAL_ERROR "${install_var} (${${install_var}}) is not under install prefix.")
-			endif ()
-		else ()
-			set (RELATIVE_${install_var} "${${install_var}}")
-		endif()
-	endif ()
-endforeach ()
-
-set (KADU_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
-set (path_vars KADU_INSTALL_PREFIX)
-if (UNIX AND NOT APPLE)
-	list (APPEND path_vars DESKTOP_FILE_DIR)
-endif ()
-
-# Generate CMake configuration files
-
-include (CMakePackageConfigHelpers)
-
-macro (kadu_configure_package_config_file _in _out _mode)
-	if ("${_mode}" STREQUAL BUILD_TREE)
-		foreach (path_var ${path_vars})
-			set (PACKAGE_${path_var} "${${path_var}}")
-		endforeach ()
-
-		set (PACKAGE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}")
-		set (PACKAGE_SDK_DIR "${CMAKE_SOURCE_DIR}")
-
-		configure_package_config_file ("${_in}" "${_out}"
-			INSTALL_DESTINATION "${INSTALL_CMAKE_DIR}"
-			NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO
-		)
-	elseif ("${_mode}" STREQUAL INSTALL_TREE)
-		set (INCLUDE_DIR "${INSTALL_INCLUDE_DIR}")
-		set (SDK_DIR "${INSTALL_SDK_DIR}")
-		list (APPEND path_vars INCLUDE_DIR SDK_DIR)
-
-		configure_package_config_file ("${_in}" "${_out}"
-			INSTALL_DESTINATION "${INSTALL_CMAKE_DIR}"
-			PATH_VARS ${path_vars}
-			NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO
-		)
-	endif ()
-endmacro ()
-
-# This one is only for usable within the build tree. We want to actually
-# set some variables in there from within the subdirectories, so we generated
-# the intallation version later.
-kadu_configure_package_config_file (cmake/KaduConfig.cmake.in
-	"${CMAKE_BINARY_DIR}/KaduConfig.cmake" BUILD_TREE)
-
-write_basic_package_version_file ("${CMAKE_BINARY_DIR}/KaduConfigVersion.cmake"
-	VERSION ${simple_version} COMPATIBILITY AnyNewerVersion
-)
-
-# Include the generated file
-
-set (Kadu_DIR "${CMAKE_BINARY_DIR}")
-find_package (Kadu REQUIRED CONFIG)
+include (cmake/injeqt.cmake)
+include (cmake/tests.cmake)
+include (cmake/install.cmake)
+include (cmake/config-files.cmake)
 
 if (NOT WIN32)
 	include (CheckIncludeFiles)
@@ -318,18 +126,8 @@ if (NOT WIN32)
 	endif ()
 endif ()
 
-include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core)
-
-enable_testing ()
-
-add_subdirectory (kadu-core)
-add_subdirectory (varia)
-add_subdirectory (translations)
-
-include (Plugins.cmake)
-add_subdirectory (plugins)
-add_subdirectory (kthxbye)
-add_subdirectory (tests)
+include (cmake/include-dirs.cmake)
+include (cmake/build-dirs.cmake)
 
 # Now write KaduConfig for installation.
 if (UNIX)
