@@ -1041,7 +1041,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Always show identity</source>
-        <translation>Zawsze pokazuj toższamość</translation>
+        <translation>Zawsze pokazuj tożsamość</translation>
     </message>
     <message>
         <source>Notification position</source>
