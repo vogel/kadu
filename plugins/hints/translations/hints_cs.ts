@@ -63,7 +63,7 @@
     </message>
     <message>
         <source>Show all notification actions</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat všechny oznamovací činnosti</translation>
     </message>
 </context>
 </TS>

@@ -273,7 +273,7 @@
     </message>
     <message>
         <source>Show last %1 messages</source>
-        <translation type="unfinished"/>
+        <translation>Letzte %1 Nachrichten anzeigen</translation>
     </message>
     <message>
         <source>Show messages since yesterday</source>

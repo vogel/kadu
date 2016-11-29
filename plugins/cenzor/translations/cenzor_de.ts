@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Cenzor</source>
-        <translation>Zensor</translation>
+        <translation>Zensur</translation>
     </message>
     <message>
         <source>General</source>
@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Enable cenzor</source>
-        <translation>Zensor einschalten</translation>
+        <translation>Zensur einschalten</translation>
     </message>
     <message>
         <source>Admonition</source>
@@ -38,15 +38,15 @@
     <name>CenzorNotificationService</name>
     <message>
         <source>Cenzor</source>
-        <translation type="unfinished"/>
+        <translation>Zensur</translation>
     </message>
     <message>
         <source>Message was cenzored</source>
-        <translation type="unfinished"/>
+        <translation>Nachricht zensiert</translation>
     </message>
     <message>
         <source>Your interlocutor used obscene word and became admonished</source>
-        <translation type="unfinished"/>
+        <translation>Ihr Gesprächspartner wurde verwarnt, weil er Schimpfwörter verwendet hat</translation>
     </message>
 </context>
 <context>

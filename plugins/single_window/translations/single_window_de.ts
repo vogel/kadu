@@ -3,55 +3,55 @@
     <name>@default</name>
     <message>
         <source>Look</source>
-        <translation type="unfinished"/>
+        <translation>Aussehen</translation>
     </message>
     <message>
         <source>SingleWindow</source>
-        <translation type="unfinished"/>
+        <translation>Einzelfenster</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Roster position</source>
-        <translation type="unfinished"/>
+        <translation>Position der Kontaktleiste</translation>
     </message>
     <message>
         <source>Choose position of roster in Single Window mode</source>
-        <translation type="unfinished"/>
+        <translation>Position der Kontaktleiste im Einzelfenster-Modus festlegen</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"/>
+        <translation>Links</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"/>
+        <translation>Rechts</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>Kurzbefehle</translation>
     </message>
     <message>
         <source>Switch to previous tab</source>
-        <translation type="unfinished"/>
+        <translation>Zum vorherigen Reiter umschalten</translation>
     </message>
     <message>
         <source>Switch to next tab</source>
-        <translation type="unfinished"/>
+        <translation>Zum nächsten Reiter umschalten</translation>
     </message>
     <message>
         <source>Show/hide roster</source>
-        <translation type="unfinished"/>
+        <translation>Kontaktleiste anzeigen/verbergen</translation>
     </message>
     <message>
         <source>Switch focus between roster and tabs</source>
-        <translation type="unfinished"/>
+        <translation>Fokus zwischen Kontaktleiste und Reitern umschalten</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Verhalten</translation>
     </message>
 </context>
 </TS>

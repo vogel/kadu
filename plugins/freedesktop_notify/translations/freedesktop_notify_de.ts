@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Benachrichtigungen</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
@@ -11,31 +11,31 @@
     </message>
     <message>
         <source>Number of quoted characters</source>
-        <translation>Anzahl de zu zitierenden Zeichen</translation>
+        <translation>Anzahl der zu zitierenden Zeichen</translation>
     </message>
     <message>
         <source>System notifications</source>
-        <translation type="unfinished"/>
+        <translation>Systembenachrichtigungen</translation>
     </message>
     <message>
         <source>Use custom expiration timeout</source>
-        <translation type="unfinished"/>
+        <translation>Benutzerdefinierte Anzeigedauer</translation>
     </message>
     <message>
         <source>Expiration timeout</source>
-        <translation type="unfinished"/>
+        <translation>Anzeigedauer</translation>
     </message>
     <message>
         <source>Show message content</source>
-        <translation type="unfinished"/>
+        <translation>Nachrichteninhalt anzeigen</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"/>
+        <translation>Niemals</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation>Einstallungen</translation>
+        <translation>Einstellungen</translation>
     </message>
 </context>
 </TS>

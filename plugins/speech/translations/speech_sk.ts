@@ -1,100 +1,100 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sk" version="2.1">
 <context>
     <name>@default</name>
     <message>
         <source>Speech</source>
-        <translation>Sprache</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Notifications</source>
-        <translation>Benachrichtigung</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>
-        <translation>Allgemein</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Maximum number of spoken letters</source>
-        <translation>Maximale Anzahl an Buchstaben, die vorgesagt werden sollen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Message too long (male)</source>
-        <translation>Nachricht zu lang (männlich)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Message too long (female)</source>
-        <translation>Nachricht zu lang (weiblich)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Voice</source>
-        <translation>Stimme</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Frequency</source>
-        <translation>Frequenz</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Base frequency</source>
-        <translation>Grundfrequenz</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Tempo</source>
-        <translation>Tempo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Melody</source>
-        <translation>Melodie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Sound</source>
-        <translation>Klang</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Sound system</source>
-        <translation>System Audio</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>aRts</source>
-        <translation>aRts</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Esd</source>
-        <translation>Esd</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Dsp</source>
-        <translation>Dsp</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Dsp device</source>
-        <translation>Gerät Dsp</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Klatt synthesizer (requires dsp)</source>
-        <translation>Klatt (braucht dsp)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Speech program</source>
-        <translation>Programm Speech</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Test</source>
-        <translation>Test</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Read a text</source>
-        <translation>Text vorlesen</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>SpeechConfigurationWidget</name>
     <message>
         <source>Male format</source>
-        <translation>männliche Stimme</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Female format</source>
-        <translation>weibliche Stimme</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

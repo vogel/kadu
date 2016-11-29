@@ -2118,15 +2118,15 @@ Esto excede sus límites configurados.
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; wants to send you a file %2</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; quiere enviarle un archivo %2</translation>
     </message>
     <message>
         <source>size: &lt;b&gt;%1&lt;/b&gt;, account: &lt;b&gt;%2&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>tamaño: &lt;b&gt;%1&lt;/b&gt;, cuenta: &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
         <source>account: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>cuenta: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2811,7 +2811,7 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     </message>
     <message>
         <source>from %1 at %2 with %3 for %4 account</source>
-        <translation type="unfinished"/>
+        <translation>desde %1 a %2 con %3 para %4 cuenta</translation>
     </message>
     <message>
         <source>Multilogon session disconnected</source>
@@ -3014,7 +3014,8 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     <message>
         <source>Creating plugin injector for %1 failed.
 %2: %3</source>
-        <translation type="unfinished"/>
+        <translation>La creación del complemento inyector %1 falló.
+%2: %3</translation>
     </message>
 </context>
 <context>
@@ -3675,7 +3676,7 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; cambió su estado</translation>
     </message>
     <message>
         <source>%1: %2</source>

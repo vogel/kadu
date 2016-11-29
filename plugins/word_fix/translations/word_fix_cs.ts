@@ -26,7 +26,7 @@
     </message>
     <message>
         <source>Value to replace with</source>
-        <translation>Hodnota, která se má změnit</translation>
+        <translation>Hodnota, která se má nahradit</translation>
     </message>
     <message>
         <source>Add</source>

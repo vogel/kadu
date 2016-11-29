@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Status</source>
-        <translation>Zustand</translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Check idle every</source>
@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Set status to invisible after</source>
-        <translation>Setzte Zustand &quot;Unsichtbar&quot; nach</translation>
+        <translation>Setzte &quot;Unsichtbar&quot; nach</translation>
     </message>
     <message>
         <source>Description</source>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Set status to extended away after</source>
-        <translation type="unfinished"/>
+        <translation>Setze &quot;Nicht erreichbar&quot; nach</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
@@ -63,15 +63,15 @@
     </message>
     <message>
         <source>Switch to &apos;auto extended away&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Status &quot;Nicht erreichbar&quot; automatisch setzen</translation>
     </message>
     <message>
         <source>Switch to &apos;invisible&apos;</source>
-        <translation>Status &quot;Unsichtbar&quot; setzen</translation>
+        <translation>Status &quot;Unsichtbar&quot; automatisch setzen</translation>
     </message>
     <message>
         <source>Switch to &apos;offline&apos;</source>
-        <translation>Status &quot;Offline&quot; setzen</translation>
+        <translation>Status &quot;Offline&quot; automatisch setzen</translation>
     </message>
     <message>
         <source>Set status to offline after</source>
@@ -94,7 +94,7 @@
     <name>AutoawayConfigurationUiHandler</name>
     <message>
         <source>Don&apos;t refresh</source>
-        <translation type="unfinished"/>
+        <translation>Nicht aktualisieren</translation>
     </message>
 </context>
 </TS>

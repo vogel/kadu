@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Use built-in SMS application</source>
-        <translation>Benutze eungebautes Programm</translation>
+        <translation>Benutze eingebautes Programm</translation>
     </message>
     <message>
         <source>Custom SMS application</source>

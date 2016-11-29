@@ -30,7 +30,7 @@
     <name>AutoHideConfigurationUiHandler</name>
     <message>
         <source>Don&apos;t hide</source>
-        <translation type="unfinished"/>
+        <translation>Nicht ausblenden</translation>
     </message>
 </context>
 </TS>

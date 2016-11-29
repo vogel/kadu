@@ -17,11 +17,12 @@
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>It seems your Qt library does not provide support for selected database. Please install Qt with %1 plugin.</source>
-        <translation type="unfinished"/>
+        <translation>Es scheint, Ihr Qt-Library bietet keine Unterstützung für ausgewählte Datenbank.
+Bitte wählen Sie einen anderen Treiber in Konfigurationsfenster oder installieren Sie Qt mit %1 Plugin.</translation>
     </message>
 </context>
 <context>

@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Tray</source>
-        <translation>Systemabschnitt der Kontrolleiste</translation>
+        <translation>System-Tray</translation>
     </message>
     <message>
         <source>General</source>
@@ -11,19 +11,19 @@
     </message>
     <message>
         <source>Blinking Envelope</source>
-        <translation type="unfinished"/>
+        <translation>Blinkender Briefumschlag</translation>
     </message>
     <message>
         <source>Static Envelope</source>
-        <translation type="unfinished"/>
+        <translation>Briefumschlag</translation>
     </message>
     <message>
         <source>Animated Envelope</source>
-        <translation type="unfinished"/>
+        <translation>Animierter Briefumschlag</translation>
     </message>
     <message>
         <source>Startup</source>
-        <translation type="unfinished"/>
+        <translation>Programmstart</translation>
     </message>
     <message>
         <source>Start minimized</source>
@@ -31,30 +31,30 @@
     </message>
     <message>
         <source>Show tooltip over tray icon</source>
-        <translation type="unfinished"/>
+        <translation>Tooltip über dem Tray-Icon anzeigen</translation>
     </message>
     <message>
         <source>Tray icon indicating new message</source>
-        <translation type="unfinished"/>
+        <translation>Icon für neue Nachricht</translation>
     </message>
 </context>
 <context>
     <name>DockingMenuHandler</name>
     <message>
         <source>&amp;Restore</source>
-        <translation type="unfinished"/>
+        <translation>Wiede&amp;rherstellen</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Minimieren</translation>
     </message>
     <message>
         <source>Silent mode</source>
-        <translation type="unfinished"/>
+        <translation>Stiller Modus</translation>
     </message>
     <message>
         <source>&amp;Exit Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu B&amp;eenden</translation>
     </message>
 </context>
 </TS>

@@ -2117,15 +2117,15 @@ Chcete přesto tento obrázek přijmout?</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; wants to send you a file %2</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; vám chce poslat soubor %2.</translation>
     </message>
     <message>
         <source>size: &lt;b&gt;%1&lt;/b&gt;, account: &lt;b&gt;%2&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Velikost: &lt;b&gt;%1&lt;/b&gt;, účet: &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
     <message>
         <source>account: &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Účet: &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2778,7 +2778,7 @@ poradu</translation>
     </message>
     <message>
         <source>New message</source>
-        <translation type="unfinished"/>
+        <translation>Nová zpráva</translation>
     </message>
     <message>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
@@ -2812,7 +2812,7 @@ poradu</translation>
     </message>
     <message>
         <source>from %1 at %2 with %3 for %4 account</source>
-        <translation type="unfinished"/>
+        <translation>Od %1 na %2 s %3 pro %4 účet</translation>
     </message>
     <message>
         <source>Multilogon session disconnected</source>
@@ -3015,7 +3015,8 @@ poradu</translation>
     <message>
         <source>Creating plugin injector for %1 failed.
 %2: %3</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se vytvořit vstřikovač přídavného modulu pro %1.
+%2: %3</translation>
     </message>
 </context>
 <context>
@@ -3676,7 +3677,7 @@ poradu</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; změnil stav</translation>
     </message>
     <message>
         <source>%1: %2</source>

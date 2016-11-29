@@ -2614,129 +2614,130 @@ Do you want to accept this image anyway?</source>
     </message>
     <message>
         <source>Show Myself Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Eigenen Benutzer anzeigen</translation>
     </message>
     <message>
         <source>View Chat Properties</source>
-        <translation type="unfinished"/>
+        <translation>Unterhaltungseigenschaften ansehen</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished"/>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <source>Your Accounts</source>
-        <translation type="unfinished"/>
+        <translation>Eigene Konten</translation>
     </message>
     <message>
         <source>Multilogons</source>
-        <translation type="unfinished"/>
+        <translation>Mehrfach-Anmeldungen</translation>
     </message>
     <message>
         <source>Report a Bug</source>
-        <translation type="unfinished"/>
+        <translation>Einen Fehler melden</translation>
     </message>
     <message>
         <source>Get Involved</source>
-        <translation type="unfinished"/>
+        <translation>Mithelfen</translation>
     </message>
     <message>
         <source>Translate Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu übersetzen</translation>
     </message>
     <message>
         <source>Open Description Link in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Beschreibungs-Link im Browser öffnen</translation>
     </message>
     <message>
         <source>Choose which buddy would you like to merge with &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt auswählen, mit dem &lt;i&gt;%1&lt;/i&gt; zusammengefasst werden soll</translation>
     </message>
     <message>
         <source>Merge</source>
-        <translation type="unfinished"/>
+        <translation>Zusammenfassen</translation>
     </message>
     <message>
         <source>Contact:</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt:</translation>
     </message>
     <message>
         <source>First name:</source>
-        <translation type="unfinished"/>
+        <translation>Vorname:</translation>
     </message>
     <message>
         <source>Last name:</source>
-        <translation type="unfinished"/>
+        <translation>Nachname:</translation>
     </message>
     <message>
         <source>Mobile:</source>
-        <translation type="unfinished"/>
+        <translation>Mobil:</translation>
     </message>
     <message>
         <source>Delete Chat</source>
-        <translation type="unfinished"/>
+        <translation>Unterhaltung löschen</translation>
     </message>
     <message>
         <source>Delete Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt löschen</translation>
     </message>
     <message>
         <source>Forum</source>
-        <translation type="unfinished"/>
+        <translation>Forum</translation>
     </message>
 </context>
 <context>
     <name>LeaveChatAction</name>
     <message>
         <source>Leave</source>
-        <translation type="unfinished"/>
+        <translation>Verlassen</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>All messages received in this conference will be ignored
 from now on. Are you sure you want to leave this conference?</source>
-        <translation type="unfinished"/>
+        <translation>Alle zukünftigen Nachrichten aus dieser Konferenz werden von nun an ignoriert.
+Konferenz wirklich verlassen?</translation>
     </message>
     <message>
         <source>Leave conference</source>
-        <translation type="unfinished"/>
+        <translation>Konferenz verlassen</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
     <name>LineEditWithClearButton</name>
     <message>
         <source>Clear this field</source>
-        <translation type="unfinished"/>
+        <translation>Feld leeren</translation>
     </message>
 </context>
 <context>
     <name>MainConfigurationWindow</name>
     <message>
         <source>Kadu configuration</source>
-        <translation>Konfiguration Kadu</translation>
+        <translation>Konfiguration von Kadu</translation>
     </message>
     <message>
         <source>Advanced chat&apos;s look configuration</source>
-        <translation type="unfinished"/>
+        <translation>Erweiterte Konfiguration des Aussehens der Unterhaltungen</translation>
     </message>
     <message>
         <source>Open icon theme archive</source>
-        <translation type="unfinished"/>
+        <translation>Archiv mit Symbol-Designs öffnen</translation>
     </message>
     <message>
         <source>Installation failed</source>
-        <translation type="unfinished"/>
+        <translation>Installation fehlgeschlagen</translation>
     </message>
     <message>
         <source>Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</source>
-        <translation type="unfinished"/>
+        <translation>Archiv (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)</translation>
     </message>
 </context>
 <context>
@@ -2750,34 +2751,34 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>MergeBuddiesDialogWidget</name>
     <message>
         <source>Merge Buddies</source>
-        <translation type="unfinished"/>
+        <translation>Kontakte zusammenfassen</translation>
     </message>
     <message>
         <source>Buddy to merge</source>
-        <translation type="unfinished"/>
+        <translation>Zusammenzufassender Kontakt</translation>
     </message>
     <message>
         <source> - Select buddy - </source>
-        <translation type="unfinished"/>
+        <translation>- Kontakt auswählen -</translation>
     </message>
 </context>
 <context>
     <name>MessageNotificationService</name>
     <message>
         <source>New chat</source>
-        <translation type="unfinished"/>
+        <translation>Neue Unterhaltung</translation>
     </message>
     <message>
         <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Unterhaltung mit &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>New message</source>
-        <translation type="unfinished"/>
+        <translation>Neue Nachricht</translation>
     </message>
     <message>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Neue Nachricht von &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2799,26 +2800,26 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>MultilogonNotificationService</name>
     <message>
         <source>Multilogon</source>
-        <translation type="unfinished"/>
+        <translation>Mehrfachanmeldung</translation>
     </message>
     <message>
         <source>Multilogon session connected</source>
-        <translation type="unfinished"/>
+        <translation>Mehrfachanmeldungs-Sitzung verbunden</translation>
     </message>
     <message>
         <source>from %1 at %2 with %3 for %4 account</source>
-        <translation type="unfinished"/>
+        <translation>von %1 an %2 mit %3 für Konto %4</translation>
     </message>
     <message>
         <source>Multilogon session disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Mehrfachanmeldungs-Sitzung getrennt</translation>
     </message>
 </context>
 <context>
     <name>MultilogonWindow</name>
     <message>
         <source>Multilogon window</source>
-        <translation>Fenster des Mehrfach-Logins</translation>
+        <translation>Fenster der Mehrfach-Anmeldung</translation>
     </message>
     <message>
         <source>Account:</source>
@@ -2837,18 +2838,18 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>Myself</name>
     <message>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Mich</translation>
     </message>
 </context>
 <context>
     <name>NotificationService</name>
     <message>
         <source>Notify About Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Über Kontakt benachtichtigen</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"/>
+        <translation>Ignorieren</translation>
     </message>
 </context>
 <context>
@@ -2885,22 +2886,22 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
     <message>
         <source>User name:</source>
-        <translation type="unfinished"/>
+        <translation>Benutzername:</translation>
     </message>
 </context>
 <context>
     <name>PasswordDialogWidget</name>
     <message>
         <source>Incorrect password</source>
-        <translation type="unfinished"/>
+        <translation>Falsches Passwort</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Passwort</translation>
     </message>
     <message>
         <source>Store this password</source>
-        <translation type="unfinished"/>
+        <translation>Passwort speichern</translation>
     </message>
 </context>
 <context>
@@ -2914,7 +2915,7 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>PathListEditWindow</name>
     <message>
         <source>Add</source>
-        <translation>Füge hinzu</translation>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <source>Change</source>
@@ -2941,68 +2942,68 @@ from now on. Are you sure you want to leave this conference?</source>
     <name>PluginActivationService</name>
     <message>
         <source>Plugin %1 conflicts with: %2</source>
-        <translation type="unfinished"/>
+        <translation>Erweiterung %1 steht in Konflikt mir: %2</translation>
     </message>
     <message>
         <source>Plugin %1 not found</source>
-        <translation type="unfinished"/>
+        <translation>Erweiterung %1 nicht gefunden</translation>
     </message>
 </context>
 <context>
     <name>PluginErrorDialog</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Try to load this plugin on next Kadu run</source>
-        <translation type="unfinished"/>
+        <translation>Die Erweiterung beim nächsten Programmstart laden</translation>
     </message>
 </context>
 <context>
     <name>PluginListWidget</name>
     <message>
         <source>Deactivate</source>
-        <translation type="unfinished"/>
+        <translation>Deaktivieren</translation>
     </message>
     <message>
         <source>Plugin activation</source>
-        <translation type="unfinished"/>
+        <translation>Aktivierung der Erweiterung</translation>
     </message>
     <message>
         <source>Plugin deactivation</source>
-        <translation type="unfinished"/>
+        <translation>Deaktivierung der Erweiterung</translation>
     </message>
 </context>
 <context>
     <name>PluginListWidgetItemDelegate</name>
     <message>
         <source>Plugin name: %1</source>
-        <translation type="unfinished"/>
+        <translation>Name der Erweiterung: %1</translation>
     </message>
     <message>
         <source>Author: %1</source>
-        <translation type="unfinished"/>
+        <translation>Autor: &amp;1</translation>
     </message>
     <message>
         <source>Version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Version: %1</translation>
     </message>
     <message>
         <source>Description: %1</source>
-        <translation type="unfinished"/>
+        <translation>Beschreibung: %1</translation>
     </message>
     <message>
         <source>Dependencies: %1</source>
-        <translation type="unfinished"/>
+        <translation>Abhängigkeiten: %1</translation>
     </message>
     <message>
         <source>Plugin information</source>
-        <translation type="unfinished"/>
+        <translation>Informationen über die Erweiterung</translation>
     </message>
     <message>
         <source>Provides: %1</source>
-        <translation type="unfinished"/>
+        <translation>Stellt bereit: %1</translation>
     </message>
 </context>
 <context>

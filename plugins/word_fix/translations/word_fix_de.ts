@@ -7,46 +7,46 @@
     </message>
     <message>
         <source>Words fix</source>
-        <translation>Wort-Korrentor</translation>
+        <translation>Wortkorrektur</translation>
     </message>
     <message>
         <source>Enable word fix</source>
-        <translation>Korrektur einschalten</translation>
+        <translation>Wortkorrektur einschalten</translation>
     </message>
     <message>
         <source>Spelling</source>
-        <translation type="unfinished"/>
+        <translation>Schreibung</translation>
     </message>
 </context>
 <context>
     <name>WordFixConfigurationUiHandler</name>
     <message>
         <source>A word to be replaced</source>
-        <translation type="unfinished"/>
+        <translation>Zu ersetzendes Wort</translation>
     </message>
     <message>
         <source>Value to replace with</source>
-        <translation type="unfinished"/>
+        <translation>Damit wird es ersetzt</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"/>
+        <translation>Ändern</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Entfernen</translation>
     </message>
     <message>
         <source>Word</source>
-        <translation type="unfinished"/>
+        <translation>Wort</translation>
     </message>
     <message>
         <source>Replace with</source>
-        <translation type="unfinished"/>
+        <translation>Ersetzen mit</translation>
     </message>
 </context>
 </TS>

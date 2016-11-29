@@ -10,7 +10,7 @@
     <name>ConfigWizardActions</name>
     <message>
         <source>Start Configuration Wizard</source>
-        <translation type="unfinished"/>
+        <translation>Einrichtungsassistent starten</translation>
     </message>
 </context>
 <context>
