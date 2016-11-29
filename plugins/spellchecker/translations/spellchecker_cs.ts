@@ -69,7 +69,7 @@
     <name>SpellcheckerConfigurationUiHandler</name>
     <message>
         <source>Move to &apos;Checked&apos;</source>
-        <translation>Přesunout do &apos;Ověřeno&apos;</translation>
+        <translation>Přesunout do Ověřeno</translation>
     </message>
     <message>
         <source>Available languages</source>
@@ -77,7 +77,7 @@
     </message>
     <message>
         <source>Move to &apos;Available languages&apos;</source>
-        <translation>Přesunout do &apos;Dostupné jazyky&apos;</translation>
+        <translation>Přesunout do Dostupné jazyky</translation>
     </message>
     <message>
         <source>Checked</source>

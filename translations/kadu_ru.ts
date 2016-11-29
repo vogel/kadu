@@ -593,11 +593,11 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Move the Window to the Active Desktop</source>
-        <translation type="unfinished"/>
+        <translation>Переместить окно на активный рабочий стол</translation>
     </message>
     <message>
         <source>Switch Desktop Making the Window Visible</source>
-        <translation type="unfinished"/>
+        <translation>Переключить рабочий стол и сделать окно видимым</translation>
     </message>
     <message>
         <source>Set status</source>
@@ -691,7 +691,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Personal</source>
-        <translation type="unfinished"/>
+        <translation>Личный</translation>
     </message>
     <message>
         <source>Default proxy</source>
@@ -831,7 +831,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Use descriptive date format</source>
-        <translation type="unfinished"/>
+        <translation>Использовать описательный формат даты</translation>
     </message>
     <message>
         <source>Display dates like Today, Yesterday or Friday, 2:30PM</source>
@@ -859,7 +859,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Displays status changing buttons below the buddy list</source>
-        <translation type="unfinished"/>
+        <translation>Показывать кнопки статуса под списком контактов</translation>
     </message>
     <message>
         <source>Buddy groups</source>
@@ -871,7 +871,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Contact</source>
-        <translation type="unfinished"/>
+        <translation>Контакт</translation>
     </message>
     <message>
         <source>Show buddy expanding button</source>
@@ -879,35 +879,35 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Show an icon at each buddy that allows viewing contacts attached to this buddy</source>
-        <translation type="unfinished"/>
+        <translation>Показывать у контактов иконку для просмотра вложенных контактов</translation>
     </message>
     <message>
         <source>Displays buddies that are online using a bold font</source>
-        <translation type="unfinished"/>
+        <translation>Выделять онлайн контакты жирным шрифтом</translation>
     </message>
     <message>
         <source>Buddy icon position</source>
-        <translation type="unfinished"/>
+        <translation>Позиция иконки контакта</translation>
     </message>
     <message>
         <source>Choose buddy icon alignment</source>
-        <translation type="unfinished"/>
+        <translation>Выбрать выравнивание иконки контакта</translation>
     </message>
     <message>
         <source>At the buddy&apos;s name</source>
-        <translation type="unfinished"/>
+        <translation>У имени контакта</translation>
     </message>
     <message>
         <source>Notify about chat events in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Уведомлять о событиях в окне чата</translation>
     </message>
     <message>
         <source>Notify about chat events in windows&apos; titles</source>
-        <translation type="unfinished"/>
+        <translation>Уведомлять о событиях в заголовках окон</translation>
     </message>
     <message>
         <source>New Message</source>
-        <translation type="unfinished"/>
+        <translation>Новое Сообщение</translation>
     </message>
     <message>
         <source>Block window close</source>
@@ -915,7 +915,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Flash chat title</source>
-        <translation type="unfinished"/>
+        <translation>Мигать заголовком окна</translation>
     </message>
     <message>
         <source>Ignore status changes available - busy</source>
@@ -951,7 +951,7 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Per account separately</source>
-        <translation type="unfinished"/>
+        <translation>Отдельно для каждого аккаунта</translation>
     </message>
     <message>
         <source>Per identity separately</source>
@@ -959,15 +959,15 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Choose description which will be set on startup</source>
-        <translation type="unfinished"/>
+        <translation>Выберите описание, устанавливаемое при запуске</translation>
     </message>
     <message>
         <source>Last Description</source>
-        <translation type="unfinished"/>
+        <translation>Последнее Описание</translation>
     </message>
     <message>
         <source>New Description</source>
-        <translation type="unfinished"/>
+        <translation>Новое Описание</translation>
     </message>
     <message>
         <source>On shutdown, set</source>
@@ -975,23 +975,23 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Choose description which will be set on shutdown</source>
-        <translation type="unfinished"/>
+        <translation>Описание, устанавливаемое при выключении</translation>
     </message>
     <message>
         <source>Current Description</source>
-        <translation type="unfinished"/>
+        <translation>Текущее Описание</translation>
     </message>
     <message>
         <source>New description</source>
-        <translation type="unfinished"/>
+        <translation>Новое описание</translation>
     </message>
     <message>
         <source>Store descriptions</source>
-        <translation type="unfinished"/>
+        <translation>Хранить описания</translation>
     </message>
     <message>
         <source>Every description you set will be saved for further use.</source>
-        <translation type="unfinished"/>
+        <translation>Все установленные описания будут сохраняться для дальнейшего использование</translation>
     </message>
     <message>
         <source>Extras</source>
@@ -999,11 +999,11 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Plugins</source>
-        <translation type="unfinished"/>
+        <translation>Плагины</translation>
     </message>
     <message>
         <source>Show tab Everybody</source>
-        <translation type="unfinished"/>
+        <translation>Показывать вкладку Все</translation>
     </message>
     <message>
         <source>Always show tab Ungroupped</source>
@@ -1015,11 +1015,11 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Import from server succeeded</source>
-        <translation type="unfinished"/>
+        <translation>Импорт с сервера успешен</translation>
     </message>
     <message>
         <source>Import from server failed</source>
-        <translation type="unfinished"/>
+        <translation>Импорт с сервера неуспешен</translation>
     </message>
     <message>
         <source>Export to server succeeded</source>

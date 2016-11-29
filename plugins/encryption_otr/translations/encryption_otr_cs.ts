@@ -390,7 +390,7 @@
     <name>OtrPluginObject</name>
     <message>
         <source>OTR encryption library could not be initialized</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se spustit šifrovací knihovnu OTR</translation>
     </message>
 </context>
 </TS>

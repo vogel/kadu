@@ -59,11 +59,11 @@
     </message>
     <message>
         <source>Corner</source>
-        <translation type="unfinished"/>
+        <translation>Esquina</translation>
     </message>
     <message>
         <source>Show all notification actions</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar todas las notificaciones de acciones</translation>
     </message>
 </context>
 </TS>

@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Kadu - Facebook</source>
-        <translation type="unfinished"/>
+        <translation>Kadu - Facebook</translation>
     </message>
 </context>
 <context>
@@ -71,11 +71,11 @@
     <name>JabberChangePassword</name>
     <message>
         <source>Current connection is not safe for password change. Use encrypted connection or change password on provider&apos;s site.</source>
-        <translation type="unfinished"/>
+        <translation>Die bestehende Verbindung ist zu unsicher für eine Passwortänderung. Es sollte Transportverschlüsselung verwendet werden oder das Passwort über den Provider geändert werden.</translation>
     </message>
     <message>
         <source>Password change is not allowed.</source>
-        <translation type="unfinished"/>
+        <translation>Das Ändern des Passworts ist nicht erlaubt.</translation>
     </message>
 </context>
 <context>
@@ -180,7 +180,7 @@ Error: %1</source>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wählen Sie aus oder geben Sie eine Identität für dieses Konto ein.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Identität für dieses Konto auswählen oder eingeben&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Register Account</source>
@@ -202,11 +202,11 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>E-mail:</source>
-        <translation type="unfinished"/>
+        <translation>E-Mail-Adresse:</translation>
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Some servers require your e-mail address during registration.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Manche Server fordern bei der Registrierung eine E-Mail-Adresse für die Wiederherstellung des Passworts.&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -245,7 +245,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Select or enter the identity that will be associated with this account.&lt;/i&gt;&lt;/font&gt;</source>
-        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Wählen Sie aus oder geben Sie eine Identität für dieses Konto ein.&lt;/i&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font size=&apos;-1&apos;&gt;&lt;i&gt;Identität für dieses Konto auswählen oder eingeben&lt;/i&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>General</source>
@@ -289,7 +289,7 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Resource</source>
-        <translation>Ressource</translation>
+        <translation>Gerätename</translation>
     </message>
     <message>
         <source>Priority</source>
@@ -309,197 +309,197 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Proxy configuration</source>
-        <translation type="unfinished"/>
+        <translation>Proxy-Einstellungen</translation>
     </message>
     <message>
         <source>Publish system information</source>
-        <translation type="unfinished"/>
+        <translation>Systeminformationen veröffentlichen</translation>
     </message>
     <message>
         <source>XMPP Server</source>
-        <translation type="unfinished"/>
+        <translation>XMPP-Server</translation>
     </message>
     <message>
         <source>Use custom server address/port</source>
-        <translation type="unfinished"/>
+        <translation>Port und Server manuell angeben</translation>
     </message>
     <message>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Serveradresse</translation>
     </message>
     <message>
         <source>Use encrypted connection</source>
-        <translation type="unfinished"/>
+        <translation>Transportverschlüsselung benutzen</translation>
     </message>
     <message>
         <source>Only in older version</source>
-        <translation type="unfinished"/>
+        <translation>Nur in älterer Version</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Netzwerk</translation>
     </message>
     <message>
         <source>Use computer name as a resource</source>
-        <translation type="unfinished"/>
+        <translation>Den Namen des Rechners als Gerätename benutzen</translation>
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"/>
+        <translation>Benachrichtige über das Tippen</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Der Gesprächspartner kann sehen, dass gerade eine neue Nachricht eingegeben wird und umgekehrt.</translation>
     </message>
     <message>
         <source>Enable chat activity events</source>
-        <translation type="unfinished"/>
+        <translation>Aktivitätsbenachrichtigungen einschalten</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you suspend or end conversation. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Der Gesprächspartner kann sehen, ob die Unterhaltung pausiert oder geschlossen wird und umgekehrt.</translation>
     </message>
     <message>
         <source>Others can see your system name/version</source>
-        <translation type="unfinished"/>
+        <translation>Andere können sehen, welches Chat-Programm und welches Betriebssystem verwendet werden.</translation>
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Beim Konto-Entfernen nachfragen</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"/>
+        <translation>Sind Sie sicher, dass Sie das Konto %1 (%2) entfernen wollen?</translation>
     </message>
     <message>
         <source>Require data transfer proxy:</source>
-        <translation type="unfinished"/>
+        <translation>Proxy für den Datenaustausch</translation>
     </message>
     <message>
         <source>Log in before changing password.</source>
-        <translation type="unfinished"/>
+        <translation>Erst Anmelden, dann Passwort ändern.</translation>
     </message>
 </context>
 <context>
     <name>JabberErrorService</name>
     <message>
         <source>Socket error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Socketfehler: %1</translation>
     </message>
     <message>
         <source>Server did not respond for PING message</source>
-        <translation type="unfinished"/>
+        <translation>Der Server reagierte nicht auf PING-Anfrage</translation>
     </message>
     <message>
         <source>Unknown error: %1/%2</source>
-        <translation type="unfinished"/>
+        <translation>Unbekannter Fehler: %1/%2</translation>
     </message>
     <message>
         <source>Bad request</source>
-        <translation type="unfinished"/>
+        <translation>Fehlerhafte Anfrage</translation>
     </message>
     <message>
         <source>Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Konflikt</translation>
     </message>
     <message>
         <source>Feature not implemented</source>
-        <translation type="unfinished"/>
+        <translation>Funktion nicht vefügbar</translation>
     </message>
     <message>
         <source>Forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Verboten</translation>
     </message>
     <message>
         <source>Gone</source>
-        <translation type="unfinished"/>
+        <translation>Gegangen</translation>
     </message>
     <message>
         <source>Internal server error</source>
-        <translation type="unfinished"/>
+        <translation>Interner Serverfehler</translation>
     </message>
     <message>
         <source>Item not found</source>
-        <translation type="unfinished"/>
+        <translation>Element nicht gefunden</translation>
     </message>
     <message>
         <source>Jid malformed</source>
-        <translation type="unfinished"/>
+        <translation>Fehlerhafte Jabber-ID</translation>
     </message>
     <message>
         <source>Not acceptable</source>
-        <translation type="unfinished"/>
+        <translation>Nicht akzeptiert</translation>
     </message>
     <message>
         <source>Not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Nicht erlaubt</translation>
     </message>
     <message>
         <source>Not authorized</source>
-        <translation type="unfinished"/>
+        <translation>Nicht autorisiert</translation>
     </message>
     <message>
         <source>Payment required</source>
-        <translation type="unfinished"/>
+        <translation>Bezahlung erforderlich</translation>
     </message>
     <message>
         <source>Recipient unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Empfänger nicht verfügbar</translation>
     </message>
     <message>
         <source>Redirect</source>
-        <translation type="unfinished"/>
+        <translation>Umleiten</translation>
     </message>
     <message>
         <source>Registration required</source>
-        <translation type="unfinished"/>
+        <translation>Registrierung erforderlich</translation>
     </message>
     <message>
         <source>Remote server not found</source>
-        <translation type="unfinished"/>
+        <translation>Entfernter Server nicht gefunden</translation>
     </message>
     <message>
         <source>Remove server timeout</source>
-        <translation type="unfinished"/>
+        <translation>Server-Zeitüberschreitung entfernen</translation>
     </message>
     <message>
         <source>Resource constraint</source>
-        <translation type="unfinished"/>
+        <translation>Betriebsmittel beschränkt</translation>
     </message>
     <message>
         <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Dienstleistung nicht verfügbar</translation>
     </message>
     <message>
         <source>Subscription required</source>
-        <translation type="unfinished"/>
+        <translation>Abo erforderlich</translation>
     </message>
     <message>
         <source>Undefined condition</source>
-        <translation type="unfinished"/>
+        <translation>Undefinierte Bedingung</translation>
     </message>
     <message>
         <source>Unexpected request</source>
-        <translation type="unfinished"/>
+        <translation>Unerwartete Anfrage</translation>
     </message>
 </context>
 <context>
     <name>JabberOutgoingFileTransferHandler</name>
     <message>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Abgebrochen</translation>
     </message>
     <message>
         <source>File is corrupted</source>
-        <translation type="unfinished"/>
+        <translation>Datei ist beschädigt</translation>
     </message>
     <message>
         <source>Protocol error</source>
-        <translation type="unfinished"/>
+        <translation>Protokollfehler</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Unbekannter Fehler</translation>
     </message>
 </context>
 <context>
@@ -537,74 +537,76 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     <name>JabberProtocol</name>
     <message>
         <source>Another client connected on the same resource.</source>
-        <translation type="unfinished"/>
+        <translation>Ein anderes Programm hat sich auf dem selben Gerät verbunden.</translation>
     </message>
 </context>
 <context>
     <name>JabberProtocolFactory</name>
     <message>
         <source>User JID:</source>
-        <translation>Benutzer JID:</translation>
+        <translation>Benutzer Jabber-ID:</translation>
     </message>
 </context>
 <context>
     <name>JabberRegisterAccount</name>
     <message>
         <source>Internal error: invalid state</source>
-        <translation type="unfinished"/>
+        <translation>Interner Fehler: ungültiger Zustand</translation>
     </message>
     <message>
         <source>Connection established.</source>
-        <translation type="unfinished"/>
+        <translation>Verbindung hergestellt.</translation>
     </message>
     <message>
         <source>Negotiating registration parameters.</source>
-        <translation type="unfinished"/>
+        <translation>Aushandlung der Registrierungs-Parameter.</translation>
     </message>
     <message>
         <source>User with this username is already registered.</source>
-        <translation type="unfinished"/>
+        <translation>Benutzername ist bereits vergeben.</translation>
     </message>
     <message>
         <source>Registration parameters received.</source>
-        <translation type="unfinished"/>
+        <translation>Registrierungs-Parameter erhalten.</translation>
     </message>
     <message>
         <source>Registration at this server requires XMPP Data Forms support. Kadu currently does not support XMPP Data Forms.</source>
-        <translation type="unfinished"/>
+        <translation>Die Registrierung auf diesem Server erfordert XMPP Data Forms. Kadu unterstützt dies noch nicht. Vielleicht bietet der Server Registrierung über eine Internetseite an.</translation>
     </message>
     <message>
         <source>%1
 
 Server message: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1
+
+Server-Nachricht: %2</translation>
     </message>
     <message>
         <source>Unknown error: received stanza type %1</source>
-        <translation type="unfinished"/>
+        <translation>Unbekannter Fehler: Empfangene Strophe vom Typ %1</translation>
     </message>
     <message>
         <source>SSL certificate rejected</source>
-        <translation type="unfinished"/>
+        <translation>SSL-Zertifikat zurückgewiesen</translation>
     </message>
 </context>
 <context>
     <name>JabberStreamIncomingFileTransferHandler</name>
     <message>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Abgebrochen</translation>
     </message>
     <message>
         <source>File is corrupted</source>
-        <translation type="unfinished"/>
+        <translation>Datei ist beschädigt</translation>
     </message>
     <message>
         <source>Protocol error</source>
-        <translation type="unfinished"/>
+        <translation>Protokollfehler</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Unbekannter Fehler</translation>
     </message>
 </context>
 <context>
@@ -619,17 +621,19 @@ Jetzt können Sie Ihre Freunde in die Kontaktliste aufnehmen.</translation>
     </message>
     <message>
         <source>Registering new XMPP account</source>
-        <translation type="unfinished"/>
+        <translation>Neues XMPP-Konto wird registriert</translation>
     </message>
     <message>
         <source>Registration failed.
 
 Server message: %1</source>
-        <translation type="unfinished"/>
+        <translation>Registrierung fehlgeschlagen.
+
+Server-Nachricht: %1</translation>
     </message>
     <message>
         <source>Connecting with server.</source>
-        <translation type="unfinished"/>
+        <translation>Verbinde mit Server</translation>
     </message>
 </context>
 <context>
@@ -643,7 +647,7 @@ Server message: %1</source>
     <name>XmlConsole</name>
     <message>
         <source>XML Console - %1</source>
-        <translation type="unfinished"/>
+        <translation>XML-Konsole - %1</translation>
     </message>
 </context>
 </TS>

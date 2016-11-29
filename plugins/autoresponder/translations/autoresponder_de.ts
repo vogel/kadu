@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Options</source>
-        <translation>Einstallungen</translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <source>Only for the first time</source>
@@ -53,7 +53,7 @@
     <name>AutoresponderMessageFilter</name>
     <message>
         <source>KADU AUTORESPONDER:</source>
-        <translation type="unfinished"/>
+        <translation>KADU AUTORESPONDER:</translation>
     </message>
 </context>
 </TS>

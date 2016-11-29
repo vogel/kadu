@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Antistring notifications</source>
-        <translation type="unfinished"/>
+        <translation>Anti-Schneeball Benachrichtigungen</translation>
     </message>
 </context>
 <context>

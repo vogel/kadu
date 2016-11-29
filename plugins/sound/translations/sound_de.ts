@@ -31,29 +31,29 @@
     </message>
     <message>
         <source>Enable sound notifications</source>
-        <translation type="unfinished"/>
+        <translation>Benachrichtigungstöne einschalten</translation>
     </message>
 </context>
 <context>
     <name>SoundBuddyConfigurationWidget</name>
     <message>
         <source>Use custom sound</source>
-        <translation type="unfinished"/>
+        <translation>Eigene Klänge benutzen</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>Klang</translation>
     </message>
 </context>
 <context>
     <name>SoundChatConfigurationWidget</name>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"/>
+        <translation>Klang</translation>
     </message>
     <message>
         <source>Use custom sound</source>
-        <translation type="unfinished"/>
+        <translation>Eigene Klänge benutzen</translation>
     </message>
 </context>
 <context>
@@ -67,7 +67,7 @@
     <name>SoundMuteAction</name>
     <message>
         <source>Play Sounds</source>
-        <translation type="unfinished"/>
+        <translation>Spiele Klänge ab</translation>
     </message>
 </context>
 </TS>

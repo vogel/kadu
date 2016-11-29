@@ -593,7 +593,7 @@ Mensaje de servidor: %2</translation>
     </message>
     <message>
         <source>SSL certificate rejected</source>
-        <translation type="unfinished"/>
+        <translation>Certificado SSL rechazado</translation>
     </message>
 </context>
 <context>

@@ -593,7 +593,7 @@ Zpráva od serveru: %2</translation>
     </message>
     <message>
         <source>SSL certificate rejected</source>
-        <translation type="unfinished"/>
+        <translation>Certifikát SSL odmítnut</translation>
     </message>
 </context>
 <context>
