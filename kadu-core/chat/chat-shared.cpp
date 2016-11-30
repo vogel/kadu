@@ -68,6 +68,8 @@ ChatShared::~ChatShared()
 	ref.ref();
 
 	delete ChatAccount;
+	if (Details)
+		delete Details;
 }
 
 void ChatShared::setAccountManager(AccountManager *accountManager)

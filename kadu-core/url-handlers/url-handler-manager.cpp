@@ -37,11 +37,8 @@ UrlHandlerManager::UrlHandlerManager(QObject *parent) :
 		QObject{parent}
 {
 	// NOTE: StandardUrlHandler has to be the first one to fix bug #1894
-	standardUrlHandler = new StandardUrlHandler();
-	registerUrlHandler(standardUrlHandler);
-
-	mailUrlHandler = new MailUrlHandler();
-	registerUrlHandler(mailUrlHandler);
+	registerUrlHandler(&standardUrlHandler);
+	registerUrlHandler(&mailUrlHandler);
 }
 
 UrlHandlerManager::~UrlHandlerManager()
@@ -87,6 +84,9 @@ void UrlHandlerManager::done()
 
 	m_domVisitorProviderRepository->removeVisitorProvider(StandardUrlVisitorProvider);
 	m_domVisitorProviderRepository->removeVisitorProvider(MailUrlVisitorProvider);
+
+	delete StandardUrlVisitorProvider;
+	delete MailUrlVisitorProvider;
 }
 
 void UrlHandlerManager::registerUrlHandler(UrlHandler *handler)
@@ -113,10 +113,10 @@ void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
 
 const QRegExp & UrlHandlerManager::mailRegExp()
 {
-	return mailUrlHandler->mailRegExp();
+	return mailUrlHandler.mailRegExp();
 }
 
 const QRegExp & UrlHandlerManager::urlRegExp()
 {
-	return standardUrlHandler->urlRegExp();
+	return standardUrlHandler.urlRegExp();
 }

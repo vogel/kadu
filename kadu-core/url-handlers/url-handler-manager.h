@@ -22,13 +22,16 @@
 
 #pragma once
 
+#include "exports.h"
+
+#include "url-handlers/mail-url-handler.h"
+#include "url-handlers/standard-url-handler.h"
+
 #include <QtCore/QList>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QScopedPointer>
 #include <injeqt/injeqt.h>
-
-#include "exports.h"
 
 class QDomDocument;
 
@@ -36,9 +39,7 @@ class ClipboardHtmlTransformerService;
 class Configuration;
 class DomVisitorProviderRepository;
 class MailUrlDomVisitorProvider;
-class MailUrlHandler;
 class StandardUrlDomVisitorProvider;
-class StandardUrlHandler;
 class UrlClipboardHtmlTransformer;
 class UrlHandler;
 class UrlOpener;
@@ -74,8 +75,8 @@ private:
 	StandardUrlDomVisitorProvider *StandardUrlVisitorProvider;
 	MailUrlDomVisitorProvider *MailUrlVisitorProvider;
 
-	StandardUrlHandler *standardUrlHandler;
-	MailUrlHandler *mailUrlHandler;
+	StandardUrlHandler standardUrlHandler;
+	MailUrlHandler mailUrlHandler;
 
 	QScopedPointer<UrlClipboardHtmlTransformer> ClipboardTransformer;
 
