@@ -24,18 +24,14 @@
 
 #include "sms-gateway-query.h"
 
-SmsGatewayQuery::SmsGatewayQuery(QObject *parent) :
-		QObject(parent)
+SmsGatewayQuery::SmsGatewayQuery(SmsScriptsManager *smsScriptsManager, QObject *parent) :
+		QObject{parent},
+		m_smsScriptsManager{smsScriptsManager}
 {
 }
 
 SmsGatewayQuery::~SmsGatewayQuery()
 {
-}
-
-void SmsGatewayQuery::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
-{
-	m_smsScriptsManager = smsScriptsManager;
 }
 
 void SmsGatewayQuery::queryFinished(const QString &provider)
