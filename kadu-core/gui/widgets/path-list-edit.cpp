@@ -29,6 +29,7 @@
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration.h"
+#include "core/injected-factory.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
@@ -42,11 +43,16 @@ PathListEdit::PathListEdit(QWidget *parent)
 	connect(this, SIGNAL(clicked()), this, SLOT(showDialog()));
 }
 
+void PathListEdit::setInjectedFactory(InjectedFactory *injectedFactory)
+{
+	m_injectedFactory = injectedFactory;
+}
+
 void PathListEdit::showDialog()
 {
 	if (!Dialog)
 	{
-		Dialog = new PathListEditWindow(PathList);
+		Dialog = m_injectedFactory->makeInjected<PathListEditWindow>(PathList);
 		connect(Dialog.data(), SIGNAL(changed(const QStringList &)), this, SLOT(pathListChanged(const QStringList &)));
 	}
 	Dialog->show();

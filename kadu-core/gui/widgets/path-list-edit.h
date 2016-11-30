@@ -27,6 +27,7 @@
 
 class Configuration;
 class IconsManager;
+class InjectedFactory;
 class PathListEditWindow;
 
 class QLineEdit;
@@ -47,10 +48,14 @@ signals:
 	void changed();
 
 private:
+	QPointer<InjectedFactory> m_injectedFactory;
+
 	QPointer<PathListEditWindow> Dialog;
 	QStringList PathList;
 
 private slots:
+	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+
 	void showDialog();
 	void pathListChanged(const QStringList &pathList);
 
