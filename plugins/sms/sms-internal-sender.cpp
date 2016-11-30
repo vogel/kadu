@@ -74,7 +74,7 @@ void SmsInternalSender::queryForGateway()
 {
 	emit progress("dialog-information", tr("Detecting gateway..."));
 
-	SmsGatewayQuery *query = new SmsGatewayQuery(this);
+	auto query = new SmsGatewayQuery(m_smsScriptsManager, this);
 	connect(query, SIGNAL(finished(const QString &)), this, SLOT(gatewayQueryDone(const QString &)));
 	query->process(number());
 }

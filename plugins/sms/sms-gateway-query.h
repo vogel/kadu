@@ -21,7 +21,6 @@
 
 #include <QtCore/QBuffer>
 #include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
 
 class SmsScriptsManager;
 
@@ -30,7 +29,7 @@ class SmsGatewayQuery : public QObject
 	Q_OBJECT
 
 public:
-	explicit SmsGatewayQuery(QObject *parent = nullptr);
+	explicit SmsGatewayQuery(SmsScriptsManager *smsScriptsManager, QObject *parent = nullptr);
 	virtual ~SmsGatewayQuery();
 
 public slots:
@@ -42,8 +41,5 @@ signals:
 
 private:
 	QPointer<SmsScriptsManager> m_smsScriptsManager;
-
-private slots:
-	INJEQT_SET void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
 
 };
