@@ -47,19 +47,7 @@ void SoundThemeManager::setPluginInjectedFactory(PluginInjectedFactory *pluginIn
 
 void SoundThemeManager::init()
 {
-	m_themes = m_pluginInjectedFactory->makeUnique<Themes>("sounds", "sound.conf");
-	m_themes->setPaths(m_configuration->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
-
-	auto soundThemes = themes()->themes();
-	auto soundTheme = m_configuration->deprecatedApi()->readEntry("Sounds", "SoundTheme");
-	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
-	{
-		soundTheme = "default";
-		m_configuration->deprecatedApi()->writeEntry("Sounds", "SoundTheme", "default");
-	}
-
-	if (soundTheme != "custom")
-		applyTheme(soundTheme);
+	themes();
 }
 
 void SoundThemeManager::applyTheme(const QString &themeName)
@@ -75,9 +63,28 @@ void SoundThemeManager::applyTheme(const QString &themeName)
 	}
 }
 
-Themes * SoundThemeManager::themes() const
+Themes * SoundThemeManager::themes()
 {
+	if (!m_themes)
+		loadThemes();
 	return m_themes.get();
+}
+
+void SoundThemeManager::loadThemes()
+{
+	m_themes = m_pluginInjectedFactory->makeUnique<Themes>("sounds", "sound.conf");
+	m_themes->setPaths(m_configuration->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
+
+	auto soundThemes = themes()->themes();
+	auto soundTheme = m_configuration->deprecatedApi()->readEntry("Sounds", "SoundTheme");
+	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
+	{
+		soundTheme = "default";
+		m_configuration->deprecatedApi()->writeEntry("Sounds", "SoundTheme", "default");
+	}
+
+	if (soundTheme != "custom")
+		applyTheme(soundTheme);
 }
 
 #include "moc_sound-theme-manager.cpp"

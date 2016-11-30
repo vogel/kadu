@@ -1,6 +1,7 @@
 +++ version 4.2:
 * translations: #3123 fixed: typo
 * sms: #3116 fixed: crash during sending SMS (Vogel)
+* sound: #3110 fixed: crash during loading sound plugin (Vogel)
 
 +++ version 4.1:
 * pcspeaker: #3111 fixed: usage of __useconds_t type removed (Vogel)

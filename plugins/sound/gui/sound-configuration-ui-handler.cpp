@@ -102,6 +102,8 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 
 void SoundConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
+	m_themesComboBox = nullptr;
+	m_themesPaths = nullptr;
 }
 
 void SoundConfigurationUiHandler::mainConfigurationWindowApplied()

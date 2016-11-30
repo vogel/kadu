@@ -38,13 +38,15 @@ public:
 
 	void applyTheme(const QString &themeName);
 
-	Themes * themes() const;
+	Themes * themes();
 
 private:
 	QPointer<Configuration> m_configuration;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	std::unique_ptr<Themes> m_themes;
+
+	void loadThemes();
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
