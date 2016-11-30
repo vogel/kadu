@@ -23,6 +23,16 @@
 
 QList<StatusContainerAwareObject *> StatusContainerAwareObject::Objects;
 
+StatusContainerAwareObject::StatusContainerAwareObject()
+{
+	Objects.append(this);
+}
+
+StatusContainerAwareObject::~StatusContainerAwareObject()
+{
+	Objects.removeAll(this);
+}
+
 void StatusContainerAwareObject::notifyStatusContainerRegistered(StatusContainer *statusContainer)
 {
 	for (auto object : Objects)

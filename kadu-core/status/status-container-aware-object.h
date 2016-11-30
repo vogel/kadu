@@ -89,8 +89,8 @@ public:
 	 */
 	static void notifyStatusContainerUnregistered(StatusContainer *statusContainer);
 
-	StatusContainerAwareObject() {}
-	virtual ~StatusContainerAwareObject() {}
+	StatusContainerAwareObject();
+	virtual ~StatusContainerAwareObject();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
