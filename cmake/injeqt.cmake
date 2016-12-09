@@ -1,6 +1,6 @@
 # injeqt
 find_package (PkgConfig)
-pkg_check_modules (INJEQT REQUIRED injeqt>=1.1)
+pkg_check_modules (INJEQT REQUIRED injeqt>=1.1.90)
 set (INJEQT_DEFINITIONS ${INJEQT_CFLAGS_OTHER})
 include_directories (${INJEQT_INCLUDEDIR})
 link_directories (${INJEQT_LIBRARY_DIRS})

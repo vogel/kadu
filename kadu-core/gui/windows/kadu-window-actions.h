@@ -31,7 +31,6 @@
 class Actions;
 class AddConferenceAction;
 class AddGroupAction;
-class AddUserAction;
 class AddRoomChatAction;
 class ChangeStatusAction;
 class ChatWidgetActions;
@@ -75,7 +74,6 @@ class KaduWindowActions : public QObject
 	QPointer<AddConferenceAction> m_addConferenceAction;
 	QPointer<AddGroupAction> m_addGroupAction;
 	QPointer<AddRoomChatAction> m_addRoomChatAction;
-	QPointer<AddUserAction> m_addUserAction;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<ChangeStatusAction> m_changeStatusAction;
 	QPointer<CollapseAction> m_collapseAction;
@@ -117,7 +115,6 @@ private slots:
 	INJEQT_SET void setAddConferenceAction(AddConferenceAction *addConferenceAction);
 	INJEQT_SET void setAddGroupAction(AddGroupAction *addGroupAction);
 	INJEQT_SET void setAddRoomChatAction(AddRoomChatAction *addRoomChatAction);
-	INJEQT_SET void setAddUserAction(AddUserAction *addUserAction);
 	INJEQT_SET void setChangeStatusAction(ChangeStatusAction *changeStatusAction);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setCollapseAction(CollapseAction *collapseAction);

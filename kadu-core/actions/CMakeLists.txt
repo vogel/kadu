@@ -5,6 +5,7 @@ set (actions_SRCS
 	copy-description-action.cpp
 	copy-personal-info-action.cpp
 	exit-action.cpp
+	injector-registered-actions.cpp
 	lookup-buddy-info-action.cpp
 	merge-buddies-action.cpp
 	notify-about-buddy-action.cpp

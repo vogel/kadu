@@ -45,6 +45,7 @@
 #include "execution-arguments/execution-arguments.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "gui/actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
@@ -99,7 +100,8 @@
 #endif
 
 Core::Core(injeqt::injector &&injector) :
-		m_injector{std::move(injector)}
+		m_injector{std::move(injector)},
+		m_injectorRegisteredActions{*m_injector.get<Actions>(), m_injector}
 {
 	// must be created first
 	// TODO: should be maybe created by factory factory?

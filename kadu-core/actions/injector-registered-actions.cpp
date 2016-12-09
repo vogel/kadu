@@ -17,32 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "injector-registered-actions.h"
 
 #include "gui/actions/action-description.h"
+#include "gui/actions/actions.h"
 #include "injeqt-type-roles.h"
 
-#include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
+#include <injeqt/injector.h>
 
-class InjectedFactory;
-
-class AddUserAction : public ActionDescription
+InjectorRegisteredActions::InjectorRegisteredActions(Actions &actions, injeqt::injector &injector) :
+		m_actions{actions},
+		m_injector{injector}
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+	for (const auto &o : m_injector.get_all_with_type_role(ACTION))
+	{
+		auto action = qobject_cast<ActionDescription *>(o);
+		if (action && m_actions.insert(action))
+			m_registeredActions.push_back(action);
+	}
+}
 
-public:
-	Q_INVOKABLE explicit AddUserAction(QObject *parent = nullptr);
-	virtual ~AddUserAction();
-
-protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-
-private:
-	QPointer<InjectedFactory> m_injectedFactory;
-
-private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
-};
+InjectorRegisteredActions::~InjectorRegisteredActions()
+{
+	for (const auto &a : m_registeredActions)
+		m_actions.remove(a);
+}

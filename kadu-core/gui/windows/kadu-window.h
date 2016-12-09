@@ -45,6 +45,7 @@ class QMenuBar;
 class QVBoxLayout;
 
 class ActionDescription;
+class AddUserAction;
 class Application;
 class BuddyInfoPanel;
 class ChatWidgetActions;
@@ -79,6 +80,7 @@ public:
 	};
 
 private:
+	QPointer<AddUserAction> m_addUserAction;
 	QPointer<Application> m_application;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<ChatWidgetManager> m_chatWidgetManager;
@@ -133,6 +135,7 @@ private:
 	virtual void compositingDisabled();
 
 private slots:
+	INJEQT_SET void setAddUserAction(AddUserAction *addUserAction);
 	INJEQT_SET void setApplication(Application *application);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);

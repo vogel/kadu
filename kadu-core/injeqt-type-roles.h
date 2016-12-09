@@ -19,6 +19,7 @@
 
 #pragma once
 
+#define ACTION "action"
 #define LISTENER "listener"
 #define PLUGIN "plugin"
 #define SERVICE "service"

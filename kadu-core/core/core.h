@@ -26,6 +26,7 @@
 #pragma once
 
 #include "accounts/accounts-aware-object.h"
+#include "actions/injector-registered-actions.h"
 #include "configuration/configuration-aware-object.h"
 #include "exports.h"
 
@@ -66,6 +67,7 @@ protected:
 
 private:
 	mutable injeqt::v1::injector m_injector;
+	InjectorRegisteredActions m_injectorRegisteredActions;
 
 	void execute(const QStringList &openIds, const QString &openUuid);
 

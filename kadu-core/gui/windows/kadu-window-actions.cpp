@@ -28,7 +28,6 @@
 #include "kadu-window-actions.h"
 
 #include "actions/add-group-action.h"
-#include "actions/add-user-action.h"
 #include "actions/copy-description-action.h"
 #include "actions/copy-personal-info-action.h"
 #include "actions/exit-action.h"
@@ -91,11 +90,6 @@ void KaduWindowActions::setAddGroupAction(AddGroupAction *addGroupAction)
 void KaduWindowActions::setAddRoomChatAction(AddRoomChatAction *addRoomChatAction)
 {
 	m_addRoomChatAction = addRoomChatAction;
-}
-
-void KaduWindowActions::setAddUserAction(AddUserAction *addUserAction)
-{
-	m_addUserAction = addUserAction;
 }
 
 void KaduWindowActions::setChatWidgetActions(ChatWidgetActions *chatWidgetActions)
@@ -263,7 +257,6 @@ void KaduWindowActions::init()
 	m_actions->insert(m_addConferenceAction);
 	m_actions->insert(m_addGroupAction);
 	m_actions->insert(m_addRoomChatAction);
-	m_actions->insert(m_addUserAction);
 	m_actions->insert(m_changeStatusAction);
 	m_actions->insert(m_collapseAction);
 	m_actions->insert(m_copyDescriptionAction);
@@ -341,7 +334,6 @@ void KaduWindowActions::done()
 	m_actions->remove(m_addConferenceAction);
 	m_actions->remove(m_addGroupAction);
 	m_actions->remove(m_addRoomChatAction);
-	m_actions->remove(m_addUserAction);
 	m_actions->remove(m_changeStatusAction);
 	m_actions->remove(m_collapseAction);
 	m_actions->remove(m_copyDescriptionAction);

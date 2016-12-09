@@ -19,30 +19,22 @@
 
 #pragma once
 
-#include "gui/actions/action-description.h"
-#include "injeqt-type-roles.h"
+#include <vector>
 
-#include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
+namespace injeqt { namespace v1 { class injector; } }
 
-class InjectedFactory;
+class ActionDescription;
+class Actions;
 
-class AddUserAction : public ActionDescription
+class InjectorRegisteredActions final
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
-
 public:
-	Q_INVOKABLE explicit AddUserAction(QObject *parent = nullptr);
-	virtual ~AddUserAction();
-
-protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+	explicit InjectorRegisteredActions(Actions &actions, injeqt::v1::injector &injector);
+	~InjectorRegisteredActions();
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-
-private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	Actions &m_actions;
+	injeqt::v1::injector &m_injector;
+	std::vector<ActionDescription *> m_registeredActions;
 
 };
