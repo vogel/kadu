@@ -124,7 +124,7 @@ public:
 	 * This method can only by called from ActionDescription instances when they are ready to be registered.
 	 * Signal actionLoaded is emited if signals are non blocked.
 	 */
-	void insert(ActionDescription *action);
+	bool insert(ActionDescription *action);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

@@ -41,12 +41,16 @@ void Actions::setSessionService(SessionService *sessionService)
 	m_sessionService = sessionService;
 }
 
-void Actions::insert(ActionDescription *action)
+bool Actions::insert(ActionDescription *action)
 {
+	if (contains(action->name()))
+		return false;
+
 	QMap<QString, ActionDescription *>::insert(action->name(), action);
 
 	if (!BlockSignals)
 		emit actionLoaded(action);
+	return true;
 }
 
 void Actions::remove(ActionDescription *action)
