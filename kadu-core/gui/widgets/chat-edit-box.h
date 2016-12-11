@@ -33,23 +33,27 @@
 
 class Action;
 class BaseActionContext;
+class BoldAction;
 class ChatConfigurationHolder;
-class ChatWidgetActions;
 class ChatWidget;
 class CustomInput;
 class IconsManager;
+class ItalicAction;
 class StatusConfigurationHolder;
 class StatusContainerManager;
+class UnderlineAction;
 
 class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	QPointer<BoldAction> m_boldAction;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<ChatWidgetActions> m_chatWidgetActions;
 	QPointer<IconsManager> m_iconsManager;
+	QPointer<ItalicAction> m_italicAction;
 	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
 	QPointer<StatusContainerManager> m_statusContainerManager;
+	QPointer<UnderlineAction> m_underlineAction;
 
 	Chat CurrentChat;
 	CustomInput *InputBox;
@@ -60,11 +64,13 @@ class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 	void setColorFromCurrentText(bool force);
 
 private slots:
+	INJEQT_SET void setBoldAction(BoldAction *boldAction);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+	INJEQT_SET void setItalicAction(ItalicAction *italicAction);
 	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+	INJEQT_SET void setUnderlineAction(UnderlineAction *underlineAction);
 	INJEQT_INIT void init();
 
 	void configurationUpdated();

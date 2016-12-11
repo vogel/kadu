@@ -20,6 +20,7 @@
 #pragma once
 
 #include "gui/actions/action-description.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -30,6 +31,7 @@ class InjectedFactory;
 class OpenSearchAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 public:
 	Q_INVOKABLE explicit OpenSearchAction(QObject *parent = nullptr);

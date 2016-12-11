@@ -49,9 +49,6 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate.h"
 #include "gui/widgets/tool-tip-manager.h"
-#include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/kadu-window.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "misc/change-notifier-lock.h"
@@ -80,14 +77,19 @@ TalkableTreeView::~TalkableTreeView()
 	Context = 0;
 }
 
+void TalkableTreeView::setDeleteTalkableAction(DeleteTalkableAction *deleteTalkableAction)
+{
+	m_deleteTalkableAction = deleteTalkableAction;
+}
+
+void TalkableTreeView::setEditTalkableAction(EditTalkableAction *editTalkableAction)
+{
+	m_editTalkableAction = editTalkableAction;
+}
+
 void TalkableTreeView::setInjectedFactory(InjectedFactory *injectedFactory)
 {
 	m_injectedFactory = injectedFactory;
-}
-
-void TalkableTreeView::setKaduWindowService(KaduWindowService *kaduWindowService)
-{
-	m_kaduWindowService = kaduWindowService;
 }
 
 void TalkableTreeView::setMenuInventory(MenuInventory *menuInventory)
@@ -211,9 +213,9 @@ void TalkableTreeView::keyPressEvent(QKeyEvent *event)
 {
 	// TODO 0.10.0: add proper shortcuts handling
 	if (HotKey::shortCut(configuration(), event, "ShortCuts", "kadu_deleteuser"))
-		m_kaduWindowService->kaduWindow()->kaduWindowActions()->m_deleteTalkableAction->trigger(Context);
+		m_deleteTalkableAction->trigger(Context);
 	else if (HotKey::shortCut(configuration(), event, "ShortCuts", "kadu_persinfo"))
-		m_kaduWindowService->kaduWindow()->kaduWindowActions()->m_editTalkableAction->trigger(Context);
+		m_editTalkableAction->trigger(Context);
 	else
 	{
 		switch (event->key())

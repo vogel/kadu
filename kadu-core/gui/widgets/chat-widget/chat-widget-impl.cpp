@@ -34,7 +34,10 @@
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-container-widget.h"
+#include "gui/widgets/chat-widget/actions/bold-action.h"
 #include "gui/widgets/chat-widget/actions/chat-widget-actions.h"
+#include "gui/widgets/chat-widget/actions/italic-action.h"
+#include "gui/widgets/chat-widget/actions/underline-action.h"
 #include "gui/widgets/chat-widget/chat-widget-title.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -100,6 +103,11 @@ void ChatWidgetImpl::setActions(Actions *actions)
 	m_actions = actions;
 }
 
+void ChatWidgetImpl::setBoldAction(BoldAction *boldAction)
+{
+	m_boldAction = boldAction;
+}
+
 void ChatWidgetImpl::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
 	m_chatConfigurationHolder = chatConfigurationHolder;
@@ -135,6 +143,11 @@ void ChatWidgetImpl::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
+void ChatWidgetImpl::setItalicAction(ItalicAction *italicAction)
+{
+	m_italicAction = italicAction;
+}
+
 void ChatWidgetImpl::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
 	m_kaduWindowService = kaduWindowService;
@@ -148,6 +161,11 @@ void ChatWidgetImpl::setMessageManager(MessageManager *messageManager)
 void ChatWidgetImpl::setMessageStorage(MessageStorage *messageStorage)
 {
 	m_messageStorage = messageStorage;
+}
+
+void ChatWidgetImpl::setUnderlineAction(UnderlineAction *underlineAction)
+{
+	m_underlineAction = underlineAction;
 }
 
 void ChatWidgetImpl::setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory)
@@ -429,15 +447,15 @@ void ChatWidgetImpl::resetEditBox()
 	InputBox->inputBox()->clear();
 
 	Action *action;
-	action = m_chatWidgetActions->bold()->action(InputBox->actionContext());
+	action = m_boldAction->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
 
-	action = m_chatWidgetActions->italic()->action(InputBox->actionContext());
+	action = m_italicAction->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontItalic(action->isChecked());
 
-	action = m_chatWidgetActions->underline()->action(InputBox->actionContext());
+	action = m_underlineAction->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontUnderline(action->isChecked());
 }

@@ -22,6 +22,7 @@
 
 #include "gui/actions/action-description.h"
 #include "model/roles.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QAction>
@@ -38,6 +39,7 @@ class Myself;
 class EditTalkableAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 	QPointer<BuddyDataWindowRepository> m_buddyDataWindowRepository;
 	QPointer<ChatDataWindowRepository> m_chatDataWindowRepository;

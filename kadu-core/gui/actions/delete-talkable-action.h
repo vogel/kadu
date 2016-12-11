@@ -22,6 +22,7 @@
 
 #include "gui/actions/action-description.h"
 #include "model/roles.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QAction>
@@ -36,6 +37,7 @@ class Myself;
 class DeleteTalkableAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 public:
 	Q_INVOKABLE explicit DeleteTalkableAction(QObject *parent = nullptr);

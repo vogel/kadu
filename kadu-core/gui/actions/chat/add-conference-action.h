@@ -22,6 +22,7 @@
 #pragma once
 
 #include "gui/actions/action-description.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QAction>
@@ -32,6 +33,7 @@ class AccountManager;
 class AddConferenceAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 public:
 	Q_INVOKABLE explicit AddConferenceAction(QObject *parent = nullptr);

@@ -20,6 +20,7 @@
 #pragma once
 
 #include "gui/actions/action-description.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -29,6 +30,7 @@ class SilentModeService;
 class ToggleSilentModeAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 public:
 	Q_INVOKABLE explicit ToggleSilentModeAction(QObject *parent = nullptr);

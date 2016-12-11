@@ -163,7 +163,6 @@ private slots:
 	INJEQT_SET void setNextResultsAction(NextResultsAction *nextResultsAction);
 	INJEQT_SET void setStopSearchAction(StopSearchAction *stopSearchAction);
 	INJEQT_INIT void init();
-	INJEQT_DONE void done();
 
 	void uinTyped();
 	void personalDataTyped();

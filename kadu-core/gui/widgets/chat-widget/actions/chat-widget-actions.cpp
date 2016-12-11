@@ -20,21 +20,8 @@
 
 #include "chat-widget-actions.h"
 
-#include "gui/actions/actions.h"
-#include "gui/actions/edit-talkable-action.h"
-#include "gui/actions/chat/leave-chat-action.h"
 #include "gui/menu/menu-inventory.h"
-#include "gui/widgets/chat-widget/actions/auto-send-action.h"
-#include "gui/widgets/chat-widget/actions/block-user-action.h"
-#include "gui/widgets/chat-widget/actions/bold-action.h"
-#include "gui/widgets/chat-widget/actions/clear-chat-action.h"
-#include "gui/widgets/chat-widget/actions/insert-image-action.h"
-#include "gui/widgets/chat-widget/actions/italic-action.h"
-#include "gui/widgets/chat-widget/actions/more-actions-action.h"
 #include "gui/widgets/chat-widget/actions/open-chat-action.h"
-#include "gui/widgets/chat-widget/actions/open-chat-with-action.h"
-#include "gui/widgets/chat-widget/actions/underline-action.h"
-#include "gui/widgets/chat-widget/actions/send-action.h"
 
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 {
@@ -44,59 +31,9 @@ ChatWidgetActions::~ChatWidgetActions()
 {
 }
 
-void ChatWidgetActions::setActions(Actions *actions)
-{
-	m_actions = actions;
-}
-
-void ChatWidgetActions::setAutoSendAction(AutoSendAction *autoSendAction)
-{
-	m_autoSendAction = autoSendAction;
-}
-
-void ChatWidgetActions::setBlockUserAction(BlockUserAction *blockUserAction)
-{
-	m_blockUserAction = blockUserAction;
-}
-
-void ChatWidgetActions::setBoldAction(BoldAction *boldAction)
-{
-    m_boldAction = boldAction;
-}
-
-void ChatWidgetActions::setClearChatAction(ClearChatAction *clearChatAction)
-{
-	m_clearChatAction = clearChatAction;
-}
-
-void ChatWidgetActions::setEditTalkableAction(EditTalkableAction *editTalkableAction)
-{
-	m_editTalkableAction = editTalkableAction;
-}
-
-void ChatWidgetActions::setInsertImageAction(InsertImageAction *insertImageAction)
-{
-	m_insertImageAction = insertImageAction;
-}
-
-void ChatWidgetActions::setItalicAction(ItalicAction *italicAction)
-{
-	m_italicAction = italicAction;
-}
-
-void ChatWidgetActions::setLeaveChatAction(LeaveChatAction *leaveChatAction)
-{
-	m_leaveChatAction = leaveChatAction;
-}
-
 void ChatWidgetActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
-}
-
-void ChatWidgetActions::setMoreActionsAction(MoreActionsAction *moreActionsAction)
-{
-	m_moreActionsAction = moreActionsAction;
 }
 
 void ChatWidgetActions::setOpenChatAction(OpenChatAction *openChatAction)
@@ -104,82 +41,11 @@ void ChatWidgetActions::setOpenChatAction(OpenChatAction *openChatAction)
 	m_openChatAction = openChatAction;
 }
 
-void ChatWidgetActions::setOpenChatWithAction(OpenChatWithAction *openChatWithAction)
-{
-	m_openChatWithAction = openChatWithAction;
-}
-
-void ChatWidgetActions::setSendAction(SendAction *sendAction)
-{
-	m_sendAction = sendAction;
-}
-
-void ChatWidgetActions::setUnderlineAction(UnderlineAction *underlineAction)
-{
-	m_underlineAction = underlineAction;
-}
-
 void ChatWidgetActions::init()
 {
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_openChatAction, KaduMenu::SectionChat, 1000);
-
-	m_actions->insert(m_autoSendAction);
-	m_actions->insert(m_blockUserAction);
-	m_actions->insert(m_boldAction);
-	m_actions->insert(m_clearChatAction);
-	m_actions->insert(m_editTalkableAction);
-	m_actions->insert(m_insertImageAction);
-	m_actions->insert(m_italicAction);
-	m_actions->insert(m_leaveChatAction);
-	m_actions->insert(m_moreActionsAction);
-	m_actions->insert(m_openChatAction);
-	m_actions->insert(m_openChatWithAction);
-	m_actions->insert(m_sendAction);
-	m_actions->insert(m_underlineAction);
-}
-
-void ChatWidgetActions::done()
-{
-	m_actions->remove(m_autoSendAction);
-	m_actions->remove(m_blockUserAction);
-	m_actions->remove(m_boldAction);
-	m_actions->remove(m_clearChatAction);
-	m_actions->remove(m_editTalkableAction);
-	m_actions->remove(m_insertImageAction);
-	m_actions->remove(m_italicAction);
-	m_actions->remove(m_leaveChatAction);
-	m_actions->remove(m_moreActionsAction);
-	m_actions->remove(m_openChatAction);
-	m_actions->remove(m_openChatWithAction);
-	m_actions->remove(m_sendAction);
-	m_actions->remove(m_underlineAction);
-}
-
-ActionDescription * ChatWidgetActions::bold() const
-{
-	return m_boldAction;
-}
-
-ActionDescription * ChatWidgetActions::italic() const
-{
-	return m_italicAction;
-}
-
-ActionDescription * ChatWidgetActions::underline() const
-{
-	return m_underlineAction;
-}
-
-ActionDescription * ChatWidgetActions::blockUser() const
-{
-	return m_blockUserAction;
-}
-
-ActionDescription * ChatWidgetActions::openChatWith() const
-{
-	return m_openChatWithAction;
 }
 
 #include "moc_chat-widget-actions.cpp"

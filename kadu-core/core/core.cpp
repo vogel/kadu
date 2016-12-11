@@ -100,8 +100,7 @@
 #endif
 
 Core::Core(injeqt::injector &&injector) :
-		m_injector{std::move(injector)},
-		m_injectorRegisteredActions{*m_injector.get<Actions>(), m_injector}
+		m_injector{std::move(injector)}
 {
 	// must be created first
 	// TODO: should be maybe created by factory factory?
@@ -484,6 +483,8 @@ void Core::createGui()
 	// initialize file transfers
 	m_injector.instantiate<FileTransferHandlerManager>();
 	m_injector.instantiate<FileTransferManager>();
+
+	m_injectorRegisteredActions = std::make_unique<InjectorRegisteredActions>(*m_injector.get<Actions>(), m_injector);
 }
 
 void Core::runServices()

@@ -39,6 +39,7 @@
 class QSplitter;
 
 class Actions;
+class BoldAction;
 class ChatConfigurationHolder;
 class ChatEditBoxSizeManager;
 class ChatEditBox;
@@ -52,12 +53,14 @@ class CustomInput;
 class FilteredTreeView;
 class IconsManager;
 class InjectedFactory;
+class ItalicAction;
 class KaduWindowService;
 class MessageManager;
 class MessageStorage;
 class Protocol;
 class SortedMessages;
 class TalkableProxyModel;
+class UnderlineAction;
 class WebkitMessagesViewFactory;
 class WebkitMessagesView;
 
@@ -68,6 +71,7 @@ class KADUAPI ChatWidgetImpl : public ChatWidget, public ConfigurationAwareObjec
 	friend class ChatWidgetManager;
 
 	QPointer<Actions> m_actions;
+	QPointer<BoldAction> m_boldAction;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatEditBoxSizeManager> m_chatEditBoxSizeManager;
 	QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
@@ -76,9 +80,11 @@ class KADUAPI ChatWidgetImpl : public ChatWidget, public ConfigurationAwareObjec
 	QPointer<Configuration> m_configuration;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<InjectedFactory> m_injectedFactory;
+	QPointer<ItalicAction> m_italicAction;
 	QPointer<KaduWindowService> m_kaduWindowService;
 	QPointer<MessageManager> m_messageManager;
 	QPointer<MessageStorage> m_messageStorage;
+	QPointer<UnderlineAction> m_underlineAction;
 	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
 
 	Chat CurrentChat;
@@ -112,6 +118,7 @@ class KADUAPI ChatWidgetImpl : public ChatWidget, public ConfigurationAwareObjec
 
 private slots:
 	INJEQT_SET void setActions(Actions *actions);
+	INJEQT_SET void setBoldAction(BoldAction *boldAction);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatEditBoxSizeManager(ChatEditBoxSizeManager *chatEditBoxSizeManager);
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
@@ -119,10 +126,12 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+	INJEQT_SET void setItalicAction(ItalicAction *italicAction);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 	INJEQT_SET void setMessageManager(MessageManager *messageManager);
 	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
+	INJEQT_SET void setUnderlineAction(UnderlineAction *underlineAction);
 	INJEQT_INIT void init();
 
 	virtual void configurationUpdated() override;

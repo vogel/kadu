@@ -20,12 +20,14 @@
 #pragma once
 
 #include "gui/actions/action-description.h"
+#include "injeqt-type-roles.h"
 
 #include <injeqt/injeqt.h>
 
 class NextResultsAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 public:
 	Q_INVOKABLE explicit NextResultsAction(QObject *parent = nullptr);

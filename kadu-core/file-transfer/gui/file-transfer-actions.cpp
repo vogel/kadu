@@ -22,7 +22,6 @@
 #include "core/injected-factory.h"
 #include "file-transfer/gui/send-file-action.h"
 #include "file-transfer/gui/show-file-transfer-window-action.h"
-#include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 
 FileTransferActions::FileTransferActions(QObject *parent) :
@@ -32,11 +31,6 @@ FileTransferActions::FileTransferActions(QObject *parent) :
 
 FileTransferActions::~FileTransferActions()
 {
-}
-
-void FileTransferActions::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void FileTransferActions::setMenuInventory(MenuInventory *menuInventory)
@@ -56,9 +50,6 @@ void FileTransferActions::setShowFileTransferWindowAction(ShowFileTransferWindow
 
 void FileTransferActions::init()
 {
-	m_actions->insert(m_sendFileAction);
-	m_actions->insert(m_showFileTransferWindowAction);
-
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_sendFileAction, KaduMenu::SectionSend, 100);
@@ -77,9 +68,6 @@ void FileTransferActions::done()
 	m_menuInventory
 		->menu("tools")
 		->removeAction(m_showFileTransferWindowAction);
-
-	m_actions->remove(m_sendFileAction);
-	m_actions->remove(m_showFileTransferWindowAction);
 }
 
 #include "moc_file-transfer-actions.cpp"

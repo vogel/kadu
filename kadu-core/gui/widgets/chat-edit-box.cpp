@@ -28,7 +28,6 @@
 #include <QtWidgets/QFileDialog>
 #include <QtXml/QDomElement>
 
-
 #include "accounts/account-details.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
@@ -43,7 +42,9 @@
 #include "gui/actions/base-action-context.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
-#include "gui/widgets/chat-widget/actions/chat-widget-actions.h"
+#include "gui/widgets/chat-widget/actions/bold-action.h"
+#include "gui/widgets/chat-widget/actions/italic-action.h"
+#include "gui/widgets/chat-widget/actions/underline-action.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/talkable-tree-view.h"
@@ -76,19 +77,24 @@ ChatEditBox::~ChatEditBox()
 	chatEditBoxes.removeAll(this);
 }
 
+void ChatEditBox::setBoldAction(BoldAction *boldAction)
+{
+	m_boldAction = boldAction;
+}
+
 void ChatEditBox::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
 	m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
-void ChatEditBox::setChatWidgetActions(ChatWidgetActions *chatWidgetActions)
-{
-	m_chatWidgetActions = chatWidgetActions;
-}
-
 void ChatEditBox::setIconsManager(IconsManager *iconsManager)
 {
 	m_iconsManager = iconsManager;
+}
+
+void ChatEditBox::setItalicAction(ItalicAction *italicAction)
+{
+	m_italicAction = italicAction;
 }
 
 void ChatEditBox::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
@@ -99,6 +105,11 @@ void ChatEditBox::setStatusConfigurationHolder(StatusConfigurationHolder *status
 void ChatEditBox::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
 	m_statusContainerManager = statusContainerManager;
+}
+
+void ChatEditBox::setUnderlineAction(UnderlineAction *underlineAction)
+{
+	m_underlineAction = underlineAction;
 }
 
 void ChatEditBox::init()
@@ -153,12 +164,12 @@ void ChatEditBox::init()
 
 void ChatEditBox::fontChanged(QFont font)
 {
-	if (m_chatWidgetActions->bold()->action(actionContext()))
-		m_chatWidgetActions->bold()->action(actionContext())->setChecked(font.bold());
-	if (m_chatWidgetActions->italic()->action(actionContext()))
-		m_chatWidgetActions->italic()->action(actionContext())->setChecked(font.italic());
-	if (m_chatWidgetActions->underline()->action(actionContext()))
-		m_chatWidgetActions->underline()->action(actionContext())->setChecked(font.underline());
+	if (m_boldAction->action(actionContext()))
+		m_boldAction->action(actionContext())->setChecked(font.bold());
+	if (m_italicAction->action(actionContext()))
+		m_italicAction->action(actionContext())->setChecked(font.italic());
+	if (m_underlineAction->action(actionContext()))
+		m_underlineAction->action(actionContext())->setChecked(font.underline());
 }
 
 void ChatEditBox::colorSelectorActionCreated(Action *action)

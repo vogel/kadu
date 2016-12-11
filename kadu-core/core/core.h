@@ -32,6 +32,7 @@
 
 #include <QtCore/QObject>
 #include <injeqt/injector.h>
+#include <memory>
 
 template<class T>
 class DefaultProvider;
@@ -67,7 +68,7 @@ protected:
 
 private:
 	mutable injeqt::v1::injector m_injector;
-	InjectorRegisteredActions m_injectorRegisteredActions;
+	std::unique_ptr<InjectorRegisteredActions> m_injectorRegisteredActions;
 
 	void execute(const QStringList &openIds, const QString &openUuid);
 

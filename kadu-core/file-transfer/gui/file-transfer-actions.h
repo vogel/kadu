@@ -23,7 +23,6 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class Actions;
 class MenuInventory;
 class SendFileAction;
 class ShowFileTransferWindowAction;
@@ -37,13 +36,11 @@ public:
 	virtual ~FileTransferActions();
 
 private:
-	QPointer<Actions> m_actions;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<SendFileAction> m_sendFileAction;
 	QPointer<ShowFileTransferWindowAction> m_showFileTransferWindowAction;
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setSendFileAction(SendFileAction *sendFileAction);
 	INJEQT_SET void setShowFileTransferWindowAction(ShowFileTransferWindowAction *showFileTransferWindowAction);

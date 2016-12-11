@@ -20,6 +20,7 @@
 #pragma once
 
 #include "gui/actions/action-description.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -30,6 +31,7 @@ class Myself;
 class BlockUserAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 public:
 	Q_INVOKABLE explicit BlockUserAction(QObject *parent = nullptr);

@@ -20,12 +20,14 @@
 #pragma once
 
 #include "gui/actions/action-description.h"
+#include "injeqt-type-roles.h"
 
 #include <injeqt/injeqt.h>
 
 class AddFoundBuddyAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 public:
 	Q_INVOKABLE explicit AddFoundBuddyAction(QObject *parent = nullptr);

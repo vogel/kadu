@@ -22,6 +22,7 @@
 
 #include "gui/actions/action-description.h"
 #include "misc/memory.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -31,6 +32,7 @@ class ChatWidgetManager;
 class RecentChatsAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 public:
 	Q_INVOKABLE explicit RecentChatsAction(QObject *parent = nullptr);
