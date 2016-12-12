@@ -26,8 +26,8 @@
 #include "core/injected-factory.h"
 #include "misc/memory.h"
 #include "widgets/chat-style-preview.h"
-#include "widgets/configuration/configuration-widget.h"
 #include "widgets/configuration/config-group-box.h"
+#include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
 
 #include <QtCore/QCoreApplication>

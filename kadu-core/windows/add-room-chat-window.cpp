@@ -27,12 +27,12 @@
 #include "chat/type/chat-type-room.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/injected-factory.h"
-#include "widgets/accounts-combo-box.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol.h"
+#include "widgets/accounts-combo-box.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialogButtonBox>

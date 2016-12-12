@@ -24,8 +24,8 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
 #include <QtCore/QPoint>
+#include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 #include "exports.h"

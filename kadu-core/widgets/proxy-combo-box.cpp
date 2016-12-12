@@ -21,11 +21,11 @@
 #include "proxy-combo-box.h"
 
 #include "core/injected-factory.h"
-#include "windows/proxy-edit-window-service.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
+#include "windows/proxy-edit-window-service.h"
 
 #include <QtWidgets/QAction>
 

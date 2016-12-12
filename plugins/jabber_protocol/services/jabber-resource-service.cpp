@@ -19,11 +19,11 @@
 
 #include "jabber-resource-service.h"
 
-#include "chat/chat.h"
 #include "chat/chat-details-room.h"
+#include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
-#include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 
 JabberResourceService::JabberResourceService(QObject *parent) :
 		QObject{parent}

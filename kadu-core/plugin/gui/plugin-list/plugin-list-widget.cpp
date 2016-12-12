@@ -24,13 +24,6 @@
 #include "plugin-list-widget.h"
 
 #include "core/injected-factory.h"
-#include "widgets/categorized-list-view-painter.h"
-#include "widgets/categorized-list-view.h"
-#include "widgets/configuration/config-section.h"
-#include "widgets/configuration/configuration-widget.h"
-#include "widgets/filter-widget.h"
-#include "windows/main-configuration-window.h"
-#include "windows/string-list-dialog.h"
 #include "misc/change-notifier-lock.h"
 #include "plugin/activation/plugin-activation-service.h"
 #include "plugin/gui/plugin-list/plugin-list-view-delegate.h"
@@ -42,6 +35,13 @@
 #include "plugin/state/plugin-state-manager.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state.h"
+#include "widgets/categorized-list-view-painter.h"
+#include "widgets/categorized-list-view.h"
+#include "widgets/configuration/config-section.h"
+#include "widgets/configuration/configuration-widget.h"
+#include "widgets/filter-widget.h"
+#include "windows/main-configuration-window.h"
+#include "windows/string-list-dialog.h"
 
 #include <QtWidgets/QBoxLayout>
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "windows/configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
+#include "windows/configuration-window.h"
 #include "exports.h"
 
 #include <QtCore/QPointer>

@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include <mpd/client.h>
 #include <injeqt/injeqt.h>
+#include <mpd/client.h>
 
 #include "plugins/mediaplayer/player-commands.h"
 #include "plugins/mediaplayer/player-info.h"

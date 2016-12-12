@@ -23,10 +23,10 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
+#include "windows/message-dialog.h"
 
 #include "chat-image-request-service.h"
 

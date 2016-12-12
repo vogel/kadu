@@ -19,17 +19,17 @@
 
 #include "hints-widget.h"
 
-#include "hints-configuration.h"
 #include "hint.h"
+#include "hints-configuration.h"
 
 #include "misc/memory.h"
 #include "plugin/plugin-injected-factory.h"
 
+#include <QtCore/QDateTime>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QLayoutItem>
 #include <QtWidgets/QVBoxLayout>
-#include <QtCore/QDateTime>
 
 HintsWidget::HintsWidget(QWidget *parent) :
 		QFrame{parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::MSWindowsOwnDC}

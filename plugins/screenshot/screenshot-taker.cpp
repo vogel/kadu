@@ -30,9 +30,9 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-#include "widgets/chat-widget/chat-widget.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "widgets/chat-widget/chat-widget.h"
 #include "pixmap-grabber.h"
 
 #include "screenshot-taker.h"

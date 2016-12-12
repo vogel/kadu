@@ -24,8 +24,8 @@
 #include "status/status-adapter.h"
 
 #include <QtCore/QPointer>
-#include <memory>
 #include <injeqt/injeqt.h>
+#include <memory>
 
 class FacebookDepreceatedMessage;
 class JabberProtocolMenuManager;

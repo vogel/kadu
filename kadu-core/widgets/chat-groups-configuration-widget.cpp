@@ -24,8 +24,8 @@
 #include "buddies/group.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
-#include "widgets/group-list.h"
 #include "misc/misc.h"
+#include "widgets/group-list.h"
 
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGroupBox>

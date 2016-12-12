@@ -20,10 +20,10 @@
 #include "webkit-messages-view-display-factory.h"
 
 #include "chat-style/chat-style-manager.h"
-#include "widgets/webkit-messages-view/webkit-messages-view-clearing-display.h"
-#include "widgets/webkit-messages-view/webkit-messages-view-removing-display.h"
 #include "message/message-render-info-factory.h"
 #include "misc/memory.h"
+#include "widgets/webkit-messages-view/webkit-messages-view-clearing-display.h"
+#include "widgets/webkit-messages-view/webkit-messages-view-removing-display.h"
 
 WebkitMessagesViewDisplayFactory::WebkitMessagesViewDisplayFactory(QObject *parent):
 		QObject{parent}

@@ -24,10 +24,10 @@
 #include "gui/widgets/list-edit-widget.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "misc/paths-provider.h"
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
 
 CenzorConfigurationUiHandler::CenzorConfigurationUiHandler(QObject *parent) :
 		QObject{parent},

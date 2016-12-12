@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <functional>
 #include <QtTest/QTest>
+#include <functional>
 
 template<typename E>
 void expect(std::function<void()> call)

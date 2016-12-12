@@ -23,14 +23,14 @@
 #include <QtWidgets/QPushButton>
 
 #include "configuration/configuration.h"
+#include "misc/paths-provider.h"
+#include "notification/notifier-configuration-data-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "widgets/configuration/config-combo-box.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "widgets/configuration/notify-group-box.h"
 #include "windows/configuration-window.h"
 #include "windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
-#include "notification/notifier-configuration-data-manager.h"
-#include "plugin/plugin-injected-factory.h"
 #include "activate.h"
 #include "debug.h"
 

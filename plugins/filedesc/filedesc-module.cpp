@@ -19,9 +19,9 @@
 
 #include "filedesc-module.h"
 
-#include "filedesc.h"
 #include "filedesc-plugin-object.h"
 #include "filedesc-status-changer.h"
+#include "filedesc.h"
 
 FiledescModule::FiledescModule()
 {

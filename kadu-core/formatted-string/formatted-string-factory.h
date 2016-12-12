@@ -24,9 +24,9 @@
 #include "exports.h"
 
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 #include <memory>
 #include <vector>
-#include <injeqt/injeqt.h>
 
 class HtmlString;
 class ImageStorageService;

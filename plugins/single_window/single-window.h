@@ -7,9 +7,9 @@
 #include "chat/chat-manager.h"
 #include "configuration/configuration-aware-object.h"
 #include "configuration/gui/configuration-ui-handler.h"
-#include "widgets/custom-input.h"
 #include "os/generic/compositing-aware-object.h"
 #include "provider/simple-provider.h"
+#include "widgets/custom-input.h"
 
 class QSplitter;
 class QTabWidget;

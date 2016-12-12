@@ -20,9 +20,9 @@
 
 #pragma once
 
-#include "widgets/actions-combo-box.h"
 #include "misc/memory.h"
 #include "network/proxy/network-proxy.h"
+#include "widgets/actions-combo-box.h"
 #include "exports.h"
 
 #include <QtCore/QPointer>

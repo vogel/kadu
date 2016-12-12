@@ -21,8 +21,8 @@
 #include "tool-tip-manager.h"
 
 #include "core/injected-factory.h"
-#include "widgets/tool-tip-widget.h"
 #include "talkable/talkable.h"
+#include "widgets/tool-tip-widget.h"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>

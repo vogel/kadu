@@ -23,11 +23,11 @@
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/model/contact-data-extractor.h"
-#include "widgets/chat-widget/chat-widget.h"
-#include "widgets/chat-widget/chat-widget-title-composing-state-position.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/services/chat-state.h"
+#include "widgets/chat-widget/chat-widget-title-composing-state-position.h"
+#include "widgets/chat-widget/chat-widget.h"
 
 ChatWidgetTitle::ChatWidgetTitle(ChatWidget *parent) :
 		QObject{parent},

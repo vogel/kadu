@@ -32,10 +32,10 @@
 #include "buddies/buddy.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
-#include "widgets/avatar-painter.h"
-#include "widgets/talkable-delegate-configuration.h"
 #include "identities/identity.h"
 #include "model/roles.h"
+#include "widgets/avatar-painter.h"
+#include "widgets/talkable-delegate-configuration.h"
 
 #include "talkable-painter.h"
 

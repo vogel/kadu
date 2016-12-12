@@ -37,8 +37,8 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QScrollBar>
 
-#include "widgets/categorized-list-view-painter.h"
 #include "model/categorized-sort-filter-proxy-model.h"
+#include "widgets/categorized-list-view-painter.h"
 
 //BEGIN: CategorizedListViewPrivate part
 

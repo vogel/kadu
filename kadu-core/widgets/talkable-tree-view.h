@@ -22,11 +22,11 @@
 
 #include "widgets/kadu-tree-view.h"
 
+#include "actions/action-context-provider.h"
+#include "actions/action-context.h"
 #include "buddies/buddy.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
-#include "actions/action-context-provider.h"
-#include "actions/action-context.h"
 #include "talkable/talkable.h"
 #include "exports.h"
 

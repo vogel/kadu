@@ -17,11 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "execution-arguments/execution-arguments.h"
 #include "execution-arguments/execution-arguments-parser.h"
+#include "execution-arguments/execution-arguments.h"
 
-#include <vector>
 #include <QtTest/QtTest>
+#include <vector>
 
 class ExcutionArgumentsParserTest : public QObject
 {

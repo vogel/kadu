@@ -20,6 +20,8 @@
 #include "send-file-action.h"
 
 #include "accounts/account.h"
+#include "actions/action-context.h"
+#include "actions/action.h"
 #include "chat/chat.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
@@ -30,8 +32,6 @@
 #include "file-transfer/file-transfer-storage.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
-#include "actions/action-context.h"
-#include "actions/action.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 

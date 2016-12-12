@@ -24,13 +24,8 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
-#include "widgets/filter-widget.h"
-#include "widgets/filtered-tree-view.h"
-#include "widgets/group-tab-bar/group-tab-bar-configurator.h"
-#include "widgets/group-tab-bar/group-tab-bar.h"
-#include "widgets/talkable-tree-view.h"
-#include "windows/proxy-action-context.h"
 #include "model/model-chain.h"
+#include "status/status-container-manager.h"
 #include "talkable/filter/group-talkable-filter.h"
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/filter/hide-contact-chats-talkable-filter.h"
@@ -39,7 +34,12 @@
 #include "talkable/filter/unread-messages-talkable-filter.h"
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
-#include "status/status-container-manager.h"
+#include "widgets/filter-widget.h"
+#include "widgets/filtered-tree-view.h"
+#include "widgets/group-tab-bar/group-tab-bar-configurator.h"
+#include "widgets/group-tab-bar/group-tab-bar.h"
+#include "widgets/talkable-tree-view.h"
+#include "windows/proxy-action-context.h"
 
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHBoxLayout>

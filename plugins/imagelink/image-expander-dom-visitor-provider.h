@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "dom/ignore-links-dom-visitor.h"
 #include "dom/dom-visitor-provider.h"
+#include "dom/ignore-links-dom-visitor.h"
 
 #include "configuration/image-link-configuration.h"
 

@@ -23,12 +23,12 @@
 #include <QtWidgets/QMenu>
 
 #include "accounts/account.h"
-#include "core/core.h"
 #include "actions/action.h"
-#include "widgets/chat-edit-box.h"
-#include "widgets/chat-widget/chat-widget.h"
+#include "core/core.h"
 #include "plugin/plugin-injected-factory.h"
 #include "protocols/protocol.h"
+#include "widgets/chat-edit-box.h"
+#include "widgets/chat-widget/chat-widget.h"
 
 #include "configuration/screen-shot-configuration.h"
 #include "screenshot.h"

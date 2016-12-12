@@ -24,12 +24,12 @@
 #include "html/html-string.h"
 #include "html/normalized-html-string.h"
 #include "multilogon/multilogon-session.h"
-#include "notification/notification.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-service.h"
+#include "notification/notification.h"
 #include "protocols/protocol.h"
 #include "protocols/services/multilogon-service.h"
 

@@ -21,10 +21,10 @@
 
 #include "accounts/account.h"
 #include "actions/action.h"
-#include "widgets/chat-edit-box.h"
-#include "widgets/custom-input.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "widgets/chat-edit-box.h"
+#include "widgets/custom-input.h"
 
 UnderlineAction::UnderlineAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

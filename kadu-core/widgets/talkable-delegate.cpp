@@ -23,10 +23,10 @@
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact-manager.h"
-#include "widgets/talkable-painter.h"
 #include "message/unread-message-repository.h"
 #include "model/kadu-abstract-model.h"
 #include "model/model-chain.h"
+#include "widgets/talkable-painter.h"
 
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QAbstractItemView>

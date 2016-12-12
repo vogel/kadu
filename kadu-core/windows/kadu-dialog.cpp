@@ -30,10 +30,10 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-#include "widgets/dialog/dialog-widget.h"
-#include "widgets/dialog/title-widget.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "widgets/dialog/dialog-widget.h"
+#include "widgets/dialog/title-widget.h"
 
 #include "kadu-dialog.h"
 

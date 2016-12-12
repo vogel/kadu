@@ -27,12 +27,12 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/myself.h"
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
 #include "roster/roster.h"
+#include "windows/message-dialog.h"
 
 #include <QtWidgets/QMessageBox>
 

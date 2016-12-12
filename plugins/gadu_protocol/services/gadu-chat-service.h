@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include <libgadu.h>
 #include <injeqt/injeqt.h>
+#include <libgadu.h>
 
 #include "message/message-common.h"
 #include "protocols/protocol.h"

@@ -19,9 +19,6 @@
 
 #include "actions-module.h"
 
-#include "actions/chat/add-conference-action.h"
-#include "actions/chat/add-room-chat-action.h"
-#include "actions/chat/leave-chat-action.h"
 #include "actions/chat-widget/auto-send-action.h"
 #include "actions/chat-widget/block-user-action.h"
 #include "actions/chat-widget/bold-action.h"
@@ -33,6 +30,9 @@
 #include "actions/chat-widget/open-chat-with-action.h"
 #include "actions/chat-widget/send-action.h"
 #include "actions/chat-widget/underline-action.h"
+#include "actions/chat/add-conference-action.h"
+#include "actions/chat/add-room-chat-action.h"
+#include "actions/chat/leave-chat-action.h"
 #include "actions/main/change-status-action.h"
 #include "actions/main/default-proxy-action.h"
 #include "actions/main/exit-action.h"

@@ -25,9 +25,6 @@
 
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
-#include "widgets/categorized-list-view-painter.h"
-#include "widgets/categorized-list-view.h"
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/categorized-sort-filter-proxy-model.h"
@@ -38,6 +35,9 @@
 #include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/plugin-dependency-handler.h"
+#include "widgets/categorized-list-view-painter.h"
+#include "widgets/categorized-list-view.h"
+#include "windows/message-dialog.h"
 
 #include <QtGui/QPainter>
 #include <QtWidgets/QApplication>

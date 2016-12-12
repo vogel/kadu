@@ -26,8 +26,8 @@
 #include <QtWidgets/QMenu>
 
 #include "accounts/account-manager.h"
-#include "contacts/contact-manager.h"
 #include "actions/actions.h"
+#include "contacts/contact-manager.h"
 #include "menu/menu-inventory.h"
 #include "misc/paths-provider.h"
 #include "plugin/plugin-injected-factory.h"

@@ -21,9 +21,9 @@
 #pragma once
 
 #include "buddies/buddy.h"
+#include "message/message.h"
 #include "widgets/kadu-tree-view-delegate.h"
 #include "widgets/talkable-delegate-configuration.h"
-#include "message/message.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>

@@ -23,9 +23,9 @@
 #include <QtWidgets/QRadioButton>
 
 #include "accounts/account-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "widgets/protocols-combo-box.h"
 #include "windows/your-accounts.h"
-#include "plugin/plugin-injected-factory.h"
 
 #include "config-wizard-choose-network-page.h"
 

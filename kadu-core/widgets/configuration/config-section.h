@@ -23,9 +23,9 @@
 
 #pragma once
 
+#include "icons/kadu-icon.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "widgets/configuration/kadu-tab-widget.h"
-#include "icons/kadu-icon.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>

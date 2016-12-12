@@ -27,9 +27,9 @@
 #include <QtCore/QPointer>
 #include <QtCore/QStringList>
 #include <QtGui/QColor>
+#include <injeqt/injeqt.h>
 #include <map>
 #include <memory>
-#include <injeqt/injeqt.h>
 
 class AdiumStyleEngine;
 class ChatConfigurationHolder;

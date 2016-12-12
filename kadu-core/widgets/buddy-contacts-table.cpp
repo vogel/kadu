@@ -28,14 +28,14 @@
 #include <QtWidgets/QTableView>
 
 #include "core/injected-factory.h"
+#include "icons/icons-manager.h"
+#include "identities/identity.h"
+#include "model/roles.h"
 #include "widgets/buddy-contacts-table-delegate.h"
 #include "widgets/buddy-contacts-table-item.h"
 #include "widgets/buddy-contacts-table-model-proxy.h"
 #include "widgets/buddy-contacts-table-model.h"
 #include "windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "identities/identity.h"
-#include "model/roles.h"
 
 #include "buddy-contacts-table.h"
 

@@ -23,8 +23,8 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/injected-factory.h"
 #include "actions/action.h"
+#include "core/injected-factory.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 #include "widgets/recent-chats-menu.h"
 

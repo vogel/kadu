@@ -33,12 +33,12 @@
 #include "dom/dom-processor-service.h"
 #include "dom/dom-processor.h"
 #include "dom/ignore-links-dom-visitor.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-container.h"
 #include "url-handlers/simple-url-expander.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
 
 #include "jabber-url-handler.h"
 

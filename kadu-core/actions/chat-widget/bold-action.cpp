@@ -20,11 +20,11 @@
 #include "bold-action.h"
 
 #include "actions/action.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 #include "widgets/chat-edit-box.h"
 #include "widgets/chat-widget/chat-widget.h"
 #include "widgets/custom-input.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocol.h"
 
 BoldAction::BoldAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

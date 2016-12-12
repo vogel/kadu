@@ -25,6 +25,8 @@
 #include <QtWidgets/QMenu>
 
 #include "accounts/account-manager.h"
+#include "actions/action.h"
+#include "actions/actions.h"
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
 #include "configuration/configuration-api.h"
@@ -34,8 +36,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
 #include "core/session-service.h"
-#include "actions/action.h"
-#include "actions/actions.h"
 #include "gui/configuration/toolbar-configuration-manager.h"
 #include "widgets/talkable-tree-view.h"
 #include "widgets/toolbar.h"

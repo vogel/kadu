@@ -24,8 +24,8 @@
 
 #include "accounts/account.h"
 #include "core/injected-factory.h"
-#include "widgets/accounts-combo-box.h"
 #include "model/roles.h"
+#include "widgets/accounts-combo-box.h"
 
 #include <QtCore/QEvent>
 #include <QtWidgets/QComboBox>

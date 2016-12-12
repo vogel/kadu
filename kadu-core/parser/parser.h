@@ -27,8 +27,8 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
-#include <functional>
 #include <injeqt/injeqt.h>
+#include <functional>
 
 template<typename T> class QStack;
 

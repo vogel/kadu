@@ -25,10 +25,10 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
-#include "notification/notification.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-service.h"
+#include "notification/notification.h"
 
 FirewallNotificationService::FirewallNotificationService(QObject *parent) :
 		QObject{parent},

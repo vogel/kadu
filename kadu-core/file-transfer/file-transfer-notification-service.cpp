@@ -30,12 +30,12 @@
 #include "html/html-string.h"
 #include "html/normalized-html-string.h"
 #include "identities/identity.h"
-#include "notification/notification.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-service.h"
+#include "notification/notification.h"
 
 FileTransferNotificationService::FileTransferNotificationService(QObject *parent) :
 		QObject{parent},

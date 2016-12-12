@@ -24,10 +24,10 @@
 #include "chat/chat-manager.h"
 #include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact.h"
-#include "widgets/chat-widget/chat-widget-repository.h"
-#include "widgets/chat-widget/chat-widget.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "widgets/chat-widget/chat-widget.h"
 
 void OtrMessageEventService::wrapperOtrHandleMessageEvent(void *data, OtrlMessageEvent event, ConnContext *context, const char *message, gcry_error_t error)
 {

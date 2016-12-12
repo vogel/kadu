@@ -27,8 +27,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtWidgets/QToolButton>
-#include <functional>
 #include <injeqt/injeqt.h>
+#include <functional>
 
 #include "configuration/configuration-aware-object.h"
 #include "icons/kadu-icon.h"

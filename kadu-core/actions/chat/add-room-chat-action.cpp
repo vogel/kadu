@@ -21,8 +21,8 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/injected-factory.h"
 #include "actions/action.h"
+#include "core/injected-factory.h"
 
 #include "windows/add-room-chat-window.h"
 

@@ -19,12 +19,12 @@
 
 #include "chat-widget-state-persistence-service.h"
 
-#include "widgets/chat-widget/chat-widget-repository.h"
-#include "widgets/chat-widget/chat-widget.h"
-#include "widgets/custom-input.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "html/normalized-html-string.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "widgets/chat-widget/chat-widget.h"
+#include "widgets/custom-input.h"
 
 ChatWidgetStatePersistenceService::ChatWidgetStatePersistenceService()
 {

@@ -27,10 +27,10 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "misc/paths-provider.h"
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
 #include "debug.h"
 
 #include <QtWidgets/QFormLayout>

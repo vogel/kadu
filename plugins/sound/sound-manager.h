@@ -22,9 +22,9 @@
 
 #include "sound-exports.h"
 
-#include <injeqt/injeqt.h>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
+#include <injeqt/injeqt.h>
 
 class Configuration;
 class SoundPlayer;

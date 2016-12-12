@@ -20,8 +20,8 @@
 #include "chat-widget-set-title.h"
 
 #include "chat/chat.h"
-#include "widgets/chat-widget/chat-widget.h"
 #include "widgets/chat-widget/chat-widget-title.h"
+#include "widgets/chat-widget/chat-widget.h"
 
 ChatWidgetSetTitle::ChatWidgetSetTitle(QObject *parent) :
 		QObject{parent}

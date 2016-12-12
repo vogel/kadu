@@ -36,9 +36,9 @@
 #include "misc/paths-provider.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
-#include "notification/notification.h"
-#include "notification/notification-event.h"
 #include "notification/notification-event-repository.h"
+#include "notification/notification-event.h"
+#include "notification/notification.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "freedesktop-notifier.h"

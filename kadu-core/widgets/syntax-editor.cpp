@@ -27,9 +27,9 @@
 #include <QtWidgets/QPushButton>
 
 #include "core/injected-factory.h"
-#include "windows/message-dialog.h"
 #include "misc/paths-provider.h"
 #include "misc/syntax-list.h"
+#include "windows/message-dialog.h"
 
 #include "syntax-editor.h"
 

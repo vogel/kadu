@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include "widgets/webkit-messages-view/message-limiter.h"
 #include "message/message.h"
 #include "message/sorted-messages.h"
 #include "misc/memory.h"
 #include "protocols/services/chat-state-service.h"
+#include "widgets/webkit-messages-view/message-limiter.h"
 #include "exports.h"
 
 #include <QtCore/QObject>

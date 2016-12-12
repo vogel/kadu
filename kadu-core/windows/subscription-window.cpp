@@ -26,12 +26,12 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "core/injected-factory.h"
-#include "windows/add-buddy-window.h"
 #include "icons/icons-manager.h"
 #include "model/roles.h"
 #include "plugin/plugin-injected-factory.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
+#include "windows/add-buddy-window.h"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialogButtonBox>

@@ -22,13 +22,13 @@
 #include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
-#include "widgets/chat-widget/chat-widget-repository.h"
-#include "widgets/chat-widget/chat-widget.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "notification/notification-event.h"
 #include "notification/notification-service.h"
 #include "notification/notification.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "widgets/chat-widget/chat-widget.h"
 
 #include "otr-notifier.h"
 

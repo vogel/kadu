@@ -19,14 +19,14 @@
 
 #include "status-module.h"
 
-#include "windows/status-window-service.h"
-#include "status/remote-status-request-handler.h"
 #include "status/all-accounts-status-container.h"
 #include "status/description-manager.h"
+#include "status/remote-status-request-handler.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-notification-service.h"
 #include "status/status-setter.h"
 #include "status/status-type-manager.h"
+#include "windows/status-window-service.h"
 
 StatusModule::StatusModule()
 {

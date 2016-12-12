@@ -26,14 +26,14 @@
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/injected-factory.h"
 #include "menu/menu-inventory.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
-#include "notification/notification-callback.h"
 #include "notification/notification-callback-repository.h"
+#include "notification/notification-callback.h"
 #include "notification/notification-dispatcher.h"
 #include "notification/notification.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/silent-mode-service.h"
 #include "parser/parser.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
 
 #include "notification-service.h"
 

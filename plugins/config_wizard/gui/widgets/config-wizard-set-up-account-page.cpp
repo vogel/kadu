@@ -24,10 +24,10 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "core/myself.h"
+#include "protocols/protocol-factory.h"
 #include "widgets/account-add-widget.h"
 #include "widgets/account-create-widget.h"
 #include "windows/your-accounts.h"
-#include "protocols/protocol-factory.h"
 
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QFormLayout>

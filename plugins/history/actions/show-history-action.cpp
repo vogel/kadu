@@ -22,17 +22,17 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
+#include "actions/action.h"
+#include "actions/actions.h"
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "actions/actions.h"
-#include "actions/action.h"
+#include "message/sorted-messages.h"
+#include "plugin/plugin-injected-factory.h"
 #include "widgets/chat-edit-box.h"
 #include "widgets/chat-widget/chat-widget.h"
 #include "widgets/webkit-messages-view/webkit-messages-view.h"
-#include "message/sorted-messages.h"
-#include "plugin/plugin-injected-factory.h"
 
 #include "gui/windows/history-window-service.h"
 #include "gui/windows/history-window.h"

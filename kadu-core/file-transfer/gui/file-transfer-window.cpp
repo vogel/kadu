@@ -24,8 +24,8 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/gui/file-transfer-widget.h"
-#include "windows/main-window-repository.h"
 #include "os/generic/window-geometry-manager.h"
+#include "windows/main-window-repository.h"
 
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>

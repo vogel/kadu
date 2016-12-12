@@ -42,7 +42,6 @@
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
-#include "windows/message-dialog.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "message/message-storage.h"
@@ -50,6 +49,7 @@
 #include "message/raw-message.h"
 #include "misc/misc.h"
 #include "services/raw-message-transformer-service.h"
+#include "windows/message-dialog.h"
 #include "debug.h"
 
 #include <QtGui/QTextDocument>

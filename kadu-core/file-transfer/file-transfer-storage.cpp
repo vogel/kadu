@@ -19,9 +19,9 @@
 
 #include "file-transfer-storage.h"
 
+#include "core/injected-factory.h"
 #include "file-transfer/file-transfer-shared.h"
 #include "file-transfer/file-transfer.h"
-#include "core/injected-factory.h"
 
 #include <QtWidgets/QApplication>
 

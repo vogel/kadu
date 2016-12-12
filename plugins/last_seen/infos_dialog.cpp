@@ -23,12 +23,12 @@
 
 #include "infos.h"
 
+#include "actions/base-action-context.h"
 #include "chat/chat-manager.h"
 #include "chat/chat-storage.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "contacts/contact-manager.h"
-#include "actions/base-action-context.h"
 #include "menu/menu-inventory.h"
 #include "model/roles.h"
 #include "os/generic/window-geometry-manager.h"

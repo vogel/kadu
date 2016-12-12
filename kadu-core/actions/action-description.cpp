@@ -21,9 +21,9 @@
 
 #include "action-description.h"
 
-#include "core/injected-factory.h"
-#include "configuration/configuration.h"
 #include "actions/action.h"
+#include "configuration/configuration.h"
+#include "core/injected-factory.h"
 #include "gui/hot-key.h"
 #include "windows/main-window.h"
 

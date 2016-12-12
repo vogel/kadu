@@ -25,10 +25,6 @@
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
-#include "widgets/chat-widget/chat-widget-repository.h"
-#include "widgets/chat-widget/chat-widget.h"
-#include "windows/main-configuration-window.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "message/message-filter-service.h"
@@ -38,6 +34,10 @@
 #include "status/status-type-data.h"
 #include "status/status-type-group.h"
 #include "status/status-type-manager.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "widgets/chat-widget/chat-widget.h"
+#include "windows/main-configuration-window.h"
 #include "debug.h"
 
 #include <QtWidgets/QApplication>

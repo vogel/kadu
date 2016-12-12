@@ -19,8 +19,8 @@
 
 #include "gadu-module.h"
 
-#include "server/gadu-servers-manager.h"
 #include "helpers/gadu-list-helper.h"
+#include "server/gadu-servers-manager.h"
 #include "gadu-plugin-object.h"
 #include "gadu-protocol-factory.h"
 #include "gadu-url-dom-visitor-provider.h"

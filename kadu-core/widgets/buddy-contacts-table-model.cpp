@@ -24,8 +24,6 @@
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
-#include "widgets/buddy-contacts-table-item.h"
-#include "widgets/simple-configuration-value-state-notifier.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
@@ -35,6 +33,8 @@
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
 #include "roster/roster.h"
+#include "widgets/buddy-contacts-table-item.h"
+#include "widgets/simple-configuration-value-state-notifier.h"
 
 #include <QtGui/QColor>
 #include <QtGui/QIcon>

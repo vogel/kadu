@@ -19,11 +19,11 @@
 
 #include "add-group-action.h"
 
-#include "buddies/group.h"
-#include "core/injected-factory.h"
-#include "actions/actions.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
+#include "actions/actions.h"
+#include "buddies/group.h"
+#include "core/injected-factory.h"
 #include "windows/group-edit-window.h"
 
 AddGroupAction::AddGroupAction(QObject *parent) :

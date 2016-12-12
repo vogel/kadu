@@ -21,11 +21,11 @@
 
 #include "history.h"
 
+#include "actions/action-context.h"
+#include "actions/action.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
 #include "core/myself.h"
-#include "actions/action-context.h"
-#include "actions/action.h"
 #include "talkable/talkable.h"
 
 ClearHistoryAction::ClearHistoryAction(QObject *parent) :

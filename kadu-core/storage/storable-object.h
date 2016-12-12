@@ -29,8 +29,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QVariant>
-#include <memory>
 #include <injeqt/injeqt.h>
+#include <memory>
 
 #define PROPERTY_DEC(type, fieldName) \
 	type fieldName;

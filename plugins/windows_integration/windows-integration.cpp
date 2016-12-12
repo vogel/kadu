@@ -23,11 +23,11 @@
 #include "windows-thumbnail-toolbar.h"
 
 #include "file-transfer/file-transfer-manager.h"
-#include "windows/main-window-repository.h"
 #include "misc/memory.h"
 #include "plugin/plugin-injected-factory.h"
 #include "status/status-actions.h"
 #include "status/status-container-manager.h"
+#include "windows/main-window-repository.h"
 
 #include <QtWidgets/QWidget>
 

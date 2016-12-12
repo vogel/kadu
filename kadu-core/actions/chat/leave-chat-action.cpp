@@ -21,15 +21,15 @@
 
 #include "leave-chat-action.h"
 
-#include "chat/chat.h"
 #include "actions/action-context.h"
+#include "chat/chat.h"
+#include "icons/icons-manager.h"
+#include "protocols/protocol.h"
+#include "protocols/services/chat-service.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 #include "widgets/chat-widget/chat-widget-repository.h"
 #include "widgets/chat-widget/chat-widget.h"
 #include "windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "protocols/protocol.h"
-#include "protocols/services/chat-service.h"
 
 LeaveChatAction::LeaveChatAction(QObject *parent) :
 		ActionDescription(parent)

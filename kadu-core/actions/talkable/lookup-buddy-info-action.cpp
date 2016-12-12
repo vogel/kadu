@@ -19,14 +19,14 @@
 
 #include "lookup-buddy-info-action.h"
 
-#include "buddies/buddy-set.h"
-#include "core/injected-factory.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
+#include "buddies/buddy-set.h"
+#include "core/injected-factory.h"
+#include "protocols/protocol.h"
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 #include "windows/search-window.h"
-#include "protocols/protocol.h"
 
 LookupBuddyInfoAction::LookupBuddyInfoAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

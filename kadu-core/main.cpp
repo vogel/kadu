@@ -47,8 +47,6 @@
 #include "file-transfer/file-transfer-module.h"
 #include "formatted-string/formatted-string-module.h"
 #include "gui/gui-module.h"
-#include "widgets/chat-widget/chat-widget-module.h"
-#include "windows/chat-window/chat-window-module.h"
 #include "icons/icons-module.h"
 #include "identities/identity-module.h"
 #include "message/message-module.h"
@@ -66,6 +64,8 @@
 #include "status/status-module.h"
 #include "talkable/talkable-module.h"
 #include "themes/themes-module.h"
+#include "widgets/chat-widget/chat-widget-module.h"
+#include "windows/chat-window/chat-window-module.h"
 #include "kadu-config.h"
 
 #include <QtCore/QCoreApplication>

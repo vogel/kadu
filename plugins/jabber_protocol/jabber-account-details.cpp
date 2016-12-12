@@ -21,10 +21,10 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
-#include "windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "misc/misc.h"
-#include "plugin/plugin-injected-factory.h"
 #include "os/generic/system-info.h"
+#include "plugin/plugin-injected-factory.h"
+#include "windows/open-chat-with/open-chat-with-runner-manager.h"
 
 #include "jabber-protocol.h"
 

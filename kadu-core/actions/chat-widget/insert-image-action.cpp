@@ -20,8 +20,8 @@
 #include "insert-image-action.h"
 
 #include "actions/action.h"
-#include "widgets/chat-edit-box.h"
 #include "protocols/protocol.h"
+#include "widgets/chat-edit-box.h"
 
 #include <QtWidgets/QMenu>
 

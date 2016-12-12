@@ -26,14 +26,14 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
-#include "widgets/identities-combo-box.h"
-#include "widgets/simple-configuration-value-state-notifier.h"
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "os/generic/url-opener.h"
 #include "plugin/plugin-injected-factory.h"
 #include "protocols/protocols-manager.h"
+#include "widgets/identities-combo-box.h"
+#include "widgets/simple-configuration-value-state-notifier.h"
+#include "windows/message-dialog.h"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>

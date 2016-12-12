@@ -20,8 +20,8 @@
 #include "jabber-room-chat-service.h"
 
 #include "services/jabber-presence-service.h"
-#include "jabber-room-chat.h"
 #include "jabber-protocol.h"
+#include "jabber-room-chat.h"
 #include "jid.h"
 
 #include "buddies/buddy-manager.h"

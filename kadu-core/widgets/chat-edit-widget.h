@@ -23,8 +23,8 @@
 #include <QtWidgets/QWidget>
 
 #include "chat/chat.h"
-#include "widgets/modal-configuration-widget.h"
 #include "misc/memory.h"
+#include "widgets/modal-configuration-widget.h"
 #include "exports.h"
 
 class SimpleConfigurationValueStateNotifier;

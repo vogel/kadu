@@ -30,9 +30,9 @@
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "services/jabber-servers-service.h"
 #include "facebook-depreceated-message.h"
+#include "gtalk-protocol-factory.h"
 #include "jabber-account-details.h"
 #include "jabber-id-validator.h"
-#include "gtalk-protocol-factory.h"
 #include "jabber-protocol.h"
 #include "jabber-status-adapter.h"
 

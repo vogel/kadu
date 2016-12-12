@@ -1,8 +1,8 @@
 #pragma once
 
 #include "chat/chat.h"
-#include "windows/main-configuration-window.h"
 #include "notification/notifier.h"
+#include "windows/main-configuration-window.h"
 
 #include "docking-notify-configuration-widget.h"
 

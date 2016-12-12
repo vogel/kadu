@@ -38,8 +38,8 @@
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 
-#include "buddy.h"
 #include <QtWidgets/qapplication.h>
+#include "buddy.h"
 
 KaduSharedBaseClassImpl(Buddy)
 

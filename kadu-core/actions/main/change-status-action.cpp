@@ -21,9 +21,9 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
-#include "core/injected-factory.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
+#include "core/injected-factory.h"
 #include "gui/status-icon.h"
 #include "widgets/status-menu.h"
 

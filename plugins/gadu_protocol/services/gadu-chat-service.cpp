@@ -36,7 +36,6 @@
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-is-plain-text-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
-#include "windows/message-dialog.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "icons/icons-manager.h"
@@ -46,6 +45,7 @@
 #include "services/image-storage-service.h"
 #include "services/raw-message-transformer-service.h"
 #include "status/status-type.h"
+#include "windows/message-dialog.h"
 #include "debug.h"
 
 #include "helpers/formatted-string-gadu-html-visitor.h"

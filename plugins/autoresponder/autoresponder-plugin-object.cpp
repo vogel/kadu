@@ -23,10 +23,10 @@
 #include "autoresponder-message-filter.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "message/message-filter-service.h"
+#include "misc/paths-provider.h"
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
-#include "message/message-filter-service.h"
 
 AutoresponderPluginObject::AutoresponderPluginObject(QObject *parent) :
 		QObject{parent}

@@ -30,8 +30,8 @@
 #include "exports.h"
 
 #include <QtCore/QItemSelection>
-#include <QtCore/QPointer>
 #include <QtCore/QModelIndex>
+#include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 

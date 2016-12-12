@@ -29,8 +29,8 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QWidget>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 
 class AccountManager;

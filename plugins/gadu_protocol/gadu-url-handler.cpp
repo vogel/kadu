@@ -30,11 +30,11 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-container.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
 
 #include "gadu-url-handler.h"
 

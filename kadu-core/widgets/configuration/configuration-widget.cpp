@@ -35,6 +35,8 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
+#include "icons/kadu-icon.h"
+#include "misc/paths-provider.h"
 #include "widgets/configuration/config-action-button.h"
 #include "widgets/configuration/config-check-box.h"
 #include "widgets/configuration/config-color-button.h"
@@ -58,8 +60,6 @@
 #include "widgets/configuration/config-widget.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/configuration-window.h"
-#include "icons/kadu-icon.h"
-#include "misc/paths-provider.h"
 
 #include "debug.h"
 

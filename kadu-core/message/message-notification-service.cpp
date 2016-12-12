@@ -21,16 +21,16 @@
 
 #include "accounts/account.h"
 #include "chat/chat.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "message/message.h"
-#include "notification/notification.h"
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
 #include "notification/notification-event-repository.h"
 #include "notification/notification-event.h"
 #include "notification/notification-service.h"
+#include "notification/notification.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
 
 MessageNotificationService::MessageNotificationService(QObject *parent) :
 		QObject{parent},

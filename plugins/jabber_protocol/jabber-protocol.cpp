@@ -52,13 +52,13 @@
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "core/version-service.h"
-#include "windows/message-dialog.h"
 #include "misc/memory.h"
 #include "os/generic/system-info.h"
 #include "plugin/plugin-injected-factory.h"
 #include "protocols/protocols-manager.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
+#include "windows/message-dialog.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtNetwork/QAbstractSocket>
@@ -68,8 +68,8 @@
 #include <qxmpp/QXmppMucManager.h>
 #include <qxmpp/QXmppRosterManager.h>
 #include <qxmpp/QXmppTransferManager.h>
-#include <qxmpp/QXmppVersionManager.h>
 #include <qxmpp/QXmppVCardManager.h>
+#include <qxmpp/QXmppVersionManager.h>
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol{account, factory},

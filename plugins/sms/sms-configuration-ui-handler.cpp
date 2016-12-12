@@ -35,6 +35,7 @@
 #include "core/core.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
+#include "icons/icons-manager.h"
 #include "widgets/configuration/config-combo-box.h"
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-line-edit.h"
@@ -42,7 +43,6 @@
 #include "windows/kadu-window.h"
 #include "windows/main-configuration-window.h"
 #include "windows/message-dialog.h"
-#include "icons/icons-manager.h"
 #include "debug.h"
 
 #include "misc/paths-provider.h"

@@ -19,11 +19,11 @@
 
 #include "merge-buddies-action.h"
 
+#include "actions/action-context.h"
+#include "actions/action.h"
 #include "buddies/buddy-set.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
-#include "actions/action-context.h"
-#include "actions/action.h"
 #include "widgets/dialog/merge-buddies-dialog-widget.h"
 #include "windows/kadu-dialog.h"
 

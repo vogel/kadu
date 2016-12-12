@@ -28,11 +28,6 @@
 #include "chat/type/chat-type-contact-set.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/injected-factory.h"
-#include "widgets/account-buddy-list-widget.h"
-#include "widgets/accounts-combo-box.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
-#include "widgets/filtered-tree-view.h"
-#include "widgets/talkable-tree-view.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/model-chain.h"
@@ -42,6 +37,11 @@
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
+#include "widgets/account-buddy-list-widget.h"
+#include "widgets/accounts-combo-box.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
+#include "widgets/filtered-tree-view.h"
+#include "widgets/talkable-tree-view.h"
 // will be used when Qt 4.8 .is required
 // #include "buddies/model/checkable-buddies-proxy-model.h"
 

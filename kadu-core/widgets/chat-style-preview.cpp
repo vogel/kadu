@@ -27,12 +27,12 @@
 #include "contacts/contact-storage.h"
 #include "core/myself.h"
 #include "gui/configuration/chat-configuration-holder.h"
-#include "widgets/webkit-messages-view/webkit-messages-view-factory.h"
-#include "widgets/webkit-messages-view/webkit-messages-view.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "html/normalized-html-string.h"
 #include "message/message-storage.h"
+#include "widgets/webkit-messages-view/webkit-messages-view-factory.h"
+#include "widgets/webkit-messages-view/webkit-messages-view.h"
 
 #include <QtWidgets/QHBoxLayout>
 

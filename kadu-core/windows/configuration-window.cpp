@@ -35,6 +35,7 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-manager.h"
 #include "core/injected-factory.h"
+#include "os/generic/window-geometry-manager.h"
 #include "widgets/configuration/config-action-button.h"
 #include "widgets/configuration/config-check-box.h"
 #include "widgets/configuration/config-color-button.h"
@@ -58,7 +59,6 @@
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/configuration-window.h"
 #include "windows/kadu-window.h"
-#include "os/generic/window-geometry-manager.h"
 
 #include "activate.h"
 

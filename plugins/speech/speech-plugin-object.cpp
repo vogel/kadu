@@ -19,14 +19,14 @@
 
 #include "speech-plugin-object.h"
 
-#include "speech.h"
 #include "speech-configuration-ui-handler.h"
+#include "speech.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "windows/main-configuration-window-service.h"
-#include "windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "notification/notifier-repository.h"
+#include "windows/main-configuration-window-service.h"
+#include "windows/main-configuration-window.h"
 
 SpeechPluginObject::SpeechPluginObject(QObject *parent) :
 		QObject{parent}

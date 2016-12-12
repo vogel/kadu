@@ -24,8 +24,8 @@
 #include "preview.h"
 
 #include "buddies/buddy-dummy-factory.h"
-#include "widgets/kadu-web-view.h"
 #include "parser/parser.h"
+#include "widgets/kadu-web-view.h"
 
 #include <QtWidgets/QHBoxLayout>
 

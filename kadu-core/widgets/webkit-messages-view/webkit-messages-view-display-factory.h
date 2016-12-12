@@ -23,8 +23,8 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <memory>
 #include <injeqt/injeqt.h>
+#include <memory>
 
 class ChatStyleManager;
 class ChatStyleRenderer;

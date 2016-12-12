@@ -19,13 +19,13 @@
 
 #include "show-myself-action.h"
 
+#include "actions/action.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "actions/action.h"
-#include "windows/kadu-window-service.h"
-#include "windows/kadu-window.h"
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 
 ShowMyselfAction::ShowMyselfAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

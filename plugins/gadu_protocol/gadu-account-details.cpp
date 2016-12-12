@@ -22,10 +22,10 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "windows/open-chat-with/open-chat-with-runner-manager.h"
-#include "windows/open-chat-with/open-chat-with-runner.h"
 #include "misc/misc.h"
 #include "plugin/plugin-injected-factory.h"
+#include "windows/open-chat-with/open-chat-with-runner-manager.h"
+#include "windows/open-chat-with/open-chat-with-runner.h"
 
 #include "gadu-account-details.h"
 

@@ -28,10 +28,10 @@
 #include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 
+#include "actions/action.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
 #include "configuration/gui/configuration-ui-handler.h"
-#include "actions/action.h"
 
 #include "sms_exports.h"
 

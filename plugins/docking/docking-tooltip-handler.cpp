@@ -19,8 +19,8 @@
 
 #include "docking-tooltip-handler.h"
 
-#include "docking-configuration.h"
 #include "docking-configuration-provider.h"
+#include "docking-configuration.h"
 #include "status-notifier-item.h"
 
 #include "status/status-container-manager.h"

@@ -20,8 +20,8 @@
 #pragma once
 
 #include "chat/chat.h"
-#include "widgets/chat-widget/chat-widget-repository.h"
 #include "misc/iterator.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
 #include "exports.h"
 
 #include <QtCore/QObject>

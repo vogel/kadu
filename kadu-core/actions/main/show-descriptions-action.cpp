@@ -19,9 +19,9 @@
 
 #include "show-descriptions-action.h"
 
+#include "actions/action.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "actions/action.h"
 
 ShowDescriptionsAction::ShowDescriptionsAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

@@ -28,15 +28,12 @@
 
 #include "docking-configuration-provider.h"
 #include "docking-menu-handler.h"
-#include "status-notifier-item.h"
 #include "status-notifier-item-attention-mode.h"
 #include "status-notifier-item-configuration.h"
+#include "status-notifier-item.h"
 
 #include "core/session-service.h"
 #include "gui/status-icon.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
-#include "windows/kadu-window-service.h"
-#include "windows/kadu-window.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message.h"
@@ -44,6 +41,9 @@
 #include "plugin/plugin-injected-factory.h"
 #include "provider/default-provider.h"
 #include "status/status-container-manager.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 #include "activate.h"
 #include "attention-service.h"
 

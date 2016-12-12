@@ -19,9 +19,9 @@
 
 #include "auto-hide-module.h"
 
-#include "auto-hide.h"
 #include "auto-hide-configuration-ui-handler.h"
 #include "auto-hide-plugin-object.h"
+#include "auto-hide.h"
 
 AutoHideModule::AutoHideModule()
 {

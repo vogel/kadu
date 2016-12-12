@@ -29,16 +29,16 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
+#include "icons/icons-manager.h"
+#include "identities/identity-manager.h"
+#include "plugin/plugin-injected-factory.h"
+#include "protocols/services/avatar-service.h"
 #include "widgets/account-avatar-widget.h"
 #include "widgets/account-buddy-list-widget.h"
 #include "widgets/account-configuration-widget-tab-adapter.h"
 #include "widgets/proxy-combo-box.h"
 #include "widgets/simple-configuration-value-state-notifier.h"
 #include "windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "identities/identity-manager.h"
-#include "plugin/plugin-injected-factory.h"
-#include "protocols/services/avatar-service.h"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>

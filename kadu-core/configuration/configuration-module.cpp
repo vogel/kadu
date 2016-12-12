@@ -19,12 +19,12 @@
 
 #include "configuration-module.h"
 
-#include "configuration/gui/configuration-ui-handler-repository.h"
 #include "configuration/configuration-factory.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration-path-provider.h"
 #include "configuration/configuration-writer.h"
 #include "configuration/configuration.h"
+#include "configuration/gui/configuration-ui-handler-repository.h"
 
 ConfigurationModule::ConfigurationModule()
 {

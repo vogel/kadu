@@ -31,9 +31,9 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "windows/message-dialog.h"
 
 #include "progress-window.h"
 

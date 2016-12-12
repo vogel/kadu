@@ -19,9 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "model/roles.h"
 #include "widgets/buddy-contacts-table-item.h"
 #include "widgets/buddy-contacts-table-model.h"
-#include "model/roles.h"
 
 #include "buddy-contacts-table-model-proxy.h"
 

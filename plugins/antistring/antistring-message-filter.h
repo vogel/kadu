@@ -21,8 +21,8 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
-#include "windows/main-configuration-window.h"
 #include "message/message-filter.h"
+#include "windows/main-configuration-window.h"
 
 #include <injeqt/injeqt.h>
 

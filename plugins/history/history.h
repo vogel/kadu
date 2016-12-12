@@ -38,11 +38,11 @@
 #include <QtWidgets/QListWidget>
 #include <injeqt/injeqt.h>
 
+#include "actions/action-description.h"
+#include "actions/action.h"
 #include "configuration/configuration-aware-object.h"
 #include "configuration/gui/configuration-ui-handler.h"
 #include "core/crash-aware-object.h"
-#include "actions/action-description.h"
-#include "actions/action.h"
 #include "message/message.h"
 #include "protocols/protocol.h"
 #include "storage/history-storage.h"

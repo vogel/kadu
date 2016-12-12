@@ -19,9 +19,9 @@
 
 #include "auto-send-action.h"
 
+#include "actions/action.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "actions/action.h"
 #include "gui/configuration/chat-configuration-holder.h"
 
 AutoSendAction::AutoSendAction(QObject *parent) :

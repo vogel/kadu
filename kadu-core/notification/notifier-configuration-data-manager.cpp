@@ -20,8 +20,8 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
-#include "windows/configuration-window.h"
 #include "plugin/plugin-injected-factory.h"
+#include "windows/configuration-window.h"
 
 #include "notifier-configuration-data-manager.h"
 

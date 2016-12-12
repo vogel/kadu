@@ -29,11 +29,11 @@
 #include "gui/widgets/gadu-contact-personal-info-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "helpers/gadu-list-helper.h"
+#include "plugin/plugin-injected-factory.h"
 #include "gadu-account-details.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol.h"
 #include "gadu-status-adapter.h"
-#include "plugin/plugin-injected-factory.h"
 
 #include "gadu-protocol-factory.h"
 

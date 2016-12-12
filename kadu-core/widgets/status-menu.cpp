@@ -27,14 +27,14 @@
 #include <QtWidgets/QMenu>
 
 #include "core/injected-factory.h"
-#include "windows/status-window-service.h"
-#include "windows/status-window.h"
-#include "windows/window-manager.h"
 #include "protocols/protocol.h"
 #include "status/status-actions.h"
 #include "status/status-container.h"
 #include "status/status-setter.h"
 #include "status/status-type.h"
+#include "windows/status-window-service.h"
+#include "windows/status-window.h"
+#include "windows/window-manager.h"
 
 #include "status-menu.h"
 

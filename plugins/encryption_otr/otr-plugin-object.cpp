@@ -34,13 +34,13 @@
 #include "otr-session-service.h"
 #include "otr-trust-level-service.h"
 
-#include "widgets/account-configuration-widget-factory-repository.h"
-#include "widgets/buddy-configuration-widget-factory-repository.h"
-#include "widgets/chat-top-bar-widget-factory-repository.h"
 #include "message/message-manager.h"
 #include "notification/notification-event-repository.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "services/raw-message-transformer-service.h"
+#include "widgets/account-configuration-widget-factory-repository.h"
+#include "widgets/buddy-configuration-widget-factory-repository.h"
+#include "widgets/chat-top-bar-widget-factory-repository.h"
 
 #include <libotr/proto.h>
 

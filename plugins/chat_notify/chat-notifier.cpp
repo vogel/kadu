@@ -23,12 +23,12 @@
 
 #include "contacts/contact-set.h"
 #include "formatted-string/formatted-string-factory.h"
-#include "widgets/chat-widget/chat-widget-repository.h"
-#include "widgets/chat-widget/chat-widget.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "message/message-manager.h"
 #include "notification/notification.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "widgets/chat-widget/chat-widget.h"
 
 ChatNotifier::ChatNotifier(QObject *parent) :
 		QObject{parent},

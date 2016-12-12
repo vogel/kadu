@@ -32,7 +32,6 @@
 #include "accounts/filter/have-multilogon-filter.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/injected-factory.h"
-#include "widgets/accounts-combo-box.h"
 #include "icons/icons-manager.h"
 #include "model/roles.h"
 #include "multilogon/model/multilogon-model.h"
@@ -40,6 +39,7 @@
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/multilogon-service.h"
+#include "widgets/accounts-combo-box.h"
 
 #include "multilogon-window.h"
 

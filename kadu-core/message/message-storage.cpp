@@ -19,9 +19,9 @@
 
 #include "message-storage.h"
 
+#include "core/injected-factory.h"
 #include "message/message-shared.h"
 #include "message/message.h"
-#include "core/injected-factory.h"
 
 #include <QtWidgets/QApplication>
 

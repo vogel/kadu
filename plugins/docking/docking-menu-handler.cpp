@@ -22,13 +22,13 @@
 #include "docking-menu-action-repository.h"
 #include "status-notifier-item.h"
 
-#include "widgets/status-menu.h"
-#include "windows/kadu-window-service.h"
-#include "windows/kadu-window.h"
 #include "icons/icons-manager.h"
 #include "notification/silent-mode-service.h"
 #include "plugin/plugin-injected-factory.h"
 #include "status/status-container-manager.h"
+#include "widgets/status-menu.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 #include "activate.h"
 
 #include <QtWidgets/QApplication>

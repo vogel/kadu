@@ -22,18 +22,18 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
-#include "contacts/contact-set.h"
-#include "actions/actions.h"
 #include "actions/action-description.h"
 #include "actions/action.h"
+#include "actions/actions.h"
+#include "contacts/contact-set.h"
 #include "menu/menu-inventory.h"
+#include "plugin/plugin-injected-factory.h"
+#include "talkable/talkable-converter.h"
 #include "widgets/chat-edit-box.h"
 #include "widgets/chat-widget/chat-widget.h"
 #include "widgets/talkable-tree-view.h"
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
-#include "plugin/plugin-injected-factory.h"
-#include "talkable/talkable-converter.h"
 #include "debug.h"
 
 #include "plugins/history/history.h"

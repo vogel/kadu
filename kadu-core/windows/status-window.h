@@ -26,8 +26,8 @@
 #include "status/status.h"
 #include "exports.h"
 
-#include <QtWidgets/QDialog>
 #include <QtCore/QPointer>
+#include <QtWidgets/QDialog>
 #include <injeqt/injeqt.h>
 
 class QComboBox;

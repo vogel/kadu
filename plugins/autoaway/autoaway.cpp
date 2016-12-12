@@ -29,11 +29,11 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/myself.h"
-#include "widgets/configuration/configuration-widget.h"
-#include "windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "parser/parser.h"
 #include "status/status-changer-manager.h"
+#include "widgets/configuration/configuration-widget.h"
+#include "windows/main-configuration-window.h"
 #include "debug.h"
 
 #include <QtWidgets/QApplication>

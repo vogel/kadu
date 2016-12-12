@@ -19,9 +19,9 @@
 
 #include "open-description-link-action.h"
 
-#include "contacts/contact-set.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
+#include "contacts/contact-set.h"
 #include "os/generic/url-opener.h"
 #include "url-handlers/url-handler-manager.h"
 

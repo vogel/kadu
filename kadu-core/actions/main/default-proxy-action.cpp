@@ -20,13 +20,13 @@
 
 #include "default-proxy-action.h"
 
-#include "core/injected-factory.h"
 #include "actions/action.h"
-#include "windows/proxy-edit-window-service.h"
+#include "core/injected-factory.h"
 #include "model/roles.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
 #include "network/proxy/network-proxy-manager.h"
+#include "windows/proxy-edit-window-service.h"
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>

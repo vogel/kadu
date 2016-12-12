@@ -27,12 +27,18 @@
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolTip>
 
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
 #include "actions/action-description.h"
 #include "actions/action.h"
 #include "actions/actions.h"
+#include "configuration/configuration.h"
+#include "configuration/deprecated-configuration-api.h"
+#include "icons/kadu-icon.h"
 #include "menu/menu-inventory.h"
+#include "notification/notification-event-repository.h"
+#include "notification/notification-event.h"
+#include "notification/notification.h"
+#include "plugin/plugin-injected-factory.h"
+#include "status/status-changer-manager.h"
 #include "widgets/chat-edit-box.h"
 #include "widgets/chat-widget/chat-widget-repository.h"
 #include "widgets/chat-widget/chat-widget.h"
@@ -40,16 +46,10 @@
 #include "widgets/custom-input.h"
 #include "windows/main-configuration-window.h"
 #include "windows/message-dialog.h"
-#include "icons/kadu-icon.h"
-#include "notification/notification-event-repository.h"
-#include "notification/notification.h"
-#include "notification/notification-event.h"
-#include "plugin/plugin-injected-factory.h"
-#include "status/status-changer-manager.h"
 #include "debug.h"
 
-#include "plugins/docking/docking.h"
 #include "plugins/docking/docking-menu-action-repository.h"
+#include "plugins/docking/docking.h"
 
 #include "actions/mediaplayer-menu-action.h"
 #include "actions/next-action.h"
@@ -59,8 +59,8 @@
 #include "actions/toggle-mediaplayer-statuses-action.h"
 #include "actions/volume-down-action.h"
 #include "actions/volume-up-action.h"
-#include "mediaplayer-notification-service.h"
 #include "media-player-status-changer.h"
+#include "mediaplayer-notification-service.h"
 #include "player-commands.h"
 #include "player-info.h"
 

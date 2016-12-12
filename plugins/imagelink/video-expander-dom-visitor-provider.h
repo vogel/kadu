@@ -21,8 +21,8 @@
 
 #include "configuration/image-link-configuration.h"
 
-#include "dom/ignore-links-dom-visitor.h"
 #include "dom/dom-visitor-provider.h"
+#include "dom/ignore-links-dom-visitor.h"
 
 #include <QtCore/QObject>
 

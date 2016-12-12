@@ -57,11 +57,11 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/services/clipboard-html-transformer-service.h"
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
 #include "url-handlers/url-handler-manager.h"
+#include "windows/message-dialog.h"
 #include "debug.h"
 
 #include "kadu-web-view.h"

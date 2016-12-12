@@ -22,10 +22,10 @@
 #include "avatars/avatar.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
 #include "message/message.h"
 #include "message/unread-message-repository.h"
 #include "status/status-container-manager.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
 
 #include <libqmessagingmenu/qmessaging-menu-app.h>
 #include <libqmessagingmenu/qmessaging-menu-source.h>

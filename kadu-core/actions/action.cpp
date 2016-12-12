@@ -24,10 +24,10 @@
 #include <QtWidgets/QMenu>
 
 #include "accounts/account-manager.h"
-#include "buddies/buddy-set.h"
-#include "buddies/buddy.h"
 #include "actions/action-context.h"
 #include "actions/action-description.h"
+#include "buddies/buddy-set.h"
+#include "buddies/buddy.h"
 #include "gui/hot-key.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"

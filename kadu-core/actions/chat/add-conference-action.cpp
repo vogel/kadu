@@ -21,9 +21,9 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/injected-factory.h"
-#include "actions/actions.h"
 #include "actions/action.h"
+#include "actions/actions.h"
+#include "core/injected-factory.h"
 #include "windows/add-conference-window.h"
 
 #include "add-conference-action.h"

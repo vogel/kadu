@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include "widgets/talkable-delegate-configuration.h"
 #include "misc/memory.h"
+#include "widgets/talkable-delegate-configuration.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QItemDelegate>

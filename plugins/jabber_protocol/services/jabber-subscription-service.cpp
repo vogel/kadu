@@ -21,8 +21,8 @@
 
 #include "jabber-subscription-service.h"
 
-#include "windows/subscription-window.h"
 #include "plugin/plugin-injected-factory.h"
+#include "windows/subscription-window.h"
 #include "jabber-protocol.h"
 
 #include "contacts/contact-manager.h"

@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/accounts-aware-object.h"
 #include "accounts/account-storage.h"
+#include "accounts/accounts-aware-object.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-api.h"
@@ -31,13 +31,13 @@
 #include "contacts/contact-manager.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
-#include "widgets/dialog/password-dialog-widget.h"
-#include "windows/kadu-dialog.h"
 #include "identities/identity.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 #include "roster/roster-service.h"
+#include "widgets/dialog/password-dialog-widget.h"
+#include "windows/kadu-dialog.h"
 #include "debug.h"
 
 #include "account-manager.h"

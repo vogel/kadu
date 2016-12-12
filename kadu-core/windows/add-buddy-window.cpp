@@ -45,9 +45,6 @@
 #include "core/injected-factory.h"
 #include "core/myself.h"
 #include "gui/scoped-updates-disabler.h"
-#include "widgets/accounts-combo-box.h"
-#include "widgets/groups-combo-box.h"
-#include "widgets/select-talkable-combo-box.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
@@ -61,6 +58,9 @@
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
 #include "talkable/talkable-converter.h"
 #include "url-handlers/url-handler-manager.h"
+#include "widgets/accounts-combo-box.h"
+#include "widgets/groups-combo-box.h"
+#include "widgets/select-talkable-combo-box.h"
 
 #include <QtCore/QSortFilterProxyModel>
 #include <QtWidgets/QAction>

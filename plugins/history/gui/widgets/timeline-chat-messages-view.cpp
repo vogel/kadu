@@ -32,14 +32,14 @@
 #include "formatted-string/formatted-string.h"
 #include "gui/scoped-updates-disabler.h"
 #include "gui/web-view-highlighter.h"
-#include "widgets/search-bar.h"
-#include "widgets/wait-overlay.h"
-#include "widgets/webkit-messages-view/webkit-messages-view-factory.h"
-#include "widgets/webkit-messages-view/webkit-messages-view.h"
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"
 #include "model/roles.h"
 #include "plugin/plugin-injected-factory.h"
+#include "widgets/search-bar.h"
+#include "widgets/wait-overlay.h"
+#include "widgets/webkit-messages-view/webkit-messages-view-factory.h"
+#include "widgets/webkit-messages-view/webkit-messages-view.h"
 
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QSplitter>

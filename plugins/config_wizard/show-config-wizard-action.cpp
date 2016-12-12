@@ -21,9 +21,9 @@
 
 #include "gui/windows/config-wizard-window.h"
 
+#include "actions/action.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "actions/action.h"
 #include "plugin/plugin-injected-factory.h"
 #include "activate.h"
 

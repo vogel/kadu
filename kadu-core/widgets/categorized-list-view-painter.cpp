@@ -23,8 +23,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QStyleOption>
 
-#include "widgets/categorized-list-view.h"
 #include "model/categorized-sort-filter-proxy-model.h"
+#include "widgets/categorized-list-view.h"
 
 #include "categorized-list-view-painter.h"
 

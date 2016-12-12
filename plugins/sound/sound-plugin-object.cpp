@@ -27,12 +27,12 @@
 #include "sound-manager.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "misc/paths-provider.h"
+#include "notification/notifier-repository.h"
 #include "widgets/buddy-configuration-widget-factory-repository.h"
 #include "widgets/chat-configuration-widget-factory-repository.h"
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
-#include "notification/notifier-repository.h"
 
 SoundPluginObject::SoundPluginObject(QObject *parent) :
 		QObject{parent}

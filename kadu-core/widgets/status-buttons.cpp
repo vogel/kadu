@@ -23,9 +23,9 @@
 
 #include "accounts/account-manager.h"
 #include "core/injected-factory.h"
-#include "widgets/status-button.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
+#include "widgets/status-button.h"
 
 #include "status-buttons.h"
 

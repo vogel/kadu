@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include "widgets/actions-combo-box.h"
 #include "identities/identity.h"
+#include "widgets/actions-combo-box.h"
 #include "exports.h"
 
 #include <QtCore/QPointer>

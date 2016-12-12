@@ -25,8 +25,8 @@
 #include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 
-#include "widgets/modal-configuration-widget.h"
 #include "network/proxy/network-proxy.h"
+#include "widgets/modal-configuration-widget.h"
 
 class QComboBox;
 class QLineEdit;

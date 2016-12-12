@@ -19,9 +19,9 @@
 
 #include "open-chat-action.h"
 
-#include "chat/chat.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
+#include "chat/chat.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 
 OpenChatAction::OpenChatAction(QObject *parent) :

@@ -22,13 +22,13 @@
 #include "select-talkable-popup.h"
 
 #include "core/injected-factory.h"
-#include "widgets/filter-widget.h"
-#include "widgets/talkable-tree-view.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
+#include "widgets/filter-widget.h"
+#include "widgets/talkable-tree-view.h"
 
 #include <QtWidgets/QLineEdit>
 

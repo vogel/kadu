@@ -25,11 +25,11 @@
 #include "history.h"
 
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
+#include "misc/paths-provider.h"
 #include "widgets/buddy-configuration-widget-factory-repository.h"
 #include "widgets/chat-configuration-widget-factory-repository.h"
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
 
 HistoryPluginObject::HistoryPluginObject(QObject *parent) :
 		QObject{parent}

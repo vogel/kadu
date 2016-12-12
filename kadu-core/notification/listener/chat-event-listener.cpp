@@ -19,12 +19,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "widgets/chat-widget/chat-widget-repository.h"
-#include "widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
 #include "message/message-notification-service.h"
 #include "message/message.h"
 #include "notification/notification-configuration.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "widgets/chat-widget/chat-widget.h"
 #include "activate.h"
 
 #include "chat-event-listener.h"

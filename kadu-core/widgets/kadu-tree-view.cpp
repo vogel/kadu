@@ -26,9 +26,9 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "widgets/filtered-tree-view.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "widgets/filtered-tree-view.h"
 
 #include "kadu-tree-view.h"
 

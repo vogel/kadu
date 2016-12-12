@@ -22,9 +22,9 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "widgets/talkable-tree-view.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "widgets/talkable-tree-view.h"
 
 TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *listView, QObject *parent) :
 		QObject{parent},

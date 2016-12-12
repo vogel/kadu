@@ -21,9 +21,9 @@
 
 #include "simpleview.h"
 
+#include "misc/paths-provider.h"
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
 
 SimpleviewPluginObject::SimpleviewPluginObject(QObject *parent) :
 		QObject{parent}

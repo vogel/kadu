@@ -21,10 +21,10 @@
 
 #include "freedesktop-notifier.h"
 
-#include "windows/main-configuration-window-service.h"
-#include "windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "notification/notifier-repository.h"
+#include "windows/main-configuration-window-service.h"
+#include "windows/main-configuration-window.h"
 
 FreedesktopNotifyPluginObject::FreedesktopNotifyPluginObject(QObject *parent) :
 		QObject{parent}

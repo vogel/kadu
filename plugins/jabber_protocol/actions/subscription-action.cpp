@@ -21,11 +21,11 @@
 
 #include "jabber-protocol.h"
 
+#include "actions/action-context.h"
+#include "actions/action.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/myself.h"
-#include "actions/action-context.h"
-#include "actions/action.h"
 
 SubscriptionAction::SubscriptionAction(QObject *parent) :
 		ActionDescription(parent)

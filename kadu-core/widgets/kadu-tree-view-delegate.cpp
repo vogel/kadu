@@ -22,10 +22,10 @@
 
 #include "accounts/account-manager.h"
 #include "core/injected-factory.h"
-#include "widgets/talkable-painter.h"
-#include "widgets/talkable-tree-view.h"
 #include "identities/identity-manager.h"
 #include "identities/identity.h"
+#include "widgets/talkable-painter.h"
+#include "widgets/talkable-tree-view.h"
 
 #include "kadu-tree-view-delegate.h"
 

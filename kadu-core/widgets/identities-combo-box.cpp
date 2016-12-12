@@ -22,11 +22,11 @@
 #include "identities-combo-box.h"
 
 #include "core/injected-factory.h"
-#include "windows/message-dialog.h"
 #include "identities/identity-manager.h"
 #include "identities/model/identity-model.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
+#include "windows/message-dialog.h"
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QInputDialog>

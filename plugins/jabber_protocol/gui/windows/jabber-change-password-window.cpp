@@ -24,10 +24,10 @@
 #include "services/jabber-change-password.h"
 
 #include "configuration/config-file-variant-wrapper.h"
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol.h"
+#include "windows/message-dialog.h"
 
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>

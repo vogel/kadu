@@ -19,9 +19,9 @@
 
 #include "identity-storage.h"
 
+#include "core/injected-factory.h"
 #include "identities/identity-shared.h"
 #include "identities/identity.h"
-#include "core/injected-factory.h"
 
 #include <QtWidgets/QApplication>
 

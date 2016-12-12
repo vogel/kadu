@@ -34,6 +34,7 @@
 #include <enchant.h>
 #endif
 
+#include "misc/paths-provider.h"
 #include "widgets/chat-edit-box.h"
 #include "widgets/chat-widget/chat-widget-repository.h"
 #include "widgets/chat-widget/chat-widget.h"
@@ -42,7 +43,6 @@
 #include "widgets/custom-input.h"
 #include "windows/main-configuration-window.h"
 #include "windows/message-dialog.h"
-#include "misc/paths-provider.h"
 
 #include "configuration/spellchecker-configuration.h"
 #include "highlighter.h"

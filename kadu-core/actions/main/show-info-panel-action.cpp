@@ -19,9 +19,9 @@
 
 #include "show-info-panel-action.h"
 
+#include "actions/action.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "actions/action.h"
 #include "widgets/buddy-info-panel.h"
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"

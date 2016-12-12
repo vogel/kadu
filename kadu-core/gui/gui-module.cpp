@@ -24,6 +24,8 @@
 #include "menu/menu-inventory.h"
 #include "widgets/chat-edit-box-size-manager.h"
 #include "widgets/chat-widget/actions/chat-widget-actions.h"
+#include "widgets/custom-input-menu-manager.h"
+#include "widgets/tool-tip-manager.h"
 #include "widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "widgets/webkit-messages-view/webkit-messages-view-factory.h"
 #include "widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
@@ -36,10 +38,8 @@
 #include "windows/multilogon-window-service.h"
 #include "windows/open-chat-with/open-chat-with-service.h"
 #include "windows/proxy-edit-window-service.h"
-#include "windows/your-accounts-window-service.h"
-#include "widgets/custom-input-menu-manager.h"
-#include "widgets/tool-tip-manager.h"
 #include "windows/window-manager.h"
+#include "windows/your-accounts-window-service.h"
 
 GuiModule::GuiModule()
 {

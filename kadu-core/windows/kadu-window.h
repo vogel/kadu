@@ -34,9 +34,9 @@
 
 #include "buddies/buddy-list.h"
 #include "chat/chat.h"
-#include "windows/main-window.h"
 #include "os/generic/compositing-aware-object.h"
 #include "talkable/talkable.h"
+#include "windows/main-window.h"
 #include "exports.h"
 
 class QSplitter;

@@ -21,12 +21,12 @@
 #include <QtWidgets/QAction>
 
 #include "core/injected-factory.h"
-#include "widgets/select-talkable-popup.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
+#include "widgets/select-talkable-popup.h"
 
 #include "select-talkable-combo-box.h"
 

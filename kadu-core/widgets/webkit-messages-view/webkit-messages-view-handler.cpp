@@ -20,8 +20,8 @@
 #include "webkit-messages-view-handler.h"
 
 #include "chat-style/engine/chat-style-renderer.h"
-#include "widgets/webkit-messages-view/webkit-messages-view-display.h"
 #include "protocols/services/chat-state.h"
+#include "widgets/webkit-messages-view/webkit-messages-view-display.h"
 
 WebkitMessagesViewHandler::WebkitMessagesViewHandler(not_owned_qptr<ChatStyleRenderer> chatStyleRenderer,
 	std::unique_ptr<WebkitMessagesViewDisplay> messagesDisplay, QObject *parent) :

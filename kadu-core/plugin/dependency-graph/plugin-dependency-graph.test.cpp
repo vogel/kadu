@@ -22,8 +22,8 @@
 #include "plugin/dependency-graph/plugin-dependency-cycle-exception.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 
-#include <algorithm>
 #include <QtTest/QtTest>
+#include <algorithm>
 
 class PluginDependencyGraphTest : public QObject
 {

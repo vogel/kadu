@@ -26,13 +26,13 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpinBox>
 
-#include "core/core.h"
-#include "core/core.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "core/core.h"
+#include "core/core.h"
+#include "misc/paths-provider.h"
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
 
 #include "antistring-configuration.h"
 

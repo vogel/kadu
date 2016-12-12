@@ -26,11 +26,11 @@
 #include "buddies/model/buddy-manager-adapter.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
-#include "widgets/select-talkable-combo-box.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
 #include "talkable/talkable-converter.h"
+#include "widgets/select-talkable-combo-box.h"
 
 #include <QtGui/QIcon>
 #include <QtWidgets/QAction>

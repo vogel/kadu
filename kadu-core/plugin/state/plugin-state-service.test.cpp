@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugin/state/plugin-state.h"
 #include "plugin/state/plugin-state-service.h"
+#include "plugin/state/plugin-state.h"
 
 #include <QtTest/QtTest>
 

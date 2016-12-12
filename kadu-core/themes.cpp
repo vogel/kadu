@@ -30,9 +30,9 @@
 #include "configuration/deprecated-configuration-api.h"
 
 #include "core/core.h"
-#include "windows/message-dialog.h"
 #include "misc/misc.h"
 #include "misc/paths-provider.h"
+#include "windows/message-dialog.h"
 #include "debug.h"
 
 #include "themes.h"

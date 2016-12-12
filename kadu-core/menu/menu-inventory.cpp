@@ -22,11 +22,11 @@
 #include "menu-inventory.h"
 
 #include "accounts/account.h"
-#include "contacts/contact-set.h"
-#include "core/injected-factory.h"
 #include "actions/action-context.h"
 #include "actions/action-description.h"
 #include "actions/action.h"
+#include "contacts/contact-set.h"
+#include "core/injected-factory.h"
 #include "protocols/protocol-menu-manager.h"
 
 #include <QtWidgets/QMenu>

@@ -19,8 +19,8 @@
 
 #include "more-actions-action.h"
 
-#include "actions/actions.h"
 #include "actions/action.h"
+#include "actions/actions.h"
 #include "widgets/chat-edit-box.h"
 #include "widgets/chat-edit-widget.h"
 #include "widgets/toolbar.h"

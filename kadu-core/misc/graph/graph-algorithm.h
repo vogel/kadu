@@ -25,6 +25,7 @@
 #include <map>
 #include <set>
 #include <utility>
+#include <vector>
 
 template<typename GraphType, typename SuccessorTypeTag>
 class GraphCycleFinder

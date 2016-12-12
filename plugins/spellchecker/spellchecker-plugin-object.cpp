@@ -23,9 +23,9 @@
 #include "spellchecker.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
+#include "misc/paths-provider.h"
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
 
 SpellcheckerPluginObject::SpellcheckerPluginObject(QObject *parent) :
 		QObject{parent}

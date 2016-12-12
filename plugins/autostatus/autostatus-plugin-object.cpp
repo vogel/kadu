@@ -23,10 +23,10 @@
 #include "autostatus-service.h"
 #include "autostatus-status-changer.h"
 
-#include "windows/main-configuration-window-service.h"
-#include "windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "status/status-changer-manager.h"
+#include "windows/main-configuration-window-service.h"
+#include "windows/main-configuration-window.h"
 
 AutostatusPluginObject::AutostatusPluginObject(QObject *parent) :
 		QObject{parent}

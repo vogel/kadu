@@ -19,13 +19,13 @@
 
 #include "chat-widget-container-handler-mapper.h"
 
+#include "message/sorted-messages.h"
 #include "widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "widgets/chat-widget/chat-widget-container-handler.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 #include "widgets/chat-widget/chat-widget-repository.h"
 #include "widgets/chat-widget/chat-widget.h"
-#include "message/sorted-messages.h"
 
 #include <algorithm>
 

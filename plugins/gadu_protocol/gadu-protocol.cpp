@@ -41,7 +41,6 @@
 #include "contacts/contact-manager.h"
 #include "core/version-service.h"
 #include "formatted-string/composite-formatted-string.h"
-#include "windows/message-dialog.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "plugin/plugin-injected-factory.h"
 #include "qt/long-validator.h"
@@ -49,6 +48,7 @@
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
 #include "status/status.h"
+#include "windows/message-dialog.h"
 
 #include "core/core.h"
 #include "icons/icons-manager.h"

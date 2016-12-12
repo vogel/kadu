@@ -28,8 +28,8 @@
 #include "message/message.h"
 #include "talkable/talkable.h"
 
-#include "../history-query-result.h"
 #include "../history-exports.h"
+#include "../history-query-result.h"
 
 class HistoryQuery;
 class SortedMessages;

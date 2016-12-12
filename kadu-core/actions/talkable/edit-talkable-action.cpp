@@ -20,13 +20,13 @@
 
 #include <QtWidgets/QApplication>
 
+#include "actions/action-context.h"
+#include "actions/action.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
-#include "actions/action-context.h"
-#include "actions/action.h"
 #include "windows/add-buddy-window.h"
 #include "windows/buddy-data-window-repository.h"
 #include "windows/buddy-data-window.h"

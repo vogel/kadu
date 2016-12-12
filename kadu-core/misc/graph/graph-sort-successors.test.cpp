@@ -19,11 +19,11 @@
 
 #include "misc/algorithm.h"
 #include "misc/exception.h"
-#include "misc/graph/graph.h"
 #include "misc/graph/graph-algorithm.h"
+#include "misc/graph/graph.h"
 
-#include <algorithm>
 #include <QtTest/QtTest>
+#include <algorithm>
 
 struct Tag1 {};
 struct Tag2 {};

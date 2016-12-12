@@ -19,14 +19,14 @@
 
 #include "show-only-buddies-with-description-or-online-action.h"
 
+#include "actions/action.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
-#include "actions/action.h"
-#include "windows/kadu-window-service.h"
-#include "windows/kadu-window.h"
 #include "talkable/filter/hide-offline-without-description-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 
 ShowOnlyBuddiesWithDescriptionOrOnlineAction::ShowOnlyBuddiesWithDescriptionOrOnlineAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

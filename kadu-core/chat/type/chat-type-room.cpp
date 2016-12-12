@@ -22,8 +22,8 @@
 #include "chat/chat-manager.h"
 #include "chat/chat-storage.h"
 #include "core/injected-factory.h"
-#include "widgets/chat-room-edit-widget.h"
 #include "icons/kadu-icon.h"
+#include "widgets/chat-room-edit-widget.h"
 
 #include "chat-type-room.h"
 

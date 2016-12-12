@@ -23,11 +23,11 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "actions/actions.h"
 #include "actions/action.h"
-#include "menu/menu-inventory.h"
+#include "actions/actions.h"
 #include "gui/windows/xml-console.h"
 #include "identities/identity.h"
+#include "menu/menu-inventory.h"
 
 #include <QtCore/QTimer>
 #include <QtWidgets/QMenu>

@@ -19,9 +19,9 @@
 
 #include "notify-about-buddy-action.h"
 
-#include "buddies/buddy-set.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
+#include "buddies/buddy-set.h"
 
 NotifyAboutBuddyAction::NotifyAboutBuddyAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

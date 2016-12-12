@@ -27,10 +27,10 @@
 #include "chat/buddy-chat-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/session-service.h"
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "os/generic/window-geometry-manager.h"
 #include "plugin/plugin-injected-factory.h"
+#include "windows/message-dialog.h"
 #include "activate.h"
 
 #include "gui/widgets/chat-history-tab.h"

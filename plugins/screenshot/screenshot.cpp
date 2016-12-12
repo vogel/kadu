@@ -27,11 +27,11 @@
 
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "icons/icons-manager.h"
+#include "plugin/plugin-injected-factory.h"
 #include "widgets/chat-widget/chat-widget.h"
 #include "widgets/custom-input.h"
 #include "windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "plugin/plugin-injected-factory.h"
 #include "activate.h"
 #include "debug.h"
 

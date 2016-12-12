@@ -19,10 +19,10 @@
 
 #include "autoaway-module.h"
 
-#include "autoaway.h"
 #include "autoaway-configuration-ui-handler.h"
 #include "autoaway-plugin-object.h"
 #include "autoaway-status-changer.h"
+#include "autoaway.h"
 
 AutoawayModule::AutoawayModule()
 {

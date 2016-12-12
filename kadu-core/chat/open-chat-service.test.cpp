@@ -19,12 +19,12 @@
 
 #include "chat/open-chat-service.h"
 
-#include "chat/open-chat-service.h"
 #include "chat/open-chat-repository.h"
-#include "widgets/chat-widget/chat-widget-repository-impl.h"
-#include "widgets/chat-widget/chat-widget.h"
+#include "chat/open-chat-service.h"
 #include "message/sorted-messages.h"
 #include "misc/memory.h"
+#include "widgets/chat-widget/chat-widget-repository-impl.h"
+#include "widgets/chat-widget/chat-widget.h"
 
 #include <QtTest/QtTest>
 #include <injeqt/injector.h>

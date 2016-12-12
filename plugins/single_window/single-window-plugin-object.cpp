@@ -21,9 +21,9 @@
 
 #include "single-window.h"
 
+#include "misc/paths-provider.h"
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
-#include "misc/paths-provider.h"
 
 SingleWindowPluginObject::SingleWindowPluginObject(QObject *parent) :
 		QObject{parent}

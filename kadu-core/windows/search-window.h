@@ -22,13 +22,13 @@
 
 #pragma once
 
+#include "actions/action.h"
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-search-criteria.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
-#include "actions/action.h"
-#include "windows/main-window.h"
 #include "misc/memory.h"
+#include "windows/main-window.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>

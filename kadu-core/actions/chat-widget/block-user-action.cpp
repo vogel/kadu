@@ -19,9 +19,9 @@
 
 #include "block-user-action.h"
 
+#include "actions/action.h"
 #include "buddies/buddy-set.h"
 #include "core/myself.h"
-#include "actions/action.h"
 #include "widgets/chat-edit-box.h"
 #include "widgets/chat-edit-widget.h"
 #include "widgets/chat-widget/chat-widget.h"

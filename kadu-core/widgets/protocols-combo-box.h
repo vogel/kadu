@@ -23,9 +23,9 @@
 
 #pragma once
 
-#include "widgets/actions-combo-box.h"
 #include "misc/memory.h"
 #include "protocols/protocol-factory.h"
+#include "widgets/actions-combo-box.h"
 #include "exports.h"
 
 #include <QtCore/QPointer>

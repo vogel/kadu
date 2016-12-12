@@ -22,8 +22,8 @@
 #pragma once
 
 #include "configuration/gui/configuration-ui-handler.h"
-#include "windows/main-configuration-window.h"
 #include "notification/notification-event.h"
+#include "windows/main-configuration-window.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>

@@ -21,8 +21,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
+#include "windows/message-dialog.h"
 
 FacebookDepreceatedMessage::FacebookDepreceatedMessage(QObject *parent) :
 		QObject{parent}

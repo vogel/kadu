@@ -24,9 +24,9 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QStyle>
 
-#include "widgets/line-edit-clear-button.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "widgets/line-edit-clear-button.h"
 
 #include "line-edit-with-clear-button.h"
 

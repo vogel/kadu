@@ -19,14 +19,14 @@
 
 #include "autoaway-plugin-object.h"
 
-#include "autoaway.h"
 #include "autoaway-configuration-ui-handler.h"
+#include "autoaway.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "windows/main-configuration-window-service.h"
-#include "windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "status/status-changer-manager.h"
+#include "windows/main-configuration-window-service.h"
+#include "windows/main-configuration-window.h"
 
 AutoawayPluginObject::AutoawayPluginObject(QObject *parent) :
 		QObject{parent}

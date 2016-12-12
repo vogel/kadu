@@ -21,11 +21,11 @@
 
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer.h"
+#include "misc/paths-provider.h"
 #include "widgets/webkit-messages-view/message-limit-policy.h"
 #include "widgets/webkit-messages-view/webkit-messages-view-display-factory.h"
 #include "widgets/webkit-messages-view/webkit-messages-view-display.h"
 #include "widgets/webkit-messages-view/webkit-messages-view-handler.h"
-#include "misc/paths-provider.h"
 
 WebkitMessagesViewHandlerFactory::WebkitMessagesViewHandlerFactory(QObject *parent) :
 		QObject{parent}

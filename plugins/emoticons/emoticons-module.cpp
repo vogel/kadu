@@ -21,8 +21,8 @@
 
 #include "configuration/emoticon-configurator.h"
 #include "expander/emoticon-expander-dom-visitor-provider.h"
-#include "gui/emoticons-configuration-ui-handler.h"
 #include "gui/emoticon-clipboard-html-transformer.h"
+#include "gui/emoticons-configuration-ui-handler.h"
 #include "gui/insert-emoticon-action.h"
 #include "emoticons-plugin-object.h"
 

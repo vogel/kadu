@@ -23,12 +23,6 @@
 #include "chat/buddy-chat-manager.h"
 #include "configuration/configuration-api.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "widgets/chat-widget/chat-widget-activation-service.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
-#include "widgets/chat-widget/chat-widget-repository.h"
-#include "widgets/chat-widget/chat-widget.h"
-#include "windows/kadu-window-service.h"
-#include "windows/kadu-window.h"
 #include "message/message-manager.h"
 #include "message/sorted-messages.h"
 #include "message/unread-message-repository.h"
@@ -36,6 +30,12 @@
 #include "protocols/protocol.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
+#include "widgets/chat-widget/chat-widget-activation-service.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "widgets/chat-widget/chat-widget.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 
 #include <QtWidgets/QApplication>
 

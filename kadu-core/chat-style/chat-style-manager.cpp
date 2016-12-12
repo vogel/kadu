@@ -26,13 +26,13 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/configuration/chat-configuration-holder.h"
+#include "misc/algorithm.h"
+#include "misc/memory.h"
+#include "misc/paths-provider.h"
 #include "widgets/chat-style-preview.h"
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
-#include "misc/algorithm.h"
-#include "misc/memory.h"
-#include "misc/paths-provider.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>

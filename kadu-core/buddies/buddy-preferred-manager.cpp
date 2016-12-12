@@ -26,9 +26,9 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
+#include "status/status-container.h"
 #include "widgets/chat-widget/chat-widget-repository.h"
 #include "widgets/chat-widget/chat-widget.h"
-#include "status/status-container.h"
 #include "buddy.h"
 
 #include "buddies/buddy-preferred-manager.h"

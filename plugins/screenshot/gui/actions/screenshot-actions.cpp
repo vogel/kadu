@@ -20,8 +20,8 @@
 
 #include "screenshot-actions.h"
 
-#include "configuration/screen-shot-configuration.h"
 #include "actions/actions.h"
+#include "configuration/screen-shot-configuration.h"
 #include "gui/actions/screenshot-action.h"
 #include "plugin/plugin-injected-factory.h"
 

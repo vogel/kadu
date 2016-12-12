@@ -22,13 +22,13 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QTextEdit>
 
-#include "actions/actions.h"
 #include "actions/action-description.h"
 #include "actions/action.h"
-#include "widgets/custom-input-menu-manager.h"
-#include "widgets/custom-input.h"
+#include "actions/actions.h"
 #include "icons/kadu-icon.h"
 #include "plugin/plugin-injected-factory.h"
+#include "widgets/custom-input-menu-manager.h"
+#include "widgets/custom-input.h"
 
 #include "configuration/spellchecker-configuration.h"
 #include "spellchecker.h"

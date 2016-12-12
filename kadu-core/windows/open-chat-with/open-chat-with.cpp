@@ -36,21 +36,21 @@
 #include "configuration/configuration.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
-#include "widgets/chat-widget/chat-widget-manager.h"
-#include "widgets/filtered-tree-view.h"
-#include "widgets/line-edit-with-clear-button.h"
 #include "misc/paths-provider.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "talkable/model/talkable-proxy-model.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
+#include "widgets/filtered-tree-view.h"
+#include "widgets/line-edit-with-clear-button.h"
 #include "activate.h"
 #include "debug.h"
 
 #include <QtCore/QTimer>
+#include <QtGui/QKeyEvent>
 #include <QtQml/QQmlContext>
 #include <QtQuick/QQuickItem>
 #include <QtQuickWidgets/QQuickWidget>
-#include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QDialogButtonBox>

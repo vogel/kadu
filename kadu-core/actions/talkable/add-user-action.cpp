@@ -19,10 +19,10 @@
 
 #include "add-user-action.h"
 
-#include "buddies/buddy-set.h"
-#include "core/injected-factory.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
+#include "buddies/buddy-set.h"
+#include "core/injected-factory.h"
 #include "windows/add-buddy-window.h"
 
 AddUserAction::AddUserAction(QObject *parent) :

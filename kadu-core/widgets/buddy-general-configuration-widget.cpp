@@ -31,17 +31,17 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"
+#include "icons/icons-manager.h"
+#include "misc/misc.h"
+#include "model/roles.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 #include "widgets/buddy-avatar-widget.h"
 #include "widgets/buddy-contacts-table.h"
 #include "widgets/composite-configuration-value-state-notifier.h"
 #include "widgets/simple-configuration-value-state-notifier.h"
 #include "widgets/simple-configuration-value-state-notifier.h"
 #include "windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "misc/misc.h"
-#include "model/roles.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocol.h"
 
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialogButtonBox>

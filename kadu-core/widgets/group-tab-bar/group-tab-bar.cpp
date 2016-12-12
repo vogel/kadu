@@ -27,15 +27,15 @@
 #include "chat/chat-list-mime-data-service.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
+#include "talkable/filter/group-filter.h"
 #include "windows/add-buddy-window.h"
 #include "windows/group-edit-window.h"
 #include "windows/kadu-dialog.h"
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 #include "windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "icons/kadu-icon.h"
-#include "talkable/filter/group-filter.h"
 #include "debug.h"
 
 #include <QtCore/QMimeData>

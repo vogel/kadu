@@ -31,7 +31,6 @@
 #include "accounts/account.h"
 #include "core/injected-factory.h"
 #include "gui/status-icon.h"
-#include "widgets/status-menu.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol.h"
@@ -39,6 +38,7 @@
 #include "status/status-container.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
+#include "widgets/status-menu.h"
 
 
 #include "status-button.h"

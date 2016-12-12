@@ -33,17 +33,17 @@
 #include <QtWidgets/QToolButton>
 #include <QtXml/QDomElement>
 
+#include "actions/actions.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "actions/actions.h"
-#include "windows/main-window.h"
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/change-notifier-lock.h"
 #include "misc/change-notifier.h"
 #include "misc/misc.h"
+#include "windows/main-window.h"
+#include "windows/message-dialog.h"
 #include "debug.h"
 
 #include "toolbar.h"

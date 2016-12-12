@@ -26,13 +26,13 @@
 #include "jabber-account-details.h"
 #include "jid.h"
 
-#include "core/myself.h"
 #include "contacts/contact-manager.h"
+#include "core/myself.h"
 #include "file-transfer/file-transfer-direction.h"
 #include "file-transfer/file-transfer-handler-manager.h"
-#include "file-transfer/file-transfer-type.h"
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/file-transfer-storage.h"
+#include "file-transfer/file-transfer-type.h"
 #include "file-transfer/gui/file-transfer-can-send-result.h"
 
 #include <qxmpp/QXmppTransferManager.h>

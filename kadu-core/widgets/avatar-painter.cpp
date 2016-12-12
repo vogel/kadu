@@ -27,8 +27,8 @@
 #include <QtWidgets/QStyleOptionViewItem>
 
 #include "contacts/contact.h"
-#include "widgets/talkable-delegate-configuration.h"
 #include "model/roles.h"
+#include "widgets/talkable-delegate-configuration.h"
 
 #include "avatar-painter.h"
 

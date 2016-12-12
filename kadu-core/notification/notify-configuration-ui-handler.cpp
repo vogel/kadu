@@ -43,10 +43,10 @@
 #include "widgets/configuration/notify-tree-widget.h"
 #include "windows/configuration-window.h"
 
-#include "notifier-repository.h"
-#include "notifier.h"
 #include "notification-event-repository.h"
 #include "notification-event.h"
+#include "notifier-repository.h"
+#include "notifier.h"
 
 #include "notify-configuration-ui-handler.h"
 

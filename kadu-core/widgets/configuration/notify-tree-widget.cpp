@@ -31,11 +31,11 @@
 #include <QtWidgets/QHeaderView>
 
 #include "core/injected-factory.h"
+#include "notification/notification-event-repository.h"
+#include "notification/notification-event.h"
 #include "notification/notifier-repository.h"
 #include "notification/notifier.h"
 #include "notification/notify-configuration-ui-handler.h"
-#include "notification/notification-event.h"
-#include "notification/notification-event-repository.h"
 
 #include "notify-tree-widget.h"
 

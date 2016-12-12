@@ -30,9 +30,9 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
-#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "storage/storage-point.h"
+#include "windows/message-dialog.h"
 #include "debug.h"
 
 #include "group-manager.h"

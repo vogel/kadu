@@ -19,8 +19,8 @@
 
 #include "misc/algorithm.h"
 
-#include <vector>
 #include <QtTest/QtTest>
+#include <vector>
 
 class FindOverlapingRegionTest : public QObject
 {

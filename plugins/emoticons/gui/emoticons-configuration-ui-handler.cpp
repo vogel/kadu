@@ -24,6 +24,8 @@
 #include <QtWidgets/QFileDialog>
 
 #include "compression/archive-extractor.h"
+#include "misc/paths-provider.h"
+#include "plugin/plugin-injected-factory.h"
 #include "widgets/configuration/config-check-box.h"
 #include "widgets/configuration/config-list-widget.h"
 #include "widgets/configuration/config-path-list-edit.h"
@@ -31,8 +33,6 @@
 #include "widgets/path-list-edit.h"
 #include "windows/main-configuration-window.h"
 #include "windows/message-dialog.h"
-#include "misc/paths-provider.h"
-#include "plugin/plugin-injected-factory.h"
 
 #include "theme/emoticon-theme.h"
 #include "theme/gadu-emoticon-theme-loader.h"

@@ -21,14 +21,14 @@
 
 #include <QtCore/QTimer>
 
-#include "contacts/contact-set.h"
-#include "core/core.h"
 #include "actions/action-description.h"
 #include "actions/action.h"
+#include "contacts/contact-set.h"
+#include "core/core.h"
 #include "menu/menu-inventory.h"
+#include "protocols/protocol-menu-manager.h"
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
-#include "protocols/protocol-menu-manager.h"
 #include "menu-item.h"
 
 #include "kadu-menu.h"
