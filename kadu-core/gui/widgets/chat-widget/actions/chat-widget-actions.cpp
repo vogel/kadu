@@ -21,7 +21,7 @@
 #include "chat-widget-actions.h"
 
 #include "gui/menu/menu-inventory.h"
-#include "gui/widgets/chat-widget/actions/open-chat-action.h"
+#include "actions/chat-widget/open-chat-action.h"
 
 ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 {

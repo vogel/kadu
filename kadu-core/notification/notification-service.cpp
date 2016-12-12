@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "actions/notify-about-buddy-action.h"
+#include "actions/talkable/notify-about-buddy-action.h"
 #include "buddies/buddy-set.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"

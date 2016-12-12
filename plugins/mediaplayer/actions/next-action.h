@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "gui/actions/action-description.h"
+#include "actions/action-description.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>

@@ -23,8 +23,8 @@
 
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "gui/actions/action-description.h"
-#include "gui/actions/action.h"
+#include "actions/action-description.h"
+#include "actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/windows/kadu-window-service.h"
 #include "gui/windows/kadu-window.h"

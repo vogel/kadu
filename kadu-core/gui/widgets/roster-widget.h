@@ -22,7 +22,7 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/actions/action-context-provider.h"
+#include "actions/action-context-provider.h"
 #include "os/generic/compositing-aware-object.h"
 #include "talkable/talkable.h"
 #include "exports.h"

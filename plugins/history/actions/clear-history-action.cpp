@@ -24,8 +24,8 @@
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
 #include "core/myself.h"
-#include "gui/actions/action-context.h"
-#include "gui/actions/action.h"
+#include "actions/action-context.h"
+#include "actions/action.h"
 #include "talkable/talkable.h"
 
 ClearHistoryAction::ClearHistoryAction(QObject *parent) :

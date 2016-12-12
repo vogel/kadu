@@ -24,7 +24,7 @@
 #include "autostatus-service.h"
 #include "toggle-autostatus-action.h"
 
-#include "gui/actions/actions.h"
+#include "actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 
 AutostatusActions::AutostatusActions(QObject *parent) :

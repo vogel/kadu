@@ -24,7 +24,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "gui/actions/action.h"
+#include "actions/action.h"
 
 SoundMuteAction::SoundMuteAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

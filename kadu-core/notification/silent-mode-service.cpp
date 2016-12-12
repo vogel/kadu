@@ -19,11 +19,11 @@
 
 #include "silent-mode-service.h"
 
-#include "actions/toggle-silent-mode-action.h"
+#include "actions/main/toggle-silent-mode-action.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/actions/action-description.h"
-#include "gui/actions/action.h"
+#include "actions/action-description.h"
+#include "actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "notification/full-screen-service-handler.h"
 #include "notification/full-screen-service.h"

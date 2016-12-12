@@ -45,7 +45,7 @@
 #include "execution-arguments/execution-arguments.h"
 #include "file-transfer/file-transfer-handler-manager.h"
 #include "file-transfer/file-transfer-manager.h"
-#include "gui/actions/actions.h"
+#include "actions/actions.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"

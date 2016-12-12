@@ -24,9 +24,9 @@
 #include "accounts/account.h"
 #include "contacts/contact-set.h"
 #include "core/injected-factory.h"
-#include "gui/actions/action-context.h"
-#include "gui/actions/action-description.h"
-#include "gui/actions/action.h"
+#include "actions/action-context.h"
+#include "actions/action-description.h"
+#include "actions/action.h"
 #include "protocols/protocol-menu-manager.h"
 
 #include <QtWidgets/QMenu>

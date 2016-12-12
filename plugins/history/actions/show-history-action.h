@@ -26,7 +26,7 @@
 
 #include "history-exports.h"
 
-#include "gui/actions/action-description.h"
+#include "actions/action-description.h"
 
 class BuddyChatManager;
 class HistoryWindowService;

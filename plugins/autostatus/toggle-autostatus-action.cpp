@@ -21,7 +21,7 @@
 
 #include "autostatus-service.h"
 
-#include "gui/actions/action.h"
+#include "actions/action.h"
 
 ToggleAutostatusAction::ToggleAutostatusAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

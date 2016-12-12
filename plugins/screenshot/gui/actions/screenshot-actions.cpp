@@ -21,7 +21,7 @@
 #include "screenshot-actions.h"
 
 #include "configuration/screen-shot-configuration.h"
-#include "gui/actions/actions.h"
+#include "actions/actions.h"
 #include "gui/actions/screenshot-action.h"
 #include "plugin/plugin-injected-factory.h"
 

@@ -31,7 +31,7 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
 #include "configuration/gui/configuration-ui-handler.h"
-#include "gui/actions/action.h"
+#include "actions/action.h"
 
 #include "sms_exports.h"
 

@@ -22,7 +22,7 @@
 #include "gui/sound-mute-action.h"
 #include "sound-manager.h"
 
-#include "gui/actions/actions.h"
+#include "actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 #include "plugin/plugin-injected-factory.h"
 

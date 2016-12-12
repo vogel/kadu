@@ -22,9 +22,9 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QTextEdit>
 
-#include "gui/actions/actions.h"
-#include "gui/actions/action-description.h"
-#include "gui/actions/action.h"
+#include "actions/actions.h"
+#include "actions/action-description.h"
+#include "actions/action.h"
 #include "gui/widgets/custom-input-menu-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "icons/kadu-icon.h"

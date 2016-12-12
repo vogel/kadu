@@ -27,7 +27,7 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
-#include "gui/actions/actions.h"
+#include "actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 #include "misc/paths-provider.h"
 #include "plugin/plugin-injected-factory.h"

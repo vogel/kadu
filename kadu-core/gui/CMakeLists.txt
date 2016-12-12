@@ -1,21 +1,4 @@
 set (gui_SRCS
-	actions/chat/add-conference-action.cpp
-	actions/chat/add-room-chat-action.cpp
-	actions/chat/leave-chat-action.cpp
-
-	actions/talkable-tree-view/collapse-action.cpp
-	actions/talkable-tree-view/expand-action.cpp
-
-	actions/action.cpp
-	actions/actions.cpp
-	actions/action-description.cpp
-	actions/base-action-context.cpp
-	actions/change-status-action.cpp
-	actions/default-proxy-action.cpp
-	actions/delete-talkable-action.cpp
-	actions/edit-talkable-action.cpp
-	actions/recent-chats-action.cpp
-
 	configuration/chat-configuration-holder.cpp
 	configuration/toolbar-configuration-manager.cpp
 
@@ -25,20 +8,7 @@ set (gui_SRCS
 
 	services/clipboard-html-transformer-service.cpp
 
-	widgets/chat-widget/actions/auto-send-action.cpp
-	widgets/chat-widget/actions/block-user-action.cpp
-	widgets/chat-widget/actions/bold-action.cpp
-	widgets/chat-widget/actions/chat-widget-actions-module.cpp
 	widgets/chat-widget/actions/chat-widget-actions.cpp
-	widgets/chat-widget/actions/clear-chat-action.cpp
-	widgets/chat-widget/actions/insert-image-action.cpp
-	widgets/chat-widget/actions/italic-action.cpp
-	widgets/chat-widget/actions/more-actions-action.cpp
-	widgets/chat-widget/actions/open-chat-action.cpp
-	widgets/chat-widget/actions/open-chat-with-action.cpp
-	widgets/chat-widget/actions/send-action.cpp
-	widgets/chat-widget/actions/underline-action.cpp
-
 	widgets/chat-widget/chat-widget-activation-service.cpp
 	widgets/chat-widget/chat-widget-container-handler.cpp
 	widgets/chat-widget/chat-widget-container-handler-mapper.cpp
@@ -246,21 +216,6 @@ set (gui_SRCS
 )
 
 set (gui_MOC_SRCS
-	actions/chat/add-conference-action.h
-	actions/chat/add-room-chat-action.h
-	actions/chat/leave-chat-action.h
-
-	actions/action.h
-	actions/actions.h
-	actions/action-context.h
-	actions/action-description.h
-	actions/base-action-context.h
-	actions/change-status-action.h
-	actions/delete-talkable-action.h
-	actions/default-proxy-action.h
-	actions/edit-talkable-action.h
-	actions/recent-chats-action.h
-
 	menu/kadu-menu.h
 	menu/menu-inventory.h
 

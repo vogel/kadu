@@ -27,17 +27,17 @@
 
 #include "kadu-window-actions.h"
 
-#include "actions/copy-description-action.h"
-#include "actions/copy-personal-info-action.h"
-#include "actions/merge-buddies-action.h"
-#include "actions/open-buddy-email-action.h"
-#include "actions/open-description-link-action.h"
-#include "gui/actions/delete-talkable-action.h"
-#include "gui/actions/edit-talkable-action.h"
-#include "gui/actions/talkable-tree-view/collapse-action.h"
-#include "gui/actions/talkable-tree-view/expand-action.h"
+#include "actions/chat-widget/block-user-action.h"
+#include "actions/talkable/copy-description-action.h"
+#include "actions/talkable/copy-personal-info-action.h"
+#include "actions/talkable/merge-buddies-action.h"
+#include "actions/talkable/open-buddy-email-action.h"
+#include "actions/talkable/open-description-link-action.h"
+#include "actions/talkable/delete-talkable-action.h"
+#include "actions/talkable/edit-talkable-action.h"
+#include "actions/tree-view/collapse-action.h"
+#include "actions/tree-view/expand-action.h"
 #include "gui/menu/menu-inventory.h"
-#include "gui/widgets/chat-widget/actions/block-user-action.h"
 
 KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 {

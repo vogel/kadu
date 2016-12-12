@@ -29,9 +29,9 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/actions/action-description.h"
-#include "gui/actions/action.h"
-#include "gui/actions/actions.h"
+#include "actions/action-description.h"
+#include "actions/action.h"
+#include "actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"

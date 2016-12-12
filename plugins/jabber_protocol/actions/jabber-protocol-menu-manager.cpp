@@ -25,7 +25,7 @@
 #include "actions/remove-subscription-action.h"
 #include "actions/resend-subscription-action.h"
 
-#include "gui/actions/actions.h"
+#include "actions/actions.h"
 
 JabberProtocolMenuManager::JabberProtocolMenuManager(QObject *parent) :
 		QObject{parent}

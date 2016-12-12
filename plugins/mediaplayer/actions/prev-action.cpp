@@ -21,7 +21,7 @@
 
 #include "mediaplayer.h"
 
-#include "gui/actions/actions.h"
+#include "actions/actions.h"
 
 PrevAction::PrevAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

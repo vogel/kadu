@@ -47,7 +47,6 @@
 #include "file-transfer/file-transfer-module.h"
 #include "formatted-string/formatted-string-module.h"
 #include "gui/gui-module.h"
-#include "gui/widgets/chat-widget/actions/chat-widget-actions-module.h"
 #include "gui/widgets/chat-widget/chat-widget-module.h"
 #include "gui/windows/chat-window/chat-window-module.h"
 #include "icons/icons-module.h"
@@ -63,7 +62,6 @@
 #include "parser/parser-module.h"
 #include "plugin/plugin-module.h"
 #include "roster/roster-module.h"
-#include "search/actions/search-actions-module.h"
 #include "ssl/ssl-module.h"
 #include "status/status-module.h"
 #include "talkable/talkable-module.h"
@@ -223,7 +221,6 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(std::make_unique<BuddyModule>());
 	modules.emplace_back(std::make_unique<ChatModule>());
 	modules.emplace_back(std::make_unique<ChatStyleModule>());
-	modules.emplace_back(std::make_unique<ChatWidgetActionsModule>());
 	modules.emplace_back(std::make_unique<ChatWidgetModule>());
 	modules.emplace_back(std::make_unique<ChatWindowModule>());
 	modules.emplace_back(std::make_unique<CoreModule>(std::move(profileDirectory)));
@@ -243,7 +240,6 @@ int main(int argc, char *argv[]) try
 	modules.emplace_back(std::make_unique<ParserModule>());
 	modules.emplace_back(std::make_unique<PluginModule>());
 	modules.emplace_back(std::make_unique<RosterModule>());
-	modules.emplace_back(std::make_unique<SearchActionsModule>());
 	modules.emplace_back(std::make_unique<SslModule>());
 	modules.emplace_back(std::make_unique<StatusModule>());
 	modules.emplace_back(std::make_unique<TalkableModule>());

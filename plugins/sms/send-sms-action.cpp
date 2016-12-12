@@ -22,8 +22,8 @@
 #include "sms-actions.h"
 
 #include "buddies/buddy-set.h"
-#include "gui/actions/action-context.h"
-#include "gui/actions/action.h"
+#include "actions/action-context.h"
+#include "actions/action.h"
 
 SendSmsAction::SendSmsAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

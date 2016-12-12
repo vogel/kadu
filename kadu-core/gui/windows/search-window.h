@@ -26,7 +26,7 @@
 #include "buddies/buddy-search-criteria.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
-#include "gui/actions/action.h"
+#include "actions/action.h"
 #include "gui/windows/main-window.h"
 #include "misc/memory.h"
 

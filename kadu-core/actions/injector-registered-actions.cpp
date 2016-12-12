@@ -19,8 +19,8 @@
 
 #include "injector-registered-actions.h"
 
-#include "gui/actions/action-description.h"
-#include "gui/actions/actions.h"
+#include "actions/action-description.h"
+#include "actions/actions.h"
 #include "injeqt-type-roles.h"
 
 #include <injeqt/injector.h>

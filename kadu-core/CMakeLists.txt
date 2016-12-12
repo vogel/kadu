@@ -91,7 +91,6 @@ set (kadu_SUBDIRS
 	protocols
 	qt
 	roster
-	search
 	services
 	ssl
 	status
@@ -263,6 +262,13 @@ kadu_api_directories (kadu-core
 	accounts
 	accounts/filter
 	accounts/model
+	actions
+	actions/chat
+	actions/chat-widget
+	actions/main
+	actions/search
+	actions/talkable
+	actions/tree-view
 	avatars
 	buddies
 	buddies/model
@@ -284,8 +290,6 @@ kadu_api_directories (kadu-core
 	file-transfer/gui
 	formatted-string
 	gui
-	gui/actions
-	gui/actions/chat
 	gui/configuration
 	gui/menu
 	gui/model
@@ -329,8 +333,6 @@ kadu_api_directories (kadu-core
 	provider
 	roster
 	qt
-	search
-	search/actions
 	services
 	ssl
 	ssl/gui

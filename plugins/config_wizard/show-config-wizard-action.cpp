@@ -23,7 +23,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/actions/action.h"
+#include "actions/action.h"
 #include "plugin/plugin-injected-factory.h"
 #include "activate.h"
 

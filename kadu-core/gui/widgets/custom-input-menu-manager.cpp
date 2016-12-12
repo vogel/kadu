@@ -23,10 +23,10 @@
 
 #include <QtWidgets/QMenu>
 
-#include "gui/actions/action-context-provider.h"
-#include "gui/actions/action-context.h"
-#include "gui/actions/action-description.h"
-#include "gui/actions/action.h"
+#include "actions/action-context-provider.h"
+#include "actions/action-context.h"
+#include "actions/action-description.h"
+#include "actions/action.h"
 
 #include "custom-input-menu-manager.h"
 

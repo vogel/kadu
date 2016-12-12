@@ -23,7 +23,7 @@
 #include <QtCore/QPointer>
 #include <QtWidgets/QAction>
 
-#include "gui/actions/action-description.h"
+#include "actions/action-description.h"
 
 class ChatWidget;
 class PluginInjectedFactory;

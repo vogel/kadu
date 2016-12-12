@@ -20,7 +20,7 @@
 #ifndef PROXY_ACTION_CONTEXT_H
 #define PROXY_ACTION_CONTEXT_H
 
-#include "gui/actions/action-context.h"
+#include "actions/action-context.h"
 
 class ProxyActionContext : public ActionContext
 {

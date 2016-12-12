@@ -23,8 +23,8 @@
 
 #include "show-config-wizard-action.h"
 
-#include "gui/actions/actions.h"
-#include "gui/actions/action-description.h"
+#include "actions/actions.h"
+#include "actions/action-description.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"

@@ -23,8 +23,8 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "gui/actions/actions.h"
-#include "gui/actions/action.h"
+#include "actions/actions.h"
+#include "actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/windows/xml-console.h"
 #include "identities/identity.h"

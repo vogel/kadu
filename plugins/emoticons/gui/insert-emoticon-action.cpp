@@ -20,7 +20,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/actions/action.h"
+#include "actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 
 #include "configuration/emoticon-configuration.h"

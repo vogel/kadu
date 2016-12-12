@@ -21,7 +21,7 @@
 
 #include "tabs.h"
 
-#include "gui/actions/action.h"
+#include "actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 

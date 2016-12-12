@@ -19,9 +19,8 @@
 
 #include "file-transfer-actions.h"
 
-#include "core/injected-factory.h"
-#include "file-transfer/gui/send-file-action.h"
-#include "file-transfer/gui/show-file-transfer-window-action.h"
+#include "actions/main/show-file-transfer-window-action.h"
+#include "actions/talkable/send-file-action.h"
 #include "gui/menu/menu-inventory.h"
 
 FileTransferActions::FileTransferActions(QObject *parent) :

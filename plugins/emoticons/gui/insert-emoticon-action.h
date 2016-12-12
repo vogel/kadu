@@ -20,7 +20,7 @@
 #ifndef INSERT_EMOTICON_ACTION_H
 #define INSERT_EMOTICON_ACTION_H
 
-#include "gui/actions/action-description.h"
+#include "actions/action-description.h"
 #include "configuration/emoticon-configuration.h"
 #include "emoticon.h"
 

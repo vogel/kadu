@@ -28,7 +28,7 @@
 #include "chat/type/chat-type-contact.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "contacts/contact-manager.h"
-#include "gui/actions/base-action-context.h"
+#include "actions/base-action-context.h"
 #include "gui/menu/menu-inventory.h"
 #include "model/roles.h"
 #include "os/generic/window-geometry-manager.h"
