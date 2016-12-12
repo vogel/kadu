@@ -21,7 +21,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "gui/widgets/configuration/configuration-widget.h"
+#include "widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
 
 #include "mpd-config.h"

@@ -23,8 +23,8 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
 #include "actions/action.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/kadu-window.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 #include "talkable/filter/hide-without-description-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 

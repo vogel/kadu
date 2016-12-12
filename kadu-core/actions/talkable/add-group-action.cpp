@@ -24,7 +24,7 @@
 #include "actions/actions.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
-#include "gui/windows/group-edit-window.h"
+#include "windows/group-edit-window.h"
 
 AddGroupAction::AddGroupAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

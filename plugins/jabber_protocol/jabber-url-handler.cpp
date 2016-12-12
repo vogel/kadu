@@ -33,7 +33,7 @@
 #include "dom/dom-processor-service.h"
 #include "dom/dom-processor.h"
 #include "dom/ignore-links-dom-visitor.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"

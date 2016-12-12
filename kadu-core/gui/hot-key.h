@@ -1,7 +1,7 @@
 #ifndef HOT_KEY_H
 #define HOT_KEY_H
 
-#include "gui/widgets/line-edit-with-clear-button.h"
+#include "widgets/line-edit-with-clear-button.h"
 #include "exports.h"
 
 class Configuration;

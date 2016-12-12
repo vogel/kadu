@@ -25,7 +25,7 @@
 #include "accounts/account.h"
 #include "actions/actions.h"
 #include "actions/action.h"
-#include "gui/menu/menu-inventory.h"
+#include "menu/menu-inventory.h"
 #include "gui/windows/xml-console.h"
 #include "identities/identity.h"
 

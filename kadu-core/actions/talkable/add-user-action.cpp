@@ -23,7 +23,7 @@
 #include "core/injected-factory.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
-#include "gui/windows/add-buddy-window.h"
+#include "windows/add-buddy-window.h"
 
 AddUserAction::AddUserAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

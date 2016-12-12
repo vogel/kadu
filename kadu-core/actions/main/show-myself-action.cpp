@@ -22,8 +22,8 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "actions/action.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/kadu-window.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
 

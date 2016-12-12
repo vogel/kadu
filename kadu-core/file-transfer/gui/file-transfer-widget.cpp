@@ -28,8 +28,8 @@
 #include "file-transfer/file-transfer-type.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/outgoing-file-transfer-handler.h"
-#include "gui/widgets/contact-avatar-display.h"
-#include "gui/windows/message-dialog.h"
+#include "widgets/contact-avatar-display.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 

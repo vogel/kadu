@@ -19,7 +19,7 @@
 
 #include "show-configuration-window-action.h"
 
-#include "gui/windows/main-configuration-window-service.h"
+#include "windows/main-configuration-window-service.h"
 
 ShowConfigurationWindowAction::ShowConfigurationWindowAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

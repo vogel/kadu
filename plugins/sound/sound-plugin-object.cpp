@@ -27,10 +27,10 @@
 #include "sound-manager.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "gui/widgets/buddy-configuration-widget-factory-repository.h"
-#include "gui/widgets/chat-configuration-widget-factory-repository.h"
-#include "gui/windows/main-configuration-window-service.h"
-#include "gui/windows/main-configuration-window.h"
+#include "widgets/buddy-configuration-widget-factory-repository.h"
+#include "widgets/chat-configuration-widget-factory-repository.h"
+#include "windows/main-configuration-window-service.h"
+#include "windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 #include "notification/notifier-repository.h"
 

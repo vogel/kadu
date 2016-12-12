@@ -20,10 +20,10 @@
 #include "clear-chat-action.h"
 
 #include "actions/action.h"
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-edit-widget.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "widgets/chat-edit-box.h"
+#include "widgets/chat-edit-widget.h"
+#include "widgets/chat-widget/chat-widget.h"
+#include "widgets/webkit-messages-view/webkit-messages-view.h"
 
 ClearChatAction::ClearChatAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

@@ -34,14 +34,14 @@
 #include <enchant.h>
 #endif
 
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/custom-input.h"
-#include "gui/windows/main-configuration-window.h"
-#include "gui/windows/message-dialog.h"
+#include "widgets/chat-edit-box.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "widgets/chat-widget/chat-widget.h"
+#include "widgets/configuration/config-group-box.h"
+#include "widgets/configuration/configuration-widget.h"
+#include "widgets/custom-input.h"
+#include "windows/main-configuration-window.h"
+#include "windows/message-dialog.h"
 #include "misc/paths-provider.h"
 
 #include "configuration/spellchecker-configuration.h"

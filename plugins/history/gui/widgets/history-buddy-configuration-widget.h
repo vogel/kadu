@@ -20,7 +20,7 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/widgets/buddy-configuration-widget.h"
+#include "widgets/buddy-configuration-widget.h"
 
 class Configuration;
 class SimpleConfigurationValueStateNotifier;

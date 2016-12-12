@@ -21,7 +21,7 @@
 
 #include "actions/main/show-file-transfer-window-action.h"
 #include "actions/talkable/send-file-action.h"
-#include "gui/menu/menu-inventory.h"
+#include "menu/menu-inventory.h"
 
 FileTransferActions::FileTransferActions(QObject *parent) :
 		QObject{parent}

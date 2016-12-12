@@ -25,9 +25,9 @@
 
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
-#include "gui/widgets/categorized-list-view-painter.h"
-#include "gui/widgets/categorized-list-view.h"
-#include "gui/windows/message-dialog.h"
+#include "widgets/categorized-list-view-painter.h"
+#include "widgets/categorized-list-view.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/categorized-sort-filter-proxy-model.h"

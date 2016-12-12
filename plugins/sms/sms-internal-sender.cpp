@@ -25,7 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "debug.h"
 
 #include "scripts/sms-script-manager.h"

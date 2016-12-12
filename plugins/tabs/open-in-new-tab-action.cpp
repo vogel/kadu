@@ -25,9 +25,9 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/windows/main-configuration-window-service.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "windows/main-configuration-window-service.h"
 
 #include <QtCore/QCoreApplication>
 

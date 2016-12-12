@@ -27,7 +27,7 @@
 #include "jabber-url-handler.h"
 
 #include "dom/dom-visitor-provider-repository.h"
-#include "gui/menu/menu-inventory.h"
+#include "menu/menu-inventory.h"
 #include "protocols/protocols-manager.h"
 #include "url-handlers/url-handler-manager.h"
 

@@ -23,7 +23,7 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"

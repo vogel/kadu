@@ -21,7 +21,7 @@
 #include "config-wizard-completed-page.h"
 
 #include "accounts/account-manager.h"
-#include "gui/windows/your-accounts-window-service.h"
+#include "windows/your-accounts-window-service.h"
 
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QFormLayout>

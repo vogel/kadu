@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "gui/widgets/chat-configuration-widget-factory.h"
+#include "widgets/chat-configuration-widget-factory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>

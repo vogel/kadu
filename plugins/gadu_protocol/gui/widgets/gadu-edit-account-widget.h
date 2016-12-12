@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "gui/widgets/account-edit-widget.h"
+#include "widgets/account-edit-widget.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>

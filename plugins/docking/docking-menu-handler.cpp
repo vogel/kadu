@@ -22,9 +22,9 @@
 #include "docking-menu-action-repository.h"
 #include "status-notifier-item.h"
 
-#include "gui/widgets/status-menu.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/kadu-window.h"
+#include "widgets/status-menu.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 #include "icons/icons-manager.h"
 #include "notification/silent-mode-service.h"
 #include "plugin/plugin-injected-factory.h"

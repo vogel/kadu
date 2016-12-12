@@ -22,7 +22,7 @@
 
 #include <QtCore/QPointer>
 
-#include "gui/widgets/account-configuration-widget.h"
+#include "widgets/account-configuration-widget.h"
 
 class QCheckBox;
 

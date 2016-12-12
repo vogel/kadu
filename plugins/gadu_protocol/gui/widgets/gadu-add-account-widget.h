@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "gui/widgets/account-add-widget.h"
+#include "widgets/account-add-widget.h"
 
 #include <injeqt/injeqt.h>
 

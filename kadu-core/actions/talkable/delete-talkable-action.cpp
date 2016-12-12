@@ -28,9 +28,9 @@
 #include "core/myself.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
-#include "gui/windows/buddy-delete-window.h"
-#include "gui/windows/kadu-window.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/buddy-delete-window.h"
+#include "windows/kadu-window.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 
 #include "delete-talkable-action.h"

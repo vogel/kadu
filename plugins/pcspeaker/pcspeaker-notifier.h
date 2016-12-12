@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "gui/windows/main-configuration-window.h"
+#include "windows/main-configuration-window.h"
 
 #include "notification/notifier.h"
 

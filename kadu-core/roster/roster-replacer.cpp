@@ -27,7 +27,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/myself.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "roster/roster-entry-state.h"

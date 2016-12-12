@@ -25,8 +25,8 @@
 #include "actions/actions.h"
 #include "actions/action-description.h"
 #include "actions/action.h"
-#include "gui/widgets/custom-input-menu-manager.h"
-#include "gui/widgets/custom-input.h"
+#include "widgets/custom-input-menu-manager.h"
+#include "widgets/custom-input.h"
 #include "icons/kadu-icon.h"
 #include "plugin/plugin-injected-factory.h"
 

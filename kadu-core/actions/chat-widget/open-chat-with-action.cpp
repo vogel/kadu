@@ -20,7 +20,7 @@
 #include "open-chat-with-action.h"
 
 #include "actions/action.h"
-#include "gui/windows/open-chat-with/open-chat-with-service.h"
+#include "windows/open-chat-with/open-chat-with-service.h"
 
 OpenChatWithAction::OpenChatWithAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

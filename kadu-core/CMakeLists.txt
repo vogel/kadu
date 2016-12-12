@@ -79,6 +79,7 @@ set (kadu_SUBDIRS
 	html
 	icons
 	identities
+	menu
 	message
 	misc
 	model
@@ -98,6 +99,8 @@ set (kadu_SUBDIRS
 	talkable
 	themes
 	url-handlers
+	widgets
+	windows
 )
 
 find_package (LibArchive 2.6.0 REQUIRED)
@@ -291,21 +294,13 @@ kadu_api_directories (kadu-core
 	formatted-string
 	gui
 	gui/configuration
-	gui/menu
 	gui/model
 	gui/services
-	gui/widgets
-	gui/widgets/configuration
-	gui/widgets/dialog
-	gui/widgets/chat-widget
-	gui/widgets/group-tab-bar
-	gui/widgets/webkit-messages-view
-	gui/windows
-	gui/windows/open-chat-with
 	html
 	icons
 	identities
 	identities/model
+	menu
 	message
 	misc
 	model
@@ -343,4 +338,12 @@ kadu_api_directories (kadu-core
 	talkable/model
 	themes
 	url-handlers
+	widgets
+	widgets/configuration
+	widgets/dialog
+	widgets/chat-widget
+	widgets/group-tab-bar
+	widgets/webkit-messages-view
+	windows
+	windows/open-chat-with
 )

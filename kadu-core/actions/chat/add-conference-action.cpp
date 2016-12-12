@@ -24,7 +24,7 @@
 #include "core/injected-factory.h"
 #include "actions/actions.h"
 #include "actions/action.h"
-#include "gui/windows/add-conference-window.h"
+#include "windows/add-conference-window.h"
 
 #include "add-conference-action.h"
 

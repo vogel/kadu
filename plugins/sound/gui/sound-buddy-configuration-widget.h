@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "gui/widgets/buddy-configuration-widget.h"
+#include "widgets/buddy-configuration-widget.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>

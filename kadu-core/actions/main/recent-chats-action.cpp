@@ -25,8 +25,8 @@
 #include "accounts/account.h"
 #include "core/injected-factory.h"
 #include "actions/action.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/recent-chats-menu.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
+#include "widgets/recent-chats-menu.h"
 
 #include <QtWidgets/QMenu>
 

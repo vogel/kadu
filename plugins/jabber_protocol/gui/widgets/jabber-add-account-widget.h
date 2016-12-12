@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include "gui/widgets/account-add-widget.h"
-#include "gui/widgets/identities-combo-box.h"
+#include "widgets/account-add-widget.h"
+#include "widgets/identities-combo-box.h"
 
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>

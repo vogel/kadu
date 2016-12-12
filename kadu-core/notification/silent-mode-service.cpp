@@ -24,7 +24,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "actions/action-description.h"
 #include "actions/action.h"
-#include "gui/menu/menu-inventory.h"
+#include "menu/menu-inventory.h"
 #include "notification/full-screen-service-handler.h"
 #include "notification/full-screen-service.h"
 #include "status/status-container-manager.h"

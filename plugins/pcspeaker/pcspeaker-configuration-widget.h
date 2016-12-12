@@ -8,7 +8,7 @@
 #include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 
-#include "gui/widgets/configuration/notifier-configuration-widget.h"
+#include "widgets/configuration/notifier-configuration-widget.h"
 
 class Configuration;
 class IconsManager;

@@ -21,8 +21,8 @@
 #pragma once
 
 #include "accounts/account.h"
-#include "gui/widgets/account-create-widget.h"
-#include "gui/widgets/identities-combo-box.h"
+#include "widgets/account-create-widget.h"
+#include "widgets/identities-combo-box.h"
 
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>

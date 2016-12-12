@@ -23,7 +23,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 
 #include <QtCore/QProcess>

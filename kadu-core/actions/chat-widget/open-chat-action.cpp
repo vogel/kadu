@@ -22,7 +22,7 @@
 #include "chat/chat.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
 
 OpenChatAction::OpenChatAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

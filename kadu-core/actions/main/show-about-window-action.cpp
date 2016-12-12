@@ -20,9 +20,9 @@
 #include "show-about-window-action.h"
 
 #include "core/injected-factory.h"
-#include "gui/windows/about.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/kadu-window.h"
+#include "windows/about.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 
 ShowAboutWindowAction::ShowAboutWindowAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

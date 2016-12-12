@@ -28,8 +28,8 @@
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "actions/actions.h"
 #include "dom/dom-visitor-provider-repository.h"
-#include "gui/windows/main-configuration-window-service.h"
-#include "gui/windows/main-configuration-window.h"
+#include "windows/main-configuration-window-service.h"
+#include "windows/main-configuration-window.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "misc/paths-provider.h"
 

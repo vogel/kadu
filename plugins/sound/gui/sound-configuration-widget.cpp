@@ -24,7 +24,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/widgets/configuration/notify-group-box.h"
+#include "widgets/configuration/notify-group-box.h"
 #include "icons/kadu-icon.h"
 #include "plugin/plugin-injected-factory.h"
 

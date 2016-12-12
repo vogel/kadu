@@ -24,8 +24,8 @@
 #include "jabber-account-details.h"
 #include "jabber-personal-info-widget.h"
 
-#include "gui/widgets/account-edit-widget.h"
-#include "gui/widgets/identities-combo-box.h"
+#include "widgets/account-edit-widget.h"
+#include "widgets/identities-combo-box.h"
 
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QHBoxLayout>

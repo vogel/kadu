@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,9 +34,9 @@
 #include "otr-session-service.h"
 #include "otr-trust-level-service.h"
 
-#include "gui/widgets/account-configuration-widget-factory-repository.h"
-#include "gui/widgets/buddy-configuration-widget-factory-repository.h"
-#include "gui/widgets/chat-top-bar-widget-factory-repository.h"
+#include "widgets/account-configuration-widget-factory-repository.h"
+#include "widgets/buddy-configuration-widget-factory-repository.h"
+#include "widgets/chat-top-bar-widget-factory-repository.h"
 #include "message/message-manager.h"
 #include "notification/notification-event-repository.h"
 #include "plugin/activation/plugin-activation-error-exception.h"

@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "gui/widgets/chat-widget/chat-widget-container-handler.h"
+#include "widgets/chat-widget/chat-widget-container-handler.h"
 #include "injeqt-type-roles.h"
 
 #include <QtCore/QObject>

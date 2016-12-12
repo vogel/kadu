@@ -20,8 +20,8 @@
 
 #include "autoresponder-configuration-ui-handler.h"
 
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/windows/main-configuration-window.h"
+#include "widgets/configuration/configuration-widget.h"
+#include "windows/main-configuration-window.h"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>

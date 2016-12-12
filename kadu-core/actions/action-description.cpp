@@ -25,7 +25,7 @@
 #include "configuration/configuration.h"
 #include "actions/action.h"
 #include "gui/hot-key.h"
-#include "gui/windows/main-window.h"
+#include "windows/main-window.h"
 
 #include <QtCore/QLatin1String>
 #include <QtCore/QMetaMethod>

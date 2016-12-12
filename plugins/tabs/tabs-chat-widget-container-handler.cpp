@@ -22,7 +22,7 @@
 #include "gui/widgets/tab-widget.h"
 #include "tabs.h"
 
-#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
+#include "widgets/chat-widget/chat-widget-container-handler-repository.h"
 
 TabsChatWidgetContainerHandler::TabsChatWidgetContainerHandler(QObject *parent) :
 		ChatWidgetContainerHandler{parent}

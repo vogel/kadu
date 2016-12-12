@@ -29,7 +29,7 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "contacts/contact-manager.h"
 #include "actions/base-action-context.h"
-#include "gui/menu/menu-inventory.h"
+#include "menu/menu-inventory.h"
 #include "model/roles.h"
 #include "os/generic/window-geometry-manager.h"
 #include "status/status-type-data.h"

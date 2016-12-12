@@ -30,7 +30,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"

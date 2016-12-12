@@ -23,7 +23,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-#include "gui/widgets/select-talkable-combo-box.h"
+#include "widgets/select-talkable-combo-box.h"
 
 class QAction;
 

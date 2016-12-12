@@ -24,8 +24,8 @@
 #include "core/myself.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
-#include "gui/widgets/dialog/merge-buddies-dialog-widget.h"
-#include "gui/windows/kadu-dialog.h"
+#include "widgets/dialog/merge-buddies-dialog-widget.h"
+#include "windows/kadu-dialog.h"
 
 MergeBuddiesAction::MergeBuddiesAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

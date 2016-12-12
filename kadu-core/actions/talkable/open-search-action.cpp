@@ -21,7 +21,7 @@
 
 #include "accounts/account-manager.h"
 #include "core/injected-factory.h"
-#include "gui/windows/search-window.h"
+#include "windows/search-window.h"
 
 OpenSearchAction::OpenSearchAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

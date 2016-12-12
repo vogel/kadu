@@ -23,9 +23,9 @@
 #include "core/injected-factory.h"
 #include "actions/action-context.h"
 #include "actions/action.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/kadu-window.h"
-#include "gui/windows/search-window.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
+#include "windows/search-window.h"
 #include "protocols/protocol.h"
 
 LookupBuddyInfoAction::LookupBuddyInfoAction(QObject *parent) :

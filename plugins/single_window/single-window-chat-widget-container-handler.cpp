@@ -21,7 +21,7 @@
 
 #include "single-window.h"
 
-#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
+#include "widgets/chat-widget/chat-widget-container-handler-repository.h"
 
 SingleWindowChatWidgetContainerHandler::SingleWindowChatWidgetContainerHandler(QObject *parent) :
 		ChatWidgetContainerHandler(parent)

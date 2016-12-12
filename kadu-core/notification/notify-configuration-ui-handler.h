@@ -22,7 +22,7 @@
 #pragma once
 
 #include "configuration/gui/configuration-ui-handler.h"
-#include "gui/windows/main-configuration-window.h"
+#include "windows/main-configuration-window.h"
 #include "notification/notification-event.h"
 
 #include <QtCore/QPointer>

@@ -30,7 +30,7 @@
 #include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 
-#include "gui/widgets/custom-input.h"
+#include "widgets/custom-input.h"
 
 #include "os/generic/compositing-aware-object.h"
 

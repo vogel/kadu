@@ -24,7 +24,7 @@
 #include "core/injected-factory.h"
 #include "actions/action.h"
 
-#include "gui/windows/add-room-chat-window.h"
+#include "windows/add-room-chat-window.h"
 
 #include "add-room-chat-action.h"
 

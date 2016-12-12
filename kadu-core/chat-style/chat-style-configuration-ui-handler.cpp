@@ -25,10 +25,10 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
 #include "misc/memory.h"
-#include "gui/widgets/chat-style-preview.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/windows/main-configuration-window.h"
+#include "widgets/chat-style-preview.h"
+#include "widgets/configuration/configuration-widget.h"
+#include "widgets/configuration/config-group-box.h"
+#include "windows/main-configuration-window.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtWidgets/QCheckBox>

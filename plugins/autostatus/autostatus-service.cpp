@@ -22,7 +22,7 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QTimer>
 
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "status/status-changer-manager.h"

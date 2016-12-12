@@ -22,9 +22,9 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "actions/action.h"
-#include "gui/widgets/buddy-info-panel.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/kadu-window.h"
+#include "widgets/buddy-info-panel.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 
 ShowInfoPanelAction::ShowInfoPanelAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

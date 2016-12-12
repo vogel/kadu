@@ -20,7 +20,7 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/widgets/chat-configuration-widget.h"
+#include "widgets/chat-configuration-widget.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>

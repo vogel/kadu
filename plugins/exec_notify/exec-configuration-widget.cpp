@@ -24,8 +24,8 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/widgets/configuration/notify-group-box.h"
-#include "gui/windows/main-configuration-window.h"
+#include "widgets/configuration/notify-group-box.h"
+#include "windows/main-configuration-window.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtWidgets/QHBoxLayout>

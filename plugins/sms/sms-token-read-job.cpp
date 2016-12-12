@@ -22,8 +22,8 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-#include "gui/windows/message-dialog.h"
-#include "gui/windows/token-window.h"
+#include "windows/message-dialog.h"
+#include "windows/token-window.h"
 
 #include "sms-token-read-job.h"
 

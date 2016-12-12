@@ -22,7 +22,7 @@
 #include "core/session-service.h"
 #include "actions/action-description.h"
 #include "actions/action.h"
-#include "gui/windows/main-window.h"
+#include "windows/main-window.h"
 
 #include "actions.h"
 

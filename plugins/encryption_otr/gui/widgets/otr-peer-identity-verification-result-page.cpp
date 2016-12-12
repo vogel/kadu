@@ -65,7 +65,7 @@ void OtrPeerIdentityVerificationResultPage::initializePage()
 	OtrTrustLevelService::TrustLevel trustLevel = TrustLevelService
 			? TrustLevelService.data()->loadTrustLevelFromContact(MyContact)
 			: OtrTrustLevelService::TrustLevelUnknown;
-	
+
 	setField("resultText", stateToString(result, trustLevel));
 }
 

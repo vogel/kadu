@@ -33,9 +33,9 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
-#include "gui/widgets/simple-configuration-value-state-notifier.h"
+#include "widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/jabber-wait-for-account-register-window.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "plugin/plugin-injected-factory.h"

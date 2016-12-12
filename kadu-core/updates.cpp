@@ -36,9 +36,9 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
 #include "core/version-service.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/kadu-window.h"
-#include "gui/windows/updates-dialog.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
+#include "windows/updates-dialog.h"
 #include "debug.h"
 
 #include "updates.h"

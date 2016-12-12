@@ -21,7 +21,7 @@
 
 #include <QtWebKitWidgets/QWebFrame>
 
-#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "widgets/webkit-messages-view/webkit-messages-view.h"
 
 #include "web-view-highlighter.h"
 

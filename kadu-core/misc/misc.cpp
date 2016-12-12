@@ -39,8 +39,8 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/windows/message-dialog.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
+#include "windows/message-dialog.h"
 #include "debug.h"
 
 #include "misc.h"

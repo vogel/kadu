@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "gui/windows/progress-window.h"
+#include "windows/progress-window.h"
 
 #include <QtCore/QPointer>
 

@@ -23,7 +23,7 @@
 #include "windows-thumbnail-toolbar.h"
 
 #include "file-transfer/file-transfer-manager.h"
-#include "gui/windows/main-window-repository.h"
+#include "windows/main-window-repository.h"
 #include "misc/memory.h"
 #include "plugin/plugin-injected-factory.h"
 #include "status/status-actions.h"

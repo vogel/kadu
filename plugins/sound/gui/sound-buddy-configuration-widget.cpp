@@ -22,7 +22,7 @@
 #include "gui/sound-select-file.h"
 #include "sound-manager.h"
 
-#include "gui/widgets/simple-configuration-value-state-notifier.h"
+#include "widgets/simple-configuration-value-state-notifier.h"
 #include "plugin/plugin-injected-factory.h"
 
 #include <QtWidgets/QCheckBox>

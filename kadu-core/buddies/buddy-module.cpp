@@ -28,7 +28,7 @@
 #include "buddies/group-manager.h"
 #include "buddies/group-storage.h"
 #include "buddies/model/buddy-data-extractor.h"
-#include "gui/widgets/buddy-configuration-widget-factory-repository.h"
+#include "widgets/buddy-configuration-widget-factory-repository.h"
 
 BuddyModule::BuddyModule()
 {

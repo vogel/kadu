@@ -23,8 +23,8 @@
 
 #include "contacts/contact-set.h"
 #include "formatted-string/formatted-string-factory.h"
-#include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "widgets/chat-widget/chat-widget.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "message/message-manager.h"

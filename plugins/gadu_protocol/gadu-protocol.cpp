@@ -41,7 +41,7 @@
 #include "contacts/contact-manager.h"
 #include "core/version-service.h"
 #include "formatted-string/composite-formatted-string.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "plugin/plugin-injected-factory.h"
 #include "qt/long-validator.h"

@@ -34,9 +34,9 @@
 
 #include "core/session-service.h"
 #include "gui/status-icon.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/windows/kadu-window-service.h"
-#include "gui/windows/kadu-window.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
+#include "windows/kadu-window-service.h"
+#include "windows/kadu-window.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message.h"

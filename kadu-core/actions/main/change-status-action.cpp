@@ -25,7 +25,7 @@
 #include "actions/action-context.h"
 #include "actions/action.h"
 #include "gui/status-icon.h"
-#include "gui/widgets/status-menu.h"
+#include "widgets/status-menu.h"
 
 #include "change-status-action.h"
 

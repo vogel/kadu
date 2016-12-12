@@ -19,7 +19,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/widgets/chat-widget/chat-widget-title-composing-state-position.h"
+#include "widgets/chat-widget/chat-widget-title-composing-state-position.h"
 
 #include "chat-configuration-holder.h"
 

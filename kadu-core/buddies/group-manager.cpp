@@ -30,7 +30,7 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "storage/storage-point.h"
 #include "debug.h"

@@ -26,9 +26,9 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/windows/main-configuration-window.h"
+#include "widgets/configuration/config-group-box.h"
+#include "widgets/configuration/configuration-widget.h"
+#include "windows/main-configuration-window.h"
 
 #include <QtCore/QMap>
 #include <QtWidgets/QGridLayout>

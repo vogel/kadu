@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "gui/widgets/chat-configuration-widget-factory.h"
+#include "widgets/chat-configuration-widget-factory.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>

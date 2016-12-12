@@ -19,7 +19,7 @@
 
 #include "status-module.h"
 
-#include "gui/windows/status-window-service.h"
+#include "windows/status-window-service.h"
 #include "status/remote-status-request-handler.h"
 #include "status/all-accounts-status-container.h"
 #include "status/description-manager.h"

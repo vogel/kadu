@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "gui/widgets/chat-top-bar-widget-factory.h"
+#include "widgets/chat-top-bar-widget-factory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>

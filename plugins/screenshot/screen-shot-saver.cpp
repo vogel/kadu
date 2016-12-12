@@ -23,7 +23,7 @@
 #include <QtCore/QDir>
 
 #include "configuration/screen-shot-configuration.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 
 #include "screen-shot-saver.h"

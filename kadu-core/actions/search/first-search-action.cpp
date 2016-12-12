@@ -19,7 +19,7 @@
 
 #include "first-search-action.h"
 
-#include "gui/windows/search-window.h"
+#include "windows/search-window.h"
 
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QRadioButton>

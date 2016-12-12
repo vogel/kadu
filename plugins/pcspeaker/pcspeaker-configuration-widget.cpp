@@ -26,7 +26,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "gui/widgets/configuration/notify-group-box.h"
+#include "widgets/configuration/notify-group-box.h"
 #include "icons/kadu-icon.h"
 
 #include "pcspeaker-notifier.h"

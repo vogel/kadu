@@ -19,7 +19,7 @@
 
 #include "show-your-accounts-action.h"
 
-#include "gui/windows/your-accounts-window-service.h"
+#include "windows/your-accounts-window-service.h"
 
 ShowYourAccountsAction::ShowYourAccountsAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

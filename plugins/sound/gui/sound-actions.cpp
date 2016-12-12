@@ -23,7 +23,7 @@
 #include "sound-manager.h"
 
 #include "actions/actions.h"
-#include "gui/menu/menu-inventory.h"
+#include "menu/menu-inventory.h"
 #include "plugin/plugin-injected-factory.h"
 
 SoundActions::SoundActions(QObject *parent) :

@@ -25,8 +25,8 @@
 
 #include "actions/actions.h"
 #include "actions/action-description.h"
-#include "gui/menu/menu-inventory.h"
-#include "gui/widgets/configuration/configuration-widget.h"
+#include "menu/menu-inventory.h"
+#include "widgets/configuration/configuration-widget.h"
 #include "misc/paths-provider.h"
 #include "debug.h"
 

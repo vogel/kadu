@@ -19,7 +19,7 @@
 
 #include "add-found-buddy-action.h"
 
-#include "gui/windows/search-window.h"
+#include "windows/search-window.h"
 
 #include <QtWidgets/QTreeWidget>
 

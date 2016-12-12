@@ -19,7 +19,7 @@
 
 #include "stop-search-action.h"
 
-#include "gui/windows/search-window.h"
+#include "windows/search-window.h"
 
 StopSearchAction::StopSearchAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

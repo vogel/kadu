@@ -20,9 +20,9 @@
 #include "send-action.h"
 
 #include "actions/action.h"
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/widgets/custom-input.h"
+#include "widgets/chat-edit-box.h"
+#include "widgets/chat-widget/chat-widget.h"
+#include "widgets/custom-input.h"
 
 SendAction::SendAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

@@ -22,8 +22,8 @@
 #include "tabs.h"
 
 #include "actions/action.h"
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
+#include "widgets/chat-edit-box.h"
+#include "widgets/chat-widget/chat-widget.h"
 
 AttachTabAction::AttachTabAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

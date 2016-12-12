@@ -20,7 +20,7 @@
 
 #include "history-messages-prepender.h"
 
-#include "gui/widgets/webkit-messages-view/webkit-messages-view.h"
+#include "widgets/webkit-messages-view/webkit-messages-view.h"
 #include "message/sorted-messages.h"
 
 #include <QtCore/QFutureWatcher>

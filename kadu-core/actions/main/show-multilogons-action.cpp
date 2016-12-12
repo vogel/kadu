@@ -21,7 +21,7 @@
 
 #include "accounts/account-manager.h"
 #include "actions/action.h"
-#include "gui/windows/multilogon-window-service.h"
+#include "windows/multilogon-window-service.h"
 
 ShowMultilogonsAction::ShowMultilogonsAction(QObject *parent) :
 		// using C++ initializers breaks Qt's lupdate

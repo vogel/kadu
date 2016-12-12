@@ -27,9 +27,9 @@
 
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/widgets/custom-input.h"
-#include "gui/windows/message-dialog.h"
+#include "widgets/chat-widget/chat-widget.h"
+#include "widgets/custom-input.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "plugin/plugin-injected-factory.h"
 #include "activate.h"

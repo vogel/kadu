@@ -22,10 +22,10 @@
 #include "configuration/spellchecker-configuration.h"
 #include "spellchecker.h"
 
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/windows/main-configuration-window.h"
-#include "gui/windows/message-dialog.h"
+#include "widgets/configuration/config-group-box.h"
+#include "widgets/configuration/configuration-widget.h"
+#include "windows/main-configuration-window.h"
+#include "windows/message-dialog.h"
 
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>

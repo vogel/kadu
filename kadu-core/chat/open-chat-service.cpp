@@ -20,8 +20,8 @@
 #include "open-chat-service.h"
 
 #include "chat/open-chat-repository.h"
-#include "gui/widgets/chat-widget/chat-widget-repository.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
+#include "widgets/chat-widget/chat-widget-repository.h"
+#include "widgets/chat-widget/chat-widget.h"
 
 OpenChatService::OpenChatService(QObject *parent) :
 		QObject{parent}

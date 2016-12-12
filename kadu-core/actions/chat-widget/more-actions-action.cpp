@@ -21,9 +21,9 @@
 
 #include "actions/actions.h"
 #include "actions/action.h"
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-edit-widget.h"
-#include "gui/widgets/toolbar.h"
+#include "widgets/chat-edit-box.h"
+#include "widgets/chat-edit-widget.h"
+#include "widgets/toolbar.h"
 
 #include <QtWidgets/QMenu>
 

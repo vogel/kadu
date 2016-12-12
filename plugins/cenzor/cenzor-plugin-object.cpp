@@ -23,8 +23,8 @@
 #include "cenzor-message-filter.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
-#include "gui/windows/main-configuration-window-service.h"
-#include "gui/windows/main-configuration-window.h"
+#include "windows/main-configuration-window-service.h"
+#include "windows/main-configuration-window.h"
 #include "message/message-filter-service.h"
 #include "misc/paths-provider.h"
 #include "status/status-changer-manager.h"

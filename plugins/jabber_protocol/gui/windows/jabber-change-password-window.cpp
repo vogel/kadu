@@ -24,7 +24,7 @@
 #include "services/jabber-change-password.h"
 
 #include "configuration/config-file-variant-wrapper.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol.h"

@@ -20,8 +20,8 @@
 #include "italic-action.h"
 
 #include "actions/action.h"
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/custom-input.h"
+#include "widgets/chat-edit-box.h"
+#include "widgets/custom-input.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 

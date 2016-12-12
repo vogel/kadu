@@ -20,7 +20,7 @@
 #pragma once
 
 #include "accounts/account.h"
-#include "gui/windows/open-chat-with/open-chat-with-runner.h"
+#include "windows/open-chat-with/open-chat-with-runner.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>

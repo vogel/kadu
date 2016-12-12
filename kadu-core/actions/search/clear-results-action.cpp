@@ -19,7 +19,7 @@
 
 #include "clear-results-action.h"
 
-#include "gui/windows/search-window.h"
+#include "windows/search-window.h"
 
 #include <QtWidgets/QTreeWidget>
 

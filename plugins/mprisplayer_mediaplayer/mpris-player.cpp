@@ -25,7 +25,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/windows/main-configuration-window.h"
+#include "windows/main-configuration-window.h"
 #include "plugin/metadata/plugin-metadata.h"
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state.h"

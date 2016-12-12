@@ -25,8 +25,8 @@
 #include "accounts/account.h"
 #include "core/core.h"
 #include "actions/action.h"
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
+#include "widgets/chat-edit-box.h"
+#include "widgets/chat-widget/chat-widget.h"
 #include "plugin/plugin-injected-factory.h"
 #include "protocols/protocol.h"
 

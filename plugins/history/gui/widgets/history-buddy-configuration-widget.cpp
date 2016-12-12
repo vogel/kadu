@@ -24,7 +24,7 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "gui/widgets/simple-configuration-value-state-notifier.h"
+#include "widgets/simple-configuration-value-state-notifier.h"
 
 #include "history-buddy-configuration-widget.h"
 

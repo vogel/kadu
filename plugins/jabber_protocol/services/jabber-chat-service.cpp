@@ -42,7 +42,7 @@
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "message/message-storage.h"

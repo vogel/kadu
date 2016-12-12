@@ -21,7 +21,7 @@
 
 #include "mediaplayer.h"
 
-#include "gui/widgets/chat-edit-box.h"
+#include "widgets/chat-edit-box.h"
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>

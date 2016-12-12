@@ -22,7 +22,7 @@
 
 #include "core/injected-factory.h"
 #include "actions/action.h"
-#include "gui/windows/proxy-edit-window-service.h"
+#include "windows/proxy-edit-window-service.h"
 #include "model/roles.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"

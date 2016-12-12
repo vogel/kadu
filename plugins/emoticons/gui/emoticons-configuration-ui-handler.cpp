@@ -24,13 +24,13 @@
 #include <QtWidgets/QFileDialog>
 
 #include "compression/archive-extractor.h"
-#include "gui/widgets/configuration/config-check-box.h"
-#include "gui/widgets/configuration/config-list-widget.h"
-#include "gui/widgets/configuration/config-path-list-edit.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/path-list-edit.h"
-#include "gui/windows/main-configuration-window.h"
-#include "gui/windows/message-dialog.h"
+#include "widgets/configuration/config-check-box.h"
+#include "widgets/configuration/config-list-widget.h"
+#include "widgets/configuration/config-path-list-edit.h"
+#include "widgets/configuration/configuration-widget.h"
+#include "widgets/path-list-edit.h"
+#include "windows/main-configuration-window.h"
+#include "windows/message-dialog.h"
 #include "misc/paths-provider.h"
 #include "plugin/plugin-injected-factory.h"
 

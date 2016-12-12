@@ -24,7 +24,7 @@
 #include "plugins/mediaplayer/mediaplayer-plugin-object.h"
 #include "plugins/mediaplayer/mediaplayer.h"
 
-#include "gui/windows/main-configuration-window-service.h"
+#include "windows/main-configuration-window-service.h"
 #include "misc/paths-provider.h"
 
 MpdPlayerPluginObject::MpdPlayerPluginObject(QObject *parent) :

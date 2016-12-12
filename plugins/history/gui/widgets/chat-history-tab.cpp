@@ -24,7 +24,7 @@
 #include "storage/history-messages-storage.h"
 
 #include "contacts/contact-set.h"
-#include "gui/widgets/talkable-tree-view.h"
+#include "widgets/talkable-tree-view.h"
 #include "model/model-chain.h"
 #include "talkable/talkable-converter.h"
 

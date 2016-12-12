@@ -25,7 +25,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
-#include "gui/widgets/simple-configuration-value-state-notifier.h"
+#include "widgets/simple-configuration-value-state-notifier.h"
 
 #include "history-chat-configuration-widget.h"
 

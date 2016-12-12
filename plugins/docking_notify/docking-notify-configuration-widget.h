@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "gui/widgets/configuration/notifier-configuration-widget.h"
+#include "widgets/configuration/notifier-configuration-widget.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>

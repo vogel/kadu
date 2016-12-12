@@ -22,7 +22,7 @@
 
 #include <QtCore/QPointer>
 
-#include "gui/widgets/buddy-configuration-widget.h"
+#include "widgets/buddy-configuration-widget.h"
 
 class QCheckBox;
 

@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "gui/widgets/account-configuration-widget-factory.h"
+#include "widgets/account-configuration-widget-factory.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>

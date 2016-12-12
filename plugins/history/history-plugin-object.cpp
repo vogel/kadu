@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,10 +25,10 @@
 #include "history.h"
 
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
-#include "gui/widgets/buddy-configuration-widget-factory-repository.h"
-#include "gui/widgets/chat-configuration-widget-factory-repository.h"
-#include "gui/windows/main-configuration-window-service.h"
-#include "gui/windows/main-configuration-window.h"
+#include "widgets/buddy-configuration-widget-factory-repository.h"
+#include "widgets/chat-configuration-widget-factory-repository.h"
+#include "windows/main-configuration-window-service.h"
+#include "windows/main-configuration-window.h"
 #include "misc/paths-provider.h"
 
 HistoryPluginObject::HistoryPluginObject(QObject *parent) :

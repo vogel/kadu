@@ -21,7 +21,7 @@
 
 #include "accounts/account.h"
 #include "chat/chat.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "widgets/chat-widget/chat-widget-manager.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "message/message.h"

@@ -52,7 +52,7 @@
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "core/version-service.h"
-#include "gui/windows/message-dialog.h"
+#include "windows/message-dialog.h"
 #include "misc/memory.h"
 #include "os/generic/system-info.h"
 #include "plugin/plugin-injected-factory.h"
