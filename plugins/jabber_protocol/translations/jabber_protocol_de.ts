@@ -3,7 +3,7 @@
     <name>FacebookDepreceatedMessage</name>
     <message>
         <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
-        <translation type="unfinished"/>
+        <translation>Facebook hat den Support für XMPP ab den 01.05.2015 eingestellt. Kadu kann sich daher nicht mehr mit Facebook-Accounts verbinden. Die Accounts müssen nicht gelöscht werden, allerdings funktionieren diese nur noch für das Nachrichten-Protokoll.</translation>
     </message>
     <message>
         <source>Kadu - Facebook</source>
@@ -112,17 +112,21 @@
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) must be the same!</source>
-        <translation type="unfinished"/>
+        <translation>Ungültige Eingabe in benötigten Feldern.
+
+Die eingegebenen Passwörter müssen übereinstimmen.</translation>
     </message>
     <message>
         <source>Log in before changing password.</source>
-        <translation type="unfinished"/>
+        <translation>Bitte loggen Sie sich ein bevor Sie das Passwort ändern.</translation>
     </message>
     <message>
         <source>Password change failed.
 
 Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Passwortänderung fehlgeschlagen.
+
+Fehler: %1</translation>
     </message>
 </context>
 <context>
@@ -198,7 +202,9 @@ Error: %1</source>
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) must be the same!</source>
-        <translation type="unfinished"/>
+        <translation>Ungültige Eingabe in benötigten Feldern.
+
+Die eingegebenen Passwörter müssen übereinstimmen.</translation>
     </message>
     <message>
         <source>E-mail:</source>

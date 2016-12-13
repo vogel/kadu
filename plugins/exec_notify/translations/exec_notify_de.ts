@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Run command</source>
-        <translation type="unfinished"/>
+        <translation>Starte Kommando</translation>
     </message>
 </context>
 </TS>

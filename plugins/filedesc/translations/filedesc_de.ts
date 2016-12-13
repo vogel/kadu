@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>FileDesc</source>
-        <translation type="unfinished"/>
+        <translation>FileDesc</translation>
     </message>
     <message>
         <source>File with description to synchronize</source>
@@ -23,19 +23,19 @@
     </message>
     <message>
         <source>Allows you to set some custom description manualy, until file contents does not change</source>
-        <translation type="unfinished"/>
+        <translation>Erlaubt es, eine Beschreibung per Hand zu setzen, solange der Inhalt der Datei unverändert bleibt</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Verhalten</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Beschreibung</translation>
     </message>
     <message>
         <source>Always add description to status</source>
-        <translation type="unfinished"/>
+        <translation>Füge immer die Beschreibung zum Status zu</translation>
     </message>
 </context>
 </TS>

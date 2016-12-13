@@ -3,34 +3,34 @@
     <name>@default</name>
     <message>
         <source>Keep contact list size</source>
-        <translation type="unfinished"/>
+        <translation>Behalte Größe der Kontaktliste</translation>
     </message>
     <message>
         <source>Hide scroll bar</source>
-        <translation type="unfinished"/>
+        <translation>Verstecke Scrollleiste</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Extras</translation>
     </message>
     <message>
         <source>Simple View</source>
-        <translation type="unfinished"/>
+        <translation>Einfache Ansicht</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Optionen</translation>
     </message>
     <message>
         <source>Hide window borders</source>
-        <translation type="unfinished"/>
+        <translation>Verstecke Fensterrahmen</translation>
     </message>
 </context>
 <context>
     <name>SimpleView</name>
     <message>
         <source>Simple view</source>
-        <translation type="unfinished"/>
+        <translation>Einfache Ansicht</translation>
     </message>
 </context>
 </TS>

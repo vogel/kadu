@@ -3,7 +3,7 @@
     <name>@default</name>
     <message>
         <source>Indicator</source>
-        <translation type="unfinished"/>
+        <translation>Indikator</translation>
     </message>
 </context>
 </TS>

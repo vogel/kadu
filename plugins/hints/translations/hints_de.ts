@@ -15,55 +15,55 @@
     </message>
     <message>
         <source>Icon size</source>
-        <translation type="unfinished"/>
+        <translation>Symbol-Größe</translation>
     </message>
     <message>
         <source>16px</source>
-        <translation type="unfinished"/>
+        <translation>16px</translation>
     </message>
     <message>
         <source>22px</source>
-        <translation type="unfinished"/>
+        <translation>22px</translation>
     </message>
     <message>
         <source>32px</source>
-        <translation type="unfinished"/>
+        <translation>32px</translation>
     </message>
     <message>
         <source>48px</source>
-        <translation type="unfinished"/>
+        <translation>48px</translation>
     </message>
     <message>
         <source>64px</source>
-        <translation type="unfinished"/>
+        <translation>64px</translation>
     </message>
     <message>
         <source>Top Left</source>
-        <translation type="unfinished"/>
+        <translation>oben links</translation>
     </message>
     <message>
         <source>Top Right</source>
-        <translation type="unfinished"/>
+        <translation>oben rechts</translation>
     </message>
     <message>
         <source>Bottom Left</source>
-        <translation type="unfinished"/>
+        <translation>unten links</translation>
     </message>
     <message>
         <source>Bottom Right</source>
-        <translation type="unfinished"/>
+        <translation>unten rechts</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Corner</source>
-        <translation type="unfinished"/>
+        <translation>Ecke</translation>
     </message>
     <message>
         <source>Show all notification actions</source>
-        <translation type="unfinished"/>
+        <translation>Zeige alle Benachrichtigungsaktionen</translation>
     </message>
 </context>
 </TS>

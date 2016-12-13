@@ -3,53 +3,53 @@
     <name>@default</name>
     <message>
         <source>MediaPlayer</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>MPRIS Player</source>
-        <translation type="unfinished"/>
+        <translation>MPRIS-Konformes Abspielprogramm</translation>
     </message>
 </context>
 <context>
     <name>MPRISPlayerConfigurationUiHandler</name>
     <message>
         <source>Select Player:</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm auswählen:</translation>
     </message>
     <message>
         <source>Add Player</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm hinzufügen</translation>
     </message>
     <message>
         <source>Edit Player</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm bearbeiten</translation>
     </message>
     <message>
         <source>Delete Player</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm entfernen</translation>
     </message>
 </context>
 <context>
     <name>MPRISPlayerDialog</name>
     <message>
         <source>Add Player</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm hinzufügen</translation>
     </message>
     <message>
         <source>Edit Player</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm bearbeiten</translation>
     </message>
     <message>
         <source>Player:</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm:</translation>
     </message>
     <message>
         <source>Service:</source>
-        <translation type="unfinished"/>
+        <translation>Dienst:</translation>
     </message>
 </context>
 </TS>

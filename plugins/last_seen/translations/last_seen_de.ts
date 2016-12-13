@@ -3,14 +3,14 @@
     <name>Infos</name>
     <message>
         <source>&amp;Show infos about buddies</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Info&amp;s über Kontakte</translation>
     </message>
 </context>
 <context>
     <name>InfosDialog</name>
     <message>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <source>Protocol</source>
@@ -26,7 +26,7 @@
     </message>
     <message>
         <source>State</source>
-        <translation>Zustand</translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Last time seen on</source>
@@ -38,7 +38,7 @@
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Benutzername</translation>
     </message>
 </context>
 </TS>
