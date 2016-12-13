@@ -20,11 +20,8 @@
 #include "sound-actions.h"
 
 #include "gui/sound-mute-action.h"
-#include "sound-manager.h"
 
-#include "actions/actions.h"
 #include "menu/menu-inventory.h"
-#include "plugin/plugin-injected-factory.h"
 
 SoundActions::SoundActions(QObject *parent) :
 		QObject{parent}
@@ -35,37 +32,23 @@ SoundActions::~SoundActions()
 {
 }
 
-void SoundActions::setActions(Actions *actions)
-{
-	m_actions = actions;
-}
-
-void SoundActions::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
-{
-	m_pluginInjectedFactory = pluginInjectedFactory;
-}
-
 void SoundActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
 }
 
-void SoundActions::setSoundManager(SoundManager *soundManager)
+void SoundActions::setSoundMuteAction(SoundMuteAction *soundMuteAction)
 {
-	m_soundManager = soundManager;
+	m_soundMuteAction = soundMuteAction;
 }
 
 void SoundActions::init()
 {
-	m_soundMuteAction = m_pluginInjectedFactory->makeInjected<SoundMuteAction>(this);
-	m_actions->insert(m_soundMuteAction);
-
 	m_menuInventory
 		->menu("main")
 		->addAction(m_soundMuteAction, KaduMenu::SectionMiscTools, 7)
 		->update();
 
-	m_soundMuteAction->setSoundManager(m_soundManager);
 	m_soundMuteAction->updateActionStates();
 }
 

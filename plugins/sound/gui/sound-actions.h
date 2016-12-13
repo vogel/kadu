@@ -25,10 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class Actions;
-class PluginInjectedFactory;
 class MenuInventory;
-class SoundManager;
 class SoundMuteAction;
 
 class QAction;
@@ -45,17 +42,12 @@ protected:
 	virtual void configurationUpdated();
 
 private:
-	QPointer<Actions> m_actions;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<MenuInventory> m_menuInventory;
-	QPointer<SoundManager> m_soundManager;
-	SoundMuteAction *m_soundMuteAction;
+	QPointer<SoundMuteAction> m_soundMuteAction;
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setSoundManager(SoundManager *soundManager);
+	INJEQT_SET void setSoundMuteAction(SoundMuteAction *soundMuteAction);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 

@@ -26,7 +26,6 @@
 #include <QtWidgets/QMenu>
 
 #include "accounts/account-manager.h"
-#include "actions/actions.h"
 #include "contacts/contact-manager.h"
 #include "menu/menu-inventory.h"
 #include "misc/paths-provider.h"
@@ -51,11 +50,6 @@ Infos::~Infos()
 void Infos::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
-}
-
-void Infos::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void Infos::setContactManager(ContactManager *contactManager)
@@ -87,7 +81,6 @@ void Infos::init()
 {
 	kdebugf();
 
-	m_actions->insert(m_showInfosWindowAction);
 	triggerAllAccountsRegistered(m_accountManager);
 
 	fileName = m_pathsProvider->profilePath() + QStringLiteral("last_seen.data");
@@ -171,7 +164,6 @@ void Infos::done()
 		->menu("tools")
 		->removeAction(m_showInfosWindowAction)
 		->update();
-	m_actions->remove(m_showInfosWindowAction);
 
 	kdebugf2();
 }

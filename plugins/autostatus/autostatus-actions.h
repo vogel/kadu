@@ -23,7 +23,6 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class Actions;
 class ToggleAutostatusAction;
 
 class MenuInventory;
@@ -40,12 +39,10 @@ public:
 	void unregisterActions();
 
 private:
-	QPointer<Actions> m_actions;
 	QPointer<MenuInventory> m_menuInventory;
 	QPointer<ToggleAutostatusAction> m_toggleAutostatusAction;
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 	INJEQT_SET void setToggleAutostatusAction(ToggleAutostatusAction *toggleAutostatusAction);
 	INJEQT_INIT void init();

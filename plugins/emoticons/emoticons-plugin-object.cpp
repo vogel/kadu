@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,7 +25,6 @@
 #include "gui/emoticons-configuration-ui-handler.h"
 #include "gui/insert-emoticon-action.h"
 
-#include "actions/actions.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "dom/dom-visitor-provider-repository.h"
 #include "gui/services/clipboard-html-transformer-service.h"
@@ -40,11 +39,6 @@ EmoticonsPluginObject::EmoticonsPluginObject(QObject *parent) :
 
 EmoticonsPluginObject::~EmoticonsPluginObject()
 {
-}
-
-void EmoticonsPluginObject::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void EmoticonsPluginObject::setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService)
@@ -99,7 +93,6 @@ void EmoticonsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 
 void EmoticonsPluginObject::init()
 {
-	m_actions->insert(m_insertEmoticonAction);
 	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/emoticons.ui"));
 	m_clipboardHtmlTransformerService->registerTransformer(m_emoticonClipboardHtmlTransformer);
 	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_emoticonsConfigurationUiHandler);

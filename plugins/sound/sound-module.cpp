@@ -23,6 +23,7 @@
 #include "gui/sound-buddy-configuration-widget-factory.h"
 #include "gui/sound-chat-configuration-widget-factory.h"
 #include "gui/sound-configuration-ui-handler.h"
+#include "gui/sound-mute-action.h"
 #include "notification/sound-notifier.h"
 #include "sound-manager.h"
 #include "sound-plugin-object.h"
@@ -35,6 +36,7 @@ SoundModule::SoundModule()
 	add_type<SoundChatConfigurationWidgetFactory>();
 	add_type<SoundConfigurationUiHandler>();
 	add_type<SoundManager>();
+	add_type<SoundMuteAction>();
 	add_type<SoundNotifier>();
 	add_type<SoundPluginObject>();
 	add_type<SoundThemeManager>();

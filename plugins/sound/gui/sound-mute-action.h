@@ -20,6 +20,7 @@
 #pragma once
 
 #include "actions/action-description.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QPointer>
 
@@ -28,12 +29,11 @@ class SoundManager;
 class SoundMuteAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	explicit SoundMuteAction(QObject *parent = nullptr);
+	Q_INVOKABLE explicit SoundMuteAction(QObject *parent = nullptr);
 	virtual ~SoundMuteAction();
-
-	void setSoundManager(SoundManager *soundManager);
 
 protected:
 	virtual void actionTriggered(QAction *sender, bool toggled) override;
@@ -41,5 +41,8 @@ protected:
 
 private:
 	QPointer<SoundManager> m_soundManager;
+
+private slots:
+	INJEQT_SET void setSoundManager(SoundManager *soundManager);
 
 };

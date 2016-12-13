@@ -24,7 +24,6 @@
 #include "show-config-wizard-action.h"
 
 #include "actions/action-description.h"
-#include "actions/actions.h"
 #include "menu/menu-inventory.h"
 #include "misc/paths-provider.h"
 #include "widgets/configuration/configuration-widget.h"
@@ -41,11 +40,6 @@ ConfigWizardActions::~ConfigWizardActions()
 {
 }
 
-void ConfigWizardActions::setActions(Actions *actions)
-{
-	m_actions = actions;
-}
-
 void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
 {
 	m_menuInventory = menuInventory;
@@ -58,7 +52,6 @@ void ConfigWizardActions::setShowConfigWizardAction(ShowConfigWizardAction *show
 
 void ConfigWizardActions::registerActions()
 {
-	m_actions->insert(m_showConfigWizardAction);
 	m_menuInventory
 		->menu("tools")
 		->addAction(m_showConfigWizardAction, KaduMenu::SectionTools)
@@ -71,7 +64,6 @@ void ConfigWizardActions::unregisterActions()
 		->menu("tools")
 		->removeAction(m_showConfigWizardAction)
 		->update();
-	m_actions->remove(m_showConfigWizardAction);
 }
 
 #include "moc_config-wizard-actions.cpp"

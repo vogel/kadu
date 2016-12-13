@@ -24,7 +24,6 @@
 
 #include "actions/action-description.h"
 #include "actions/action.h"
-#include "actions/actions.h"
 #include "contacts/contact-set.h"
 #include "menu/menu-inventory.h"
 #include "plugin/plugin-injected-factory.h"
@@ -54,11 +53,6 @@ SmsActions::SmsActions(QObject *parent) :
 
 SmsActions::~SmsActions()
 {
-}
-
-void SmsActions::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void SmsActions::setHistory(History *history)
@@ -116,7 +110,6 @@ void SmsActions::init()
 	connect(m_kaduWindowService->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
 			this, SLOT(talkableActivated(Talkable)));
 
-	m_actions->insert(m_sendSmsAction);
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_sendSmsAction, KaduMenu::SectionSend, 10)
@@ -139,7 +132,6 @@ void SmsActions::done()
 		->menu("buddy")
 		->removeAction(m_sendSmsAction)
 		->update();
-	m_actions->remove(m_sendSmsAction);
 }
 
 void SmsActions::newSms(const QString &mobile)

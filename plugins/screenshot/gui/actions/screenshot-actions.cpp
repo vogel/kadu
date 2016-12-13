@@ -55,4 +55,9 @@ void ScreenshotActions::init()
 	m_actions->insert(m_screenShotActionDescription);
 }
 
+void ScreenshotActions::done()
+{
+	m_actions->remove(m_screenShotActionDescription);
+}
+
 #include "moc_screenshot-actions.cpp"

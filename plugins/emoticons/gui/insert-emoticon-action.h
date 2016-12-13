@@ -22,6 +22,7 @@
 
 #include "actions/action-description.h"
 #include "configuration/emoticon-configuration.h"
+#include "injeqt-type-roles.h"
 #include "emoticon.h"
 
 /**
@@ -36,6 +37,7 @@
 class InsertEmoticonAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 	EmoticonConfiguration Configuration;
 

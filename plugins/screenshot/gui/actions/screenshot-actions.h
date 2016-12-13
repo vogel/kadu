@@ -42,7 +42,7 @@ private:
 	QPointer<Actions> m_actions;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
-	
+
 	owned_qptr<ScreenshotAction> m_screenShotActionDescription;
 
 private slots:
@@ -50,5 +50,6 @@ private slots:
 	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 };

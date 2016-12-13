@@ -27,6 +27,7 @@
 #include "history-exports.h"
 
 #include "actions/action-description.h"
+#include "injeqt-type-roles.h"
 
 class BuddyChatManager;
 class HistoryWindowService;
@@ -35,6 +36,7 @@ class History;
 class HISTORYAPI ShowHistoryAction : public ActionDescription
 {
 	Q_OBJECT
+	INJEQT_TYPE_ROLE(ACTION)
 
 	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<HistoryWindowService> m_historyWindowService;

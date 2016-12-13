@@ -29,7 +29,6 @@
 
 class QAction;
 
-class Actions;
 class ChatWidget;
 class History;
 class PluginInjectedFactory;
@@ -46,7 +45,6 @@ class SmsActions : public QObject
 {
 	Q_OBJECT
 
-	QPointer<Actions> m_actions;
 	QPointer<History> m_history;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<KaduWindowService> m_kaduWindowService;
@@ -59,7 +57,6 @@ class SmsActions : public QObject
 	QPointer<TalkableConverter> m_talkableConverter;
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setHistory(History *history);
 	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);

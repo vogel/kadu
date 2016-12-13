@@ -51,7 +51,6 @@
 
 class AccountManager;
 class Account;
-class Actions;
 class BuddyChatManager;
 class ChatWidget;
 class ChatWidgetRepository;
@@ -69,7 +68,6 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 	Q_OBJECT
 
 	QPointer<AccountManager> m_accountManager;
-	QPointer<Actions> m_actions;
 	QPointer<BuddyChatManager> m_buddyChatManager;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<ClearHistoryAction> m_clearHistoryAction;
@@ -118,7 +116,6 @@ class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareO
 
 private slots:
 	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setActions(Actions *actions);
 	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setClearHistoryAction(ClearHistoryAction *clearHistoryAction);

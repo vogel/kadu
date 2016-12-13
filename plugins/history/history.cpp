@@ -30,7 +30,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "actions/actions.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
 #include "chat/buddy-chat-manager.h"
@@ -75,11 +74,6 @@ History::~History()
 void History::setAccountManager(AccountManager *accountManager)
 {
 	m_accountManager = accountManager;
-}
-
-void History::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void History::setBuddyChatManager(BuddyChatManager *buddyChatManager)
@@ -142,10 +136,6 @@ void History::done()
 
 void History::createActionDescriptions()
 {
-	m_actions->blockSignals();
-	m_actions->insert(m_clearHistoryAction);
-	m_actions->insert(m_showHistoryAction);
-
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_showHistoryAction, KaduMenu::SectionView, 100)
@@ -154,9 +144,6 @@ void History::createActionDescriptions()
 		->menu("main")
 		->addAction(m_showHistoryAction, KaduMenu::SectionRecentChats)
 		->update();
-
-	// The last ActionDescription will send actionLoaded() signal.
-	m_actions->unblockSignals();
 
 }
 
@@ -170,8 +157,6 @@ void History::deleteActionDescriptions()
 		->menu("main")
 		->removeAction(m_showHistoryAction)
 		->update();
-	m_actions->remove(m_clearHistoryAction);
-	m_actions->remove(m_showHistoryAction);
 }
 
 void History::chatWidgetAdded(ChatWidget *chatWidget)
