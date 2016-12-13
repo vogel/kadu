@@ -3,46 +3,46 @@
     <name>@default</name>
     <message>
         <source>MediaPlayer</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Media Player Daemon Settings</source>
-        <translation type="unfinished"/>
+        <translation>Einstellungen vom Media Player Daemon</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Rechnername</translation>
     </message>
     <message>
         <source>Media Player Daemon server address</source>
-        <translation type="unfinished"/>
+        <translation>Server Adresse des Media Player Daemon</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"/>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Port number MPD is listening on</source>
-        <translation type="unfinished"/>
+        <translation>Portnummer, auf der MPT lauscht</translation>
     </message>
     <message>
         <source>Connection timeout (seconds)</source>
-        <translation type="unfinished"/>
+        <translation>Timeout für Verbindung (Sekunden)</translation>
     </message>
     <message>
         <source>Number of seconds before the connection is terminated</source>
-        <translation type="unfinished"/>
+        <translation>Zeit in Sekunden, bevor die Verbindung geschlossen wird</translation>
     </message>
 </context>
 <context>
     <name>MPDMediaPlayer</name>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Unbekannt</translation>
     </message>
 </context>
 </TS>

@@ -7,15 +7,15 @@
     </message>
     <message>
         <source>Antistring</source>
-        <translation>Anti-Schneeball-System</translation>
+        <translation>Kettenbriefe</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>Allgemeines</translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Enable Antistring</source>
-        <translation>Anti-Schneeball-System einschalten</translation>
+        <translation>Kettenbrieferkennung einschalten</translation>
     </message>
     <message>
         <source>Block message</source>
@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Antistring notifications</source>
-        <translation>Anti-Schneeball Benachrichtigungen</translation>
+        <translation>Kettenbrief-Benachrichtigungen</translation>
     </message>
 </context>
 <context>
@@ -74,18 +74,19 @@
     <message>
         <source>     DATA AND TIME      ::   ID   ::    MESSAGE
 </source>
-        <translation type="unfinished"/>
+        <translation>DATUM/ZEIT :: ID :: NACHRICHT
+</translation>
     </message>
 </context>
 <context>
     <name>AntistringNotificationService</name>
     <message>
         <source>Antistring</source>
-        <translation type="unfinished"/>
+        <translation>Kettenbrief-Erkennung</translation>
     </message>
     <message>
         <source>Your interlocutor send you love letter</source>
-        <translation type="unfinished"/>
+        <translation>Ihr Gesprächspartner hat Ihnen einen Kettenbrief gesendet.</translation>
     </message>
 </context>
 </TS>

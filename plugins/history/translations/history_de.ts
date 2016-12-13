@@ -11,35 +11,35 @@
     </message>
     <message>
         <source>Chats History</source>
-        <translation type="unfinished"/>
+        <translation>Chat-Verlauf</translation>
     </message>
     <message>
         <source>Save messages in history</source>
-        <translation>Im Verlauf speichern</translation>
+        <translation>Speichere Nachrichten Im Verlauf</translation>
     </message>
     <message>
         <source>Save chats with anonymous users</source>
-        <translation type="unfinished"/>
+        <translation>Speichere Chats mit unbekannten Nutzern</translation>
     </message>
     <message>
         <source>Status Changes</source>
-        <translation type="unfinished"/>
+        <translation>Zustandsänderungen</translation>
     </message>
     <message>
         <source>Save status changes</source>
-        <translation>Zustandänderungen speichern</translation>
+        <translation>Zustandsänderungen speichern</translation>
     </message>
     <message>
         <source>Save status changes in history</source>
-        <translation>Zustandänderungen werden im Verlauf gespeichert</translation>
+        <translation>Zustandsänderungen werden im Verlauf gespeichert</translation>
     </message>
     <message>
         <source>Save status only with description</source>
-        <translation type="unfinished"/>
+        <translation>Speichere Status nur mit Beschreibung</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation>Tastenkürzel</translation>
+        <translation>Kurzbefehle</translation>
     </message>
     <message>
         <source>View history</source>
@@ -47,35 +47,35 @@
     </message>
     <message>
         <source>Save chats in history</source>
-        <translation type="unfinished"/>
+        <translation>Speichere Chats im Verlauf</translation>
     </message>
     <message>
         <source>History in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Verlauf im Chat-Fenster</translation>
     </message>
     <message>
         <source>Show messages from history since</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Nachrichten aus dem Verlauf seit</translation>
     </message>
     <message>
         <source>Choose time period in which messages can be quoted in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Wählen Sie den Zeitraum, in dem Nachrichten innerhalb des Chat-Fensters zitiert werden können</translation>
     </message>
     <message>
         <source>yesterday</source>
-        <translation type="unfinished"/>
+        <translation>letzter Tag</translation>
     </message>
     <message>
         <source>last week</source>
-        <translation type="unfinished"/>
+        <translation>letzte Woche</translation>
     </message>
     <message>
         <source>last month</source>
-        <translation type="unfinished"/>
+        <translation>letzter Monat</translation>
     </message>
     <message>
         <source>Limit number of messages from history</source>
-        <translation type="unfinished"/>
+        <translation>Limitiere Nachrichten-Anzahl aus dem Verlauf</translation>
     </message>
     <message>
         <source>Behavior</source>
@@ -90,14 +90,14 @@
     <name>BuddyHistoryDeleteHandler</name>
     <message>
         <source>Chat history</source>
-        <translation type="unfinished"/>
+        <translation>Chat-Verlauf</translation>
     </message>
 </context>
 <context>
     <name>ChatHistoryTab</name>
     <message>
         <source>&amp;Clear Chat History</source>
-        <translation type="unfinished"/>
+        <translation>Chat-Verlauf leeren</translation>
     </message>
 </context>
 <context>
@@ -115,7 +115,7 @@
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"/>
+        <translation>Speichere Verlauf</translation>
     </message>
 </context>
 <context>
@@ -126,18 +126,18 @@
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"/>
+        <translation>Speichere Verlauf</translation>
     </message>
 </context>
 <context>
     <name>HistoryMessagesTab</name>
     <message>
         <source>&amp;Remove entries</source>
-        <translation type="unfinished"/>
+        <translation>Eint&amp;räge entfernen</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation type="unfinished"/>
+        <translation>Filter</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -145,11 +145,11 @@
     </message>
     <message>
         <source>Do you really want to delete history?</source>
-        <translation type="unfinished"/>
+        <translation>Wollen Sie den Verlauf wirklich löschen?</translation>
     </message>
     <message>
         <source>Delete history</source>
-        <translation type="unfinished"/>
+        <translation>Verlauf löschen</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -164,7 +164,7 @@
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Länge</translation>
     </message>
     <message>
         <source>Date</source>
@@ -187,11 +187,11 @@
     </message>
     <message>
         <source>&amp;Clear Status History</source>
-        <translation type="unfinished"/>
+        <translation>Statusverlauf leeren</translation>
     </message>
     <message>
         <source>&amp;Clear SMS History</source>
-        <translation type="unfinished"/>
+        <translation>SMS-Verlauf leeren</translation>
     </message>
     <message>
         <source>Chats</source>
@@ -199,7 +199,7 @@
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"/>
+        <translation>Status</translation>
     </message>
     <message>
         <source>SMS</source>
@@ -210,55 +210,55 @@
     <name>SearchTab</name>
     <message>
         <source>Search for:</source>
-        <translation type="unfinished"/>
+        <translation>Suche nach:</translation>
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"/>
+        <translation>Chats</translation>
     </message>
     <message>
         <source> - All chats - </source>
-        <translation type="unfinished"/>
+        <translation>- Alle Chats -</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"/>
+        <translation>Status</translation>
     </message>
     <message>
         <source> - All buddies - </source>
-        <translation type="unfinished"/>
+        <translation>- Alle Kontakte -</translation>
     </message>
     <message>
         <source>Smses</source>
-        <translation type="unfinished"/>
+        <translation>SMS</translation>
     </message>
     <message>
         <source> - All recipients - </source>
-        <translation type="unfinished"/>
+        <translation>- Alle Empfänger -</translation>
     </message>
     <message>
         <source>By date</source>
-        <translation type="unfinished"/>
+        <translation>Nach Datum</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"/>
+        <translation>zu</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Suche</translation>
     </message>
     <message>
         <source>Found</source>
-        <translation type="unfinished"/>
+        <translation>Gefunden</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Buddy</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt</translation>
     </message>
     <message>
         <source>Recipient</source>
@@ -269,7 +269,7 @@
     <name>ShowHistoryActionDescription</name>
     <message>
         <source>View Chat History</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Chat-Verlauf</translation>
     </message>
     <message>
         <source>Show last %1 messages</source>
@@ -277,19 +277,19 @@
     </message>
     <message>
         <source>Show messages since yesterday</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Nachrichten seit gestern</translation>
     </message>
     <message>
         <source>Show messages from last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Nachrichten der letzten 7 Tage</translation>
     </message>
     <message>
         <source>Show messages from last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Nachrichten der letzten 30 Tage</translation>
     </message>
     <message>
         <source>Show whole history</source>
-        <translation type="unfinished"/>
+        <translation>Zeige gesamten Verlauf</translation>
     </message>
 </context>
 </TS>

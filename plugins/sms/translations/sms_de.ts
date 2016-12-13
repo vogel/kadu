@@ -52,31 +52,32 @@
     <message>
         <source>Check this box if your sms application does not understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
-        <translation type="unfinished"/>
+        <translation>Aktivieren Sie das Kästchen, wenn die SMS-Anwendung nicht mit folgenden Parametern umgehen kann: Nummer &amp;Nachricht&amp;
+Die Parameter sollten mit Leerzeichen getrennt werden. %k wird zu einer Nummer umgewandelt, %m zur Nachricht</translation>
     </message>
     <message>
         <source>SMS proxy for built-in application</source>
-        <translation type="unfinished"/>
+        <translation>SMS-Proxy für die eingebaute Anwendung</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Extras</translation>
     </message>
     <message>
         <source>Your nick for SMS</source>
-        <translation type="unfinished"/>
+        <translation>Ihr Nickname für SMS</translation>
     </message>
     <message>
         <source>Use application custom arguments</source>
-        <translation type="unfinished"/>
+        <translation>Zusätzliche Parameter nutzen</translation>
     </message>
     <message>
         <source>SMS custom arguments</source>
-        <translation type="unfinished"/>
+        <translation>Eigene Paramete für SMS</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Verhalten</translation>
     </message>
 </context>
 <context>
@@ -98,7 +99,7 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     </message>
     <message>
         <source>GSM provider</source>
-        <translation>Provider GSM</translation>
+        <translation>GSM-Provider</translation>
     </message>
     <message>
         <source>Content</source>
@@ -134,22 +135,22 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     </message>
     <message>
         <source> - Select recipient - </source>
-        <translation type="unfinished"/>
+        <translation>- Empfänger auswählen -</translation>
     </message>
     <message>
         <source>Sending SMS...</source>
-        <translation type="unfinished"/>
+        <translation>Sende SMS...</translation>
     </message>
 </context>
 <context>
     <name>SmsExternalSender</name>
     <message>
         <source>Could not spawn child process. Check if the program is functional</source>
-        <translation>Konnte das Kind-Prozess nicht erreichen. Überprüfen Sie, ob das Programm funktioniert</translation>
+        <translation>Konnte das Unterprogramm nicht starten. Überprüfen Sie, ob das Programm funktioniert</translation>
     </message>
     <message>
         <source>The process exited abnormally. The SMS may not be sent</source>
-        <translation>Der Prozess wurde ungewöhnlich beendet. SMS wurde nicht weschickt</translation>
+        <translation>Der Prozess wurde ungewöhnlich beendet. SMS wurde möglicherweise nicht verschickt</translation>
     </message>
     <message>
         <source>SMS sent</source>
@@ -160,23 +161,23 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     <name>SmsInternalSender</name>
     <message>
         <source>Automatic gateway selection is not available. Please select SMS gateway manually.</source>
-        <translation>Automatische Providerauswahl ist nicht verfügbar. Wählen Sie einen aus.</translation>
+        <translation>Automatische Gatewayauswahl ist nicht verfügbar. Wählen Sie bitte einen aus.</translation>
     </message>
     <message>
         <source>Signature can&apos;t be empty.</source>
-        <translation type="unfinished"/>
+        <translation>Signatur darf nicht leer sein.</translation>
     </message>
     <message>
         <source>Detecting gateway...</source>
-        <translation type="unfinished"/>
+        <translation>Erkenne Gateway...</translation>
     </message>
     <message>
         <source>Detected gateway: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Erkanntes Gateway: %1</translation>
     </message>
     <message>
         <source>Sending SMS...</source>
-        <translation type="unfinished"/>
+        <translation>Sende SMS...</translation>
     </message>
     <message>
         <source>SMS sent</source>
@@ -187,31 +188,31 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     <name>SmsTokenReadJob</name>
     <message>
         <source>Invalid paremeters for token read job.</source>
-        <translation type="unfinished"/>
+        <translation>Ungültige Parameter um das Token auszulesen.</translation>
     </message>
     <message>
         <source>Downloading token image...</source>
-        <translation type="unfinished"/>
+        <translation>Lade Token-Bild...</translation>
     </message>
     <message>
         <source>Unable to fetch token image.</source>
-        <translation type="unfinished"/>
+        <translation>Konnte das Token-Bild nicht laden.</translation>
     </message>
     <message>
         <source>Unable to read token image.</source>
-        <translation type="unfinished"/>
+        <translation>Konnte das Token-Bild nicht lesen.</translation>
     </message>
     <message>
         <source>Waiting for entry of token value...</source>
-        <translation type="unfinished"/>
+        <translation>Warte auf Token-Eingabe...</translation>
     </message>
     <message>
         <source>No token value provided.</source>
-        <translation type="unfinished"/>
+        <translation>Keine Token eingegeben.</translation>
     </message>
     <message>
         <source>Received token value.</source>
-        <translation type="unfinished"/>
+        <translation>Token-Eingabe erhalten.</translation>
     </message>
 </context>
 </TS>

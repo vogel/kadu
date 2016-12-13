@@ -1,3 +1,6 @@
++++ version 4.3:
+* translations: #3124 fixed: added German translation
+
 +++ version 4.2:
 * translations: #3123 fixed: typo
 * sms: #3116 fixed: crash during sending SMS (Vogel)

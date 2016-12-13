@@ -337,6 +337,7 @@ SectionGroupEnd
 !macro kadu_plugin_translation_files name
 	SetOutPath "$INSTDIR\plugins\translations"
 	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_cs.qm"
+	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_de.qm"
 	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_en.qm"
 	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_pl.qm"
 	File /nonfatal "${DATA_DIR}\kadu\plugins\translations\${name}_tr.qm"

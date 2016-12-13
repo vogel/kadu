@@ -66,49 +66,51 @@
     </message>
     <message>
         <source>Signature Cutting</source>
-        <translation type="unfinished"/>
+        <translation>Abschneiden der Signatur</translation>
     </message>
     <message>
         <source>Other Settings</source>
-        <translation type="unfinished"/>
+        <translation>Andere Einstellungen</translation>
     </message>
     <message>
         <source>With this option enabled you'll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Win+ Enter/Backspace/Left/Right/Up/Down.</source>
-        <translation type="unfinished"/>
+        <translation>Wenn diese Option aktiviert ist, kann das Abspielprogramm
+ im Chat-Fenster mit folgenden Kürzeln bedient werden:
+Meta + Enter/Backspace/Links/Rechts/Hoch/Runter.</translation>
     </message>
     <message>
         <source>Add in the Front</source>
-        <translation type="unfinished"/>
+        <translation>Am Anfang hinzufügen</translation>
     </message>
     <message>
         <source>Add at the Back</source>
-        <translation type="unfinished"/>
+        <translation>Am Ende hinzufügen</translation>
     </message>
     <message>
         <source>Replace &apos;#{player}&apos; Tag</source>
-        <translation type="unfinished"/>
+        <translation>Ersetze &apos;#{player}&apos;-Tag</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Extras</translation>
     </message>
     <message>
         <source>Media Player</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm</translation>
     </message>
     <message>
         <source>MediaPlayer message format in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Format der Nachricht des MediaPlayer für das Chat-Fenster</translation>
     </message>
     <message>
         <source>Enable signature cutting</source>
-        <translation type="unfinished"/>
+        <translation>Kürzen des Signatur aktivieren</translation>
     </message>
     <message>
         <source>Enable removing non-essential stuff from audio file titles</source>
-        <translation type="unfinished"/>
+        <translation>Aktiviere das Entfernen von Unwichtigen Inhalt aus dem Titel der Audio-Dateien</translation>
     </message>
 </context>
 <context>
@@ -159,59 +161,59 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
     </message>
     <message>
         <source>Enable MediaPlayer Statuses</source>
-        <translation type="unfinished"/>
+        <translation>MediaPlayer-Status einschalten</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished"/>
+        <translation>Abspielen</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"/>
+        <translation>Anhalten</translation>
     </message>
     <message>
         <source>Previous Track</source>
-        <translation type="unfinished"/>
+        <translation>Vorheriges Stück</translation>
     </message>
     <message>
         <source>Next Track</source>
-        <translation type="unfinished"/>
+        <translation>Nächstes Stück</translation>
     </message>
     <message>
         <source>Volume Up</source>
-        <translation type="unfinished"/>
+        <translation>Lauter</translation>
     </message>
     <message>
         <source>Volume Down</source>
-        <translation type="unfinished"/>
+        <translation>Leiser</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>More than 1/10 of titles you&apos;re trying to send are empty.&lt;br&gt;Perhaps %1 hasn&apos;t read all titles yet, give its some more time.&lt;br&gt;Do you want to send playlist anyway?</source>
-        <translation type="unfinished"/>
+        <translation>Mehr als ein Zehntel der Titel, die Sie versuchen zu Senden, sind leer.&lt;br&gt;Möglicherweise hat %1 noch nicht alle Titel eingelesen. In dem Fall warten Sie noch bitte etwas.&lt;br&gt;Möchten Sie die Playlist trotzdem senden?</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation type="unfinished"/>
+        <translation>Pausieren</translation>
     </message>
     <message>
         <source>Player isn&apos;t running!</source>
-        <translation type="unfinished"/>
+        <translation>Abspielprogramm läuft nicht!</translation>
     </message>
     <message>
         <source>Send anyway</source>
-        <translation type="unfinished"/>
+        <translation>trotzdem senden</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Senden</translation>
     </message>
 </context>
 </TS>

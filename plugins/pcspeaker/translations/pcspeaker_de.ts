@@ -3,14 +3,14 @@
     <name>@default</name>
     <message>
         <source>PC Speaker</source>
-        <translation type="unfinished"/>
+        <translation>PC-Lautsprecher</translation>
     </message>
 </context>
 <context>
     <name>PCSpeakerConfigurationWidget</name>
     <message>
         <source>Put the played sounds separate by space, _ for pause, eg. D2 C1# G0</source>
-        <translation>Schreiben Sie Tonen isolieren durch Sperrung, zb. D2 C1# H0#</translation>
+        <translation>Geben Sie die Töne mit Leerzeichen getrennt an, _ für eine Pause. Beispiel: D2 C1# G0</translation>
     </message>
 </context>
 </TS>
