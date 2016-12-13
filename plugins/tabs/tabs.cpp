@@ -29,7 +29,6 @@
 #include "accounts/account.h"
 #include "actions/action-description.h"
 #include "actions/action.h"
-#include "actions/actions.h"
 #include "buddies/buddy-list.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
@@ -74,11 +73,6 @@ TabsManager::TabsManager(QObject *parent) :
 
 TabsManager::~TabsManager()
 {
-}
-
-void TabsManager::setActions(Actions *actions)
-{
-	m_actions = actions;
 }
 
 void TabsManager::setAttachTabAction(AttachTabAction *attachTabAction)
@@ -161,8 +155,6 @@ void TabsManager::init()
 	// pozycja tabów
 	configurationUpdated();
 
-	m_actions->insert(m_attachTabAction);
-	m_actions->insert(m_openInNewTabAction);
 	m_menuInventory
 		->menu("buddy-list")
 		->addAction(m_openInNewTabAction, KaduMenu::SectionChat, 20)
@@ -183,8 +175,6 @@ void TabsManager::done()
 		->menu("buddy-list")
 		->removeAction(m_openInNewTabAction)
 		->update();
-	m_actions->remove(m_attachTabAction);
-	m_actions->remove(m_openInNewTabAction);
 
 	disconnect(m_chatWidgetManager, 0, this, 0);
 

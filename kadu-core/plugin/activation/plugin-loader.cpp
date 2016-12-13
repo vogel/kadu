@@ -20,6 +20,7 @@
 
 #include "plugin-loader.h"
 
+#include "actions/actions.h"
 #include "misc/memory.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/plugin-injected-factory-module.h"
@@ -45,7 +46,9 @@ PluginLoader::PluginLoader(const QString &pluginDirPath, const QString &pluginNa
 		// using C++ initializers breaks Qt's lupdate
 		QObject(parent),
 		m_pluginLoader{createPluginLoader(pluginDirPath, pluginName)},
-		m_pluginInjector{createPluginInjector(pluginName, pluginInjectorProvider)}
+		m_pluginInjector{createPluginInjector(pluginName, pluginInjectorProvider)},
+		m_pluginInjectorProviderContainer{pluginName, pluginInjectorProvider, m_pluginInjector},
+		m_injectorRegisteredActions{*m_pluginInjector.get<Actions>(), m_pluginInjector}
 {
 }
 

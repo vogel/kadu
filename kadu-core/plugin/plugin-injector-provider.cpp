@@ -20,7 +20,6 @@
 #include "plugin-injector-provider.h"
 
 #include "core/injector-provider.h"
-#include "plugin/plugin-repository.h"
 
 PluginInjectorProvider::PluginInjectorProvider(QObject *instance) :
 		QObject{instance}
@@ -36,15 +35,20 @@ void PluginInjectorProvider::setInjectorProvider(InjectorProvider *injectorProvi
 	m_injectorProvider = injectorProvider;
 }
 
-void PluginInjectorProvider::setPluginRepository(PluginRepository *pluginRepository)
+void PluginInjectorProvider::insert(const QString &pluginName, injeqt::injector &injector)
 {
-	m_pluginRepository = pluginRepository;
+	m_pluginInjectors[pluginName] = &injector;
+}
+
+void PluginInjectorProvider::remove(const QString &pluginName)
+{
+	m_pluginInjectors.erase(pluginName);
 }
 
 injeqt::injector & PluginInjectorProvider::injector(const QString &pluginName)
 {
-	auto result = m_pluginRepository->pluginInjector(pluginName);
-	return result
-			? *result
+	auto it = m_pluginInjectors.find(pluginName);
+	return it != std::end(m_pluginInjectors)
+			? *(it->second)
 			: m_injectorProvider->injector();
 }

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,41 +19,20 @@
 
 #pragma once
 
-#include "exports.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
+#include <QtCore/QString>
 #include <injeqt/injector.h>
 
-class PluginActivationService;
+class PluginInjectorProvider;
 
-/**
- * @addtogroup Plugin
- * @{
- */
-
-/**
- * @class PluginRepository
- * @short Contains and returns plugin objects.
- */
-class KADUAPI PluginRepository : public QObject
+class PluginInjectorProviderContainer
 {
-	Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit PluginRepository(QObject *parent = nullptr);
-	virtual ~PluginRepository();
-
-	injeqt::injector * pluginInjector(const QString &pluginName);
+	explicit PluginInjectorProviderContainer(QString pluginName, PluginInjectorProvider *pluginInjectorProvider, injeqt::injector &injector);
+	~PluginInjectorProviderContainer();
 
 private:
-	QPointer<PluginActivationService> m_pluginActivationService;
-
-private slots:
-	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
+	QString m_pluginName;
+	PluginInjectorProvider *m_pluginInjectorProvider;
 
 };
-
-/**
- * @}
- */

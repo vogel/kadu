@@ -19,7 +19,9 @@
 
 #pragma once
 
+#include "actions/injector-registered-actions.h"
 #include "misc/memory.h"
+#include "plugin/activation/plugin-injector-provider-container.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -80,6 +82,8 @@ public:
 private:
 	std::unique_ptr<QPluginLoader> m_pluginLoader;
 	mutable injeqt::injector m_pluginInjector;
+	PluginInjectorProviderContainer m_pluginInjectorProviderContainer;
+	InjectorRegisteredActions m_injectorRegisteredActions;
 
 	std::unique_ptr<QPluginLoader> createPluginLoader(const QString &pluginDirPath, const QString &pluginName) const;
 	injeqt::injector createPluginInjector(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider);

@@ -24,9 +24,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injector.h>
+#include <map>
 
 class InjectorProvider;
-class PluginRepository;
 
 class KADUAPI PluginInjectorProvider : public QObject
 {
@@ -37,13 +37,14 @@ public:
 	virtual ~PluginInjectorProvider();
 
 	injeqt::injector & injector(const QString &pluginName);
+	void insert(const QString &pluginName, injeqt::injector &injector);
+	void remove(const QString &pluginName);
 
 private:
 	QPointer<InjectorProvider> m_injectorProvider;
-	QPointer<PluginRepository> m_pluginRepository;
+	std::map<QString, injeqt::injector *> m_pluginInjectors;
 
 private slots:
 	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
-	INJEQT_SET void setPluginRepository(PluginRepository *pluginRepository);
 
 };

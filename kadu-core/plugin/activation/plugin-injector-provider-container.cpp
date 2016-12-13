@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,29 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugin-repository.h"
+#include "plugin-injector-provider-container.h"
 
-#include "plugin/activation/active-plugin.h"
-#include "plugin/activation/plugin-activation-service.h"
+#include "plugin/plugin-injector-provider.h"
 
-PluginRepository::PluginRepository(QObject *parent) :
-		QObject{parent}
+PluginInjectorProviderContainer::PluginInjectorProviderContainer::PluginInjectorProviderContainer(
+	QString pluginName,
+	PluginInjectorProvider* pluginInjectorProvider,
+	injeqt::injector& injector) :
+		m_pluginName{std::move(pluginName)},
+		m_pluginInjectorProvider{pluginInjectorProvider}
 {
+	m_pluginInjectorProvider->insert(m_pluginName, injector);
 }
 
-PluginRepository::~PluginRepository()
-{
-}
 
-void PluginRepository::setPluginActivationService(PluginActivationService *pluginActivationService)
+PluginInjectorProviderContainer::~PluginInjectorProviderContainer()
 {
-	m_pluginActivationService = pluginActivationService;
-}
-
-injeqt::injector * PluginRepository::pluginInjector(const QString& pluginName)
-{
-	if (auto a = m_pluginActivationService->activePlugin(pluginName))
-		return &a->injector();
-	else
-		return nullptr;
+	m_pluginInjectorProvider->remove(m_pluginName);
 }

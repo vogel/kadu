@@ -30,7 +30,6 @@
 #include "gui/hot-key.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
-#include "plugin/plugin-repository.h"
 #include "widgets/buddy-info-panel.h"
 #include "widgets/group-tab-bar/group-tab-bar.h"
 #include "widgets/roster-widget.h"

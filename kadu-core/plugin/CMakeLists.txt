@@ -2,6 +2,7 @@ set (plugin_SRCS
 	activation/active-plugin.cpp
 	activation/plugin-activation-error-handler.cpp
 	activation/plugin-activation-service.cpp
+	activation/plugin-injector-provider-container.cpp
 	activation/plugin-loader.cpp
 	activation/plugin-translations-loader.cpp
 	dependency-graph/plugin-dependency-graph.cpp
@@ -31,7 +32,6 @@ set (plugin_SRCS
 	plugin-modules-factory.cpp
 	plugin-manager.cpp
 	plugin-module.cpp
-	plugin-repository.cpp
 )
 
 kadu_add_test (dependency-graph/plugin-dependency-graph-builder)
