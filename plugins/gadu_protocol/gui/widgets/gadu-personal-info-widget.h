@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include "accounts/account.h"
 #include "buddies/buddy.h"
 
 #include <QtCore/QPointer>

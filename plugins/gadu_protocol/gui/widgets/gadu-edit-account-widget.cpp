@@ -21,7 +21,8 @@
 
 #include "gadu-edit-account-widget.h"
 
-#include "gadu-account-details.h"
+#include "server/gadu-servers-manager.h"
+#include "gadu-account-data.h"
 #include "gadu-id-validator.h"
 #include "gadu-personal-info-widget.h"
 
@@ -111,8 +112,6 @@ void GaduEditAccountWidget::setUrlOpener(UrlOpener *urlOpener)
 
 void GaduEditAccountWidget::init()
 {
-	Details = dynamic_cast<GaduAccountDetails *>(account().details());
-
 	createGui();
 	loadAccountData();
 	stateChangedSlot(stateNotifier()->state());
@@ -350,13 +349,11 @@ void GaduEditAccountWidget::apply()
 	// so in cache of identity status container it already knows password and can do status change without asking user for it
 	account().setAccountIdentity(Identities->currentIdentity());
 
-	if (Details)
-	{
-		Details->setReceiveImagesDuringInvisibility(ReceiveImagesDuringInvisibility->isChecked());
-		Details->setChatImageSizeWarning(ChatImageSizeWarning->isChecked());
-		Details->setSendTypingNotification(SendTypingNotification->isChecked());
-		Details->setReceiveSpam(!ReceiveSpam->isChecked());
-	}
+	auto accountData = GaduAccountData{account()};
+	accountData.setReceiveImagesDuringInvisibility(ReceiveImagesDuringInvisibility->isChecked());
+	accountData.setChatImageSizeWarning(ChatImageSizeWarning->isChecked());
+	accountData.setSendTypingNotification(SendTypingNotification->isChecked());
+	accountData.setReceiveSpam(!ReceiveSpam->isChecked());
 
 	m_configuration->deprecatedApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
 	m_configuration->deprecatedApi()->writeEntry("Network", "Server", ipAddresses->text());
@@ -391,6 +388,8 @@ void GaduEditAccountWidget::dataChanged()
 {
 	ConfigurationValueState widgetsState = stateNotifier()->state();
 
+	auto accountData = GaduAccountData{account()};
+
 	if (account().accountIdentity() == Identities->currentIdentity()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
@@ -398,14 +397,14 @@ void GaduEditAccountWidget::dataChanged()
 		&& account().privateStatus() == ShowStatusToEveryone->isChecked()
 		&& account().useDefaultProxy() == ProxyCombo->isDefaultProxySelected()
 		&& account().proxy() == ProxyCombo->currentProxy()
-		&& Details->receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
+		&& accountData.receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
 
-		&& Details->chatImageSizeWarning() == ChatImageSizeWarning->isChecked()
+		&& accountData.chatImageSizeWarning() == ChatImageSizeWarning->isChecked()
 
 		&& m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
 		&& m_configuration->deprecatedApi()->readEntry("Network", "Server") == ipAddresses->text()
-		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
-		&& Details->receiveSpam() != ReceiveSpam->isChecked()
+		&& accountData.sendTypingNotification() == SendTypingNotification->isChecked()
+		&& accountData.receiveSpam() != ReceiveSpam->isChecked()
 		&& !gpiw->isModified())
 	{
 		simpleStateNotifier()->setState(StateNotChanged);
@@ -433,14 +432,11 @@ void GaduEditAccountWidget::loadAccountData()
 	else
 		ProxyCombo->setCurrentProxy(account().proxy());
 
-	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (details)
-	{
-		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());;
-		ChatImageSizeWarning->setChecked(details->chatImageSizeWarning());
-		SendTypingNotification->setChecked(details->sendTypingNotification());
-		ReceiveSpam->setChecked(!details->receiveSpam());
-	}
+	auto accountData = GaduAccountData{account()};
+	ReceiveImagesDuringInvisibility->setChecked(accountData.receiveImagesDuringInvisibility());;
+	ChatImageSizeWarning->setChecked(accountData.chatImageSizeWarning());
+	SendTypingNotification->setChecked(accountData.sendTypingNotification());
+	ReceiveSpam->setChecked(!accountData.receiveSpam());
 
 	useDefaultServers->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true));
 	ipAddresses->setText(m_configuration->deprecatedApi()->readEntry("Network", "Server"));

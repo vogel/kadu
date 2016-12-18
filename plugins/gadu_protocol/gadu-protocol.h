@@ -53,10 +53,12 @@ class GaduContactListHandler;
 class GaduDriveService;
 class GaduIMTokenService;
 class GaduNotifyService;
+class GaduOpenChatWithRunner;
 class GaduProtocolSocketNotifiers;
 class GaduUserDataService;
 class IconsManager;
 class NetworkProxyManager;
+class PluginInjectedFactory;
 class ProtocolGaduConnection;
 class VersionService;
 
@@ -90,9 +92,11 @@ private:
 	QPointer<GaduServersManager> m_gaduServersManager;
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<NetworkProxyManager> m_networkProxyManager;
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<VersionService> m_versionService;
 
 	ProtocolGaduConnection *Connection;
+	GaduOpenChatWithRunner *OpenChatRunner;
 
 	GaduAvatarService *CurrentAvatarService;
 	GaduBuddyListSerializationService *CurrentBuddyListSerializationService;
@@ -145,6 +149,7 @@ private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setVersionService(VersionService *versionService);
 	INJEQT_INIT void init();
 

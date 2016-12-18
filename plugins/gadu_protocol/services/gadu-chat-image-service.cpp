@@ -24,7 +24,8 @@
 
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
-#include "gadu-account-details.h"
+#include "services/gadu-chat-service.h"
+#include "gadu-account-data.h"
 
 #include "gadu-chat-image-service.h"
 
@@ -139,8 +140,8 @@ ChatImage GaduChatImageService::prepareImageToBeSent(const QByteArray &imageData
 
 Error GaduChatImageService::checkImageSize(qint64 size) const
 {
-	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (!details || !details->chatImageSizeWarning() || size <= RECOMMENDED_MAXIMUM_SIZE)
+	auto data = GaduAccountData{account()};
+	if (!data.chatImageSizeWarning() || size <= RECOMMENDED_MAXIMUM_SIZE)
 		return Error(NoError, QString());
 
 	QString message = tr("This image has %1 KiB and exceeds recommended maximum size of %2 KiB. Some clients may have trouble with too large images.")

@@ -18,73 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/configuration-api.h"
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "core/core.h"
-#include "misc/misc.h"
-#include "plugin/plugin-injected-factory.h"
-#include "windows/open-chat-with/open-chat-with-runner-manager.h"
-#include "windows/open-chat-with/open-chat-with-runner.h"
-
 #include "gadu-account-details.h"
 
+#include "accounts/account.h"
+
 GaduAccountDetails::GaduAccountDetails(AccountShared *data, QObject *parent) :
-		AccountDetails(data, parent), ReceiveImagesDuringInvisibility(true),
-		ChatImageSizeWarning(true), InitialRosterImport(true),
-		SendTypingNotification(true), UserlistVersion(-1), ReceiveSpam(true)
+		AccountDetails(data, parent)
 {
 }
 
 GaduAccountDetails::~GaduAccountDetails()
 {
-	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
-	delete OpenChatRunner;
-	OpenChatRunner = 0;
-}
-
-void GaduAccountDetails::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
-{
-	m_pluginInjectedFactory = pluginInjectedFactory;
-}
-
-void GaduAccountDetails::init()
-{
-	OpenChatRunner = m_pluginInjectedFactory->makeInjected<GaduOpenChatWithRunner>(mainData());
-	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
-}
-
-void GaduAccountDetails::load()
-{
-	if (!isValidStorage())
-		return;
-
-	AccountDetails::load();
-
-	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
-	ChatImageSizeWarning = loadValue<bool>("ChatImageSizeWarning", true);
-	InitialRosterImport = loadValue<bool>("InitialRosterImport", true);
-	SendTypingNotification = loadValue<bool>("SendTypingNotification", true);
-	UserlistVersion = loadValue<int>("UserlistVersion", -1);
-	ReceiveSpam = loadValue<bool>("ReceiveSpam", true);
-}
-
-void GaduAccountDetails::store()
-{
-	if (!isValidStorage())
-		return;
-
-	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
-	storeValue("ChatImageSizeWarning", ChatImageSizeWarning);
-	storeValue("InitialRosterImport", InitialRosterImport);
-	storeValue("SendTypingNotification", SendTypingNotification);
-	storeValue("UserlistVersion", UserlistVersion);
-	storeValue("ReceiveSpam", ReceiveSpam);
-}
-
-UinType GaduAccountDetails::uin()
-{
-	return mainData()->id().toULong();
 }
 
 #include "moc_gadu-account-details.cpp"

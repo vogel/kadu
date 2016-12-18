@@ -24,7 +24,7 @@
 #include "file-transfer/gadu-outgoing-file-transfer-handler.h"
 #include "file-transfer/gadu-url-incoming-file-transfer-handler.h"
 #include "helpers/gadu-protocol-helper.h"
-#include "gadu-account-details.h"
+#include "gadu-account-data.h"
 #include "gadu-protocol.h"
 
 #include "contacts/contact-manager.h"

@@ -29,7 +29,6 @@ class AccountManager;
 class ConfigurationManager;
 class Configuration;
 class ContactManager;
-class GaduAccountDetails;
 class GaduPersonalInfoWidget;
 class GaduServersManager;
 class IconsManager;
@@ -68,8 +67,6 @@ private:
 	QPointer<IdentityManager> m_identityManager;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<UrlOpener> m_urlOpener;
-
-	GaduAccountDetails *Details;
 
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;

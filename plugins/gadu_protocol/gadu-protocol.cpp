@@ -49,12 +49,14 @@
 #include "status/status-type.h"
 #include "status/status.h"
 #include "windows/message-dialog.h"
+#include "windows/open-chat-with/open-chat-with-runner-manager.h"
 
 #include "core/core.h"
 #include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "debug.h"
 
+#include "open-chat-with/gadu-open-chat-with-runner.h"
 #include "server/gadu-servers-manager.h"
 #include "server/protocol-gadu-connection.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
@@ -67,7 +69,7 @@
 #include "services/gadu-notify-service.h"
 #include "services/gadu-roster-service.h"
 #include "services/user-data/gadu-user-data-service.h"
-#include "gadu-account-details.h"
+#include "gadu-account-data.h"
 
 #include "gadu-protocol.h"
 
@@ -83,6 +85,10 @@ GaduProtocol::GaduProtocol(GaduListHelper *gaduListHelper, GaduServersManager *g
 GaduProtocol::~GaduProtocol()
 {
 	kdebugf();
+
+	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
+	delete OpenChatRunner;
+	OpenChatRunner = 0;
 
 	disconnect(account(), 0, this, 0);
 
@@ -107,6 +113,11 @@ void GaduProtocol::setIconsManager(IconsManager *iconsManager)
 void GaduProtocol::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
 {
 	m_networkProxyManager = networkProxyManager;
+}
+
+void GaduProtocol::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
+{
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void GaduProtocol::setVersionService(VersionService *versionService)
@@ -177,6 +188,9 @@ void GaduProtocol::init()
 
 	connect(account(), SIGNAL(updated()), this, SLOT(accountUpdated()));
 
+	OpenChatRunner = m_pluginInjectedFactory->makeInjected<GaduOpenChatWithRunner>(account());
+	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
+
 	kdebugf2();
 }
 
@@ -190,10 +204,10 @@ void GaduProtocol::setStatusFlags()
 	if (!GaduSession)
 		return;
 
-	GaduAccountDetails *details = static_cast<GaduAccountDetails *>(account().details());
+	auto data = GaduAccountData{account()};
 
 	int statusFlags = GG_STATUS_FLAG_UNKNOWN;
-	if (details && !details->receiveSpam())
+	if (!data.receiveSpam())
 		statusFlags = statusFlags | GG_STATUS_FLAG_SPAM;
 
 	gg_change_status_flags(GaduSession, GG_STATUS_FLAG_UNKNOWN | statusFlags);
@@ -254,11 +268,9 @@ void GaduProtocol::everyMinuteActions()
 
 void GaduProtocol::configureServices()
 {
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (!gaduAccountDetails)
-		return;
+	auto accountData = GaduAccountData{account()};
 
-	CurrentChatStateService->setSendTypingNotifications(gaduAccountDetails->sendTypingNotification());
+	CurrentChatStateService->setSendTypingNotifications(accountData.sendTypingNotification());
 
 	switch (statusTypeManager()->statusTypeData(status().type()).typeGroup())
 	{
@@ -266,7 +278,7 @@ void GaduProtocol::configureServices()
 			CurrentChatImageService->setReceiveImages(false);
 			break;
 		case StatusTypeGroup::Invisible:
-			CurrentChatImageService->setReceiveImages(gaduAccountDetails->receiveImagesDuringInvisibility());
+			CurrentChatImageService->setReceiveImages(accountData.receiveImagesDuringInvisibility());
 			break;
 		default:
 			CurrentChatImageService->setReceiveImages(true);
@@ -309,8 +321,8 @@ void GaduProtocol::login()
 		SocketNotifiers = 0;
 	}
 
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (!gaduAccountDetails || 0 == gaduAccountDetails->uin())
+	auto accountData = GaduAccountData{account()};
+	if (0 == accountData.uin())
 	{
 		connectionClosed();
 		return;
@@ -412,9 +424,7 @@ void GaduProtocol::setupLoginParams()
 {
 	memset(&GaduLoginParams, 0, sizeof(GaduLoginParams));
 
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (!gaduAccountDetails)
-		return;
+	auto accountData = GaduAccountData{account()};
 
 	GaduLoginParams.uin = account().id().toULong();
 	GaduLoginParams.password = qstrdup(account().password().toUtf8().constData());

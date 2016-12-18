@@ -24,7 +24,7 @@
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
 #include "services/gadu-roster-state-machine.h"
-#include "gadu-account-details.h"
+#include "gadu-account-data.h"
 
 #include "buddies/buddy-manager.h"
 #include "roster/roster-entry-state.h"
@@ -134,13 +134,7 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 		return;
 	}
 
-	auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (!accountDetails)
-	{
-		getFinished(false);
-		return;
-	}
-
+	auto accountData = GaduAccountData{account()};
 	if (e->event.userlist100_reply.format_type != GG_USERLIST100_FORMAT_TYPE_GG70)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply with unwanted format type (%d)\n", (int)e->event.userlist100_reply.format_type);
@@ -158,15 +152,15 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "userlist 100 reply:\n%s\n", content);
 
-	if (accountDetails->userlistVersion() != (int)e->event.userlist100_reply.version)
+	if (accountData.userlistVersion() != (int)e->event.userlist100_reply.version)
 	{
 		auto content2 = QByteArray{content};
 		auto buddies = m_gaduListHelper->byteArrayToBuddyList(account(), content2);
 		getFinished(true);
 
 		auto result = m_rosterReplacer->replaceRoster(account(), buddies, haveToAskForAddingContacts());
-		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
-		accountDetails->setInitialRosterImport(false);
+		accountData.setUserlistVersion(e->event.userlist100_reply.version);
+		accountData.setInitialRosterImport(false);
 
 		for (auto &&contact : result.first)
 			contact.rosterEntry()->setSynchronized();
@@ -207,14 +201,11 @@ void GaduRosterService::handleEventUserlist100PutReply(struct gg_event *e)
 
 	if (e->event.userlist100_reply.type == GG_USERLIST100_REPLY_ACK)
 	{
-		auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-		if (accountDetails)
-		{
-			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
-			markSynchronizingAsSynchronized();
-			putFinished(true);
-			return;
-		}
+		auto accountData = GaduAccountData{account()};
+		accountData.setUserlistVersion(e->event.userlist100_reply.version);
+		markSynchronizingAsSynchronized();
+		putFinished(true);
+		return;
 	}
 
 	putFinished(false);
@@ -240,8 +231,8 @@ void GaduRosterService::handleEventUserlist100Version(gg_event *e)
 {
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "new version of userlist available: %d\n", e->event.userlist100_version.version);
 
-	auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (accountDetails && accountDetails->userlistVersion() != (int)e->event.userlist100_version.version)
+	auto accountData = GaduAccountData{account()};
+	if (accountData.userlistVersion() != (int)e->event.userlist100_version.version)
 		emit stateMachineRemoteDirty();
 }
 
@@ -258,16 +249,14 @@ void GaduRosterService::markSynchronizingAsSynchronized()
 
 bool GaduRosterService::haveToAskForAddingContacts() const
 {
-	auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (!accountDetails) // assert?
-		return true;
+	auto accountData = GaduAccountData{account()};
 
 	// if already synchronized, never ask
-	if (-1 != accountDetails->userlistVersion())
+	if (-1 != accountData.userlistVersion())
 		return false;
 
 	// if not yet synchronized but also not migrating from 0.9.x, i.e., it's a clean install, do not ask as well
-	if (accountDetails->initialRosterImport())
+	if (accountData.initialRosterImport())
 		return false;
 
 	// here is the case for migrating from 0.9.x - ask then
@@ -311,17 +300,10 @@ void GaduRosterService::exportContactList()
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
 
-	auto accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (!accountDetails)
-	{
-		putFinished(false);
-		markSynchronizingAsSynchronized();
-		return;
-	}
-
+	auto accountData = GaduAccountData{account()};
 	auto writableSessionToken = m_connection.data()->writableSessionToken();
 	auto ret = gg_userlist100_request(writableSessionToken.rawSession(),
-			GG_USERLIST100_PUT, accountDetails->userlistVersion(), GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData());
+			GG_USERLIST100_PUT, accountData.userlistVersion(), GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData());
 	if (-1 == ret)
 	{
 		markSynchronizingAsSynchronized();

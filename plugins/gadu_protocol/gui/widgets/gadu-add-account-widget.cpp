@@ -20,7 +20,6 @@
 
 #include "gadu-add-account-widget.h"
 
-#include "gadu-account-details.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"
 
@@ -179,10 +178,6 @@ void GaduAddAccountWidget::apply()
 	// we have to set identity after password
 	// so in cache of identity status container it already knows password and can do status change without asking user for it
 	gaduAccount.setAccountIdentity(Identity->currentIdentity());
-
-	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(gaduAccount.details());
-	if (details)
-		details->setState(StorableObject::StateNew);
 
 	resetGui();
 

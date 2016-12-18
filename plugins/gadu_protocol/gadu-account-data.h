@@ -20,14 +20,38 @@
 
 #pragma once
 
-#include "accounts/account-details.h"
+#include "protocols/protocol.h"
 
-class GaduAccountDetails : public AccountDetails
+class AccountShared;
+
+class GaduAccountData final
 {
-	Q_OBJECT
 
 public:
-	explicit GaduAccountDetails(AccountShared *data, QObject *parent = nullptr);
-	virtual ~GaduAccountDetails();
+	explicit GaduAccountData(AccountShared *data);
+	~GaduAccountData();
+
+	UinType uin();
+
+	bool receiveImagesDuringInvisibility() const;
+	void setReceiveImagesDuringInvisibility(bool receiveImagesDuringInvisibility) const;
+
+	bool chatImageSizeWarning() const;
+	void setChatImageSizeWarning(bool chatImageSizeWarning) const;
+
+	bool initialRosterImport() const;
+	void setInitialRosterImport(bool initialRosterImport) const;
+
+	bool sendTypingNotification() const;
+	void setSendTypingNotification(bool sendTypingNotification) const;
+
+	int userlistVersion() const;
+	void setUserlistVersion(int userlistVersion) const;
+
+	bool receiveSpam() const;
+	void setReceiveSpam(bool receiveSpam) const;
+
+private:
+	AccountShared *m_data;
 
 };
