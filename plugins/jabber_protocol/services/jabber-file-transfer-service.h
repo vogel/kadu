@@ -64,7 +64,7 @@ private slots:
 	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
 	INJEQT_SET void setMyself(Myself *myself);
 
-	void dataTransferProxyChanged();
+	void accountUpdated();
 	void fileReceived(QXmppTransferJob *transferJob);
 
 };

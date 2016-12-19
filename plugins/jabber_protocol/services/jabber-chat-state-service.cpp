@@ -129,12 +129,12 @@ void JabberChatStateService::sendState(const Contact &contact, ChatState state)
 	if (receivedChatState == QXmppMessage::State::None || receivedChatState == QXmppMessage::State::Gone)
 		return;
 
-	auto jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!jabberAccountDetails || !jabberAccountDetails->sendTypingNotification())
+	auto accountData = JabberAccountData{account()};
+	if (!accountData.sendTypingNotification())
 		return;
 
 	auto xmppState = stateToXmppState(state);
-	if (!jabberAccountDetails->sendGoneNotification() && (xmppState == QXmppMessage::State::Gone || xmppState == QXmppMessage::State::Inactive))
+	if (!accountData.sendGoneNotification() && (xmppState == QXmppMessage::State::Gone || xmppState == QXmppMessage::State::Inactive))
 		xmppState = QXmppMessage::State::Paused;
 
 	auto sentChatState = static_cast<QXmppMessage::State>(contact.property("jabber:sent-chat-state", QXmppMessage::State::None).toInt());

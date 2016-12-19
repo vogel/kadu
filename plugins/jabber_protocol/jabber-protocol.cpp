@@ -24,6 +24,7 @@
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
+#include "open-chat-with/jabber-open-chat-with-runner.h"
 #include "qxmpp/jabber-register-extension.h"
 #include "qxmpp/jabber-roster-extension.h"
 #include "qxmpp/jabber-ssl-handler.h"
@@ -58,6 +59,7 @@
 #include "protocols/protocols-manager.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
+#include "windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "windows/message-dialog.h"
 
 #include <QtCore/QCoreApplication>
@@ -80,6 +82,15 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 JabberProtocol::~JabberProtocol()
 {
 	logout();
+
+	OpenChatWithRunnerManager::instance()->unregisterRunner(m_jabberOpenChatWithRunner);
+	delete m_jabberOpenChatWithRunner;
+	m_jabberOpenChatWithRunner = 0;
+}
+
+void JabberProtocol::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
+{
+	m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void JabberProtocol::setSystemInfo(SystemInfo *systemInfo)
@@ -94,8 +105,7 @@ void JabberProtocol::setVersionService(VersionService *versionService)
 
 void JabberProtocol::init()
 {
-	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
-	connect(details, SIGNAL(priorityChanged()), this, SLOT(updatePresence()), Qt::UniqueConnection);
+	connect(account(), SIGNAL(updated()), this, SLOT(updatePresence()), Qt::UniqueConnection);
 
 	// TODO: remove after 01.05.2015
 	if (account().id().endsWith(QStringLiteral("@chat.facebook.com")))
@@ -171,6 +181,9 @@ void JabberProtocol::init()
 	setRosterService(rosterService);
 
 	m_subscriptionService = pluginInjectedFactory()->makeInjected<JabberSubscriptionService>(&m_client->rosterManager(), this);
+
+	m_jabberOpenChatWithRunner = m_pluginInjectedFactory->makeInjected<JabberOpenChatWithRunner>(account());
+	OpenChatWithRunnerManager::instance()->registerRunner(m_jabberOpenChatWithRunner);
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
@@ -196,14 +209,8 @@ void JabberProtocol::rosterReady()
  */
 void JabberProtocol::login()
 {
-	auto jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!jabberAccountDetails)
-	{
-		connectionClosed();
-		return;
-	}
-
-	if (jabberAccountDetails->publishSystemInfo())
+	auto accountData = JabberAccountData{account()};
+	if (accountData.publishSystemInfo())
 	{
 		m_client->versionManager().setClientName("Kadu");
 		m_client->versionManager().setClientVersion(m_versionService->version());
@@ -216,34 +223,30 @@ void JabberProtocol::login()
 		m_client->versionManager().setClientOs(QString{});
 	}
 
-	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!details)
-		return;
-
 	auto streamSecurityMode = QXmppConfiguration::StreamSecurityMode{};
-	switch (details->encryptionMode())
+	switch (accountData.encryptionMode())
 	{
-		case JabberAccountDetails::Encryption_Auto:
+		case JabberAccountData::Encryption_Auto:
 			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSEnabled;
 			break;
-		case JabberAccountDetails::Encryption_Yes:
+		case JabberAccountData::Encryption_Yes:
 			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSRequired;
 			break;
-		case JabberAccountDetails::Encryption_No:
+		case JabberAccountData::Encryption_No:
 			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSDisabled;
 			break;
-		case JabberAccountDetails::Encryption_Legacy:
+		case JabberAccountData::Encryption_Legacy:
 			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::LegacySSL;
 			break;
 	}
 
-	auto useNonSASLAuthentication = details->plainAuthMode() == JabberAccountDetails::AllowPlain
+	auto useNonSASLAuthentication = accountData.plainAuthMode() == JabberAccountData::AllowPlain
 			? true
-			: details->plainAuthMode() == JabberAccountDetails::JabberAccountDetails::AllowPlainOverTLS
+			: accountData.plainAuthMode() == JabberAccountData::JabberAccountData::AllowPlainOverTLS
 			? QXmppConfiguration::StreamSecurityMode::TLSDisabled != streamSecurityMode
 			: false;
 
-	auto jid = Jid::parse(account().id()).withResource(details->resource());
+	auto jid = Jid::parse(account().id()).withResource(accountData.resource(*m_systemInfo));
 
 	auto configuration = QXmppConfiguration{};
 	configuration.setAutoAcceptSubscriptions(false);
@@ -269,15 +272,14 @@ void JabberProtocol::login()
 		configuration.setNetworkProxy(proxy);
 	}
 
-	if (details->useCustomHostPort())
+	if (accountData.useCustomHostPort())
 	{
-		configuration.setHost(details->customHost());
-		configuration.setPort(details->customPort());
+		configuration.setHost(accountData.customHost());
+		configuration.setPort(accountData.customPort());
 	}
 
 	auto presence = m_presenceService->statusToPresence(status());
-	if (details)
-		presence.setPriority(details->priority());
+	presence.setPriority(accountData.priority());
 
 	static_cast<JabberRosterService *>(rosterService())->prepareRoster();
 	m_client->connectToServer(configuration, presence);
@@ -361,9 +363,8 @@ void JabberProtocol::sendStatusToServer()
 		return;
 
 	auto presence = m_presenceService->statusToPresence(status());
-	auto details = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (details)
-		presence.setPriority(details->priority());
+	auto accountData = JabberAccountData{account()};
+	presence.setPriority(accountData.priority());
 
 	m_client->setClientPresence(presence);
 	account().accountContact().setCurrentStatus(status());

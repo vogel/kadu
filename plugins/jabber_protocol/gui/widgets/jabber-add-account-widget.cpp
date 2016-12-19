@@ -22,7 +22,7 @@
 #include "jabber-add-account-widget.h"
 
 #include "services/jabber-servers-service.h"
-#include "jabber-account-details.h"
+#include "jabber-account-data.h"
 
 #include "accounts/account-manager.h"
 #include "accounts/account-storage.h"
@@ -203,21 +203,17 @@ void JabberAddAccountWidget::apply()
 	// so in cache of identity status container it already knows password and can do status change without asking user for it
 	jabberAccount.setAccountIdentity(Identity->currentIdentity());
 
-	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(jabberAccount.details());
-	if (details)
-	{
-		details->setState(StorableObject::StateNew);
-		details->setResource("Kadu");
-		details->setPriority(5);
+	auto accountData = JabberAccountData{jabberAccount};
+	accountData.setResource("Kadu");
+	accountData.setPriority(5);
 
-		bool isGoogleAppsAccount = m_isGmail && !Domain->currentText().contains("gmail");
-		// Google Apps account sometimes needs custom host/port settings to work
-		if (isGoogleAppsAccount)
-		{
-			details->setUseCustomHostPort(true);
-			details->setCustomHost("talk.google.com");
-			details->setCustomPort(5222);
-		}
+	bool isGoogleAppsAccount = m_isGmail && !Domain->currentText().contains("gmail");
+	// Google Apps account sometimes needs custom host/port settings to work
+	if (isGoogleAppsAccount)
+	{
+		accountData.setUseCustomHostPort(true);
+		accountData.setCustomHost("talk.google.com");
+		accountData.setCustomPort(5222);
 	}
 
 	resetGui();

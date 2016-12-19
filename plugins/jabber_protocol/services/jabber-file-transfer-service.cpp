@@ -23,7 +23,7 @@
 #include "file-transfer/jabber-outgoing-file-transfer-handler.h"
 #include "file-transfer/jabber-stream-incoming-file-transfer-handler.h"
 #include "services/jabber-resource-service.h"
-#include "jabber-account-details.h"
+#include "jabber-account-data.h"
 #include "jid.h"
 
 #include "contacts/contact-manager.h"
@@ -42,9 +42,8 @@ JabberFileTransferService::JabberFileTransferService(QXmppTransferManager *trans
 		m_transferManager{transferManager},
 		m_account{account}
 {
-	auto details = dynamic_cast<JabberAccountDetails *>(account.details());
-	connect(details, SIGNAL(dataTransferProxyChanged()), this, SLOT(dataTransferProxyChanged()));
-	dataTransferProxyChanged();
+	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
+	accountUpdated();
 
 	connect(m_transferManager, SIGNAL(fileReceived(QXmppTransferJob*)), this, SLOT(fileReceived(QXmppTransferJob*)));
 }
@@ -103,11 +102,11 @@ FileTransferCanSendResult JabberFileTransferService::canSend(Contact contact)
 	return {true, {}};
 }
 
-void JabberFileTransferService::dataTransferProxyChanged()
+void JabberFileTransferService::accountUpdated()
 {
-	auto details = dynamic_cast<JabberAccountDetails *>(m_account.details());
-	m_transferManager->setProxy(details->dataTransferProxy());
-	m_transferManager->setProxyOnly(details->requireDataTransferProxy());
+	auto accountData = JabberAccountData{m_account};
+	m_transferManager->setProxy(accountData.dataTransferProxy());
+	m_transferManager->setProxyOnly(accountData.requireDataTransferProxy());
 }
 
 void JabberFileTransferService::fileReceived(QXmppTransferJob *transferJob)

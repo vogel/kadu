@@ -44,7 +44,7 @@
 #include "services/jabber-servers-service.h"
 #include "widgets/simple-configuration-value-state-notifier.h"
 #include "windows/message-dialog.h"
-#include "jabber-account-details.h"
+#include "jabber-account-data.h"
 #include "jabber-protocol-factory.h"
 
 #include "jabber-create-account-widget.h"
@@ -263,10 +263,6 @@ void JabberCreateAccountWidget::jidRegistered(const Jid &jid)
 	// we have to set identity after password
 	// so in cache of identity status container it already knows password and can do status change without asking user for it
 	jabberAccount.setAccountIdentity(IdentityCombo->currentIdentity());
-
-	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(jabberAccount.details());
-	if (details)
-		details->setState(StorableObject::StateNew);
 
 	resetGui();
 

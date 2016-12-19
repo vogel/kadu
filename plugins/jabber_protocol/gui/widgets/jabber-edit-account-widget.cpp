@@ -31,6 +31,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
+#include "os/generic/system-info.h"
 #include "plugin/plugin-injected-factory.h"
 #include "protocols/services/avatar-service.h"
 #include "widgets/account-avatar-widget.h"
@@ -84,6 +85,11 @@ void JabberEditAccountWidget::setIdentityManager(IdentityManager *identityManage
 void JabberEditAccountWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
 	m_pluginInjectedFactory = pluginInjectedFactory;
+}
+
+void JabberEditAccountWidget::setSystemInfo(SystemInfo *systemInfo)
+{
+	m_systemInfo = systemInfo;
 }
 
 void JabberEditAccountWidget::init()
@@ -235,10 +241,10 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	EncryptionModeLabel->setText(tr("Use encrypted connection") + ':');
 
 	EncryptionMode = new QComboBox(general);
-	EncryptionMode->addItem(tr("Never"), JabberAccountDetails::Encryption_No);
-	EncryptionMode->addItem(tr("Always"), JabberAccountDetails::Encryption_Yes);
-	EncryptionMode->addItem(tr("When available"), JabberAccountDetails::Encryption_Auto);
-	EncryptionMode->addItem(tr("Only in older version"), JabberAccountDetails::Encryption_Legacy);
+	EncryptionMode->addItem(tr("Never"), JabberAccountData::Encryption_No);
+	EncryptionMode->addItem(tr("Always"), JabberAccountData::Encryption_Yes);
+	EncryptionMode->addItem(tr("When available"), JabberAccountData::Encryption_Auto);
+	EncryptionMode->addItem(tr("Only in older version"), JabberAccountData::Encryption_Legacy);
 	connect(EncryptionMode, SIGNAL(activated(int)), this, SLOT(dataChanged()));
 	boxLayout->addRow(EncryptionModeLabel, EncryptionMode);
 
@@ -246,9 +252,9 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	plainAuthLabel->setText(tr("Allow plaintext authentication") + ':');
 
 	PlainTextAuth = new QComboBox(general);
-	PlainTextAuth->addItem(tr("Never"), JabberAccountDetails::NoAllowPlain);
-	PlainTextAuth->addItem(tr("Always"), JabberAccountDetails::AllowPlain);
-	PlainTextAuth->addItem(tr("Over encrypted connection"), JabberAccountDetails::AllowPlainOverTLS);
+	PlainTextAuth->addItem(tr("Never"), JabberAccountData::NoAllowPlain);
+	PlainTextAuth->addItem(tr("Always"), JabberAccountData::AllowPlain);
+	PlainTextAuth->addItem(tr("Over encrypted connection"), JabberAccountData::AllowPlainOverTLS);
 	connect(PlainTextAuth, SIGNAL(activated(int)), this, SLOT(dataChanged()));
 	boxLayout->addRow(plainAuthLabel, PlainTextAuth);
 
@@ -345,8 +351,8 @@ void JabberEditAccountWidget::hostToggled(bool on)
 	CustomPort->setEnabled(on);
 	CustomHostLabel->setEnabled(on);
 	CustomPortLabel->setEnabled(on);
-	if (!on && EncryptionMode->currentIndex() == EncryptionMode->findData(JabberAccountDetails::Encryption_Legacy)) {
-		EncryptionMode->setCurrentIndex(JabberAccountDetails::Encryption_Auto);
+	if (!on && EncryptionMode->currentIndex() == EncryptionMode->findData(JabberAccountData::Encryption_Legacy)) {
+		EncryptionMode->setCurrentIndex(JabberAccountData::Encryption_Auto);
 	}
 }
 
@@ -364,9 +370,7 @@ void JabberEditAccountWidget::stateChangedSlot(ConfigurationValueState state)
 
 void JabberEditAccountWidget::dataChanged()
 {
-  	AccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!AccountDetails)
-		return;
+	auto accountData = JabberAccountData{account()};
 
 	ConfigurationValueState widgetsState = stateNotifier()->state();
 
@@ -376,19 +380,19 @@ void JabberEditAccountWidget::dataChanged()
 		&& account().password() == AccountPassword->text()
 		&& account().proxy() == ProxyCombo->currentProxy()
 		&& account().useDefaultProxy() == ProxyCombo->isDefaultProxySelected()
-		&& AccountDetails->useCustomHostPort() == CustomHostPort->isChecked()
-		&& AccountDetails->customHost() == CustomHost->displayText()
-		&& AccountDetails->customPort() == CustomPort->displayText().toInt()
-		&& AccountDetails->encryptionMode() == (JabberAccountDetails::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt()
-		&& AccountDetails->plainAuthMode() == (JabberAccountDetails::AllowPlainType)PlainTextAuth->itemData(PlainTextAuth->currentIndex()).toInt()
-		&& AccountDetails->autoResource() == AutoResource->isChecked()
-		&& AccountDetails->resource() == ResourceName->text()
-		&& AccountDetails->priority() == Priority->text().toInt()
-		&& AccountDetails->dataTransferProxy() == DataTransferProxy->text()
-		&& AccountDetails->requireDataTransferProxy() == RequireDataTransferProxy->isChecked()
-		&& AccountDetails->sendGoneNotification() == SendGoneNotification->isChecked()
-		&& AccountDetails->sendTypingNotification() == SendTypingNotification->isChecked()
-		&& AccountDetails->publishSystemInfo() == PublishSystemInfo->isChecked()
+		&& accountData.useCustomHostPort() == CustomHostPort->isChecked()
+		&& accountData.customHost() == CustomHost->displayText()
+		&& accountData.customPort() == CustomPort->displayText().toInt()
+		&& accountData.encryptionMode() == (JabberAccountData::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt()
+		&& accountData.plainAuthMode() == (JabberAccountData::AllowPlainType)PlainTextAuth->itemData(PlainTextAuth->currentIndex()).toInt()
+		&& accountData.autoResource() == AutoResource->isChecked()
+		&& accountData.resource(*m_systemInfo) == ResourceName->text()
+		&& accountData.priority() == Priority->text().toInt()
+		&& accountData.dataTransferProxy() == DataTransferProxy->text()
+		&& accountData.requireDataTransferProxy() == RequireDataTransferProxy->isChecked()
+		&& accountData.sendGoneNotification() == SendGoneNotification->isChecked()
+		&& accountData.sendTypingNotification() == SendTypingNotification->isChecked()
+		&& accountData.publishSystemInfo() == PublishSystemInfo->isChecked()
 		&& !PersonalInfoWidget->isModified())
 	{
 		simpleStateNotifier()->setState(StateNotChanged);
@@ -423,33 +427,29 @@ void JabberEditAccountWidget::loadAccountData()
 
 void JabberEditAccountWidget::loadAccountDetailsData()
 {
-	AccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!AccountDetails)
-		return;
+	auto accountData = JabberAccountData{account()};
 
-	CustomHostPort->setChecked(AccountDetails->useCustomHostPort());
-	CustomHost->setText(AccountDetails->customHost());
-	CustomPort->setText(QString::number(AccountDetails->customPort()));
-	EncryptionMode->setCurrentIndex(EncryptionMode->findData(AccountDetails->encryptionMode()));
-	PlainTextAuth->setCurrentIndex(PlainTextAuth->findData(AccountDetails->plainAuthMode()));
+	CustomHostPort->setChecked(accountData.useCustomHostPort());
+	CustomHost->setText(accountData.customHost());
+	CustomPort->setText(QString::number(accountData.customPort()));
+	EncryptionMode->setCurrentIndex(EncryptionMode->findData(accountData.encryptionMode()));
+	PlainTextAuth->setCurrentIndex(PlainTextAuth->findData(accountData.plainAuthMode()));
 
-	AutoResource->setChecked(AccountDetails->autoResource());
-	ResourceName->setText(AccountDetails->resource());
-	Priority->setText(QString::number(AccountDetails->priority()));
-	DataTransferProxy->setText(AccountDetails->dataTransferProxy());
-	RequireDataTransferProxy->setChecked(AccountDetails->requireDataTransferProxy());
+	AutoResource->setChecked(accountData.autoResource());
+	ResourceName->setText(accountData.resource(*m_systemInfo));
+	Priority->setText(QString::number(accountData.priority()));
+	DataTransferProxy->setText(accountData.dataTransferProxy());
+	RequireDataTransferProxy->setChecked(accountData.requireDataTransferProxy());
 
-	SendGoneNotification->setChecked(AccountDetails->sendGoneNotification());
-	SendTypingNotification->setChecked(AccountDetails->sendTypingNotification());
+	SendGoneNotification->setChecked(accountData.sendGoneNotification());
+	SendTypingNotification->setChecked(accountData.sendTypingNotification());
 
-	PublishSystemInfo->setChecked(AccountDetails->publishSystemInfo());
+	PublishSystemInfo->setChecked(accountData.publishSystemInfo());
 }
 
 void JabberEditAccountWidget::apply()
 {
-	AccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
-	if (!AccountDetails)
-		return;
+	auto accountData = JabberAccountData{account()};
 
 	applyAccountConfigurationWidgets();
 
@@ -463,19 +463,19 @@ void JabberEditAccountWidget::apply()
 	// we have to set identity after password
 	// so in cache of identity status container it already knows password and can do status change without asking user for it
 	account().setAccountIdentity(Identities->currentIdentity());
-	AccountDetails->setUseCustomHostPort(CustomHostPort->isChecked());
-	AccountDetails->setCustomHost(CustomHost->text());
-	AccountDetails->setCustomPort(CustomPort->text().toInt());
-	AccountDetails->setEncryptionMode((JabberAccountDetails::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt());
-	AccountDetails->setPlainAuthMode((JabberAccountDetails::AllowPlainType)PlainTextAuth->itemData(PlainTextAuth->currentIndex()).toInt());
-	AccountDetails->setAutoResource(AutoResource->isChecked());
-	AccountDetails->setResource(ResourceName->text());
-	AccountDetails->setPriority(Priority->text().toInt());
-	AccountDetails->setDataTransferProxy(DataTransferProxy->text());
-	AccountDetails->setRequireDataTransferProxy(RequireDataTransferProxy->isChecked());
-	AccountDetails->setSendGoneNotification(SendGoneNotification->isChecked());
-	AccountDetails->setSendTypingNotification(SendTypingNotification->isChecked());
-	AccountDetails->setPublishSystemInfo(PublishSystemInfo->isChecked());
+	accountData.setUseCustomHostPort(CustomHostPort->isChecked());
+	accountData.setCustomHost(CustomHost->text());
+	accountData.setCustomPort(CustomPort->text().toInt());
+	accountData.setEncryptionMode(static_cast<JabberAccountData::EncryptionFlag>(EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt()));
+	accountData.setPlainAuthMode(static_cast<JabberAccountData::AllowPlainType>(PlainTextAuth->itemData(PlainTextAuth->currentIndex()).toInt()));
+	accountData.setAutoResource(AutoResource->isChecked());
+	accountData.setResource(ResourceName->text());
+	accountData.setPriority(Priority->text().toInt());
+	accountData.setDataTransferProxy(DataTransferProxy->text());
+	accountData.setRequireDataTransferProxy(RequireDataTransferProxy->isChecked());
+	accountData.setSendGoneNotification(SendGoneNotification->isChecked());
+	accountData.setSendTypingNotification(SendTypingNotification->isChecked());
+	accountData.setPublishSystemInfo(PublishSystemInfo->isChecked());
 
 	if (PersonalInfoWidget->isModified())
 		PersonalInfoWidget->apply();

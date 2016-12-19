@@ -27,7 +27,7 @@
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-personal-info-service.h"
 #include "services/jabber-subscription-service.h"
-#include "jabber-account-details.h"
+#include "jabber-account-data.h"
 
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
@@ -35,14 +35,16 @@
 #include <injeqt/injeqt.h>
 #include <qxmpp/QXmppClient.h>
 
-class PluginInjectedFactory;class JabberChangePasswordService;
+class JabberChangePasswordService;
 class JabberErrorService;
+class JabberOpenChatWithRunner;
 class JabberPresenceService;
 class JabberRegisterExtension;
 class JabberResourceService;
 class JabberRoomChatService;
 class JabberRosterExtension;
 class JabberStreamDebugService;
+class PluginInjectedFactory;
 class SystemInfo;
 class VersionService;
 
@@ -84,6 +86,7 @@ protected:
 	virtual void changePrivateMode() override;
 
 private:
+	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<SystemInfo> m_systemInfo;
 	QPointer<VersionService> m_versionService;
 
@@ -99,6 +102,7 @@ private:
 	JabberStreamDebugService *m_streamDebugService;
 	JabberVCardService *m_vcardService;
 	JabberResourceService *m_resourceService;
+	JabberOpenChatWithRunner *m_jabberOpenChatWithRunner;
 
 	QXmppClient *m_client;
 	std::unique_ptr<JabberRegisterExtension> m_registerExtension;
@@ -109,6 +113,7 @@ private:
 	bool m_contactsListReadOnly;
 
 private slots:
+	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
 	INJEQT_SET void setVersionService(VersionService *versionService);
 	INJEQT_INIT void init();

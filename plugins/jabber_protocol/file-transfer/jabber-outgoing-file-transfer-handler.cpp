@@ -22,7 +22,7 @@
 #include "file-transfer/file-transfer-status.h"
 
 #include "services/jabber-resource-service.h"
-#include "jabber-account-details.h"
+#include "jabber-account-data.h"
 #include "jabber-protocol.h"
 
 #include "jabber-outgoing-file-transfer-handler.h"

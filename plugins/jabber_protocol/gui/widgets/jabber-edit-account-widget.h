@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "jabber-account-details.h"
+#include "jabber-account-data.h"
 #include "jabber-personal-info-widget.h"
 
 #include "widgets/account-edit-widget.h"
@@ -38,6 +38,7 @@ class IconsManager;
 class IdentityManager;
 class PluginInjectedFactory;
 class ProxyComboBox;
+class SystemInfo;
 
 class QCheckBox;
 class QLineEdit;
@@ -62,8 +63,8 @@ private:
 	QPointer<IconsManager> m_iconsManager;
 	QPointer<IdentityManager> m_identityManager;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+	QPointer<SystemInfo> m_systemInfo;
 
-	JabberAccountDetails *AccountDetails;
 	JabberPersonalInfoWidget *PersonalInfoWidget;
 
 	QLineEdit *AccountId;
@@ -119,6 +120,7 @@ private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
 	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
 	INJEQT_INIT void init();
 
 	virtual void removeAccount();
