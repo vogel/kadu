@@ -254,7 +254,7 @@ protected:
 	 *
 	 * In this method a connection is made to ensure that this model is informed about status changes of contacts.
 	 */
-	virtual void accountRegistered(Account account);
+	virtual void accountRegistered(Account account) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -263,7 +263,7 @@ protected:
 	 *
 	 * In this method connection connection made in @link accountRegistered @endlink is disconnected.
 	 */
-	virtual void accountUnregistered(Account account);
+	virtual void accountUnregistered(Account account) override;
 
 private:
 	QPointer<AccountManager> m_accountManager;

@@ -99,7 +99,7 @@ protected:
 	 * This slot is called every time an account is added in @link AccountManager @endlink. New entry is added to database
 	 * to match data of new account.
 	 */
-	virtual void accountAdded(Account account);
+	virtual void accountAdded(Account account) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -109,7 +109,7 @@ protected:
 	 * This slot is called every time an account is removed from @link AccountManager @endlink. Entry for this account is cleared
 	 * from database so no protocol or account username is remembered.
 	 */
-	virtual void accountRemoved(Account account);
+	virtual void accountRemoved(Account account) override;
 
 private:
 	QPointer<AccountManager> m_accountManager;

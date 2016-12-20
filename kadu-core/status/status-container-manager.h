@@ -176,7 +176,7 @@ protected:
 	 * StatusContainerManager is in one container per account mode. In one container per identity mode, updateIdentities
 	 * method is called to ensure that no empty identity has active status container.
 	 */
-	virtual void accountRegistered(Account account);
+	virtual void accountRegistered(Account account) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -187,7 +187,7 @@ protected:
 	 * StatusContainerManager is in one container per account mode. In one container per identity mode, updateIdentities
 	 * method is called to ensure that no empty identity has active status container.
 	 */
-	virtual void accountUnregistered(Account account);
+	virtual void accountUnregistered(Account account) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

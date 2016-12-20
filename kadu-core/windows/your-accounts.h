@@ -136,8 +136,8 @@ private slots:
 protected:
 	virtual void closeEvent(QCloseEvent *e);
 	virtual void keyPressEvent(QKeyEvent *e);
-	virtual void accountRegistered(Account account) { Q_UNUSED(account) }
-	virtual void accountUnregistered(Account account);
+	virtual void accountRegistered(Account account) override { Q_UNUSED(account) }
+	virtual void accountUnregistered(Account account) override;
 
 public:
 	explicit YourAccounts(QWidget *parent = nullptr);

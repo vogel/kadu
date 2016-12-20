@@ -140,8 +140,8 @@ private slots:
 	void chatDestroyed(ChatWidget *);
 
 protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
+	virtual void accountRegistered(Account account) override;
+	virtual void accountUnregistered(Account account) override;
 	virtual void configurationUpdated();
 
 };
