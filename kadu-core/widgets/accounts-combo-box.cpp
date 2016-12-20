@@ -23,6 +23,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/filter/abstract-account-filter.h"
+#include "accounts/filter/have-protocol-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
 #include "core/injected-factory.h"
@@ -58,6 +59,7 @@ void AccountsComboBox::init()
 	Model = m_injectedFactory->makeInjected<AccountsModel>(m_accountManager, chain);
 	ProxyModel = new AccountsProxyModel(chain);
 	chain->setBaseModel(Model);
+	ProxyModel->addFilter(new HaveProtocolFilter(ProxyModel));
 	chain->addProxyModel(ProxyModel);
 	setUpModel(AccountRole, chain);
 }

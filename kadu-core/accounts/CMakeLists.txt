@@ -9,6 +9,7 @@ set (accounts_SRCS
 	accounts-aware-object.cpp
 
 	filter/have-multilogon-filter.cpp
+	filter/have-protocol-filter.cpp
 	filter/protocol-filter.cpp
 	filter/writeable-contacts-list-filter.cpp
 

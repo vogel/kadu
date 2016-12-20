@@ -26,7 +26,9 @@
 #include "your-accounts.h"
 
 #include "accounts/account-manager.h"
+#include "accounts/filter/have-protocol-filter.h"
 #include "accounts/model/accounts-model.h"
+#include "accounts/model/accounts-proxy-model.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-manager.h"
 #include "core/injected-factory.h"
@@ -36,6 +38,7 @@
 #include "model/action-filter-proxy-model.h"
 #include "model/action-list-model.h"
 #include "model/merged-proxy-model-factory.h"
+#include "model/model-chain.h"
 #include "model/roles.h"
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/filter/can-register-protocol-filter.h"
@@ -130,6 +133,11 @@ void YourAccounts::createGui()
 	AccountsView->setMinimumWidth(150);
 	contentLayout->addWidget(AccountsView);
 	MyAccountsModel = m_injectedFactory->makeInjected<AccountsModel>(m_accountManager, AccountsView);
+	auto *chain = new ModelChain{this};
+	auto accountProxyModel = new AccountsProxyModel(chain);
+	chain->setBaseModel(MyAccountsModel);
+	accountProxyModel->addFilter(new HaveProtocolFilter(accountProxyModel));
+	chain->addProxyModel(accountProxyModel);
 
 	QAction *separator = new QAction(this);
 	separator->setSeparator(true);
@@ -143,7 +151,7 @@ void YourAccounts::createGui()
 	actionsModel->appendAction(CreateNewAccountAction);
 
 	QList<QAbstractItemModel *> models;
-	models.append(MyAccountsModel);
+	models.append(chain->lastModel());
 	models.append(actionsModel);
 
 	ActionFilterProxyModel *proxyModel = new ActionFilterProxyModel(this);
