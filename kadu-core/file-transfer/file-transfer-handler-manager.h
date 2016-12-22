@@ -49,8 +49,8 @@ private slots:
 	void fileTransferRemoved(FileTransfer fileTransfer);
 
 protected:
-	virtual void accountRegistered(Account account) override;
-	virtual void accountUnregistered(Account account) override;
+	virtual void accountAdded(Account account) override;
+	virtual void accountRemoved(Account account) override;
 
 private:
 	QPointer<AccountManager> m_accountManager;
@@ -63,5 +63,6 @@ private:
 
 private slots:
 	void protocolHandlerChanged();
+	void protocolHandlerChanged(Account account);
 
 };

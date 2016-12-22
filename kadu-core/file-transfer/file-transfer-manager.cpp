@@ -139,18 +139,36 @@ void FileTransferManager::setKaduWindowService(KaduWindowService *kaduWindowServ
 void FileTransferManager::init()
 {
 	m_configurationManager->registerStorableObject(this);
-	triggerAllAccountsRegistered(m_accountManager);
+	triggerAllAccountsAdded(m_accountManager);
 }
 
 void FileTransferManager::done()
 {
-	triggerAllAccountsUnregistered(m_accountManager);
+	triggerAllAccountsRemoved(m_accountManager);
 	m_configurationManager->unregisterStorableObject(this);
 	if (m_window)
 		m_window.data()->deleteLater();
 }
 
-void FileTransferManager::addFileTransferService(Account account)
+FileTransfer FileTransferManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
+{
+	return m_fileTransferStorage->loadStubFromStorage(storagePoint);
+}
+
+void FileTransferManager::accountAdded(Account account)
+{
+	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	protocolHandlerChanged(account);
+}
+
+void FileTransferManager::protocolHandlerChanged()
+{
+	auto account = Account{sender()};
+	if (account)
+		protocolHandlerChanged(account);
+}
+
+void FileTransferManager::protocolHandlerChanged(Account account)
 {
 	auto protocol = account.protocolHandler();
 	if (!protocol)
@@ -162,38 +180,6 @@ void FileTransferManager::addFileTransferService(Account account)
 
 	connect(service, SIGNAL(incomingFileTransfer(FileTransfer)),
 			this, SLOT(incomingFileTransfer(FileTransfer)));
-}
-
-void FileTransferManager::removeFileTransferService(Account account)
-{
-	auto protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	auto service = protocol->fileTransferService();
-	if (!service)
-		return;
-
-	disconnect(service, 0, this, 0);
-}
-
-FileTransfer FileTransferManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
-{
-	return m_fileTransferStorage->loadStubFromStorage(storagePoint);
-}
-
-void FileTransferManager::accountRegistered(Account account)
-{
-	QMutexLocker locker(&mutex());
-
-	addFileTransferService(account);
-}
-
-void FileTransferManager::accountUnregistered(Account account)
-{
-	QMutexLocker locker(&mutex());
-
-	removeFileTransferService(account);
 }
 
 void FileTransferManager::cleanUp()

@@ -52,12 +52,12 @@ void FileTransferHandlerManager::init()
 	connect(m_fileTransferManager.data(), SIGNAL(fileTransferAboutToBeAdded(FileTransfer)), this, SLOT(fileTransferAboutToBeAdded(FileTransfer)));
 	connect(m_fileTransferManager.data(), SIGNAL(fileTransferAboutToBeRemoved(FileTransfer)), this, SLOT(fileTransferRemoved(FileTransfer)));
 
-	triggerAllAccountsRegistered(m_accountManager);
+	triggerAllAccountsAdded(m_accountManager);
 }
 
 void FileTransferHandlerManager::done()
 {
-	triggerAllAccountsUnregistered(m_accountManager);
+	triggerAllAccountsRemoved(m_accountManager);
 }
 
 void FileTransferHandlerManager::createHandlers(Account account)
@@ -74,24 +74,27 @@ void FileTransferHandlerManager::removeHandlers(Account account)
 			removeHandler(transfer);
 }
 
-void FileTransferHandlerManager::accountRegistered(Account account)
+void FileTransferHandlerManager::accountAdded(Account account)
 {
 	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
-	createHandlers(account);
+	protocolHandlerChanged(account);
 }
 
-void FileTransferHandlerManager::accountUnregistered(Account account)
+void FileTransferHandlerManager::accountRemoved(Account account)
 {
-	removeHandlers(account);
 	disconnect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	protocolHandlerChanged(account);
 }
 
 void FileTransferHandlerManager::protocolHandlerChanged()
 {
 	auto account = Account{sender()};
-	if (!account)
-		return;
+	if (account)
+		protocolHandlerChanged(account);
+}
 
+void FileTransferHandlerManager::protocolHandlerChanged(Account account)
+{
 	if (account.protocolHandler())
 		createHandlers(account);
 	else

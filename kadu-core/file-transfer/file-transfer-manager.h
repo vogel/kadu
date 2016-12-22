@@ -77,8 +77,7 @@ signals:
 protected:
 	virtual FileTransfer loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void accountRegistered(Account account) override;
-	virtual void accountUnregistered(Account account) override;
+	virtual void accountAdded(Account account) override;
 
 	virtual void itemAboutToBeAdded(FileTransfer fileTransfer) override;
 	virtual void itemAdded(FileTransfer fileTransfer) override;
@@ -102,8 +101,6 @@ private:
 	QPointer<KaduWindowService> m_kaduWindowService;
 	int m_totalProgress;
 
-	void addFileTransferService(Account account);
-	void removeFileTransferService(Account account);
 	void setTotalProgress(int totalProgress);
 
 private slots:
@@ -125,5 +122,8 @@ private slots:
 
 	void incomingFileTransfer(FileTransfer fileTransfer);
 	void updateProgress();
+
+	void protocolHandlerChanged();
+	void protocolHandlerChanged(Account account);
 
 };
