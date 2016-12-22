@@ -159,20 +159,20 @@ void FirewallMessageFilter::init()
 	LastMsg.start();
 	LastNotify.start();
 
-	triggerAllAccountsRegistered(m_accountManager);
+	triggerAllAccountsAdded(m_accountManager);
 }
 
 void FirewallMessageFilter::done()
 {
-	triggerAllAccountsUnregistered(m_accountManager);
+	triggerAllAccountsRemoved(m_accountManager);
 }
 
-void FirewallMessageFilter::accountRegistered(Account account)
+void FirewallMessageFilter::accountAdded(Account account)
 {
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 }
 
-void FirewallMessageFilter::accountUnregistered(Account account)
+void FirewallMessageFilter::accountRemoved(Account account)
 {
 	disconnect(account, 0, this, 0);
 }
