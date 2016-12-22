@@ -81,7 +81,7 @@ void Infos::init()
 {
 	kdebugf();
 
-	triggerAllAccountsRegistered(m_accountManager);
+	triggerAllAccountsAdded(m_accountManager);
 
 	fileName = m_pathsProvider->profilePath() + QStringLiteral("last_seen.data");
 
@@ -177,7 +177,7 @@ void Infos::onShowInfos()
 	kdebugf2();
 }
 
-void Infos::accountRegistered(Account account)
+void Infos::accountAdded(Account account)
 {
 	kdebugf();
 
@@ -186,7 +186,7 @@ void Infos::accountRegistered(Account account)
 	kdebugf2();
 }
 
-void Infos::accountUnregistered(Account account)
+void Infos::accountRemoved(Account account)
 {
 	kdebugf();
 

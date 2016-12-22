@@ -68,8 +68,8 @@ private slots:
 	void contactStatusChanged(Contact contact, Status status);
 
 protected:
-	virtual void accountRegistered(Account account) override;
-	virtual void accountUnregistered(Account account) override;
+	virtual void accountAdded(Account account) override;
+	virtual void accountRemoved(Account account) override;
 
 	//! updates Last Seen times in lastSeen.
 	void updateTimes();
