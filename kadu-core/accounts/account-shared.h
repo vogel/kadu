@@ -155,6 +155,7 @@ public:
 signals:
 	void buddyStatusChanged(const Contact &contact, const Status &oldStatus);
 
+	void connecting();
 	void connected();
 	void disconnected();
 

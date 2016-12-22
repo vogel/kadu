@@ -341,6 +341,7 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
 			this, SIGNAL(buddyStatusChanged(Contact, Status)));
 	connect(ProtocolHandler, &Protocol::remoteStatusChangeRequest, this, &AccountShared::remoteStatusChangeRequest);
+	connect(ProtocolHandler, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
 	connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 

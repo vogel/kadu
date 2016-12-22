@@ -386,23 +386,16 @@ void Core::updateIcon()
 	QApplication::setWindowIcon(m_injector.get<IconsManager>()->iconByPath(KaduIcon("kadu_icons/kadu")));
 }
 
-void Core::accountRegistered(Account account)
+void Core::accountAdded(Account account)
 {
-	auto protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	connect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
-	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
-	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
+	connect(account, SIGNAL(connecting()), this, SIGNAL(connecting()));
+	connect(account, SIGNAL(connected()), this, SIGNAL(connected()));
+	connect(account, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
 }
 
-void Core::accountUnregistered(Account account)
+void Core::accountRemoved(Account account)
 {
-	auto protocol = account.protocolHandler();
-
-	if (protocol)
-		disconnect(protocol, 0, this, 0);
+	disconnect(account, 0, this, 0);
 }
 
 void Core::configurationUpdated()
