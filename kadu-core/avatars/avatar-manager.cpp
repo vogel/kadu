@@ -69,7 +69,7 @@ void AvatarManager::setContactManager(ContactManager *contactManager)
 
 void AvatarManager::init()
 {
-	triggerAllAccountsRegistered(m_accountManager);
+	triggerAllAccountsAdded(m_accountManager);
 
 	UpdateTimer = new QTimer(this);
 	UpdateTimer->setInterval(30 * 60 * 1000); // half an hour
@@ -81,7 +81,7 @@ void AvatarManager::init()
 
 void AvatarManager::done()
 {
-	triggerAllAccountsUnregistered(m_accountManager);
+	triggerAllAccountsRemoved(m_accountManager);
 }
 
 void AvatarManager::itemAboutToBeAdded(Avatar item)
@@ -112,14 +112,14 @@ Avatar AvatarManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &s
 	return m_avatarStorage->loadStubFromStorage(storagePoint);
 }
 
-void AvatarManager::accountRegistered(Account account)
+void AvatarManager::accountAdded(Account account)
 {
 	QMutexLocker locker(&mutex());
 
 	connect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
 }
 
-void AvatarManager::accountUnregistered(Account account)
+void AvatarManager::accountRemoved(Account account)
 {
 	QMutexLocker locker(&mutex());
 

@@ -66,8 +66,8 @@ signals:
 protected:
 	virtual Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void accountRegistered(Account account) override;
-	virtual void accountUnregistered(Account account) override;
+	virtual void accountAdded(Account account) override;
+	virtual void accountRemoved(Account account) override;
 
 	virtual void itemAboutToBeAdded(Avatar item) override;
 	virtual void itemAdded(Avatar item) override;
