@@ -254,16 +254,16 @@ protected:
 	 *
 	 * In this method a connection is made to ensure that this model is informed about status changes of contacts.
 	 */
-	virtual void accountRegistered(Account account) override;
+	virtual void accountAdded(Account account) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Method called every time an account is unregisterd.
 	 * @param account just unregistered account
 	 *
-	 * In this method connection connection made in @link accountRegistered @endlink is disconnected.
+	 * In this method connection connection made in @link accountAdded @endlink is disconnected.
 	 */
-	virtual void accountUnregistered(Account account) override;
+	virtual void accountRemoved(Account account) override;
 
 private:
 	QPointer<AccountManager> m_accountManager;

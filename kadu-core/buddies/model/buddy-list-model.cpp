@@ -47,7 +47,7 @@ BuddyListModel::~BuddyListModel()
 {
 	setBuddyList(BuddyList());
 
-	triggerAllAccountsUnregistered(m_accountManager);
+	triggerAllAccountsRemoved(m_accountManager);
 }
 
 void BuddyListModel::setAccountManager(AccountManager *accountManager)
@@ -93,7 +93,7 @@ void BuddyListModel::init()
 	roles[StatusIconPath] = "statusIcon";
 	setRoleNames(roles);
 
-	triggerAllAccountsRegistered(m_accountManager);
+	triggerAllAccountsAdded(m_accountManager);
 
 	connect(m_contactManager, SIGNAL(contactUpdated(Contact)),
 	        this, SLOT(contactUpdated(Contact)), Qt::DirectConnection);
@@ -560,12 +560,12 @@ QMimeData * BuddyListModel::mimeData(const QModelIndexList &indexes) const
 	return m_buddyListMimeDataService->toMimeData(list).release();
 }
 
-void BuddyListModel::accountRegistered(Account account)
+void BuddyListModel::accountAdded(Account account)
 {
 	connect(account, SIGNAL(buddyStatusChanged(Contact,Status)), this, SLOT(contactStatusChanged(Contact,Status)));
 }
 
-void BuddyListModel::accountUnregistered (Account account)
+void BuddyListModel::accountRemoved(Account account)
 {
 	disconnect(account, 0, this, 0);
 }
