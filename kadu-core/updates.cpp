@@ -85,15 +85,15 @@ void Updates::setVersionService(VersionService *versionService)
 void Updates::init()
 {
 	buildQuery();
-	triggerAllAccountsRegistered(m_accountManager);
+	triggerAllAccountsAdded(m_accountManager);
 }
 
-void Updates::accountRegistered(Account account)
+void Updates::accountAdded(Account account)
 {
 	connect(account, SIGNAL(connected()), this, SLOT(run()));
 }
 
-void Updates::accountUnregistered(Account account)
+void Updates::accountRemoved(Account account)
 {
 	disconnect(account, 0, this, 0);
 }
