@@ -84,7 +84,7 @@ void GaduAddAccountWidget::init()
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(m_accountManager, SIGNAL(accountRegistered(Account)), this, SLOT(dataChanged()));
+	connect(m_accountManager, SIGNAL(accountAdded(Account)), this, SLOT(dataChanged()));
 
 	createGui(m_showButtons);
 	resetGui();
