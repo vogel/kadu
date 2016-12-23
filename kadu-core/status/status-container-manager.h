@@ -166,6 +166,9 @@ private slots:
 	 */
 	void setStatusModeChanged();
 
+	void protocolHandlerChanged();
+	void protocolHandlerChanged(Account account);
+
 protected:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -176,7 +179,7 @@ protected:
 	 * StatusContainerManager is in one container per account mode. In one container per identity mode, updateIdentities
 	 * method is called to ensure that no empty identity has active status container.
 	 */
-	virtual void accountRegistered(Account account) override;
+	virtual void accountAdded(Account account) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -187,7 +190,7 @@ protected:
 	 * StatusContainerManager is in one container per account mode. In one container per identity mode, updateIdentities
 	 * method is called to ensure that no empty identity has active status container.
 	 */
-	virtual void accountUnregistered(Account account) override;
+	virtual void accountRemoved(Account account) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

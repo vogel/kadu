@@ -69,7 +69,7 @@ void StatusContainerManager::init()
 	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
 		triggerAllIdentitiesAdded(m_identityManager);
 	else if (m_statusConfigurationHolder->isSetStatusPerAccount())
-		triggerAllAccountsRegistered(m_accountManager);
+		triggerAllAccountsAdded(m_accountManager);
 	else
 		registerStatusContainer(m_allAccountsStatusContainer);
 
@@ -84,7 +84,7 @@ void StatusContainerManager::done()
 		if (m_statusConfigurationHolder->isSetStatusPerIdentity())
 			triggerAllIdentitiesRemoved(m_identityManager);
 		else if (m_statusConfigurationHolder->isSetStatusPerAccount())
-			triggerAllAccountsUnregistered(m_accountManager);
+			triggerAllAccountsRemoved(m_accountManager);
 		else
 			unregisterStatusContainer(m_allAccountsStatusContainer);
 	}
@@ -102,22 +102,41 @@ void StatusContainerManager::updateIdentities()
 			registerStatusContainer(identity.statusContainer());
 }
 
-void StatusContainerManager::accountRegistered(Account account)
+void StatusContainerManager::accountAdded(Account account)
 {
-	if (m_statusConfigurationHolder->isSetStatusPerAccount() && !StatusContainers.contains(account.statusContainer()))
-		registerStatusContainer(account.statusContainer());
-
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && !StatusContainers.contains(account.accountIdentity().statusContainer()))
-		updateIdentities();
+	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	protocolHandlerChanged(account);
 }
 
-void StatusContainerManager::accountUnregistered(Account account)
+void StatusContainerManager::accountRemoved(Account account)
 {
-	if (m_statusConfigurationHolder->isSetStatusPerAccount() && StatusContainers.contains(account.statusContainer()))
-		unregisterStatusContainer(account.statusContainer());
+	disconnect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	protocolHandlerChanged(account);
+}
 
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		updateIdentities();
+void StatusContainerManager::protocolHandlerChanged()
+{
+	auto account = Account{sender()};
+	if (account)
+		protocolHandlerChanged(account);
+}
+
+void StatusContainerManager::protocolHandlerChanged(Account account)
+{
+	if (account.protocolHandler())
+	{
+		if (m_statusConfigurationHolder->isSetStatusPerAccount() && !StatusContainers.contains(account.statusContainer()))
+			registerStatusContainer(account.statusContainer());
+		if (m_statusConfigurationHolder->isSetStatusPerIdentity() && !StatusContainers.contains(account.accountIdentity().statusContainer()))
+			updateIdentities();
+	}
+	else
+	{
+		if (m_statusConfigurationHolder->isSetStatusPerAccount() && StatusContainers.contains(account.statusContainer()))
+			unregisterStatusContainer(account.statusContainer());
+		if (m_statusConfigurationHolder->isSetStatusPerIdentity())
+			updateIdentities();
+	}
 }
 
 void StatusContainerManager::identityAdded(Identity identity)
