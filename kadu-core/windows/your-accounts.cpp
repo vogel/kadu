@@ -156,7 +156,7 @@ void YourAccounts::createGui()
 
 	ActionFilterProxyModel *proxyModel = new ActionFilterProxyModel(this);
 	proxyModel->setSourceModel(MergedProxyModelFactory::createInstance(models, this));
-	proxyModel->setModel(MyAccountsModel);
+	proxyModel->setModel(chain->lastModel());
 	proxyModel->addHideWhenModelEmpty(separator);
 
 	AccountsView->setModel(proxyModel);
