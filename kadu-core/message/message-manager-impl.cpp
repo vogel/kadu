@@ -59,41 +59,46 @@ void MessageManagerImpl::setMessageTransformerService(MessageTransformerService 
 
 void MessageManagerImpl::init()
 {
-	triggerAllAccountsRegistered(m_accountManager);
+	triggerAllAccountsAdded(m_accountManager);
 }
 
 void MessageManagerImpl::done()
 {
-	triggerAllAccountsUnregistered(m_accountManager);
+	triggerAllAccountsRemoved(m_accountManager);
 }
 
-void MessageManagerImpl::accountRegistered(Account account)
+void MessageManagerImpl::accountAdded(Account account)
 {
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return;
-
-	connect(chatService, SIGNAL(messageReceived(const Message &)),
-	        this, SLOT(messageReceivedSlot(const Message &)));
-	connect(chatService, SIGNAL(messageSent(const Message &)),
-	        this, SIGNAL(messageSent(const Message &)));
+	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	protocolHandlerChanged(account);
 }
 
-void MessageManagerImpl::accountUnregistered(Account account)
+void MessageManagerImpl::accountRemoved(Account account)
 {
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
+	disconnect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	protocolHandlerChanged(account);
+}
 
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return;
+void MessageManagerImpl::protocolHandlerChanged()
+{
+	auto account = Account{sender()};
+	if (account)
+		protocolHandlerChanged(account);
+}
 
-	disconnect(chatService, 0, this, 0);
+void MessageManagerImpl::protocolHandlerChanged(Account account)
+{
+	if (account.protocolHandler())
+	{
+		auto chatService = account.protocolHandler()->chatService();
+		if (!chatService)
+			return;
+
+		connect(chatService, SIGNAL(messageReceived(const Message &)),
+				this, SLOT(messageReceivedSlot(const Message &)));
+		connect(chatService, SIGNAL(messageSent(const Message &)),
+				this, SIGNAL(messageSent(const Message &)));
+	}
 }
 
 void MessageManagerImpl::messageReceivedSlot(const Message &message)

@@ -80,13 +80,13 @@ void AccountsAwareObject::notifyAccountUnregistered(Account account)
 
 void AccountsAwareObject::triggerAllAccountsAdded(AccountManager *accountManager)
 {
-	for (auto const &account : accountManager->items())
+	for (auto const &account : accountManager->allItems())
 		accountAdded(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsRemoved(AccountManager *accountManager)
 {
-	for (auto const &account : accountManager->items())
+	for (auto const &account : accountManager->allItems())
 		accountRemoved(account);
 }
 

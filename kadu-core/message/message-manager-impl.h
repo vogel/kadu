@@ -21,6 +21,7 @@
 #pragma once
 
 #include "accounts/accounts-aware-object.h"
+#include "accounts/account.h"
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "exports.h"
@@ -45,8 +46,8 @@ public:
 	virtual bool sendRawMessage(const Chat &chat, const QByteArray &content) override;
 
 protected:
-	virtual void accountRegistered(Account account) override;
-	virtual void accountUnregistered(Account account) override;
+	virtual void accountAdded(Account account) override;
+	virtual void accountRemoved(Account account) override;
 
 private:
 	QPointer<AccountManager> m_accountManager;
@@ -95,6 +96,9 @@ private slots:
 	 * This slot emits messageReceived and unreadMessageAdded signals.
 	 */
 	void messageReceivedSlot(const Message &message);
+
+	void protocolHandlerChanged();
+	void protocolHandlerChanged(Account account);
 
 };
 
