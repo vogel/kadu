@@ -490,7 +490,13 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 	ForceWidgetChange = false;
 }
 
-void YourAccounts::accountUnregistered(Account account)
+void YourAccounts::accountAdded(Account account)
+{
+	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	protocolHandlerChanged(account);
+}
+
+void YourAccounts::accountRemoved(Account account)
 {
 	QMap<Account, AccountEditWidget *>::iterator i = EditWidgets.find(account);
 	if (i != EditWidgets.end())
@@ -502,6 +508,19 @@ void YourAccounts::accountUnregistered(Account account)
 		i.value()->deleteLater();
 		EditWidgets.erase(i);
 	}
+}
+
+void YourAccounts::protocolHandlerChanged()
+{
+	auto account = Account{sender()};
+	if (account)
+		protocolHandlerChanged(account);
+}
+
+void YourAccounts::protocolHandlerChanged(Account account)
+{
+	if (!account.protocolHandler())
+		accountRemoved(account);
 }
 
 void YourAccounts::okClicked()
