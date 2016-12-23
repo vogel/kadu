@@ -61,9 +61,9 @@ void ShowXmlConsoleAction::setMenuInventory(MenuInventory *menuInventory)
 
 void ShowXmlConsoleAction::init()
 {
-	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
+	connect(m_accountManager, SIGNAL(accountAdded(Account)),
 			this, SLOT(updateShowXmlConsoleMenu()));
-	connect(m_accountManager, SIGNAL(accountUnregistered(Account)),
+	connect(m_accountManager, SIGNAL(accountRemoved(Account)),
 			this, SLOT(updateShowXmlConsoleMenu()));
 
 	// It is needed bacause of loading protocol plugins before creating GUI.
