@@ -103,6 +103,15 @@ Account AccountManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> 
 	return m_accountStorage->loadStubFromStorage(storagePoint);
 }
 
+void AccountManager::itemAboutToBeAdded(Account item)
+{
+	QMutexLocker locker(&mutex());
+
+	if (item.data())
+		item.data()->ensureLoaded();
+	emit accountAboutToBeAdded(item);
+}
+
 void AccountManager::itemAdded(Account item)
 {
 	QMutexLocker locker(&mutex());
@@ -110,6 +119,14 @@ void AccountManager::itemAdded(Account item)
 	if (item.data())
 		item.data()->ensureLoaded();
 	AccountsAwareObject::notifyAccountAdded(item);
+	emit accountAdded(item);
+}
+
+void AccountManager::itemAboutToBeRemoved(Account item)
+{
+	QMutexLocker locker(&mutex());
+
+	emit accountAboutToBeRemoved(item);
 }
 
 void AccountManager::itemRemoved(Account item)
@@ -117,6 +134,7 @@ void AccountManager::itemRemoved(Account item)
 	QMutexLocker locker(&mutex());
 
 	AccountsAwareObject::notifyAccountRemoved(item);
+	emit accountRemoved(item);
 }
 
 void AccountManager::itemAboutToBeRegistered(Account item)

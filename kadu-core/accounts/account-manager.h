@@ -72,7 +72,9 @@ private slots:
 protected:
 	virtual Account loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
+	virtual void itemAboutToBeAdded(Account item) override;
 	virtual void itemAdded(Account item) override;
+	virtual void itemAboutToBeRemoved(Account item) override;
 	virtual void itemRemoved(Account item) override;
 
 	virtual void itemAboutToBeRegistered(Account item) override;
@@ -135,6 +137,8 @@ signals:
 	void accountAboutToBeUnregistered(Account);
 	void accountUnregistered(Account);
 
+	void accountAboutToBeAdded(Account);
+	void accountAdded(Account);
 	void accountAboutToBeRemoved(Account);
 	void accountRemoved(Account);
 
