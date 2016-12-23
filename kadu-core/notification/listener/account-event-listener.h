@@ -48,8 +48,8 @@ public:
 	virtual ~AccountEventListener();
 
 protected:
-	virtual void accountRegistered(Account account) override;
-	virtual void accountUnregistered(Account account) override;
+	virtual void accountAdded(Account account) override;
+	virtual void accountRemoved(Account account) override;
 
 private:
 	QPointer<AccountManager> m_accountManager;
@@ -74,5 +74,7 @@ private slots:
 	INJEQT_DONE void done();
 
 	void accountConnected();
+	void protocolHandlerChanged();
+	void protocolHandlerChanged(Account account);
 
 };
