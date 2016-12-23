@@ -142,6 +142,8 @@ signals:
 	void accountAboutToBeRemoved(Account);
 	void accountRemoved(Account);
 
+	void accountLoadedStateChanged();
+
 	void accountUpdated(Account);
 
 };
