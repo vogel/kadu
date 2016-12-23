@@ -47,9 +47,7 @@ void AddConferenceAction::setAccountManager(AccountManager *accountManager)
 
 void AddConferenceAction::init()
 {
-	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
-	        this, SLOT(updateAddChatMenuItem()));
-	connect(m_accountManager, SIGNAL(accountUnregistered(Account)),
+	connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)),
 	        this, SLOT(updateAddChatMenuItem()));
 
 	updateAddChatMenuItem();

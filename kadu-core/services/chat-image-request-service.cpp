@@ -63,8 +63,7 @@ void ChatImageRequestService::setAccountManager(AccountManager *accountManager)
 	if (!CurrentAccountManager)
 		return;
 
-	connect(CurrentAccountManager.data(), SIGNAL(accountRegistered(Account)), this, SLOT(accountRegistered(Account)));
-	connect(CurrentAccountManager.data(), SIGNAL(accountUnregistered(Account)), this, SLOT(accountUnregistered(Account)));
+	connect(CurrentAccountManager.data(), SIGNAL(accountLoadedStateChanged(Account)), this, SLOT(connectAccount(Account)));
 }
 
 void ChatImageRequestService::setContactManager(ContactManager *contactManager)
@@ -77,26 +76,15 @@ void ChatImageRequestService::setConfiguration(ChatImageRequestServiceConfigurat
 	Configuration = configuration;
 }
 
-void ChatImageRequestService::accountRegistered(Account account)
+void ChatImageRequestService::connectAccount(Account account)
 {
 	if (!account || !account.protocolHandler() || !account.protocolHandler()->chatImageService())
 		return;
 
 	connect(account.protocolHandler()->chatImageService(), SIGNAL(chatImageKeyReceived(QString,ChatImage)),
-	        this, SLOT(chatImageKeyReceived(QString,ChatImage)));
+	        this, SLOT(chatImageKeyReceived(QString,ChatImage)), Qt::UniqueConnection);
 	connect(account.protocolHandler()->chatImageService(), SIGNAL(chatImageAvailable(ChatImage,QByteArray)),
-	        this, SLOT(chatImageAvailable(ChatImage,QByteArray)));
-}
-
-void ChatImageRequestService::accountUnregistered(Account account)
-{
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->chatImageService())
-		return;
-
-	disconnect(account.protocolHandler()->chatImageService(), SIGNAL(chatImageKeyReceived(QString,ChatImage)),
-	           this, SLOT(chatImageKeyReceived(QString,ChatImage)));
-	disconnect(account.protocolHandler()->chatImageService(), SIGNAL(chatImageAvailable(ChatImage,QByteArray)),
-	          this, SLOT(chatImageAvailable(ChatImage,QByteArray)));
+	        this, SLOT(chatImageAvailable(ChatImage,QByteArray)), Qt::UniqueConnection);
 }
 
 bool ChatImageRequestService::acceptImage(const Account &account, const QString &id, const ChatImage &chatImage) const

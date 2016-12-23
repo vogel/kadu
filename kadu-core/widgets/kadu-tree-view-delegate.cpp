@@ -83,8 +83,7 @@ void KaduTreeViewDelegate::setShowIdentityNameIfMany(bool showIdentityNameIfMany
 	ShowIdentityNameIfMany = showIdentityNameIfMany;
 	if (ShowIdentityNameIfMany)
 	{
-		connect(m_accountManager, SIGNAL(accountRegistered(Account)), this, SLOT(updateShowIdentityName()));
-		connect(m_accountManager, SIGNAL(accountUnregistered(Account)), this, SLOT(updateShowIdentityName()));
+		connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)), this, SLOT(updateShowIdentityName()));
 		connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(updateShowIdentityName()));
 		updateShowIdentityName();
 	}

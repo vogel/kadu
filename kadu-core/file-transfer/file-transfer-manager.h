@@ -123,7 +123,6 @@ private slots:
 	void incomingFileTransfer(FileTransfer fileTransfer);
 	void updateProgress();
 
-	void protocolHandlerChanged();
 	void protocolHandlerChanged(Account account);
 
 };

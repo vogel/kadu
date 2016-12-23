@@ -132,17 +132,12 @@ public slots:
 	void providePassword(Account account);
 
 signals:
-	void accountAboutToBeRegistered(Account);
-	void accountRegistered(Account);
-	void accountAboutToBeUnregistered(Account);
-	void accountUnregistered(Account);
-
 	void accountAboutToBeAdded(Account);
 	void accountAdded(Account);
 	void accountAboutToBeRemoved(Account);
 	void accountRemoved(Account);
 
-	void accountLoadedStateChanged();
+	void accountLoadedStateChanged(Account);
 
 	void accountUpdated(Account);
 

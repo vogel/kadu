@@ -492,7 +492,7 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 
 void YourAccounts::accountAdded(Account account)
 {
-	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
 	protocolHandlerChanged(account);
 }
 
@@ -508,13 +508,6 @@ void YourAccounts::accountRemoved(Account account)
 		i.value()->deleteLater();
 		EditWidgets.erase(i);
 	}
-}
-
-void YourAccounts::protocolHandlerChanged()
-{
-	auto account = Account{sender()};
-	if (account)
-		protocolHandlerChanged(account);
 }
 
 void YourAccounts::protocolHandlerChanged(Account account)

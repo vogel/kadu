@@ -97,7 +97,6 @@ private slots:
 	 */
 	void messageReceivedSlot(const Message &message);
 
-	void protocolHandlerChanged();
 	void protocolHandlerChanged(Account account);
 
 };

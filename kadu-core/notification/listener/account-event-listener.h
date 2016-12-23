@@ -74,7 +74,6 @@ private slots:
 	INJEQT_DONE void done();
 
 	void accountConnected();
-	void protocolHandlerChanged();
 	void protocolHandlerChanged(Account account);
 
 };

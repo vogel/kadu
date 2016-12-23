@@ -104,18 +104,13 @@ void AccountEventListener::accountAdded(Account account)
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			m_statusNotificationService, SLOT(notifyStatusChanged(Contact,Status)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
+	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
+	protocolHandlerChanged(account);
 }
 
 void AccountEventListener::accountRemoved(Account account)
 {
 	disconnect(account, 0, this, 0);
-}
-
-void AccountEventListener::protocolHandlerChanged()
-{
-	auto account = Account{sender()};
-	if (account)
-		protocolHandlerChanged(account);
 }
 
 void AccountEventListener::protocolHandlerChanged(Account account)

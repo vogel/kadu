@@ -76,21 +76,14 @@ void FileTransferHandlerManager::removeHandlers(Account account)
 
 void FileTransferHandlerManager::accountAdded(Account account)
 {
-	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
 	protocolHandlerChanged(account);
 }
 
 void FileTransferHandlerManager::accountRemoved(Account account)
 {
-	disconnect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	disconnect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
 	protocolHandlerChanged(account);
-}
-
-void FileTransferHandlerManager::protocolHandlerChanged()
-{
-	auto account = Account{sender()};
-	if (account)
-		protocolHandlerChanged(account);
 }
 
 void FileTransferHandlerManager::protocolHandlerChanged(Account account)

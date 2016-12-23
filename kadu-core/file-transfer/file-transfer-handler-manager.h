@@ -62,7 +62,6 @@ private:
 	void removeHandler(FileTransfer transfer);
 
 private slots:
-	void protocolHandlerChanged();
 	void protocolHandlerChanged(Account account);
 
 };

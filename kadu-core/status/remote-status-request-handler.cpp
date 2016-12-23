@@ -49,19 +49,19 @@ void RemoteStatusRequestHandler::setStatusSetter(StatusSetter *statusSetter)
 
 void RemoteStatusRequestHandler::init()
 {
-	connect(m_accountManager, &AccountManager::accountRegistered, this, &RemoteStatusRequestHandler::accountRegistered);
-	connect(m_accountManager, &AccountManager::accountUnregistered, this, &RemoteStatusRequestHandler::accountUnregistered);
+	connect(m_accountManager, &AccountManager::accountAdded, this, &RemoteStatusRequestHandler::accountAdded);
+	connect(m_accountManager, &AccountManager::accountRemoved, this, &RemoteStatusRequestHandler::accountRemoved);
 
 	for (auto account : m_accountManager->items())
-		accountRegistered(account);
+		accountAdded(account);
 }
 
-void RemoteStatusRequestHandler::accountRegistered(Account account)
+void RemoteStatusRequestHandler::accountAdded(Account account)
 {
 	connect(account, &AccountShared::remoteStatusChangeRequest, this, &RemoteStatusRequestHandler::remoteStatusChangeRequest);
 }
 
-void RemoteStatusRequestHandler::accountUnregistered(Account account)
+void RemoteStatusRequestHandler::accountRemoved(Account account)
 {
 	disconnect(account, nullptr, this, nullptr);
 }

@@ -49,8 +49,7 @@ void OpenSearchAction::setInjectedFactory(InjectedFactory *injectedFactory)
 
 void OpenSearchAction::actionInstanceCreated(Action *action)
 {
-	connect(m_accountManager, SIGNAL(accountRegistered(Account)), action, SLOT(checkState()));
-	connect(m_accountManager, SIGNAL(accountUnregistered(Account)), action, SLOT(checkState()));
+	connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)), action, SLOT(checkState()));
 }
 
 void OpenSearchAction::actionTriggered(QAction *sender, bool)

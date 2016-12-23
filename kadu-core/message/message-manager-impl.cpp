@@ -69,21 +69,14 @@ void MessageManagerImpl::done()
 
 void MessageManagerImpl::accountAdded(Account account)
 {
-	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
 	protocolHandlerChanged(account);
 }
 
 void MessageManagerImpl::accountRemoved(Account account)
 {
-	disconnect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	disconnect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
 	protocolHandlerChanged(account);
-}
-
-void MessageManagerImpl::protocolHandlerChanged()
-{
-	auto account = Account{sender()};
-	if (account)
-		protocolHandlerChanged(account);
 }
 
 void MessageManagerImpl::protocolHandlerChanged(Account account)

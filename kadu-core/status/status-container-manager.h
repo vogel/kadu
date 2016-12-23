@@ -166,7 +166,6 @@ private slots:
 	 */
 	void setStatusModeChanged();
 
-	void protocolHandlerChanged();
 	void protocolHandlerChanged(Account account);
 
 protected:

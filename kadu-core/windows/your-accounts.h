@@ -133,7 +133,6 @@ private slots:
 
 	void okClicked();
 
-	void protocolHandlerChanged();
 	void protocolHandlerChanged(Account account);
 
 protected:

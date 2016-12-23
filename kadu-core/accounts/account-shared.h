@@ -162,7 +162,7 @@ signals:
 	void remoteStatusChangeRequest(Account account, Status requestedStatus);
 
 	void updated();
-	void protocolHandlerChanged();
+	void protocolHandlerChanged(Account account);
 
 };
 

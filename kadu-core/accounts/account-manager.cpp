@@ -120,8 +120,8 @@ void AccountManager::itemAdded(Account item)
 		item.data()->ensureLoaded();
 	AccountsAwareObject::notifyAccountAdded(item);
 	emit accountAdded(item);
-	connect(item, SIGNAL(protocolHandlerChanged()), this, SIGNAL(accountLoadedStateChanged()));
-	emit accountLoadedStateChanged();
+	connect(item, SIGNAL(protocolHandlerChanged(Account)), this, SIGNAL(accountLoadedStateChanged(Account)));
+	emit accountLoadedStateChanged(item);
 }
 
 void AccountManager::itemAboutToBeRemoved(Account item)
@@ -137,8 +137,8 @@ void AccountManager::itemRemoved(Account item)
 
 	AccountsAwareObject::notifyAccountRemoved(item);
 	emit accountRemoved(item);
-	disconnect(item, SIGNAL(protocolHandlerChanged()), this, SIGNAL(accountLoadedStateChanged()));
-	emit accountLoadedStateChanged();
+	disconnect(item, SIGNAL(protocolHandlerChanged(Account)), this, SIGNAL(accountLoadedStateChanged(Account)));
+	emit accountLoadedStateChanged(item);
 }
 
 void AccountManager::itemAboutToBeRegistered(Account item)
@@ -146,7 +146,6 @@ void AccountManager::itemAboutToBeRegistered(Account item)
 	QMutexLocker locker(&mutex());
 
 	connect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
-	emit accountAboutToBeRegistered(item);
 }
 
 void AccountManager::itemRegistered(Account item)
@@ -155,8 +154,6 @@ void AccountManager::itemRegistered(Account item)
 
 	connect(protocol(item), SIGNAL(invalidPassword(Account)),
 			this, SLOT(providePassword(Account)), Qt::QueuedConnection);
-
-	emit accountRegistered(item);
 }
 
 void AccountManager::itemAboutToBeUnregisterd(Account item)
@@ -164,8 +161,6 @@ void AccountManager::itemAboutToBeUnregisterd(Account item)
 	QMutexLocker locker(&mutex());
 
 	disconnect(protocol(item), 0, this, 0);
-
-	emit accountAboutToBeUnregistered(item);
 }
 
 void AccountManager::itemUnregistered(Account item)
@@ -173,7 +168,6 @@ void AccountManager::itemUnregistered(Account item)
 	QMutexLocker locker(&mutex());
 
 	disconnect(item, 0, this, 0);
-	emit accountUnregistered(item);
 }
 
 Account AccountManager::defaultAccount()

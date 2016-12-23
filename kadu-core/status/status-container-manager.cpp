@@ -104,21 +104,14 @@ void StatusContainerManager::updateIdentities()
 
 void StatusContainerManager::accountAdded(Account account)
 {
-	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
 	protocolHandlerChanged(account);
 }
 
 void StatusContainerManager::accountRemoved(Account account)
 {
-	disconnect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	disconnect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
 	protocolHandlerChanged(account);
-}
-
-void StatusContainerManager::protocolHandlerChanged()
-{
-	auto account = Account{sender()};
-	if (account)
-		protocolHandlerChanged(account);
 }
 
 void StatusContainerManager::protocolHandlerChanged(Account account)

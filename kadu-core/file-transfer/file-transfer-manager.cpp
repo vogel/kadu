@@ -157,15 +157,8 @@ FileTransfer FileTransferManager::loadStubFromStorage(const std::shared_ptr<Stor
 
 void FileTransferManager::accountAdded(Account account)
 {
-	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
 	protocolHandlerChanged(account);
-}
-
-void FileTransferManager::protocolHandlerChanged()
-{
-	auto account = Account{sender()};
-	if (account)
-		protocolHandlerChanged(account);
 }
 
 void FileTransferManager::protocolHandlerChanged(Account account)

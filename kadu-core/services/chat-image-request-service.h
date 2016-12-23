@@ -90,8 +90,7 @@ private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 
-	void accountRegistered(Account account);
-	void accountUnregistered(Account account);
+	void connectAccount(Account account);
 
 	void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
     void chatImageAvailable(const ChatImage &chatImage, const QByteArray &imageData);

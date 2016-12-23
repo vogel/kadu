@@ -45,8 +45,8 @@ private:
 	QPointer<StatusContainerManager> m_statusContainerManager;
 	QPointer<StatusSetter> m_statusSetter;
 
-	void accountRegistered(Account account);
-	void accountUnregistered(Account account);
+	void accountAdded(Account account);
+	void accountRemoved(Account account);
 	void remoteStatusChangeRequest(Account account, Status requestedStatus);
 
 private slots:
@@ -54,5 +54,5 @@ private slots:
 	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
 	INJEQT_INIT void init();
-	
+
 };
