@@ -56,7 +56,7 @@ protected:
 	 * status containers handled by this object. Signal statusUpdated is emited, as this new account
 	 * could change AccountManager::bestAccount and result of all getters results.
 	 */
-	virtual void accountRegistered(Account account) override;
+	virtual void accountAdded(Account account) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -66,7 +66,7 @@ protected:
 	 * status containers handled by this object. Signal statusUpdated is emited, as removal of this account
 	 * could change AccountManager::bestAccount and result of all getters results.
 	 */
-	virtual void accountUnregistered(Account account) override;
+	virtual void accountRemoved(Account account) override;
 
 public:
 	Q_INVOKABLE explicit AllAccountsStatusContainer(QObject *parent = nullptr);
@@ -183,6 +183,9 @@ private slots:
 	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
+
+	void protocolHandlerChanged();
+	void protocolHandlerChanged(Account account);
 
 };
 

@@ -48,30 +48,51 @@ void AllAccountsStatusContainer::setStatusConfigurationHolder(StatusConfiguratio
 
 void AllAccountsStatusContainer::init()
 {
-	triggerAllAccountsRegistered(m_accountManager);
+	triggerAllAccountsAdded(m_accountManager);
 }
 
 void AllAccountsStatusContainer::done()
 {
-	triggerAllAccountsUnregistered(m_accountManager);
+	triggerAllAccountsRemoved(m_accountManager);
 }
 
-void AllAccountsStatusContainer::accountRegistered(Account account)
+void AllAccountsStatusContainer::accountAdded(Account account)
 {
+	connect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
 	Accounts.append(account);
-	connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
-	if (!m_statusConfigurationHolder->isSetStatusPerAccount() && !m_statusConfigurationHolder->isSetStatusPerIdentity())
-		account.statusContainer()->setStatus(LastSetStatus, SourceStatusChanger);
-
-	emit statusUpdated(this);
+	protocolHandlerChanged(account);
 }
 
-void AllAccountsStatusContainer::accountUnregistered(Account account)
+void AllAccountsStatusContainer::accountRemoved(Account account)
 {
-	if (Accounts.removeAll(account) > 0)
+	disconnect(account, SIGNAL(protocolHandlerChanged()), this, SLOT(protocolHandlerChanged()));
+	protocolHandlerChanged(account);
+}
+
+void AllAccountsStatusContainer::protocolHandlerChanged()
+{
+	auto account = Account{sender()};
+	if (account)
+		protocolHandlerChanged(account);
+}
+
+void AllAccountsStatusContainer::protocolHandlerChanged(Account account)
+{
+	if (account.protocolHandler())
 	{
-		disconnect(account.statusContainer(), 0, this, 0);
+		connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
+		if (!m_statusConfigurationHolder->isSetStatusPerAccount() && !m_statusConfigurationHolder->isSetStatusPerIdentity())
+			account.statusContainer()->setStatus(LastSetStatus, SourceStatusChanger);
+
 		emit statusUpdated(this);
+	}
+	else
+	{
+		if (Accounts.removeAll(account) > 0)
+		{
+			disconnect(account.statusContainer(), 0, this, 0);
+			emit statusUpdated(this);
+		}
 	}
 }
 
