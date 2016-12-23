@@ -39,14 +39,14 @@ AccountsModel::AccountsModel(AccountManager *accountManager, QObject *parent) :
 {
 	connect(m_accountManager, SIGNAL(accountUpdated(Account)),
 			this, SLOT(accountUpdated(Account)));
-	connect(m_accountManager, SIGNAL(accountAboutToBeRegistered(Account)),
-			this, SLOT(accountAboutToBeRegistered(Account)));
-	connect(m_accountManager, SIGNAL(accountRegistered(Account)),
-			this, SLOT(accountRegistered(Account)));
-	connect(m_accountManager, SIGNAL(accountAboutToBeUnregistered(Account)),
-			this, SLOT(accountAboutToBeUnregistered(Account)));
-	connect(m_accountManager, SIGNAL(accountUnregistered(Account)),
-			this, SLOT(accountUnregistered(Account)));
+	connect(m_accountManager, SIGNAL(accountAboutToBeAdded(Account)),
+			this, SLOT(accountAboutToBeAdded(Account)));
+	connect(m_accountManager, SIGNAL(accountAdded(Account)),
+			this, SLOT(accountAdded(Account)));
+	connect(m_accountManager, SIGNAL(accountAboutToBeRemoved(Account)),
+			this, SLOT(accountAboutToBeRemoved(Account)));
+	connect(m_accountManager, SIGNAL(accountRemoved(Account)),
+			this, SLOT(accountRemoved(Account)));
 }
 
 AccountsModel::~AccountsModel()
@@ -131,7 +131,7 @@ void AccountsModel::accountUpdated(Account account)
 		emit dataChanged(index, index);
 }
 
-void AccountsModel::accountAboutToBeRegistered(Account account)
+void AccountsModel::accountAboutToBeAdded(Account account)
 {
 	Q_UNUSED(account)
 
@@ -139,20 +139,20 @@ void AccountsModel::accountAboutToBeRegistered(Account account)
 	beginInsertRows(QModelIndex(), count, count);
 }
 
-void AccountsModel::accountRegistered(Account account)
+void AccountsModel::accountAdded(Account account)
 {
 	Q_UNUSED(account)
 
 	endInsertRows();
 }
 
-void AccountsModel::accountAboutToBeUnregistered(Account account)
+void AccountsModel::accountAboutToBeRemoved(Account account)
 {
 	int index = accountIndex(account);
 	beginRemoveRows(QModelIndex(), index, index);
 }
 
-void AccountsModel::accountUnregistered(Account account)
+void AccountsModel::accountRemoved(Account account)
 {
 	Q_UNUSED(account)
 

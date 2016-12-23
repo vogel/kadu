@@ -61,9 +61,9 @@ private slots:
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
 	void accountUpdated(Account account);
-	void accountAboutToBeRegistered(Account account);
-	void accountRegistered(Account account);
-	void accountAboutToBeUnregistered(Account account);
-	void accountUnregistered(Account account);
+	void accountAboutToBeAdded(Account account);
+	void accountAdded(Account account);
+	void accountAboutToBeRemoved(Account account);
+	void accountRemoved(Account account);
 
 };
