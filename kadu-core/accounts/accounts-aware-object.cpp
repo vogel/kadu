@@ -34,16 +34,6 @@ void AccountsAwareObject::accountRemoved(Account account)
 	Q_UNUSED(account)
 }
 
-void AccountsAwareObject::accountRegistered(Account account)
-{
-	Q_UNUSED(account)
-}
-
-void AccountsAwareObject::accountUnregistered(Account account)
-{
-	Q_UNUSED(account)
-}
-
 AccountsAwareObject::AccountsAwareObject()
 {
 	Objects.append(this);
@@ -66,18 +56,6 @@ void AccountsAwareObject::notifyAccountRemoved(Account account)
 		object->accountRemoved(account);
 }
 
-void AccountsAwareObject::notifyAccountRegistered(Account account)
-{
-	for (AccountsAwareObject *object : Objects)
-		object->accountRegistered(account);
-}
-
-void AccountsAwareObject::notifyAccountUnregistered(Account account)
-{
-	for (AccountsAwareObject *object : Objects)
-		object->accountUnregistered(account);
-}
-
 void AccountsAwareObject::triggerAllAccountsAdded(AccountManager *accountManager)
 {
 	for (auto const &account : accountManager->allItems())
@@ -88,16 +66,4 @@ void AccountsAwareObject::triggerAllAccountsRemoved(AccountManager *accountManag
 {
 	for (auto const &account : accountManager->allItems())
 		accountRemoved(account);
-}
-
-void AccountsAwareObject::triggerAllAccountsRegistered(AccountManager *accountManager)
-{
-	for (auto const &account : accountManager->items())
-		accountRegistered(account);
-}
-
-void AccountsAwareObject::triggerAllAccountsUnregistered(AccountManager *accountManager)
-{
-	for (auto const &account : accountManager->items())
-		accountUnregistered(account);
 }

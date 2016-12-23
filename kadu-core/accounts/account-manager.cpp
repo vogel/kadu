@@ -131,8 +131,6 @@ void AccountManager::itemRegistered(Account item)
 {
 	QMutexLocker locker(&mutex());
 
-	AccountsAwareObject::notifyAccountRegistered(item);
-
 	connect(protocol(item), SIGNAL(invalidPassword(Account)),
 			this, SLOT(providePassword(Account)), Qt::QueuedConnection);
 
@@ -143,7 +141,6 @@ void AccountManager::itemAboutToBeUnregisterd(Account item)
 {
 	QMutexLocker locker(&mutex());
 
-	AccountsAwareObject::notifyAccountUnregistered(item);
 	disconnect(protocol(item), 0, this, 0);
 
 	emit accountAboutToBeUnregistered(item);
