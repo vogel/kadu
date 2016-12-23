@@ -120,8 +120,8 @@ void History::setShowHistoryAction(ShowHistoryAction *showHistoryAction)
 void History::init()
 {
 	createActionDescriptions();
-	connect(m_accountManager, SIGNAL(accountRegistered(Account)), this, SLOT(accountRegistered(Account)));
-	connect(m_accountManager, SIGNAL(accountUnregistered(Account)), this, SLOT(accountUnregistered(Account)));
+	connect(m_accountManager, SIGNAL(accountAdded(Account)), this, SLOT(accountAdded(Account)));
+	connect(m_accountManager, SIGNAL(accountRemoved(Account)), this, SLOT(accountRemoved(Account)));
 	connect(m_chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
 
 	createDefaultConfiguration();
@@ -183,25 +183,15 @@ void History::chatWidgetAdded(ChatWidget *chatWidget)
 	new HistoryMessagesPrepender(CurrentStorage->messages(query), chatMessagesView);
 }
 
-void History::accountRegistered(Account account)
+void History::accountAdded(Account account)
 {
-	if (!account.protocolHandler())
-		return;
-
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
 }
 
-void History::accountUnregistered(Account account)
+void History::accountRemoved(Account account)
 {
 	disconnect(account, 0, this, 0);
-
-	if (!account.protocolHandler())
-		return;
-
-	ChatService *service = account.protocolHandler()->chatService();
-	if (service)
-		disconnect(service, 0, this, 0);
 }
 
 bool History::shouldSaveForBuddy(const Buddy &buddy)
@@ -357,7 +347,7 @@ void History::registerStorage(HistoryStorage *storage)
 			chatWidgetAdded(chat);
 
 	foreach (const Account &account, m_accountManager->items())
-		accountRegistered(account);
+		accountAdded(account);
 
 	emit storageChanged(CurrentStorage);
 }
@@ -368,7 +358,7 @@ void History::unregisterStorage(HistoryStorage *storage)
 		return;
 
 	foreach (const Account &account, m_accountManager->items())
-		accountUnregistered(account);
+		accountRemoved(account);
 
 	stopSaveThread();
 

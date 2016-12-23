@@ -127,8 +127,8 @@ private slots:
 	INJEQT_INIT void init();
 	INJEQT_DONE void done();
 
-	void accountRegistered(Account);
-	void accountUnregistered(Account);
+	void accountAdded(Account);
+	void accountRemoved(Account);
 
 	void enqueueMessage(const Message &);
 	void contactStatusChanged(Contact contact, Status oldStatus);
