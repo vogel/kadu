@@ -22,7 +22,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account-details.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-api.h"
@@ -82,7 +81,6 @@ KaduSharedBase_PropertyDefCRW(Account, Identity, accountIdentity, AccountIdentit
 KaduSharedBase_PropertyReadDef(Account, std::shared_ptr<StoragePoint>, storage, Storage, std::shared_ptr<StoragePoint>())
 KaduSharedBase_PropertyReadDef(Account, QString, protocolName, ProtocolName, QString())
 KaduSharedBase_PropertyReadDef(Account, Protocol *, protocolHandler, ProtocolHandler, 0)
-KaduSharedBase_PropertyReadDef(Account, AccountDetails *, details, Details, 0)
 KaduSharedBase_PropertyReadDef(Account, Contact, accountContact, AccountContact, Contact::null)
 KaduSharedBase_PropertyDefCRW(Account, QString, id, Id, QString())
 KaduSharedBase_PropertyDef(Account, bool, rememberPassword, RememberPassword, true)

@@ -142,15 +142,10 @@ bool IdentityShared::hasAccount(const Account &account)
 	return account && Accounts.contains(account);
 }
 
-bool IdentityShared::hasAnyAccountWithDetails()
+bool IdentityShared::hasAnyLoadedAccount()
 {
 	ensureLoaded();
-
-	foreach (const Account &account, Accounts)
-		if (account.details())
-			return true;
-
-	return false;
+	return std::any_of(std::begin(Accounts), std::end(Accounts), [](const Account &x){ return x.protocolHandler(); });
 }
 
 bool IdentityShared::isEmpty()

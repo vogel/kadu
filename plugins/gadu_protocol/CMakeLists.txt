@@ -85,7 +85,6 @@ set (SOURCES
 	socket-notifiers/gadu-socket-notifiers.cpp
 
 	gadu-account-data.cpp
-	gadu-account-details.cpp
 	gadu-id-validator.cpp
 	gadu-module.cpp
 	gadu-plugin-modules-factory.cpp

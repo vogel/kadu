@@ -28,7 +28,6 @@
 #include <QtWidgets/QFileDialog>
 #include <QtXml/QDomElement>
 
-#include "accounts/account-details.h"
 #include "actions/action.h"
 #include "actions/base-action-context.h"
 #include "actions/chat-widget/bold-action.h"

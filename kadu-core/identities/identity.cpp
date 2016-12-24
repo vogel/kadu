@@ -74,10 +74,10 @@ bool Identity::hasAccount(Account account) const
 			: false;
 }
 
-bool Identity::hasAnyAccountWithDetails() const
+bool Identity::hasAnyLoadedAccount() const
 {
 	return !isNull()
-			? data()->hasAnyAccountWithDetails()
+			? data()->hasAnyLoadedAccount()
 			: false;
 }
 

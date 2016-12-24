@@ -30,7 +30,6 @@
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "helpers/gadu-list-helper.h"
 #include "plugin/plugin-injected-factory.h"
-#include "gadu-account-details.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol.h"
 #include "gadu-status-adapter.h"
@@ -75,11 +74,6 @@ void GaduProtocolFactory::setPluginInjectedFactory(PluginInjectedFactory *plugin
 Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 {
 	return m_pluginInjectedFactory->makeInjected<GaduProtocol>(m_gaduListHelper, m_gaduServersManager, account, this);
-}
-
-AccountDetails * GaduProtocolFactory::createAccountDetails(AccountShared *accountShared)
-{
-	return m_pluginInjectedFactory->makeInjected<GaduAccountDetails>(accountShared);
 }
 
 AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)

@@ -23,7 +23,6 @@
 
 #pragma once
 
-#include "accounts/account-details.h"
 #include "network/proxy/network-proxy.h"
 #include "status/status.h"
 #include "storage/shared.h"
@@ -71,8 +70,6 @@ class KADUAPI AccountShared : public Shared
 
 	Identity *AccountIdentity;
 	Contact *AccountContact;
-
-	AccountDetails *Details;
 
 	QString Id;
 
@@ -128,8 +125,6 @@ public:
 	virtual QString storageNodeName();
 
 	virtual void aboutToBeRemoved();
-
-	AccountDetails * details() const { return Details; }
 
 	Contact accountContact();
 

@@ -29,7 +29,6 @@
 #include <QtGui/QValidator>
 #include <QtWidgets/QDialog>
 
-#include "accounts/account-details.h"
 #include "status/status-adapter.h"
 #include "exports.h"
 
@@ -55,7 +54,6 @@ class KADUAPI ProtocolFactory : public QObject
 
 public:
 	virtual Protocol * createProtocolHandler(Account account) = 0;
-	virtual AccountDetails * createAccountDetails(AccountShared *accountShared) = 0;
 	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent = nullptr) = 0;
 	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent = nullptr) = 0;
 	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent = nullptr) = 0;

@@ -46,7 +46,7 @@ public:
 	void addAccount(Account account);
 	void removeAccount(Account account);
 	bool hasAccount(Account account) const;
-	bool hasAnyAccountWithDetails() const;
+	bool hasAnyLoadedAccount() const;
 	bool isEmpty() const;
 
 	StatusContainer * statusContainer() const;

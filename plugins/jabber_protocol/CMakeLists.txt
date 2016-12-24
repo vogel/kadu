@@ -81,7 +81,6 @@ set (SOURCES
 
 	facebook-depreceated-message.cpp
 	jabber-account-data.cpp
-	jabber-account-details.cpp
 	jabber-id-validator.cpp
 	jabber-module.cpp
 	jabber-plugin-modules-factory.cpp

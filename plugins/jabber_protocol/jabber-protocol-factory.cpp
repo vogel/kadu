@@ -31,7 +31,6 @@
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "services/jabber-servers-service.h"
 #include "facebook-depreceated-message.h"
-#include "jabber-account-details.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
 #include "jabber-protocol.h"
@@ -83,11 +82,6 @@ Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 		m_facebookDepreceatedMessage->showIfNotSeen();
 
 	return m_pluginInjectedFactory->makeInjected<JabberProtocol>(account, this);
-}
-
-AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *accountShared)
-{
-	return m_pluginInjectedFactory->makeInjected<JabberAccountDetails>(accountShared);
 }
 
 AccountAddWidget * JabberProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)

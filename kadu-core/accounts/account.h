@@ -26,7 +26,6 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
-#include "accounts/account-details.h"
 #include "accounts/account-shared.h"
 #include "storage/shared-base.h"
 
@@ -56,7 +55,6 @@ public:
 	KaduSharedBase_PropertyRead(std::shared_ptr<StoragePoint>, storage, Storage)
 	KaduSharedBase_PropertyRead(QString, protocolName, ProtocolName)
 	KaduSharedBase_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
-	KaduSharedBase_PropertyRead(AccountDetails *, details, Details)
 	KaduSharedBase_PropertyRead(Contact, accountContact, AccountContact)
 	KaduSharedBase_PropertyCRW(QString, id, Id)
 	KaduSharedBase_Property(bool, rememberPassword, RememberPassword)

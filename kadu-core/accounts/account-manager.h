@@ -92,7 +92,7 @@ public:
 			return result;
 
 		foreach (const Account &account, accounts)
-			if (account.details() && account.data())
+			if (account.data())
 			{
 				// TODO: hack
 				auto p = protocol(account);

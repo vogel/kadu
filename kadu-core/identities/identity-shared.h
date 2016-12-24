@@ -51,7 +51,7 @@ public:
 	void addAccount(const Account &account);
 	void removeAccount(const Account &account);
 	bool hasAccount(const Account &account);
-	bool hasAnyAccountWithDetails();
+	bool hasAnyLoadedAccount();
 	bool isEmpty();
 
 	KaduShared_Property(const QString &, name, Name)

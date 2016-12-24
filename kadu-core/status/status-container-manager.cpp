@@ -96,9 +96,9 @@ void StatusContainerManager::updateIdentities()
 		return;
 
 	foreach (const Identity &identity, m_identityManager->items())
-		if (StatusContainers.contains(identity.statusContainer()) && !identity.hasAnyAccountWithDetails())
+		if (StatusContainers.contains(identity.statusContainer()) && !identity.hasAnyLoadedAccount())
 			unregisterStatusContainer(identity.statusContainer());
-		else if (!StatusContainers.contains(identity.statusContainer()) && identity.hasAnyAccountWithDetails())
+		else if (!StatusContainers.contains(identity.statusContainer()) && identity.hasAnyLoadedAccount())
 			registerStatusContainer(identity.statusContainer());
 }
 
@@ -134,7 +134,7 @@ void StatusContainerManager::protocolHandlerChanged(Account account)
 
 void StatusContainerManager::identityAdded(Identity identity)
 {
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && !StatusContainers.contains(identity.statusContainer()) && identity.hasAnyAccountWithDetails())
+	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && !StatusContainers.contains(identity.statusContainer()) && identity.hasAnyLoadedAccount())
 		registerStatusContainer(identity.statusContainer());
 }
 

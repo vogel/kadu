@@ -290,7 +290,7 @@ void Protocol::loggingInStateEntered()
 	// better do some cleanup then
 	disconnectedCleanup();
 
-	if (!CurrentAccount.details() || account().id().isEmpty())
+	if (account().id().isEmpty())
 	{
 		emit stateMachineConnectionClosed();
 		return;

@@ -21,7 +21,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account-details.h"
 #include "accounts/account-manager.h"
 #include "accounts/account-status-container.h"
 #include "configuration/configuration.h"
@@ -45,7 +44,7 @@
 
 AccountShared::AccountShared(const QString &protocolName, QObject *parent) :
 		Shared(QUuid(), parent), ProtocolName(protocolName),
-		ProtocolHandler(0), Details(0),
+		ProtocolHandler(0),
 		RememberPassword(false), HasPassword(false), UseDefaultProxy(true), PrivateStatus(true)
 {
 	AccountIdentity = new Identity();
@@ -265,9 +264,6 @@ void AccountShared::store()
 
 	storeValue("PrivateStatus", PrivateStatus);
 
-	if (Details)
-		Details->ensureStored();
-
 	if (protocolHandler() && protocolHandler()->rosterService() && protocolHandler()->rosterService()->tasks())
 		storeRosterTasks(protocolHandler()->rosterService()->tasks()->tasks());
 }
@@ -282,13 +278,6 @@ bool AccountShared::shouldStore()
 
 void AccountShared::aboutToBeRemoved()
 {
-	if (Details)
-	{
-		Details->ensureStored();
-		delete Details;
-		Details = 0;
-	}
-
 	setAccountIdentity(Identity::null);
 }
 
@@ -325,12 +314,8 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 
 	ensureLoaded();
 
-	if (ProtocolHandler || (factory->name() != ProtocolName) || Details)
+	if (ProtocolHandler || (factory->name() != ProtocolName))
 		return;
-
-	Details = factory->createAccountDetails(this);
-	if (Details)
-		details()->ensureLoaded();
 
 	ProtocolHandler = factory->createProtocolHandler(this);
 	if (!ProtocolHandler)
@@ -360,7 +345,7 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	ensureLoaded();
 
-	if (!ProtocolHandler || (factory->name() != ProtocolName) || !Details)
+	if (!ProtocolHandler || (factory->name() != ProtocolName))
 		return;
 
 	if (protocolHandler() && protocolHandler()->rosterService() && protocolHandler()->rosterService()->tasks())
@@ -370,10 +355,6 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 	disconnect(ProtocolHandler, 0, this, 0);
 
 	setDisconnectStatus();
-
-	Details->ensureStored();
-	delete Details;
-	Details = 0;
 
 	// dont get deleted in next line
 	Account guard(this);

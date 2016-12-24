@@ -31,7 +31,6 @@
 #include "services/jabber-servers-service.h"
 #include "facebook-depreceated-message.h"
 #include "gtalk-protocol-factory.h"
-#include "jabber-account-details.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol.h"
 #include "jabber-status-adapter.h"
@@ -82,11 +81,6 @@ Protocol * GTalkProtocolFactory::createProtocolHandler(Account account)
 		m_facebookDepreceatedMessage->showIfNotSeen();
 
 	return m_pluginInjectedFactory->makeInjected<JabberProtocol>(account, this);
-}
-
-AccountDetails * GTalkProtocolFactory::createAccountDetails(AccountShared *accountShared)
-{
-	return m_pluginInjectedFactory->makeInjected<JabberAccountDetails>(accountShared);
 }
 
 AccountAddWidget * GTalkProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
