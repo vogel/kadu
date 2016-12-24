@@ -199,7 +199,7 @@ protected:
 	 * Slot called when new identity is registered. This slot allows for updating list of active status containers when
 	 * StatusContainerManager is in one container per identity mode.
 	 */
-	virtual void identityAdded(Identity identity);
+	virtual void identityAdded(Identity identity) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -209,7 +209,7 @@ protected:
 	 * Slot called when identity is unregistered. This slot allows for updating list of active status containers when
 	 * StatusContainerManager is in one container per identity mode.
 	 */
-	virtual void identityRemoved(Identity identity);
+	virtual void identityRemoved(Identity identity) override;
 
 public:
 	Q_INVOKABLE explicit StatusContainerManager(QObject *parent = nullptr);
@@ -242,7 +242,7 @@ public:
 	 *
 	 * Returns "All" string.
 	 */
-	virtual QString statusContainerName();
+	virtual QString statusContainerName() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -252,7 +252,7 @@ public:
 	 *
 	 * Sets new status on all active status containers.
 	 */
-	virtual void setStatus(Status status, StatusChangeSource source);
+	virtual void setStatus(Status status, StatusChangeSource source) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -261,7 +261,7 @@ public:
 	 *
 	 * Returns status of default status container. If no default status container is available, returns "Offline" status.
 	 */
-	virtual Status status();
+	virtual Status status() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -270,7 +270,7 @@ public:
 	 *
 	 * Returns "is status setting in progress" property of default status container. If no default status container is available, returns false.
 	 */
-	virtual bool isStatusSettingInProgress();
+	virtual bool isStatusSettingInProgress() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -280,7 +280,7 @@ public:
 	 * Returns generic (without protocol badge) icon of status of default status container. If no default status container is available,
 	 * returns "Offline" icon.
 	 */
-	virtual KaduIcon statusIcon();
+	virtual KaduIcon statusIcon() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -290,7 +290,7 @@ public:
 	 *
 	 * Returns generic (without protocol badge) icon of given status.
 	 */
-	virtual KaduIcon statusIcon(const Status &status);
+	virtual KaduIcon statusIcon(const Status &status) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -299,7 +299,7 @@ public:
 	 *
 	 * Returns list of default status container supported status types. If no default status container is available, empty list is returned.
 	 */
-	virtual QList<StatusType> supportedStatusTypes();
+	virtual QList<StatusType> supportedStatusTypes() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -308,7 +308,7 @@ public:
 	 *
 	 * Returns maximum description length of default status container. If no default status container is available, -1 is returned.
 	 */
-	virtual int maxDescriptionLength();
+	virtual int maxDescriptionLength() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -317,7 +317,7 @@ public:
 	 *
 	 * Returns "All " string.
 	 */
-	virtual QString statusNamePrefix();
+	virtual QString statusNamePrefix() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -326,7 +326,7 @@ public:
 	 *
 	 * Returns stored status of default status container.If no default status container is available, "Offline" status is returned.
 	 */
-	virtual Status loadStatus();
+	virtual Status loadStatus() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -335,7 +335,7 @@ public:
 	 *
 	 * Stores given status in all active status containers.
 	 */
-	virtual void storeStatus(Status status);
+	virtual void storeStatus(Status status) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -345,7 +345,7 @@ public:
 	 * Returns list of all registered status containers - that can be list of accounts, identities or an
 	 * instance of AllAccountsStatusContainer.
 	 */
-	virtual QList<StatusContainer *> subStatusContainers();
+	virtual QList<StatusContainer *> subStatusContainers() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

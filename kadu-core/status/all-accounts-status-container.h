@@ -79,7 +79,7 @@ public:
 	 *
 	 * Returns empty string as this container name.
 	 */
-	virtual QString statusContainerName()  { return QString(); }
+	virtual QString statusContainerName() override { return QString(); }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -89,7 +89,7 @@ public:
 	 *
 	 * Sets status on all registered accounts.
 	 */
-	virtual void setStatus(Status status, StatusChangeSource source);
+	virtual void setStatus(Status status, StatusChangeSource source) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -99,7 +99,7 @@ public:
 	 * Return best account status.
 	 * For definition of best account see @see AccountManager::bestAccount.
 	 */
-	virtual Status status();
+	virtual Status status() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -109,7 +109,7 @@ public:
 	 * Return true if best account status setting is in progress.
 	 * For definition of best account see @see AccountManager::bestAccount.
 	 */
-	virtual bool isStatusSettingInProgress();
+	virtual bool isStatusSettingInProgress() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -119,7 +119,7 @@ public:
 	 * Return maximum length of description on best account.
 	 * For definition of best account see @see AccountManager::bestAccount.
 	 */
-	virtual int maxDescriptionLength();
+	virtual int maxDescriptionLength() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -129,7 +129,7 @@ public:
 	 * Return maximum length of description on best account.
 	 * Return status icon of best account.
 	 */
-	virtual KaduIcon statusIcon();
+	virtual KaduIcon statusIcon() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -140,7 +140,7 @@ public:
 	 * Return status icon of given status using best account icons.
 	 * Return status icon of best account.
 	 */
-	virtual KaduIcon statusIcon(const Status &status);
+	virtual KaduIcon statusIcon(const Status &status) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -150,7 +150,7 @@ public:
 	 * Return list of supported status types for best account.
 	 * Return status icon of best account.
 	 */
-	virtual QList<StatusType> supportedStatusTypes();
+	virtual QList<StatusType> supportedStatusTypes() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -160,7 +160,7 @@ public:
 	 * Return best account stored status.
 	 * Return status icon of best account.
 	 */
-	virtual Status loadStatus();
+	virtual Status loadStatus() override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -169,7 +169,7 @@ public:
 	 *
 	 * Stores given status in all accounts.
 	 */
-	virtual void storeStatus(Status status);
+	virtual void storeStatus(Status status) override;
 
 private:
 	QPointer<AccountManager> m_accountManager;
