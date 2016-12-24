@@ -64,7 +64,7 @@ signals:
 protected:
 	virtual void accountAdded(Account account) override;
 	virtual void accountRemoved(Account account) override;
-	virtual void configurationUpdated();
+	virtual void configurationUpdated() override;
 
 private:
 	mutable injeqt::v1::injector m_injector;
