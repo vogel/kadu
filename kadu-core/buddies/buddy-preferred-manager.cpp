@@ -186,7 +186,7 @@ bool BuddyPreferredManager::isAccountCommon(const Account &account, const BuddyS
 Account BuddyPreferredManager::getCommonAccount(const BuddySet &buddies)
 {
 	foreach (const Account &account, m_accountManager->items())
-		if (isAccountCommon(account, buddies))
+		if (account.protocolHandler() && isAccountCommon(account, buddies))
 			return account;
 
 	return Account::null;

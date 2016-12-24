@@ -67,7 +67,7 @@ void AddConferenceAction::updateAddChatMenuItem()
 
 	foreach (const Account &account, m_accountManager->items())
 	{
-		if (account.protocolName() == "gadu")
+		if (account.protocolHandler() && account.protocolName() == "gadu")
 			isConferenceSupported = true;
 	}
 
