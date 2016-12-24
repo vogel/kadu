@@ -26,8 +26,3 @@ ActivePlugin::ActivePlugin(const QString &pluginDirPath, const QString &pluginTr
 		m_pluginLoader{std::make_unique<PluginLoader>(pluginDirPath, pluginName, pluginInjectorProvider)}
 {
 }
-
-injeqt::injector & ActivePlugin::injector() const
-{
-	return m_pluginLoader->injector();
-}

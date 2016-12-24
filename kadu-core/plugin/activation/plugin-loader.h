@@ -69,11 +69,6 @@ public:
 	 */
 	virtual ~PluginLoader() noexcept;
 
-	/**
-	 * @return Injector of plugin.
-	 */
-	injeqt::injector & injector() const noexcept;
-
 private:
 	std::unique_ptr<QPluginLoader> m_pluginLoader;
 	mutable injeqt::injector m_pluginInjector;

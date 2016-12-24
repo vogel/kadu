@@ -64,11 +64,6 @@ public:
 	 */
 	explicit ActivePlugin(const QString &pluginDirPath, const QString &pluginTranslationDir, const QString &language, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider);
 
-	/**
-	 * @return Injector of plugin.
-	 */
-	injeqt::injector & injector() const;
-
 private:
 	// translations must be loaded first and uloaded last, see #2177
 	std::unique_ptr<PluginTranslationsLoader> m_pluginTranslationsLoader;

@@ -64,11 +64,6 @@ PluginLoader::~PluginLoader() noexcept
 	// m_pluginLoader->unload();
 }
 
-injeqt::injector & PluginLoader::injector() const noexcept
-{
-	return m_pluginInjector;
-}
-
 std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginDirPath, const QString &pluginName) const
 {
 	auto result = std::make_unique<QPluginLoader>(pluginDirPath + "/" + QStringLiteral(SO_PREFIX) + pluginName + QStringLiteral("." SO_EXT));
