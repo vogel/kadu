@@ -69,11 +69,6 @@ public:
 	 */
 	injeqt::injector & injector() const;
 
-	/**
-	 * @brief Starts plugin objects.
-	 */
-	void start();
-
 private:
 	// translations must be loaded first and uloaded last, see #2177
 	std::unique_ptr<PluginTranslationsLoader> m_pluginTranslationsLoader;

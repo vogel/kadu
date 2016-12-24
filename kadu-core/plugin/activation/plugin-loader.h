@@ -74,11 +74,6 @@ public:
 	 */
 	injeqt::injector & injector() const noexcept;
 
-	/**
-	 * @brief Starts plugin objects.
-	 */
-	void start();
-
 private:
 	std::unique_ptr<QPluginLoader> m_pluginLoader;
 	mutable injeqt::injector m_pluginInjector;

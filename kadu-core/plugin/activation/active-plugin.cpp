@@ -31,8 +31,3 @@ injeqt::injector & ActivePlugin::injector() const
 {
 	return m_pluginLoader->injector();
 }
-
-void ActivePlugin::start()
-{
-	return m_pluginLoader->start();
-}

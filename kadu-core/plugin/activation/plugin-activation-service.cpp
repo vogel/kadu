@@ -133,15 +133,12 @@ QVector<QString> PluginActivationService::deactivatePluginWithDependents(const Q
 void PluginActivationService::activatePlugin(const QString &pluginName)
 {
 	if (!contains(m_activePlugins, pluginName))
-	{
 		m_activePlugins.insert(std::make_pair(pluginName, std::make_unique<ActivePlugin>(
 			m_pathsProvider->pluginsLibPath(),
 			m_pathsProvider->dataPath() + QStringLiteral("plugins/translations"),
 			m_configuration->deprecatedApi()->readEntry("General", "Language"),
 			pluginName,
 			m_pluginInjectorProvider)));
-		m_activePlugins[pluginName]->start();
-	}
 }
 
 void PluginActivationService::deactivatePlugin(const QString &pluginName)

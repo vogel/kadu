@@ -31,7 +31,6 @@ PluginInjectorProviderContainer::PluginInjectorProviderContainer::PluginInjector
 	m_pluginInjectorProvider->insert(m_pluginName, injector);
 }
 
-
 PluginInjectorProviderContainer::~PluginInjectorProviderContainer()
 {
 	m_pluginInjectorProvider->remove(m_pluginName);
