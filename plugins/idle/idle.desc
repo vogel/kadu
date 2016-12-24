@@ -6,3 +6,4 @@ Description[pl]=Sprawdza czas przez jaki użytkownik nie jest obecny przy komput
 Author=Kadu Team
 LoadByDefault=false
 Version=core
+Internal=true

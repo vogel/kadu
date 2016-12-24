@@ -22,7 +22,7 @@
 #include "plugin/metadata/plugin-metadata.h"
 
 PluginMetadataBuilder::PluginMetadataBuilder() :
-		m_loadByDefault{true}
+		m_loadByDefault{true}, m_internal{false}
 {
 }
 
@@ -92,6 +92,12 @@ PluginMetadataBuilder &PluginMetadataBuilder::setLoadByDefault(bool loadByDefaul
 	return *this;
 }
 
+PluginMetadataBuilder &PluginMetadataBuilder::setInternal(bool internal)
+{
+	m_internal = internal;
+	return *this;
+}
+
 PluginMetadata PluginMetadataBuilder::create()
 {
 	return
@@ -106,6 +112,7 @@ PluginMetadata PluginMetadataBuilder::create()
 		m_provides,
 		m_dependencies,
 		m_replaces,
-		m_loadByDefault
+		m_loadByDefault,
+		m_internal
 	};
 }

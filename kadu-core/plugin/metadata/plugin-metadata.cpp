@@ -26,10 +26,10 @@ PluginMetadata::PluginMetadata() :
 
 PluginMetadata::PluginMetadata(
 			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
-			QString provides, QStringList dependencies, QStringList replaces, bool loadByDefault) :
+			QString provides, QStringList dependencies, QStringList replaces, bool loadByDefault, bool internal) :
 		m_name{std::move(name)}, m_displayName{std::move(displayName)}, m_category{std::move(category)}, m_type{std::move(type)},
 		m_description{std::move(description)}, m_author{std::move(author)}, m_version{std::move(version)}, m_provides{std::move(provides)},
-		m_dependencies{std::move(dependencies)}, m_replaces{std::move(replaces)}, m_loadByDefault{loadByDefault}
+		m_dependencies{std::move(dependencies)}, m_replaces{std::move(replaces)}, m_loadByDefault{loadByDefault}, m_internal{internal}
 {
 }
 
@@ -90,4 +90,9 @@ QStringList PluginMetadata::replaces() const
 bool PluginMetadata::loadByDefault() const
 {
 	return m_loadByDefault;
+}
+
+bool PluginMetadata::internal() const
+{
+	return m_internal;
 }

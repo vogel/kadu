@@ -73,5 +73,6 @@ PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginNam
 			.setDependencies(file.value("Module/Dependencies").toString().split(' ', QString::SkipEmptyParts))
 			.setReplaces(file.value("Module/Replaces").toString().split(' ', QString::SkipEmptyParts))
 			.setLoadByDefault(file.value("Module/LoadByDefault").toBool())
+			.setInternal(file.value("Module/Internal").toBool())
 			.create();
 }

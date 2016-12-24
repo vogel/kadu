@@ -46,7 +46,7 @@ public:
 	PluginMetadata();
 	PluginMetadata(
 			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
-			QString provides, QStringList dependencies, QStringList replaces, bool loadByDefault);
+			QString provides, QStringList dependencies, QStringList replaces, bool loadByDefault, bool internal);
 	~PluginMetadata();
 
 	/**
@@ -127,6 +127,11 @@ public:
 	 */
 	bool loadByDefault() const;
 
+	/**
+	 * @return True, if plugin is internal and should not be shown to user.
+	 */
+	bool internal() const;
+
 private:
 	QString m_name;
 	QString m_displayName;
@@ -139,6 +144,7 @@ private:
 	QStringList m_dependencies;
 	QStringList m_replaces;
 	bool m_loadByDefault;
+	bool m_internal;
 
 };
 

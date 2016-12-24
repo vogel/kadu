@@ -54,6 +54,7 @@ public:
 	PluginMetadataBuilder & setDependencies(const QStringList &dependencies);
 	PluginMetadataBuilder & setReplaces(const QStringList &replaces);
 	PluginMetadataBuilder & setLoadByDefault(bool loadByDefault);
+	PluginMetadataBuilder & setInternal(bool internal);
 
 	/**
 	 * @return New PluginMetadata object with properties set with setXXX calls.
@@ -72,6 +73,7 @@ private:
 	QStringList m_dependencies;
 	QStringList m_replaces;
 	bool m_loadByDefault;
+	bool m_internal;
 
 };
 

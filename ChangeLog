@@ -1,3 +1,6 @@
++++ version 5.0:
+* plugins: #2796 fixed: do not bother user with idle plugin (Vogel)
+
 +++ version 4.3:
 * translations: #3124 fixed: added German translation
 

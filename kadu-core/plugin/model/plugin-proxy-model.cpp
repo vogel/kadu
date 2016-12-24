@@ -53,6 +53,9 @@ bool PluginProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &source
 
 	auto index = sourceModel()->index(sourceRow, 0);
 	auto metadata = index.data(PluginModel::MetadataRole).value<PluginMetadata>();
+	if (metadata.internal())
+		return false;
+
 	return metadata.displayName().contains(m_filterText, Qt::CaseInsensitive) ||
 			metadata.name().contains(m_filterText, Qt::CaseInsensitive) ||
 			metadata.description().contains(m_filterText, Qt::CaseInsensitive) ||
