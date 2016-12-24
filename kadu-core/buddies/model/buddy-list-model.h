@@ -122,7 +122,7 @@ public:
 	 * This method returns index for given coordinates. Returned index's InternalPoitner property points to
 	 * @link BuddyShared @endlink or @link ContactShared @endlink instance, so it is eady to retreive data later.
 	 */
-	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -134,7 +134,7 @@ public:
 	 * pointer then it has no parent index. If child index contains @link ContactShared @endlink pointer then
 	 * an OwnerBuddy of this @link Contact @endlink is used to compute parent index's coordinates and return it.
 	 */
-	virtual QModelIndex parent(const QModelIndex &child) const;
+	virtual QModelIndex parent(const QModelIndex &child) const override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -144,7 +144,7 @@ public:
 	 *
 	 * This method always returns 1.
 	 */
-	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
+	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -155,7 +155,7 @@ public:
 	 * This method returns number of items in buddy list if parent is not valid, number of contacts of buddy is
 	 * parent is a buddy index, and 0 if parent is contact index.
 	 */
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -166,7 +166,7 @@ public:
 	 * This method returns flags for given index. It adds Qt:;ItemIsDragEnabled for every valid index and
 	 * Qt::ItemIsUserCheckable if model's Checkable property is set to true.
 	 */
-	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
+	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -181,7 +181,7 @@ public:
 	 *
 	 * For contact indexes @link ContactDataExtractor @endlink is used.
 	 */
-	virtual QVariant data(const QModelIndex &index, int role) const;
+	virtual QVariant data(const QModelIndex &index, int role) const override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -194,7 +194,7 @@ public:
 	 * Only Qt::CheckStateRole is valid and only when Checkable property is true. Only buddy indexes are acceptable
 	 * as index parameter. After successfull change @link checkedBuddiesChanged @endlink signal is emited.
 	 */
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -203,7 +203,7 @@ public:
 	 *
 	 * See @link BuddyListMimeDataHelper @endlink for more info on buddy list mime types.
 	 */
-	virtual QStringList mimeTypes() const;
+	virtual QStringList mimeTypes() const override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -213,7 +213,7 @@ public:
 	 *
 	 * See @link BuddyListMimeDataHelper @endlink for more info on buddy list mime types.
 	 */
-	virtual QMimeData * mimeData(const QModelIndexList &indexes) const;
+	virtual QMimeData * mimeData(const QModelIndexList &indexes) const override;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -235,7 +235,7 @@ public:
 	 * If type is @link Talkable @endlink then value is converted to @link Buddy @endlink or @link Contact @endlink first.
 	 * Then given item is located on model and proper list of one or zero indexes is returned.
 	 */
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
+	virtual QModelIndexList indexListForValue(const QVariant &value) const override;
 
 signals:
 	/**
