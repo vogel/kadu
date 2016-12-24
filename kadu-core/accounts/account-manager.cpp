@@ -43,7 +43,7 @@
 #include "account-manager.h"
 
 AccountManager::AccountManager(QObject *parent) :
-		Manager<Account>{parent}
+		SimpleManager<Account>{parent}
 {
 }
 
@@ -109,6 +109,7 @@ void AccountManager::itemAboutToBeAdded(Account item)
 
 	if (item.data())
 		item.data()->ensureLoaded();
+	connect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
 	emit accountAboutToBeAdded(item);
 }
 
@@ -120,7 +121,7 @@ void AccountManager::itemAdded(Account item)
 		item.data()->ensureLoaded();
 	AccountsAwareObject::notifyAccountAdded(item);
 	emit accountAdded(item);
-	connect(item, SIGNAL(protocolHandlerChanged(Account)), this, SIGNAL(accountLoadedStateChanged(Account)));
+	connect(item, SIGNAL(protocolHandlerChanged(Account)), this, SIGNAL(protocolHandlerChanged(Account)));
 	emit accountLoadedStateChanged(item);
 }
 
@@ -137,37 +138,17 @@ void AccountManager::itemRemoved(Account item)
 
 	AccountsAwareObject::notifyAccountRemoved(item);
 	emit accountRemoved(item);
-	disconnect(item, SIGNAL(protocolHandlerChanged(Account)), this, SIGNAL(accountLoadedStateChanged(Account)));
+	disconnect(item, SIGNAL(protocolHandlerChanged(Account)), this, SIGNAL(protocolHandlerChanged(Account)));
 	emit accountLoadedStateChanged(item);
-}
-
-void AccountManager::itemAboutToBeRegistered(Account item)
-{
-	QMutexLocker locker(&mutex());
-
-	connect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
-}
-
-void AccountManager::itemRegistered(Account item)
-{
-	QMutexLocker locker(&mutex());
-
-	connect(protocol(item), SIGNAL(invalidPassword(Account)),
-			this, SLOT(providePassword(Account)), Qt::QueuedConnection);
-}
-
-void AccountManager::itemAboutToBeUnregisterd(Account item)
-{
-	QMutexLocker locker(&mutex());
-
-	disconnect(protocol(item), 0, this, 0);
-}
-
-void AccountManager::itemUnregistered(Account item)
-{
-	QMutexLocker locker(&mutex());
-
 	disconnect(item, 0, this, 0);
+}
+
+void AccountManager::protocolHandlerChanged(Account item)
+{
+	if (protocol(item))
+		connect(protocol(item), SIGNAL(invalidPassword(Account)),
+				this, SLOT(providePassword(Account)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
+	emit accountLoadedStateChanged(item);
 }
 
 Account AccountManager::defaultAccount()
@@ -196,7 +177,7 @@ const QVector<Account> AccountManager::byIdentity(Identity identity)
 	ensureLoaded();
 
 	QVector<Account> list;
-	foreach (const Account &account, allItems())
+	foreach (const Account &account, items())
 		if (account.accountIdentity() == identity)
 			list.append(account);
 
@@ -209,7 +190,7 @@ Account AccountManager::byId(const QString& protocolName, const QString& id)
 
 	ensureLoaded();
 
-	foreach (const Account &account, allItems())
+	foreach (const Account &account, items())
 		if (account.protocolName() == protocolName && account.id() == id)
 			return account;
 
@@ -223,7 +204,7 @@ const QVector<Account> AccountManager::byProtocolName(const QString &name)
 	ensureLoaded();
 
 	QVector<Account> list;
-	foreach (const Account &account, allItems())
+	foreach (const Account &account, items())
 		if (account.protocolName() == name)
 			list.append(account);
 
@@ -291,9 +272,9 @@ void AccountManager::providePassword(Account account)
 
 void AccountManager::loaded()
 {
-	Manager<Account>::loaded();
+	SimpleManager<Account>::loaded();
 
-	foreach (const Account &account, allItems())
+	foreach (const Account &account, items())
 		account.accountContact().setOwnerBuddy(m_myself->buddy());
 }
 

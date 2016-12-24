@@ -24,7 +24,7 @@
 #include "accounts/account.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
-#include "storage/manager.h"
+#include "storage/simple-manager.h"
 #include "exports.h"
 
 #include <QtCore/QMap>
@@ -42,7 +42,7 @@ class InjectedFactory;
 class Myself;
 class Status;
 
-class KADUAPI AccountManager : public Manager<Account>
+class KADUAPI AccountManager : public SimpleManager<Account>
 {
 	Q_OBJECT
 
@@ -66,6 +66,7 @@ private slots:
 	INJEQT_DONE void done();
 
 	void passwordProvided(const QVariant &data, const QString &password, bool permament);
+	void protocolHandlerChanged(Account);
 
 	void accountDataUpdated();
 
@@ -76,11 +77,6 @@ protected:
 	virtual void itemAdded(Account item) override;
 	virtual void itemAboutToBeRemoved(Account item) override;
 	virtual void itemRemoved(Account item) override;
-
-	virtual void itemAboutToBeRegistered(Account item) override;
-	virtual void itemRegistered(Account item) override;
-	virtual void itemAboutToBeUnregisterd(Account item) override;
-	virtual void itemUnregistered(Account item) override;
 
 	virtual void loaded() override;
 

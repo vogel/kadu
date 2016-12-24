@@ -289,7 +289,6 @@ void AccountShared::aboutToBeRemoved()
 		Details = 0;
 	}
 
-	m_accountManager->unregisterItem(this);
 	setAccountIdentity(Identity::null);
 }
 
@@ -350,8 +349,6 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 
 	MyStatusContainer->triggerStatusUpdated();
 
-	m_accountManager->registerItem(this);
-
 	emit updated();
 	emit protocolHandlerChanged(this);
 }
@@ -380,7 +377,6 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	// dont get deleted in next line
 	Account guard(this);
-	m_accountManager->unregisterItem(this);
 
 	delete ProtocolHandler;
 	ProtocolHandler = 0;

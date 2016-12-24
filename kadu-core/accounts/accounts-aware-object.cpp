@@ -58,12 +58,12 @@ void AccountsAwareObject::notifyAccountRemoved(Account account)
 
 void AccountsAwareObject::triggerAllAccountsAdded(AccountManager *accountManager)
 {
-	for (auto const &account : accountManager->allItems())
+	for (auto const &account : accountManager->items())
 		accountAdded(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsRemoved(AccountManager *accountManager)
 {
-	for (auto const &account : accountManager->allItems())
+	for (auto const &account : accountManager->items())
 		accountRemoved(account);
 }
