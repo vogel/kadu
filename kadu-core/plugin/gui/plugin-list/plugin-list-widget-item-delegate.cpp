@@ -188,11 +188,11 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 	info += tr("Plugin name: %1").arg(model->data(index, PluginModel::NameRole).toString()) + "\n";
 
 	auto pluginMetadata = model->data(index, PluginModel::MetadataRole).value<PluginMetadata>();
-	info += tr("Author: %1").arg(pluginMetadata.author()) + "\n";
-	info += tr("Version: %1").arg(pluginMetadata.version()) + "\n";
-	info += tr("Description: %1").arg(pluginMetadata.description()) + "\n";
-	info += tr("Dependencies: %1").arg(pluginMetadata.dependencies().join(", ")) + "\n";
-	info += tr("Provides: %1").arg(pluginMetadata.provides());
+	info += tr("Author: %1").arg(pluginMetadata.author) + "\n";
+	info += tr("Version: %1").arg(pluginMetadata.version) + "\n";
+	info += tr("Description: %1").arg(pluginMetadata.description) + "\n";
+	info += tr("Dependencies: %1").arg(pluginMetadata.dependencies.join(", ")) + "\n";
+	info += tr("Provides: %1").arg(pluginMetadata.provides);
 
 	MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), tr("Plugin information"), info, QMessageBox::Ok, itemView());
 }

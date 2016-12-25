@@ -235,7 +235,7 @@ void PluginListWidget::handleCheckedPlugin(const QString &pluginName, const QSet
 
 	auto conflictingDisplayNames = QStringList{};
 	std::transform(std::begin(conflictingVector), std::end(conflictingVector), std::back_inserter(conflictingDisplayNames),
-		[this](const QString &pluginName){ return m_pluginDependencyHandler->pluginMetadata(pluginName).displayName(); });
+		[this](const QString &pluginName){ return m_pluginDependencyHandler->pluginMetadata(pluginName).displayName; });
 
 	auto message = QString{"Following plugins will be deactivated because of conflict:"};
 	auto dialog = new StringListDialog{message, tr("Deactivate"), conflictingDisplayNames, this};
@@ -265,7 +265,7 @@ void PluginListWidget::handleUncheckedPlugin(const QString &pluginName, const QS
 
 	auto activeDependentsNames = QStringList{};
 	std::transform(std::begin(activeDependents), std::end(activeDependents), std::back_inserter(activeDependentsNames),
-		[this](const QString &pluginName){ return m_pluginDependencyHandler->pluginMetadata(pluginName).displayName(); });
+		[this](const QString &pluginName){ return m_pluginDependencyHandler->pluginMetadata(pluginName).displayName; });
 
 	auto message = QString{"Following plugins will be deactivated because of dependencies:"};
 	auto dialog = new StringListDialog{message, tr("Deactivate"), activeDependentsNames, this};

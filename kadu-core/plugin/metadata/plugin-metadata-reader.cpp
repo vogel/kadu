@@ -22,7 +22,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/version-service.h"
-#include "plugin/metadata/plugin-metadata-builder.h"
 #include "plugin/metadata/plugin-metadata-reader-exception.h"
 #include "plugin/metadata/plugin-metadata.h"
 
@@ -58,21 +57,21 @@ PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginNam
 	QSettings file{filePath, QSettings::IniFormat};
 	file.setIniCodec("UTF-8");
 
-	auto builder = PluginMetadataBuilder{};
-	return builder
-			.setName(pluginName)
-			.setDisplayName(file.value("Module/DisplayName[" + lang + ']', file.value("Module/DisplayName")).toString())
-			.setCategory(file.value("Module/Category").toString())
-			.setType(file.value("Module/Type").toString())
-			.setDescription(file.value("Module/Description[" + lang + ']', file.value("Module/Description")).toString())
-			.setAuthor(file.value("Module/Author").toString())
-			.setVersion(file.value("Module/Version").toString() == "core"
-					? m_versionService->version()
-					: file.value("Module/Version").toString())
-			.setProvides(file.value("Module/Provides").toString())
-			.setDependencies(file.value("Module/Dependencies").toString().split(' ', QString::SkipEmptyParts))
-			.setReplaces(file.value("Module/Replaces").toString().split(' ', QString::SkipEmptyParts))
-			.setLoadByDefault(file.value("Module/LoadByDefault").toBool())
-			.setInternal(file.value("Module/Internal").toBool())
-			.create();
+	auto result = PluginMetadata{};
+	result.name = pluginName;
+	result.displayName = file.value("Module/DisplayName[" + lang + ']', file.value("Module/DisplayName")).toString();
+	result.category = file.value("Module/Category").toString();
+	result.type = file.value("Module/Type").toString();
+	result.description = file.value("Module/Description[" + lang + ']', file.value("Module/Description")).toString();
+	result.author = file.value("Module/Author").toString();
+	result.version = file.value("Module/Version").toString() == "core"
+			? m_versionService->version()
+			: file.value("Module/Version").toString();
+	result.provides = file.value("Module/Provides").toString();
+	result.dependencies = file.value("Module/Dependencies").toString().split(' ', QString::SkipEmptyParts);
+	result.replaces = file.value("Module/Replaces").toString().split(' ', QString::SkipEmptyParts);
+	result.loadByDefault = file.value("Module/LoadByDefault").toBool();
+	result.internal = file.value("Module/Internal").toBool();
+
+	return result;
 }

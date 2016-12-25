@@ -68,7 +68,7 @@ PluginDependencyGraph PluginDependencyGraphBuilder::buildValidGraph(const std::m
 
 			auto &entry = data.at(plugin);
 			auto &metadata = plugins.at(plugin);
-			auto provides = metadata.provides();
+			auto provides = metadata.provides;
 			auto dependents = graph.directDependents(plugin);
 
 			if (!provides.isEmpty())
@@ -130,7 +130,7 @@ PluginDependencyGraph PluginDependencyGraphBuilder::buildGraph(const std::map<QS
 	for (auto const &plugin : plugins)
 	{
 		result.addPlugin(plugin.first);
-		for (auto const &dependency : plugin.second.dependencies())
+		for (auto const &dependency : plugin.second.dependencies)
 			result.addDependency(plugin.first, dependency);
 	}
 

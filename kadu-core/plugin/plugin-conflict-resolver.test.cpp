@@ -20,7 +20,6 @@
 #include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugin/metadata/plugin-metadata-builder.h"
 #include "plugin/metadata/plugin-metadata-provider.h"
 #include "plugin/metadata/plugin-metadata.h"
 #include "plugin/plugin-conflict-resolver.h"
@@ -92,12 +91,12 @@ SimpleMetadataProvider * PluginConflictResolverTest::createMetatadataProvider(co
 
 PluginMetadata PluginConflictResolverTest::createPluginMetadata(const PluginTuple &plugin)
 {
-	auto builder = PluginMetadataBuilder{};
-	return builder
-			.setName(std::get<0>(plugin))
-			.setProvides(std::get<1>(plugin))
-			.setDependencies(std::get<2>(plugin))
-			.create();
+	auto result = PluginMetadata{};
+	result.name = std::get<0>(plugin);
+	result.provides = std::get<1>(plugin);
+	result.dependencies = std::get<2>(plugin);
+
+	return result;
 }
 
 void PluginConflictResolverTest::noConflicts()

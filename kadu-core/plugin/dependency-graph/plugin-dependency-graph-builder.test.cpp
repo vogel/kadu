@@ -21,7 +21,6 @@
 #include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
-#include "plugin/metadata/plugin-metadata-builder.h"
 #include "plugin/metadata/plugin-metadata.h"
 
 #include <QtTest/QtTest>
@@ -61,12 +60,12 @@ private slots:
 
 PluginMetadata PluginDependencyGraphBuilderTest::createPluginMetadata(const PluginTuple &plugin)
 {
-	auto builder = PluginMetadataBuilder{};
-	return builder
-			.setName(std::get<0>(plugin))
-			.setProvides(std::get<1>(plugin))
-			.setDependencies(std::get<2>(plugin))
-			.create();
+	auto result = PluginMetadata{};
+	result.name = std::get<0>(plugin);
+	result.provides = std::get<1>(plugin);
+	result.dependencies = std::get<2>(plugin);
+
+	return result;
 }
 
 void PluginDependencyGraphBuilderTest::verifyDependencies(const PluginDependencyGraph &graph, const QString &pluginName, const QStringList &dependencies, const QStringList &dependents)

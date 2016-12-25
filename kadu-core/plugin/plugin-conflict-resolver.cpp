@@ -49,16 +49,16 @@ std::set<QString> PluginConflictResolver::conflictingPlugins(const std::set<QStr
 
 	auto activeProvides = QMap<QString, QString>{};
 	for (auto const &metadata : m_pluginDependencyHandler)
-		if (contains(activePluginSet, metadata.name()) && !metadata.provides().isEmpty())
-			activeProvides.insert(metadata.provides(), metadata.name());
+		if (contains(activePluginSet, metadata.name) && !metadata.provides.isEmpty())
+			activeProvides.insert(metadata.provides, metadata.name);
 
 	auto pluginsToDeactivate = std::set<QString>{};
 	for (auto pluginName : withoutActive)
 	{
 		auto metadata = m_pluginDependencyHandler->pluginMetadata(pluginName);
-		if (!metadata.provides().isEmpty() && activeProvides.contains(metadata.provides()))
+		if (!metadata.provides.isEmpty() && activeProvides.contains(metadata.provides))
 		{
-			auto pluginToDeactivate = activeProvides.value(metadata.provides());
+			auto pluginToDeactivate = activeProvides.value(metadata.provides);
 			for (auto dependentPluginToDeactivate : m_pluginDependencyHandler->withDependents(pluginToDeactivate))
 				if (contains(activePluginSet, dependentPluginToDeactivate))
 					pluginsToDeactivate.insert(dependentPluginToDeactivate);

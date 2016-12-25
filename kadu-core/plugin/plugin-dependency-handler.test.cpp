@@ -20,7 +20,6 @@
 #include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugin/metadata/plugin-metadata-builder.h"
 #include "plugin/metadata/plugin-metadata-provider.h"
 #include "plugin/metadata/plugin-metadata.h"
 #include "plugin/plugin-dependency-handler.h"
@@ -83,11 +82,11 @@ SimpleMetadataProvider * PluginDependencyHandlerTest::createMetatadataProvider(c
 
 PluginMetadata PluginDependencyHandlerTest::createPluginMetadata(const QPair<QString, QStringList> &plugin)
 {
-	auto builder = PluginMetadataBuilder{};
-	return builder
-			.setName(plugin.first)
-			.setDependencies(plugin.second)
-			.create();
+	auto result = PluginMetadata{};
+	result.name = plugin.first;
+	result.dependencies = plugin.second;
+
+	return result;
 }
 
 void PluginDependencyHandlerTest::verifyDependencies(const PluginDependencyGraph &graph, const QString &pluginName, const QStringList &dependencies, const QStringList &dependents)
@@ -117,10 +116,10 @@ void PluginDependencyHandlerTest::simpleDependencyTest()
 	QVERIFY(handler.get()->hasPluginMetadata("p3"));
 	QVERIFY(handler.get()->hasPluginMetadata("p4"));
 	QVERIFY(!handler.get()->hasPluginMetadata("p5"));
-	QCOMPARE(handler.get()->pluginMetadata("p1").name(), QString{"p1"});
-	QCOMPARE(handler.get()->pluginMetadata("p2").name(), QString{"p2"});
-	QCOMPARE(handler.get()->pluginMetadata("p3").name(), QString{"p3"});
-	QCOMPARE(handler.get()->pluginMetadata("p4").name(), QString{"p4"});
+	QCOMPARE(handler.get()->pluginMetadata("p1").name, QString{"p1"});
+	QCOMPARE(handler.get()->pluginMetadata("p2").name, QString{"p2"});
+	QCOMPARE(handler.get()->pluginMetadata("p3").name, QString{"p3"});
+	QCOMPARE(handler.get()->pluginMetadata("p4").name, QString{"p4"});
 	QCOMPARE(handler.get()->withDependencies("p1"), QVector<QString>{} << "p4" << "p3" << "p2" << "p1");
 	QCOMPARE(handler.get()->withDependents("p1"), QVector<QString>{} << "p1");
 	QCOMPARE(handler.get()->withDependencies("p2"), QVector<QString>{} << "p4" << "p3" << "p2");
@@ -143,7 +142,7 @@ void PluginDependencyHandlerTest::selfDependencyTest()
 	QCOMPARE(handler.get()->pluginNames(), std::set<QString>{"p1"});
 	QVERIFY(handler.get()->hasPluginMetadata("p1"));
 	QVERIFY(!handler.get()->hasPluginMetadata("p2"));
-	QCOMPARE(handler.get()->pluginMetadata("p1").name(), QString{"p1"});
+	QCOMPARE(handler.get()->pluginMetadata("p1").name, QString{"p1"});
 	QCOMPARE(handler.get()->withDependencies("p1"), QVector<QString>{} << "p1");
 	QCOMPARE(handler.get()->withDependents("p1"), QVector<QString>{} << "p1");
 }

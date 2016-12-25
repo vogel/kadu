@@ -73,15 +73,15 @@ QVariant PluginModel::data(const QModelIndex &index, int role) const
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return !pluginMetadata.displayName().isEmpty() ? pluginMetadata.displayName() : pluginMetadata.name();
+			return !pluginMetadata.displayName.isEmpty() ? pluginMetadata.displayName : pluginMetadata.name;
 		case MetadataRole:
 			return QVariant::fromValue(pluginMetadata);
 		case NameRole:
-			return pluginMetadata.name();
+			return pluginMetadata.name;
 		case CommentRole:
-			return pluginMetadata.description();
+			return pluginMetadata.description;
 		case Qt::CheckStateRole:
-			return m_activePlugins.contains(pluginMetadata.name());
+			return m_activePlugins.contains(pluginMetadata.name);
 		case CategorizedSortFilterProxyModel::CategoryDisplayRole:
 		case CategorizedSortFilterProxyModel::CategorySortRole:
 		{
@@ -95,7 +95,7 @@ QVariant PluginModel::data(const QModelIndex &index, int role) const
 			(void)QT_TR_NOOP("Sound");
 			(void)QT_TR_NOOP("Status");
 
-			return !pluginMetadata.category().isEmpty() ? QCoreApplication::translate("PluginModel", pluginMetadata.category().toUtf8().constData()) : tr("Misc");
+			return !pluginMetadata.category.isEmpty() ? QCoreApplication::translate("PluginModel", pluginMetadata.category.toUtf8().constData()) : tr("Misc");
 		}
 		default:
 			return {};

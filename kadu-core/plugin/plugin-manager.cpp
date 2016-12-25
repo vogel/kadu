@@ -57,7 +57,7 @@ void PluginManager::setPluginStateService(PluginStateService *pluginStateService
 void PluginManager::activateProtocolPlugins()
 {
 	if (m_pluginActivationService)
-		for (const auto &pluginName : pluginsToActivate([](const PluginMetadata &pluginMetadata){ return pluginMetadata.type() == "protocol"; }))
+		for (const auto &pluginName : pluginsToActivate([](const PluginMetadata &pluginMetadata){ return pluginMetadata.type == "protocol"; }))
 			m_pluginActivationService->activatePluginWithDependencies(pluginName);
 }
 
@@ -79,7 +79,7 @@ QVector<QString> PluginManager::pluginsToActivate(std::function<bool(const Plugi
 
 	for (auto const &plugin : m_pluginDependencyHandler)
 		if (filter(plugin) && shouldActivate(plugin))
-			result.append(plugin.name());
+			result.append(plugin.name);
 
 	return result;
 }
@@ -91,20 +91,20 @@ bool PluginManager::shouldActivate(const PluginMetadata &pluginMetadata) const n
 
 	if (m_runningUnity)
 	{
-		if (pluginMetadata.name().contains("indicator_docking"))
+		if (pluginMetadata.name.contains("indicator_docking"))
 			return true;
-		if (pluginMetadata.name().contains("docking"))
+		if (pluginMetadata.name.contains("docking"))
 			return false;
 	}
 
-	switch (m_pluginStateService->pluginState(pluginMetadata.name()))
+	switch (m_pluginStateService->pluginState(pluginMetadata.name))
 	{
 		case PluginState::Enabled:
 			return true;
 		case PluginState::Disabled:
 			return false;
 		case PluginState::New:
-			return pluginMetadata.loadByDefault();
+			return pluginMetadata.loadByDefault;
 	}
 
 	return false;
@@ -138,8 +138,8 @@ QString PluginManager::findReplacementPlugin(const QString &pluginToReplace) con
 		return {};
 
 	for (auto const &possibleReplacementPlugin : m_pluginDependencyHandler)
-		if (contains(possibleReplacementPlugin.replaces(), pluginToReplace))
-			return possibleReplacementPlugin.name();
+		if (contains(possibleReplacementPlugin.replaces, pluginToReplace))
+			return possibleReplacementPlugin.name;
 
 	return {};
 }
