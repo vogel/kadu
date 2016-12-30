@@ -38,7 +38,7 @@
 #include "avatar-manager.h"
 
 AvatarManager::AvatarManager(QObject *parent) :
-		SimpleManager<Avatar>{parent},
+		Manager<Avatar>{parent},
 		UpdateTimer{nullptr}
 {
 }

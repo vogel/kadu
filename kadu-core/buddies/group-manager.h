@@ -22,7 +22,7 @@
 #pragma once
 
 #include "buddies/group.h"
-#include "storage/simple-manager.h"
+#include "storage/manager.h"
 #include "exports.h"
 
 #include <QtCore/QList>
@@ -36,7 +36,7 @@ class Configuration;
 class IconsManager;
 class GroupStorage;
 
-class KADUAPI GroupManager : public SimpleManager<Group>
+class KADUAPI GroupManager : public Manager<Group>
 {
 	Q_OBJECT
 

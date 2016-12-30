@@ -30,7 +30,7 @@
 #include "network-proxy-manager.h"
 
 NetworkProxyManager::NetworkProxyManager(QObject *parent) :
-		SimpleManager<NetworkProxy>{parent}
+		Manager<NetworkProxy>{parent}
 {
 }
 
@@ -68,14 +68,14 @@ void NetworkProxyManager::load()
 {
 	QMutexLocker locker(&mutex());
 
-	SimpleManager<NetworkProxy>::load();
+	Manager<NetworkProxy>::load();
 }
 
 void NetworkProxyManager::store()
 {
 	QMutexLocker locker(&mutex());
 
-	SimpleManager<NetworkProxy>::store();
+	Manager<NetworkProxy>::store();
 }
 
 NetworkProxy NetworkProxyManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)

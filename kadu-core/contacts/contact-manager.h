@@ -27,7 +27,7 @@
 
 #include "contacts/contact.h"
 #include "message/message.h"
-#include "storage/simple-manager.h"
+#include "storage/manager.h"
 #include "exports.h"
 
 #include <QtCore/QMap>
@@ -44,7 +44,7 @@ class Myself;
 class Parser;
 class UnreadMessageRepository;
 
-class KADUAPI ContactManager : public SimpleManager<Contact>
+class KADUAPI ContactManager : public Manager<Contact>
 {
 	Q_OBJECT
 

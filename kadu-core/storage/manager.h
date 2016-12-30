@@ -20,8 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SIMPLE_MANAGER_H
-#define SIMPLE_MANAGER_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QMutex>
@@ -41,7 +40,7 @@
  */
 
 /**
- * @class SimpleManager
+ * @class Manager
  * @author Rafal 'Vogel' Malinowski
  * @param Item class type of manager items, must be derivered from UuidStorableObject.
  * @short Object that manages instances of given Item type (including storing and loading from XML file).
@@ -60,21 +59,21 @@
  * This class is thread-safe.
  */
 template<class Item>
-class SimpleManager : public StorableObject
+class Manager : public StorableObject
 {
 	QMutex Mutex;
 
 	QVector<Item> Items;
 
 protected:
-	SimpleManager(QObject *parent) :
+	Manager(QObject *parent) :
 			StorableObject{parent},
 			Mutex{QMutex::Recursive}
 	{
 		setState(StateNotLoaded);
 	}
 
-	virtual ~SimpleManager()
+	virtual ~Manager()
 	{
 	}
 
@@ -374,5 +373,3 @@ public:
 /**
  * @}
  */
-
-#endif // SIMPLE_MANAGER_H

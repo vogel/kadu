@@ -38,7 +38,7 @@
 #include "group-manager.h"
 
 GroupManager::GroupManager(QObject *parent) :
-		SimpleManager<Group>{parent}
+		Manager<Group>{parent}
 {
 }
 
@@ -112,7 +112,7 @@ void GroupManager::load()
 		return;
 	}
 
-	SimpleManager<Group>::load();
+	Manager<Group>::load();
 }
 
 void GroupManager::store()
@@ -121,7 +121,7 @@ void GroupManager::store()
 
 	emit saveGroupData();
 
-	SimpleManager<Group>::store();
+	Manager<Group>::store();
 }
 
 Group GroupManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)

@@ -44,7 +44,7 @@
 #include <QtCore/QTimer>
 
 ContactManager::ContactManager(QObject *parent) :
-		SimpleManager<Contact>{parent}
+		Manager<Contact>{parent}
 {
 }
 
@@ -251,7 +251,7 @@ void ContactManager::removeDuplicateContacts()
 
 void ContactManager::loaded()
 {
-	SimpleManager<Contact>::loaded();
+	Manager<Contact>::loaded();
 
 	if (!m_configuration->deprecatedApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
 		// delay it so that everything needed will be loaded when we call this method

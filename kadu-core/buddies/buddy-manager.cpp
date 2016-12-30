@@ -36,7 +36,7 @@
 #include "debug.h"
 
 BuddyManager::BuddyManager(QObject *parent) :
-		SimpleManager<Buddy>{parent}
+		Manager<Buddy>{parent}
 {
 }
 
@@ -78,7 +78,7 @@ void BuddyManager::load()
 {
 	QMutexLocker locker(&mutex());
 
-	SimpleManager<Buddy>::load();
+	Manager<Buddy>::load();
 }
 
 Buddy BuddyManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)

@@ -29,7 +29,7 @@
 #include "identity-manager.h"
 
 IdentityManager::IdentityManager(QObject *parent) :
-		SimpleManager<Identity>{parent}
+		Manager<Identity>{parent}
 {
 }
 
@@ -154,7 +154,7 @@ void IdentityManager::load()
 {
 	QMutexLocker locker(&mutex());
 
-	SimpleManager<Identity>::load();
+	Manager<Identity>::load();
 
 	if (items().isEmpty())
 		addDefaultIdentities();

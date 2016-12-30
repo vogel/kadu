@@ -33,7 +33,7 @@
  *
  * This group contains classes and templates that allows to store and load
  * data from XML file. This includes support for Managers (@link<Manager> Manager @endlink
- * and @link<SimpleManager> SimpleManager @endlink) that automates all basic tasks
+ * and @link<Manager> Manager @endlink) that automates all basic tasks
  * (loading, storing, counting) and @link<Details> Details @endlink that allows to separate data
  * for each object into two different class (one for common data for all instances and one for
  * data specific to given implementation of that class).

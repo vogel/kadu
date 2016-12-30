@@ -62,7 +62,7 @@
 #include <QtWidgets/QMessageBox>
 
 FileTransferManager::FileTransferManager(QObject *parent) :
-		SimpleManager<FileTransfer>{parent},
+		Manager<FileTransfer>{parent},
 		m_totalProgress{100}
 {
 }

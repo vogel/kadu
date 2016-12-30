@@ -25,7 +25,7 @@
 #include "chat-manager.h"
 
 ChatManager::ChatManager(QObject *parent) :
-		SimpleManager<Chat>{parent}
+		Manager<Chat>{parent}
 {
 }
 

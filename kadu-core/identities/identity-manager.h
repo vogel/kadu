@@ -23,7 +23,7 @@
 #pragma once
 
 #include "identities/identity.h"
-#include "storage/simple-manager.h"
+#include "storage/manager.h"
 #include "exports.h"
 
 #include <QtCore/QList>
@@ -37,7 +37,7 @@ class ConfigurationManager;
 class IdentityStorage;
 class Status;
 
-class KADUAPI IdentityManager : public SimpleManager<Identity>
+class KADUAPI IdentityManager : public Manager<Identity>
 {
 	Q_OBJECT
 

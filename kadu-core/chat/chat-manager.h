@@ -30,7 +30,7 @@
 #include <injeqt/injeqt.h>
 
 #include "message/message.h"
-#include "storage/simple-manager.h"
+#include "storage/manager.h"
 
 #include "chat.h"
 
@@ -87,7 +87,7 @@ class UnreadMessageRepository;
  * Use @link items @endlink method to get access to all chats will full data, use @link allItems @endlink
  * to get access to all chats, even with only basic data.
  */
-class KADUAPI ChatManager : public SimpleManager<Chat>
+class KADUAPI ChatManager : public Manager<Chat>
 {
 	Q_OBJECT
 

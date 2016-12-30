@@ -25,7 +25,7 @@
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy.h"
-#include "storage/simple-manager.h"
+#include "storage/manager.h"
 #include "exports.h"
 
 #include <QtCore/QMap>
@@ -41,7 +41,7 @@ class ConfigurationManager;
 class Configuration;
 class ContactManager;
 
-class KADUAPI BuddyManager : public SimpleManager<Buddy>
+class KADUAPI BuddyManager : public Manager<Buddy>
 {
 	Q_OBJECT
 

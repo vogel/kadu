@@ -22,7 +22,7 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "network/proxy/network-proxy.h"
-#include "storage/simple-manager.h"
+#include "storage/manager.h"
 #include "exports.h"
 
 #include <QtCore/QList>
@@ -36,7 +36,7 @@ class Configuration;
 class NetworkProxyStorage;
 class NetworkProxy;
 
-class KADUAPI NetworkProxyManager : public SimpleManager<NetworkProxy>, ConfigurationAwareObject
+class KADUAPI NetworkProxyManager : public Manager<NetworkProxy>, ConfigurationAwareObject
 {
 	Q_OBJECT
 

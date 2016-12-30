@@ -23,7 +23,7 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "file-transfer/file-transfer.h"
-#include "storage/simple-manager.h"
+#include "storage/manager.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
@@ -47,7 +47,7 @@ class IconsManager;
 class InjectedFactory;
 class KaduWindowService;
 
-class KADUAPI FileTransferManager : public SimpleManager<FileTransfer>, AccountsAwareObject
+class KADUAPI FileTransferManager : public Manager<FileTransfer>, AccountsAwareObject
 {
 	Q_OBJECT
 

@@ -23,7 +23,7 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "avatars/avatar.h"
-#include "storage/simple-manager.h"
+#include "storage/manager.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
@@ -38,7 +38,7 @@ class Buddy;
 class ContactManager;
 class Contact;
 
-class KADUAPI AvatarManager : public SimpleManager<Avatar>, AccountsAwareObject
+class KADUAPI AvatarManager : public Manager<Avatar>, AccountsAwareObject
 {
 	Q_OBJECT
 

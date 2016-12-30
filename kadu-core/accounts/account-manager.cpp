@@ -43,7 +43,7 @@
 #include "account-manager.h"
 
 AccountManager::AccountManager(QObject *parent) :
-		SimpleManager<Account>{parent}
+		Manager<Account>{parent}
 {
 }
 
@@ -272,7 +272,7 @@ void AccountManager::providePassword(Account account)
 
 void AccountManager::loaded()
 {
-	SimpleManager<Account>::loaded();
+	Manager<Account>::loaded();
 
 	foreach (const Account &account, items())
 		account.accountContact().setOwnerBuddy(m_myself->buddy());

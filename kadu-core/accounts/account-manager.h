@@ -24,7 +24,7 @@
 #include "accounts/account.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
-#include "storage/simple-manager.h"
+#include "storage/manager.h"
 #include "exports.h"
 
 #include <QtCore/QMap>
@@ -42,7 +42,7 @@ class InjectedFactory;
 class Myself;
 class Status;
 
-class KADUAPI AccountManager : public SimpleManager<Account>
+class KADUAPI AccountManager : public Manager<Account>
 {
 	Q_OBJECT
 
