@@ -32,7 +32,6 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "message/message.h"
-#include "storage/manager.h"
 #include "exports.h"
 
 /**
