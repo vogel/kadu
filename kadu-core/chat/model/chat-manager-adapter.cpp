@@ -27,7 +27,7 @@ ChatManagerAdapter::ChatManagerAdapter(ChatManager *chatManager, ChatListModel *
 		QObject{model},
 		m_model{model}
 {
-	m_model->setChats(chatManager->allItems().values().toVector());
+	m_model->setChats(chatManager->items());
 
 	connect(chatManager, SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)), Qt::DirectConnection);
 	connect(chatManager, SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)), Qt::DirectConnection);

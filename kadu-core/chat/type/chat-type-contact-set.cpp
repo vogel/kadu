@@ -46,7 +46,7 @@ Chat ChatTypeContactSet::findChat(ChatManager *chatManager, ChatStorage *chatSto
 		if (contact.id() == account.id())
 			return Chat::null;
 
-	foreach (const Chat &chat, chatManager->allItems()) // search allItems, chats can be not loaded yet
+	foreach (const Chat &chat, chatManager->items())
 		if (chat.type() == QStringLiteral("ContactSet") || chat.type() == QStringLiteral("Conference"))
 			if (chat.contacts() == contacts)
 			{

@@ -30,7 +30,7 @@
 #include <injeqt/injeqt.h>
 
 #include "message/message.h"
-#include "storage/manager.h"
+#include "storage/simple-manager.h"
 
 #include "chat.h"
 
@@ -87,7 +87,7 @@ class UnreadMessageRepository;
  * Use @link items @endlink method to get access to all chats will full data, use @link allItems @endlink
  * to get access to all chats, even with only basic data.
  */
-class KADUAPI ChatManager : public Manager<Chat>
+class KADUAPI ChatManager : public SimpleManager<Chat>
 {
 	Q_OBJECT
 
@@ -107,10 +107,10 @@ public:
 	virtual Chat byDisplay(const QString &display) = 0;
 
 protected:
-	virtual void itemAboutToBeRegistered(Chat item) override;
-	virtual void itemRegistered(Chat item) override;
-	virtual void itemAboutToBeUnregisterd(Chat item) override;
-	virtual void itemUnregistered(Chat item) override;
+	virtual void itemAboutToBeAdded(Chat item) override;
+	virtual void itemAdded(Chat item) override;
+	virtual void itemAboutToBeRemoved(Chat item) override;
+	virtual void itemRemoved(Chat item) override;
 
 signals:
 	/**

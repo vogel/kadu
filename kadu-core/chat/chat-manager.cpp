@@ -25,7 +25,7 @@
 #include "chat-manager.h"
 
 ChatManager::ChatManager(QObject *parent) :
-		Manager<Chat>{parent}
+		SimpleManager<Chat>{parent}
 {
 }
 
@@ -33,22 +33,22 @@ ChatManager::~ChatManager()
 {
 }
 
-void ChatManager::itemAboutToBeRegistered(Chat item)
+void ChatManager::itemAboutToBeAdded(Chat item)
 {
 	emit chatAboutToBeAdded(item);
 }
 
-void ChatManager::itemRegistered(Chat item)
+void ChatManager::itemAdded(Chat item)
 {
 	emit chatAdded(item);
 }
 
-void ChatManager::itemAboutToBeUnregisterd(Chat item)
+void ChatManager::itemAboutToBeRemoved(Chat item)
 {
 	emit chatAboutToBeRemoved(item);
 }
 
-void ChatManager::itemUnregistered(Chat item)
+void ChatManager::itemRemoved(Chat item)
 {
 	emit chatRemoved(item);
 }

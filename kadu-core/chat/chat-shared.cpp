@@ -292,8 +292,6 @@ void ChatShared::loadDetails()
 
 		Details->ensureLoaded();
 	}
-
-	m_chatManager->registerItem(this);
 }
 
 /**
@@ -338,8 +336,6 @@ void ChatShared::setType(const QString &type)
 		Details->ensureStored();
 		delete Details;
 		Details = 0;
-
-		m_chatManager->unregisterItem(this);
 	}
 
 	Type = type;

@@ -83,20 +83,20 @@ Chat ChatManagerImpl::loadStubFromStorage(const std::shared_ptr<StoragePoint> &s
 	return m_chatStorage->loadStubFromStorage(storagePoint);
 }
 
-void ChatManagerImpl::itemAboutToBeRegistered(Chat item)
+void ChatManagerImpl::itemAboutToBeAdded(Chat item)
 {
-	ChatManager::itemAboutToBeRegistered(item);
+	ChatManager::itemAboutToBeAdded(item);
 
 	connect(item, SIGNAL(updated()), this, SLOT(chatDataUpdated()));
 	connect(item, SIGNAL(opened()), this, SLOT(chatOpened()));
 	connect(item, SIGNAL(closed()), this, SLOT(chatClosed()));
 }
 
-void ChatManagerImpl::itemAboutToBeUnregisterd(Chat item)
+void ChatManagerImpl::itemAboutToBeRemoved(Chat item)
 {
 	disconnect(item, nullptr, this, nullptr);
 
-	ChatManager::itemAboutToBeUnregisterd(item);
+	ChatManager::itemAboutToBeRemoved(item);
 }
 
 QVector<Chat> ChatManagerImpl::chats(const Account &account)
@@ -110,7 +110,7 @@ QVector<Chat> ChatManagerImpl::chats(const Account &account)
 	if (account.isNull())
 		return chats;
 
-	foreach (const Chat &chat, allItems())
+	foreach (const Chat &chat, items())
 		if (account == chat.chatAccount())
 			chats.append(chat);
 
@@ -126,7 +126,7 @@ Chat ChatManagerImpl::byDisplay(const QString &display)
 	if (display.isEmpty())
 		return Chat::null;
 
-	foreach (const Chat &chat, allItems())
+	foreach (const Chat &chat, items())
 		if (display == chat.display())
 			return chat;
 

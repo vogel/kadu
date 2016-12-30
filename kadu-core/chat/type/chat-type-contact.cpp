@@ -37,7 +37,7 @@ Chat ChatTypeContact::findChat(ChatManager *chatManager, ChatStorage *chatStorag
 	if (contact.id() == account.id())
 		return Chat::null;
 
-	foreach (const Chat &chat, chatManager->allItems())
+	foreach (const Chat &chat, chatManager->items())
 		if (chat.type() == QStringLiteral("Contact") || chat.type() == QStringLiteral("Simple"))
 			if (chat.contacts().toContact() == contact)
 			{

@@ -32,7 +32,7 @@ Chat ChatTypeRoom::findChat(ChatManager *chatManager, ChatStorage *chatStorage, 
 	if (!account)
 		return Chat::null;
 
-	foreach (const Chat &chat, chatManager->allItems())
+	foreach (const Chat &chat, chatManager->items())
 	{
 		if (chat.type() != "Room")
 			continue;
