@@ -50,9 +50,8 @@ Chat ChatTypeRoom::findChat(ChatManager *chatManager, ChatStorage *chatStorage, 
 	if (ActionReturnNull == notFoundAction)
 		return Chat::null;
 
-	auto chat = chatStorage->create();
+	auto chat = chatStorage->create("Room");
 	chat.setChatAccount(account);
-	chat.setType("Room");
 
 	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
 	Q_ASSERT(details);

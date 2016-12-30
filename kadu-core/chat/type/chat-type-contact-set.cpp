@@ -58,7 +58,7 @@ Chat ChatTypeContactSet::findChat(ChatManager *chatManager, ChatStorage *chatSto
 	if (ActionReturnNull == notFoundAction)
 		return Chat::null;
 
-	auto chat = chatStorage->create();
+	auto chat = chatStorage->create("ContactSet");
 	chat.setChatAccount(account);
 
 	Contact contact = contacts.toContact();
@@ -67,8 +67,6 @@ Chat ChatTypeContactSet::findChat(ChatManager *chatManager, ChatStorage *chatSto
 	// TODO: this should be done better
 	if (chat.chatAccount().protocolName() != "gadu")
 		return Chat::null;
-
-	chat.setType("ContactSet");
 
 	ChatDetailsContactSet *chatDetailsContactSet = dynamic_cast<ChatDetailsContactSet *>(chat.details());
 	if (chatDetailsContactSet)

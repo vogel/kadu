@@ -49,9 +49,8 @@ Chat ChatTypeContact::findChat(ChatManager *chatManager, ChatStorage *chatStorag
 	if (ActionReturnNull == notFoundAction)
 		return Chat::null;
 
-	auto chat = chatStorage->create();
+	auto chat = chatStorage->create("Contact");
 	chat.setChatAccount(account);
-	chat.setType("Contact");
 
 	ChatDetailsContact *chatDetailsContact = dynamic_cast<ChatDetailsContact *>(chat.details());
 	if (chatDetailsContact)

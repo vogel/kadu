@@ -195,13 +195,13 @@ QString SqlChatsMapping::chatToString(const Chat &chat)
 Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string)
 {
 	if (!account)
-		return m_chatStorage->create();
+		return m_chatStorage->create("");
 
 	QStringList items = string.split(";", QString::SkipEmptyParts);
 	int len = items.length();
 
 	if (len < 2)
-		return m_chatStorage->create();
+		return m_chatStorage->create("");
 
 	QString chatType = items.at(0);
 
@@ -232,7 +232,7 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 		return ChatTypeContactSet::findChat(m_chatManager, m_chatStorage, contacts, ActionCreateAndAdd);
 	}
 
-	return m_chatStorage->create();
+	return m_chatStorage->create("");
 }
 
 #include "moc_sql-chats-mapping.cpp"

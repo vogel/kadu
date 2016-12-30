@@ -39,9 +39,11 @@ void ChatStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 	m_injectedFactory = injectedFactory;
 }
 
-Chat ChatStorage::create()
+Chat ChatStorage::create(const QString &type)
 {
-	return m_injectedFactory->makeInjected<ChatShared>();
+	auto result = Chat{m_injectedFactory->makeInjected<ChatShared>()};
+	result.setType(type);
+	return result;
 }
 
 Chat ChatStorage::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)

@@ -321,7 +321,7 @@ void SearchTab::currentDateChanged()
 	auto chat = m_talkableConverter->toChat(talkable);
 	if (!chat)
 	{
-		chat = m_chatStorage->create();
+		chat = m_chatStorage->create("");
 		chat.setDisplay("?");
 	}
 	TimelineView->messagesView()->setChat(chat);

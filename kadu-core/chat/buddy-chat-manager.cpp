@@ -77,9 +77,7 @@ void BuddyChatManager::done()
 
 Chat BuddyChatManager::createAndInsertBuddyChat(const Buddy &buddy)
 {
-	auto result = m_chatStorage->create();
-	result.setType("Buddy");
-
+	auto result = m_chatStorage->create("Buddy");
 	ChatDetailsBuddy *buddyDetails = qobject_cast<ChatDetailsBuddy *>(result.details());
 	Q_ASSERT(buddyDetails);
 

@@ -107,8 +107,7 @@ owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 {
 	auto example = m_buddyStorage->create();
 
-	auto chat = m_chatStorage->create();
-	chat.setType("Contact");
+	auto chat = m_chatStorage->create("Contact");
 
 	auto details = static_cast<ChatDetailsContact *>(chat.details());
 	details->setState(StorableObject::StateNew);

@@ -38,7 +38,7 @@ public:
 	Q_INVOKABLE explicit ChatStorage(QObject *parent = nullptr);
 	virtual ~ChatStorage();
 
-	Chat create();
+	Chat create(const QString &type);
 	Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 	Chat loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
