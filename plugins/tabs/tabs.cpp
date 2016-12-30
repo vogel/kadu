@@ -502,7 +502,7 @@ void TabsManager::load()
 		return;
 
 	QVector<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, "Tab");
-	foreach (const QDomElement &element, itemElements)
+	for (auto const &element : itemElements)
 	{
 		QUuid chatId(element.attribute("chat"));
 

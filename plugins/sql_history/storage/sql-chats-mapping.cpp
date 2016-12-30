@@ -183,7 +183,7 @@ QString SqlChatsMapping::chatToString(const Chat &chat)
 		QStringList result;
 		result << "ContactSet";
 
-		foreach (const Contact &contact, chat.contacts())
+		for (auto const &contact : chat.contacts())
 			result << QString::number(ContactsMapping->idByContact(contact, true));
 
 		return result.join(";");

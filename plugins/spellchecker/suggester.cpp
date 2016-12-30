@@ -92,7 +92,7 @@ void Suggester::addWordListToMenu(const QTextCursor &textCursor)
 void Suggester::clearWordMenu()
 {
 	// Remove old actions
-	foreach (ActionDescription *action, SuggestActions)
+	for (auto action : SuggestActions)
 		m_customInputMenuManager->removeActionDescription(action);
 
 	qDeleteAll(SuggestActions);

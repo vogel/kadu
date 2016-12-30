@@ -342,7 +342,7 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 	query.setForwardOnly(false);
 
 	QList<int> ids = contacts.keys();
-	foreach (int id, ids)
+	for (auto id : ids)
 	{
 		Contact contact = contacts.value(id);
 		int accountId = SqlAccountsMapping::idByAccount(contact.contactAccount());
@@ -362,7 +362,7 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 	query.setForwardOnly(true);
 	query.exec();
 
-	auto accounsMapping = m_pluginInjectedFactory->makeUnique<SqlAccountsMapping>(database); 
+	auto accounsMapping = m_pluginInjectedFactory->makeUnique<SqlAccountsMapping>(database);
 	auto contactsMapping = m_pluginInjectedFactory->makeUnique<SqlContactsMapping>(database, accounsMapping.get());
 
 	// force creating contacts table entries for all contacts used in statuses
@@ -431,7 +431,7 @@ void SqlImport::importChatsToV4(QSqlDatabase &database)
 	auto chatsMapping = m_pluginInjectedFactory->makeUnique<SqlChatsMapping>(database, accountsMapping.get(), contactsMapping.get());
 
 	QList<int> ids = chats.keys();
-	foreach (int id, ids)
+	for (auto id : ids)
 	{
 		Chat chat = chats.value(id);
 		int accountId = SqlAccountsMapping::idByAccount(chat.chatAccount());
@@ -492,7 +492,7 @@ void SqlImport::dropBeforeV4Fields(QSqlDatabase &database)
 			<< "INSERT INTO kadu_message_contents (id, content) SELECT id, content FROM kadu_message_contents_old;"
 			<< "DROP TABLE kadu_message_contents_old;";
 
-	foreach (const QString &queryString, queries)
+	for (auto const &queryString : queries)
 	{
 		query.prepare(queryString);
 		query.setForwardOnly(true);
@@ -509,7 +509,7 @@ void SqlImport::dropBeforeV4Indexes(QSqlDatabase &database)
 			<< "DROP INDEX IF EXISTS kadu_chat_uuid;"
 			<< "DROP INDEX IF EXISTS kadu_contact_uuid;";
 
-	foreach (const QString &queryString, queries)
+	for (auto const &queryString : queries)
 	{
 		query.prepare(queryString);
 		query.setForwardOnly(true);
@@ -573,7 +573,7 @@ void SqlImport::importVersion1Schema(QSqlDatabase &database)
 			<< "DELETE FROM schema_version;"
 			<< QString("INSERT INTO schema_version (version) VALUES (%1);").arg(CURRENT_SCHEMA_VERSION);
 
-	foreach (const QString &queryString, queries)
+	for (auto const &queryString : queries)
 	{
 		query.prepare(queryString);
 		query.setForwardOnly(true);
@@ -625,9 +625,7 @@ void SqlImport::removeDuplicatesFromVersion2Schema(QSqlDatabase &database, const
 {
 	QSqlQuery query(database);
 
-	// typedef is needed for foreach
-	typedef QPair<QString, QStringList> IdsPair;
-	QHash<QString, IdsPair> chats;
+	QHash<QString, QPair<QString, QStringList>> chats;
 	query.prepare(QString("SELECT id, %1 FROM %2;").arg(valueFieldName, idTableName));
 	query.setForwardOnly(true);
 	query.exec();
@@ -642,7 +640,7 @@ void SqlImport::removeDuplicatesFromVersion2Schema(QSqlDatabase &database, const
 	}
 
 	QStringList badIds;
-	foreach (const IdsPair &pair, chats)
+	for (auto const &pair : chats)
 	{
 		if (pair.second.isEmpty())
 			continue;
