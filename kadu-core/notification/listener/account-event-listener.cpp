@@ -97,14 +97,11 @@ void AccountEventListener::done()
 
 void AccountEventListener::accountAdded(Account account)
 {
-	auto protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			m_statusNotificationService, SLOT(notifyStatusChanged(Contact,Status)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
+
 	protocolHandlerChanged(account);
 }
 
