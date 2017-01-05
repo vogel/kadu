@@ -24,7 +24,7 @@
 #include <QtCore/QObject>
 #include <map>
 
-class PluginMetadata;
+struct PluginMetadata;
 
 class KADUAPI PluginMetadataProvider : public QObject
 {

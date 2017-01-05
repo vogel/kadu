@@ -26,7 +26,7 @@
 #include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "exports.h"
 
-class PluginMetadata;
+struct PluginMetadata;
 
 /**
  * @addtogroup Plugin

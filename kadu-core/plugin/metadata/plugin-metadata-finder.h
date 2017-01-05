@@ -25,7 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class PluginMetadata;
+struct PluginMetadata;
 class PluginMetadataReader;
 
 /**

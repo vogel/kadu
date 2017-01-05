@@ -24,8 +24,8 @@
 #include <injeqt/injeqt.h>
 
 class Configuration;
-class PluginMetadata;
 class VersionService;
+struct PluginMetadata;
 
 /**
  * @addtogroup Plugin
