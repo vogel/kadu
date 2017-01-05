@@ -64,16 +64,9 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 	QList<int> ports;
 	QRegExp addressPortRegexp( "^(.+):(\\d+)$" ); // X:Y
 	if (serverAddress.contains(addressPortRegexp))
-	{
 		address = addressPortRegexp.cap(1);
-		int port = addressPortRegexp.cap(2).toInt();
-		ports << port;
-	}
 	else
-	{
 		address = serverAddress;
-		ports = AllPorts;
-	}
 
 	QList<QString> servers;
 	QRegExp ipRangeRegexp("^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)-(\\d+)$"); // X.X.X.X-X
@@ -93,8 +86,7 @@ QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(
 	QHostAddress ip;
 	foreach (const QString &server, servers)
 		if (ip.setAddress(server))
-			foreach (int port, ports)
-				result.append(GaduServer(ip, port));
+			result.append(GaduServer(ip, 443));
 
 	return result;
 }
@@ -135,17 +127,9 @@ void GaduServersManager::buildServerList()
 	GoodServers.clear();
 	BadServers.clear();
 	AllServers.clear();
-	AllPorts.clear();
 
 	int LastGoodPort = m_configuration->deprecatedApi()->readNumEntry("Network", "LastServerPort",
 			m_configuration->deprecatedApi()->readNumEntry("Network", "DefaultPort", 443));
-
-	if (8074 == LastGoodPort || 443 == LastGoodPort)
-		AllPorts << LastGoodPort;
-	if (8074 != LastGoodPort)
-		AllPorts << 8074;
-	if (443 != LastGoodPort)
-		AllPorts << 443;
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true))
 		loadServerListFromFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/gadu_protocol/servers.txt"));
@@ -160,7 +144,7 @@ void GaduServersManager::configurationUpdated()
 	buildServerList();
 }
 
-GaduServersManager::GaduServer GaduServersManager::getServer(bool onlyTls)
+GaduServersManager::GaduServer GaduServersManager::getServer()
 {
 	if (GoodServers.isEmpty())
 	{
@@ -169,10 +153,10 @@ GaduServersManager::GaduServer GaduServersManager::getServer(bool onlyTls)
 		return GaduServer(QHostAddress(), 0);
 	}
 
-	if (onlyTls && GoodServers[0].second != 443 && GoodServers[0].second != 0)
+	if (GoodServers[0].second != 443 && GoodServers[0].second != 0)
 	{
 		markServerAsBad(GoodServers[0]);
-		return getServer(true);
+		return getServer();
 	}
 
 	return GoodServers[0];

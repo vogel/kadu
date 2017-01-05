@@ -84,9 +84,6 @@ FileTransferCanSendResult GaduFileTransferService::canSend(Contact contact)
 	if (!Protocol->isConnected())
 		return {false, tr("Connect before sending files.")};
 
-	if (!Protocol->secureConnection())
-		return {false, tr("Enable SSL in account configuration and reconnect before sending files.")};
-
 	if (m_imTokenService->imToken().isEmpty())
 		return {false, tr("Unable to login to GG Drive. Reconnect before sending files.")};
 

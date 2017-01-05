@@ -43,7 +43,7 @@ public:
 	virtual ~GaduServersManager();
 
 	const QList<GaduServer> & getServersList();
-	QPair<QHostAddress, int> getServer(bool onlyTls);
+	QPair<QHostAddress, int> getServer();
 	void markServerAsGood(GaduServer server);
 	void markServerAsBad(GaduServer server);
 
@@ -56,7 +56,6 @@ private:
 	QPointer<Configuration> m_configuration;
 	QPointer<PathsProvider> m_pathsProvider;
 
-	QList<int> AllPorts;
 	QList<GaduServer> AllServers;
 	QList<GaduServer> GoodServers;
 	QList<GaduServer> BadServers;
