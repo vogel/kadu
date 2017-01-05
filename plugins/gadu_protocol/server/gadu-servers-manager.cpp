@@ -128,9 +128,6 @@ void GaduServersManager::buildServerList()
 	BadServers.clear();
 	AllServers.clear();
 
-	int LastGoodPort = m_configuration->deprecatedApi()->readNumEntry("Network", "LastServerPort",
-			m_configuration->deprecatedApi()->readNumEntry("Network", "DefaultPort", 443));
-
 	if (m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true))
 		loadServerListFromFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/gadu_protocol/servers.txt"));
 	else
@@ -170,7 +167,6 @@ const QList<GaduServersManager::GaduServer> & GaduServersManager::getServersList
 void GaduServersManager::markServerAsGood(GaduServersManager::GaduServer server)
 {
 	m_configuration->deprecatedApi()->writeEntry("Network", "LastServerIP", server.first.toString());
-	m_configuration->deprecatedApi()->writeEntry("Network", "LastServerPort", server.second);
 }
 
 void GaduServersManager::markServerAsBad(GaduServersManager::GaduServer server)
