@@ -127,7 +127,6 @@ void GaduEditAccountWidget::createGui()
 	createGeneralTab(tabWidget);
 	createPersonalInfoTab(tabWidget);
 	createBuddiesTab(tabWidget);
-	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
 
 	new AccountConfigurationWidgetTabAdapter(this, tabWidget, this);
@@ -221,17 +220,6 @@ void GaduEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
 	tabWidget->addTab(widget, tr("Buddies"));
 }
 
-void GaduEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
-{
-	QWidget *conenctionTab = new QWidget(this);
-	tabWidget->addTab(conenctionTab, tr("Connection"));
-
-	QVBoxLayout *layout = new QVBoxLayout(conenctionTab);
-	createGeneralGroupBox(layout);
-
-	layout->addStretch(100);
-}
-
 void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 {
 	QWidget *optionsTab = new QWidget(this);
@@ -285,6 +273,10 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	otherLayout->addRow(ReceiveSpam);
 
+	// proxy
+
+	createGeneralGroupBox(layout);
+
 	// stretch
 
 	layout->addStretch(100);
@@ -292,27 +284,6 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 {
-	QGroupBox *general = new QGroupBox(tr("Gadu-Gadu Server"), this);
-	QFormLayout *generalLayout = new QFormLayout(general);
-
-	useDefaultServers = new QCheckBox(tr("Use default servers"), general);
-	generalLayout->addRow(useDefaultServers);
-
-	QLabel *ipAddressesLabel = new QLabel(tr("Custom server IP addresses"), general);
-	ipAddresses = new QLineEdit(general);
-	ipAddresses->setToolTip("You can specify which servers and ports to use.\n"
-							"Separate every server using semicolon.\n"
-							"The last IPv4 octet may be specified as a range of addresses.\n"
-							"For example:\n"
-							"91.214.237.1 ; 91.214.237.3 ; 91.214.237.10:8074 ; 91.214.237.11-20 ; 91.214.237.21-30:8074");
-	generalLayout->addRow(ipAddressesLabel, ipAddresses);
-
-	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setDisabled(bool)));
-	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setDisabled(bool)));
-
-	connect(useDefaultServers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
-	connect(ipAddresses, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-
 	QGroupBox *connection = new QGroupBox(tr("Network"), this);
 	QFormLayout *connectionLayout = new QFormLayout(connection);
 
@@ -323,7 +294,6 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 	connectionLayout->addRow(proxyLabel, ProxyCombo);
 
-	layout->addWidget(general);
 	layout->addWidget(connection);
 }
 
@@ -354,10 +324,6 @@ void GaduEditAccountWidget::apply()
 	accountData.setChatImageSizeWarning(ChatImageSizeWarning->isChecked());
 	accountData.setSendTypingNotification(SendTypingNotification->isChecked());
 	accountData.setReceiveSpam(!ReceiveSpam->isChecked());
-
-	m_configuration->deprecatedApi()->writeEntry("Network", "isDefServers", useDefaultServers->isChecked());
-	m_configuration->deprecatedApi()->writeEntry("Network", "Server", ipAddresses->text());
-	m_gaduServersManager->buildServerList();
 
 	if (gpiw->isModified())
 		gpiw->apply();
@@ -401,8 +367,6 @@ void GaduEditAccountWidget::dataChanged()
 
 		&& accountData.chatImageSizeWarning() == ChatImageSizeWarning->isChecked()
 
-		&& m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true) == useDefaultServers->isChecked()
-		&& m_configuration->deprecatedApi()->readEntry("Network", "Server") == ipAddresses->text()
 		&& accountData.sendTypingNotification() == SendTypingNotification->isChecked()
 		&& accountData.receiveSpam() != ReceiveSpam->isChecked()
 		&& !gpiw->isModified())
@@ -437,9 +401,6 @@ void GaduEditAccountWidget::loadAccountData()
 	ChatImageSizeWarning->setChecked(accountData.chatImageSizeWarning());
 	SendTypingNotification->setChecked(accountData.sendTypingNotification());
 	ReceiveSpam->setChecked(!accountData.receiveSpam());
-
-	useDefaultServers->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true));
-	ipAddresses->setText(m_configuration->deprecatedApi()->readEntry("Network", "Server"));
 
 	simpleStateNotifier()->setState(StateNotChanged);
 }
