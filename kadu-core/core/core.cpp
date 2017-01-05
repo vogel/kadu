@@ -274,10 +274,6 @@ void Core::createDefaultConfiguration()
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxFont", userboxfont);
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UseUserboxBackground", false);
 
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Network", "isDefServers", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Network", "Server", QString());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Network", "UseProxy", false);
-
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_clear", "F9");
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_configure", "F2");
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_modulesmanager", "F4");

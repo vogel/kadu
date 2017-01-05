@@ -83,9 +83,6 @@ private:
 
 	GaduPersonalInfoWidget *gpiw;
 
-	QCheckBox *useDefaultServers;
-	QLineEdit *ipAddresses;
-
 	QCheckBox *ShowStatusToEveryone;
 	QCheckBox *SendTypingNotification;
 	QCheckBox *ReceiveSpam;
@@ -101,7 +98,6 @@ private:
 	void createGeneralGroupBox(QVBoxLayout *layout);
 	void createPersonalInfoTab(QTabWidget *);
 	void createBuddiesTab(QTabWidget *);
-	void createConnectionTab(QTabWidget *);
 	void createOptionsTab(QTabWidget *);
 
 	void loadAccountData();

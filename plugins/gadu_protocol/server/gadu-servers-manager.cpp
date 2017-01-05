@@ -112,27 +112,12 @@ void GaduServersManager::loadServerListFromFile(const QString &fileName)
 	file.close();
 }
 
-void GaduServersManager::loadServerListFromString(const QString& data)
-{
-	QStringList servers = data.split(';', QString::SkipEmptyParts);
-
-	foreach (const QString &server, servers)
-		GoodServers << gaduServersFromString(server.trimmed());
-	GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
-	GoodServers << gaduServersFromString(m_configuration->deprecatedApi()->readEntry("Network", "LastServerIP"));
-}
-
 void GaduServersManager::buildServerList()
 {
 	GoodServers.clear();
 	BadServers.clear();
 	AllServers.clear();
-
-	if (m_configuration->deprecatedApi()->readBoolEntry("Network", "isDefServers", true))
-		loadServerListFromFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/gadu_protocol/servers.txt"));
-	else
-		loadServerListFromString(m_configuration->deprecatedApi()->readEntry("Network", "Server"));
-
+	loadServerListFromFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/gadu_protocol/servers.txt"));
 	AllServers = GoodServers;
 }
 

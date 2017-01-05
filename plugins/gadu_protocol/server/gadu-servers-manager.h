@@ -63,7 +63,6 @@ private:
 	QList<GaduServer> gaduServersFromString(const QString &serverAddress);
 
 	void loadServerListFromFile(const QString &fileName);
-	void loadServerListFromString(const QString &data);
 
 private slots:
 	INJEQT_SET void setConfiguration(Configuration *configuration);
