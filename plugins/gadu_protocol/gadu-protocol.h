@@ -187,8 +187,6 @@ public:
 
 	virtual int maxDescriptionLength();
 
-	bool secureConnection() const;
-
 	void enableSocketNotifiers();
 	void disableSocketNotifiers();
 	gg_session * gaduSession() { return GaduSession; }

@@ -75,7 +75,6 @@ GaduProtocol::GaduProtocol(GaduListHelper *gaduListHelper, GaduServersManager *g
 		Protocol(account, factory),
 		m_gaduServersManager{gaduServersManager},
 		ActiveServer(), GaduLoginParams(), GaduSession(0), SocketNotifiers(0), PingTimer(0),
-		SecureConnection{false},
 		m_gaduListHelper{gaduListHelper}
 {
 }
@@ -427,10 +426,9 @@ void GaduProtocol::setupLoginParams()
 	if (!loginStatus().description().isEmpty())
 		GaduLoginParams.status_descr = qstrdup(loginStatus().description().toUtf8().constData());
 
-	SecureConnection = gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL);
-	GaduLoginParams.tls = SecureConnection ? GG_SSL_ENABLED : GG_SSL_DISABLED;
+	GaduLoginParams.tls = GG_SSL_REQUIRED;
 
-	ActiveServer = m_gaduServersManager->getServer(1 == GaduLoginParams.tls);
+	ActiveServer = m_gaduServersManager->getServer();
 
 	bool haveServer = !ActiveServer.first.isNull();
 	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.first.toIPv4Address()) : 0;
@@ -602,13 +600,6 @@ void GaduProtocol::configurationUpdated()
 	// 8 bits for gadu debug
 	gg_debug_level = debug_mask & 255;
 #endif
-}
-
-bool GaduProtocol::secureConnection() const
-{
-	return isConnected()
-			? SecureConnection
-			: false;
 }
 
 #include "moc_gadu-protocol.cpp"
