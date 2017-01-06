@@ -18,14 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFile>
-#include <QtCore/QRegExp>
-
 #include <libgadu.h>
-
-#include "configuration/configuration.h"
-#include "configuration/deprecated-configuration-api.h"
-#include "misc/paths-provider.h"
 
 #include "gadu-servers-manager.h"
 
@@ -38,92 +31,12 @@ GaduServersManager::~GaduServersManager()
 {
 }
 
-void GaduServersManager::setConfiguration(Configuration *configuration)
-{
-	m_configuration = configuration;
-}
-
-void GaduServersManager::setPathsProvider(PathsProvider *pathsProvider)
-{
-	m_pathsProvider = pathsProvider;
-}
-
 void GaduServersManager::init()
 {
-	buildServerList();
-}
-
-QList<GaduServersManager::GaduServer> GaduServersManager::gaduServersFromString(const QString &serverAddress)
-{
-	QList<GaduServer> result;
-
-	if (serverAddress.isEmpty() || serverAddress.startsWith(QStringLiteral("0.0.0.0")))
-		return result;
-
-	QString address;
-	QList<int> ports;
-	QRegExp addressPortRegexp( "^(.+):(\\d+)$" ); // X:Y
-	if (serverAddress.contains(addressPortRegexp))
-		address = addressPortRegexp.cap(1);
-	else
-		address = serverAddress;
-
-	QList<QString> servers;
-	QRegExp ipRangeRegexp("^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)-(\\d+)$"); // X.X.X.X-X
-	if (address.contains(ipRangeRegexp))
-	{
-		int a = ipRangeRegexp.cap(1).toInt();
-		int b = ipRangeRegexp.cap(2).toInt();
-		int c = ipRangeRegexp.cap(3).toInt();
-		int d1 = ipRangeRegexp.cap(4).toInt();
-		int d2 = ipRangeRegexp.cap(5).toInt();
-		for (int d = d1; d <= d2; ++d)
-			servers << QString("%1.%2.%3.%4").arg(a).arg(b).arg(c).arg(d);
-	}
-	else
-		servers << address;
-
-	QHostAddress ip;
-	foreach (const QString &server, servers)
-		if (ip.setAddress(server))
-			result.append(GaduServer(ip, 443));
-
-	return result;
-}
-
-void GaduServersManager::loadServerListFromFile(const QString &fileName)
-{
 	GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
-	GoodServers << gaduServersFromString(m_configuration->deprecatedApi()->readEntry("Network", "LastServerIP"));
-
-	QFile file(fileName);
-
-	if (!file.open(QFile::ReadOnly))
-		return;
-
-	QTextStream serversStream(&file);
-
-	while (!serversStream.atEnd())
-	{
-		QString server = serversStream.readLine();
-		GoodServers << gaduServersFromString(server);
-	}
-
-	file.close();
-}
-
-void GaduServersManager::buildServerList()
-{
-	GoodServers.clear();
-	BadServers.clear();
-	AllServers.clear();
-	loadServerListFromFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/gadu_protocol/servers.txt"));
+	for (auto i = 108; i <= 123; i++)
+		GoodServers << GaduServer{QHostAddress{QString{"91.214.237.%1"}.arg(i)}, 443};
 	AllServers = GoodServers;
-}
-
-void GaduServersManager::configurationUpdated()
-{
-	buildServerList();
 }
 
 GaduServersManager::GaduServer GaduServersManager::getServer()
@@ -142,16 +55,6 @@ GaduServersManager::GaduServer GaduServersManager::getServer()
 	}
 
 	return GoodServers[0];
-}
-
-const QList<GaduServersManager::GaduServer> & GaduServersManager::getServersList()
-{
-	return AllServers;
-}
-
-void GaduServersManager::markServerAsGood(GaduServersManager::GaduServer server)
-{
-	m_configuration->deprecatedApi()->writeEntry("Network", "LastServerIP", server.first.toString());
 }
 
 void GaduServersManager::markServerAsBad(GaduServersManager::GaduServer server)

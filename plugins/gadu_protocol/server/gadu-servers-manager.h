@@ -27,12 +27,7 @@
 
 #include "../gadu-exports.h"
 
-#include "configuration/configuration-aware-object.h"
-
-class Configuration;
-class PathsProvider;
-
-class GADUAPI GaduServersManager : public QObject, public ConfigurationAwareObject
+class GADUAPI GaduServersManager : public QObject
 {
 	Q_OBJECT
 
@@ -42,31 +37,15 @@ public:
 	Q_INVOKABLE explicit GaduServersManager(QObject *parent = nullptr);
 	virtual ~GaduServersManager();
 
-	const QList<GaduServer> & getServersList();
 	QPair<QHostAddress, int> getServer();
-	void markServerAsGood(GaduServer server);
 	void markServerAsBad(GaduServer server);
 
-	void buildServerList();
-
-protected:
-	virtual void configurationUpdated();
-
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PathsProvider> m_pathsProvider;
-
 	QList<GaduServer> AllServers;
 	QList<GaduServer> GoodServers;
 	QList<GaduServer> BadServers;
 
-	QList<GaduServer> gaduServersFromString(const QString &serverAddress);
-
-	void loadServerListFromFile(const QString &fileName);
-
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 	INJEQT_INIT void init();
 
 };
