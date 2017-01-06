@@ -344,8 +344,6 @@ void GaduProtocol::connectedToServer()
 {
 	kdebugf();
 
-	m_gaduServersManager->markServerAsGood(ActiveServer);
-
 	PingTimer = new QTimer(0);
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
 	PingTimer->start(60000);
