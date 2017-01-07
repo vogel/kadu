@@ -62,7 +62,7 @@ public:
 	Q_INVOKABLE explicit FirewallMessageFilter(QObject *parent = nullptr);
 	virtual ~FirewallMessageFilter();
 
-	virtual bool acceptMessage(const Message& message);
+	virtual bool acceptMessage(const Message& message) override;
 
 	bool acceptIncomingMessage(const Message &message);
 	bool acceptOutgoingMessage(const Message &message);
@@ -142,6 +142,6 @@ private slots:
 protected:
 	virtual void accountAdded(Account account) override;
 	virtual void accountRemoved(Account account) override;
-	virtual void configurationUpdated();
+	virtual void configurationUpdated() override;
 
 };
