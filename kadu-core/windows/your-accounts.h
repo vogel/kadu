@@ -136,8 +136,8 @@ private slots:
 	void protocolHandlerChanged(Account account);
 
 protected:
-	virtual void closeEvent(QCloseEvent *e);
-	virtual void keyPressEvent(QKeyEvent *e);
+	virtual void closeEvent(QCloseEvent *e) override;
+	virtual void keyPressEvent(QKeyEvent *e) override;
 	virtual void accountAdded(Account account) override;
 	virtual void accountRemoved(Account account) override;
 

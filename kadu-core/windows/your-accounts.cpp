@@ -269,13 +269,14 @@ AccountCreateWidget * YourAccounts::getAccountCreateWidget(ProtocolFactory *prot
 	if (!CreateWidgets.contains(protocol))
 	{
 		AccountCreateWidget *widget = protocol->newCreateAccountWidget(true, CreateAddStack);
-		Q_ASSERT(widget);
+		if (widget)
+		{
+			CreateWidgets.insert(protocol, widget);
+			connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+			CreateAddStack->addWidget(widget);
 
-		CreateWidgets.insert(protocol, widget);
-		connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
-		CreateAddStack->addWidget(widget);
-
-		return widget;
+			return widget;
+		}
 	}
 
 	return CreateWidgets.value(protocol);
@@ -289,13 +290,14 @@ AccountAddWidget * YourAccounts::getAccountAddWidget(ProtocolFactory *protocol)
 	if (!AddWidgets.contains(protocol))
 	{
 		AccountAddWidget *widget = protocol->newAddAccountWidget(true, CreateAddStack);
-		Q_ASSERT(widget);
+		if (widget)
+		{
+			AddWidgets.insert(protocol, widget);
+			connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+			CreateAddStack->addWidget(widget);
 
-		AddWidgets.insert(protocol, widget);
-		connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
-		CreateAddStack->addWidget(widget);
-
-		return widget;
+			return widget;
+		}
 	}
 
 	return AddWidgets.value(protocol);
