@@ -21,11 +21,9 @@
 #pragma once
 
 #include "protocols/protocol-factory.h"
-#include "status/status-adapter.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
-#include <memory>
 
 class FacebookDepreceatedMessage;
 class JabberProtocolMenuManager;
@@ -39,22 +37,22 @@ public:
 	Q_INVOKABLE explicit JabberProtocolFactory(QObject *parent = nullptr);
 	virtual ~JabberProtocolFactory();
 
-	virtual Protocol * createProtocolHandler(Account account);
-	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent);
-	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent);
-	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
-	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr);
-    virtual ProtocolMenuManager * protocolMenuManager();
-	virtual QList<StatusType> supportedStatusTypes();
-	virtual StatusAdapter * statusAdapter() { return m_statusAdapter.get(); }
-	virtual QString idLabel();
-	virtual QValidator::State validateId(QString id);
-	virtual bool canRegister();
+	virtual Protocol * createProtocolHandler(Account account) override;
+	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent) override;
+	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent) override;
+	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*) override;
+	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr) override;
+    virtual ProtocolMenuManager * protocolMenuManager() override;
+	virtual QList<StatusType> supportedStatusTypes() override;
+	virtual Status adaptStatus(Status) const override;
+	virtual QString idLabel() override;
+	virtual QValidator::State validateId(QString id) override;
+	virtual bool canRegister() override;
 
-	virtual QString name() { return "jabber"; }
-	virtual QString displayName() { return "Jabber/XMPP"; }
+	virtual QString name() override { return "jabber"; }
+	virtual QString displayName() override { return "Jabber/XMPP"; }
 
-	virtual KaduIcon icon();
+	virtual KaduIcon icon() override;
 
 private:
 	QPointer<FacebookDepreceatedMessage> m_facebookDepreceatedMessage;
@@ -62,8 +60,6 @@ private:
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	QList<StatusType> m_supportedStatusTypes;
-
-	std::unique_ptr<StatusAdapter> m_statusAdapter;
 
 private slots:
 	INJEQT_SET void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);

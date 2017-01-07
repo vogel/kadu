@@ -32,7 +32,6 @@
 #include "plugin/plugin-injected-factory.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol.h"
-#include "gadu-status-adapter.h"
 
 #include "gadu-protocol-factory.h"
 
@@ -40,8 +39,6 @@ GaduProtocolFactory::GaduProtocolFactory(QObject *parent) :
 		ProtocolFactory{}
 {
 	Q_UNUSED(parent);
-
-	MyStatusAdapter = std::make_unique<GaduStatusAdapter>();
 
 	// already sorted
 	SupportedStatusTypes.append(StatusType::FreeForChat);
@@ -98,6 +95,16 @@ AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, Q
 QList<StatusType> GaduProtocolFactory::supportedStatusTypes()
 {
 	return SupportedStatusTypes;
+}
+
+Status GaduProtocolFactory::adaptStatus(Status status) const
+{
+	Status adapted = status;
+
+	if (adapted.type() == StatusType::NotAvailable)
+		adapted.setType(StatusType::Away);
+
+	return adapted;
 }
 
 QString GaduProtocolFactory::idLabel()

@@ -21,11 +21,9 @@
 #pragma once
 
 #include "protocols/protocol-factory.h"
-#include "status/status-adapter.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
-#include <memory>
 
 class FacebookDepreceatedMessage;
 class PluginInjectedFactory;
@@ -40,22 +38,22 @@ public:
 	Q_INVOKABLE explicit GTalkProtocolFactory(QObject *parent = nullptr);
 	virtual ~GTalkProtocolFactory();
 
-	virtual Protocol * createProtocolHandler(Account account);
-	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent);
-	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent);
-	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
-	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr);
-    virtual ProtocolMenuManager * protocolMenuManager();
-	virtual QList<StatusType> supportedStatusTypes();
-	virtual StatusAdapter * statusAdapter() { return m_statusAdapter.get(); }
-	virtual QString idLabel();
-	virtual QValidator::State validateId(QString id);
-	virtual bool canRegister();
+	virtual Protocol * createProtocolHandler(Account account) override;
+	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent) override;
+	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent) override;
+	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*) override;
+	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr) override;
+    virtual ProtocolMenuManager * protocolMenuManager() override;
+	virtual QList<StatusType> supportedStatusTypes() override;
+	virtual Status adaptStatus(Status) const override;
+	virtual QString idLabel() override;
+	virtual QValidator::State validateId(QString id) override;
+	virtual bool canRegister() override;
 
-	virtual QString name() { return "gmail/google talk"; }
-	virtual QString displayName() { return "Gmail/Google Talk"; }
+	virtual QString name() override { return "gmail/google talk"; }
+	virtual QString displayName() override { return "Gmail/Google Talk"; }
 
-	virtual KaduIcon icon();
+	virtual KaduIcon icon() override;
 
 private:
 	QPointer<FacebookDepreceatedMessage> m_facebookDepreceatedMessage;
@@ -63,8 +61,6 @@ private:
 	QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
 
 	QList<StatusType> m_supportedStatusTypes;
-
-	std::unique_ptr<StatusAdapter> m_statusAdapter;
 
 private slots:
 	INJEQT_SET void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);

@@ -91,7 +91,6 @@ set (SOURCES
 	gadu-plugin-object.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
-	gadu-status-adapter.cpp
 	gadu-url-dom-visitor-provider.cpp
 	gadu-url-handler.cpp
 )

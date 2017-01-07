@@ -39,7 +39,6 @@
 #include "roster/roster-service.h"
 #include "services/chat-service.h"
 #include "services/chat-state-service.h"
-#include "status/status-adapter.h"
 #include "status/status-type-manager.h"
 #include "status/status.h"
 #include "debug.h"
@@ -194,7 +193,7 @@ void Protocol::setStatus(Status status, StatusChangeSource source)
 	if (SourceStatusChanger == source && !account().hasPassword())
 		return;
 
-	LoginStatus = protocolFactory()->statusAdapter()->adapt(status);
+	LoginStatus = protocolFactory()->adaptStatus(status);
 	doSetStatus(LoginStatus);
 }
 

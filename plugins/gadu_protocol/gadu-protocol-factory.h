@@ -22,11 +22,9 @@
 #pragma once
 
 #include "protocols/protocol-factory.h"
-#include "status/status-adapter.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
-#include <memory>
 
 class GaduListHelper;
 class GaduServersManager;
@@ -40,21 +38,21 @@ public:
 	Q_INVOKABLE explicit GaduProtocolFactory(QObject *parent = nullptr);
 	virtual ~GaduProtocolFactory();
 
-	virtual Protocol * createProtocolHandler(Account account);
-	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent);
-	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent);
-	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent);
-	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr);
-	virtual QList<StatusType> supportedStatusTypes();
-	virtual StatusAdapter * statusAdapter() { return MyStatusAdapter.get(); }
-	virtual QString idLabel();
-	virtual QValidator::State validateId(QString id);
-	virtual bool canRegister();
-	virtual bool canRemoveAvatar() { return false; } // this is so lame for gadu-gadu, so so lame ...
+	virtual Protocol * createProtocolHandler(Account account) override;
+	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent) override;
+	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent) override;
+	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent) override;
+	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr) override;
+	virtual QList<StatusType> supportedStatusTypes() override;
+	virtual Status adaptStatus(Status) const override;
+	virtual QString idLabel() override;
+	virtual QValidator::State validateId(QString id) override;
+	virtual bool canRegister() override;
+	virtual bool canRemoveAvatar() override { return false; } // this is so lame for gadu-gadu, so so lame ...
 
-	virtual QString name() { return "gadu"; }
-	virtual QString displayName() { return "Gadu-Gadu"; }
-	virtual KaduIcon icon();
+	virtual QString name() override { return "gadu"; }
+	virtual QString displayName() override { return "Gadu-Gadu"; }
+	virtual KaduIcon icon() override;
 
 private:
 	QPointer<GaduListHelper> m_gaduListHelper;
@@ -62,8 +60,6 @@ private:
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 	QList<StatusType> SupportedStatusTypes;
-
-	std::unique_ptr<StatusAdapter> MyStatusAdapter;
 
 private slots:
 	INJEQT_SET void setGaduListHelper(GaduListHelper *gaduListHelper);

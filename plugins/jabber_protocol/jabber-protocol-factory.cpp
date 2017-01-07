@@ -34,14 +34,11 @@
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
 #include "jabber-protocol.h"
-#include "jabber-status-adapter.h"
 
 JabberProtocolFactory::JabberProtocolFactory(QObject *parent) :
 		ProtocolFactory{}
 {
 	Q_UNUSED(parent);
-
-	m_statusAdapter = std::make_unique<JabberStatusAdapter>();
 
 	// already sorted
 	m_supportedStatusTypes.append(StatusType::FreeForChat);
@@ -110,6 +107,16 @@ AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account account,
 QList<StatusType> JabberProtocolFactory::supportedStatusTypes()
 {
 	return m_supportedStatusTypes;
+}
+
+Status JabberProtocolFactory::adaptStatus(Status status) const
+{
+	Status adapted = status;
+
+	if (adapted.type() == StatusType::Invisible)
+		adapted.setType(StatusType::DoNotDisturb);
+
+	return adapted;
 }
 
 QString JabberProtocolFactory::idLabel()

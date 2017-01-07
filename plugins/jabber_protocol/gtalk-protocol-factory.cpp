@@ -33,14 +33,11 @@
 #include "gtalk-protocol-factory.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol.h"
-#include "jabber-status-adapter.h"
 
 GTalkProtocolFactory::GTalkProtocolFactory(QObject *parent) :
 		ProtocolFactory{}
 {
 	Q_UNUSED(parent);
-
-	m_statusAdapter = std::make_unique<JabberStatusAdapter>();
 
 	// already sorted
 	m_supportedStatusTypes.append(StatusType::FreeForChat);
@@ -109,6 +106,16 @@ AccountEditWidget * GTalkProtocolFactory::newEditAccountWidget(Account account, 
 QList<StatusType> GTalkProtocolFactory::supportedStatusTypes()
 {
 	return m_supportedStatusTypes;
+}
+
+Status GTalkProtocolFactory::adaptStatus(Status status) const
+{
+	Status adapted = status;
+
+	if (adapted.type() == StatusType::Invisible)
+		adapted.setType(StatusType::DoNotDisturb);
+
+	return adapted;
 }
 
 QString GTalkProtocolFactory::idLabel()

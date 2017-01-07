@@ -87,7 +87,6 @@ set (SOURCES
 	jabber-plugin-object.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
-	jabber-status-adapter.cpp
 	jabber-url-dom-visitor-provider.cpp
 	jabber-url-handler.cpp
 	jid.cpp

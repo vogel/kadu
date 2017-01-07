@@ -29,7 +29,8 @@
 #include <QtGui/QValidator>
 #include <QtWidgets/QDialog>
 
-#include "status/status-adapter.h"
+#include "accounts/account.h"
+#include "contacts/contact.h"
 #include "exports.h"
 
 class Account;
@@ -54,15 +55,15 @@ class KADUAPI ProtocolFactory : public QObject
 
 public:
 	virtual Protocol * createProtocolHandler(Account account) = 0;
-	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent = nullptr) = 0;
-	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent = nullptr) = 0;
-	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent = nullptr) = 0;
-	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr) = 0;
-	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }
+	virtual AccountAddWidget * newAddAccountWidget(bool, QWidget * = nullptr) { return nullptr; }
+	virtual AccountCreateWidget * newCreateAccountWidget(bool, QWidget * = nullptr) { return nullptr; }
+	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget * = nullptr) { return nullptr; }
+	virtual QWidget * newContactPersonalInfoWidget(Contact, QWidget * = nullptr) { return nullptr; }
+	virtual ProtocolMenuManager * protocolMenuManager() { return nullptr; }
 	virtual QList<StatusType> supportedStatusTypes() = 0;
-	virtual StatusAdapter * statusAdapter() = 0;
+	virtual Status adaptStatus(Status) const = 0;
 	virtual QString idLabel() = 0;
-	virtual QValidator::State validateId(QString id) = 0;
+	virtual QValidator::State validateId(QString) { return QValidator::Acceptable; };
 	virtual bool canRegister() = 0;
 	virtual bool canRemoveAvatar() { return true; } // this is so lame for gadu-gadu, so so lame ...
 

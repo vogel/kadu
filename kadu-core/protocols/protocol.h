@@ -99,7 +99,7 @@ public:
 	Status status() const;
 	virtual int maxDescriptionLength() { return -1; }
 
-	virtual void changePrivateMode() = 0;
+	virtual void changePrivateMode() {};
 
 	virtual QString statusPixmapPath() = 0;
 
