@@ -61,7 +61,7 @@ void MessageManagerImpl::init()
 {
 	connect(m_chatServiceRepository, &ChatServiceRepository::chatServiceAdded,
 			this, &MessageManagerImpl::addChatService);
-	connect(m_chatServiceRepository, &ChatServiceRepository::chatServiceAdded,
+	connect(m_chatServiceRepository, &ChatServiceRepository::chatServiceRemoved,
 			this, &MessageManagerImpl::removeChatService);
 
 	for (auto chatService : m_chatServiceRepository)
@@ -75,24 +75,24 @@ void MessageManagerImpl::done()
 
 	connect(m_chatServiceRepository, &ChatServiceRepository::chatServiceAdded,
 			this, &MessageManagerImpl::addChatService);
-	connect(m_chatServiceRepository, &ChatServiceRepository::chatServiceAdded,
+	connect(m_chatServiceRepository, &ChatServiceRepository::chatServiceRemoved,
 			this, &MessageManagerImpl::removeChatService);
 }
 
 void MessageManagerImpl::addChatService(ChatService *chatService)
 {
-	connect(chatService, SIGNAL(messageReceived(const Message &)),
-			this, SLOT(messageReceivedSlot(const Message &)));
-	connect(chatService, SIGNAL(messageSent(const Message &)),
-			this, SIGNAL(messageSent(const Message &)));
+	connect(chatService, &ChatService::messageReceived,
+			this, &MessageManagerImpl::messageReceivedSlot);
+	connect(chatService, &ChatService::messageSent,
+			this, &MessageManagerImpl::messageSent);
 }
 
 void MessageManagerImpl::removeChatService(ChatService *chatService)
 {
-	disconnect(chatService, SIGNAL(messageReceived(const Message &)),
-			this, SLOT(messageReceivedSlot(const Message &)));
-	disconnect(chatService, SIGNAL(messageSent(const Message &)),
-			this, SIGNAL(messageSent(const Message &)));
+	disconnect(chatService, &ChatService::messageReceived,
+			this, &MessageManagerImpl::messageReceivedSlot);
+	disconnect(chatService, &ChatService::messageSent,
+			this, &MessageManagerImpl::messageSent);
 }
 
 void MessageManagerImpl::messageReceivedSlot(const Message &message)

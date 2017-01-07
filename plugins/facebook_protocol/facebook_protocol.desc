@@ -1,0 +1,10 @@
+[Module]
+DisplayName=Facebook Chat support
+DisplayName[pl]=Obsługa rozmów na Facebook
+Description=Facebook Chat support
+Description[pl]=Obsługa rozmów na Facebook
+Author=Kadu Team
+Version=core
+LoadByDefault=true
+Type=protocol
+Category=Protocols

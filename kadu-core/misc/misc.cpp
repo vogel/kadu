@@ -31,6 +31,7 @@
 #include <QtGui/QDesktopServices>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
+#include <assert.h>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -172,4 +173,51 @@ QChar extractLetter(QChar c)
 			return decomposition.at(i);
 
 	return c;
+}
+
+QByteArray prettyHexPart(const QByteArray &data)
+{
+	assert(data.size() <= 0x08);
+	auto hex = data.toHex();
+	for (auto i = hex.size() - 2; i > 0x00; i -= 2)
+		hex.insert(i, ' ');
+	return hex;
+}
+
+QByteArray prettyHexLine(const QByteArray &data)
+{
+	assert(data.size() <= 0x10);
+
+	auto hexLine = (prettyHexPart(data.mid(0x00, 0x08)) + "  " + prettyHexPart(data.mid(0x08, 0x08))).leftJustified(3 * 16, ' ');
+	auto printable = QByteArray{};
+	std::transform(std::begin(data), std::end(data), std::back_inserter(printable), [](char c){
+		if (c >= 'a' && c <= 'z')
+			return c;
+		if (c >= 'A' && c <= 'Z')
+			return c;
+		if (c >= '0' && c <= '9')
+			return c;
+		return '.';
+	});
+	return hexLine + "  |" + printable + "|";
+}
+
+QByteArray prettyHex(const QByteArray &data)
+{
+	auto result = QByteArray{};
+	if (data.isEmpty())
+		return result;
+
+	auto hex = data.toHex();
+	for (auto offset = 0; offset < data.size(); offset += 0x10)
+	{
+		auto chunk = data.mid(offset, 0x10);
+		auto line = prettyHexLine(chunk);
+		result.append(QByteArray::number(offset, 0x10).rightJustified(0x08, '0'));
+		result.append("  ");
+		result.append(prettyHexLine(chunk));
+		result.append("\n");
+	}
+
+	return result;
 }

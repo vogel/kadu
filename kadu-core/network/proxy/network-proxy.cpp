@@ -26,6 +26,8 @@
 
 #include "network-proxy.h"
 
+#include <QtNetwork/QNetworkProxy>
+
 KaduSharedBaseClassImpl(NetworkProxy)
 
 NetworkProxy NetworkProxy::null;
@@ -62,3 +64,22 @@ KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, user, User, QString())
 KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, password, Password, QString())
 KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, pollingUrl, PollingUrl, QString())
 KaduSharedBase_PropertyReadDef(NetworkProxy, QString, displayName, DisplayName, QString())
+
+QNetworkProxy toQNetworkProxy(const NetworkProxy& networkProxy)
+{
+	if (!networkProxy)
+		return {};
+
+	auto proxy = QNetworkProxy{};
+	if (networkProxy.type() == "socks")
+		proxy.setType(QNetworkProxy::Socks5Proxy);
+	else
+		proxy.setType(QNetworkProxy::HttpProxy);
+
+	proxy.setHostName(networkProxy.address());
+	proxy.setPort(networkProxy.port());
+	proxy.setUser(networkProxy.user());
+	proxy.setPassword(networkProxy.password());
+
+	return proxy;
+}
