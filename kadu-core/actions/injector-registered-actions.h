@@ -34,7 +34,6 @@ public:
 
 private:
 	Actions &m_actions;
-	injeqt::v1::injector &m_injector;
 	std::vector<ActionDescription *> m_registeredActions;
 
 };

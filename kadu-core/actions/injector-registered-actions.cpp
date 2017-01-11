@@ -26,10 +26,9 @@
 #include <injeqt/injector.h>
 
 InjectorRegisteredActions::InjectorRegisteredActions(Actions &actions, injeqt::injector &injector) :
-		m_actions{actions},
-		m_injector{injector}
+		m_actions{actions}
 {
-	for (const auto &o : m_injector.get_all_with_type_role(ACTION))
+	for (const auto &o : injector.get_all_with_type_role(ACTION))
 	{
 		auto action = qobject_cast<ActionDescription *>(o);
 		if (action && m_actions.insert(action))
