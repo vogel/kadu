@@ -121,8 +121,8 @@ void AccountManager::itemAdded(Account item)
 		item.data()->ensureLoaded();
 	AccountsAwareObject::notifyAccountAdded(item);
 	emit accountAdded(item);
-	connect(item, SIGNAL(protocolHandlerChanged(Account)), this, SIGNAL(accountLoadedStateChanged(Account)));
-	emit accountLoadedStateChanged(item);
+	connect(item, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
+	protocolHandlerChanged(item);
 }
 
 void AccountManager::itemAboutToBeRemoved(Account item)
@@ -138,7 +138,6 @@ void AccountManager::itemRemoved(Account item)
 
 	AccountsAwareObject::notifyAccountRemoved(item);
 	emit accountRemoved(item);
-	disconnect(item, SIGNAL(protocolHandlerChanged(Account)), this, SIGNAL(accountLoadedStateChanged(Account)));
 	emit accountLoadedStateChanged(item);
 	disconnect(item, 0, this, 0);
 }
