@@ -157,7 +157,7 @@ Account AccountManager::defaultAccount()
 	ensureLoaded();
 
 	// TODO: hack
-	foreach (const Account &account, items())
+	for (auto const &account : items())
 		if (account.protocolName() == "gadu")
 			return account;
 
@@ -176,7 +176,7 @@ const QVector<Account> AccountManager::byIdentity(Identity identity)
 	ensureLoaded();
 
 	QVector<Account> list;
-	foreach (const Account &account, items())
+	for (auto const &account : items())
 		if (account.accountIdentity() == identity)
 			list.append(account);
 
@@ -189,7 +189,7 @@ Account AccountManager::byId(const QString& protocolName, const QString& id)
 
 	ensureLoaded();
 
-	foreach (const Account &account, items())
+	for (auto const &account : items())
 		if (account.protocolName() == protocolName && account.id() == id)
 			return account;
 
@@ -203,7 +203,7 @@ const QVector<Account> AccountManager::byProtocolName(const QString &name)
 	ensureLoaded();
 
 	QVector<Account> list;
-	foreach (const Account &account, items())
+	for (auto const &account : items())
 		if (account.protocolName() == name)
 			list.append(account);
 
@@ -221,7 +221,7 @@ void AccountManager::accountDataUpdated()
 
 void AccountManager::removeAccountAndBuddies(Account account)
 {
-	StatusContainer *statusContainer = account.statusContainer();
+	auto statusContainer = account.statusContainer();
 	if (statusContainer)
 		statusContainer->setStatus(Status(), SourceUser); // user removed account
 
@@ -230,12 +230,10 @@ void AccountManager::removeAccountAndBuddies(Account account)
 
 	removeItem(account);
 
-	QVector<Contact> contacts = m_contactManager->contacts(account);
-	foreach (const Contact &contact, contacts)
+	for (auto const &contact : m_contactManager->contacts(account))
 		m_buddyManager->clearOwnerAndRemoveEmptyBuddy(contact);
 
-	QVector<Chat> chats = m_chatManager->chats(account);
-	foreach (const Chat &chat, chats)
+	for (auto const &chat : m_chatManager->chats(account))
 		chat.setDisplay(QString());
 }
 
@@ -273,7 +271,7 @@ void AccountManager::loaded()
 {
 	Manager<Account>::loaded();
 
-	foreach (const Account &account, items())
+	for (auto const &account : items())
 		account.accountContact().setOwnerBuddy(m_myself->buddy());
 }
 
