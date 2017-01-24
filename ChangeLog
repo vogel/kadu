@@ -1,5 +1,6 @@
 +++ version 4.3:
 * translations: #3124 fixed: added German translation
+* gadu: #3117 fixed: TLS errors fixed (Vogel)
 
 +++ version 4.2:
 * translations: #3123 fixed: typo

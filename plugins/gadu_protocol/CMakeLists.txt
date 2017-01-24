@@ -4,7 +4,7 @@ cmake_minimum_required (VERSION 2.8)
 
 find_package (Kadu REQUIRED CONFIG)
 
-set (LIBGADU_MIN_VERSION "1.12.1")
+set (LIBGADU_MIN_VERSION "1.12.2")
 
 kadu_api_directories (plugins/gadu_protocol
 	file-transfers
