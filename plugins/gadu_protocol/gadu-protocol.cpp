@@ -197,7 +197,7 @@ void GaduProtocol::init()
 	OpenChatRunner = m_pluginInjectedFactory->makeInjected<GaduOpenChatWithRunner>(account());
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 
-	m_chatServiceRepository->addChatService(account(), GaduChatService);
+	m_chatServiceRepository->addChatService(account(), CurrentChatService);
 
 	kdebugf2();
 }
