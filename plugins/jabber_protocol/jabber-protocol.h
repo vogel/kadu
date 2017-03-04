@@ -48,6 +48,8 @@ class PluginInjectedFactory;
 class SystemInfo;
 class VersionService;
 
+class ChatServiceRepository;
+
 class QXmppClient;
 class QXmppMucManager;
 class QXmppTransferManager;
@@ -86,6 +88,7 @@ protected:
 	virtual void changePrivateMode() override;
 
 private:
+	QPointer<ChatServiceRepository> m_chatServiceRepository;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<SystemInfo> m_systemInfo;
 	QPointer<VersionService> m_versionService;
@@ -113,10 +116,12 @@ private:
 	bool m_contactsListReadOnly;
 
 private slots:
+	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
 	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
 	INJEQT_SET void setVersionService(VersionService *versionService);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 	void connectedToServer();
 	void disconenctedFromServer();

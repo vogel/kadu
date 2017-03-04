@@ -50,6 +50,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "chat/chat-service-repository.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "core/version-service.h"
@@ -86,6 +87,11 @@ JabberProtocol::~JabberProtocol()
 	OpenChatWithRunnerManager::instance()->unregisterRunner(m_jabberOpenChatWithRunner);
 	delete m_jabberOpenChatWithRunner;
 	m_jabberOpenChatWithRunner = 0;
+}
+
+void JabberProtocol::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
+{
+	m_chatServiceRepository = chatServiceRepository;
 }
 
 void JabberProtocol::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
@@ -184,6 +190,13 @@ void JabberProtocol::init()
 
 	m_jabberOpenChatWithRunner = m_pluginInjectedFactory->makeInjected<JabberOpenChatWithRunner>(account());
 	OpenChatWithRunnerManager::instance()->registerRunner(m_jabberOpenChatWithRunner);
+
+	m_chatServiceRepository->addChatService(account(), chatService);
+}
+
+void JabberProtocol::done()
+{
+	m_chatServiceRepository->removeChatService(account());
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)

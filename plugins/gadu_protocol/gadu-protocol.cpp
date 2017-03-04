@@ -35,6 +35,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-service-repository.h"
 #include "chat/chat.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -98,6 +99,11 @@ GaduProtocol::~GaduProtocol()
 void GaduProtocol::setAvatarManager(AvatarManager *avatarManager)
 {
 	m_avatarManager = avatarManager;
+}
+
+void GaduProtocol::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
+{
+	m_chatServiceRepository = chatServiceRepository;
 }
 
 void GaduProtocol::setConfiguration(Configuration *configuration)
@@ -191,7 +197,14 @@ void GaduProtocol::init()
 	OpenChatRunner = m_pluginInjectedFactory->makeInjected<GaduOpenChatWithRunner>(account());
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 
+	m_chatServiceRepository->addChatService(account(), GaduChatService);
+
 	kdebugf2();
+}
+
+void GaduProtocol::done()
+{
+	m_chatServiceRepository->removeChatService(account());
 }
 
 int GaduProtocol::maxDescriptionLength()
