@@ -36,6 +36,7 @@
 #include <qxmpp/QXmppClient.h>
 
 class JabberChangePasswordService;
+class JabberChatService;
 class JabberErrorService;
 class JabberOpenChatWithRunner;
 class JabberPresenceService;
@@ -47,6 +48,8 @@ class JabberStreamDebugService;
 class PluginInjectedFactory;
 class SystemInfo;
 class VersionService;
+
+class ChatServiceRepository;
 
 class QXmppClient;
 class QXmppMucManager;
@@ -86,11 +89,13 @@ protected:
 	virtual void changePrivateMode() override;
 
 private:
+	QPointer<ChatServiceRepository> m_chatServiceRepository;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<SystemInfo> m_systemInfo;
 	QPointer<VersionService> m_versionService;
 
 	JabberAvatarService *m_avatarService;
+	JabberChatService *m_chatService;
 	JabberChangePasswordService *m_changePasswordService;
 	JabberContactPersonalInfoService *m_contactPersonalInfoService;
 	JabberErrorService *m_errorService;
@@ -113,10 +118,12 @@ private:
 	bool m_contactsListReadOnly;
 
 private slots:
+	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
 	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
 	INJEQT_SET void setVersionService(VersionService *versionService);
 	INJEQT_INIT void init();
+	INJEQT_DONE void done();
 
 	void connectedToServer();
 	void disconenctedFromServer();

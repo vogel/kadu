@@ -50,6 +50,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "chat/chat-service-repository.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "core/version-service.h"
@@ -86,6 +87,11 @@ JabberProtocol::~JabberProtocol()
 	OpenChatWithRunnerManager::instance()->unregisterRunner(m_jabberOpenChatWithRunner);
 	delete m_jabberOpenChatWithRunner;
 	m_jabberOpenChatWithRunner = 0;
+}
+
+void JabberProtocol::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
+{
+	m_chatServiceRepository = chatServiceRepository;
 }
 
 void JabberProtocol::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
@@ -153,10 +159,10 @@ void JabberProtocol::init()
 
 	m_avatarService = pluginInjectedFactory()->makeInjected<JabberAvatarService>(m_client, account(), this);
 
-	auto chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
-	chatService->setChatStateService(chatStateService);
-	chatService->setResourceService(m_resourceService);
-	chatService->setRoomChatService(m_roomChatService);
+	m_chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
+	m_chatService->setChatStateService(chatStateService);
+	m_chatService->setResourceService(m_resourceService);
+	m_chatService->setRoomChatService(m_roomChatService);
 
 	m_contactPersonalInfoService = pluginInjectedFactory()->makeInjected<JabberContactPersonalInfoService>(account(), this);
 	m_personalInfoService = pluginInjectedFactory()->makeInjected<JabberPersonalInfoService>(account(), this);
@@ -176,7 +182,7 @@ void JabberProtocol::init()
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 
-	setChatService(chatService);
+	setChatService(m_chatService);
 	setChatStateService(chatStateService);
 	setRosterService(rosterService);
 
@@ -184,6 +190,13 @@ void JabberProtocol::init()
 
 	m_jabberOpenChatWithRunner = m_pluginInjectedFactory->makeInjected<JabberOpenChatWithRunner>(account());
 	OpenChatWithRunnerManager::instance()->registerRunner(m_jabberOpenChatWithRunner);
+
+	m_chatServiceRepository->addChatService(m_chatService);
+}
+
+void JabberProtocol::done()
+{
+	m_chatServiceRepository->removeChatService(m_chatService);
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
