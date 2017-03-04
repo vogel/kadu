@@ -10,6 +10,7 @@ set (chat_SRCS
 	chat-manager-impl.cpp
 	chat-manager.cpp
 	chat-module.cpp
+	chat-service-repository.cpp
 	chat-shared.cpp
 	chat-storage.cpp
 	open-chat-repository.cpp
