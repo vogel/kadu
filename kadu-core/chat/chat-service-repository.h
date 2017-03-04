@@ -20,6 +20,7 @@
 #pragma once
 
 #include "accounts/account.h"
+#include "misc/iterator.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
@@ -31,23 +32,38 @@ class KADUAPI ChatServiceRepository : public QObject
 {
 	Q_OBJECT
 
-	using Storage = std::map<Account, ChatService *>;
-
 public:
+	using Storage = std::map<Account, ChatService *>;
+	using WrappedIterator = Storage::iterator;
+	using Iterator = IteratorWrapper<WrappedIterator, ChatService *>;
+
 	Q_INVOKABLE explicit ChatServiceRepository(QObject *parent = nullptr) : QObject{parent} {}
 	virtual ~ChatServiceRepository() = default;
+
+	Iterator begin();
+	Iterator end();
 
 	ChatService * chatService(const Account &account) const;
 
 public slots:
-	void addChatService(const Account &account, ChatService *chatService);
-	void removeChatService(const Account &account);
+	void addChatService(ChatService *chatService);
+	void removeChatService(ChatService *chatService);
 
 signals:
-	void chatServiceAdded(const Account &account, ChatService *chatService);
-	void chatServiceRemoved(const Account &account, ChatService *chatService);
+	void chatServiceAdded(ChatService *chatService);
+	void chatServiceRemoved(ChatService *chatService);
 
 private:
 	Storage m_chatServices;
 
 };
+
+inline ChatServiceRepository::Iterator begin(ChatServiceRepository *chatWidgetRepository)
+{
+	return chatWidgetRepository->begin();
+}
+
+inline ChatServiceRepository::Iterator end(ChatServiceRepository *chatWidgetRepository)
+{
+	return chatWidgetRepository->end();
+}

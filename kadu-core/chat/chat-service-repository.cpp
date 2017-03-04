@@ -20,7 +20,29 @@
 #include "chat-service-repository.h"
 #include "chat-service-repository.moc"
 
+#include "protocols/services/chat-service.h"
+
 #include <cassert>
+
+namespace
+{
+
+ChatService * converter(ChatServiceRepository::WrappedIterator iterator)
+{
+	return iterator->second;
+}
+
+}
+
+ChatServiceRepository::Iterator ChatServiceRepository::begin()
+{
+	return Iterator{m_chatServices.begin(), converter};
+}
+
+ChatServiceRepository::Iterator ChatServiceRepository::end()
+{
+	return Iterator{m_chatServices.end(), converter};
+}
 
 ChatService * ChatServiceRepository::chatService(const Account &account) const
 {
@@ -30,20 +52,19 @@ ChatService * ChatServiceRepository::chatService(const Account &account) const
 			: it->second;
 }
 
-void ChatServiceRepository::addChatService(const Account &account, ChatService *chatService)
+void ChatServiceRepository::addChatService(ChatService *chatService)
 {
-	assert(m_chatServices.find(account) == std::end(m_chatServices));
+	assert(m_chatServices.find(chatService->account()) == std::end(m_chatServices));
 
-	m_chatServices.insert(std::make_pair(account, chatService));
-	emit chatServiceAdded(account, chatService);
+	m_chatServices.insert(std::make_pair(chatService->account(), chatService));
+	emit chatServiceAdded(chatService);
 }
 
-void ChatServiceRepository::removeChatService(const Account &account)
+void ChatServiceRepository::removeChatService(ChatService *chatService)
 {
-	auto it = m_chatServices.find(account);
+	auto it = m_chatServices.find(chatService->account());
 	assert(it != std::end(m_chatServices));
 
-	auto chatService = it->second;
 	m_chatServices.erase(it);
-	emit chatServiceRemoved(account, chatService);
+	emit chatServiceRemoved(chatService);
 }
