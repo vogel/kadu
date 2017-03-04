@@ -20,8 +20,6 @@
 #include "chat-service-repository.h"
 #include "chat-service-repository.moc"
 
-#include "accounts/account.h"
-
 #include <cassert>
 
 ChatService * ChatServiceRepository::chatService(const Account &account) const

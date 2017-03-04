@@ -19,13 +19,15 @@
 
 #pragma once
 
+#include "accounts/account.h"
+#include "exports.h"
+
 #include <QtCore/QObject>
 #include <map>
 
-class Account;
 class ChatService;
 
-class ChatServiceRepository : public QObject
+class KADUAPI ChatServiceRepository : public QObject
 {
 	Q_OBJECT
 
