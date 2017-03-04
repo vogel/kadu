@@ -186,7 +186,6 @@ void GaduProtocol::init()
 	connect(rosterService, SIGNAL(contactRemoved(Contact)), CurrentNotifyService, SLOT(contactRemoved(Contact)));
 	connect(rosterService, SIGNAL(contactUpdatedLocally(Contact)), CurrentNotifyService, SLOT(contactUpdatedLocally(Contact)));
 
-	setChatService(CurrentChatService);
 	setChatStateService(CurrentChatStateService);
 	setRosterService(rosterService);
 
