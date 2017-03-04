@@ -37,7 +37,6 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-state-machine.h"
 #include "roster/roster-service.h"
-#include "services/chat-service.h"
 #include "services/chat-state-service.h"
 #include "status/status-type-manager.h"
 #include "status/status.h"
@@ -52,11 +51,6 @@ Protocol::Protocol(Account account, ProtocolFactory *factory) :
 
 Protocol::~Protocol()
 {
-}
-
-void Protocol::setChatService(ChatService * const chatService)
-{
-	m_chatService = chatService;
 }
 
 void Protocol::setChatStateService(ChatStateService * const chatStateService)
@@ -123,11 +117,6 @@ PluginInjectedFactory *Protocol::pluginInjectedFactory() const
 StatusTypeManager * Protocol::statusTypeManager() const
 {
 	return m_statusTypeManager;
-}
-
-ChatService * Protocol::chatService()
-{
-	return m_chatService.data();
 }
 
 ChatStateService * Protocol::chatStateService()

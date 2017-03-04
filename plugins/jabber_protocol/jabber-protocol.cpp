@@ -182,7 +182,6 @@ void JabberProtocol::init()
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 
-	setChatService(m_chatService);
 	setChatStateService(chatStateService);
 	setRosterService(rosterService);
 
