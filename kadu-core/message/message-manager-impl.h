@@ -20,7 +20,6 @@
 
 #pragma once
 
-#include "accounts/accounts-aware-object.h"
 #include "accounts/account.h"
 #include "message/message-manager.h"
 #include "message/message.h"
@@ -29,12 +28,13 @@
 #include <QtCore/QObject>
 #include <injeqt/injeqt.h>
 
-class AccountManager;
+class ChatServiceRepository;
+class ChatService;
 class MessageFilterService;
 class MessageStorage;
 class MessageTransformerService;
 
-class KADUAPI MessageManagerImpl : public MessageManager, public AccountsAwareObject
+class KADUAPI MessageManagerImpl : public MessageManager
 {
 	Q_OBJECT
 
@@ -45,12 +45,8 @@ public:
 	virtual bool sendMessage(const Chat &chat, NormalizedHtmlString content, bool silent = false) override;
 	virtual bool sendRawMessage(const Chat &chat, const QByteArray &content) override;
 
-protected:
-	virtual void accountAdded(Account account) override;
-	virtual void accountRemoved(Account account) override;
-
 private:
-	QPointer<AccountManager> m_accountManager;
+	QPointer<ChatServiceRepository> m_chatServiceRepository;
 	QPointer<MessageFilterService> m_messageFilterService;
 	QPointer<MessageStorage> m_messageStorage;
 	QPointer<MessageTransformerService> m_messageTransformerService;
@@ -63,8 +59,11 @@ private:
 	 */
 	Message createOutgoingMessage(const Chat &chat, NormalizedHtmlString content);
 
+	void addChatService(ChatService *chatService);
+	void removeChatService(ChatService *chatService);
+
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
 
 	/**
 	 * @short Set message filter service for this service.
@@ -96,8 +95,6 @@ private slots:
 	 * This slot emits messageReceived and unreadMessageAdded signals.
 	 */
 	void messageReceivedSlot(const Message &message);
-
-	void protocolHandlerChanged(Account account);
 
 };
 

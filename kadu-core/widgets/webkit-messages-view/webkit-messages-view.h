@@ -33,6 +33,7 @@
 class ChatConfigurationHolder;
 class ChatImage;
 class ChatImageRequestService;
+class ChatServiceRepository;
 class ChatStyleManager;
 class ChatStyleRendererConfiguration;
 class ChatStyleRendererFactory;
@@ -95,6 +96,7 @@ protected:
 private:
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatImageRequestService> m_chatImageRequestService;
+	QPointer<ChatServiceRepository> m_chatServiceRepository;
 	QPointer<ChatStyleManager> m_chatStyleManager;
 	QPointer<InjectedFactory> m_injectedFactory;
 	QPointer<PathsProvider> m_pathsProvider;
@@ -117,6 +119,7 @@ private:
 private slots:
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
+	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
 	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
 	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);

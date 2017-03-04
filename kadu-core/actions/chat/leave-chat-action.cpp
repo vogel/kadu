@@ -22,9 +22,9 @@
 #include "leave-chat-action.h"
 
 #include "actions/action-context.h"
+#include "chat/chat-service-repository.h"
 #include "chat/chat.h"
 #include "icons/icons-manager.h"
-#include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 #include "widgets/chat-widget/chat-widget-repository.h"
@@ -42,6 +42,11 @@ LeaveChatAction::LeaveChatAction(QObject *parent) :
 
 LeaveChatAction::~LeaveChatAction()
 {
+}
+
+void LeaveChatAction::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
+{
+	m_chatServiceRepository = chatServiceRepository;
 }
 
 void LeaveChatAction::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -62,12 +67,7 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chat)
 		return;
 
-	auto account = chat.chatAccount();
-	auto protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	auto chatService = protocol->chatService();
+	auto chatService = m_chatServiceRepository->chatService(chat.chatAccount());
 	if (!chatService)
 		return;
 

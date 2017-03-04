@@ -19,11 +19,11 @@
 
 #include "accounts/account.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-service-repository.h"
 #include "chat/chat-storage.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "message/message-manager.h"
-#include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 
 #include "otr-op-data.h"
@@ -84,6 +84,11 @@ void OtrMessageService::setChatManager(ChatManager *chatManager)
 	m_chatManager = chatManager;
 }
 
+void OtrMessageService::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
+{
+	m_chatServiceRepository = chatServiceRepository;
+}
+
 void OtrMessageService::setChatStorage(ChatStorage *chatStorage)
 {
 	m_chatStorage = chatStorage;
@@ -105,10 +110,7 @@ void OtrMessageService::injectMessage(const Contact &contact, const QByteArray &
 
 int OtrMessageService::maxMessageSize(const Account &account) const
 {
-	Protocol *protocolHandler = account.protocolHandler();
-	if (!protocolHandler)
-		return 0;
-	ChatService *chatService = protocolHandler->chatService();
+	auto chatService = m_chatServiceRepository->chatService(account);
 	if (!chatService)
 		return 0;
 	return chatService->maxMessageLength();
