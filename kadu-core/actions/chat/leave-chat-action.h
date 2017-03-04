@@ -25,6 +25,7 @@
 
 #include <injeqt/injeqt.h>
 
+class ChatServiceRepository;
 class ChatWidgetRepository;
 class IconsManager;
 
@@ -41,10 +42,12 @@ protected:
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
 private:
+	QPointer<ChatServiceRepository> m_chatServiceRepository;
 	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QPointer<IconsManager> m_iconsManager;
 
 private slots:
+	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
 	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 

@@ -21,7 +21,7 @@
 
 #include "message-manager-impl.h"
 
-#include "accounts/account-manager.h"
+#include "chat/chat-service-repository.h"
 #include "message/message-filter-service.h"
 #include "message/message-storage.h"
 #include "protocols/protocol.h"
@@ -37,9 +37,9 @@ MessageManagerImpl::~MessageManagerImpl()
 {
 }
 
-void MessageManagerImpl::setAccountManager(AccountManager *accountManager)
+void MessageManagerImpl::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
 {
-	m_accountManager = accountManager;
+	m_chatServiceRepository = chatServiceRepository;
 }
 
 void MessageManagerImpl::setMessageFilterService(MessageFilterService *messageFilterService)
@@ -59,39 +59,40 @@ void MessageManagerImpl::setMessageTransformerService(MessageTransformerService 
 
 void MessageManagerImpl::init()
 {
-	triggerAllAccountsAdded(m_accountManager);
+	connect(m_chatServiceRepository, &ChatServiceRepository::chatServiceAdded,
+			this, &MessageManagerImpl::addChatService);
+	connect(m_chatServiceRepository, &ChatServiceRepository::chatServiceAdded,
+			this, &MessageManagerImpl::removeChatService);
+
+	for (auto chatService : m_chatServiceRepository)
+		addChatService(chatService);
 }
 
 void MessageManagerImpl::done()
 {
-	triggerAllAccountsRemoved(m_accountManager);
+	for (auto chatService : m_chatServiceRepository)
+		removeChatService(chatService);
+
+	connect(m_chatServiceRepository, &ChatServiceRepository::chatServiceAdded,
+			this, &MessageManagerImpl::addChatService);
+	connect(m_chatServiceRepository, &ChatServiceRepository::chatServiceAdded,
+			this, &MessageManagerImpl::removeChatService);
 }
 
-void MessageManagerImpl::accountAdded(Account account)
+void MessageManagerImpl::addChatService(ChatService *chatService)
 {
-	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
-	protocolHandlerChanged(account);
+	connect(chatService, SIGNAL(messageReceived(const Message &)),
+			this, SLOT(messageReceivedSlot(const Message &)));
+	connect(chatService, SIGNAL(messageSent(const Message &)),
+			this, SIGNAL(messageSent(const Message &)));
 }
 
-void MessageManagerImpl::accountRemoved(Account account)
+void MessageManagerImpl::removeChatService(ChatService *chatService)
 {
-	disconnect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
-	protocolHandlerChanged(account);
-}
-
-void MessageManagerImpl::protocolHandlerChanged(Account account)
-{
-	if (account.protocolHandler())
-	{
-		auto chatService = account.protocolHandler()->chatService();
-		if (!chatService)
-			return;
-
-		connect(chatService, SIGNAL(messageReceived(const Message &)),
-				this, SLOT(messageReceivedSlot(const Message &)));
-		connect(chatService, SIGNAL(messageSent(const Message &)),
-				this, SIGNAL(messageSent(const Message &)));
-	}
+	disconnect(chatService, SIGNAL(messageReceived(const Message &)),
+			this, SLOT(messageReceivedSlot(const Message &)));
+	disconnect(chatService, SIGNAL(messageSent(const Message &)),
+			this, SIGNAL(messageSent(const Message &)));
 }
 
 void MessageManagerImpl::messageReceivedSlot(const Message &message)
@@ -122,8 +123,8 @@ Message MessageManagerImpl::createOutgoingMessage(const Chat &chat, NormalizedHt
 
 bool MessageManagerImpl::sendMessage(const Chat &chat, NormalizedHtmlString htmlContent, bool silent)
 {
-	Protocol *protocol = chat.chatAccount().protocolHandler();
-	if (!protocol || !protocol->chatService())
+	auto chatService = m_chatServiceRepository->chatService(chat.chatAccount());
+	if (!chatService)
 		return false;
 
 	Message message = createOutgoingMessage(chat, std::move(htmlContent));
@@ -134,7 +135,7 @@ bool MessageManagerImpl::sendMessage(const Chat &chat, NormalizedHtmlString html
 			? m_messageTransformerService.data()->transform(message)
 			: message;
 
-	bool sent = protocol->chatService()->sendMessage(transformedMessage);
+	bool sent = chatService->sendMessage(transformedMessage);
 	if (sent && !silent)
 		emit messageSent(transformedMessage);
 
@@ -143,11 +144,11 @@ bool MessageManagerImpl::sendMessage(const Chat &chat, NormalizedHtmlString html
 
 bool MessageManagerImpl::sendRawMessage(const Chat &chat, const QByteArray &content)
 {
-	Protocol *protocol = chat.chatAccount().protocolHandler();
-	if (!protocol || !protocol->chatService())
+	auto chatService = m_chatServiceRepository->chatService(chat.chatAccount());
+	if (chatService)
+		return chatService->sendRawMessage(chat, content);
+	else
 		return false;
-
-	return protocol->chatService()->sendRawMessage(chat, content);
 }
 
 #include "message-manager-impl.moc"

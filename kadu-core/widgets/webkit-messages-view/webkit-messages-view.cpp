@@ -23,6 +23,7 @@
 #include "chat-style/engine/chat-style-renderer-configuration.h"
 #include "chat-style/engine/chat-style-renderer-factory.h"
 #include "chat-style/engine/chat-style-renderer.h"
+#include "chat/chat-service-repository.h"
 #include "contacts/contact-set.h"
 #include "core/injected-factory.h"
 #include "gui/configuration/chat-configuration-holder.h"
@@ -62,6 +63,11 @@ void WebkitMessagesView::setChatConfigurationHolder(ChatConfigurationHolder *cha
 void WebkitMessagesView::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
 {
 	m_chatImageRequestService = chatImageRequestService;
+}
+
+void WebkitMessagesView::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
+{
+	m_chatServiceRepository = chatServiceRepository;
 }
 
 void WebkitMessagesView::setChatStyleManager(ChatStyleManager *chatStyleManager)
@@ -152,13 +158,10 @@ void WebkitMessagesView::updateAtBottom()
 
 void WebkitMessagesView::connectChat()
 {
-	if (m_chat.isNull() || m_chat.chatAccount().isNull() || !m_chat.chatAccount().protocolHandler())
-		return;
-
 	for (auto const &contact : m_chat.contacts())
 		connect(contact, SIGNAL(buddyUpdated()), this, SLOT(refreshView()));
 
-	auto chatService = m_chat.chatAccount().protocolHandler()->chatService();
+	auto chatService = m_chatServiceRepository->chatService(m_chat.chatAccount());
 	if (chatService)
 		connect(chatService, SIGNAL(sentMessageStatusChanged(const Message &)),
 		        this, SLOT(sentMessageStatusChanged(const Message &)));
@@ -179,7 +182,7 @@ void WebkitMessagesView::disconnectChat()
 	if (chatImageService)
 		disconnect(chatImageService, nullptr, this, nullptr);
 
-	auto chatService = m_chat.chatAccount().protocolHandler()->chatService();
+	auto chatService = m_chatServiceRepository->chatService(m_chat.chatAccount());
 	if (chatService)
 		disconnect(chatService, nullptr, this, nullptr);
 }
