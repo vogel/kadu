@@ -71,10 +71,6 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chatService)
 		return;
 
-	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
-	if (!chatWidget)
-		return;
-
 	auto dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
 		tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"),
 		widget);
@@ -84,7 +80,10 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 		return;
 
 	chatService->leaveChat(chat);
-	chatWidget->requestClose();
+
+	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
+	if (chatWidget)
+		chatWidget->requestClose();
 }
 
 #include "moc_leave-chat-action.cpp"
