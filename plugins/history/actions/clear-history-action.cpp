@@ -74,14 +74,8 @@ void ClearHistoryAction::updateActionState(Action *action)
 		return;
 
 	for (auto const &contact : contacts)
-	{
 		if (m_myself->buddy() == contact.ownerBuddy())
 			return;
-
-		auto account = contact.contactAccount();
-		if (!account.protocolHandler() || !account.protocolHandler()->chatService())
-			return;
-	}
 
 	action->setEnabled(true);
 }
