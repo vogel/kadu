@@ -36,6 +36,7 @@
 #include <qxmpp/QXmppClient.h>
 
 class JabberChangePasswordService;
+class JabberChatService;
 class JabberErrorService;
 class JabberOpenChatWithRunner;
 class JabberPresenceService;
@@ -94,6 +95,7 @@ private:
 	QPointer<VersionService> m_versionService;
 
 	JabberAvatarService *m_avatarService;
+	JabberChatService *m_chatService;
 	JabberChangePasswordService *m_changePasswordService;
 	JabberContactPersonalInfoService *m_contactPersonalInfoService;
 	JabberErrorService *m_errorService;

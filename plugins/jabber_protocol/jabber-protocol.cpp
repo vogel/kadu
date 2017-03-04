@@ -159,10 +159,10 @@ void JabberProtocol::init()
 
 	m_avatarService = pluginInjectedFactory()->makeInjected<JabberAvatarService>(m_client, account(), this);
 
-	auto chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
-	chatService->setChatStateService(chatStateService);
-	chatService->setResourceService(m_resourceService);
-	chatService->setRoomChatService(m_roomChatService);
+	m_chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
+	m_chatService->setChatStateService(chatStateService);
+	m_chatService->setResourceService(m_resourceService);
+	m_chatService->setRoomChatService(m_roomChatService);
 
 	m_contactPersonalInfoService = pluginInjectedFactory()->makeInjected<JabberContactPersonalInfoService>(account(), this);
 	m_personalInfoService = pluginInjectedFactory()->makeInjected<JabberPersonalInfoService>(account(), this);
@@ -182,7 +182,7 @@ void JabberProtocol::init()
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 
-	setChatService(chatService);
+	setChatService(m_chatService);
 	setChatStateService(chatStateService);
 	setRosterService(rosterService);
 
@@ -191,12 +191,12 @@ void JabberProtocol::init()
 	m_jabberOpenChatWithRunner = m_pluginInjectedFactory->makeInjected<JabberOpenChatWithRunner>(account());
 	OpenChatWithRunnerManager::instance()->registerRunner(m_jabberOpenChatWithRunner);
 
-	m_chatServiceRepository->addChatService(account(), chatService);
+	m_chatServiceRepository->addChatService(m_chatService);
 }
 
 void JabberProtocol::done()
 {
-	m_chatServiceRepository->removeChatService(account());
+	m_chatServiceRepository->removeChatService(m_chatService);
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)

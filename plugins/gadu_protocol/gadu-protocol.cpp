@@ -197,14 +197,14 @@ void GaduProtocol::init()
 	OpenChatRunner = m_pluginInjectedFactory->makeInjected<GaduOpenChatWithRunner>(account());
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 
-	m_chatServiceRepository->addChatService(account(), CurrentChatService);
+	m_chatServiceRepository->addChatService(CurrentChatService);
 
 	kdebugf2();
 }
 
 void GaduProtocol::done()
 {
-	m_chatServiceRepository->removeChatService(account());
+	m_chatServiceRepository->removeChatService(CurrentChatService);
 }
 
 int GaduProtocol::maxDescriptionLength()
