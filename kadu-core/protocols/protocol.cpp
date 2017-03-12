@@ -53,11 +53,6 @@ Protocol::~Protocol()
 {
 }
 
-void Protocol::setChatStateService(ChatStateService * const chatStateService)
-{
-	m_chatStateService = chatStateService;
-}
-
 void Protocol::setContactManager(ContactManager *contactManager)
 {
 	m_contactManager = contactManager;
@@ -117,11 +112,6 @@ PluginInjectedFactory *Protocol::pluginInjectedFactory() const
 StatusTypeManager * Protocol::statusTypeManager() const
 {
 	return m_statusTypeManager;
-}
-
-ChatStateService * Protocol::chatStateService()
-{
-	return m_chatStateService.data();
 }
 
 RosterService * Protocol::rosterService() const

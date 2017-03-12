@@ -50,8 +50,9 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
-#include "chat/chat-service-repository.h"
 #include "chat/chat-manager.h"
+#include "chat/chat-service-repository.h"
+#include "chat/chat-state-service-repository.h"
 #include "contacts/contact-manager.h"
 #include "core/version-service.h"
 #include "misc/memory.h"
@@ -92,6 +93,11 @@ JabberProtocol::~JabberProtocol()
 void JabberProtocol::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
 {
 	m_chatServiceRepository = chatServiceRepository;
+}
+
+void JabberProtocol::setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository)
+{
+	m_chatStateServiceRepository = chatStateServiceRepository;
 }
 
 void JabberProtocol::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
@@ -154,13 +160,13 @@ void JabberProtocol::init()
 
 	m_roomChatService = pluginInjectedFactory()->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account(), this);
 
-	auto chatStateService = pluginInjectedFactory()->makeInjected<JabberChatStateService>(m_client, account(), this);
-	chatStateService->setResourceService(m_resourceService);
+	m_chatStateService = pluginInjectedFactory()->makeInjected<JabberChatStateService>(m_client, account(), this);
+	m_chatStateService->setResourceService(m_resourceService);
 
 	m_avatarService = pluginInjectedFactory()->makeInjected<JabberAvatarService>(m_client, account(), this);
 
 	m_chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
-	m_chatService->setChatStateService(chatStateService);
+	m_chatService->setChatStateService(m_chatStateService);
 	m_chatService->setResourceService(m_resourceService);
 	m_chatService->setRoomChatService(m_roomChatService);
 
@@ -182,7 +188,6 @@ void JabberProtocol::init()
 
 	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 
-	setChatStateService(chatStateService);
 	setRosterService(rosterService);
 
 	m_subscriptionService = pluginInjectedFactory()->makeInjected<JabberSubscriptionService>(&m_client->rosterManager(), this);
@@ -191,10 +196,12 @@ void JabberProtocol::init()
 	OpenChatWithRunnerManager::instance()->registerRunner(m_jabberOpenChatWithRunner);
 
 	m_chatServiceRepository->addChatService(m_chatService);
+	m_chatStateServiceRepository->addChatStateService(m_chatStateService);
 }
 
 void JabberProtocol::done()
 {
+	m_chatStateServiceRepository->removeChatStateService(m_chatStateService);
 	m_chatServiceRepository->removeChatService(m_chatService);
 }
 

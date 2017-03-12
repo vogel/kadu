@@ -37,6 +37,7 @@
 
 class JabberChangePasswordService;
 class JabberChatService;
+class JabberChatStateService;
 class JabberErrorService;
 class JabberOpenChatWithRunner;
 class JabberPresenceService;
@@ -50,6 +51,7 @@ class SystemInfo;
 class VersionService;
 
 class ChatServiceRepository;
+class ChatStateServiceRepository;
 
 class QXmppClient;
 class QXmppMucManager;
@@ -90,12 +92,14 @@ protected:
 
 private:
 	QPointer<ChatServiceRepository> m_chatServiceRepository;
+	QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<SystemInfo> m_systemInfo;
 	QPointer<VersionService> m_versionService;
 
 	JabberAvatarService *m_avatarService;
 	JabberChatService *m_chatService;
+	JabberChatStateService *m_chatStateService;
 	JabberChangePasswordService *m_changePasswordService;
 	JabberContactPersonalInfoService *m_contactPersonalInfoService;
 	JabberErrorService *m_errorService;
@@ -119,6 +123,7 @@ private:
 
 private slots:
 	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
+	INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
 	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
 	INJEQT_SET void setVersionService(VersionService *versionService);

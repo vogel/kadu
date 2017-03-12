@@ -36,6 +36,7 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/chat-service-repository.h"
+#include "chat/chat-state-service-repository.h"
 #include "chat/chat.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -103,6 +104,11 @@ void GaduProtocol::setAvatarManager(AvatarManager *avatarManager)
 void GaduProtocol::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
 {
 	m_chatServiceRepository = chatServiceRepository;
+}
+
+void GaduProtocol::setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository)
+{
+	m_chatStateServiceRepository = chatStateServiceRepository;
 }
 
 void GaduProtocol::setConfiguration(Configuration *configuration)
@@ -185,7 +191,6 @@ void GaduProtocol::init()
 	connect(rosterService, SIGNAL(contactRemoved(Contact)), CurrentNotifyService, SLOT(contactRemoved(Contact)));
 	connect(rosterService, SIGNAL(contactUpdatedLocally(Contact)), CurrentNotifyService, SLOT(contactUpdatedLocally(Contact)));
 
-	setChatStateService(CurrentChatStateService);
 	setRosterService(rosterService);
 
 	configureServices();
@@ -196,12 +201,14 @@ void GaduProtocol::init()
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 
 	m_chatServiceRepository->addChatService(CurrentChatService);
+	m_chatStateServiceRepository->addChatStateService(CurrentChatStateService);
 
 	kdebugf2();
 }
 
 void GaduProtocol::done()
 {
+	m_chatStateServiceRepository->removeChatStateService(CurrentChatStateService);
 	m_chatServiceRepository->removeChatService(CurrentChatService);
 }
 

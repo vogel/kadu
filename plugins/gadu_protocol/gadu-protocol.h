@@ -49,6 +49,7 @@
 
 class AvatarManager;
 class ChatServiceRepository;
+class ChatStateServiceRepository;
 class Configuration;
 class GaduContactListHandler;
 class GaduDriveService;
@@ -90,6 +91,7 @@ public:
 private:
 	QPointer<AvatarManager> m_avatarManager;
 	QPointer<ChatServiceRepository> m_chatServiceRepository;
+	QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
 	QPointer<Configuration> m_configuration;
 	QPointer<GaduServersManager> m_gaduServersManager;
 	QPointer<IconsManager> m_iconsManager;
@@ -149,6 +151,7 @@ private:
 private slots:
 	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
 	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
+	INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
 	INJEQT_SET void setConfiguration(Configuration *configuration);
 	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);

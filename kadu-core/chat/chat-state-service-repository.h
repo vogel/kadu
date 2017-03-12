@@ -26,44 +26,44 @@
 #include <QtCore/QObject>
 #include <map>
 
-class ChatService;
+class ChatStateService;
 
-class KADUAPI ChatServiceRepository : public QObject
+class KADUAPI ChatStateServiceRepository : public QObject
 {
 	Q_OBJECT
 
 public:
-	using Storage = std::map<Account, ChatService *>;
+	using Storage = std::map<Account, ChatStateService *>;
 	using WrappedIterator = Storage::iterator;
-	using Iterator = IteratorWrapper<WrappedIterator, ChatService *>;
+	using Iterator = IteratorWrapper<WrappedIterator, ChatStateService *>;
 
-	Q_INVOKABLE explicit ChatServiceRepository(QObject *parent = nullptr) : QObject{parent} {}
-	virtual ~ChatServiceRepository() = default;
+	Q_INVOKABLE explicit ChatStateServiceRepository(QObject *parent = nullptr) : QObject{parent} {}
+	virtual ~ChatStateServiceRepository() = default;
 
 	Iterator begin();
 	Iterator end();
 
-	ChatService * chatService(const Account &account) const;
+	ChatStateService * chatStateService(const Account &account) const;
 
 public slots:
-	void addChatService(ChatService *chatService);
-	void removeChatService(ChatService *chatService);
+	void addChatStateService(ChatStateService *chatStateService);
+	void removeChatStateService(ChatStateService *chatStateService);
 
 signals:
-	void chatServiceAdded(ChatService *chatService);
-	void chatServiceRemoved(ChatService *chatService);
+	void chatStateServiceAdded(ChatStateService *chatStateService);
+	void chatStateServiceRemoved(ChatStateService *chatStateService);
 
 private:
-	Storage m_chatServices;
+	Storage m_chatStateServices;
 
 };
 
-inline ChatServiceRepository::Iterator begin(ChatServiceRepository *chatServiceRepository)
+inline ChatStateServiceRepository::Iterator begin(ChatStateServiceRepository *chatStateServiceRepository)
 {
-	return chatServiceRepository->begin();
+	return chatStateServiceRepository->begin();
 }
 
-inline ChatServiceRepository::Iterator end(ChatServiceRepository *chatServiceRepository)
+inline ChatStateServiceRepository::Iterator end(ChatStateServiceRepository *chatStateServiceRepository)
 {
-	return chatServiceRepository->end();
+	return chatStateServiceRepository->end();
 }

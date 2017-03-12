@@ -43,6 +43,7 @@ class BoldAction;
 class ChatConfigurationHolder;
 class ChatEditBoxSizeManager;
 class ChatEditBox;
+class ChatStateServiceRepository;
 class ChatTopBarContainerWidget;
 class ChatTopBarWidgetFactoryRepository;
 class ChatTypeManager;
@@ -74,6 +75,7 @@ class KADUAPI ChatWidgetImpl : public ChatWidget, public ConfigurationAwareObjec
 	QPointer<BoldAction> m_boldAction;
 	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
 	QPointer<ChatEditBoxSizeManager> m_chatEditBoxSizeManager;
+	QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
 	QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
 	QPointer<ChatTypeManager> m_chatTypeManager;
 	QPointer<ChatWidgetActions> m_chatWidgetActions;
@@ -121,6 +123,7 @@ private slots:
 	INJEQT_SET void setBoldAction(BoldAction *boldAction);
 	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
 	INJEQT_SET void setChatEditBoxSizeManager(ChatEditBoxSizeManager *chatEditBoxSizeManager);
+	INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
 	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
 	INJEQT_SET void setConfiguration(Configuration *configuration);

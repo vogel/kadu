@@ -25,6 +25,7 @@
 #include "actions/chat-widget/bold-action.h"
 #include "actions/chat-widget/italic-action.h"
 #include "actions/chat-widget/underline-action.h"
+#include "chat/chat-state-service-repository.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-set.h"
@@ -92,8 +93,6 @@ ChatWidgetImpl::~ChatWidgetImpl()
 	emit widgetDestroyed(CurrentChat);
 	emit widgetDestroyed(this);
 
-	if (currentProtocol() && currentProtocol()->chatStateService() && chat().contacts().toContact())
-		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatState::Gone);
 
 	CurrentChat.setOpen(false);
 }
@@ -116,6 +115,11 @@ void ChatWidgetImpl::setChatConfigurationHolder(ChatConfigurationHolder *chatCon
 void ChatWidgetImpl::setChatEditBoxSizeManager(ChatEditBoxSizeManager *chatEditBoxSizeManager)
 {
 	m_chatEditBoxSizeManager = chatEditBoxSizeManager;
+}
+
+void ChatWidgetImpl::setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository)
+{
+	m_chatStateServiceRepository = chatStateServiceRepository;
 }
 
 void ChatWidgetImpl::setChatTypeManager(ChatTypeManager *chatTypeManager)
@@ -190,9 +194,9 @@ void ChatWidgetImpl::init()
 	// icon for conference never changes
 	if (CurrentChat.contacts().count() == 1)
 	{
-		if (currentProtocol() && currentProtocol()->chatStateService())
-			connect(currentProtocol()->chatStateService(), SIGNAL(peerStateChanged(const Contact &, ChatState)),
-					this, SLOT(contactActivityChanged(const Contact &, ChatState)));
+		auto chatStateService = m_chatStateServiceRepository->chatStateService(chat().chatAccount());
+		connect(chatStateService, &ChatStateService::peerStateChanged,
+				this, &ChatWidgetImpl::contactActivityChanged);
 	}
 
 	connect(CurrentChat, SIGNAL(updated()), this, SLOT(chatUpdated()));
@@ -683,8 +687,9 @@ void ChatWidgetImpl::composingStopped()
 	ComposingTimer.stop();
 	IsComposing = false;
 
-	if (currentProtocol() && currentProtocol()->chatStateService() && chat().contacts().toContact())
-		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatState::Paused);
+	auto chatStateService = m_chatStateServiceRepository->chatStateService(chat().chatAccount());
+	if (chatStateService && chat().contacts().toContact())
+		chatStateService->sendState(chat().contacts().toContact(), ChatState::Paused);
 }
 
 void ChatWidgetImpl::checkComposing()
@@ -699,7 +704,8 @@ void ChatWidgetImpl::checkComposing()
 
 void ChatWidgetImpl::updateComposing()
 {
-	if (!currentProtocol() || !currentProtocol()->chatStateService())
+	auto chatStateService = m_chatStateServiceRepository->chatStateService(chat().chatAccount());
+	if (!chatStateService)
 		return;
 
 	if (!ComposingTimer.isActive())
@@ -710,7 +716,7 @@ void ChatWidgetImpl::updateComposing()
 			return;
 
 		if (chat().contacts().toContact())
-			currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatState::Composing);
+			chatStateService->sendState(chat().contacts().toContact(), ChatState::Composing);
 
 		ComposingTimer.start();
 	}

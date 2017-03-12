@@ -12,6 +12,7 @@ set (chat_SRCS
 	chat-module.cpp
 	chat-service-repository.cpp
 	chat-shared.cpp
+	chat-state-service-repository.cpp
 	chat-storage.cpp
 	open-chat-repository.cpp
 	open-chat-service.cpp

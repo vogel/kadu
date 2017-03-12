@@ -43,7 +43,6 @@ class AccountShared;
 class AvatarService;
 class BuddyListSerializationService;
 class ChatImageService;
-class ChatStateService;
 class ContactManager;
 class ContactPersonalInfoService;
 class ContactSet;
@@ -76,7 +75,6 @@ public:
 	virtual AvatarService * avatarService() { return 0; }
 	virtual BuddyListSerializationService * buddyListSerializationService() { return nullptr; }
 	virtual ChatImageService * chatImageService() { return 0; }
-	virtual ChatStateService * chatStateService();
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return 0; }
 	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual MultilogonService * multilogonService() { return 0; }
@@ -164,7 +162,6 @@ protected:
 	void doSetStatus(Status status);
 
 	// services
-	void setChatStateService(ChatStateService * const chatStateService);
 	void setRosterService(RosterService * const rosterService);
 
 protected slots:
@@ -177,7 +174,6 @@ protected slots:
 	void reconnect();
 
 private:
-	QPointer<ChatStateService> m_chatStateService;
 	QPointer<ContactManager> m_contactManager;
 	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 	QPointer<RosterService> m_rosterService;

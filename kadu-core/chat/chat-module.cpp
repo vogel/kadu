@@ -23,6 +23,7 @@
 #include "chat/chat-list-mime-data-service.h"
 #include "chat/chat-manager-impl.h"
 #include "chat/chat-service-repository.h"
+#include "chat/chat-state-service-repository.h"
 #include "chat/chat-storage.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/open-chat-repository.h"
@@ -42,6 +43,7 @@ ChatModule::ChatModule()
 	add_type<ChatListMimeDataService>();
 	add_type<ChatManagerImpl>();
 	add_type<ChatServiceRepository>();
+	add_type<ChatStateServiceRepository>();
 	add_type<ChatStorage>();
 	add_type<ChatTypeBuddy>();
 	add_type<ChatTypeContactSet>();
