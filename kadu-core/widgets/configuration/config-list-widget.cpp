@@ -27,8 +27,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-list-widget.h"
 
-#include "debug.h"
-
 ConfigListWidget::ConfigListWidget(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QListWidget(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
@@ -76,8 +74,6 @@ void ConfigListWidget::setCurrentItem(const QString &currentItem)
 
 void ConfigListWidget::createWidgets()
 {
-	kdebugf();
-
 	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this, Qt::AlignRight | Qt::AlignTop);
 

@@ -33,7 +33,6 @@
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
-#include "debug.h"
 
 #include "avatar-manager.h"
 

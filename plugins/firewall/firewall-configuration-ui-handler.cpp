@@ -31,7 +31,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
-#include "debug.h"
 
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QLabel>
@@ -164,15 +163,11 @@ void FirewallConfigurationUiHandler::mainConfigurationWindowApplied()
 
 void FirewallConfigurationUiHandler::left(QListWidgetItem *item)
 {
-	kdebugf();
-
 	AllList->addItem(new QListWidgetItem(*item));
 	SecureList->removeItemWidget(item);
 	delete item;
 
 	AllList->sortItems();
-
-	kdebugf2();
 }
 
 void FirewallConfigurationUiHandler::allLeft()
@@ -191,15 +186,11 @@ void FirewallConfigurationUiHandler::allLeft()
 
 void FirewallConfigurationUiHandler::right(QListWidgetItem *item)
 {
-	kdebugf();
-
 	SecureList->addItem(new QListWidgetItem(*item));
 	AllList->removeItemWidget(item);
 	delete item;
 
 	SecureList->sortItems();
-
-	kdebugf2();
 }
 
 void FirewallConfigurationUiHandler::allRight()

@@ -27,8 +27,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-preview.h"
 
-#include "debug.h"
-
 ConfigPreview::ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: Preview(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
@@ -48,8 +46,6 @@ ConfigPreview::~ConfigPreview()
 
 void ConfigPreview::createWidgets()
 {
-	kdebugf();
-
 	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this, Qt::AlignRight | Qt::AlignTop);
 }

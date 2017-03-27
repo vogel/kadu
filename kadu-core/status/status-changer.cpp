@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
-
 #include "status-changer.h"
 
 StatusChanger::StatusChanger(int priority, QObject *parent) :

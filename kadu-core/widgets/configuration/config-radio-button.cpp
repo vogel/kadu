@@ -27,8 +27,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-radio-button.h"
 
-#include "debug.h"
-
 ConfigRadioButton::ConfigRadioButton(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QRadioButton(widgetCaption, parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
@@ -42,8 +40,6 @@ ConfigRadioButton::ConfigRadioButton(ConfigGroupBox *parentConfigGroupBox, Confi
 
 void ConfigRadioButton::createWidgets()
 {
-	kdebugf();
-
 	setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
 	parentConfigGroupBox->addWidget(this, true);
 

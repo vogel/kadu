@@ -42,7 +42,6 @@
 #include "contacts/contact-manager.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "misc.h"
 

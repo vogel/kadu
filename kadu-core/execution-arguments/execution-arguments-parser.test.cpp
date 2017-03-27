@@ -31,10 +31,6 @@ private slots:
 	void shouldCreateDefaultArgumentsWhenNonePassed();
 	void shouldProperlyParseQueryVersion();
 	void shouldProperlyParseQueryUsage();
-	void shouldProperlyParseValidDebugMask();
-	void shouldIgnoreInvalidDebugMask();
-	void shouldIgnoreEmptyDebugMask();
-	void shouldAcceptLastValidDebugMask();
 	void shouldProperlyParseProfileDirectory();
 	void shouldIgnoreEmptyProfileDirectory();
 	void shouldAcceptLastProfileDirectory();
@@ -52,7 +48,6 @@ void ExcutionArgumentsParserTest::shouldCreateDefaultArgumentsWhenNonePassed()
 
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{});
 	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
@@ -65,7 +60,6 @@ void ExcutionArgumentsParserTest::shouldProperlyParseQueryVersion()
 
 	QCOMPARE(executionArguments.queryVersion(), true);
 	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{});
 	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
@@ -78,59 +72,6 @@ void ExcutionArgumentsParserTest::shouldProperlyParseQueryUsage()
 
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), true);
-	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.profileDirectory(), QString{});
-	QCOMPARE(executionArguments.openIds(), QStringList{});
-}
-
-void ExcutionArgumentsParserTest::shouldProperlyParseValidDebugMask()
-{
-	auto arguments = QStringList{} << "--debug" << "126";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
-
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{"126"});
-	QCOMPARE(executionArguments.profileDirectory(), QString{});
-	QCOMPARE(executionArguments.openIds(), QStringList{});
-}
-
-void ExcutionArgumentsParserTest::shouldIgnoreEmptyDebugMask()
-{
-	auto arguments = QStringList{} << "--debug";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
-
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.profileDirectory(), QString{});
-	QCOMPARE(executionArguments.openIds(), QStringList{});
-}
-
-void ExcutionArgumentsParserTest::shouldIgnoreInvalidDebugMask()
-{
-	auto arguments = QStringList{} << "--debug" << "--version";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
-
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{});
-	QCOMPARE(executionArguments.profileDirectory(), QString{});
-	QCOMPARE(executionArguments.openIds(), QStringList{});
-}
-
-void ExcutionArgumentsParserTest::shouldAcceptLastValidDebugMask()
-{
-	auto arguments = QStringList{} << "--debug" << "125" << "--debug" << "--version" << "--debug" << "256";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
-
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{"256"});
 	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
@@ -143,7 +84,6 @@ void ExcutionArgumentsParserTest::shouldProperlyParseProfileDirectory()
 
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{});
 	QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-2"});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
@@ -156,7 +96,6 @@ void ExcutionArgumentsParserTest::shouldIgnoreEmptyProfileDirectory()
 
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{});
 	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
@@ -169,7 +108,6 @@ void ExcutionArgumentsParserTest::shouldAcceptLastProfileDirectory()
 
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{});
 	QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-3"});
 	QCOMPARE(executionArguments.openIds(), QStringList{});
 }
@@ -182,7 +120,6 @@ void ExcutionArgumentsParserTest::shouldProperlyParseListOfIds()
 
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{});
 	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:123" << "gg:456" << "xmpp:test@example.com");
 }
@@ -195,20 +132,18 @@ void ExcutionArgumentsParserTest::shouldIgnoreInvalidIds()
 
 	QCOMPARE(executionArguments.queryVersion(), false);
 	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.debugMask(), QString{});
 	QCOMPARE(executionArguments.profileDirectory(), QString{});
 	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:123" << "gg:456" << "xmpp:test@example.com");
 }
 
 void ExcutionArgumentsParserTest::shouldProperlyParseComplexArguments()
 {
-	auto arguments = QStringList{} << "--version" << "--help" << "--debug" << "15" << "--config-dir" << "kadu-7" << "gg:15" << "xmpp:12";
+	auto arguments = QStringList{} << "--version" << "--help" << "--config-dir" << "kadu-7" << "gg:15" << "xmpp:12";
 	auto parser = ExecutionArgumentsParser{};
 	auto executionArguments = parser.parse(arguments);
 
 	QCOMPARE(executionArguments.queryVersion(), true);
 	QCOMPARE(executionArguments.queryUsage(), true);
-	QCOMPARE(executionArguments.debugMask(), QString{"15"});
 	QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-7"});
 	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:15" << "xmpp:12");
 }

@@ -37,7 +37,6 @@
 #include "parser/parser.h"
 #include "talkable/talkable-converter.h"
 #include "url-handlers/url-handler-manager.h"
-#include "debug.h"
 
 #include "buddy-info-panel.h"
 

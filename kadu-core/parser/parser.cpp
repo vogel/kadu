@@ -41,7 +41,6 @@
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
 #include "talkable/talkable-converter.h"
-#include "debug.h"
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcess>
@@ -133,84 +132,52 @@ QString Parser::escape(const QString &string)
 
 bool Parser::registerTag(const QString &name, TalkableTagCallback func)
 {
-	kdebugf();
-
 	if (m_registeredTalkableTags.contains(name))
 	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", qPrintable(name));
 		return false;
 	}
 
 	if (m_registeredObjectTags.contains(name))
 	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered (as object tag)!\n", qPrintable(name));
 		return false;
 	}
 
 	m_registeredTalkableTags.insert(name, func);
-
-	kdebugf2();
 	return true;
 }
 
 bool Parser::unregisterTag(const QString &name)
 {
-	kdebugf();
-
 	if (!m_registeredTalkableTags.contains(name))
-	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "Talkable tag %s not registered!\n", qPrintable(name));
 		return false;
-	}
 
 	m_registeredTalkableTags.remove(name);
-
-	kdebugf2();
 	return true;
 }
 
 bool Parser::registerObjectTag(const QString &name, ObjectTagCallback func)
 {
-	kdebugf();
-
 	if (m_registeredObjectTags.contains(name))
-	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", qPrintable(name));
 		return false;
-	}
 
 	if (m_registeredTalkableTags.contains(name))
-	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered (as Talkable tag)!\n", qPrintable(name));
 		return false;
-	}
 
 	m_registeredObjectTags.insert(name, func);
-
-	kdebugf2();
 	return true;
 }
 
 bool Parser::unregisterObjectTag(const QString &name)
 {
-	kdebugf();
-
 	if (!m_registeredObjectTags.contains(name))
-	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "object tag %s not registered!\n", qPrintable(name));
 		return false;
-	}
 
 	m_registeredObjectTags.remove(name);
-
-	kdebugf2();
 	return true;
 }
 
 QString Parser::executeCmd(const QString &cmd)
 {
-	kdebugf();
-
 	QString s(cmd);
 	// TODO: check if Qt escapes these
 	s.remove(QRegExp("`|>|<"));
@@ -223,7 +190,6 @@ QString Parser::executeCmd(const QString &cmd)
 	if (executor.waitForFinished())
 		ret = executor.readAll();
 
-	kdebugf2();
 	return ret;
 }
 
@@ -464,11 +430,6 @@ QString Parser::joinParserTokens(const ContainerClass &parseStack)
 	QString joined;
 	foreach(const ParserToken &elem, parseStack)
 	{
-		if (elem.type() != PT_STRING)
-		{
-			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", elem.type());
-		}
-
 		switch (elem.type())
 		{
 			case PT_STRING:
@@ -509,8 +470,6 @@ QString Parser::joinParserTokens(const ContainerClass &parseStack)
 
 QString Parser::parse(const QString &s, Talkable talkable, const ParserData * const parserData, ParserEscape escape = ParserEscape::HtmlEscape)
 {
-	kdebugmf(KDEBUG_DUMP, "%s htmlEscape=%i\n", qPrintable(s), static_cast<int>(escape));
-
 	prepareSearchChars(m_configuration);
 
 	QStack<ParserToken> parseStack;
@@ -722,15 +681,11 @@ QString Parser::parse(const QString &s, Talkable talkable, const ParserData * co
 
 						if (GlobalVariables.contains(content))
 						{
-							kdebugm(KDEBUG_INFO, "name: %s, value: %s\n", qPrintable(pe.decodedContent()), qPrintable(GlobalVariables[pe.decodedContent()]));
 							pe.setContent(GlobalVariables[content]);
 							pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
 						}
 						else
-						{
-							kdebugm(KDEBUG_WARNING, "variable %s undefined\n", qPrintable(pe.decodedContent()));
 							pe.setContent(QString());
-						}
 
 						parseStack.push(pe);
 
@@ -767,7 +722,6 @@ QString Parser::parse(const QString &s, Talkable talkable, const ParserData * co
 							pe.setContent(m_registeredObjectTags[content](parserData));
 						else
 						{
-							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", qPrintable(pe.decodedContent()));
 							pe.setContent(QString());
 						}
 
@@ -922,15 +876,9 @@ QString Parser::parse(const QString &s, Talkable talkable, const ParserData * co
 				parseStack.push(pe);
 			}
 		}
-		else
-		{
-			kdebugm(KDEBUG_ERROR, "shit happens? %d %c (ascii %d, unicode 0x%hx)\n", idx, c.toAscii(), (int)c.toAscii(), c.unicode());
-		}
 	}
 
 	QString ret = joinParserTokens(parseStack);
-
-	kdebugm(KDEBUG_DUMP, "%s\n", qPrintable(ret));
 
 	return ret;
 }

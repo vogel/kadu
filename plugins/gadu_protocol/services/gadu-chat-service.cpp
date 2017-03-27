@@ -46,7 +46,6 @@
 #include "services/raw-message-transformer-service.h"
 #include "status/status-type.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "helpers/formatted-string-gadu-html-visitor.h"
 #include "helpers/formatted-string-image-key-received-visitor.h"
@@ -201,7 +200,6 @@ bool GaduChatService::sendMessage(const Message &message)
 	if (rawMessage.rawContent().length() > maxMessageLength())
 	{
 		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Message too long (%1 >= %2)").arg(rawMessage.rawContent().length()).arg(10000));
-		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return false;
 	}
 
@@ -340,8 +338,6 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 
 void GaduChatService::handleEventMsg(struct gg_event *e)
 {
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
-
 	if (isSystemMessage(e))
 		return;
 
@@ -373,8 +369,6 @@ void GaduChatService::handleEventMultilogonMsg(gg_event *e)
 
 void GaduChatService::handleEventAck(struct gg_event *e)
 {
-	kdebugf();
-
 	int messageId = e->event.ack.seq;
 	if (!UndeliveredMessages.contains(messageId))
 		return;
@@ -386,26 +380,21 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 	{
 		case GG_ACK_DELIVERED:
 		case GG_ACK_QUEUED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %u, seq: %d, status: %d)\n", uin, messageId, e->event.ack.status);
 			UndeliveredMessages[messageId].setStatus(MessageStatusDelivered);
 			emit sentMessageStatusChanged(UndeliveredMessages[messageId]);
 			break;
 		case GG_ACK_BLOCKED:
 		case GG_ACK_MBOXFULL:
 		case GG_ACK_NOT_DELIVERED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %u, seq: %d, status: %d)\n", uin, messageId, e->event.ack.status);
 			UndeliveredMessages[messageId].setStatus(MessageStatusWontDeliver);
 			emit sentMessageStatusChanged(UndeliveredMessages[messageId]);
 			break;
 		default:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %u, seq: %d, status:%d)\n", uin, messageId, e->event.ack.status);
 			return;
 	}
 	UndeliveredMessages.remove(messageId);
 
 	removeTimeoutUndeliveredMessages();
-
-	kdebugf2();
 }
 
 void GaduChatService::removeTimeoutUndeliveredMessages()

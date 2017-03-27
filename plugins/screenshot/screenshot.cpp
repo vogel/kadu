@@ -33,7 +33,6 @@
 #include "widgets/custom-input.h"
 #include "windows/message-dialog.h"
 #include "activate.h"
-#include "debug.h"
 
 #include "configuration/screen-shot-configuration.h"
 #include "gui/widgets/screenshot-widget.h"
@@ -165,7 +164,6 @@ bool ScreenShot::checkImageSize(long int size)
 
 void ScreenShot::checkShotsSize()
 {
-	kdebugf();
 	if (!m_screenShotConfiguration->warnAboutDirectorySize())
 		return;
 

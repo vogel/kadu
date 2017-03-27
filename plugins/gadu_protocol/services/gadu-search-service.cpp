@@ -21,7 +21,6 @@
 #include "buddies/buddy-storage.h"
 #include "contacts/contact-storage.h"
 #include "misc/misc.h"
-#include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
@@ -120,7 +119,6 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 	BuddyList results;
 
 	int count = gg_pubdir50_count(res);
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "found %d results\n", count);
 
 	for (int i = 0; i < count; i++)
 		results.append(GaduProtocolHelper::searchResultToBuddy(m_buddyStorage, m_contactStorage, account(), res, i));

@@ -26,8 +26,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-label.h"
 
-#include "debug.h"
-
 ConfigLabel::ConfigLabel(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QLabel(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
@@ -41,8 +39,6 @@ ConfigLabel::ConfigLabel(ConfigGroupBox *parentConfigGroupBox, ConfigurationWind
 
 void ConfigLabel::createWidgets()
 {
-	kdebugf();
-
 	setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
 	setWordWrap(true);
 	parentConfigGroupBox->addWidget(this);

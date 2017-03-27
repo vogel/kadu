@@ -27,8 +27,6 @@
 #include "widgets/configuration/config-check-box.h"
 #include "widgets/configuration/config-group-box.h"
 
-#include "debug.h"
-
 ConfigCheckBox::ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QCheckBox(widgetCaption, parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
@@ -42,8 +40,6 @@ ConfigCheckBox::ConfigCheckBox(ConfigGroupBox *parentConfigGroupBox, Configurati
 
 void ConfigCheckBox::createWidgets()
 {
-	kdebugf();
-
 	setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
 	parentConfigGroupBox->addWidget(this, true);
 

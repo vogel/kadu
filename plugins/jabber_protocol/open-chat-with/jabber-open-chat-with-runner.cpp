@@ -26,7 +26,6 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
-#include "debug.h"
 
 JabberOpenChatWithRunner::JabberOpenChatWithRunner(Account account, QObject *parent) :
 		QObject{parent},
@@ -50,8 +49,6 @@ void JabberOpenChatWithRunner::setContactManager(ContactManager *contactManager)
 
 BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 {
-	kdebugf();
-
 	BuddyList matchedContacts;
 	QString queryCopy(query);
 	int pos = 0;

@@ -27,8 +27,6 @@
 #include "widgets/configuration/config-combo-box.h"
 #include "widgets/configuration/config-group-box.h"
 
-#include "debug.h"
-
 ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0),
@@ -77,8 +75,6 @@ QString ConfigComboBox::currentItemValue()
 
 void ConfigComboBox::createWidgets()
 {
-	kdebugf();
-
 	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 

@@ -31,7 +31,6 @@
 #include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
-#include "debug.h"
 
 #include <QtCore/QStringList>
 #include <QtCore/QTextCodec>

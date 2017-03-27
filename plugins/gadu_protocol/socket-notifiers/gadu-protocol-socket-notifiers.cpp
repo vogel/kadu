@@ -30,7 +30,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-manager.h"
 #include "misc/misc.h"
-#include "debug.h"
 
 #include <QtCore/QSocketNotifier>
 #include <libgadu.h>
@@ -80,43 +79,6 @@ bool GaduProtocolSocketNotifiers::checkRead()
 bool GaduProtocolSocketNotifiers::checkWrite()
 {
 	return m_session->check & GG_CHECK_WRITE;
-}
-
-void GaduProtocolSocketNotifiers::dumpConnectionState()
-{
-	switch (m_session->state)
-	{
-		case GG_STATE_RESOLVING:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Resolving address\n");
-			break;
-		case GG_STATE_CONNECTING_HUB:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connecting to hub\n");
-			break;
-		case GG_STATE_READING_DATA:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Fetching data from hub\n");
-			break;
-		case GG_STATE_CONNECTING_GG:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connecting to server\n");
-			break;
-		case GG_STATE_READING_KEY:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Waiting for hash key\n");
-			break;
-		case GG_STATE_READING_REPLY:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Sending key\n");
-			break;
-		case GG_STATE_CONNECTED:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "connected\n");
-			break;
-		case GG_STATE_IDLE:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_WARNING, "idle!\n");
-			break;
-		case GG_STATE_ERROR:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_WARNING, "state==error! error=%d\n", m_session->error);
-			break;
-		default:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown state! state=%d\n", m_session->state);
-			break;
-	}
 }
 
 void GaduProtocolSocketNotifiers::handleEventMultilogonInfo(gg_event* e)
@@ -180,7 +142,6 @@ void GaduProtocolSocketNotifiers::handleEventConnFailed(struct gg_event *e)
 		case GG_FAILURE_UNAVAILABLE: err = GaduProtocol::ConnectionUnavailableError; break;
 
 		default:
-			kdebugm(KDEBUG_ERROR, "ERROR: unhandled/unknown connection error! %d\n", e->event.failure);
 			err = GaduProtocol::ConnectionUnknow;
 			break;
 	}
@@ -213,8 +174,6 @@ void GaduProtocolSocketNotifiers::handleEventDisconnect(struct gg_event *e)
 
 void GaduProtocolSocketNotifiers::socketEvent()
 {
-	kdebugf();
-
 	auto e = gg_watch_fd(m_session);
 	if (!e || GG_STATE_IDLE == m_session->state)
 	{
@@ -225,11 +184,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 		return;
 	}
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
 	watchFor(m_session); // maybe fd has changed, we need to check always
-
-	dumpConnectionState();
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "event: %d\n", e->type);
 
 	switch (e->type)
 	{
@@ -318,7 +273,6 @@ void GaduProtocolSocketNotifiers::socketEvent()
 	}
 
 	gg_free_event(e);
-	kdebugf2();
 }
 
 int GaduProtocolSocketNotifiers::timeout()
@@ -335,8 +289,6 @@ int GaduProtocolSocketNotifiers::timeout()
 
 bool GaduProtocolSocketNotifiers::handleSoftTimeout()
 {
-	kdebugf();
-
 	if (!m_session || !m_session->soft_timeout)
 		return false;
 

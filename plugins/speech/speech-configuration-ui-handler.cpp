@@ -35,7 +35,6 @@
 #include "widgets/configuration/configuration-widget.h"
 #include "widgets/select-file.h"
 #include "windows/main-configuration-window.h"
-#include "debug.h"
 #include "speech.h"
 
 #include "speech-configuration-ui-handler.h"
@@ -113,8 +112,6 @@ void SpeechConfigurationUiHandler::soundSystemChanged(int index)
 
 void SpeechConfigurationUiHandler::testSpeech()
 {
-	kdebugf();
-
 	if (!programSelectFile)
 		return;
 
@@ -127,20 +124,15 @@ void SpeechConfigurationUiHandler::testSpeech()
 	bool mel = melodyCheckBox->isChecked();
 
 	QString sound_system = soundSystemComboBox->currentItemValue();
-	kdebugm(KDEBUG_INFO, "flags: %d %d %s\n", mel, klatt, qPrintable(sound_system));
 
 	int frequency = frequencySlider->value();
 	int tempo = tempoSlider->value();
 	int baseFrequency = baseFrequencySlider->value();
 
-	kdebugm(KDEBUG_INFO, "%d %d %d\n", frequency, tempo, baseFrequency);
-
 	QString text;
 	text = m_parser->parse(formatF, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
 
 	m_speech->say(text.contains("%1") ? text.arg("Test") : QString("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
-
-	kdebugf2();
 }
 
 #include "moc_speech-configuration-ui-handler.cpp"

@@ -33,7 +33,6 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 #include "activate.h"
-#include "debug.h"
 #include "exports.h"
 #include "kadu-config.h"
 
@@ -115,20 +114,17 @@ void UnixSignalHandler::startSignalHandling()
 
 static void kadu_signal_handler(int signal)
 {
-	kdebugmf(KDEBUG_WARNING, "%d\n", signal);
 
 	static int sigsegvCount = 0;
 
 	if (sigsegvCount > 1)
 	{
-		kdebugmf(KDEBUG_WARNING, "sigsegv recursion: %d\n", sigsegvCount);
 		abort();
 	}
 
 	if (signal == SIGSEGV)
 	{
 		++sigsegvCount;
-		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
 
 		CrashAwareObject::notifyCrash();
 
@@ -140,15 +136,9 @@ static void kadu_signal_handler(int signal)
 		int numEntries;
 
 		if ((numEntries = backtrace(backtraceArray, 100)) < 0)
-		{
-			kdebugm(KDEBUG_PANIC, "could not generate backtrace\n");
 			abort();
-		}
 		if (!(backtraceStrings = backtrace_symbols(backtraceArray, numEntries)))
-		{
-			kdebugm(KDEBUG_PANIC, "could not get symbol names for backtrace\n");
 			abort();
-		}
 
 		fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
 		for (int i = 0; i < numEntries; ++i)
@@ -181,8 +171,6 @@ static void kadu_signal_handler(int signal)
 		}
 
 		free(backtraceStrings);
-#else // HAVE_EXECINFO
-		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif // HAVE_EXECINFO
 
 		g_application->backupConfiguration();
@@ -190,7 +178,6 @@ static void kadu_signal_handler(int signal)
 	}
 	else if (signal == SIGUSR1)
 	{
-		kdebugm(KDEBUG_INFO, "ok, got a signal to show up\n");
 		_activateWindow(g_configuration, g_kaduWindowService->kaduWindow());
 	}
 	else if (signal == SIGINT || signal == SIGTERM)

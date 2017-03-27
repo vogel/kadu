@@ -22,8 +22,6 @@
 
 #include <libgadu.h>
 
-#include "debug.h"
-
 #include "gadu-pubdir-socket-notifiers.h"
 
 void GaduPubdirSocketNotifiers::watchFor(struct gg_http *h)
@@ -51,8 +49,6 @@ void GaduPubdirSocketNotifiers::finished(bool ok)
 
 void GaduPubdirSocketNotifiers::socketEvent()
 {
-	kdebugf();
-
 	if (gg_pubdir_watch_fd(H) == -1)
 	{
 		finished(false);
@@ -64,29 +60,17 @@ void GaduPubdirSocketNotifiers::socketEvent()
 	switch (H->state)
 	{
 		case GG_STATE_CONNECTING:
-			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "changing QSocketNotifiers\n");
 			watchFor(H);
 			break;
 
 		case GG_STATE_ERROR:
-			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "error!\n");
 			finished(false);
 			break;
 
 		case GG_STATE_DONE:
-			if (p->success)
-			{
-				kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO,  "success!\n");
-			}
-			else
-			{
-				kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "error!\n");
-			}
 			finished(p->success);
 			break;
 	}
-
-	kdebugf2();
 }
 
 int GaduPubdirSocketNotifiers::timeout()

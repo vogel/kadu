@@ -21,28 +21,20 @@
 #include <QtCore/QSocketNotifier>
 #include <QtCore/QTimer>
 
-#include "debug.h"
-
 #include "gadu-socket-notifiers.h"
 
 GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent)
 	: QObject(parent), Socket(-1), Started(false), ReadNotifier(0), WriteNotifier(0), TimeoutTimer(0)
 {
-	kdebugf();
-	kdebugf2();
 }
 
 GaduSocketNotifiers::~GaduSocketNotifiers()
 {
-	kdebugf();
 	deleteSocketNotifiers();
-	kdebugf2();
 }
 
 void GaduSocketNotifiers::createSocketNotifiers()
 {
-	kdebugf();
-
 	deleteSocketNotifiers();
 
 	if (-1 == Socket)
@@ -60,14 +52,10 @@ void GaduSocketNotifiers::createSocketNotifiers()
 	Started = true;
 
 	enable();
-
-	kdebugf2();
 }
 
 void GaduSocketNotifiers::deleteSocketNotifiers()
 {
-	kdebugf();
-
 	if (!Started)
 		return;
 
@@ -87,14 +75,10 @@ void GaduSocketNotifiers::deleteSocketNotifiers()
 		TimeoutTimer->deleteLater();
 		TimeoutTimer = 0;
 	}
-
-	kdebugf2();
 }
 
 void GaduSocketNotifiers::disable()
 {
-	kdebugf();
-
 	if (!Started)
 		return;
 
@@ -106,8 +90,6 @@ void GaduSocketNotifiers::disable()
 
 void GaduSocketNotifiers::enable()
 {
-	kdebugf();
-
 	if (!Started)
 		return;
 
@@ -135,8 +117,6 @@ void GaduSocketNotifiers::enable()
 
 void GaduSocketNotifiers::watchFor(int socket)
 {
-	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "notifier: %p, old socket: %d, socket: %d\n", this, Socket, socket);
-
 	if (Socket == socket)
 		return;
 
@@ -146,32 +126,22 @@ void GaduSocketNotifiers::watchFor(int socket)
 
 void GaduSocketNotifiers::socketTimeout()
 {
-	kdebugf();
-
 	if (!handleSoftTimeout())
 		connectionTimeout();
 }
 
 void GaduSocketNotifiers::dataReceived()
 {
-	kdebugf();
-
 	disable();
 	socketEvent();
 	enable();
-
-	kdebugf2();
 }
 
 void GaduSocketNotifiers::dataSent()
 {
-	kdebugf();
-
 	disable();
 	socketEvent();
 	enable();
-
-	kdebugf2();
 }
 
 #include "moc_gadu-socket-notifiers.cpp"

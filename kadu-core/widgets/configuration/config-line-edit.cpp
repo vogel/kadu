@@ -26,8 +26,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-line-edit.h"
 
-#include "debug.h"
-
 ConfigLineEdit::ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: LineEditWithClearButton(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
@@ -49,8 +47,6 @@ ConfigLineEdit::~ConfigLineEdit()
 
 void ConfigLineEdit::createWidgets()
 {
-	kdebugf();
-
 	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 

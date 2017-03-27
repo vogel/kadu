@@ -37,7 +37,6 @@
 #include "windows/kadu-window.h"
 #include "windows/main-window-repository.h"
 #include "activate.h"
-#include "debug.h"
 
 #include "single-window.h"
 

@@ -40,7 +40,6 @@
 #include "services/chat-state-service.h"
 #include "status/status-type-manager.h"
 #include "status/status.h"
-#include "debug.h"
 
 #include <QtGui/QTextDocument>
 

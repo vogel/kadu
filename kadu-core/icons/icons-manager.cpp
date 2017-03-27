@@ -31,7 +31,6 @@
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "themes/icon-theme-manager.h"
-#include "debug.h"
 
 #include <QtCore/QFileInfo>
 

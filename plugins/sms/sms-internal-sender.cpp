@@ -26,7 +26,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "scripts/sms-script-manager.h"
 #include "sms-gateway-manager.h"
@@ -60,7 +59,6 @@ void SmsInternalSender::sendMessage(const QString &message)
 	if (Gateway.signatureRequired() && !validateSignature())
 	{
 		emit finished(false, "dialog-error", tr("Signature can't be empty."));
-		kdebugf2();
 		return;
 	}
 
@@ -111,7 +109,6 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 	if (gatewayId.isEmpty())
 	{
 		emit finished(false, "dialog-error", tr("Automatic gateway selection is not available. Please select SMS gateway manually."));
-		kdebugf2();
 		return;
 	}
 

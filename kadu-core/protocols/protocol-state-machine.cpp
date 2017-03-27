@@ -22,7 +22,6 @@
 
 #include "network/network-manager.h"
 #include "protocols/protocol.h"
-#include "debug.h"
 
 #include "protocol-state-machine.h"
 
@@ -184,8 +183,6 @@ void ProtocolStateMachine::printConfiguration()
 		states.append("logging-in-maybe-online");
 	if (configuration().contains(LoggedInState))
 		states.append("logged-in");
-
-	kdebugm(KDEBUG_INFO, "State machine: [%s]\n", qPrintable(states.join(", ")));
 }
 
 /**

@@ -230,7 +230,6 @@ Window PixmapGrabber::findRealWindow( Window w, int depth )
 
 QPixmap PixmapGrabber::grabCurrent()
 {
-	kdebugf();
 	POINT p;
 	HWND winId = 0;
 	if(GetCursorPos(&p))
@@ -254,7 +253,6 @@ QPixmap PixmapGrabber::grabCurrent()
 		int height = rect.bottom - rect.top;
 		PrintWindow_t PrintWindow_f=(PrintWindow_t)QLibrary::resolve("user32", "PrintWindow");
 		if(!PrintWindow_f){
-			kdebugmf(KDEBUG_WARNING, "Old windows detected, using hack..\n");
 			// ugly hack..
 			HWND hwndFg=GetForegroundWindow();
 			SetForegroundWindow(winId);

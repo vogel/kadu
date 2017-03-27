@@ -33,7 +33,6 @@
 #include "misc/misc.h"
 #include "misc/paths-provider.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "themes.h"
 
@@ -106,8 +105,6 @@ const QStringList & Themes::themes() const
 
 void Themes::setTheme(const QString &theme)
 {
-	kdebugf();
-
 	if (ThemesList.contains(theme) || (theme == "Custom"))
 	{
 		entries.clear();
@@ -127,8 +124,6 @@ void Themes::setTheme(const QString &theme)
 		}
 		emit themeChanged(ActualTheme);
 	}
-
-	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_INFO, "end: theme: %s\n", qPrintable(ActualTheme));
 }
 
 const QString & Themes::theme() const
@@ -138,7 +133,6 @@ const QString & Themes::theme() const
 
 void Themes::setPaths(const QStringList &paths)
 {
-	kdebugf();
 	ThemesList.clear();
 	ThemesPaths.clear();
 	additional.clear();
@@ -157,7 +151,6 @@ void Themes::setPaths(const QStringList &paths)
 // 			MessageDialog::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(it), false, "dialog-warning");
 	}
 	emit pathsChanged(ThemesPaths);
-	kdebugf2();
 }
 
 QStringList Themes::defaultPathsProviderWithThemes() const

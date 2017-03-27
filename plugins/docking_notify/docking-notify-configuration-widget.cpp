@@ -32,7 +32,6 @@
 #include "windows/configuration-window.h"
 #include "windows/main-configuration-window.h"
 #include "activate.h"
-#include "debug.h"
 
 #include "docking-notify-configuration-widget.h"
 
@@ -69,8 +68,6 @@ void DockingNotifyConfigurationWidget::saveNotifyConfigurations()
 
 void DockingNotifyConfigurationWidget::switchToEvent(const QString &event)
 {
-	kdebugf();
-
 	currentNotificationEvent = event;
 }
 

@@ -45,7 +45,6 @@
 #include "widgets/custom-input.h"
 #include "windows/main-configuration-window.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "plugins/docking/docking-menu-action-repository.h"
 #include "plugins/docking/docking.h"
@@ -176,8 +175,6 @@ void MediaPlayer::setToggleMediaplayerStatusesAction(ToggleMediaplayerStatusesAc
 
 void MediaPlayer::init()
 {
-	kdebugf();
-
 	// Initialization
 	playerInfo = 0;
 	playerCommands = 0;
@@ -218,8 +215,6 @@ void MediaPlayer::done()
 	if (DockedMediaplayerStatus)
 		m_dockingMenuActionRepository->removeAction(DockedMediaplayerStatus);
 
-	kdebugf();
-
 	m_statusChangerManager->unregisterStatusChanger(Changer);
 
 	timer->stop();
@@ -251,22 +246,18 @@ void MediaPlayer::setControlsEnabled(bool enabled)
 
 void MediaPlayer::chatWidgetAdded(ChatWidget *chat)
 {
-	kdebugf();
 	connect(chat->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(chatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	connect(chat->edit(), SIGNAL(keyReleased(QKeyEvent *, CustomInput *, bool &)), this, SLOT(chatKeyReleased(QKeyEvent *, CustomInput *, bool &)));
 }
 
 void MediaPlayer::chatWidgetRemoved(ChatWidget *chat)
 {
-	kdebugf();
 	disconnect(chat->edit(), 0, this, 0);
 }
 
 void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 {
 	Q_UNUSED(k)
-
-	kdebugf();
 
 	if (handled)
 		return;
@@ -331,8 +322,6 @@ void MediaPlayer::chatKeyReleased(QKeyEvent *e, CustomInput *k, bool &handled)
 void MediaPlayer::putSongTitle(int ident)
 {
 	Q_UNUSED(ident)
-
-	kdebugf();
 
 	if (!isActive())
 	{
@@ -413,8 +402,6 @@ void MediaPlayer::putSongTitle(int ident)
 void MediaPlayer::putPlayList(int ident)
 {
 	Q_UNUSED(ident)
-
-	kdebugf();
 
 	if (!isActive())
 	{
@@ -522,12 +509,6 @@ void MediaPlayer::putPlayList(int ident)
 // TODO: it needs an update to new Kadu-parser
 QString MediaPlayer::parse(const QString &str)
 {
-	/*
-		Code of this function is partialy
-		borrown from Kadu. Thanks to Kadu Team! :)
-	*/
-	kdebugf();
-
 	if (isActive())
 	{
 		if (!isPlaying())
@@ -610,8 +591,6 @@ QString MediaPlayer::parse(const QString &str)
 
 QString MediaPlayer::formatLength(int length)
 {
-	kdebugf();
-
 	QString ms;
 	if (length < 1000)
 		length = 1000;
@@ -630,8 +609,6 @@ QString MediaPlayer::formatLength(int length)
 
 ChatWidget *MediaPlayer::getCurrentChat()
 {
-	kdebugf();
-
 	if (!m_chatWidgetRepository)
 		return 0;
 
@@ -714,8 +691,6 @@ void MediaPlayer::checkTitle()
 
 void MediaPlayer::configurationUpdated()
 {
-	kdebugf();
-
 	// Statuses switch
 	bool enabled = !Changer->isDisabled();
 

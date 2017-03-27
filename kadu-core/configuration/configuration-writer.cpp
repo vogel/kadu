@@ -23,7 +23,6 @@
 #include "configuration/configuration.h"
 #include "file-system/atomic-file-write-exception.h"
 #include "file-system/atomic-file-writer.h"
-#include "debug.h"
 
 #include <QtCore/QDir>
 
@@ -68,7 +67,6 @@ void ConfigurationWriter::write(const QString &fileName) const
 	}
 	catch (AtomicFileWriteException &)
 	{
-		kdebugm(KDEBUG_INFO, "error during saving of '%s'\n", qPrintable(fileName));
 	}
 }
 

@@ -36,7 +36,6 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include <QtCore/QMimeData>
 #include <QtGui/QDragEnterEvent>
@@ -325,8 +324,6 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 	}
 
 	QApplication::restoreOverrideCursor();
-
-	kdebugf2();
 }
 
 void GroupTabBar::addBuddy()

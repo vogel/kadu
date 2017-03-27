@@ -31,7 +31,6 @@
 #include "html/normalized-html-string.h"
 #include "notification/notification.h"
 #include "parser/parser.h"
-#include "debug.h"
 #include "speech-configuration-widget.h"
 
 #include "speech.h"
@@ -76,8 +75,6 @@ void Speech::say(const QString &s, const QString &path,
 		const QString &sound_system, const QString &device,
 		int freq, int tempo, int basefreq)
 {
-	kdebugf();
-
 	QString t, dev, soundSystem;
 	QStringList list;
 
@@ -120,24 +117,17 @@ void Speech::say(const QString &s, const QString &path,
 	list.append("-f");
 	list.append(QString::number(basefreq));
 
-	kdebugm(KDEBUG_INFO, "text: %s command: %s %s\n", qPrintable(s), qPrintable(t), qPrintable(list.join(" ")));
-
 	QProcess *p = new QProcess();
 	QProcess::connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
 	p->start(t, list);
 	p->write(s.toUtf8().constData());
 	p->closeWriteChannel();
-
-	kdebugf2();
 }
 
 void Speech::notify(const Notification &notification)
 {
-	kdebugf();
-
 	if (lastSpeech.elapsed() < 1500)
 	{
-		kdebugf2();
 		return;
 	}
 
@@ -175,8 +165,6 @@ void Speech::notify(const Notification &notification)
 
 	say(htmlToPlain(text));
 	lastSpeech.restart();
-
-	kdebugf2();
 }
 
 NotifierConfigurationWidget * Speech::createConfigurationWidget(QWidget *parent)

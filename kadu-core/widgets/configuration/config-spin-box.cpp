@@ -27,8 +27,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-spin-box.h"
 
-#include "debug.h"
-
 ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, const QString &specialValue,
 		int minValue, int maxValue, int step, QString suffix, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QSpinBox(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager),
@@ -57,8 +55,6 @@ ConfigSpinBox::~ConfigSpinBox()
 
 void ConfigSpinBox::createWidgets()
 {
-	kdebugf();
-
 	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 

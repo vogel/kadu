@@ -50,7 +50,6 @@
 #include "misc/misc.h"
 #include "services/raw-message-transformer-service.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include <QtGui/QTextDocument>
 #include <qxmpp/QXmppMessage.h>

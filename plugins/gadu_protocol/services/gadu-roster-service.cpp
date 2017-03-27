@@ -31,7 +31,6 @@
 #include "roster/roster-entry.h"
 #include "roster/roster-notifier.h"
 #include "roster/roster-replacer.h"
-#include "debug.h"
 
 #include <QtCore/QScopedArrayPointer>
 #include <libgadu.h>
@@ -130,14 +129,12 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 {
 	if (!m_stateMachine->isPerformingGet())
 	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got unexpected userlist 100 get reply, ignoring\n");
 		return;
 	}
 
 	auto accountData = GaduAccountData{account()};
 	if (e->event.userlist100_reply.format_type != GG_USERLIST100_FORMAT_TYPE_GG70)
 	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply with unwanted format type (%d)\n", (int)e->event.userlist100_reply.format_type);
 		getFinished(false);
 		return;
 	}
@@ -145,12 +142,9 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 	auto content = e->event.userlist100_reply.reply;
 	if (!content)
 	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply without any content\n");
 		getFinished(false);
 		return;
 	}
-
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "userlist 100 reply:\n%s\n", content);
 
 	if (accountData.userlistVersion() != (int)e->event.userlist100_reply.version)
 	{
@@ -194,10 +188,7 @@ void GaduRosterService::handleEventUserlist100GetReply(struct gg_event *e)
 void GaduRosterService::handleEventUserlist100PutReply(struct gg_event *e)
 {
 	if (!m_stateMachine->isPerformingPut())
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got unexpected userlist 100 put reply, ignoring\n");
 		return;
-	}
 
 	if (e->event.userlist100_reply.type == GG_USERLIST100_REPLY_ACK)
 	{
@@ -222,15 +213,11 @@ void GaduRosterService::handleEventUserlist100Reply(struct gg_event *e)
 		case GG_USERLIST100_REPLY_REJECT:
 			handleEventUserlist100PutReply(e);
 			break;
-		default:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got unknown userlist100 reply type (%d)\n", e->event.userlist100_reply.type);
 	}
 }
 
 void GaduRosterService::handleEventUserlist100Version(gg_event *e)
 {
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "new version of userlist available: %d\n", e->event.userlist100_version.version);
-
 	auto accountData = GaduAccountData{account()};
 	if (accountData.userlistVersion() != (int)e->event.userlist100_version.version)
 		emit stateMachineRemoteDirty();
@@ -297,9 +284,6 @@ void GaduRosterService::exportContactList()
 		contact.rosterEntry()->setSynchronizingToRemote();
 
 	auto contacts = m_gaduListHelper->contactListToByteArray(m_synchronizingContacts);
-
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
-
 	auto accountData = GaduAccountData{account()};
 	auto writableSessionToken = m_connection.data()->writableSessionToken();
 	auto ret = gg_userlist100_request(writableSessionToken.rawSession(),

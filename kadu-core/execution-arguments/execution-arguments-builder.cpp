@@ -39,12 +39,6 @@ ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setQueryUsage(bool queryU
 	return *this;
 }
 
-ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setDebugMask(QString debugMask)
-{
-	m_debugMask = std::move(debugMask);
-	return *this;
-}
-
 ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setProfileDirectory(QString profileDirectory)
 {
 	m_profileDirectory = std::move(profileDirectory);
@@ -68,7 +62,6 @@ ExecutionArguments ExecutionArgumentsBuilder::build() const
 	return {
 		m_queryVersion,
 		m_queryUsage,
-		m_debugMask,
 		m_profileDirectory,
 		m_openIds,
 		m_openUuid

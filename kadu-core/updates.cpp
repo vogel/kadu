@@ -39,7 +39,6 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 #include "windows/updates-dialog.h"
-#include "debug.h"
 
 #include "updates.h"
 
@@ -171,8 +170,6 @@ void Updates::buildQuery()
 
 void Updates::run()
 {
-	kdebugf();
-
 	if (UpdateChecked)
 		return;
 
@@ -221,8 +218,6 @@ QString Updates::stripVersion(const QString &version)
 
 void Updates::gotUpdatesInfo(QNetworkReply *reply)
 {
-	kdebugf();
-
 	reply->deleteLater();
 	deleteLater();
 
@@ -230,10 +225,7 @@ void Updates::gotUpdatesInfo(QNetworkReply *reply)
 	{
 		auto newestVersion = QString::fromUtf8(reply->readAll());
 		if (newestVersion.size() > 31)
-		{
-			kdebugmf(KDEBUG_WARNING, "cannot obtain update info\n");
 			return;
-		}
 
 		if (isNewerVersionThan(newestVersion))
 		{

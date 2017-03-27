@@ -37,7 +37,6 @@
 #include "core/injected-factory.h"
 #include "misc/change-notifier.h"
 #include "parser/parser.h"
-#include "debug.h"
 
 #include "chat-shared.h"
 

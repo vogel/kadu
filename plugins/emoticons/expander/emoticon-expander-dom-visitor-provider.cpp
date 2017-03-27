@@ -27,7 +27,6 @@
 
 #include "dom/ignore-links-dom-visitor.h"
 #include "misc/memory.h"
-#include "debug.h"
 
 EmoticonExpanderDomVisitorProvider::EmoticonExpanderDomVisitorProvider(QObject *parent) :
 		QObject{parent}
@@ -46,7 +45,7 @@ void EmoticonExpanderDomVisitorProvider::rebuildExpander()
 		return;
 	}
 
-	m_ignoreLinksVisitor = m_configuration.animate() 
+	m_ignoreLinksVisitor = m_configuration.animate()
 			? std::make_unique<IgnoreLinksDomVisitor>(std::make_unique<EmoticonExpander>(m_tree.get(), std::make_unique<AnimatedEmoticonPathProvider>()))
 			: std::make_unique<IgnoreLinksDomVisitor>(std::make_unique<EmoticonExpander>(m_tree.get(), std::make_unique<StaticEmoticonPathProvider>()));
 }

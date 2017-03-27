@@ -22,8 +22,6 @@
 #include "services/gadu-roster-service.h"
 
 #include "protocols/protocol.h"
-#include "debug.h"
-
 
 #include <QtCore/QHistoryState>
 #include <QtCore/QStringList>
@@ -154,8 +152,6 @@ void GaduRosterStateMachine::printConfiguration()
 		states.append("remote-cleaning-dirty");
 	if (configuration().contains(m_remoteFailedState))
 		states.append("remote-failed");
-
-	kdebugm(KDEBUG_INFO, "Gadu contact list state machine: [%s]\n", qPrintable(states.join(", ")));
 }
 
 void GaduRosterStateMachine::checkIfSynchronizationRequired()

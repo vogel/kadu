@@ -38,7 +38,6 @@
 #include "protocols/protocol.h"
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
-#include "debug.h"
 
 #include <QtCore/QPair>
 #include <QtCore/QTimer>

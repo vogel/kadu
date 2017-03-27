@@ -68,7 +68,6 @@
 #include "activate.h"
 
 #include "icons/icons-manager.h"
-#include "debug.h"
 
 #include "buddy-data-window.h"
 
@@ -80,9 +79,7 @@ BuddyDataWindow::BuddyDataWindow(const Buddy &buddy) :
 
 BuddyDataWindow::~BuddyDataWindow()
 {
-	kdebugf();
 	emit destroyed(MyBuddy);
-	kdebugf2();
 }
 
 void BuddyDataWindow::setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository)
@@ -113,8 +110,6 @@ void BuddyDataWindow::setMyself(Myself *myself)
 void BuddyDataWindow::init()
 {
 	Q_ASSERT(MyBuddy != m_myself->buddy());
-
-	kdebugf();
 
 	setWindowRole("kadu-buddy-data");
 	setAttribute(Qt::WA_DeleteOnClose);

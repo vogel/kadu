@@ -20,8 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
-
 #include "chat-image-service.h"
 
 ChatImageService::ChatImageService(Account account, QObject *parent) :

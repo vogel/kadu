@@ -61,8 +61,6 @@
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/configuration-window.h"
 
-#include "debug.h"
-
 ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent) :
 		QWidget(parent), DataManager(dataManager), CurrentSection(0)
 {
@@ -175,8 +173,6 @@ void ConfigurationWidget::removeUiFile(const QString &fileName)
 
 QList<ConfigWidget *>  ConfigurationWidget::processUiFile(const QString &fileName, bool append)
 {
-	kdebugf();
-
 	QList<ConfigWidget *> result;
 	QFile file(fileName);
 
@@ -186,7 +182,6 @@ QList<ConfigWidget *>  ConfigurationWidget::processUiFile(const QString &fileNam
 
 	if (!uiFile.setContent(&file))
 	{
-		kdebugf2();
 		file.close();
 		return result;
 	}
@@ -196,7 +191,6 @@ QList<ConfigWidget *>  ConfigurationWidget::processUiFile(const QString &fileNam
 	QDomElement kaduConfigurationUi = uiFile.documentElement();
 	if (kaduConfigurationUi.tagName() != "configuration-ui")
 	{
-		kdebugf2();
 		return result;
 	}
 
@@ -205,32 +199,26 @@ QList<ConfigWidget *>  ConfigurationWidget::processUiFile(const QString &fileNam
 	for (uint i = 0; i < length; i++)
 		result += processUiSectionFromDom(children.item(static_cast<int>(i)), append);
 
-	kdebugf2();
 	return result;
 }
 
 QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sectionNode, bool append)
 {
-	kdebugf();
-
 	QList<ConfigWidget *> result;
 	if (!sectionNode.isElement())
 	{
-		kdebugf2();
 		return result;
 	}
 
 	const QDomElement &sectionElement = sectionNode.toElement();
 	if (sectionElement.tagName() != "section")
 	{
-		kdebugf2();
 		return result;
 	}
 
 	const QString &sectionName = sectionElement.attribute("name");
 	if (sectionName.isEmpty())
 	{
-		kdebugf2();
 		return result;
 	}
 
@@ -245,33 +233,27 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 	for (uint i = 0; i < length; i++)
 		result += processUiTabFromDom(children.item(static_cast<int>(i)), sectionName, append);
 
-	kdebugf2();
 	return result;
 }
 
 QList<ConfigWidget *> ConfigurationWidget::processUiTabFromDom(QDomNode tabNode,
 		const QString &sectionName, bool append)
 {
-	kdebugf();
-
 	QList<ConfigWidget *> result;
 	if (!tabNode.isElement())
 	{
-		kdebugf2();
 		return result;
 	}
 
 	const QDomElement &tabElement = tabNode.toElement();
 	if (tabElement.tagName() != "tab")
 	{
-		kdebugf2();
 		return result;
 	}
 
 	const QString tabName = tabElement.attribute("name");
 	if (tabName.isEmpty())
 	{
-		kdebugf2();
 		return result;
 	}
 
@@ -280,32 +262,26 @@ QList<ConfigWidget *> ConfigurationWidget::processUiTabFromDom(QDomNode tabNode,
 	for (uint i = 0; i < length; i++)
 		result += processUiGroupBoxFromDom(children.item(static_cast<int>(i)), sectionName, tabName, append);
 
-	kdebugf2();
 	return result;
 }
 
 QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append)
 {
-	kdebugf();
-
 	QList<ConfigWidget *> result;
 	if (!groupBoxNode.isElement())
 	{
-		kdebugf2();
 		return result;
 	}
 
 	const QDomElement &groupBoxElement = groupBoxNode.toElement();
 	if (groupBoxElement.tagName() != "group-box")
 	{
-		kdebugf2();
 		return result;
 	}
 
 	const QString groupBoxName = groupBoxElement.attribute("name");
 	if (groupBoxName.isEmpty())
 	{
-		kdebugf2();
 		return result;
 	}
 
@@ -314,7 +290,6 @@ QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode gro
 	ConfigGroupBox *configGroupBoxWidget = configGroupBox(sectionName, tabName, groupBoxName, append);
 	if (!configGroupBoxWidget)
 	{
-		kdebugf2();
 		return result;
 	}
 
@@ -337,17 +312,13 @@ QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode gro
 		if (!configGroupBoxWidget->deref())
 			delete configGroupBoxWidget;
 
-	kdebugf2();
 	return result;
 }
 
 ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox)
 {
-	kdebugf();
-
 	if (!uiElementNode.isElement())
 	{
-		kdebugf2();
 		return 0;
 	}
 
@@ -395,14 +366,12 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 		widget = m_injectedFactory->makeInjected<ConfigLineSeparator>(configGroupBox, DataManager);
 	else
 	{
-		kdebugf2();
 		return 0;
 	}
 
 	if (!widget->fromDomElement(uiElement))
 	{
 		delete widget;
-		kdebugf2();
 		return 0;
 	}
 
@@ -410,17 +379,13 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 	if (!id.isEmpty())
 		Widgets.insert(id, dynamic_cast<QWidget *>(widget));
 
-	kdebugf2();
 	return widget;
 }
 
 void ConfigurationWidget::removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox)
 {
-	kdebugf();
-
 	if (!uiElementNode.isElement())
 	{
-		kdebugf2();
 		return;
 	}
 
@@ -439,8 +404,6 @@ void ConfigurationWidget::removeUiElementFromDom(QDomNode uiElementNode, ConfigG
 			break;
 		}
 	}
-
-	kdebugf2();
 }
 
 QWidget * ConfigurationWidget::widgetById(const QString &id)
@@ -498,8 +461,6 @@ ConfigSection * ConfigurationWidget::configSection(const KaduIcon &icon, const Q
 
 void ConfigurationWidget::loadConfiguration(QObject *object)
 {
-	kdebugf();
-
 	if (!object)
 		return;
 
@@ -519,8 +480,6 @@ void ConfigurationWidget::loadConfiguration()
 
 void ConfigurationWidget::saveConfiguration(QObject *object)
 {
-	kdebugf();
-
 	if (!object)
 		return;
 

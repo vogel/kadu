@@ -34,8 +34,6 @@
 
 #include "os/generic/compositing-aware-object.h"
 
-#include "debug.h"
-
 class Application;
 class ChatWidgetManager;
 class ChatWidget;

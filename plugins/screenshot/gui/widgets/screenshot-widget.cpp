@@ -34,7 +34,6 @@
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-#include "debug.h"
 
 #include "gui/widgets/crop-image-widget.h"
 #include "gui/widgets/screenshot-tool-box.h"

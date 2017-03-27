@@ -24,7 +24,6 @@
 #include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
-#include "debug.h"
 
 #include "gadu-id-validator.h"
 
@@ -52,8 +51,6 @@ void GaduOpenChatWithRunner::setContactManager(ContactManager *contactManager)
 
 BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 {
-	kdebugf();
-
 	BuddyList matchedContacts;
 	QString queryCopy(query);
 	int pos = 0;

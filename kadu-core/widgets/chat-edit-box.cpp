@@ -57,7 +57,6 @@
 #include "widgets/talkable-tree-view.h"
 #include "widgets/toolbar.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "chat-edit-box.h"
 

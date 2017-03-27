@@ -28,8 +28,6 @@
 #include "widgets/configuration/config-widget.h"
 #include "widgets/configuration/configuration-widget.h"
 
-#include "debug.h"
-
 ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: parentConfigGroupBox(parentConfigGroupBox), dataManager(dataManager)
 {

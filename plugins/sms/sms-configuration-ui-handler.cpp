@@ -43,7 +43,6 @@
 #include "windows/kadu-window.h"
 #include "windows/main-configuration-window.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "misc/paths-provider.h"
 

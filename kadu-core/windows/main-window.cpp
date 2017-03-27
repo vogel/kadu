@@ -39,7 +39,6 @@
 #include "gui/configuration/toolbar-configuration-manager.h"
 #include "widgets/talkable-tree-view.h"
 #include "widgets/toolbar.h"
-#include "debug.h"
 
 #include "main-window.h"
 

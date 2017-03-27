@@ -59,7 +59,6 @@ ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments)
 	return ExecutionArgumentsBuilder{}
 		.setQueryVersion(queryVersion)
 		.setQueryUsage(queryUsage)
-		.setDebugMask(std::move(debugMask))
 		.setProfileDirectory(std::move(profileDirectory))
 		.setOpenIds(std::move(openIds))
 		.setOpenUuid(std::move(openUuid))

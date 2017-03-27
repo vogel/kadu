@@ -22,7 +22,6 @@
 
 #include "buddies/buddy-storage.h"
 #include "contacts/contact-storage.h"
-#include "debug.h"
 
 #include "gadu-protocol-helper.h"
 
@@ -122,7 +121,6 @@ QString GaduProtocolHelper::connectionErrorMessage(GaduProtocol::GaduError error
 		case GaduProtocol::Disconnected:
 			return QCoreApplication::translate("@default", "Disconnection has occurred");
 		default:
-			kdebugm(KDEBUG_ERROR, "Unhandled error? (%d)\n", int(error));
 			return QCoreApplication::translate("@default", "Connection broken");
 	}
 }

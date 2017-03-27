@@ -34,7 +34,6 @@
 #include "status/status-changer-manager.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
-#include "debug.h"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
@@ -137,8 +136,6 @@ QString Autoaway::descriptionAddon() const
 
 void Autoaway::checkIdleTime()
 {
-	kdebugf();
-
 	m_idleTime = m_idle->secondsIdle();
 
 	if (m_refreshStatusInterval > 0 && m_idleTime >= m_refreshStatusTime)
@@ -161,8 +158,6 @@ void Autoaway::checkIdleTime()
 	m_timer->setInterval(m_checkInterval * 1000);
 	m_timer->setSingleShot(true);
 	m_timer->start();
-
-	kdebugf2();
 }
 
 QString Autoaway::changeDescription(const QString& oldDescription)

@@ -50,8 +50,6 @@
 
 #include "notify-configuration-ui-handler.h"
 
-#include "debug.h"
-
 NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :
 		QObject{parent}, allUsers{}, notifiedUsers{}, notificationsGroupBox{},
 		useCustomSettingsCheckBox{}, notifyTreeWidget{}
@@ -290,8 +288,6 @@ void NotifyConfigurationUiHandler::moveToAllList()
 
 void NotifyConfigurationUiHandler::eventSwitched()
 {
-	kdebugf();
-
 	CurrentEvent = notifyTreeWidget->currentEvent();
 
 	useCustomSettingsCheckBox->setVisible(!NotificationEvents[CurrentEvent].event.category().isEmpty());
@@ -318,8 +314,6 @@ void NotifyConfigurationUiHandler::eventSwitched()
 
 void NotifyConfigurationUiHandler::notifierToggled(Notifier *notifier, bool toggled)
 {
-	kdebugf();
-
 	if (!NotifierGui.contains(notifier))
 		NotifierGui.insert(notifier, NotifierConfigurationGuiItem());
 	NotifierGui[notifier].Events[CurrentEvent] = toggled;

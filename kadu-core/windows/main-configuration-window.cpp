@@ -68,7 +68,6 @@
 #include "windows/kadu-window.h"
 #include "windows/message-dialog.h"
 
-#include "debug.h"
 #include "languages-manager.h"
 
 #include "main-configuration-window.h"

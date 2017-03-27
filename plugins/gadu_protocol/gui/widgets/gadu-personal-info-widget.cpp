@@ -26,7 +26,6 @@
 #include "buddies/buddy-storage.h"
 #include "core/core.h"
 #include "protocols/services/personal-info-service.h"
-#include "debug.h"
 #include "gadu-account-data.h"
 
 #include "gadu-personal-info-widget.h"
@@ -107,7 +106,6 @@ void GaduPersonalInfoWidget::createGui()
 
 void GaduPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
-	kdebugmf (KDEBUG_INFO,"personal info available\n");
 	MyBuddy = buddy;
 	fillForm();
 }

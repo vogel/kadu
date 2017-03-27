@@ -64,7 +64,6 @@ private:
 	QPointer<GaduIMTokenService> m_imTokenService;
 	QPointer<GaduUserDataService> m_userDataService;
 
-	void dumpConnectionState();
 	void handleEventNotify(struct gg_event *e);
 	void handleEventNotify60(struct gg_event *e);
 	void handleEventStatus(struct gg_event *e);

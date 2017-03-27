@@ -33,7 +33,6 @@
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
-#include "debug.h"
 
 #include "path-list-edit.h"
 

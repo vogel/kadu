@@ -23,7 +23,6 @@
 #include <libgadu.h>
 
 #include "misc/misc.h"
-#include "debug.h"
 
 #include "gadu-token-socket-notifiers.h"
 
@@ -52,11 +51,8 @@ void GaduTokenSocketNotifiers::finished(const QString& tokenId, const QPixmap& t
 
 void GaduTokenSocketNotifiers::socketEvent()
 {
-	kdebugf();
-
 	if (gg_token_watch_fd(H) == -1)
 	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
 		finished(QString(), QPixmap());
 		return;
 	}
@@ -67,20 +63,16 @@ void GaduTokenSocketNotifiers::socketEvent()
 	{
 
 		case GG_STATE_CONNECTING:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
 			watchFor(H);
 			break;
 
 		case GG_STATE_ERROR:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
 			finished(QString(), QPixmap());
 			break;
 
 		case GG_STATE_DONE:
 			if (p->success)
 			{
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "success\n");
-
 				struct gg_token *t = (struct gg_token *)H->data;
 				QString tokenId = QString::fromUtf8(t->tokenid);
 
@@ -96,14 +88,11 @@ void GaduTokenSocketNotifiers::socketEvent()
 			}
 			else
 			{
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
 				finished(QString(), QPixmap());
 			}
 
 			break;
 	}
-
-	kdebugf2();
 }
 
 int GaduTokenSocketNotifiers::timeout()

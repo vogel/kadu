@@ -45,7 +45,6 @@
 #include "windows/message-dialog.h"
 
 #include "activate.h"
-#include "debug.h"
 
 ChatWindow::ChatWindow(Chat chat, QWidget *parent) :
 		QWidget(parent), DesktopAwareObject(this),
@@ -80,8 +79,6 @@ void ChatWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 
 void ChatWindow::init()
 {
-	kdebugf();
-
 	setWindowRole("kadu-chat");
 
 	m_chatWidget = m_injectedFactory->makeInjected<ChatWidgetImpl>(m_chat, this);
@@ -174,8 +171,6 @@ Chat ChatWindow::chat() const
 
 void ChatWindow::closeEvent(QCloseEvent *e)
 {
-	kdebugf();
-
 	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "ChatCloseTimer"))
 	{
 		int period = m_configuration->deprecatedApi()->readNumEntry("Chat", "ChatCloseTimerPeriod", 2);

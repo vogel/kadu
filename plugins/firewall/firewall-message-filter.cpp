@@ -68,7 +68,6 @@ Nowa funkcjonalnosc - Dorregaray
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 #include "windows/search-window.h"
-#include "debug.h"
 
 FirewallMessageFilter::FirewallMessageFilter(QObject *parent) :
 		QObject{parent},
@@ -216,7 +215,6 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 
 				LastNotify.restart();
 			}
-			kdebugf2();
 			return !ignore;
 		}
 	}
@@ -233,7 +231,6 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 
 			LastNotify.restart();
 		}
-		kdebugf2();
 		return !ignore;
 	}
 
@@ -274,8 +271,6 @@ bool FirewallMessageFilter::acceptIncomingMessage(const Message &message)
 
 bool FirewallMessageFilter::checkConference(const Chat &chat)
 {
-	kdebugf();
-
 	if (!IgnoreConferences)
 		return false;
 
@@ -286,32 +281,26 @@ bool FirewallMessageFilter::checkConference(const Chat &chat)
 	{
 		if (!contact.isAnonymous() || Passed.contains(contact))
 		{
-			kdebugf2();
  			return false;
 		}
 	}
 
-	kdebugf2();
 	return true;
 }
 
 bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, const QString &message, bool &ignore)
 {
-	kdebugf();
-
 	if (!CheckChats)
 		return false;
 
 	// konferencja
 	if (chat.contacts().count() > 1)
 	{
-		kdebugf2();
  		return false;
 	}
 
 	if (!sender.isAnonymous() || Passed.contains(sender))
 	{
-		kdebugf2();
  		return false;
 	}
 
@@ -319,7 +308,6 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 	{
 		writeLog(sender, tr("Chat with anonim silently dropped.\n") + "----------------------------------------------------\n");
 
-		kdebugf2();
  		return true;
 	}
 
@@ -333,7 +321,6 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 				Protocol *protocol = chat.chatAccount().protocolHandler();
 				if (!protocol)
 				{
-					kdebugf2();
 					return false;
 				}
 
@@ -342,7 +329,6 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 
 			writeLog(sender, tr("Chat with invisible anonim ignored.\n") + "----------------------------------------------------\n");
 
-			kdebugf2();
 			return true;
 		}
 	}
@@ -356,7 +342,6 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 			Protocol *protocol = chat.chatAccount().protocolHandler();
 			if (!protocol)
 			{
-				kdebugf2();
 				return false;
 			}
 
@@ -367,7 +352,6 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 
 		ignore = true;
 
-		kdebugf2();
 		return false;
 	}
 	else
@@ -382,30 +366,24 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
 			LastContact = sender;
 		}
 
-		kdebugm(KDEBUG_INFO, "%s\n", qPrintable(message));
-
 		QDateTime dateTime = chat.chatAccount().property("firewall:firewall-account-connected", QDateTime()).toDateTime();
 		if (dateTime.isValid() && dateTime < QDateTime::currentDateTime())
 		{
 			Protocol *protocol = chat.chatAccount().protocolHandler();
 			if (!protocol)
 			{
-				kdebugf2();
 				return false;
 			}
 
 			m_messageManager->sendMessage(chat, ConfirmationQuestion, true);
 		}
 
-		kdebugf2();
 		return true;
 	}
 }
 
 bool FirewallMessageFilter::checkFlood()
 {
-	kdebugf();
-
 	if (!CheckDos)
 		return false;
 
@@ -414,25 +392,20 @@ bool FirewallMessageFilter::checkFlood()
 	if (LastMsg.restart() >= DosInterval)
 	{
 		FloodMessages = 0;
-		kdebugf2();
 		return false;
 	}
 
 	if (FloodMessages < maxFloodMessages)
 	{
 		FloodMessages++;
-		kdebugf2();
 		return false;
 	}
 
-	kdebugf2();
 	return true;
 }
 
 bool FirewallMessageFilter::checkEmoticons(const QString &message)
 {
-	kdebugf();
-
 	QStringList emots;
 	emots << "<" << ":)" << ":(" << ":-(" << ";)" << ":[" << "wrrrr!" << "niee" << "tiaaa" << ":-)" << ";-)" << ":P" << ":-P" << ";P" << ";-P" << "!!" << "??" << ";(" << ";-(" << ":D" << ":-D" << ";D" << ";-D" << ":O" << ":-O" << ";O" << ";-O" << ":>" << ";>" << ":->" << ";->" << ":|" << ";|" << ":-|" << ";-|" << ":]" << ";]" << ":-]" << ";-]" << ":/" << ";/" << ":-/" << ";-/" << ":*" << ":-*" << ";*" << ";-*" << "]:->";
 
@@ -440,34 +413,25 @@ bool FirewallMessageFilter::checkEmoticons(const QString &message)
 	foreach (const QString &emot, emots)
 		occ += message.count(emot);
 
-	kdebugf2();
 	return (occ > MaxEmoticons);
 }
 
 void FirewallMessageFilter::accountConnected()
 {
-	kdebugf();
-
 	Account account(sender());
 	if (!account)
 		return;
 
 	account.addProperty("firewall:firewall-account-connected", QDateTime::currentDateTime().addMSecs(4000), CustomProperties::NonStorable);
-
-	kdebugf2();
 }
 
 void FirewallMessageFilter::chatDestroyed(ChatWidget *chatWidget)
 {
-	kdebugf();
-
 	foreach (const Contact &contact, chatWidget->chat().contacts())
 	{
 		if (SecuredTemporaryAllowed.contains(contact.ownerBuddy()))
 			SecuredTemporaryAllowed.remove(contact.ownerBuddy());
 	}
-
-	kdebugf2();
 }
 
 bool FirewallMessageFilter::acceptOutgoingMessage(const Message &message)
@@ -516,8 +480,6 @@ bool FirewallMessageFilter::acceptOutgoingMessage(const Message &message)
 
 void FirewallMessageFilter::writeLog(const Contact &contact, const QString &message)
 {
-	kdebugf();
-
 	if (!WriteLog)
 		return;
 
@@ -536,8 +498,6 @@ void FirewallMessageFilter::writeLog(const Contact &contact, const QString &mess
 		stream << QDateTime::currentDateTime().toString() << " :: " << contact.display(true) << " :: " << message << "\n";
 		logFile.close();
 	}
-
-	kdebugf2();
 }
 
 void FirewallMessageFilter::configurationUpdated()

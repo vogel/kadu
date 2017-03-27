@@ -21,7 +21,6 @@
 #include <QtCore/QVariant>
 
 #include "plugin/plugin-injected-factory.h"
-#include "debug.h"
 
 #include "gui/widgets/config-wizard-choose-network-page.h"
 #include "gui/widgets/config-wizard-completed-page.h"
@@ -44,8 +43,6 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 
 ConfigWizardWindow::~ConfigWizardWindow()
 {
-	kdebugf();
-	kdebugf2();
 }
 
 void ConfigWizardWindow::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
@@ -60,8 +57,6 @@ void ConfigWizardWindow::setProtocolsManager(ProtocolsManager *protocolsManager)
 
 void ConfigWizardWindow::init()
 {
-	kdebugf();
-
 	setWindowRole("kadu-wizard");
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Kadu Wizard"));
@@ -81,8 +76,6 @@ void ConfigWizardWindow::init()
 
 	connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
 	connect(this, SIGNAL(rejected()), this, SLOT(rejectedSlot()));
-
-	kdebugf2();
 }
 
 void ConfigWizardWindow::setPage(int id, ConfigWizardPage *page)

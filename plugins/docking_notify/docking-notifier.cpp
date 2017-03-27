@@ -34,7 +34,6 @@
 #include "plugin/plugin-injected-factory.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "plugins/docking/docking-plugin-object.h"
 #include "plugins/docking/docking.h"
@@ -121,8 +120,6 @@ QString DockingNotifier::parseText(const QString &text, const Notification &noti
 
 void DockingNotifier::notify(const Notification &notification)
 {
-	kdebugf();
-
 	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
 	unsigned int timeout = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + key + "_timeout");
 	unsigned int icon = m_configuration->deprecatedApi()->readNumEntry("Qt4DockingNotifier", QString("Event_") + key + "_icon");
@@ -132,8 +129,6 @@ void DockingNotifier::notify(const Notification &notification)
 	m_docking->showMessage(parseText(title, notification, notification.text),
 		parseText(syntax, notification, notification.details),
 		(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
-
-	kdebugf2();
 }
 
 void DockingNotifier::messageClicked()

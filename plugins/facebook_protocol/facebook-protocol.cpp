@@ -30,7 +30,6 @@
 #include "misc/misc.h"
 #include "plugin/plugin-injected-factory.h"
 #include "status/status-container.h"
-#include "debug.h"
 
 #include "libs/boost/variant/get.hpp"
 
@@ -119,7 +118,6 @@ QString FacebookProtocol::statusPixmapPath()
 void FacebookProtocol::invalidDataReceived(const QByteArray &data)
 {
 	(void)data;
-	kdebugm(KDEBUG_INFO, "Received invalid data on facebook: %s\n", qPrintable(prettyHex(data)));
 }
 
 void FacebookProtocol::presenceReceived(const QFacebookPublishPresence &presence)

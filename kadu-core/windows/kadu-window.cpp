@@ -90,7 +90,6 @@
 
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
-#include "debug.h"
 
 #include "kadu-window.h"
 
@@ -519,7 +518,6 @@ void KaduWindow::keyPressEvent(QKeyEvent *e)
 	{
 		if (Docked && isWindow())
 		{
-			kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
 			hide();
 			return;
 		}

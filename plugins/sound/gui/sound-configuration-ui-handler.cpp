@@ -31,7 +31,6 @@
 #include "widgets/configuration/configuration-widget.h"
 #include "widgets/path-list-edit.h"
 #include "windows/main-configuration-window.h"
-#include "debug.h"
 #include "themes.h"
 
 SoundConfigurationUiHandler::SoundConfigurationUiHandler(QObject *parent) :

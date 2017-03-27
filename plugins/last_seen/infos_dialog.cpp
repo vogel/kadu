@@ -34,7 +34,6 @@
 #include "os/generic/window-geometry-manager.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
-#include "debug.h"
 
 #include <QtCore/QStringList>
 #include <QtNetwork/QHostAddress>

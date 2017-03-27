@@ -27,7 +27,6 @@
 #include "menu/menu-inventory.h"
 #include "misc/paths-provider.h"
 #include "widgets/configuration/configuration-widget.h"
-#include "debug.h"
 
 #include <QtWidgets/QAction>
 

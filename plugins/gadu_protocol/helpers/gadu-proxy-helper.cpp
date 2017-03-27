@@ -21,7 +21,6 @@
 #include <libgadu.h>
 
 #include "network/proxy/network-proxy.h"
-#include "debug.h"
 
 #include "gadu-proxy-helper.h"
 
@@ -39,8 +38,6 @@ void GaduProxyHelper::cleanUpProxySettings()
 
 void GaduProxyHelper::setupProxy(NetworkProxy networkProxy)
 {
-	kdebugf();
-
 	GaduProxyHelper::cleanUpProxySettings();
 
 	gg_proxy_enabled = !networkProxy.isNull() && !networkProxy.address().isEmpty();
@@ -49,9 +46,6 @@ void GaduProxyHelper::setupProxy(NetworkProxy networkProxy)
 
 	gg_proxy_host = qstrdup(networkProxy.address().toLatin1().constData());
 	gg_proxy_port = networkProxy.port();
-
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
 
 	if (!networkProxy.user().isEmpty())
 	{

@@ -38,7 +38,6 @@
 #include "widgets/chat-widget/chat-widget-repository.h"
 #include "widgets/chat-widget/chat-widget.h"
 #include "windows/main-configuration-window.h"
-#include "debug.h"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>

@@ -46,7 +46,6 @@
 #include "widgets/select-talkable-combo-box.h"
 #include "windows/message-dialog.h"
 #include "windows/progress-window.h"
-#include "debug.h"
 
 #include "plugins/history/history-plugin-object.h"
 #include "plugins/history/history.h"
@@ -228,13 +227,9 @@ void SmsDialog::configurationUpdated()
 
 void SmsDialog::setRecipient(const QString &phone)
 {
-	kdebugf();
-
 	RecipientEdit->setText(phone);
 	if (!phone.isEmpty())
 		ContentEdit->setFocus();
-
-	kdebugf2();
 }
 
 void SmsDialog::recipientBuddyChanged()
@@ -266,14 +261,10 @@ void SmsDialog::recipientNumberChanged(const QString &number)
 
 void SmsDialog::editReturnPressed()
 {
-	kdebugf();
-
 	if (ContentEdit->toPlainText().isEmpty())
 		ContentEdit->setFocus();
 	else
 		sendSms();
-
-	kdebugf2();
 }
 
 void SmsDialog::gatewayActivated(int index)
@@ -298,8 +289,6 @@ void SmsDialog::gatewayAssigned(const QString &number, const QString &gatewayId)
 
 void SmsDialog::sendSms()
 {
-	kdebugf();
-
 	SmsSender *sender;
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("SMS", "BuiltInApp"))
@@ -314,7 +303,6 @@ void SmsDialog::sendSms()
 		{
 			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
 					tr("SMS application was not specified. Visit the configuration section"), QMessageBox::Ok, this);
-			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
 			return;
 		}
 		sender = m_pluginInjectedFactory->makeInjected<SmsExternalSender>(RecipientEdit->text(), this);
@@ -337,8 +325,6 @@ void SmsDialog::sendSms()
 		connect(sender, SIGNAL(smsSent(QString,QString)), this, SLOT(saveSmsInHistory(QString,QString)));
 
 	sender->sendMessage(ContentEdit->toPlainText());
-
-	kdebugf2();
 }
 
 void SmsDialog::updateCounter()

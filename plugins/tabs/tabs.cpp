@@ -58,7 +58,6 @@
 #include "widgets/configuration/configuration-widget.h"
 #include "widgets/toolbar.h"
 #include "activate.h"
-#include "debug.h"
 
 #include "attach-tab-action.h"
 #include "open-in-new-tab-action.h"
@@ -132,8 +131,6 @@ void TabsManager::setSessionService(SessionService *sessionService)
 
 void TabsManager::init()
 {
-	kdebugf();
-
 	setState(StateNotLoaded);
 
 	createDefaultConfiguration();
@@ -161,14 +158,10 @@ void TabsManager::init()
 		->update();
 
 	openStoredChatTabs();
-
-	kdebugf2();
 }
 
 void TabsManager::done()
 {
-	kdebugf();
-
 	storeOpenedChatTabs();
 
 	m_menuInventory
@@ -192,8 +185,6 @@ void TabsManager::done()
 
 	delete Menu;
 	Menu = 0;
-
-	kdebugf2();
 }
 
 void TabsManager::openStoredChatTabs()
@@ -227,8 +218,6 @@ bool TabsManager::acceptChat(Chat chat) const
 
 ChatWidget * TabsManager::addChat(Chat chat, OpenChatActivation activation)
 {
-	kdebugf();
-
 	auto chatWidget = m_pluginInjectedFactory->makeInjected<ChatWidgetImpl>(chat, nullptr);
 	setConfiguration(chatWidget);
 
@@ -297,8 +286,6 @@ void TabsManager::removeChat(Chat chat)
 
 void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 {
-	kdebugf();
-
 	chatWidget->chat().removeProperty("tabs:fix2626");
 
 	if (TabDialog->indexOf(chatWidget) != -1)
@@ -313,24 +300,16 @@ void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 
 	ClosedChats.append(chatWidget->chat());
 	ReopenClosedTabMenuAction->setEnabled(ClosedChats.size() > 0);
-
-	kdebugf2();
 }
 
 void TabsManager::onTitleChanged(ChatWidget *chatWidget)
 {
-	kdebugf();
-
 	int chatIndex = TabDialog->indexOf(chatWidget);
 
 	if (-1 == chatIndex || !chatWidget)
 		return;
 
 	updateTabTitle(chatWidget);
-	//if (TabDialog->currentIndex() == chatIndex)
-		//TabDialog->setWindowTitle(TabDialog->tabText(chatIndex));
-
-	kdebugf2();
 }
 
 void TabsManager::onTitleChanged()
@@ -359,8 +338,6 @@ void TabsManager::onTabChange(int index)
 
 void TabsManager::insertTab(ChatWidget *chatWidget)
 {
-	kdebugf();
-
 	Title->addChatWidget(chatWidget);
 
 	bool restoreChatGeometry = true;
@@ -402,22 +379,16 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	// unreadMessagesCountChanged(chatWidget);
 	if (_isActiveWindow(TabDialog) && TabDialog->currentWidget() == chatWidget)
 		emit chatWidgetActivated(chatWidget);
-
-	kdebugf2();
 }
 
 void TabsManager::onContextMenu(QWidget *w, const QPoint &pos)
 {
-	kdebugf();
 	SelectedChat = qobject_cast<ChatWidget *>(w);
 	Menu->popup(pos);
-	kdebugf2();
 }
 
 void TabsManager::makePopupMenu()
 {
-	kdebugf();
-
 	Menu = new QMenu();
 	DetachTabMenuAction = Menu->addAction(m_iconsManager->iconByPath(KaduIcon("kadu_icons/tab-detach")), tr("Detach"), this, SLOT(onMenuActionDetach()));
 	Menu->addAction(tr("Detach all"), this, SLOT(onMenuActionDetachAll()));
@@ -430,8 +401,6 @@ void TabsManager::makePopupMenu()
 
 	if (m_configuration->deprecatedApi()->readBoolEntry("Tabs", "OldStyleClosing"))
 		Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
-
-	kdebugf2();
 }
 
 void TabsManager::onMenuActionDetach()
@@ -480,7 +449,6 @@ void TabsManager::attachChat(ChatWidget *chatWidget)
 
 void TabsManager::detachChat(ChatWidget *chatWidget)
 {
-	kdebugf();
 	if (TabDialog->indexOf(chatWidget) == -1)
 		return;
 
@@ -565,8 +533,6 @@ bool TabsManager::shouldStore()
 
 void TabsManager::configurationUpdated()
 {
-	kdebugf();
-
 	ConfigTabsBelowChats = m_configuration->deprecatedApi()->readBoolEntry("Chat", "TabsBelowChats");
 	ConfigDefaultTabs = m_configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs");
 
@@ -580,8 +546,6 @@ void TabsManager::configurationUpdated()
 	auto count = TabDialog->count();
 	for (auto i = 0; i < count; i++)
 		setConfiguration(static_cast<ChatWidget *>(TabDialog->widget(i)));
-
-	kdebugf2();
 }
 
 void TabsManager::setConfiguration(ChatWidget* chatWidget)

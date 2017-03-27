@@ -50,7 +50,6 @@ public:
 
 	ExecutionArgumentsBuilder & setQueryVersion(bool queryVersion);
 	ExecutionArgumentsBuilder & setQueryUsage(bool queryUsage);
-	ExecutionArgumentsBuilder & setDebugMask(QString debugMask);
 	ExecutionArgumentsBuilder & setProfileDirectory(QString profileDirectory);
 	ExecutionArgumentsBuilder & setOpenIds(QStringList openIds);
 	ExecutionArgumentsBuilder & setOpenUuid(QString openUuid);
@@ -63,7 +62,6 @@ public:
 private:
 	bool m_queryVersion;
 	bool m_queryUsage;
-	QString m_debugMask;
 	QString m_profileDirectory;
 	QStringList m_openIds;
 	QString m_openUuid;

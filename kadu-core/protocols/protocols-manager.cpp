@@ -25,8 +25,6 @@
 #include "misc/misc.h"
 #include "protocols/protocol-factory.h"
 
-#include "debug.h"
-
 #include "protocols-manager.h"
 
 ProtocolsManager::ProtocolsManager(QObject *parent) :

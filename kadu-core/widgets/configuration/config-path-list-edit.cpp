@@ -27,8 +27,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-path-list-edit.h"
 
-#include "debug.h"
-
 ConfigPathListEdit::ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: PathListEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
@@ -49,8 +47,6 @@ ConfigPathListEdit::~ConfigPathListEdit()
 
 void ConfigPathListEdit::createWidgets()
 {
-	kdebugf();
-
 	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 

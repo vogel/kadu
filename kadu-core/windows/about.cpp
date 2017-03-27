@@ -48,7 +48,6 @@
 #include "os/generic/url-opener.h"
 #include "os/generic/window-geometry-manager.h"
 #include "url-handlers/url-handler-manager.h"
-#include "debug.h"
 
 #include "about.h"
 
@@ -257,14 +256,9 @@ void About::keyPressEvent(QKeyEvent *event)
 
 QString About::loadFile(const QString &name)
 {
-	kdebugf();
-
 	QFile file(m_pathsProvider->dataPath() + name);
 	if (!file.open(QIODevice::ReadOnly))
-	{
-		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", qPrintable(name));
 		return QString();
-	}
 
 	QTextStream str(&file);
 	str.setCodec("UTF-8");
@@ -273,7 +267,6 @@ QString About::loadFile(const QString &name)
 
 	data.replace(QRegExp("\r\n?"), QStringLiteral("\n"));
 
-	kdebugf2();
 	return data;
 }
 

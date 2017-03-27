@@ -30,7 +30,6 @@
 #include "menu/menu-inventory.h"
 #include "misc/paths-provider.h"
 #include "plugin/plugin-injected-factory.h"
-#include "debug.h"
 #include "exports.h"
 
 #include "infos.h"
@@ -79,8 +78,6 @@ void Infos::setShowInfosWindowAction(ShowInfosWindowAction *showInfosWindowActio
 
 void Infos::init()
 {
-	kdebugf();
-
 	triggerAllAccountsAdded(m_accountManager);
 
 	fileName = m_pathsProvider->profilePath() + QStringLiteral("last_seen.data");
@@ -90,7 +87,6 @@ void Infos::init()
 		QFile file(fileName);
 		if (file.open(QIODevice::ReadOnly))
 		{
-			kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
 			QTextStream stream(&file);
 			while (!stream.atEnd())
 			{
@@ -100,7 +96,6 @@ void Infos::init()
 				QString protocol = fullId[0];
 				QString uin = fullId[1];
 				QString dateTime = stream.readLine();
-				//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(protocol), qPrintable(uin), qPrintable(dateTime));
 
 				Contact contact;
 				// wstawiamy tylko konta, które są na liście kontaktów
@@ -132,24 +127,18 @@ void Infos::init()
 		->menu("tools")
 		->addAction(m_showInfosWindowAction, KaduMenu::SectionTools, 3)
 		->update();
-
-	kdebugf2();
 }
 
 void Infos::done()
 {
-	kdebugf();
-
 	updateTimes();
 	QFile file(fileName);
 	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
-		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
 		QTextStream stream(&file);
 		for (LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
 		{
 			QPair<QString, QString> lastSeenKey = it.key();
-			//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(lastSeenKey.first), qPrintable(lastSeenKey.second), qPrintable(it.value()));
 			stream << lastSeenKey.first << ":" << lastSeenKey.second << "\n" << it.value() << "\n\n";
 		}
 		file.close();
@@ -164,66 +153,42 @@ void Infos::done()
 		->menu("tools")
 		->removeAction(m_showInfosWindowAction)
 		->update();
-
-	kdebugf2();
 }
 
 void Infos::onShowInfos()
 {
-	kdebugf();
 	updateTimes();
 	InfosDialog *infosDialog = m_pluginInjectedFactory->makeInjected<InfosDialog>(lastSeen);
 	infosDialog->show();
-	kdebugf2();
 }
 
 void Infos::accountAdded(Account account)
 {
-	kdebugf();
-
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
-	kdebugf2();
 }
 
 void Infos::accountRemoved(Account account)
 {
-	kdebugf();
-
 	disconnect(account, 0, this, 0);
-	kdebugf2();
 }
 
 void Infos::contactStatusChanged(Contact contact, Status status)
 {
 	Q_UNUSED(status)
-	kdebugf();
 	// interesuje nas tylko zmiana na offline, lastSeen dla ludzi online
 	// zostanie zapisany przy wyjściu z programu
 	if (contact.currentStatus().isDisconnected())
-	{
 		lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]
 		         = QDateTime::currentDateTime().toString(QStringLiteral("dd-MM-yyyy hh:mm"));
-		//kdebugm(KDEBUG_INFO, "Last seen %s %s %s\n", qPrintable(contact.contactAccount().protocolName()), qPrintable(contact.id()), qPrintable(QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm")));
-	}
-	kdebugf2();
 }
 
 void Infos::updateTimes()
 {
-	kdebugf();
 	foreach (const Contact &contact, m_contactManager->items())
-	{
 		if (!contact.currentStatus().isDisconnected())
-		{
-			kdebugm(KDEBUG_INFO, "Updating %s:%s time\n", qPrintable(contact.contactAccount().protocolName()), qPrintable(contact.id()));
-			kdebugm(KDEBUG_INFO, "Previous one: %s\n", qPrintable(lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]));
-			kdebugm(KDEBUG_INFO, "New one: %s\n\n", qPrintable(QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm")));
 			lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]
 			         = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
-		}
-	}
-	kdebugf2();
 }
 
 #include "moc_infos.cpp"

@@ -33,7 +33,6 @@
 #include "icons/icons-manager.h"
 #include "storage/storage-point.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "group-manager.h"
 
@@ -182,24 +181,20 @@ QString GroupManager::validateGroupName(Group group, const QString &newName)
 // TODO: move some of this to %like-encoding, so we don't block normal names
 bool GroupManager::acceptableGroupName(const QString &groupName, bool acceptExistingGroupName)
 {
-	kdebugf();
 	if (groupName.isEmpty())
 	{
-		kdebugf2();
 		return false;
 	}
 
 	if (groupName.contains(","))
 	{
 		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("'%1' is prohibited").arg(','));
-		kdebugf2();
 		return false;
 	}
 
 	if (groupName.contains(";"))
 	{
 		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("'%1' is prohibited").arg(';'));
-		kdebugf2();
 		return false;
 	}
 
@@ -209,7 +204,6 @@ bool GroupManager::acceptableGroupName(const QString &groupName, bool acceptExis
 	{
 		// because of gadu-gadu contact list format...
 		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Numbers are prohibited"));
-		kdebugf2();
 		return false;
 	}
 
@@ -217,18 +211,15 @@ bool GroupManager::acceptableGroupName(const QString &groupName, bool acceptExis
  	if (groupName == tr("All"))
 	{
 		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Group name %1 is prohibited").arg(groupName));
- 		kdebugf2();
  		return false;
 	}
 
 	if (!acceptExistingGroupName && byName(groupName, false))
  	{
 		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Group of that name already exists!"));
- 		kdebugf2();
  		return false;
  	}
 
-	kdebugf2();
 	return true;
 }
 

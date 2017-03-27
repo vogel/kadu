@@ -27,8 +27,6 @@
 #include "widgets/configuration/config-action-button.h"
 #include "widgets/configuration/config-group-box.h"
 
-#include "debug.h"
-
 ConfigActionButton::ConfigActionButton(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QPushButton(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
@@ -42,8 +40,6 @@ ConfigActionButton::ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, Con
 
 void ConfigActionButton::createWidgets()
 {
-	kdebugf();
-
 	setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
 	parentConfigGroupBox->addWidgets(new QLabel(" "), this);
 

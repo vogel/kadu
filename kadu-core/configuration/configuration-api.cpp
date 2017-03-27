@@ -25,7 +25,6 @@
 #include <errno.h>
 
 #include "configuration/configuration-read-error-exception.h"
-#include "debug.h"
 
 #include "configuration-api.h"
 

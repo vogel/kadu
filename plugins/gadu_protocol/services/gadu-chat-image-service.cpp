@@ -20,7 +20,6 @@
  */
 
 #include "misc/error.h"
-#include "debug.h"
 
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
@@ -61,9 +60,6 @@ void GaduChatImageService::setReceiveImages(bool receiveImages)
 
 void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 {
-	kdebugm(KDEBUG_INFO, "%s", qPrintable(QString("Received image request. sender: %1, size: %2, crc32: %3\n")
-		.arg(e->event.image_request.sender).arg(e->event.image_request.size).arg(e->event.image_request.crc32)));
-
 	if (!Connection || !Connection.data()->hasSession())
 		return;
 
@@ -82,10 +78,6 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 
 void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 {
-	kdebugm(KDEBUG_INFO, "%s", qPrintable(QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n")
-			.arg(e->event.image_reply.sender).arg(e->event.image_reply.size)
-			.arg(e->event.image_reply.crc32).arg(e->event.image_reply.filename)));
-
 	auto image = chatImageFromSizeCrc32(e->event.image_reply.size, e->event.image_reply.crc32);
 	QByteArray imageData(e->event.image_reply.image, e->event.image_reply.size);
 

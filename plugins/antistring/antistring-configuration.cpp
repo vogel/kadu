@@ -26,7 +26,6 @@
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "misc/paths-provider.h"
-#include "debug.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
@@ -91,10 +90,7 @@ void AntistringConfiguration::readDefaultConditions()
 {
 	QFile defaultListFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/antistring/ant_conditions.conf"));
 	if (!defaultListFile.open(QFile::ReadOnly))
-	{
-		kdebug("Can't open file: %s\n", qPrintable(defaultListFile.fileName()));
 		return;
-	}
 
 	QTextStream textStream(&defaultListFile);
 

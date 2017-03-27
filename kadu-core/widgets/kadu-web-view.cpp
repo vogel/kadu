@@ -62,15 +62,12 @@
 #include "services/image-storage-service.h"
 #include "url-handlers/url-handler-manager.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "kadu-web-view.h"
 
 KaduWebView::KaduWebView(QWidget *parent) :
 		QWebView(parent), DraggingPossible(false), IsLoading(false), RefreshTimer(new QTimer(this))
 {
-	kdebugf();
-
 	QWebSettings::setMaximumPagesInCache(0);
 	QWebSettings::setObjectCacheCapacities(0, 0, 0);
 
@@ -90,8 +87,6 @@ KaduWebView::KaduWebView(QWidget *parent) :
 	connect(pageAction(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 
 	connect(RefreshTimer, SIGNAL(timeout()), this, SLOT(reload()));
-
-	kdebugf2();
 }
 
 KaduWebView::~KaduWebView()
@@ -175,7 +170,6 @@ void KaduWebView::contextMenuEvent(QContextMenuEvent *e)
 #endif
 
  	popupMenu.exec(e->globalPos());
- 	kdebugf2();
 }
 
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
@@ -231,7 +225,6 @@ void KaduWebView::mousePressEvent(QMouseEvent *e)
 
 void KaduWebView::mouseReleaseEvent(QMouseEvent *e)
 {
-	kdebugf();
 	QWebView::mouseReleaseEvent(e);
 	DraggingPossible = false;
 
@@ -266,8 +259,6 @@ void KaduWebView::refreshLater()
 
 void KaduWebView::saveImage()
 {
-	kdebugf();
-
 	QUrl imageUrl = page()->currentFrame()->hitTestContent(ContextMenuPos).imageUrl();
 	if (m_imageStorageService)
 		imageUrl = m_imageStorageService->toFileUrl(imageUrl);

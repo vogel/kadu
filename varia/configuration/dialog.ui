@@ -44,7 +44,6 @@
 					<item value="0" caption="Move the Window to the Active Desktop" />
 					<item value="1" caption="Switch Desktop Making the Window Visible" />
 				</combo-box>
-				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" id="debug" />
 			</group-box>
 		</tab>
 	</section>

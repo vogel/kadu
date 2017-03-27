@@ -35,7 +35,6 @@
 #include "roster/roster-service-tasks.h"
 #include "roster/roster-task-type.h"
 #include "roster/roster-task.h"
-#include "debug.h"
 
 #include <qxmpp/QXmppRosterManager.h>
 

@@ -38,7 +38,6 @@
 #include "roster/roster-service.h"
 #include "widgets/dialog/password-dialog-widget.h"
 #include "windows/kadu-dialog.h"
-#include "debug.h"
 
 #include "account-manager.h"
 

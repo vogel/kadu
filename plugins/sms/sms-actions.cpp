@@ -33,7 +33,6 @@
 #include "widgets/talkable-tree-view.h"
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
-#include "debug.h"
 
 #include "plugins/history/history.h"
 

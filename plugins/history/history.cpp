@@ -50,7 +50,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "actions/clear-history-action.h"
 #include "actions/show-history-action.h"
@@ -161,8 +160,6 @@ void History::deleteActionDescriptions()
 
 void History::chatWidgetAdded(ChatWidget *chatWidget)
 {
-	kdebugf();
-
 	if (!chatWidget)
 		return;
 
@@ -308,8 +305,6 @@ void History::stopSaveThread()
 
 		if (SaveThread->isRunning())
 		{
-			kdebugm(KDEBUG_WARNING, "terminating history save thread!\n");
-
 			SaveThread->terminate();
 			SaveThread->wait(2000);
 		}
@@ -318,8 +313,6 @@ void History::stopSaveThread()
 
 void History::configurationUpdated()
 {
-	kdebugf();
-
 	ChatHistoryCitation = m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryCitation");
 	ChatHistoryQuotationTime = m_configuration->deprecatedApi()->readNumEntry("History", "ChatHistoryQuotationTime", -24);
 
@@ -327,8 +320,6 @@ void History::configurationUpdated()
 	SaveChatsWithAnonymous = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveChatsWithAnonymous", true);
 	SaveStatuses = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveStatusChanges", false);
 	SaveOnlyStatusesWithDescription = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveOnlyStatusWithDescription", false);
-
-	kdebugf2();
 }
 
 void History::registerStorage(HistoryStorage *storage)

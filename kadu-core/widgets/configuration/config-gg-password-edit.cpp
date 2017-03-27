@@ -28,7 +28,6 @@
 #include "widgets/configuration/config-group-box.h"
 
 #include "misc/misc.h"
-#include "debug.h"
 
 #include "config-gg-password-edit.h"
 

@@ -27,8 +27,6 @@
 
 #include <libgadu.h>
 
-#include "configuration/configuration-aware-object.h"
-
 #include "services/gadu-avatar-service.h"
 #include "services/gadu-buddy-list-serialization-service.h"
 #include "services/gadu-chat-image-service.h"
@@ -64,7 +62,7 @@ class PluginInjectedFactory;
 class ProtocolGaduConnection;
 class VersionService;
 
-class GADUAPI GaduProtocol : public Protocol, public ConfigurationAwareObject
+class GADUAPI GaduProtocol : public Protocol
 {
 	Q_OBJECT
 
@@ -172,8 +170,6 @@ protected:
 	virtual void sendStatusToServer();
 
 	virtual void disconnectedCleanup();
-
-	virtual void configurationUpdated();
 
 public:
 	explicit GaduProtocol(GaduListHelper *gaduListHelper, GaduServersManager *gaduServersManager, Account account, ProtocolFactory *factory);

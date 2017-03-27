@@ -39,7 +39,7 @@ class KADUAPI ExecutionArguments final
 {
 
 public:
-	ExecutionArguments(bool queryVersion, bool queryUsage, QString debugMask, QString profileDirectory, QStringList openIds, QString openUuid);
+	ExecutionArguments(bool queryVersion, bool queryUsage, QString profileDirectory, QStringList openIds, QString openUuid);
 
 	/**
 	 * @return True if version information is requested.
@@ -50,12 +50,6 @@ public:
 	 * @return True if usage information is requested.
 	 */
 	bool queryUsage() const;
-
-	/**
-	 * @return Requested value of debug mask.
-	 * @todo change to int
-	 */
-	QString debugMask() const;
 
 	/**
 	 * @return Requested value of profile directory.
@@ -75,7 +69,6 @@ public:
 private:
 	bool m_queryVersion;
 	bool m_queryUsage;
-	QString m_debugMask;
 	QString m_profileDirectory;
 	QStringList m_openIds;
 	QString m_openUuid;

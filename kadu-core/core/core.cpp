@@ -82,7 +82,6 @@
 #include "windows/kadu-window.h"
 #include "windows/search-window.h"
 #include "activate.h"
-#include "debug.h"
 #include "injeqt-type-roles.h"
 #include "updates.h"
 
@@ -172,7 +171,6 @@ void Core::createDefaultConfiguration()
 
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "AllowExecutingFromParser", false);
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "CheckUpdates", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "DescriptionHeight", 60);
 	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "DisconnectWithCurrentDescription", true);
 #ifdef Q_OS_WIN
@@ -343,8 +341,6 @@ void Core::init()
 
 void Core::deleteOldConfigurationFiles()
 {
-	kdebugf();
-
 	QDir oldConfigs(m_injector.get<PathsProvider>()->profilePath(), "kadu-4.conf.xml.backup.*", QDir::Name, QDir::Files);
 	if (oldConfigs.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs.count() - 20; i < max; ++i)
@@ -369,8 +365,6 @@ void Core::deleteOldConfigurationFiles()
 	if (oldDebugs.count() > 20)
 		for (unsigned int i = 0, max = oldDebugs.count() - 20; i < max; ++i)
 			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldDebugs[static_cast<int>(i)]);
-
-	kdebugf2();
 }
 
 void Core::updateIcon()
@@ -404,10 +398,6 @@ void Core::configurationUpdated()
 	else
 		settings.remove("Kadu");
 #endif
-
-	bool ok;
-	int newMask = qgetenv("DEBUG_MASK").toInt(&ok);
-	debug_mask = ok ? newMask : m_injector.get<Configuration>()->deprecatedApi()->readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 }
 
 int Core::executeSingle(const ExecutionArguments &executionArguments)
@@ -422,8 +412,6 @@ int Core::executeSingle(const ExecutionArguments &executionArguments)
 	auto executeAsFirst = [&](){
 		execute(executionArguments.openIds(), executionArguments.openUuid());
 		ret = QApplication::exec();
-		kdebugm(KDEBUG_INFO, "after exec\n");
-		kdebugm(KDEBUG_INFO, "exiting main\n");
 	};
 
 	auto executeAsNext = [&](SingleApplication &singleApplication){

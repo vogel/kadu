@@ -44,7 +44,6 @@
 #include "misc/misc.h"
 #include "windows/main-window.h"
 #include "windows/message-dialog.h"
-#include "debug.h"
 
 #include "toolbar.h"
 
@@ -313,7 +312,6 @@ void ToolBar::dragMoveEvent(QDragMoveEvent *event)
 
 void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 {
-	kdebugf();
 	ToolBar *source = qobject_cast<ToolBar*>(event->source());
 	if (source)
 	{
@@ -344,7 +342,6 @@ void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 
 	}
 	event->ignore();
-	kdebugf2();
 }
 
 void ToolBar::dragLeaveEvent(QDragLeaveEvent *event)
@@ -363,7 +360,6 @@ void ToolBar::leaveEvent(QEvent *event)
 
 void ToolBar::dropEvent(QDropEvent *event)
 {
-	kdebugf();
 	ToolBar *source = qobject_cast<ToolBar*>(event->source());
 
 	dragging = false;
@@ -394,8 +390,6 @@ void ToolBar::dropEvent(QDropEvent *event)
 		moveAction(actionName, style, before);
 
 	event->acceptProposedAction();
-
-	kdebugf2();
 }
 
 bool ToolBar::event(QEvent *event)
@@ -560,8 +554,6 @@ int ToolBar::actionRow(QAction *action)
 
 void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 {
-	kdebugf();
-
 // 	if (DockArea::blocked())
 // 	{
 // 		e->ignore();
@@ -573,7 +565,6 @@ void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 	delete menu;
 
 	e->accept();
-	kdebugf2();
 }
 
 void ToolBar::configurationUpdated()
@@ -592,7 +583,6 @@ void ToolBar::configurationUpdated()
 
 void ToolBar::writeToConfig(const QDomElement &parent_element)
 {
-	kdebugf();
 	QDomElement toolbar_elem = m_configuration->api()->createElement(parent_element, "ToolBar");
 
 	toolbar_elem.setAttribute("x_offset", pos().x());
@@ -609,20 +599,14 @@ void ToolBar::writeToConfig(const QDomElement &parent_element)
 			button_elem.setAttribute("action_name", toolBarAction.actionName);
 		button_elem.setAttribute("toolbutton_style", toolBarAction.style);
 	}
-
-	kdebugf2();
 }
 
 bool ToolBar::hasAction(const QString &action_name)
 {
-	kdebugf();
-
 	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
 		if (toolBarAction.actionName == action_name)
 			return true;
 	return false;
-
-	kdebugf2();
 }
 
 bool ToolBar::windowHasAction(const QString &action_name, bool exclude)
@@ -640,8 +624,6 @@ bool ToolBar::windowHasAction(const QString &action_name, bool exclude)
 
 void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 {
-	kdebugf();
-
 	ChangeNotifierLock lock(MyChangeNotifier, ChangeNotifierLock::ModeForget);
 
 	bool offset_ok;
@@ -700,8 +682,6 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 
 		addAction(actionName, buttonStyle, 0);
 	}
-
-	kdebugf2();
 }
 
 bool actionTextLessThan(QAction *a1, QAction *a2)
@@ -832,15 +812,12 @@ void ToolBar::addSpacerClicked()
 
 void ToolBar::removeToolbar()
 {
-	kdebugf();
-
 	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Do you really want to remove this toolbar?"), this);
 	dialog->addButton(QMessageBox::Yes, tr("Remove toolbar"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
 	if (dialog->ask())
 		emit removed(this); // parent window will remove this toolbar
-	kdebugf2();
 }
 
 bool ToolBar::isBlockToolbars(Configuration *configuration)
@@ -1145,8 +1122,6 @@ void ToolBar::paintDropMarker()
 ActionDrag::ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget *dragSource)
 	: QDrag(dragSource)
 {
-	kdebugf();
-
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData;
 
@@ -1157,8 +1132,6 @@ ActionDrag::ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWi
 	mimeData->setData("application/x-kadu-action", data);
 
 	setMimeData(mimeData);
-
-	kdebugf2();
 }
 
 bool ActionDrag::decode(QDropEvent *event, QString &actionName, Qt::ToolButtonStyle &style)

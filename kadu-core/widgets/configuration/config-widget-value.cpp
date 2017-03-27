@@ -24,8 +24,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-widget-value.h"
 
-#include "debug.h"
-
 ConfigWidgetValue::ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: ConfigWidget(parentConfigGroupBox, dataManager)
 {

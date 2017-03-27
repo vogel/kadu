@@ -29,7 +29,6 @@
 #include "misc/memory.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "url-handlers/url-handler-manager.h"
-#include "debug.h"
 
 #include <libgadu.h>
 
@@ -81,7 +80,7 @@ void GaduPluginObject::init()
 {
 #ifdef DEBUG_OUTPUT_ENABLED
 	// 8 bits for gadu debug
-	gg_debug_level = debug_mask & 255;
+	gg_debug_level = 255;
 #else
 	gg_debug_level = 0;
 #endif

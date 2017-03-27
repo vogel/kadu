@@ -344,7 +344,6 @@ void TabWidget::onContextMenu(int id, const QPoint &pos)
 
 void TabWidget::moveTab(int from, int to)
 {
-	kdebugf();
 	QString tablabel = tabText(from);
 	QWidget *w = widget(from);
 	QIcon tabiconset = tabIcon(from);
@@ -407,19 +406,16 @@ void TabWidget::moveTabRight()
 
 void TabWidget::dragEnterEvent(QDragEnterEvent* e)
 {
-	kdebugf();
 	// Akceptujemu dnd jezeli pochodzi on z UserBox'a lub paska kart
 // 	if ((UlesDrag::canDecode(e) && (qobject_cast<ContactsListWidget *>(e->source()))))
 // 		e->acceptProposedAction();
 // 	else
 		e->ignore();
 //
-	kdebugf2();
 }
 
 void TabWidget::dropEvent(QDropEvent* e)
 {
-	kdebugf();
 	QStringList ules;
 
 	// Jezeli dnd pochodzil z userboxa probujemy dodac nowa karte
@@ -432,8 +428,6 @@ void TabWidget::dropEvent(QDropEvent* e)
 		// Jezeli nie na koncu tabbara
 			emit openTab(ules, -1);
 	}
-
-	kdebugf2();
 }
 
 void TabWidget::changeEvent(QEvent *event)
@@ -441,21 +435,17 @@ void TabWidget::changeEvent(QEvent *event)
 	QTabWidget::changeEvent(event);
 	if (event->type() == QEvent::ActivationChange)
 	{
-		kdebugf();
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(currentWidget());
 		if (chatWidget && _isActiveWindow(this))
 			emit chatWidgetActivated(chatWidget);
-		kdebugf2();
 	}
 }
 
 void TabWidget::mouseDoubleClickEvent(QMouseEvent *e)
 {
-	kdebugf();
 	// jezeli dwuklik nastapil lewym przyciskiem myszy pokazujemy okno openchatwith
 	if (e->button() == Qt::LeftButton)
 		newChat();
-	kdebugf2();
 }
 
 void TabWidget::newChat()

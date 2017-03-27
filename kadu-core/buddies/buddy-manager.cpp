@@ -33,7 +33,6 @@
 #include "core/core.h"
 #include "roster/roster.h"
 #include "storage/storage-point.h"
-#include "debug.h"
 
 BuddyManager::BuddyManager(QObject *parent) :
 		Manager<Buddy>{parent}

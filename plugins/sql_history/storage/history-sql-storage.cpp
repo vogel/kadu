@@ -63,7 +63,6 @@
 #include "widgets/chat-widget/chat-widget.h"
 #include "windows/message-dialog.h"
 #include "windows/progress-window.h"
-#include "debug.h"
 
 #include "plugins/history/history-query-result.h"
 #include "plugins/history/history-query.h"
@@ -92,8 +91,6 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 
 HistorySqlStorage::~HistorySqlStorage()
 {
-	kdebugf();
-
 	if (InitializerThread && InitializerThread->isRunning())
 	{
 		InitializerThread->terminate();
@@ -169,8 +166,6 @@ void HistorySqlStorage::setTalkableConverter(TalkableConverter *talkableConverte
 
 void HistorySqlStorage::init()
 {
-	kdebugf();
-
 	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
 	{
 		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
@@ -406,8 +401,6 @@ int HistorySqlStorage::saveMessageContent(const Message& message)
 
 void HistorySqlStorage::appendMessage(const Message &message)
 {
-	kdebugf();
-
 	if (!waitForDatabase())
 		return;
 
@@ -428,14 +421,10 @@ void HistorySqlStorage::appendMessage(const Message &message)
 	executeQuery(AppendMessageQuery);
 
 	AppendMessageQuery.finish();
-
-	kdebugf2();
 }
 
 void HistorySqlStorage::appendStatus(const Contact &contact, const Status &status, const QDateTime &time)
 {
-	kdebugf();
-
 	if (!waitForDatabase())
 		return;
 
@@ -451,14 +440,10 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 	executeQuery(AppendStatusQuery);
 
 	AppendStatusQuery.finish();
-
-	kdebugf2();
 }
 
 void HistorySqlStorage::appendSms(const QString &recipient, const QString &content, const QDateTime &time)
 {
-	kdebugf();
-
 	if (!waitForDatabase())
 		return;
 
@@ -471,8 +456,6 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 	executeQuery(AppendSmsQuery);
 
 	AppendSmsQuery.finish();
-
-	kdebugf2();
 }
 
 void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &date)
@@ -1051,22 +1034,8 @@ QFuture<SortedMessages> HistorySqlStorage::smses(const HistoryQuery &historyQuer
 
 void HistorySqlStorage::executeQuery(QSqlQuery &query)
 {
-	kdebugf();
-
 	query.setForwardOnly(true);
-
-	QDateTime before = QDateTime::currentDateTime();
 	query.exec();
-	QDateTime after = QDateTime::currentDateTime();
-	kdebugm(KDEBUG_INFO, "db query: %s\n", qPrintable(query.executedQuery()));
-
-/*
-	printf("[%s]\n[%d.%d]-[%d.%d]/%d.%d\n", qPrintable(query.executedQuery()),
-			before.toTime_t(), before.time().msec(),
-			after.toTime_t(), after.time().msec(),
-			after.toTime_t() - before.toTime_t(),
-			after.time().msec() - before.time().msec());
-*/
 }
 
 SortedMessages HistorySqlStorage::messagesFromQuery(QSqlQuery &query)

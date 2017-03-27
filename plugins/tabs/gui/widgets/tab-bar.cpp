@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
-
 #include "tab-bar.h"
 
 TabBar::TabBar(QWidget *parent) :
@@ -45,10 +43,8 @@ void TabBar::mouseReleaseEvent(QMouseEvent *e)
 
 void TabBar::mouseDoubleClickEvent(QMouseEvent *e)
 {
-	kdebugf();
 	// w celu ulatwienia sobie zadania przekazujemy zdarzenie dalej- tu klasie tabdialog
 	emit mouseDoubleClickEventSignal(e);
-	kdebugf2();
 }
 
 #include "moc_tab-bar.cpp"

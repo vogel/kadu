@@ -49,7 +49,6 @@
 #include "widgets/configuration/configuration-widget.h"
 #include "widgets/custom-input.h"
 #include "windows/main-configuration-window.h"
-#include "debug.h"
 
 #include "word-fix-formatted-string-visitor.h"
 
@@ -108,10 +107,6 @@ void WordFix::init()
 				m_wordsList[pair.at(0)] = pair.at(1);
 			}
 			defList.close();
-		}
-		else
-		{
-			kdebug("Can't open file: %s\n", qPrintable((defList.fileName())));
 		}
 	}
 	else

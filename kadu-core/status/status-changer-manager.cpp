@@ -21,7 +21,6 @@
 
 #include "status/status-changer.h"
 #include "status/status-container-manager.h"
-#include "debug.h"
 
 #include "status-changer-manager.h"
 
@@ -41,8 +40,6 @@ void StatusChangerManager::setStatusContainerManager(StatusContainerManager *sta
 
 void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)
 {
-	kdebugf();
-
 	connect(statusChanger, SIGNAL(statusChanged(StatusContainer *)), this, SLOT(statusChanged(StatusContainer *)));
 
 	for (int i = 0; i < StatusChangers.count(); i++)
@@ -50,27 +47,20 @@ void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)
 		{
 			StatusChangers.insert(i, statusChanger);
 			statusChanged();
-			kdebugf2();
 			return;
 		}
 
 	StatusChangers.append(statusChanger);
 	statusChanged();
-
-	kdebugf2();
 }
 
 void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 {
-	kdebugf();
-
 	if (StatusChangers.removeAll(statusChanger))
 	{
 		disconnect(statusChanger, 0, this, 0);
 		statusChanged();
 	}
-
-	kdebugf2();
 }
 
 void StatusChangerManager::setStatusManually(StatusContainer *statusContainer, Status status)

@@ -22,8 +22,6 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
-#include "debug.h"
-
 #include "open-chat-with-runner-manager.h"
 
 OpenChatWithRunnerManager * OpenChatWithRunnerManager::Instance = 0;
@@ -56,8 +54,6 @@ void OpenChatWithRunnerManager::unregisterRunner(OpenChatWithRunner *runner)
 
 BuddyList OpenChatWithRunnerManager::matchingContacts(const QString &query)
 {
-	kdebugf();
-
 	BuddyList matchingContacts;
 	foreach (OpenChatWithRunner *runner, Runners)
 		matchingContacts += runner->matchingContacts(query);

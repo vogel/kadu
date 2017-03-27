@@ -43,7 +43,6 @@
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
-#include "debug.h"
 
 #include "custom-input-menu-manager.h"
 #include "custom-input.h"
@@ -51,16 +50,11 @@
 CustomInput::CustomInput(Chat chat, QWidget *parent) :
 		QTextEdit(parent), CurrentChat(chat), CopyPossible(false), autosend_enabled(true)
 {
-	kdebugf();
-
 	setAcceptRichText(false);
-
 	setAcceptDrops(true);
 
 	connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(setCopyPossible(bool)));
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChangedSlot()));
-
-	kdebugf2();
 }
 
 void CustomInput::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
@@ -106,8 +100,6 @@ void CustomInput::showEvent(QShowEvent *e)
 
 void CustomInput::keyPressEvent(QKeyEvent *e)
 {
-	kdebugf();
-
 	/* Ctrl+Return and Ctrl+Enter have a special meaning:
 	 * 1) autosend_enabled -> new line is entered
 	 * 2) message is sent
@@ -120,10 +112,8 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 				|| (e->key() == Qt::Key_Enter && e->modifiers() == Qt::KeypadModifier)))
 		|| (!autosend_enabled && isCtrlEnter) || HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_sendmessage"))
 	{
-		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
 		emit sendMessage();
 		e->accept();
-		kdebugf2();
 		return;
 	}
 	else if (isCtrlEnter)
@@ -133,7 +123,6 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		QTextEdit::keyPressEvent(&emulateNewLineEvent);
 
 		e->accept();
-		kdebugf2();
 		return;
 	}
 	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_bold"))
@@ -146,7 +135,6 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		emit fontChanged(currentFont());
 
 		e->accept();
-		kdebugf2();
 		return;
 	}
 	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_italic"))
@@ -156,7 +144,6 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		emit fontChanged(currentFont());
 
 		e->accept();
-		kdebugf2();
 		return;
 	}
 	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_underline"))
@@ -166,21 +153,18 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		emit fontChanged(currentFont());
 
 		e->accept();
-		kdebugf2();
 		return;
 	}
 	else if (e->matches(QKeySequence::SelectAll))
 	{
 		selectAll();
 		e->accept();
-		kdebugf2();
 		return;
 	}
 	else if (CopyPossible && e->matches(QKeySequence::Copy))
 	{
 		copy();
 		e->accept();
-		kdebugf2();
 		return;
 	}
 	else if (e->key() == Qt::Key_Tab)
@@ -194,12 +178,10 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 	if (handled)
 	{
 		e->accept();
-		kdebugf2();
 		return;
 	}
 
 	QTextEdit::keyPressEvent(e);
-	kdebugf2();
 }
 
 void CustomInput::keyReleaseEvent(QKeyEvent *e)

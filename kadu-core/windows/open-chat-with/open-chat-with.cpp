@@ -44,7 +44,6 @@
 #include "widgets/filtered-tree-view.h"
 #include "widgets/line-edit-with-clear-button.h"
 #include "activate.h"
-#include "debug.h"
 
 #include <QtCore/QTimer>
 #include <QtGui/QKeyEvent>
@@ -175,8 +174,6 @@ void OpenChatWith::init()
 
 void OpenChatWith::keyPressEvent(QKeyEvent *e)
 {
-	kdebugf();
-
 	switch (e->key())
 	{
 		case Qt::Key_Enter:
@@ -210,8 +207,6 @@ void OpenChatWith::keyPressEvent(QKeyEvent *e)
 	}
 
 	QWidget::keyPressEvent(e);
-
-	kdebugf2();
 }
 
 void OpenChatWith::focusQml()
@@ -229,8 +224,6 @@ void OpenChatWith::focusQml()
 
 void OpenChatWith::inputChanged(const QString &text)
 {
-	kdebugf();
-
 	BuddyList matchingContacts = text.isEmpty()
 			? m_buddyManager->items().toList()
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);

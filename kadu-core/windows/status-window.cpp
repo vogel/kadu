@@ -39,7 +39,6 @@
 #include "windows/message-dialog.h"
 #include "windows/status-window-description-proxy-model.h"
 #include "activate.h"
-#include "debug.h"
 
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>

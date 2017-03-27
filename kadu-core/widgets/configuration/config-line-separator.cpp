@@ -24,8 +24,6 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-line-separator.h"
 
-#include "debug.h"
-
 ConfigLineSeparator::ConfigLineSeparator(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QFrame(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager)
 {
@@ -34,7 +32,6 @@ ConfigLineSeparator::ConfigLineSeparator(ConfigGroupBox *parentConfigGroupBox, C
 
 void ConfigLineSeparator::createWidgets()
 {
-	kdebugf();
 	int margin = 5;
 	setFrameShape(QFrame::HLine);
 	setMinimumHeight(2*margin+1);

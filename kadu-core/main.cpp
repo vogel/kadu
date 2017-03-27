@@ -198,16 +198,6 @@ int main(int argc, char *argv[]) try
 		return 0;
 	}
 
-	if (!executionArguments.debugMask().isEmpty())
-	{
-		bool ok;
-		executionArguments.debugMask().toInt(&ok);
-		if (ok)
-			qputenv("DEBUG_MASK", executionArguments.debugMask().toUtf8());
-		else
-			fprintf(stderr, "Ignoring invalid debug mask '%s'\n", executionArguments.debugMask().toUtf8().constData());
-	}
-
 	qRegisterMetaType<Message>();
 
 	auto profileDirectory = executionArguments.profileDirectory().isEmpty()

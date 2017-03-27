@@ -47,7 +47,6 @@
 #include "protocols/services/buddy-list-serialization-service.h"
 #include "roster/roster-replacer.h"
 #include "roster/roster.h"
-#include "debug.h"
 
 #include "account-buddy-list-widget.h"
 

@@ -56,7 +56,6 @@
 #include "core/core.h"
 #include "icons/icons-manager.h"
 #include "misc/misc.h"
-#include "debug.h"
 
 #include "open-chat-with/gadu-open-chat-with-runner.h"
 #include "server/gadu-servers-manager.h"
@@ -85,15 +84,11 @@ GaduProtocol::GaduProtocol(GaduListHelper *gaduListHelper, GaduServersManager *g
 
 GaduProtocol::~GaduProtocol()
 {
-	kdebugf();
-
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 	delete OpenChatRunner;
 	OpenChatRunner = 0;
 
 	disconnect(account(), 0, this, 0);
-
-	kdebugf2();
 }
 
 void GaduProtocol::setAvatarManager(AvatarManager *avatarManager)
@@ -202,8 +197,6 @@ void GaduProtocol::init()
 
 	m_chatServiceRepository->addChatService(CurrentChatService);
 	m_chatStateServiceRepository->addChatStateService(CurrentChatStateService);
-
-	kdebugf2();
 }
 
 void GaduProtocol::done()
@@ -268,18 +261,11 @@ void GaduProtocol::changePrivateMode()
 
 void GaduProtocol::connectionTimeoutTimerSlot()
 {
-	kdebugf();
-
-	kdebugm(KDEBUG_INFO, "Timeout, breaking connection\n");
 	socketConnFailed(ConnectionTimeout);
-
-	kdebugf2();
 }
 
 void GaduProtocol::everyMinuteActions()
 {
-	kdebugf();
-
 	auto writableSessionToken = Connection->writableSessionToken();
 	gg_ping(writableSessionToken.rawSession());
 }
@@ -373,15 +359,9 @@ void GaduProtocol::login()
 
 void GaduProtocol::connectedToServer()
 {
-	kdebugf();
-
 	PingTimer = new QTimer(0);
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
 	PingTimer->start(60000);
-
-	loggedIn();
-
-	kdebugf2();
 }
 
 void GaduProtocol::afterLoggedIn()
@@ -525,7 +505,6 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int ggStatus
 
 	if (contact.isAnonymous())
 	{
-		kdebugmf(KDEBUG_INFO, "buddy %u not in list. Damned server!\n", uin);
 		if (contact.ownerBuddy())
 			emit userStatusChangeIgnored(contact.ownerBuddy());
 		rosterService()->removeContact(contact);
@@ -541,8 +520,6 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int ggStatus
 
 void GaduProtocol::socketConnFailed(GaduError error)
 {
-	kdebugf();
-
 	QString msg = GaduProtocolHelper::connectionErrorMessage(error);
 
 	switch (error)
@@ -570,7 +547,6 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			host = "HUB";
 		else
 			host = QString("%1:%2").arg(server.toString()).arg(ActiveServer.second);
-		kdebugm(KDEBUG_INFO, "%s %s\n", qPrintable(host), qPrintable(msg));
 		emit connectionError(account(), host, msg);
 	}
 
@@ -585,8 +561,6 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		logout();
 		connectionClosed();
 	}
-
-	kdebugf2();
 }
 
 void GaduProtocol::disconnectedFromServer()
@@ -619,14 +593,6 @@ GaduDriveService * GaduProtocol::driveService() const
 GaduUserDataService * GaduProtocol::userDataService() const
 {
 	return CurrentUserDataService;
-}
-
-void GaduProtocol::configurationUpdated()
-{
-#ifdef DEBUG_OUTPUT_ENABLED
-	// 8 bits for gadu debug
-	gg_debug_level = debug_mask & 255;
-#endif
 }
 
 #include "moc_gadu-protocol.cpp"
