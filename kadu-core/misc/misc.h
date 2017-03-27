@@ -47,4 +47,6 @@ KADUAPI QString fixFileName(const QString &path, const QString &fn);
 
 KADUAPI QChar extractLetter(QChar c);
 
+KADUAPI QByteArray prettyHex(const QByteArray &data);
+
 #endif // MISC_H

@@ -50,6 +50,8 @@ public:
 
 };
 
+KADUAPI QNetworkProxy toQNetworkProxy(const NetworkProxy &networkProxy);
+
 Q_DECLARE_METATYPE(NetworkProxy)
 
 #endif // NETWORK_PROXY_H

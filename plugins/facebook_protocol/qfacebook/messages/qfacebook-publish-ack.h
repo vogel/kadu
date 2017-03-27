@@ -1,0 +1,38 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2017 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#pragma once
+
+#include "qfacebook-message-type.h"
+#include "qfacebook-message.h"
+
+struct QMqttMessage;
+
+class QFacebookPublishAck : public QFacebookMessage
+{
+public:
+	QFacebookPublishAck(uint16_t mid) : mid{mid} {}
+
+	virtual QFacebookMessageType messageType() const { return QFacebookMessageType::PublishAck; }
+	virtual QMqttMessage encode() const;
+	static QFacebookPublishAck decode(const QMqttMessage &message);
+
+	uint16_t mid;
+
+};

@@ -22,6 +22,7 @@
 #include <QtCore/QObject>
 #include <cassert>
 #include <memory>
+#include <type_traits>
 
 template<typename T>
 struct not_owned_qobject_deleter
@@ -50,6 +51,12 @@ public:
 			std::unique_ptr<T, not_owned_qobject_deleter<T>>(qobject)
 	{
 		assert(qobject->QObject::parent() == nullptr);
+	}
+
+	template<typename U>
+	not_owned_qptr(not_owned_qptr<U> &&qobject) :
+			std::unique_ptr<T, not_owned_qobject_deleter<T>>(qobject.release())
+	{
 	}
 
 	operator T*() const { return this->get(); }
@@ -89,6 +96,12 @@ public:
 			std::unique_ptr<T, owned_qobject_deleter<T>>(qobject)
 	{
 		assert(qobject->QObject::parent() != nullptr);
+	}
+
+	template<typename U>
+	owned_qptr(owned_qptr<U> &&qobject) :
+			std::unique_ptr<T, owned_qobject_deleter<T>>(qobject.release())
+	{
 	}
 
 	operator T*() const { return this->get(); }

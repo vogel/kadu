@@ -1,7 +1,9 @@
 set (DEFAULT_PLUGINS
 
 # protocols
-	# GaduGadu protocol suppot
+	# Facebook Chat protocol support
+	facebook_protocol
+	# GaduGadu protocol support
 	gadu_protocol
 	# Jabber/XMPP protocol support
 	jabber_protocol

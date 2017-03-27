@@ -276,20 +276,9 @@ void JabberProtocol::login()
 	configuration.setStreamSecurityMode(streamSecurityMode);
 	configuration.setUseNonSASLAuthentication(useNonSASLAuthentication);
 
-	if (account().proxy())
-	{
-		auto proxy = QNetworkProxy{};
-		if (account().proxy().type() == "socks")
-			proxy.setType(QNetworkProxy::Socks5Proxy);
-		else
-			proxy.setType(QNetworkProxy::HttpProxy);
-
-		proxy.setHostName(account().proxy().address());
-		proxy.setPort(account().proxy().port());
-		proxy.setUser(account().proxy().user());
-		proxy.setPassword(account().proxy().password());
+	auto proxy = toQNetworkProxy(account().proxy());
+	if (proxy.type() != QNetworkProxy::NoProxy)
 		configuration.setNetworkProxy(proxy);
-	}
 
 	if (accountData.useCustomHostPort())
 	{
