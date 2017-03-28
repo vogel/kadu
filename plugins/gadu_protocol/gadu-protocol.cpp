@@ -366,6 +366,8 @@ void GaduProtocol::connectedToServer()
     PingTimer = new QTimer(0);
     connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
     PingTimer->start(60000);
+
+    loggedIn();
 }
 
 void GaduProtocol::afterLoggedIn()
