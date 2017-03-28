@@ -150,10 +150,6 @@ static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 }
 #endif   // !Q_OS_WIN
 
-#ifdef DEBUG_OUTPUT_ENABLED
-extern KADUAPI bool showTimesInDebug;
-#endif
-
 static void printVersion()
 {
     printf(
@@ -246,10 +242,6 @@ int main(int argc, char *argv[]) try
 #ifndef Q_OS_WIN
         // Qt version is better on win32
         qInstallMsgHandler(kaduQtMessageHandler);
-#endif
-
-#ifdef DEBUG_OUTPUT_ENABLED
-        showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
 #endif
 
         Core core{std::move(injector)};
