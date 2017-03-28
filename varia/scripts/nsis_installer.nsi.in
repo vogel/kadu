@@ -385,6 +385,10 @@ SectionGroup $(section_protocols) SectionProtocols
 		WriteRegStr ${PRODUCT_REGISTRY_ROOT} "Software\Classes\xmpp\shell\open\command" "" "$INSTDIR\${PRODUCT_BINARY_FILE_NAME} $\"%1$\""
 	SectionEnd
 
+	Section Facebook
+		!insertmacro kadu_plugin_content facebook_protocol
+	SectionEnd
+
 	Section Gadu-Gadu
 		!insertmacro kadu_plugin_content gadu_protocol
 
